@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 
 // Stage color palettes
@@ -29,6 +30,8 @@ export class EmblemScene {
     this._t       = 0;
     this._animObjs = [];
     this._disposables = [];
+    this._controls = null;
+    this.isGeneric = false;
   }
 
   async build() {
@@ -54,6 +57,17 @@ export class EmblemScene {
     // Update bloom strength
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = pal.bloom;
+
+    // Orbit controls — click-drag to rotate freely around the scene
+    this._controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this._controls.enableDamping  = true;
+    this._controls.dampingFactor  = 0.05;
+    this._controls.enablePan      = false;
+    this._controls.minDistance    = 3;
+    this._controls.maxDistance    = 18;
+    this._controls.maxPolarAngle  = Math.PI * 0.78;
+    this._controls.target.set(0, 0.5, 0);
+    this._controls.update();
   }
 
   _setupCamera() {
@@ -792,24 +806,44 @@ export class EmblemScene {
 
   // ── Generic fallback ───────────────────────────────────────────────────────
   _buildGenericEmblem(pal) {
-    const geo  = new THREE.IcosahedronGeometry(1.2, 2);
-    const mat  = new THREE.MeshStandardMaterial({
-      color: pal.accent, roughness: 0.6, metalness: 0.3,
-      emissive: new THREE.Color(pal.glow), emissiveIntensity: 0.2,
+    this.isGeneric = true;
+
+    // Sculptural torus-knot — more expressive than icosahedron, fully orbitable
+    const geo = new THREE.TorusKnotGeometry(0.9, 0.28, 128, 16, 3, 2);
+    const mat = new THREE.MeshStandardMaterial({
+      color: pal.accent, roughness: 0.35, metalness: 0.5,
+      emissive: new THREE.Color(pal.glow), emissiveIntensity: 0.3,
     });
     const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.y = 0.5;
     this.scene.add(mesh);
-    this._animObjs.push({ mesh, rotSpeed: 0.3 });
+    this._genericMat = mat;
+    this._animObjs.push({ mesh, rotSpeed: 0.22 });
     this._disposables.push(geo, mat);
 
-    const stream = new ParticleStream({
-      count: 60, source: new THREE.Vector3(-2, 0, 0),
-      target: new THREE.Vector3(2, 0, 0),
-      color: pal.particle, size: 0.06, speed: 0.4, arc: 1.5,
+    // Wide horizontal arc
+    const streamA = new ParticleStream({
+      count: 80, source: new THREE.Vector3(-3.0, 0.5, 0),
+      target: new THREE.Vector3(3.0, 0.5, 0),
+      color: pal.particle, size: 0.055, speed: 0.38, arc: 1.8,
     });
-    stream.opacity = 0.6; stream.active = true;
-    this.scene.add(stream.points);
-    this._streams.push(stream);
+    streamA.opacity = 0.55; streamA.active = true;
+
+    // Descending vertical arc
+    const streamB = new ParticleStream({
+      count: 55, source: new THREE.Vector3(0, 3.0, 0),
+      target: new THREE.Vector3(0, -0.5, 0),
+      color: pal.particle, size: 0.04, speed: 0.3, arc: 1.0,
+    });
+    streamB.opacity = 0.4; streamB.active = true;
+
+    this.scene.add(streamA.points, streamB.points);
+    this._streams.push(streamA, streamB);
+
+    const tl = gsap.timeline({ repeat: -1 });
+    tl.to(mat, { emissiveIntensity: 0.78, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }, 0)
+      .to(this._groundGlow, { intensity: 3.0, duration: 2.0, ease: 'sine.inOut', yoyo: true, repeat: -1 }, 0.8);
+    this._tl = tl;
   }
 
   // ── Update ─────────────────────────────────────────────────────────────────
@@ -820,10 +854,12 @@ export class EmblemScene {
       mesh.rotation.y += dt * rotSpeed;
       mesh.rotation.x += dt * rotSpeed * 0.4;
     });
+    if (this._controls) this._controls.update();
   }
 
   // ── Dispose ────────────────────────────────────────────────────────────────
   dispose() {
+    if (this._controls) { this._controls.dispose(); this._controls = null; }
     if (this._tl) { this._tl.kill(); this._tl = null; }
     gsap.killTweensOf([
       this._groundGlow, this._woman, this._toad, this._toadMat,

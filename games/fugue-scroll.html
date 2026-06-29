@@ -56,6 +56,15 @@
       letter-spacing: 0.06em;
       pointer-events: none;
       transition: color 0.4s;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    #collection-line {
+      font-size: 0.62rem;
+      color: #3a2a18;
+      letter-spacing: 0.08em;
     }
 
     /* ── Stage transition divider ─────────────────────────────── */
@@ -236,7 +245,10 @@
 
   <div id="progress-bar"></div>
   <a id="nav-back" href="../src/index.html?v=8">← HPin3D</a>
-  <div id="emblem-counter"></div>
+  <div id="emblem-counter">
+    <span id="scroll-pos"></span>
+    <span id="collection-line"></span>
+  </div>
   <div id="loading">Unfurling the scroll…</div>
   <div id="error-msg"></div>
 
@@ -260,10 +272,33 @@
       return STAGE_CONFIG[stage] || DEFAULT_STAGE;
     }
 
+    // ── Collection tracking ────────────────────────────────────────
+    const COLLECTION_KEY = 'af-emblems-seen';
+    function loadSeen() {
+      try { return new Set(JSON.parse(localStorage.getItem(COLLECTION_KEY) || '[]')); }
+      catch { return new Set(); }
+    }
+    function saveSeen(set) {
+      try { localStorage.setItem(COLLECTION_KEY, JSON.stringify([...set])); } catch {}
+    }
+    let seenSet = loadSeen();
+
+    function markSeen(emblemNumber) {
+      if (emblemNumber && !seenSet.has(emblemNumber)) {
+        seenSet.add(emblemNumber);
+        saveSeen(seenSet);
+        updateCollectionLine();
+      }
+    }
+    function updateCollectionLine() {
+      const el = document.getElementById('collection-line');
+      if (el) el.textContent = `${seenSet.size} / 51 discovered`;
+    }
+    updateCollectionLine();
+
     // ── DOM refs ─────────────────────────────────────────────────
     const main        = document.getElementById('scroll-main');
     const progressBar = document.getElementById('progress-bar');
-    const counter     = document.getElementById('emblem-counter');
     const loading     = document.getElementById('loading');
     const errorEl     = document.getElementById('error-msg');
 
@@ -414,15 +449,15 @@
       observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Animate the direct content inside dividers or sections
             const target = entry.target;
             if (target.classList.contains('emblem-section')) {
               target.classList.add('visible');
+              const num = parseInt(target.dataset.emblemNumber, 10);
+              if (!isNaN(num) && num > 0) markSeen(num);
             } else if (target.classList.contains('stage-divider')) {
               const inner = target.querySelector('.stage-divider-inner');
               if (inner) inner.classList.add('visible');
             }
-            // Don't unobserve — leave transition permanent (no exit)
           }
         });
       }, { threshold: 0.25 });
@@ -477,10 +512,12 @@
         const conf = stageConf(currentStage);
         progressBar.style.background = conf.colour;
 
-        // Counter: emblem n / total (1-indexed, skip if 0 sections yet)
-        const displayed = currentEmblemIdx + 1;
-        counter.textContent = displayed + ' / ' + sections.length;
-        counter.style.color = conf.counterColour;
+        // Counter: emblem n / total
+        const posEl = document.getElementById('scroll-pos');
+        if (posEl) {
+          posEl.textContent = (currentEmblemIdx + 1) + ' / ' + sections.length;
+          posEl.style.color = conf.counterColour;
+        }
       }, { passive: true });
     }
 

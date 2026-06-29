@@ -115,6 +115,39 @@
     #center-message h2 { font-size: 1.2rem; font-weight: normal; color: #c8a878; letter-spacing: 0.1em; }
     #center-message p  { font-size: 0.85rem; color: #6b5d4d; text-align: center; line-height: 1.7; }
 
+    /* Generic emblem text card — shown for all 46 non-showcase emblems */
+    #text-card {
+      display: none; position: fixed; z-index: 8;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: min(520px, 88vw);
+      flex-direction: column; align-items: center; gap: 0.65rem;
+      text-align: center; pointer-events: none;
+      background: rgba(8, 6, 3, 0.72);
+      border: 1px solid rgba(139, 69, 19, 0.25);
+      padding: 2.2rem 2rem 1.8rem;
+      backdrop-filter: blur(2px);
+      animation: fadeInCard 0.8s ease forwards;
+    }
+    @keyframes fadeInCard { from { opacity:0; transform: translate(-50%,-50%) translateY(12px); } to { opacity:1; transform: translate(-50%,-50%) translateY(0); } }
+    #text-card .tc-badge {
+      font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.15rem 0.5rem; border: 1px solid; display: inline-block;
+    }
+    #text-card .tc-numeral {
+      font-size: 3.4rem; font-weight: 100; letter-spacing: 0.04em; line-height: 1;
+    }
+    #text-card .tc-title { font-size: 1.25rem; font-weight: normal; color: #f0e8d8; }
+    #text-card .tc-rule  { width: 48px; height: 1px; background: rgba(139,69,19,0.35); }
+    #text-card .tc-motto {
+      font-style: italic; font-size: 0.88rem; color: #c8a878; line-height: 1.55;
+    }
+    #text-card .tc-epigram {
+      font-size: 0.75rem; color: #6b5d4d; line-height: 1.75; max-width: 420px;
+    }
+    #text-card .tc-hint {
+      font-size: 0.62rem; color: #4a3828; letter-spacing: 0.1em; margin-top: 0.4rem;
+    }
+
     /* Loading screen */
     #loading {
       position: fixed; inset: 0; z-index: 100;
@@ -160,6 +193,7 @@
 
   <div id="gallery-tooltip"></div>
   <div id="center-message"><h2></h2><p></p></div>
+  <div id="text-card"></div>
 
   <!-- Fade-to-black overlay for world transitions -->
   <div id="fade-overlay" style="
@@ -193,6 +227,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=8"></script>
+  <script type="module" src="./main.js?v=9"></script>
 </body>
 </html>

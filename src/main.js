@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { EmblemScene } from './scenes/EmblemScene.js?v=3';
+import { EmblemScene } from './scenes/EmblemScene.js?v=4';
 import { HPScene } from './scenes/HPScene.js?v=5';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
@@ -133,6 +133,31 @@ function hideHUD() {
   document.getElementById('back-btn').style.display = 'none';
 }
 
+// ─── Generic emblem text card ─────────────────────────────────────────────────
+
+function showTextCard(emblem) {
+  const el = document.getElementById('text-card');
+  if (!el) return;
+  const stage = emblem.alchemical_stage || 'NIGREDO';
+  const col   = STAGE_COLORS[stage] || '#8b4513';
+  const epigram = (emblem.epigram_english || '').replace(/\n/g,' ').trim().slice(0, 260);
+  el.innerHTML = `
+    <div class="tc-badge" style="color:${col};border-color:${col}">${stage}</div>
+    <div class="tc-numeral" style="color:${col}">${emblem.roman_numeral || emblem.number}</div>
+    <div class="tc-title">${emblem.label || ''}</div>
+    <div class="tc-rule"></div>
+    ${emblem.motto_english ? `<div class="tc-motto">${emblem.motto_english}</div>` : ''}
+    ${epigram ? `<p class="tc-epigram">${epigram}${epigram.length === 260 ? '…' : ''}</p>` : ''}
+    <div class="tc-hint">Drag canvas to rotate · press A for context · G for gallery</div>
+  `;
+  el.style.display = 'flex';
+}
+
+function hideTextCard() {
+  const el = document.getElementById('text-card');
+  if (el) el.style.display = 'none';
+}
+
 // ─── Emblem Scene ─────────────────────────────────────────────────────────────
 
 async function launchEmblemScene(emblemNumber) {
@@ -157,13 +182,20 @@ async function launchEmblemScene(emblemNumber) {
   updateHUD(emblemData);
   setActiveWorldBtn('btn-af');
 
+  // Show content card for generic scenes (all 46 non-showcase emblems)
+  if (scene.isGeneric) {
+    showTextCard(emblemData);
+  } else {
+    hideTextCard();
+  }
+
   // Stage audio
   AlchemicalAudio.setStage(emblemData.alchemical_stage || 'NIGREDO');
 
   // Linked HP annotations (auto-surface after 6s, or press A)
   state.currentAnnotations = findLinkedAnnotations(emblemData.number);
   scheduleAnnotation();
-  showFirstVisitHint();
+  showHint('Drag to rotate  ·  ← →  navigate  ·  A  context  ·  G  gallery');
 }
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
@@ -174,6 +206,7 @@ function buildGallery() {
     state.activeScene = null;
   }
 
+  hideTextCard();
   state.inGallery = true;
   hideHUD();
   setActiveWorldBtn('btn-af');
@@ -376,6 +409,7 @@ async function launchHPScene() {
   state.currentEmblem = null;
   setActiveWorldBtn('btn-hp');
   hideHUD();
+  hideTextCard();
 
   const scene = new HPScene(renderer, composer);
   await scene.build();
@@ -411,6 +445,7 @@ async function launchArchivesScene() {
   composer.passes[0] = new RenderPass(scene.scene, scene.camera);
   state.activeScene = scene;
 
+  hideTextCard();
   AlchemicalAudio.setStage('ALBEDO');
   showHint('Click any node to navigate · HP folios left · AF emblems right');
 }
@@ -452,20 +487,13 @@ function showHPHUD(sceneName, folio, linkedEmblems = []) {
 
 // ─── Key hint toast ───────────────────────────────────────────────────────────
 
-let _hintShown = false;
 function showHint(text) {
   const el = document.getElementById('key-hint');
   if (!el) return;
   el.textContent = text;
   el.style.opacity = '1';
   clearTimeout(el._timer);
-  el._timer = setTimeout(() => { el.style.opacity = '0'; }, 4500);
-}
-
-function showFirstVisitHint() {
-  if (_hintShown) return;
-  _hintShown = true;
-  showHint('← →  emblems  ·  A  context  ·  G  gallery');
+  el._timer = setTimeout(() => { el.style.opacity = '0'; }, 5000);
 }
 
 // ─── Annotations ──────────────────────────────────────────────────────────────
