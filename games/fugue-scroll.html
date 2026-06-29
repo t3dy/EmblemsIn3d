@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atalanta Animata: The Fugue Scroll</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #080604;
+      color: #f5f0e8;
+      font-family: Georgia, 'Times New Roman', serif;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    /* ── Progress bar ─────────────────────────────────────────── */
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: #8b4513;
+      transition: width 0.3s ease, background-color 0.6s ease;
+      z-index: 1000;
+      pointer-events: none;
+    }
+
+    /* ── Nav links ────────────────────────────────────────────── */
+    #nav-back {
+      position: fixed;
+      top: 12px;
+      right: 16px;
+      z-index: 1000;
+      font-family: Georgia, serif;
+      font-size: 0.78rem;
+      color: #6a5a48;
+      text-decoration: none;
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+    #nav-back:hover { color: #c8a878; }
+
+    #emblem-counter {
+      position: fixed;
+      bottom: 18px;
+      right: 18px;
+      z-index: 1000;
+      font-family: Georgia, serif;
+      font-size: 0.76rem;
+      color: #4a3a28;
+      letter-spacing: 0.06em;
+      pointer-events: none;
+      transition: color 0.4s;
+    }
+
+    /* ── Stage transition divider ─────────────────────────────── */
+    .stage-divider {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage-divider-inner {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .stage-divider-inner.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stage-divider-name {
+      font-size: 8rem;
+      font-weight: 100;
+      letter-spacing: 0.3em;
+      opacity: 0.07;
+      text-transform: uppercase;
+      line-height: 1;
+      user-select: none;
+    }
+
+    .stage-divider-symbol {
+      font-size: 1.1rem;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      margin-top: 2rem;
+      opacity: 0.25;
+    }
+
+    /* ── Emblem sections ──────────────────────────────────────── */
+    .emblem-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .emblem-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .emblem-inner {
+      max-width: 580px;
+      width: 100%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    /* Stage badge */
+    .stage-badge {
+      display: inline-block;
+      font-size: 0.6rem;
+      font-family: 'Arial', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 1.6rem;
+      border: 1px solid currentColor;
+      opacity: 0.65;
+    }
+
+    /* Roman numeral */
+    .emblem-numeral {
+      font-size: 4rem;
+      font-weight: 100;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    /* Title */
+    .emblem-title {
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: #f5f0e8;
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    /* HR */
+    .emblem-rule {
+      width: 60px;
+      height: 1px;
+      border: none;
+      margin: 0 auto 1.2rem;
+    }
+
+    /* Motto latin */
+    .motto-latin {
+      font-style: italic;
+      font-size: 1rem;
+      color: #c8a878;
+      margin-bottom: 0.5rem;
+      line-height: 1.5;
+    }
+
+    /* Motto english */
+    .motto-english {
+      font-size: 0.82rem;
+      color: #9a8070;
+      margin-bottom: 1.2rem;
+      line-height: 1.55;
+    }
+
+    /* Epigram */
+    .epigram {
+      font-size: 0.74rem;
+      color: #7a6858;
+      line-height: 1.75;
+    }
+
+    /* Frontispiece (emblem 0) — slightly different treatment */
+    .emblem-section.frontispiece .emblem-title {
+      font-size: 1.1rem;
+      color: #c8b898;
+    }
+
+    /* ── Stage colour variables (applied per element) ──────────── */
+    /* Applied via inline style on each section/element */
+
+    /* ── Loading state ────────────────────────────────────────── */
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #080604;
+      z-index: 2000;
+      font-size: 0.82rem;
+      color: #4a3a28;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: opacity 0.6s ease;
+    }
+    #loading.hidden { opacity: 0; pointer-events: none; }
+
+    /* ── Error state ─────────────────────────────────────────── */
+    #error-msg {
+      display: none;
+      position: fixed;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      background: #080604;
+      z-index: 2000;
+      color: #7a3020;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-align: center;
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+  <a id="nav-back" href="../src/index.html?v=8">← HPin3D</a>
+  <div id="emblem-counter"></div>
+  <div id="loading">Unfurling the scroll…</div>
+  <div id="error-msg"></div>
+
+  <main id="scroll-main"></main>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ── Stage configuration ──────────────────────────────────────
+    const STAGE_CONFIG = {
+      NIGREDO:    { bg: '#0a0200', colour: '#8b3a1a', counterColour: '#5a2a10' },
+      ALBEDO:     { bg: '#020810', colour: '#3a6a9a', counterColour: '#1a3a5a' },
+      CITRINITAS: { bg: '#100d00', colour: '#9a7a10', counterColour: '#5a4a08' },
+      RUBEDO:     { bg: '#0e0100', colour: '#9a1a10', counterColour: '#5a0a08' },
+    };
+
+    const DEFAULT_STAGE = { bg: '#080604', colour: '#7a6848', counterColour: '#4a3a28' };
+
+    function stageConf(stage) {
+      return STAGE_CONFIG[stage] || DEFAULT_STAGE;
+    }
+
+    // ── DOM refs ─────────────────────────────────────────────────
+    const main        = document.getElementById('scroll-main');
+    const progressBar = document.getElementById('progress-bar');
+    const counter     = document.getElementById('emblem-counter');
+    const loading     = document.getElementById('loading');
+    const errorEl     = document.getElementById('error-msg');
+
+    // ── Fetch emblems ─────────────────────────────────────────────
+    fetch('../src/data/emblems.json')
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
+      .then(emblems => {
+        buildScroll(emblems);
+        loading.classList.add('hidden');
+        initObserver();
+        initScroll(emblems);
+        // Trigger first visible sections
+        setTimeout(() => triggerVisible(), 100);
+      })
+      .catch(err => {
+        loading.classList.add('hidden');
+        errorEl.style.display = 'flex';
+        errorEl.textContent = 'Could not load emblems.json — ' + err.message;
+      });
+
+    // ── Build the scroll ─────────────────────────────────────────
+    function buildScroll(emblems) {
+      // Filter to only numbered emblems (number > 0 = emblems I–L)
+      // Emblem 0 is the frontispiece, include it but mark it specially
+      let prevStage = null;
+      let emblemCount = 0; // count numbered emblems for the n/51 counter
+
+      emblems.forEach((emb, idx) => {
+        const stage = emb.alchemical_stage || 'NIGREDO';
+        const conf  = stageConf(stage);
+
+        // Insert stage transition divider when stage changes
+        if (stage !== prevStage && prevStage !== null) {
+          main.appendChild(buildDivider(stage, conf));
+        }
+        prevStage = stage;
+
+        // Build the emblem section
+        const isFront = emb.number === 0;
+        const section = buildEmblemSection(emb, conf, isFront, idx);
+        main.appendChild(section);
+
+        if (!isFront) emblemCount++;
+      });
+    }
+
+    function buildDivider(stage, conf) {
+      const div = document.createElement('div');
+      div.className = 'stage-divider';
+      div.style.background = conf.bg;
+      div.dataset.stage = stage;
+
+      const inner = document.createElement('div');
+      inner.className = 'stage-divider-inner';
+
+      const nameEl = document.createElement('div');
+      nameEl.className = 'stage-divider-name';
+      nameEl.style.color = conf.colour;
+      nameEl.textContent = stage;
+
+      const symEl = document.createElement('div');
+      symEl.className = 'stage-divider-symbol';
+      symEl.style.color = conf.colour;
+      symEl.textContent = stage;
+
+      inner.appendChild(nameEl);
+      inner.appendChild(symEl);
+      div.appendChild(inner);
+      return div;
+    }
+
+    function buildEmblemSection(emb, conf, isFront, idx) {
+      const section = document.createElement('section');
+      section.className = 'emblem-section' + (isFront ? ' frontispiece' : '');
+      section.style.background = conf.bg;
+      section.dataset.emblemNumber = emb.number;
+      section.dataset.stage = emb.alchemical_stage || '';
+
+      const inner = document.createElement('div');
+      inner.className = 'emblem-inner';
+
+      // Stage badge
+      const badge = document.createElement('div');
+      badge.className = 'stage-badge';
+      badge.style.color = conf.colour;
+      badge.style.borderColor = conf.colour;
+      badge.textContent = emb.alchemical_stage || '';
+      inner.appendChild(badge);
+
+      // Roman numeral (or special label for frontispiece)
+      const numeral = document.createElement('div');
+      numeral.className = 'emblem-numeral';
+      numeral.style.color = conf.colour;
+      numeral.textContent = isFront ? '✦' : (emb.roman_numeral || '');
+      inner.appendChild(numeral);
+
+      // Title
+      const title = document.createElement('h2');
+      title.className = 'emblem-title';
+      title.textContent = emb.label || '';
+      inner.appendChild(title);
+
+      // Horizontal rule
+      const hr = document.createElement('hr');
+      hr.className = 'emblem-rule';
+      hr.style.background = conf.colour;
+      inner.appendChild(hr);
+
+      // Motto latin
+      if (emb.motto_latin) {
+        const ml = document.createElement('p');
+        ml.className = 'motto-latin';
+        ml.textContent = emb.motto_latin;
+        inner.appendChild(ml);
+      }
+
+      // Motto english
+      if (emb.motto_english) {
+        const me = document.createElement('p');
+        me.className = 'motto-english';
+        me.textContent = emb.motto_english;
+        inner.appendChild(me);
+      }
+
+      // Epigram english — truncate to ~220 chars with ellipsis
+      if (emb.epigram_english) {
+        const ep = document.createElement('p');
+        ep.className = 'epigram';
+        let text = emb.epigram_english.replace(/\n/g, ' ').trim();
+        if (text.length > 220) {
+          text = text.slice(0, 217).trimEnd() + '…';
+        }
+        ep.textContent = text;
+        inner.appendChild(ep);
+      }
+
+      section.appendChild(inner);
+      return section;
+    }
+
+    // ── IntersectionObserver for entrance animations ──────────────
+    let observer;
+
+    function initObserver() {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            // Animate the direct content inside dividers or sections
+            const target = entry.target;
+            if (target.classList.contains('emblem-section')) {
+              target.classList.add('visible');
+            } else if (target.classList.contains('stage-divider')) {
+              const inner = target.querySelector('.stage-divider-inner');
+              if (inner) inner.classList.add('visible');
+            }
+            // Don't unobserve — leave transition permanent (no exit)
+          }
+        });
+      }, { threshold: 0.25 });
+
+      // Observe all sections and dividers
+      document.querySelectorAll('.emblem-section, .stage-divider').forEach(el => {
+        observer.observe(el);
+      });
+    }
+
+    function triggerVisible() {
+      // Manually fire for anything already in viewport at load
+      document.querySelectorAll('.emblem-section, .stage-divider').forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.75) {
+          if (el.classList.contains('emblem-section')) {
+            el.classList.add('visible');
+          } else {
+            const inner = el.querySelector('.stage-divider-inner');
+            if (inner) inner.classList.add('visible');
+          }
+        }
+      });
+    }
+
+    // ── Scroll progress + counter ────────────────────────────────
+    function initScroll(emblems) {
+      const totalEmblems = emblems.length; // 51
+
+      window.addEventListener('scroll', () => {
+        const scrollTop  = window.scrollY || document.documentElement.scrollTop;
+        const docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+        const progress   = docHeight > 0 ? scrollTop / docHeight : 0;
+
+        // Progress bar
+        progressBar.style.width = (progress * 100).toFixed(2) + '%';
+
+        // Find the current emblem in viewport
+        const sections = document.querySelectorAll('.emblem-section');
+        let currentStage = null;
+        let currentEmblemIdx = 0;
+
+        sections.forEach((sec, i) => {
+          const rect = sec.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.5) {
+            currentEmblemIdx = i;
+            currentStage = sec.dataset.stage;
+          }
+        });
+
+        // Update progress bar colour to match current stage
+        const conf = stageConf(currentStage);
+        progressBar.style.background = conf.colour;
+
+        // Counter: emblem n / total (1-indexed, skip if 0 sections yet)
+        const displayed = currentEmblemIdx + 1;
+        counter.textContent = displayed + ' / ' + sections.length;
+        counter.style.color = conf.counterColour;
+      }, { passive: true });
+    }
+
+  }());
+  </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emblem Games — Atalanta Fugiens</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #070503;
+  color: #f0ebe0;
+  font-family: Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 1.5rem;
+  gap: 3rem;
+}
+
+header { text-align: center; }
+header h1 {
+  font-size: 1.6rem; font-weight: normal;
+  letter-spacing: 0.14em; color: #c8a878;
+  margin-bottom: 0.5rem;
+}
+header p { font-size: 0.82rem; color: #6a5848; letter-spacing: 0.06em; line-height: 1.7; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.2rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+.card {
+  border: 1px solid #2a1a0a;
+  padding: 1.8rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, background 0.2s;
+  background: rgba(255,255,255,0.015);
+}
+.card:hover { border-color: #8b4513; background: rgba(255,255,255,0.03); }
+
+.card .badge {
+  font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.18rem 0.5rem; border: 1px solid;
+  display: inline-block; width: fit-content;
+}
+.card h2 { font-size: 1.05rem; font-weight: normal; color: #e8ddc8; }
+.card p  { font-size: 0.78rem; color: #7a6858; line-height: 1.6; }
+.card .arrow { font-size: 0.72rem; color: #5a4a38; margin-top: auto; }
+.card:hover .arrow { color: #c8a878; }
+
+.back-link {
+  font-size: 0.72rem; color: #5a4a38; text-decoration: none;
+  border: 1px solid #2a1a08; padding: 0.25rem 0.65rem;
+  letter-spacing: 0.05em; transition: color 0.2s, border-color 0.2s;
+}
+.back-link:hover { color: #c8a878; border-color: #8b4513; }
+
+footer { font-size: 0.65rem; color: #3a2a18; letter-spacing: 0.07em; margin-top: auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Emblem Games</h1>
+  <p>Interactive encounters with the <em>Atalanta Fugiens</em> · Michael Maier, 1617</p>
+</header>
+
+<div class="grid">
+
+  <a class="card" href="oracle.html">
+    <div class="badge" style="color:#c8a040;border-color:#c8a040;">Oracle</div>
+    <h2>Emblem Oracle</h2>
+    <p>Draw a random emblem and receive its motto and epigram as a meditation. Each draw surfaces a different emblem from the Great Work.</p>
+    <div class="arrow">Draw an emblem →</div>
+  </a>
+
+  <a class="card" href="fugue-scroll.html">
+    <div class="badge" style="color:#3a88cc;border-color:#3a88cc;">Journey</div>
+    <h2>The Fugue Scroll</h2>
+    <p>Scroll through all 51 emblems in sequence — NIGREDO through RUBEDO — as a full-page reading experience with entrance animations.</p>
+    <div class="arrow">Begin the journey →</div>
+  </a>
+
+  <a class="card" href="stage-sorter.html">
+    <div class="badge" style="color:#ddaa00;border-color:#ddaa00;">Puzzle</div>
+    <h2>The Great Work</h2>
+    <p>Sort 20 emblems into their alchemical stages: Nigredo, Albedo, Citrinitas, Rubedo. Drag each card to the correct stage zone.</p>
+    <div class="arrow">Start sorting →</div>
+  </a>
+
+  <a class="card" href="memory.html">
+    <div class="badge" style="color:#ff5500;border-color:#ff5500;">Memory</div>
+    <h2>Motto Memory</h2>
+    <p>Flip cards to match each Latin motto with its English translation. 8 pairs per hand, scored by moves. A game of alchemical language.</p>
+    <div class="arrow">Deal a hand →</div>
+  </a>
+
+</div>
+
+<a class="back-link" href="../src/index.html?v=8">← HPin3D 3D World</a>
+
+<footer>Atalanta Fugiens · Michael Maier, Frankfurt, 1617</footer>
+
+</body>
+</html>

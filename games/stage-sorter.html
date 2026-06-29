@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Great Work — Stage Sorter</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #080604;
+    color: #c8a878;
+    font-family: Georgia, 'Times New Roman', serif;
+    min-height: 100vh;
+    padding: 0 0 40px;
+  }
+
+  /* ── header ── */
+  header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 24px 32px 16px;
+    border-bottom: 1px solid #2a1a08;
+  }
+  header .titles h1 {
+    font-size: 2rem;
+    letter-spacing: 0.04em;
+    color: #e8c898;
+    line-height: 1.1;
+  }
+  header .titles p {
+    font-size: 0.85rem;
+    color: #9a7858;
+    margin-top: 6px;
+    font-style: italic;
+  }
+  header a.back {
+    color: #9a7858;
+    text-decoration: none;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    padding-top: 4px;
+    transition: color 0.2s;
+  }
+  header a.back:hover { color: #c8a878; }
+
+  /* ── hand ── */
+  #hand-area {
+    padding: 24px 32px 16px;
+  }
+  #hand-area h2 {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6a5838;
+    margin-bottom: 14px;
+  }
+  #hand {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-height: 180px;
+    padding: 12px;
+    border: 1px dashed #2a1a08;
+    border-radius: 4px;
+    background: #060402;
+    transition: background 0.2s;
+  }
+  #hand.drag-over {
+    background: #0d0a06;
+    border-color: #4a3018;
+  }
+
+  /* ── cards ── */
+  .card {
+    width: 120px;
+    height: 160px;
+    background: #0d0906;
+    border: 2px solid #2a1a08;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: grab;
+    user-select: none;
+    padding: 10px 8px;
+    text-align: center;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.3s;
+    position: relative;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
+  .card:active { cursor: grabbing; }
+  .card.dragging { opacity: 0.35; transform: scale(0.97); }
+
+  .card .numeral {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: #6a5838;
+    text-transform: uppercase;
+  }
+  .card .title {
+    font-size: 0.78rem;
+    line-height: 1.3;
+    color: #c8a878;
+  }
+
+  /* reveal states */
+  .card.correct {
+    border-color: #44aa44 !important;
+    box-shadow: 0 0 12px rgba(68,170,68,0.4);
+  }
+  .card.correct::after {
+    content: '✓';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    color: #44aa44;
+    font-size: 0.85rem;
+    font-family: sans-serif;
+  }
+  .card.wrong {
+    animation: wrongPulse 0.6s ease forwards;
+  }
+  @keyframes wrongPulse {
+    0%   { border-color: #cc3300; box-shadow: 0 0 10px rgba(204,51,0,0.6); }
+    50%  { border-color: #ff5500; box-shadow: 0 0 18px rgba(255,85,0,0.7); }
+    100% { border-color: #2a1a08; box-shadow: none; }
+  }
+
+  /* ── zones row ── */
+  #zones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 0 32px;
+    margin-top: 24px;
+    justify-content: center;
+  }
+
+  .zone {
+    width: 200px;
+    min-height: 300px;
+    border: 2px dashed;
+    border-radius: 4px;
+    padding: 12px 8px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+  }
+  .zone.drag-over { filter: brightness(1.25); }
+
+  /* per-stage zone colours */
+  .zone[data-stage="NIGREDO"]   { background: #0d0302; border-color: #cc4400; }
+  .zone[data-stage="ALBEDO"]    { background: #020810; border-color: #3a88cc; }
+  .zone[data-stage="CITRINITAS"]{ background: #120e00; border-color: #ddaa00; }
+  .zone[data-stage="RUBEDO"]    { background: #100100; border-color: #ff5500; }
+
+  .zone-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .zone[data-stage="NIGREDO"]    .zone-label { color: #cc4400; }
+  .zone[data-stage="ALBEDO"]     .zone-label { color: #3a88cc; }
+  .zone[data-stage="CITRINITAS"] .zone-label { color: #ddaa00; }
+  .zone[data-stage="RUBEDO"]     .zone-label { color: #ff5500; }
+
+  .zone-cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  /* cards inside zones adopt zone accent border */
+  .zone[data-stage="NIGREDO"]    .card { border-color: #551800; }
+  .zone[data-stage="ALBEDO"]     .card { border-color: #1a3a55; }
+  .zone[data-stage="CITRINITAS"] .card { border-color: #553f00; }
+  .zone[data-stage="RUBEDO"]     .card { border-color: #551a00; }
+
+  /* ── controls ── */
+  #controls {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 28px 32px 0;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  button {
+    background: #1a1006;
+    color: #c8a878;
+    border: 1px solid #4a3018;
+    font-family: Georgia, serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    padding: 10px 24px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+  }
+  button:hover { background: #2a1a08; border-color: #8a6030; color: #e8c898; }
+  button:disabled { opacity: 0.4; cursor: default; }
+
+  #score-display {
+    font-size: 1.1rem;
+    color: #e8c898;
+    letter-spacing: 0.06em;
+    min-width: 140px;
+    text-align: center;
+    font-style: italic;
+  }
+
+  /* ── misc ── */
+  #status-msg {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #6a5838;
+    padding: 12px 32px 0;
+    font-style: italic;
+    min-height: 24px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="titles">
+    <h1>The Great Work</h1>
+    <p>Sort each emblem into its alchemical stage</p>
+  </div>
+  <a class="back" href="../index.html">← HPin3D</a>
+</header>
+
+<section id="hand-area">
+  <h2>Your Hand — drag each card to a stage below</h2>
+  <div id="hand"></div>
+</section>
+
+<div id="controls">
+  <button id="btn-reveal" disabled>Reveal Score</button>
+  <span id="score-display"></span>
+  <button id="btn-again">Play Again</button>
+</div>
+<p id="status-msg">Loading emblems…</p>
+
+<section id="zones">
+  <div class="zone" data-stage="NIGREDO">
+    <div class="zone-label">Nigredo</div>
+    <div class="zone-cards" id="zone-NIGREDO"></div>
+  </div>
+  <div class="zone" data-stage="ALBEDO">
+    <div class="zone-label">Albedo</div>
+    <div class="zone-cards" id="zone-ALBEDO"></div>
+  </div>
+  <div class="zone" data-stage="CITRINITAS">
+    <div class="zone-label">Citrinitas</div>
+    <div class="zone-cards" id="zone-CITRINITAS"></div>
+  </div>
+  <div class="zone" data-stage="RUBEDO">
+    <div class="zone-label">Rubedo</div>
+    <div class="zone-cards" id="zone-RUBEDO"></div>
+  </div>
+</section>
+
+<script>
+(function () {
+  'use strict';
+
+  const STAGES = ['NIGREDO', 'ALBEDO', 'CITRINITAS', 'RUBEDO'];
+  const CARDS_PER_STAGE = 5;
+
+  // ── state ──────────────────────────────────────────────────────────
+  let allEmblems = [];           // full dataset
+  let activeCards = [];          // {id, emblem} × 20
+  // Map<cardId, stageName | 'hand'>
+  const placement = new Map();
+
+  let dragId = null;
+
+  // ── DOM refs ───────────────────────────────────────────────────────
+  const handEl     = document.getElementById('hand');
+  const btnReveal  = document.getElementById('btn-reveal');
+  const btnAgain   = document.getElementById('btn-again');
+  const scoreEl    = document.getElementById('score-display');
+  const statusEl   = document.getElementById('status-msg');
+
+  // ── bootstrap ──────────────────────────────────────────────────────
+  async function init () {
+    try {
+      const resp = await fetch('../src/data/emblems.json');
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      allEmblems = await resp.json();
+      statusEl.textContent = '';
+      startGame();
+    } catch (e) {
+      statusEl.textContent = 'Could not load emblems.json — ' + e.message;
+    }
+  }
+
+  // ── game setup ─────────────────────────────────────────────────────
+  function startGame () {
+    // pick first 5 per stage
+    const picked = [];
+    for (const stage of STAGES) {
+      const pool = allEmblems.filter(e => e.alchemical_stage === stage);
+      const take = pool.slice(0, CARDS_PER_STAGE);
+      take.forEach(e => picked.push(e));
+    }
+
+    // shuffle
+    const shuffled = picked.slice().sort(() => Math.random() - 0.5);
+
+    // assign ids
+    activeCards = shuffled.map((e, i) => ({ id: 'card-' + i, emblem: e }));
+
+    // reset state
+    placement.clear();
+    activeCards.forEach(c => placement.set(c.id, 'hand'));
+
+    scoreEl.textContent = '';
+    statusEl.textContent = '';
+    btnReveal.disabled = false;
+
+    renderAll();
+  }
+
+  // ── render ─────────────────────────────────────────────────────────
+  function renderAll () {
+    // clear hand
+    handEl.innerHTML = '';
+    // clear zone card containers
+    STAGES.forEach(s => { document.getElementById('zone-' + s).innerHTML = ''; });
+
+    // render each card into current slot
+    activeCards.forEach(c => {
+      const el = makeCardEl(c);
+      if (placement.get(c.id) === 'hand') {
+        handEl.appendChild(el);
+      } else {
+        document.getElementById('zone-' + placement.get(c.id)).appendChild(el);
+      }
+    });
+
+    updateRevealButton();
+  }
+
+  function makeCardEl (c) {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.id = c.id;
+    div.draggable = true;
+
+    // numeral (roman) — use number if numeral missing
+    const num = c.emblem.roman_numeral || String(c.emblem.number);
+    // title: first 2 words
+    const shortTitle = twoWords(c.emblem.label);
+
+    div.innerHTML = `
+      <span class="numeral">${escHtml(num)}</span>
+      <span class="title">${escHtml(shortTitle)}</span>
+    `;
+
+    div.addEventListener('dragstart', onDragStart);
+    div.addEventListener('dragend',   onDragEnd);
+    return div;
+  }
+
+  function twoWords (label) {
+    if (!label) return '—';
+    const words = label.trim().split(/\s+/);
+    if (words.length <= 2) return label;
+    return words.slice(0, 2).join(' ') + '…';
+  }
+
+  function escHtml (s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  function updateRevealButton () {
+    // enable only when all 20 cards placed in a zone
+    const allPlaced = activeCards.every(c => placement.get(c.id) !== 'hand');
+    btnReveal.disabled = !allPlaced;
+    if (!allPlaced) {
+      const remaining = activeCards.filter(c => placement.get(c.id) === 'hand').length;
+      statusEl.textContent = remaining + ' card' + (remaining !== 1 ? 's' : '') + ' still in hand';
+    } else {
+      statusEl.textContent = 'All cards placed — reveal when ready.';
+    }
+  }
+
+  // ── drag & drop ────────────────────────────────────────────────────
+  function onDragStart (e) {
+    dragId = e.currentTarget.id;
+    e.currentTarget.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', dragId);
+  }
+
+  function onDragEnd (e) {
+    e.currentTarget.classList.remove('dragging');
+    dragId = null;
+  }
+
+  // Zone drop targets
+  document.querySelectorAll('.zone').forEach(zone => {
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      if (!dragId) return;
+      const stage = zone.dataset.stage;
+      placement.set(dragId, stage);
+      renderAll();
+    });
+  });
+
+  // Hand drop target (return cards to hand)
+  handEl.addEventListener('dragover', e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    handEl.classList.add('drag-over');
+  });
+  handEl.addEventListener('dragleave', () => handEl.classList.remove('drag-over'));
+  handEl.addEventListener('drop', e => {
+    e.preventDefault();
+    handEl.classList.remove('drag-over');
+    if (!dragId) return;
+    placement.set(dragId, 'hand');
+    renderAll();
+  });
+
+  // ── reveal ─────────────────────────────────────────────────────────
+  btnReveal.addEventListener('click', () => {
+    let correct = 0;
+    activeCards.forEach(c => {
+      const el = document.getElementById(c.id);
+      if (!el) return;
+      const placed = placement.get(c.id);
+      if (placed === c.emblem.alchemical_stage) {
+        correct++;
+        el.classList.add('correct');
+        el.classList.remove('wrong');
+      } else {
+        el.classList.remove('correct');
+        el.classList.add('wrong');
+        // remove wrong class after animation so it doesn't interfere with re-play
+        el.addEventListener('animationend', () => el.classList.remove('wrong'), { once: true });
+      }
+    });
+
+    scoreEl.textContent = correct + ' / ' + activeCards.length + ' correct';
+    btnReveal.disabled = true;
+    statusEl.textContent = correct === activeCards.length
+      ? 'Perfect — the Great Work is complete.'
+      : 'Study the stages and try again.';
+  });
+
+  // ── play again ─────────────────────────────────────────────────────
+  btnAgain.addEventListener('click', () => {
+    // remove reveal classes
+    activeCards.forEach(c => {
+      const el = document.getElementById(c.id);
+      if (el) el.classList.remove('correct', 'wrong');
+    });
+    startGame();
+  });
+
+  // ── go ─────────────────────────────────────────────────────────────
+  init();
+})();
+</script>
+</body>
+</html>

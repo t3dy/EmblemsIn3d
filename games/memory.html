@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emblem Memory — Atalanta Fugiens</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #070503;
+  color: #f0ebe0;
+  font-family: Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem 3rem;
+  gap: 1.5rem;
+}
+
+header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+header h1 { font-size: 1.3rem; font-weight: normal; letter-spacing: 0.1em; color: #c8a878; }
+header p  { font-size: 0.75rem; color: #6a5848; letter-spacing: 0.06em; }
+
+#top-bar {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  font-size: 0.78rem;
+  color: #7a6858;
+}
+#top-bar span { color: #c8a878; font-size: 0.9rem; }
+#top-bar a {
+  color: #6a5848; text-decoration: none; font-size: 0.72rem;
+  border: 1px solid #3a2a18; padding: 0.25rem 0.65rem;
+  letter-spacing: 0.05em; transition: color 0.2s, border-color 0.2s;
+}
+#top-bar a:hover { color: #c8a878; border-color: #8b4513; }
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  max-width: 700px;
+  width: 100%;
+}
+
+.card {
+  aspect-ratio: 3/4;
+  cursor: pointer;
+  perspective: 600px;
+  position: relative;
+}
+
+.card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(.4,.2,.2,1);
+  transform-style: preserve-3d;
+}
+.card.flipped .card-inner { transform: rotateY(180deg); }
+.card.matched .card-inner { transform: rotateY(180deg); }
+
+.card-front, .card-back {
+  position: absolute; inset: 0;
+  border-radius: 4px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.card-front {
+  background: #0e0a06;
+  border: 1px solid #2a1a0a;
+  color: #3a2a18;
+  font-size: 1.8rem;
+  letter-spacing: 0.05em;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+  border: 1px solid #3a2a14;
+}
+.card-back.roman {
+  background: #100a04;
+  color: #c8a878;
+  font-size: 2.2rem;
+  font-style: normal;
+  letter-spacing: 0.04em;
+  font-weight: 100;
+}
+.card-back.title {
+  background: #080a10;
+  color: #b0b8c8;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.card-back .stage-dot {
+  position: absolute; top: 0.4rem; right: 0.5rem;
+  width: 6px; height: 6px; border-radius: 50%;
+}
+
+.card.matched .card-back {
+  border-color: #5a8a30;
+  box-shadow: 0 0 12px rgba(80, 160, 40, 0.25);
+}
+
+#result-bar {
+  font-size: 0.82rem; color: #7a6858; letter-spacing: 0.05em;
+  min-height: 1.4rem;
+}
+#result-bar.win { color: #90b050; }
+
+#deal-btn {
+  background: none; border: 1px solid #4a2a10;
+  color: #a08060; font-family: Georgia, serif;
+  font-size: 0.8rem; letter-spacing: 0.1em;
+  padding: 0.45rem 1.4rem; cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+#deal-btn:hover { border-color: #8b4513; color: #f0ebe0; }
+
+footer {
+  font-size: 0.68rem; color: #3a2a18; letter-spacing: 0.06em; margin-top: auto;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Emblem Memory</h1>
+  <p>Match each Roman numeral to its English title</p>
+</header>
+
+<div id="top-bar">
+  <div>Moves: <span id="moves">0</span></div>
+  <div>Matches: <span id="matches">0</span> / 8</div>
+  <a href="../src/index.html?v=8">← HPin3D</a>
+</div>
+
+<div id="grid"></div>
+
+<div id="result-bar"></div>
+<button id="deal-btn">Deal New Hand</button>
+
+<footer>Atalanta Fugiens · Michael Maier, 1617</footer>
+
+<script>
+const STAGE_COLOR = {
+  NIGREDO:    '#cc4400',
+  ALBEDO:     '#3a88cc',
+  CITRINITAS: '#ddaa00',
+  RUBEDO:     '#ff5500',
+};
+
+let allEmblems = [];
+let flipped    = [];
+let matched    = new Set();
+let moves      = 0;
+let locked     = false;
+
+async function init() {
+  const res = await fetch('../src/data/emblems.json?v=8');
+  allEmblems = await res.json();
+  deal();
+  document.getElementById('deal-btn').addEventListener('click', () => {
+    document.getElementById('result-bar').textContent = '';
+    document.getElementById('result-bar').className = '';
+    deal();
+  });
+}
+
+function deal() {
+  // Pick 8 random emblems that have both roman_numeral and label (all 50 numbered ones)
+  const pool = allEmblems.filter(e => e.roman_numeral && e.label);
+  const hand = shuffle(pool).slice(0, 8);
+
+  // Create 16 cards: 8 roman numeral + 8 title, shuffled
+  const cards = [];
+  hand.forEach((emb, i) => {
+    cards.push({ id: i, side: 'roman', emb });
+    cards.push({ id: i, side: 'title', emb });
+  });
+  shuffle(cards);
+
+  flipped  = [];
+  matched  = new Set();
+  moves    = 0;
+  locked   = false;
+  document.getElementById('moves').textContent   = 0;
+  document.getElementById('matches').textContent = 0;
+
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  cards.forEach((card, ci) => {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.dataset.cardIndex = ci;
+    el.dataset.pairId    = card.id;
+    el.dataset.side      = card.side;
+
+    const inner = document.createElement('div');
+    inner.className = 'card-inner';
+
+    // Front (hidden face)
+    const front = document.createElement('div');
+    front.className = 'card-front';
+    front.textContent = '✦';
+
+    // Back (revealed face)
+    const back = document.createElement('div');
+    back.className = `card-back ${card.side}`;
+    if (card.side === 'roman') {
+      back.textContent = card.emb.roman_numeral;
+    } else {
+      back.textContent = card.emb.label;
+      if (card.emb.motto_english) {
+        const hint = document.createElement('div');
+        hint.textContent = card.emb.motto_english.length > 60
+          ? card.emb.motto_english.slice(0, 60) + '…' : card.emb.motto_english;
+        hint.style.cssText = 'margin-top:0.5rem;font-size:0.64rem;color:#5a6070;font-style:italic;line-height:1.4;';
+        back.appendChild(hint);
+      }
+    }
+
+    const dot = document.createElement('div');
+    dot.className = 'stage-dot';
+    dot.style.background = STAGE_COLOR[card.emb.alchemical_stage] ?? '#888';
+    back.appendChild(dot);
+
+    inner.appendChild(front);
+    inner.appendChild(back);
+    el.appendChild(inner);
+
+    el.addEventListener('click', () => onCardClick(el));
+    grid.appendChild(el);
+  });
+}
+
+function onCardClick(el) {
+  if (locked) return;
+  if (el.classList.contains('flipped') || el.classList.contains('matched')) return;
+
+  el.classList.add('flipped');
+  flipped.push(el);
+
+  if (flipped.length < 2) return;
+
+  locked = true;
+  moves++;
+  document.getElementById('moves').textContent = moves;
+
+  const [a, b] = flipped;
+  if (a.dataset.pairId === b.dataset.pairId && a.dataset.side !== b.dataset.side) {
+    // Match
+    setTimeout(() => {
+      a.classList.add('matched');
+      b.classList.add('matched');
+      matched.add(a.dataset.pairId);
+      document.getElementById('matches').textContent = matched.size;
+      flipped = [];
+      locked  = false;
+      if (matched.size === 8) onWin();
+    }, 600);
+  } else {
+    // No match — flip back
+    setTimeout(() => {
+      a.classList.remove('flipped');
+      b.classList.remove('flipped');
+      flipped = [];
+      locked  = false;
+    }, 1000);
+  }
+}
+
+function onWin() {
+  const bar = document.getElementById('result-bar');
+  bar.textContent = `Complete — ${moves} moves · Well done`;
+  bar.className = 'win';
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+init().catch(e => console.error(e));
+</script>
+</body>
+</html>

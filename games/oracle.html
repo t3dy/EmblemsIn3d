@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emblem Oracle · Atalanta Fugiens</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --nigredo-bg:   #120300;
+    --albedo-bg:    #020810;
+    --citrinitas-bg:#130f00;
+    --rubedo-bg:    #130100;
+
+    --nigredo-accent:   #cc4400;
+    --albedo-accent:    #3a88cc;
+    --citrinitas-accent:#ddaa00;
+    --rubedo-accent:    #ff5500;
+
+    --stage-bg:     var(--nigredo-bg);
+    --stage-accent: var(--nigredo-accent);
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--stage-bg);
+    transition: background 1s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #f5f0e8;
+    min-height: 100vh;
+  }
+
+  #card {
+    max-width: 560px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    text-align: center;
+  }
+
+  /* Stage badge */
+  #stage-badge {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--stage-accent);
+    border: 1px solid var(--stage-accent);
+    padding: 0.25em 0.75em;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Roman numeral */
+  #roman {
+    font-size: 3rem;
+    font-weight: normal;
+    color: var(--stage-accent);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    line-height: 1;
+  }
+
+  /* Title */
+  #title {
+    font-size: 1.4rem;
+    font-weight: normal;
+    color: #f5f0e8;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    line-height: 1.4;
+  }
+
+  /* Latin motto */
+  #motto-latin {
+    font-style: italic;
+    font-size: 1rem;
+    color: #c8a878;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  /* English motto */
+  #motto-english {
+    font-size: 0.85rem;
+    color: #9a8070;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Epigram */
+  #epigram {
+    font-size: 0.78rem;
+    line-height: 1.7;
+    color: #7a6858;
+    max-width: 100%;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+
+  /* Divider */
+  .divider {
+    width: 120px;
+    height: 1px;
+    background: var(--stage-accent);
+    opacity: 0.25;
+  }
+
+  /* Controls */
+  #controls {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 0.4rem;
+  }
+
+  button, .link-btn {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.82rem;
+    background: transparent;
+    color: #9a8070;
+    border: 1px solid #4a3a2a;
+    padding: 0.45em 1.1em;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.04em;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  button:hover, .link-btn:hover {
+    color: #f5f0e8;
+    border-color: var(--stage-accent);
+  }
+
+  /* Footer */
+  #footer {
+    font-size: 0.68rem;
+    color: #4a3a2a;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 0.4rem;
+  }
+
+  /* Error state */
+  #error {
+    color: #cc4400;
+    font-size: 0.85rem;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="card">
+  <span id="stage-badge"></span>
+  <div id="roman"></div>
+  <div id="title"></div>
+  <div id="motto-latin"></div>
+  <div id="motto-english"></div>
+  <div id="epigram"></div>
+  <div class="divider"></div>
+  <div id="controls">
+    <button id="draw-btn">Draw another</button>
+    <a id="view-3d" class="link-btn" href="#" target="_blank">See in 3D →</a>
+  </div>
+  <div id="footer">Atalanta Fugiens · Michael Maier, 1617</div>
+  <div id="error">Could not load emblems data.</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const STAGE_COLORS = {
+    NIGREDO:    { bg: '#120300', accent: '#cc4400' },
+    ALBEDO:     { bg: '#020810', accent: '#3a88cc' },
+    CITRINITAS: { bg: '#130f00', accent: '#ddaa00' },
+    RUBEDO:     { bg: '#130100', accent: '#ff5500' },
+  };
+
+  const STAGE_LABELS = {
+    NIGREDO:    'Nigredo',
+    ALBEDO:     'Albedo',
+    CITRINITAS: 'Citrinitas',
+    RUBEDO:     'Rubedo',
+  };
+
+  // Elements
+  const stageBadge    = document.getElementById('stage-badge');
+  const romanEl       = document.getElementById('roman');
+  const titleEl       = document.getElementById('title');
+  const mottoLatinEl  = document.getElementById('motto-latin');
+  const mottoEnglishEl= document.getElementById('motto-english');
+  const epigramEl     = document.getElementById('epigram');
+  const drawBtn       = document.getElementById('draw-btn');
+  const view3dLink    = document.getElementById('view-3d');
+  const errorEl       = document.getElementById('error');
+
+  const REVEAL_ELEMENTS = [stageBadge, romanEl, titleEl, mottoLatinEl, mottoEnglishEl, epigramEl];
+  const REVEAL_DELAY = 480; // ms between stages
+
+  let emblems = [];
+  let pendingTimeouts = [];
+
+  // Parse ?n= query param
+  function getQueryN() {
+    const params = new URLSearchParams(window.location.search);
+    const v = params.get('n');
+    if (v !== null) {
+      const n = parseInt(v, 10);
+      return isNaN(n) ? null : n;
+    }
+    return null;
+  }
+
+  // Apply stage theme to CSS variables on <html>
+  function applyStage(stage) {
+    const colors = STAGE_COLORS[stage] || STAGE_COLORS.NIGREDO;
+    document.body.style.setProperty('--stage-bg', colors.bg);
+    document.body.style.setProperty('--stage-accent', colors.accent);
+    // Also update body background directly to trigger transition
+    document.body.style.background = colors.bg;
+  }
+
+  // Reset all reveal elements to invisible
+  function hideAll() {
+    REVEAL_ELEMENTS.forEach(el => {
+      el.style.opacity = '0';
+    });
+  }
+
+  // Clear any pending timeouts
+  function clearPending() {
+    pendingTimeouts.forEach(id => clearTimeout(id));
+    pendingTimeouts = [];
+  }
+
+  // Truncate epigram text to max 180 chars with ellipsis
+  function truncate(text, max) {
+    if (!text) return '';
+    text = text.replace(/\n/g, ' ').trim();
+    if (text.length <= max) return text;
+    return text.slice(0, max).replace(/\s+\S*$/, '') + '…';
+  }
+
+  // Pick a random emblem (excluding entry 0 which is the frontispiece with no roman numeral)
+  function pickRandom(arr, excludeIndex) {
+    // Prefer numbered emblems (roman_numeral not null), but fall back to all
+    const numbered = arr.filter(e => e.roman_numeral !== null && e.roman_numeral !== undefined);
+    const pool = numbered.length > 0 ? numbered : arr;
+    if (pool.length === 0) return arr[0] || null;
+    let candidate;
+    let tries = 0;
+    do {
+      candidate = pool[Math.floor(Math.random() * pool.length)];
+      tries++;
+    } while (candidate && candidate.number === excludeIndex && pool.length > 1 && tries < 50);
+    return candidate;
+  }
+
+  let currentEmblemNumber = null;
+
+  // Populate DOM content for an emblem (no visibility changes)
+  function populateEmblem(emblem) {
+    const stage = emblem.alchemical_stage || 'NIGREDO';
+
+    stageBadge.textContent = STAGE_LABELS[stage] || stage;
+
+    romanEl.textContent = emblem.roman_numeral || '';
+
+    titleEl.textContent = emblem.label || '';
+
+    mottoLatinEl.textContent = emblem.motto_latin || '';
+    mottoLatinEl.style.display = emblem.motto_latin ? '' : 'none';
+
+    mottoEnglishEl.textContent = emblem.motto_english || '';
+    mottoEnglishEl.style.display = emblem.motto_english ? '' : 'none';
+
+    const epigramText = emblem.epigram_english || emblem.epigram_latin || '';
+    if (epigramText) {
+      epigramEl.textContent = truncate(epigramText, 180);
+      epigramEl.style.display = '';
+    } else {
+      epigramEl.textContent = '';
+      epigramEl.style.display = 'none';
+    }
+
+    // Update 3D link
+    view3dLink.href = `../src/index.html?v=8#emblem=${emblem.number}`;
+
+    // Apply stage palette
+    applyStage(stage);
+
+    currentEmblemNumber = emblem.number;
+  }
+
+  // Reveal stages sequentially
+  function revealStages() {
+    clearPending();
+    // Build list of elements that have content
+    const toReveal = [
+      stageBadge,
+      romanEl,
+      titleEl,
+      mottoLatinEl.style.display !== 'none' ? mottoLatinEl : null,
+      mottoEnglishEl.style.display !== 'none' ? mottoEnglishEl : null,
+      epigramEl.style.display !== 'none' ? epigramEl : null,
+    ].filter(Boolean);
+
+    toReveal.forEach((el, i) => {
+      const id = setTimeout(() => {
+        el.style.opacity = '1';
+      }, (i + 1) * REVEAL_DELAY);
+      pendingTimeouts.push(id);
+    });
+  }
+
+  // Show a specific emblem with reveal animation
+  function showEmblem(emblem) {
+    hideAll();
+    // Brief pause so opacity reset takes effect before populating
+    const id = setTimeout(() => {
+      populateEmblem(emblem);
+      revealStages();
+    }, 80);
+    pendingTimeouts.push(id);
+  }
+
+  // Draw a new random emblem
+  function drawAnother() {
+    if (emblems.length === 0) return;
+    const emblem = pickRandom(emblems, currentEmblemNumber);
+    if (!emblem) return;
+    showEmblem(emblem);
+  }
+
+  // Initialise from loaded data
+  function init(data) {
+    emblems = data;
+
+    const n = getQueryN();
+    let startEmblem = null;
+
+    if (n !== null) {
+      startEmblem = emblems.find(e => e.number === n) || null;
+    }
+    if (!startEmblem) {
+      startEmblem = pickRandom(emblems, null);
+    }
+    if (!startEmblem) {
+      showError('No emblems found in data.');
+      return;
+    }
+
+    showEmblem(startEmblem);
+  }
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = '';
+  }
+
+  // Wire up button
+  drawBtn.addEventListener('click', drawAnother);
+
+  // Fetch data
+  fetch('../src/data/emblems.json')
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(init)
+    .catch(err => {
+      console.error('Oracle: failed to load emblems.json', err);
+      showError('Could not load emblems data.');
+    });
+
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "symbol_name": "Sol",
+    "symbol_unicode": "U+2609",
+    "metal": "Gold (Aurum)",
+    "planet": "Sun",
+    "gender": "masculine",
+    "framework": "standard",
+    "notes": "The king of metals. Hand B uses with Latin inflections (-ra for aurata). Hand E identifies with masculine principle in chess match."
+  },
+  {
+    "id": 2,
+    "symbol_name": "Luna",
+    "symbol_unicode": "U+263D",
+    "metal": "Silver (Argentum)",
+    "planet": "Moon",
+    "gender": "feminine",
+    "framework": "standard",
+    "notes": "The queen of metals. Hand E emphasizes Luna as feminine principle, inverting gender at depth. Hand B uses less frequently than Sol."
+  },
+  {
+    "id": 3,
+    "symbol_name": "Mercury",
+    "symbol_unicode": "U+263F",
+    "metal": "Quicksilver (Hydrargyrum)",
+    "planet": "Mercury",
+    "gender": "hermaphroditic",
+    "framework": "d_espagnet",
+    "notes": "The central principle for Hand B: 'Master Mercury' (Magisteri Mercurii). Catalytic agent uniting all elements. Consistent with d'Espagnet's Enchiridion."
+  },
+  {
+    "id": 4,
+    "symbol_name": "Venus",
+    "symbol_unicode": "U+2640",
+    "metal": "Copper (Cuprum)",
+    "planet": "Venus",
+    "gender": "feminine",
+    "framework": "standard",
+    "notes": "Hand B uses with Latin inflection -eris. Associated with love, generation, and the feminine principle in both alchemical and narrative readings."
+  },
+  {
+    "id": 5,
+    "symbol_name": "Mars",
+    "symbol_unicode": "U+2642",
+    "metal": "Iron (Ferrum)",
+    "planet": "Mars",
+    "gender": "masculine",
+    "framework": "standard",
+    "notes": "The martial metal. Appears in Hand B's ideographic vocabulary but less prominently than Sol, Luna, and Mercury."
+  },
+  {
+    "id": 6,
+    "symbol_name": "Jupiter",
+    "symbol_unicode": "U+2643",
+    "metal": "Tin (Stannum)",
+    "planet": "Jupiter",
+    "gender": "masculine",
+    "framework": "standard",
+    "notes": "Hand B annotates the Jupiter passage on a4r, mapping the god's hierarchical position to the tin-gold transmutation sequence."
+  },
+  {
+    "id": 7,
+    "symbol_name": "Saturn",
+    "symbol_unicode": "U+2644",
+    "metal": "Lead (Plumbum)",
+    "planet": "Saturn",
+    "gender": "masculine",
+    "framework": "standard",
+    "notes": "The base metal. Starting point of transmutation in both d'Espagnet and pseudo-Geber frameworks. Rarely written by Hand E, who prefers full Latin names."
+  },
+  {
+    "id": 8,
+    "symbol_name": "Cinnabar",
+    "symbol_unicode": null,
+    "metal": "Mercuric Sulphide",
+    "planet": null,
+    "gender": null,
+    "framework": "standard",
+    "notes": "Red mercury ore. Hand B identifies cinnabar-related passages. The red color connects to rubedo (reddening) stage."
+  },
+  {
+    "id": 9,
+    "symbol_name": "Sulphur",
+    "symbol_unicode": null,
+    "metal": "Brimstone",
+    "planet": null,
+    "gender": "masculine",
+    "framework": "pseudo_geber",
+    "notes": "The masculine combustible principle in pseudo-Geber tradition. Hand E emphasizes sulphur as the active agent in transmutation."
+  },
+  {
+    "id": 10,
+    "symbol_name": "Hermaphrodite",
+    "symbol_unicode": null,
+    "metal": null,
+    "planet": null,
+    "gender": "hermaphroditic",
+    "framework": "both",
+    "notes": "The product of the chemical wedding: union of Sol and Luna producing a being that reconciles masculine and feminine. Hand E identifies hermaphroditic imagery on h1r."
+  }
+]

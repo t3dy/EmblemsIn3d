@@ -1,0 +1,74 @@
+DECISION: [Title of Decision]
+DATE: [YYYY-MM-DD]
+PHASE: [Planning / Proto / Scene1 / etc.]
+SESSION: [Session ID or date range]
+
+═══════════════════════════════════════════════════════════════════
+
+QUESTION:
+[What design decision did we need to make?]
+[What were the options?]
+[Why did this matter?]
+
+═══════════════════════════════════════════════════════════════════
+
+HISTORIAN'S POSITION:
+[What textual/marginal evidence grounds this decision?]
+[What does the scholarship say?]
+[Are there historical constraints we must honor?]
+[Citations: (O'Neill, Russell, Lefaivre, etc.)]
+
+═══════════════════════════════════════════════════════════════════
+
+DESIGNER'S POSITION:
+[What narrative/gameplay logic guides this decision?]
+[How does it serve player experience?]
+[What are the interactive implications?]
+[How does it balance playability with historical grounding?]
+
+═══════════════════════════════════════════════════════════════════
+
+RESOLUTION:
+[What did we decide?]
+[Why this choice over alternatives?]
+[Who was convinced by whom? Or did we compromise?]
+[If they disagreed, how did we resolve it?]
+
+═══════════════════════════════════════════════════════════════════
+
+ALTERNATIVES CONSIDERED:
+- [Option A] — Why rejected / why less appealing
+- [Option B] — Why rejected / why less appealing
+- [Option C] — Why preferred over A & B
+
+═══════════════════════════════════════════════════════════════════
+
+IMPACT ON FUTURE WORK:
+[What does this decision enable?]
+[What does it constrain?]
+[Are there follow-up decisions that depend on this one?]
+[Any technical implications (budget, scope, timeline)?]
+
+═══════════════════════════════════════════════════════════════════
+
+CONFIDENCE LEVEL:
+[ ] High — Both characters aligned; evidence clear
+[ ] Medium — One character convinced by the other; well-reasoned
+[ ] Low — Still exploratory; revisit if evidence changes
+[ ] Provisional — Placeholder; will refine during implementation
+
+═══════════════════════════════════════════════════════════════════
+
+REVISIT TRIGGER:
+[Under what conditions should we reconsider this decision?]
+[E.g., "If Historian discovers contradictory BL annotation...",
+ "If Designer finds the scene unplayable with this constraint..."]
+
+═══════════════════════════════════════════════════════════════════
+
+NOTES:
+[Any additional context, references, or conversation notes?]
+[Quotes from the characters that were especially insightful?]
+[Technical feasibility questions raised during discussion?]
+
+═══════════════════════════════════════════════════════════════════

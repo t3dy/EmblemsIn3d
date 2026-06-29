@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Emblems in 3D — Atalanta Fugiens & Hypnerotomachia Poliphili</title>
+<meta name="description" content="Interactive 3D encounters with two Renaissance emblem books: Michael Maier's Atalanta Fugiens (1617) and the Hypnerotomachia Poliphili (1499)."/>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #070503;
+  color: #f0ebe0;
+  font-family: Georgia, serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Hero ─────────────────────────────────────────────────────────── */
+.hero {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  text-align: center;
+  gap: 2rem;
+  position: relative;
+}
+
+.glyph {
+  font-size: 3rem;
+  color: #3a2a10;
+  letter-spacing: 0.5rem;
+  user-select: none;
+  animation: glyphFade 8s ease-in-out infinite;
+}
+@keyframes glyphFade {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.7; }
+}
+
+.hero h1 {
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  font-weight: normal;
+  letter-spacing: 0.18em;
+  color: #c8a878;
+  line-height: 1.2;
+}
+.hero h1 em {
+  font-style: normal;
+  color: #f5f0e8;
+}
+
+.hero .subtitle {
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  color: #5a4a38;
+  line-height: 2;
+}
+.subtitle span { color: #7a6858; }
+
+.hero .desc {
+  font-size: 0.88rem;
+  color: #7a6858;
+  line-height: 1.9;
+  max-width: 520px;
+}
+
+/* ── Primary CTAs ─────────────────────────────────────────────────── */
+.cta-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.cta {
+  text-decoration: none;
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  padding: 0.65rem 1.6rem;
+  border: 1px solid;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.cta-primary {
+  border-color: #8b4513;
+  color: #c8a878;
+  background: rgba(139,69,19,0.1);
+}
+.cta-primary:hover {
+  background: rgba(139,69,19,0.25);
+  color: #f5f0e8;
+}
+.cta-secondary {
+  border-color: #2a1a0a;
+  color: #7a6858;
+}
+.cta-secondary:hover {
+  border-color: #5a3a1a;
+  color: #c8a878;
+}
+
+/* ── Section divider ─────────────────────────────────────────────── */
+.divider {
+  width: 60px; height: 1px;
+  background: #2a1a0a;
+  margin: 0 auto;
+}
+
+/* ── Cards grid ──────────────────────────────────────────────────── */
+.section {
+  width: 100%;
+  max-width: 960px;
+  padding: 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #4a3a28;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  border: 1px solid #1e130a;
+  padding: 1.6rem 1.4rem;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: rgba(255,255,255,0.012);
+  transition: border-color 0.2s, background 0.2s;
+}
+.card:hover { border-color: #6a3a18; background: rgba(255,255,255,0.025); }
+
+.card .badge {
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border: 1px solid;
+  width: fit-content;
+}
+.card h3 { font-size: 1rem; font-weight: normal; color: #e0d8c8; }
+.card p  { font-size: 0.75rem; color: #6a5a4a; line-height: 1.65; }
+.card .arr { font-size: 0.7rem; color: #4a3828; margin-top: auto; }
+.card:hover .arr { color: #c8a878; }
+
+/* ── About ───────────────────────────────────────────────────────── */
+.about {
+  max-width: 620px;
+  padding: 2rem 2rem 5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.about p { font-size: 0.8rem; color: #5a4a38; line-height: 1.9; }
+.about a { color: #7a6858; text-underline-offset: 3px; }
+
+footer {
+  width: 100%;
+  border-top: 1px solid #1a100a;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  font-size: 0.65rem;
+  color: #3a2a18;
+  letter-spacing: 0.08em;
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="glyph">✦ · ✦ · ✦</div>
+
+  <h1><em>Emblems</em> in 3D</h1>
+
+  <div class="subtitle">
+    <span>Atalanta Fugiens</span> · Michael Maier, 1617<br>
+    <span>Hypnerotomachia Poliphili</span> · Venice, 1499
+  </div>
+
+  <p class="desc">
+    Interactive 3D environments, animations, and games built from two
+    Renaissance emblem books. Navigate the alchemical stages of the
+    <em>Atalanta Fugiens</em>, explore the gardens of the
+    <em>Hypnerotomachia</em>, and surface BL marginalia connecting
+    both worlds.
+  </p>
+
+  <div class="cta-row">
+    <a class="cta cta-primary" href="src/index.html">Enter 3D World</a>
+    <a class="cta cta-secondary" href="games/index.html">Emblem Games</a>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-label">Three worlds</div>
+  <div class="cards">
+
+    <a class="card" href="src/index.html">
+      <div class="badge" style="color:#ff6600;border-color:#ff6600;">Three.js · GSAP</div>
+      <h3>Atalanta Animata</h3>
+      <p>All 51 emblems as a clickable 3D gallery. Five showcase scenes with full GSAP animation timelines — toad suckling, brother &amp; sister conjunction, citrinitas fire, hermaphrodite, dragon &amp; ouroboros.</p>
+      <div class="arr">Gallery → emblem scenes →</div>
+    </a>
+
+    <a class="card" href="src/index.html">
+      <div class="badge" style="color:#c8a440;border-color:#c8a440;">Three.js · Particles</div>
+      <h3>Fountain of Venus</h3>
+      <p>The HP garden world: a three-tier stone fountain, Venus figure, cypress garden, water particles. BL marginalia surfaces after six seconds — press A to call it up early.</p>
+      <div class="arr">Hypnerotomachia button →</div>
+    </a>
+
+    <a class="card" href="src/index.html">
+      <div class="badge" style="color:#3a88cc;border-color:#3a88cc;">Bipartite graph</div>
+      <h3>Archives</h3>
+      <p>Cross-reference network: HP folio nodes (gold) linked to AF emblem nodes (stage-coloured) by editorial commentary. Click any node to navigate to its scene.</p>
+      <div class="arr">Archives button →</div>
+    </a>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="section">
+  <div class="section-label">Games &amp; readings</div>
+  <div class="cards">
+
+    <a class="card" href="games/oracle.html">
+      <div class="badge" style="color:#c8a040;border-color:#c8a040;">Oracle</div>
+      <h3>Emblem Oracle</h3>
+      <p>Draw a random emblem. Stage badge, Roman numeral, title, motto, and epigram fade in progressively — a daily meditation on the Great Work.</p>
+      <div class="arr">Draw →</div>
+    </a>
+
+    <a class="card" href="games/fugue-scroll.html">
+      <div class="badge" style="color:#3a88cc;border-color:#3a88cc;">Journey</div>
+      <h3>The Fugue Scroll</h3>
+      <p>All 51 emblems as full-viewport reading sections with entrance animations. Stage-transition dividers. Progress bar tracks your position in the Work.</p>
+      <div class="arr">Scroll →</div>
+    </a>
+
+    <a class="card" href="games/stage-sorter.html">
+      <div class="badge" style="color:#ddaa00;border-color:#ddaa00;">Puzzle</div>
+      <h3>The Great Work</h3>
+      <p>Sort 19 emblem cards into their alchemical stage zones by drag-and-drop. Reveal scores — correct placements glow green.</p>
+      <div class="arr">Sort →</div>
+    </a>
+
+    <a class="card" href="games/memory.html">
+      <div class="badge" style="color:#ff5500;border-color:#ff5500;">Memory</div>
+      <h3>Motto Memory</h3>
+      <p>Classic card-flip matching: pair each Roman numeral with its English title. Eight pairs shuffled per hand. Track your moves.</p>
+      <div class="arr">Deal →</div>
+    </a>
+
+  </div>
+</div>
+
+<div class="about">
+  <p>
+    A digital humanities project built with Three.js r168, GSAP 3.12, and Tone.js.
+    Emblem data from the <em>Atalanta Fugiens</em> database; HP marginalia from
+    the British Library copy (BL 1A.17757). Source on
+    <a href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>.
+  </p>
+</div>
+
+<footer>
+  Michael Maier · <em>Atalanta Fugiens</em> · Frankfurt, 1617 &nbsp;·&nbsp;
+  <em>Hypnerotomachia Poliphili</em> · Venice, 1499
+</footer>
+
+</body>
+</html>

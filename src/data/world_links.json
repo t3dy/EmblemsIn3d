@@ -1,0 +1,100 @@
+[
+  {
+    "hp_folio": 28,
+    "hp_scene": "alchemical_temple",
+    "af_emblems": [
+      5,
+      14
+    ],
+    "shared_symbol": "bellua",
+    "link_type": "prima_materia",
+    "commentary": "At folio 28 Poliphilo passes through a bestiary portal where composite monsters stand threshold-guard. The bellua recurs in Maier's Emblem V: the toad suckling at the woman's breast is prima materia in animal form — matter at its most opaque, demanding dissolution before any refinement can begin."
+  },
+  {
+    "hp_folio": 80,
+    "hp_scene": "fountain",
+    "af_emblems": [
+      1,
+      2
+    ],
+    "shared_symbol": "cornucopia",
+    "link_type": "earth_nourishment",
+    "commentary": "The Fountain of Venus occupies the centre of Poliphilo's first garden. Water cascades from tier to tier — a visible figure of Nature's gift flowing downward into matter. Maier opens the Atalanta with the same image: Nature the nurse, offering her stone as an infant at the breast. Both works begin here, at the fountain's foot."
+  },
+  {
+    "hp_folio": 88,
+    "hp_scene": "planetary_palace",
+    "af_emblems": [
+      17,
+      18
+    ],
+    "shared_symbol": "sulphur",
+    "link_type": "elemental_fire",
+    "commentary": "Folio 88 opens the planetary palace, its seven rooms ordered by the metals — Saturn's lead at the gate, Sol's gold at the innermost shrine. Maier's Emblem XVII enters the same hierarchy mid-journey, at the moment sulphur ignites: fire given to fire, the citrinitas threshold where the work begins to turn golden."
+  },
+  {
+    "hp_folio": 119,
+    "hp_scene": "three_doors",
+    "af_emblems": [
+      19,
+      20
+    ],
+    "shared_symbol": "quaternary",
+    "link_type": "elemental_dissolution",
+    "commentary": "Three doorways on folio 119 offer Poliphilo a choice: Virtue, Pleasure, or the Middle Way. Each door is also an elemental gate — the fourfold dissolution that Maier's Emblems XIX and XX enact when earth, water, air, and fire are separated and recombined in the alembic."
+  },
+  {
+    "hp_folio": 127,
+    "hp_scene": "three_doors",
+    "af_emblems": [
+      15,
+      16
+    ],
+    "shared_symbol": "synostra_gloria_mundi",
+    "link_type": "albedo_purification",
+    "commentary": "The Gloria Mundi inscription appears above the middle door at folio 127 — a whitened threshold, the world's glory as a pale reflection of what lies beyond. Maier's Albedo emblems (XV–XVI) inhabit the same colour: silver, dew, the moon's wash over blackened matter. Purification by whitening is the same operation in both books."
+  },
+  {
+    "hp_folio": 162,
+    "hp_scene": "procession",
+    "af_emblems": [
+      28,
+      29,
+      30
+    ],
+    "shared_symbol": "cantorum",
+    "link_type": "rubedo_triumph",
+    "commentary": "Folio 162 stages the great triumphal procession — trumpets, garlands, the chariot of Venus approaching her temple. The cantorum resonates through Maier's fugue structure: Emblems XXVIII–XXX are the Rubedo's opening fanfare, the fire now fully kindled, the work approaching its red completion."
+  },
+  {
+    "hp_folio": 164,
+    "hp_scene": "quinta_essentia",
+    "af_emblems": [
+      46,
+      50
+    ],
+    "shared_symbol": "quinta_essentia",
+    "link_type": "completion",
+    "commentary": "At folio 164 Poliphilo glimpses the quinta essentia — the fifth element distilled from the four, the stone itself in potential. Maier's closing emblems converge on the same mystery: Emblem L, the dragon devouring the woman, is the final self-consuming act before the philosopher's stone is revealed. Both texts end here, at the edge of what can be said."
+  },
+  {
+    "hp_folio": 14,
+    "hp_scene": "garden",
+    "af_emblems": [
+      44
+    ],
+    "shared_symbol": "sol_luna",
+    "link_type": "solar_lunar_conjunction",
+    "commentary": "Early in Poliphilo's dream the garden path divides into solar and lunar halves — warm golden light on one side, silver shadow on the other. Maier's Emblem XLIV depicts the same opposition at its most explicit: Sol and Luna as royal siblings who must be wed before the work can complete. The conjunction is encoded in the garden's geometry long before it is named."
+  },
+  {
+    "hp_folio": 31,
+    "hp_scene": "alchemical_temple",
+    "af_emblems": [
+      14
+    ],
+    "shared_symbol": "ouroboros",
+    "link_type": "self_consuming_cycle",
+    "commentary": "The ouroboros carved above the alchemical temple gate at folio 31 is one of the HP's most direct alchemical declarations — the self-consuming serpent as the emblem of a process that has no beginning and no end. Maier's Emblem XIV makes the same figure explicit: the dragon eating its tail is the Work itself, cycling through Nigredo and Rubedo without cease."
+  }
+]
