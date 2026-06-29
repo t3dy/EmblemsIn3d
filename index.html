@@ -4,293 +4,545 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Emblems in 3D — Atalanta Fugiens & Hypnerotomachia Poliphili</title>
-<meta name="description" content="Interactive 3D encounters with two Renaissance emblem books: Michael Maier's Atalanta Fugiens (1617) and the Hypnerotomachia Poliphili (1499)."/>
+<meta name="description" content="Interactive 3D worlds, animations, and games built from two Renaissance emblem books: Maier's Atalanta Fugiens (1617) and the Hypnerotomachia Poliphili (1499)."/>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold:    #c8a878;
+  --gold-dk: #8b4513;
+  --dim:     #6a5848;
+  --faint:   #3a2a18;
+  --bg:      #070503;
+  --fg:      #f0ebe0;
+  --n: #cc4400; --a: #3a88cc; --c: #ddaa00; --r: #ff5500;
+}
 
 body {
-  background: #070503;
-  color: #f0ebe0;
+  background: var(--bg);
+  color: var(--fg);
   font-family: Georgia, serif;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-/* ── Hero ─────────────────────────────────────────────────────────── */
+/* ── Utilities ── */
+a { color: inherit; }
+.badge {
+  display: inline-block;
+  font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 0.15rem 0.5rem; border: 1px solid;
+}
+.divider { width: 60px; height: 1px; background: var(--faint); margin: 0 auto; }
+.section-label {
+  font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #4a3a28;
+}
+
+/* ── Hero ── */
 .hero {
-  width: 100%;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem 2rem;
-  text-align: center;
-  gap: 2rem;
-  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 4rem 2rem; gap: 1.8rem;
 }
-
-.glyph {
-  font-size: 3rem;
-  color: #3a2a10;
-  letter-spacing: 0.5rem;
-  user-select: none;
-  animation: glyphFade 8s ease-in-out infinite;
+.hero-glyph {
+  font-size: 2.2rem; color: var(--faint); letter-spacing: 0.6rem;
+  animation: pulse 7s ease-in-out infinite;
 }
-@keyframes glyphFade {
-  0%, 100% { opacity: 0.3; }
-  50%       { opacity: 0.7; }
-}
+@keyframes pulse { 0%,100%{opacity:.25} 50%{opacity:.65} }
 
 .hero h1 {
-  font-size: clamp(1.6rem, 4vw, 2.8rem);
-  font-weight: normal;
-  letter-spacing: 0.18em;
-  color: #c8a878;
-  line-height: 1.2;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  font-weight: normal; letter-spacing: 0.16em; color: var(--gold);
+  line-height: 1.15;
 }
-.hero h1 em {
-  font-style: normal;
-  color: #f5f0e8;
-}
+.hero h1 em { font-style:normal; color: var(--fg); }
 
-.hero .subtitle {
-  font-size: 0.82rem;
-  letter-spacing: 0.12em;
-  color: #5a4a38;
-  line-height: 2;
+.hero .sub {
+  font-size: 0.8rem; letter-spacing: 0.12em; color: #5a4a38; line-height: 2.2;
 }
-.subtitle span { color: #7a6858; }
+.hero .sub span { color: var(--dim); }
 
 .hero .desc {
-  font-size: 0.88rem;
-  color: #7a6858;
-  line-height: 1.9;
-  max-width: 520px;
+  font-size: 0.88rem; color: var(--dim); line-height: 1.95; max-width: 540px;
 }
 
-/* ── Primary CTAs ─────────────────────────────────────────────────── */
-.cta-row {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 0.5rem;
-}
-
+.cta-row { display:flex; gap:0.9rem; flex-wrap:wrap; justify-content:center; }
 .cta {
-  text-decoration: none;
-  font-family: Georgia, serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.1em;
-  padding: 0.65rem 1.6rem;
-  border: 1px solid;
-  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  text-decoration: none; font-family: Georgia, serif;
+  font-size: 0.8rem; letter-spacing: 0.1em;
+  padding: 0.6rem 1.5rem; border: 1px solid;
+  transition: background .2s, color .2s, border-color .2s;
 }
-.cta-primary {
-  border-color: #8b4513;
-  color: #c8a878;
-  background: rgba(139,69,19,0.1);
-}
-.cta-primary:hover {
-  background: rgba(139,69,19,0.25);
-  color: #f5f0e8;
-}
-.cta-secondary {
-  border-color: #2a1a0a;
-  color: #7a6858;
-}
-.cta-secondary:hover {
-  border-color: #5a3a1a;
-  color: #c8a878;
-}
+.cta-p { border-color: var(--gold-dk); color: var(--gold); background: rgba(139,69,19,.1); }
+.cta-p:hover { background: rgba(139,69,19,.22); color: var(--fg); }
+.cta-s { border-color: var(--faint); color: var(--dim); }
+.cta-s:hover { border-color: #5a3a18; color: var(--gold); }
 
-/* ── Section divider ─────────────────────────────────────────────── */
-.divider {
-  width: 60px; height: 1px;
-  background: #2a1a0a;
-  margin: 0 auto;
-}
-
-/* ── Cards grid ──────────────────────────────────────────────────── */
-.section {
-  width: 100%;
-  max-width: 960px;
+/* ── Generic section wrapper ── */
+.wrap {
+  max-width: 980px; margin: 0 auto;
   padding: 4rem 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: flex; flex-direction: column; gap: 2rem;
 }
+.wrap-sm { max-width: 780px; }
 
-.section-label {
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: #4a3a28;
-}
-
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem;
-}
+/* ── Card grid ── */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 1rem; }
+.grid-3 { grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); }
+.grid-2 { grid-template-columns: repeat(auto-fill, minmax(380px,1fr)); }
 
 .card {
   border: 1px solid #1e130a;
-  padding: 1.6rem 1.4rem;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  background: rgba(255,255,255,0.012);
-  transition: border-color 0.2s, background 0.2s;
+  padding: 1.5rem 1.3rem;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; gap: 0.55rem;
+  background: rgba(255,255,255,.012);
+  transition: border-color .2s, background .2s;
 }
-.card:hover { border-color: #6a3a18; background: rgba(255,255,255,0.025); }
-
-.card .badge {
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.15rem 0.45rem;
-  border: 1px solid;
-  width: fit-content;
-}
+.card:hover { border-color: #6a3a18; background: rgba(255,255,255,.025); }
 .card h3 { font-size: 1rem; font-weight: normal; color: #e0d8c8; }
 .card p  { font-size: 0.75rem; color: #6a5a4a; line-height: 1.65; }
-.card .arr { font-size: 0.7rem; color: #4a3828; margin-top: auto; }
-.card:hover .arr { color: #c8a878; }
+.card .arr { font-size: 0.7rem; color: #4a3828; margin-top: auto; padding-top: 0.5rem; }
+.card:hover .arr { color: var(--gold); }
 
-/* ── About ───────────────────────────────────────────────────────── */
-.about {
-  max-width: 620px;
-  padding: 2rem 2rem 5rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+/* Emblem scene cards — slightly taller */
+.scene-card { padding: 1.8rem 1.4rem; }
+.scene-card .numeral {
+  font-size: 2.4rem; font-weight: 100; letter-spacing: 0.04em;
+  line-height: 1; margin-bottom: 0.3rem;
 }
-.about p { font-size: 0.8rem; color: #5a4a38; line-height: 1.9; }
-.about a { color: #7a6858; text-underline-offset: 3px; }
+
+/* ── Stage key strip ── */
+.stage-strip {
+  display: flex; gap: 0.5rem; flex-wrap: wrap;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+}
+.stage-pip { padding: 0.2rem 0.6rem; border: 1px solid; }
+
+/* ── Tech table ── */
+.tech-table { display: flex; flex-direction: column; gap: 0; border: 1px solid #1e130a; }
+.tech-row {
+  display: grid; grid-template-columns: 180px 1fr;
+  border-bottom: 1px solid #1a1008; padding: 0.7rem 1rem;
+  font-size: 0.78rem; gap: 1rem;
+}
+.tech-row:last-child { border-bottom: none; }
+.tech-row .label { color: var(--dim); letter-spacing: 0.04em; }
+.tech-row .val   { color: #c0b0a0; line-height: 1.6; }
+.tech-row .val code {
+  font-family: 'Courier New', monospace; font-size: 0.72rem;
+  color: #9a8a7a; background: rgba(255,255,255,.04);
+  padding: 0 0.3rem;
+}
+
+/* ── Decision list ── */
+.decisions { display: flex; flex-direction: column; gap: 1.4rem; }
+.decision { display: flex; flex-direction: column; gap: 0.35rem; }
+.decision .dec-head {
+  font-size: 0.78rem; color: var(--gold); letter-spacing: 0.04em;
+}
+.decision .dec-body { font-size: 0.78rem; color: var(--dim); line-height: 1.8; }
+
+/* ── Takeaway list ── */
+.takeaways { display: flex; flex-direction: column; gap: 1rem; }
+.takeaway {
+  display: grid; grid-template-columns: 140px 1fr; gap: 1rem;
+  border-left: 2px solid #2a1a08; padding: 0.5rem 0 0.5rem 1rem;
+  font-size: 0.77rem;
+}
+.takeaway .t-cat { color: var(--dim); font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 0.1rem; }
+.takeaway .t-body { color: #8a7a6a; line-height: 1.75; }
+.takeaway .t-body code { font-family: monospace; font-size: 0.7rem; color: #9a8a7a; background: rgba(255,255,255,.04); padding: 0 0.25rem; }
+
+/* ── About / footer ── */
+.about {
+  text-align: center; padding: 3rem 2rem 5rem;
+  max-width: 640px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.about p { font-size: 0.78rem; color: #5a4a38; line-height: 1.9; }
+.about a { color: var(--dim); text-underline-offset: 3px; }
 
 footer {
-  width: 100%;
   border-top: 1px solid #1a100a;
-  padding: 1.5rem 2rem;
-  text-align: center;
-  font-size: 0.65rem;
-  color: #3a2a18;
-  letter-spacing: 0.08em;
+  padding: 1.5rem 2rem; text-align: center;
+  font-size: 0.62rem; color: #3a2a18; letter-spacing: 0.08em;
 }
+footer a { color: #4a3a28; text-decoration: none; }
+footer a:hover { color: var(--dim); }
 </style>
 </head>
 <body>
 
+<!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
 <div class="hero">
-  <div class="glyph">✦ · ✦ · ✦</div>
+  <div class="hero-glyph">✦ · ✦ · ✦</div>
 
   <h1><em>Emblems</em> in 3D</h1>
 
-  <div class="subtitle">
-    <span>Atalanta Fugiens</span> · Michael Maier, 1617<br>
+  <div class="sub">
+    <span>Atalanta Fugiens</span> · Michael Maier · Frankfurt, 1617<br>
     <span>Hypnerotomachia Poliphili</span> · Venice, 1499
   </div>
 
   <p class="desc">
-    Interactive 3D environments, animations, and games built from two
+    Three.js worlds, GSAP animation timelines, and browser games built from two
     Renaissance emblem books. Navigate the alchemical stages of the
-    <em>Atalanta Fugiens</em>, explore the gardens of the
-    <em>Hypnerotomachia</em>, and surface BL marginalia connecting
-    both worlds.
+    <em>Atalanta Fugiens</em>, explore the HP gardens, cross-reference
+    both corpora in a 3D bipartite graph, and hear each stage rendered
+    in generative Tone.js audio.
   </p>
 
+  <div class="stage-strip" style="justify-content:center">
+    <div class="stage-pip" style="color:var(--n);border-color:var(--n);">Nigredo</div>
+    <div class="stage-pip" style="color:var(--a);border-color:var(--a);">Albedo</div>
+    <div class="stage-pip" style="color:var(--c);border-color:var(--c);">Citrinitas</div>
+    <div class="stage-pip" style="color:var(--r);border-color:var(--r);">Rubedo</div>
+  </div>
+
   <div class="cta-row">
-    <a class="cta cta-primary" href="src/index.html">Enter 3D World</a>
-    <a class="cta cta-secondary" href="games/index.html">Emblem Games</a>
+    <a class="cta cta-p" href="src/index.html">Enter 3D World</a>
+    <a class="cta cta-s" href="games/index.html">Emblem Games</a>
+    <a class="cta cta-s" href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>
   </div>
 </div>
 
 <div class="divider"></div>
 
-<div class="section">
+
+<!-- ══ SHOWCASE EMBLEM SCENES ════════════════════════════════════════════ -->
+<div class="wrap">
+  <div class="section-label">Five showcase animations · Atalanta Fugiens</div>
+
+  <div class="grid">
+
+    <a class="card scene-card" href="src/index.html">
+      <div class="badge" style="color:var(--n);border-color:var(--n);">Nigredo</div>
+      <div class="numeral" style="color:var(--n);">IV</div>
+      <h3>Join Brother and Sister</h3>
+      <p>Two figures drift toward centre. Love-spark ParticleStreams converge on a rising chalice — TorusGeometry bowl, CylinderGeometry stem. The alchemical conjunction of sulphur and mercury.</p>
+      <div class="arr">12s loop →</div>
+    </a>
+
+    <a class="card scene-card" href="src/index.html">
+      <div class="badge" style="color:var(--n);border-color:var(--n);">Nigredo</div>
+      <div class="numeral" style="color:var(--n);">V</div>
+      <h3>Woman Suckling the Toad</h3>
+      <p>Woman lies horizontal (CapsuleGeometry). Toad at breast — squashed sphere, amber emissive eyes. Milk ParticleStream on bezier arc. Toad grows, woman pales, flash reset. Prima materia.</p>
+      <div class="arr">12s loop →</div>
+    </a>
+
+    <a class="card scene-card" href="src/index.html">
+      <div class="badge" style="color:var(--c);border-color:var(--c);">Citrinitas</div>
+      <div class="numeral" style="color:var(--c);">X</div>
+      <h3>Give Fire to Fire</h3>
+      <p>Four-layer fire sphere stack (0xff6600→0xffee44, rising emissiveIntensity). Mercury figure pours silver stream that feeds back into flame. Recursive: fire sustaining itself.</p>
+      <div class="arr">12s loop →</div>
+    </a>
+
+    <a class="card scene-card" href="src/index.html">
+      <div class="badge" style="color:var(--r);border-color:var(--r);">Rubedo</div>
+      <div class="numeral" style="color:var(--r);">XXXIII</div>
+      <h3>Hermaphrodite in Darkness</h3>
+      <p>CapsuleGeometry hermaphrodite. PlaneGeometry wings unfurl elastically (scale.x: 0.1→1.0). TorusGeometry crown descends from y=8. Material R/B channel oscillation encodes gender union.</p>
+      <div class="arr">14s loop →</div>
+    </a>
+
+    <a class="card scene-card" href="src/index.html">
+      <div class="badge" style="color:var(--r);border-color:var(--r);">Rubedo</div>
+      <div class="numeral" style="color:var(--r);">L</div>
+      <h3>The Dragon Kills the Woman</h3>
+      <p>OctahedronGeometry philosopher's stone. 16-segment ouroboros dragon ring (capsule segments, r=2.2). 12-ray LineSegments extend from stone. Crown descends. Circular particle stream. Completion.</p>
+      <div class="arr">16s loop →</div>
+    </a>
+
+  </div>
+
+  <p style="font-size:0.72rem;color:#4a3828;text-align:center;padding-top:0.5rem;">
+    All scenes built from primitive Three.js geometry (no .glb imports) with GSAP <code style="font-family:monospace;color:#7a6a5a">repeat:-1</code> timelines.
+    Remaining 46 AF emblems accessible in the gallery — click any card to enter.
+  </p>
+</div>
+
+
+<!-- ══ THREE WORLDS ═══════════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<div class="wrap">
   <div class="section-label">Three worlds</div>
-  <div class="cards">
+
+  <div class="grid grid-3">
 
     <a class="card" href="src/index.html">
-      <div class="badge" style="color:#ff6600;border-color:#ff6600;">Three.js · GSAP</div>
+      <div class="badge" style="color:var(--r);border-color:var(--r);">Three.js · GSAP · Tone.js</div>
       <h3>Atalanta Animata</h3>
-      <p>All 51 emblems as a clickable 3D gallery. Five showcase scenes with full GSAP animation timelines — toad suckling, brother &amp; sister conjunction, citrinitas fire, hermaphrodite, dragon &amp; ouroboros.</p>
-      <div class="arr">Gallery → emblem scenes →</div>
+      <p>51-card 3D gallery coloured by alchemical stage. Showcase emblems (IV, V, X, XXXIII, L) are larger with gold EdgesGeometry borders and pulse emissive. Hover tooltip, click-to-enter, scroll-wheel zoom, parallax camera drift.</p>
+      <p style="margin-top:.4rem;font-size:.72rem;color:#4a3828;">Press <kbd style="font-family:monospace;font-size:.68rem;padding:0 .25rem;border:1px solid #3a2a18">G</kbd> to return from any scene.</p>
+      <div class="arr">Gallery → click emblem → scene →</div>
     </a>
 
     <a class="card" href="src/index.html">
-      <div class="badge" style="color:#c8a440;border-color:#c8a440;">Three.js · Particles</div>
+      <div class="badge" style="color:#c8a440;border-color:#c8a440;">Three.js · Particles · GSAP</div>
       <h3>Fountain of Venus</h3>
-      <p>The HP garden world: a three-tier stone fountain, Venus figure, cypress garden, water particles. BL marginalia surfaces after six seconds — press A to call it up early.</p>
+      <p>HP garden world at folio 80. Three-tier stone fountain (TorusGeometry rims, CircleGeometry water), Venus figure in offering pose atop column. Cypress trees, garden hedges, warm afternoon lighting. Three water ParticleStreams (top tier → mid tier → basin spray).</p>
+      <p style="margin-top:.4rem;font-size:.72rem;color:#4a3828;">Press <kbd style="font-family:monospace;font-size:.68rem;padding:0 .25rem;border:1px solid #3a2a18">A</kbd> for linked HP marginalia.</p>
       <div class="arr">Hypnerotomachia button →</div>
     </a>
 
     <a class="card" href="src/index.html">
-      <div class="badge" style="color:#3a88cc;border-color:#3a88cc;">Bipartite graph</div>
+      <div class="badge" style="color:var(--a);border-color:var(--a);">Bipartite graph · DOM labels</div>
       <h3>Archives</h3>
-      <p>Cross-reference network: HP folio nodes (gold) linked to AF emblem nodes (stage-coloured) by editorial commentary. Click any node to navigate to its scene.</p>
+      <p>Cross-reference network: 9 HP folio nodes (gold spheres) linked to 14 AF emblem nodes (stage-coloured) by quadratic bezier curves. DOM labels synced to 3D positions each frame. Showcase emblems have gold halo rings. Hover to highlight; click to navigate to the scene.</p>
       <div class="arr">Archives button →</div>
     </a>
 
   </div>
 </div>
 
-<div class="divider"></div>
 
-<div class="section">
-  <div class="section-label">Games &amp; readings</div>
-  <div class="cards">
+<!-- ══ SYSTEMS ════════════════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<div class="wrap">
+  <div class="section-label">Systems & infrastructure</div>
+
+  <div class="grid">
+
+    <div class="card" style="cursor:default;">
+      <div class="badge" style="color:var(--a);border-color:var(--a);">Tone.js 14.7.77</div>
+      <h3>Alchemical Audio</h3>
+      <p>Generative ambient soundscape per stage. NIGREDO: 3-stack sawtooth drone (42/43.2/40.8 Hz) + brown noise crackle. ALBEDO: 4 sine overtones with reverb decay=6 + tremolo. CITRINITAS: MetalSynth bell sequence + hum. RUBEDO: PolySynth triads + chorus. Unlocks on first click.</p>
+    </div>
+
+    <div class="card" style="cursor:default;">
+      <div class="badge" style="color:var(--c);border-color:var(--c);">Three.js · BufferGeometry</div>
+      <h3>ParticleStream</h3>
+      <p>Quadratic bezier particle flows: B(t) = (1-t)²P0 + 2(1-t)tP1 + t²P2. Per-particle phase offset for staggered timing. Turbulence noise added (sin-based). AdditiveBlending, depthWrite:false. Used in every emblem scene and the HP fountain.</p>
+    </div>
+
+    <div class="card" style="cursor:default;">
+      <div class="badge" style="color:var(--gold-dk);border-color:var(--gold-dk);">HP + AF databases</div>
+      <h3>Data Pipeline</h3>
+      <p>export_for_3d.py queries two SQLite databases. Dynamic column discovery via PRAGMA table_info. Outputs: emblems.json (51), hp_annotations.json, hp_symbols.json, hp_woodcuts.json, world_links.json (9 HP↔AF cross-refs with scholarly commentary).</p>
+    </div>
+
+    <div class="card" style="cursor:default;">
+      <div class="badge" style="color:#9898cc;border-color:#9898cc;">BL marginalia</div>
+      <h3>Annotation Panel</h3>
+      <p>BL manuscript annotations surface after 6 seconds in any scene (or press A). findLinkedAnnotations() walks world_links.json to the HP folio, then checks hp_annotations.json. Falls back to 150-word editorial cross-reference commentary for folios not yet in the DB.</p>
+    </div>
+
+    <div class="card" style="cursor:default;">
+      <div class="badge" style="color:var(--n);border-color:var(--n);">EffectComposer</div>
+      <h3>Bloom Post-Processing</h3>
+      <p>UnrealBloomPass strength varies by context: 0.35 (HP garden), 0.40 (gallery), 0.55–0.65 (Archives/emblems). ACESFilmic tonemapping + SRGBColorSpace output. Bloom calls made inside scene.build() so each scene self-configures the post-processing chain.</p>
+    </div>
+
+    <div class="card" style="cursor:default;">
+      <div class="badge" style="color:var(--r);border-color:var(--r);">CSS transition</div>
+      <h3>Fade Transitions</h3>
+      <p>320ms CSS opacity 0→1→0 black overlay on every world switch. Keeps the Three.js render loop running during the transition — no flash or jump cut. All switchWorld() calls go through fadeSwitch(callback).</p>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══ GAMES ══════════════════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<div class="wrap">
+  <div class="section-label">Games & readings · <a href="games/index.html" style="color:var(--dim);text-decoration:none;letter-spacing:.04em;">games/</a></div>
+
+  <div class="grid">
 
     <a class="card" href="games/oracle.html">
-      <div class="badge" style="color:#c8a040;border-color:#c8a040;">Oracle</div>
+      <div class="badge" style="color:var(--c);border-color:var(--c);">Oracle</div>
       <h3>Emblem Oracle</h3>
-      <p>Draw a random emblem. Stage badge, Roman numeral, title, motto, and epigram fade in progressively — a daily meditation on the Great Work.</p>
-      <div class="arr">Draw →</div>
+      <p>Draw a random emblem. Stage badge → Roman numeral → title → motto → epigram fade in progressively (CSS opacity, 480ms steps). Stage-tinted full-screen background. "Draw another" rerandomises and re-stages the reveal. No dependencies.</p>
+      <div class="arr">Draw an emblem →</div>
     </a>
 
     <a class="card" href="games/fugue-scroll.html">
-      <div class="badge" style="color:#3a88cc;border-color:#3a88cc;">Journey</div>
+      <div class="badge" style="color:var(--a);border-color:var(--a);">Journey · 51 emblems</div>
       <h3>The Fugue Scroll</h3>
-      <p>All 51 emblems as full-viewport reading sections with entrance animations. Stage-transition dividers. Progress bar tracks your position in the Work.</p>
-      <div class="arr">Scroll →</div>
+      <p>All 51 emblems as full-viewport reading sections. IntersectionObserver (threshold 0.25) triggers entrance animations (opacity 0→1, translateY 30px→0, 0.8s ease). Stage-transition dividers between groups. Fixed progress bar. No dependencies.</p>
+      <div class="arr">Begin the journey →</div>
     </a>
 
     <a class="card" href="games/stage-sorter.html">
-      <div class="badge" style="color:#ddaa00;border-color:#ddaa00;">Puzzle</div>
+      <div class="badge" style="color:var(--c);border-color:var(--c);">Puzzle · drag & drop</div>
       <h3>The Great Work</h3>
-      <p>Sort 19 emblem cards into their alchemical stage zones by drag-and-drop. Reveal scores — correct placements glow green.</p>
-      <div class="arr">Sort →</div>
+      <p>19 shuffled emblem cards (4 CITRINITAS + 5 each of the rest). Drag into 4 stage drop zones. Cards can return to the hand. Reveal: correct cards glow green, wrong ones pulse red. Score out of 19.</p>
+      <div class="arr">Start sorting →</div>
     </a>
 
     <a class="card" href="games/memory.html">
-      <div class="badge" style="color:#ff5500;border-color:#ff5500;">Memory</div>
+      <div class="badge" style="color:var(--r);border-color:var(--r);">Memory · 3D flip</div>
       <h3>Motto Memory</h3>
-      <p>Classic card-flip matching: pair each Roman numeral with its English title. Eight pairs shuffled per hand. Track your moves.</p>
-      <div class="arr">Deal →</div>
+      <p>Classic card-flip matching: 8 pairs per hand, shuffled. One card shows a Roman numeral (gold, 2.2rem), the paired card shows the English title. CSS perspective + rotateY 3D flip. Matched pairs glow green. Move counter.</p>
+      <div class="arr">Deal a hand →</div>
     </a>
 
   </div>
 </div>
 
+
+<!-- ══ TECH STACK ══════════════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<div class="wrap wrap-sm">
+  <div class="section-label">Tech stack</div>
+
+  <div class="tech-table">
+    <div class="tech-row">
+      <div class="label">Rendering</div>
+      <div class="val">Three.js r168 — ES module via jsDelivr CDN, loaded via <code>importmap</code>. EffectComposer + UnrealBloomPass. ACESFilmic tonemapping. SRGBColorSpace output.</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Animation</div>
+      <div class="val">GSAP 3.12.5 via esm.sh. <code>gsap.timeline({ repeat: -1 })</code> for 12–16 second looping emblem timelines. Ease functions: <code>sine.inOut</code>, <code>elastic.out</code>, <code>none</code>.</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Audio</div>
+      <div class="val">Tone.js 14.7.77 via esm.sh — lazy-imported on first user gesture. OmniOscillator, NoiseSynth, MetalSynth, PolySynth, Reverb, Chorus, Tremolo, AmplitudeEnvelope, Loop, Transport.</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Geometry</div>
+      <div class="val">CapsuleGeometry (figures), SphereGeometry (heads/fire/nodes), TorusGeometry (rims/crowns/halos), CylinderGeometry (columns), OctahedronGeometry (stone), PlaneGeometry (wings/ground), BoxGeometry (hedges/cards), ConeGeometry (trees), LineSegments (rays), BufferGeometry (particles/curves).</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Particles</div>
+      <div class="val">THREE.Points + BufferGeometry. Quadratic bezier B(t) = (1-t)²P0 + 2(1-t)tP1 + t²P2. Per-particle phase offsets. AdditiveBlending. depthWrite: false.</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Data</div>
+      <div class="val">Two SQLite databases (AF emblems, HP manuscript). Python 3 export pipeline → 6 JSON files. No server-side rendering — all static. <code>fetch('./data/emblems.json?v=8')</code>.</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Deployment</div>
+      <div class="val">GitHub Pages (static, branch: main, root). Python <code>http.server 3456</code> for local dev. No bundler — native ES modules via importmap.</div>
+    </div>
+    <div class="tech-row">
+      <div class="label">Games</div>
+      <div class="val">Pure HTML/CSS/JS — zero dependencies. HTML5 drag & drop API, CSS <code>perspective + rotateY</code> 3D flip, IntersectionObserver entrance animations.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ CREATIVE DECISIONS ════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<div class="wrap wrap-sm">
+  <div class="section-label">Creative decisions</div>
+
+  <div class="decisions">
+
+    <div class="decision">
+      <div class="dec-head">Primitive-only geometry — no 3D model imports</div>
+      <div class="dec-body">Every figure and object is built from CapsuleGeometry, SphereGeometry, TorusGeometry, etc. No .glb or .fbx imports. This forces close reading of the emblem imagery — building the toad from a squashed sphere with emissive amber eyes is an interpretive act, not a texture lookup. It also keeps the project runnable with no asset pipeline.</div>
+    </div>
+
+    <div class="decision">
+      <div class="dec-head">Alchemical stage as the master design system</div>
+      <div class="dec-body">NIGREDO / ALBEDO / CITRINITAS / RUBEDO drive every visual decision: background colour, particle colour, bloom strength, audio synthesis approach, gallery card colour, Archives node colour, and even the annotation panel border. One four-value enum unifies 51 scenes, 4 games, and a graph.</div>
+    </div>
+
+    <div class="decision">
+      <div class="dec-head">Looping GSAP timelines (12–16s, repeat: -1)</div>
+      <div class="dec-body">Alchemical operations are cyclic — the Work has no terminal state. A 12-second loop encodes the philosophical claim that the prima materia is never destroyed, only transformed. The specific durations (12s for Nigredo scenes, 16s for Rubedo's completion emblem) give longer operations more time to develop.</div>
+    </div>
+
+    <div class="decision">
+      <div class="dec-head">Quadratic bezier particle paths</div>
+      <div class="dec-body">Every substance flow (milk, mercury, water, love-sparks) uses a bezier arc with a symbolic mid-point. The milk in Emblem V arcs upward before landing at the toad — it doesn't fall straight. The mid-point encodes the transformation: this substance is going somewhere, not just moving.</div>
+    </div>
+
+    <div class="decision">
+      <div class="dec-head">Bipartite graph for the cross-reference archive</div>
+      <div class="dec-body">The scholarship on these two texts is fundamentally about their network of visual and symbolic connections. A node-link diagram makes the argument structurally visible: HP folio nodes on the left, AF emblem nodes on the right, bezier edges connecting specific readings. Clicking a node navigates you there — the graph is executable bibliography.</div>
+    </div>
+
+    <div class="decision">
+      <div class="dec-head">Editorial commentary when the DB has no data</div>
+      <div class="dec-body">The British Library annotation data only covers folios 1–8, but all 9 world_links reference folios 14–164. Rather than show an empty annotation panel, we wrote ~150-word scholarly notes for each HP↔AF connection. These are grounded in the actual imagery and stored as first-class data in world_links.json — not hardcoded strings.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══ LEARNINGS ═══════════════════════════════════════════════════════════ -->
+<div class="divider"></div>
+<div class="wrap wrap-sm">
+  <div class="section-label">What we learned building this</div>
+
+  <div class="takeaways">
+
+    <div class="takeaway">
+      <div class="t-cat">Browser · iframe</div>
+      <div class="t-body"><code>window.innerWidth</code> is 0 inside a preview iframe. Fixed with fallback chain: <code>canvas.clientWidth || document.documentElement.clientWidth || window.innerWidth || 1280</code>.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">ES modules · TDZ</div>
+      <div class="t-body">Calling <code>resizeAll()</code> at module-level before <code>const composer</code> and <code>const bloom</code> were declared put both in the Temporal Dead Zone. The init IIFE silently failed. Fix: define <code>resizeAll</code> after <code>bloom</code>, call it as the first line inside the async IIFE.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">Browser · caching</div>
+      <div class="t-body">Browsers aggressively cache ES modules as 304 Not Modified even when the file has changed. Version strings must be incremented on every file in the import chain: <code>EmblemScene.js?v=3</code>, <code>Particles.js?v=3</code>, <code>main.js?v=8</code>. A change in any leaf file requires bumping all importers.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">Three.js · position</div>
+      <div class="t-body"><code>Object.assign(new THREE.Mesh(), { position: new THREE.Vector3() })</code> throws <em>Cannot assign to read only property 'position'</em>. <code>Mesh.position</code> is a getter returning an internal Vector3 — it's not a writable property. Always use <code>mesh.position.set(x, y, z)</code>.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">Windows · encoding</div>
+      <div class="t-body">Python print statements with ✓ ⚠ ── characters throw <code>UnicodeEncodeError</code> on Windows cp1252 terminals. Replace all emoji/box-drawing chars with ASCII: <code>OK</code>, <code>WARN</code>, <code>--</code>.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">Data · coverage</div>
+      <div class="t-body"><code>motto_latin</code> is populated for only 1/51 emblems in the AF database. The memory game had to be redesigned from Latin↔English motto matching to Roman numeral↔English title matching. Check data coverage before designing games around a specific field.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">Data · stage counts</div>
+      <div class="t-body">CITRINITAS has 4 emblems, not 5. The stage-sorter assumed 5-per-stage (20 total). Fix: <code>Math.min(5, pool.length)</code> and dynamic denominator <code>activeCards.length</code>. Never hardcode stage counts — query them.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">Data · SQL schema</div>
+      <div class="t-body">The HP <code>annotations</code> table uses <code>folio_number</code> and <code>annotation_text</code>, not <code>page</code> and <code>text</code>. The export script now uses <code>PRAGMA table_info(annotations)</code> for dynamic column discovery rather than assuming column names.</div>
+    </div>
+
+    <div class="takeaway">
+      <div class="t-cat">GitHub Pages · paths</div>
+      <div class="t-body">Absolute paths like <code>/src/data/emblems.json</code> break on GitHub Pages (they resolve to the domain root, not the repo subdirectory). All data fetches must be relative: <code>./data/emblems.json</code> from <code>src/</code>, <code>../src/data/emblems.json</code> from <code>games/</code>.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══ ABOUT ═══════════════════════════════════════════════════════════════ -->
+<div class="divider" style="margin-top:2rem;"></div>
 <div class="about">
   <p>
-    A digital humanities project built with Three.js r168, GSAP 3.12, and Tone.js.
-    Emblem data from the <em>Atalanta Fugiens</em> database; HP marginalia from
-    the British Library copy (BL 1A.17757). Source on
-    <a href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>.
+    A digital humanities experiment: two Renaissance emblem books rendered as
+    interactive 3D environments, cross-referenced in a live graph, and encoded
+    as browser games. Built with Three.js, GSAP, and Tone.js — no bundler,
+    no build step, no model assets.
+  </p>
+  <p>
+    Source code and data pipeline on <a href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>.
+    AF database from the <em>Claudiens</em> project. HP marginalia from the
+    British Library copy (BL 1A.17757).
   </p>
 </div>
 
 <footer>
-  Michael Maier · <em>Atalanta Fugiens</em> · Frankfurt, 1617 &nbsp;·&nbsp;
-  <em>Hypnerotomachia Poliphili</em> · Venice, 1499
+  <em>Atalanta Fugiens</em> · Michael Maier · Frankfurt, 1617 &nbsp;·&nbsp;
+  <em>Hypnerotomachia Poliphili</em> · Venice, 1499 &nbsp;·&nbsp;
+  <a href="https://github.com/t3dy/EmblemsIn3d">github.com/t3dy/EmblemsIn3d</a>
 </footer>
 
 </body>
