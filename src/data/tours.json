@@ -50,5 +50,13 @@
       { "stage": "RUBEDO", "stageTitle": "The Reddening", "emblem": 33, "lede": "The hermaphrodite calls for fire. Rubedo is the marriage consummated in heat — the red king and white queen made one body." },
       { "stage": "RUBEDO", "stageTitle": "The Reddening", "emblem": 50, "lede": "The Dragon kills the woman and dies with her: the final fixation. The stone is achieved where death and generation become the same act. The work is complete." }
     ]
+  },
+  "two-books": {
+    "id": "two-books",
+    "title": "The Two Books",
+    "subtitle": "Where the Hypnerotomachia and the Atalanta meet",
+    "accent": "#b48ad0",
+    "intro": "The 1499 *Hypnerotomachia Poliphili* and Maier's 1617 *Atalanta Fugiens* speak the same alchemical language a century apart. This tour walks the documented links between them — at each stop, an emblem of Maier's stands beside the folio of Poliphilo's dream it answers, with the cross-reference that binds them.",
+    "source": "world_links"
   }
 }

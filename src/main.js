@@ -98,7 +98,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
-  const V = '6'; // bump when data files are re-exported
+  const V = '7'; // bump when data files are re-exported
   const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
@@ -530,7 +530,7 @@ function buildToursMenu() {
   if (!wrap || !state.tours) return;
   wrap.innerHTML = Object.values(state.tours).map(t => `
     <button class="tour-card" style="--accent:${t.accent}" onclick="window.startTour('${t.id}')">
-      <div class="tc-kicker" style="color:${t.accent}">Guided tour · ${t.stops.length} stops</div>
+      <div class="tc-kicker" style="color:${t.accent}">Guided tour · ${resolveTourStops(t).length} stops</div>
       <h3>${t.title}</h3>
       <p>${t.subtitle}</p>
       <p class="tc-intro">${fmtProse(t.intro)}</p>
@@ -563,11 +563,22 @@ function clearTour() {
   if (p) p.style.display = 'none';
 }
 
+// Resolve a tour's stops — generated from world_links for the cross-book tour,
+// otherwise taken verbatim from tours.json.
+function resolveTourStops(tour) {
+  if (tour.source === 'world_links' && Array.isArray(state.worldLinks)) {
+    return state.worldLinks
+      .filter(l => Array.isArray(l.af_emblems) && l.af_emblems.length)
+      .map(l => ({ emblem: l.af_emblems[0], folio: l.hp_folio, scene: l.hp_scene, lede: l.commentary }));
+  }
+  return tour.stops || [];
+}
+
 async function startTour(id) {
   const tour = state.tours && state.tours[id];
   if (!tour) return;
   hideToursMenu();
-  state.tour = tour;
+  state.tour = { ...tour, stops: resolveTourStops(tour) };
   state.tourStop = 0;
   await tourGoto(0);
 }
@@ -617,7 +628,10 @@ function renderTourPanel() {
   }
 
   let badge = '';
-  if (stop.stage) {
+  if (stop.folio) {
+    const scene = (stop.scene || '').replace(/_/g, ' ');
+    badge = `<span class="tp-badge" style="color:${accent};border-color:${accent}">Hypnerotomachia · f.${stop.folio}${scene ? ' · ' + scene : ''}</span>`;
+  } else if (stop.stage) {
     const c = STAGE_COLORS[stop.stage] || accent;
     badge = `<span class="tp-badge" style="color:${c};border-color:${c}">${stop.stage}${stop.stageTitle ? ' · ' + stop.stageTitle : ''}</span>`;
   } else if (!stop.symbol && emb.alchemical_stage) {
