@@ -1,7 +1,61 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
+
+// ── Image-based lighting ──────────────────────────────────────────────────────
+// A neutral studio environment gives soft, realistic fill + subtle reflections on
+// every MeshStandardMaterial. Generated once from RoomEnvironment (no HDRI file
+// needed) and shared across all scenes for the app's lifetime.
+let _sharedEnv = null;
+function getEnvMap(renderer) {
+  if (_sharedEnv) return _sharedEnv;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  _sharedEnv = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  pmrem.dispose();
+  return _sharedEnv;
+}
+
+// ── Woodcut → relief ─────────────────────────────────────────────────────────
+// Derive a tangent-space normal map from a grayscale image via a Sobel filter, so
+// the ink lines of a woodcut catch raking light as carved ridges and grooves.
+const _emblemTexLoader = new THREE.TextureLoader();
+function emblemImagePath(num) {
+  return `../images/emblems/emblem-${String(num).padStart(2, '0')}.jpg`;
+}
+function buildNormalMap(image, { width = 600, strength = 3.0 } = {}) {
+  const h = Math.max(1, Math.round(width * image.height / image.width));
+  const cv = document.createElement('canvas');
+  cv.width = width; cv.height = h;
+  const ctx = cv.getContext('2d', { willReadFrequently: true });
+  ctx.drawImage(image, 0, 0, width, h);
+  const src = ctx.getImageData(0, 0, width, h).data;
+  const gray = new Float32Array(width * h);
+  for (let i = 0; i < width * h; i++) {
+    gray[i] = (src[i * 4] * 0.299 + src[i * 4 + 1] * 0.587 + src[i * 4 + 2] * 0.114) / 255;
+  }
+  const out = ctx.createImageData(width, h);
+  const o = out.data;
+  const at = (x, y) =>
+    Math.min(h - 1, Math.max(0, y)) * width + Math.min(width - 1, Math.max(0, x));
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < width; x++) {
+      const dx = (gray[at(x + 1, y)] - gray[at(x - 1, y)]) * strength;
+      const dy = (gray[at(x, y + 1)] - gray[at(x, y - 1)]) * strength;
+      const len = Math.hypot(dx, dy, 1);
+      const p = (y * width + x) * 4;
+      o[p]     = (-dx / len * 0.5 + 0.5) * 255;
+      o[p + 1] = (-dy / len * 0.5 + 0.5) * 255;
+      o[p + 2] = (1 / len * 0.5 + 0.5) * 255;
+      o[p + 3] = 255;
+    }
+  }
+  ctx.putImageData(out, 0, 0);
+  const tex = new THREE.CanvasTexture(cv);
+  tex.colorSpace = THREE.NoColorSpace; // normal data is linear, not sRGB
+  return tex;
+}
 
 // Stage color palettes
 const PALETTES = {
@@ -41,6 +95,11 @@ export class EmblemScene {
     this.scene.background = new THREE.Color(pal.bg);
     this.scene.fog = new THREE.Fog(pal.bg, 10, 35);
 
+    // Soft neutral image-based lighting — fills shadows and adds subtle
+    // reflections so forms read, while the stage palette stays for mood.
+    this.scene.environment = getEnvMap(this.renderer);
+    this.scene.environmentIntensity = 0.5;
+
     this._setupCamera();
     this._setupLighting(pal);
     this._buildGround(pal);
@@ -51,7 +110,7 @@ export class EmblemScene {
       case 10: this._buildEmblemX(pal);     break;
       case 33: this._buildEmblemXXXIII(pal); break;
       case 50: this._buildEmblemL(pal);     break;
-      default: this._buildGenericEmblem(pal); break;
+      default: this._buildWoodcutRelief(pal); break;
     }
 
     // Update bloom strength
@@ -66,7 +125,7 @@ export class EmblemScene {
     this._controls.minDistance    = 3;
     this._controls.maxDistance    = 18;
     this._controls.maxPolarAngle  = Math.PI * 0.78;
-    this._controls.target.set(0, 0.5, 0);
+    this._controls.target.copy(this._camTarget || new THREE.Vector3(0, 0.5, 0));
     this._controls.update();
   }
 
@@ -76,15 +135,27 @@ export class EmblemScene {
   }
 
   _setupLighting(pal) {
-    const ambient = new THREE.AmbientLight(pal.ground, 0.7);
-    const key     = new THREE.DirectionalLight(pal.accent, 1.8);
-    key.position.set(-3, -1, 4);
-    const rim = new THREE.DirectionalLight(pal.glow, 0.4);
-    rim.position.set(4, 3, -2);
-    const groundGlow = new THREE.PointLight(pal.accent, 2.0, 8);
-    groundGlow.position.set(0, -1.2, 1);
+    // Warm parchment sky / dark-wood ground hemisphere for soft base light
+    const hemi = new THREE.HemisphereLight(0xfff1dd, 0x2a1c10, 0.55);
 
-    this.scene.add(ambient, key, rim, groundGlow);
+    // KEY — warm white, raking from upper-left so relief carving catches light.
+    // Neutral (not stage-tinted) so the actual imagery reads clearly.
+    const key = new THREE.DirectionalLight(0xfff0dc, 1.9);
+    key.position.set(-5, 6, 6);
+
+    // FILL — cool, soft, from the opposite side to open up the shadows
+    const fill = new THREE.DirectionalLight(0xc4d6ff, 0.7);
+    fill.position.set(5, 1.5, 4);
+
+    // RIM — stage-tinted from behind for atmosphere and silhouette separation
+    const rim = new THREE.DirectionalLight(pal.glow, 1.1);
+    rim.position.set(-2, 4, -6);
+
+    // Tinted ground bounce — mood + drives the existing showcase timelines
+    const groundGlow = new THREE.PointLight(pal.accent, 1.6, 10);
+    groundGlow.position.set(0, -1.0, 2);
+
+    this.scene.add(hemi, key, fill, rim, groundGlow);
     this._groundGlow = groundGlow;
   }
 
@@ -804,45 +875,78 @@ export class EmblemScene {
     this._tl = tl;
   }
 
-  // ── Generic fallback ───────────────────────────────────────────────────────
-  _buildGenericEmblem(pal) {
-    this.isGeneric = true;
+  // ── Woodcut relief (default for the 46 non-showcase emblems) ────────────────
+  // The actual emblem plate carved into 3-D: the image drives a displacement map
+  // and a Sobel-derived normal map, so the ink lines read as engraved relief
+  // under the raking key light. A literal 3-D rendering of the emblem.
+  _buildWoodcutRelief(pal) {
+    this.isGeneric = false; // the relief IS the content; the HUD carries the text
 
-    // Sculptural torus-knot — more expressive than icosahedron, fully orbitable
-    const geo = new THREE.TorusKnotGeometry(0.9, 0.28, 128, 16, 3, 2);
-    const mat = new THREE.MeshStandardMaterial({
-      color: pal.accent, roughness: 0.35, metalness: 0.5,
-      emissive: new THREE.Color(pal.glow), emissiveIntensity: 0.3,
+    // Subtle real depth — the normal map carries the fine carving; displacement
+    // just lifts the inked figures a touch off the paper so the silhouette reads.
+    const DEPTH = { NIGREDO: 0.10, ALBEDO: 0.12, CITRINITAS: 0.12, RUBEDO: 0.14 };
+    const depth = DEPTH[this.data.alchemical_stage] ?? 0.11;
+
+    // Frame the camera square on the plate
+    this._camTarget = new THREE.Vector3(0, 0.7, 0);
+    this.camera.position.set(0, 0.7, 8.4);
+    this.camera.lookAt(this._camTarget);
+
+    const W = 4.4, H = 5.25; // woodcut portrait aspect (~1200×1434)
+
+    // Backing plaque — gives the plate a real edge/depth when orbited
+    const backG = new THREE.BoxGeometry(W + 0.35, H + 0.35, 0.22);
+    const backMat = new THREE.MeshStandardMaterial({
+      color: 0x241712, roughness: 0.85, metalness: 0.15, envMapIntensity: 0.4,
     });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.position.y = 0.5;
-    this.scene.add(mesh);
-    this._genericMat = mat;
-    this._animObjs.push({ mesh, rotSpeed: 0.22 });
+    const back = new THREE.Mesh(backG, backMat);
+    back.position.set(0, 0.7, -0.16);
+    this.scene.add(back);
+    this._disposables.push(backG, backMat);
+
+    // The relief surface
+    const geo = new THREE.PlaneGeometry(W, H, 240, 286);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x8a8a8a, roughness: 0.82, metalness: 0.0, envMapIntensity: 0.4,
+    });
+    const relief = new THREE.Mesh(geo, mat);
+    relief.position.set(0, 0.7, 0);
+    this.scene.add(relief);
+    this._relief = relief;
     this._disposables.push(geo, mat);
 
-    // Wide horizontal arc
-    const streamA = new ParticleStream({
-      count: 80, source: new THREE.Vector3(-3.0, 0.5, 0),
-      target: new THREE.Vector3(3.0, 0.5, 0),
-      color: pal.particle, size: 0.055, speed: 0.38, arc: 1.8,
+    // Gilt hairline border
+    const edgeG   = new THREE.EdgesGeometry(new THREE.PlaneGeometry(W + 0.05, H + 0.05));
+    const edgeMat = new THREE.LineBasicMaterial({ color: 0x6a4a1e });
+    const edge    = new THREE.LineSegments(edgeG, edgeMat);
+    edge.position.set(0, 0.7, 0.03);
+    this.scene.add(edge);
+    this._disposables.push(edgeG, edgeMat);
+
+    // Load the plate, then derive displacement + normal from it
+    _emblemTexLoader.load(emblemImagePath(this.data.number), (tex) => {
+      const maxA = this.renderer.capabilities?.getMaxAnisotropy?.() || 4;
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = maxA;
+      mat.map = tex;
+      mat.displacementMap   = tex;
+      mat.displacementScale  = -depth;      // raise the dark ink off the paper
+      mat.displacementBias   =  depth * 0.92; // keep the paper plane near z=0
+      mat.color.set(0xffffff);
+      try {
+        const nrm = buildNormalMap(tex.image, { width: 700, strength: 2.6 });
+        nrm.anisotropy = maxA;
+        mat.normalMap = nrm;
+        mat.normalScale.set(1.5, 1.5);
+        this._reliefNormal = nrm;
+      } catch (e) { /* normal map is enhancement-only; relief still works */ }
+      mat.needsUpdate = true;
     });
-    streamA.opacity = 0.55; streamA.active = true;
 
-    // Descending vertical arc
-    const streamB = new ParticleStream({
-      count: 55, source: new THREE.Vector3(0, 3.0, 0),
-      target: new THREE.Vector3(0, -0.5, 0),
-      color: pal.particle, size: 0.04, speed: 0.3, arc: 1.0,
-    });
-    streamB.opacity = 0.4; streamB.active = true;
-
-    this.scene.add(streamA.points, streamB.points);
-    this._streams.push(streamA, streamB);
-
-    const tl = gsap.timeline({ repeat: -1 });
-    tl.to(mat, { emissiveIntensity: 0.78, duration: 2.5, ease: 'sine.inOut', yoyo: true, repeat: -1 }, 0)
-      .to(this._groundGlow, { intensity: 3.0, duration: 2.0, ease: 'sine.inOut', yoyo: true, repeat: -1 }, 0.8);
+    // Gentle living sway + a slow kindling ground glow
+    const tl = gsap.timeline({ repeat: -1, yoyo: true });
+    tl.to(relief.rotation, { y: 0.14, duration: 6.5, ease: 'sine.inOut' }, 0);
+    gsap.to(this._groundGlow, { intensity: 2.6, duration: 3.0, ease: 'sine.inOut', yoyo: true, repeat: -1 });
     this._tl = tl;
   }
 
@@ -866,9 +970,15 @@ export class EmblemScene {
       this._womanMat, this._shadowMat, this._brother, this._sister,
       this._cup, this._hGroup, this._fireGroup, this._firePt,
       this._stone, this._stoneLight, this._dragonGroup, this._crown,
+      this._relief?.rotation,
     ].filter(Boolean));
     this._streams.forEach(s => s.dispose());
     this._streams = [];
+    // Relief textures aren't reached by the material traversal below
+    if (this._relief?.material) {
+      this._relief.material.map?.dispose();
+      this._relief.material.normalMap?.dispose();
+    }
     this._disposables.forEach(d => d?.dispose?.());
     this.scene.traverse(obj => {
       if (obj.geometry) obj.geometry.dispose();
