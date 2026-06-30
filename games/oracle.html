@@ -109,6 +109,31 @@
     transition: opacity 0.6s ease;
   }
 
+  /* Scholarship reveal — connects the draw to the research */
+  #scholarship-toggle {
+    background: none;
+    border: none;
+    color: #8a6a3a;
+    cursor: pointer;
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    opacity: 0;
+    transition: opacity 0.6s ease, color 0.2s;
+    padding: 0.2rem 0;
+  }
+  #scholarship-toggle:hover { color: var(--stage-accent, #c8a040); }
+  #scholarship {
+    display: none;
+    font-size: 0.76rem;
+    line-height: 1.75;
+    color: #8a7a64;
+    max-width: 540px;
+    margin: 0.5rem auto 0;
+    text-align: left;
+  }
+  #scholarship.open { display: block; }
+
   /* Divider */
   .divider {
     width: 120px;
@@ -196,6 +221,8 @@
   <div id="motto-latin"></div>
   <div id="motto-english"></div>
   <div id="epigram"></div>
+  <button id="scholarship-toggle" type="button">✦ what the scholars say</button>
+  <p id="scholarship"></p>
   <div class="divider"></div>
   <div id="controls">
     <button id="draw-btn">Draw another</button>
@@ -234,11 +261,13 @@
   const mottoLatinEl  = document.getElementById('motto-latin');
   const mottoEnglishEl= document.getElementById('motto-english');
   const epigramEl     = document.getElementById('epigram');
+  const scholarshipToggle = document.getElementById('scholarship-toggle');
+  const scholarshipEl = document.getElementById('scholarship');
   const drawBtn       = document.getElementById('draw-btn');
   const view3dLink    = document.getElementById('view-3d');
   const errorEl       = document.getElementById('error');
 
-  const REVEAL_ELEMENTS = [stageBadge, romanEl, titleEl, mottoLatinEl, mottoEnglishEl, epigramEl];
+  const REVEAL_ELEMENTS = [stageBadge, romanEl, titleEl, mottoLatinEl, mottoEnglishEl, epigramEl, scholarshipToggle];
   const REVEAL_DELAY = 480; // ms between stages
 
   const COLLECTION_KEY = 'af-emblems-seen';
@@ -346,8 +375,19 @@
       epigramEl.style.display = 'none';
     }
 
+    // Scholarship (the discourse_summary) — collapsed until the reader asks
+    if (emblem.discourse_summary) {
+      scholarshipEl.textContent = emblem.discourse_summary;
+      scholarshipToggle.style.display = '';
+    } else {
+      scholarshipEl.textContent = '';
+      scholarshipToggle.style.display = 'none';
+    }
+    scholarshipEl.classList.remove('open');
+    scholarshipToggle.textContent = '✦ what the scholars say';
+
     // Update 3D link
-    view3dLink.href = `../src/index.html?v=8#emblem=${emblem.number}`;
+    view3dLink.href = `../src/index.html?v=12#emblem=${emblem.number}`;
 
     // Apply stage palette
     applyStage(stage);
@@ -366,6 +406,7 @@
       mottoLatinEl.style.display !== 'none' ? mottoLatinEl : null,
       mottoEnglishEl.style.display !== 'none' ? mottoEnglishEl : null,
       epigramEl.style.display !== 'none' ? epigramEl : null,
+      scholarshipToggle.style.display !== 'none' ? scholarshipToggle : null,
     ].filter(Boolean);
 
     toReveal.forEach((el, i) => {
@@ -429,6 +470,12 @@
 
   // Wire up button
   drawBtn.addEventListener('click', drawAnother);
+
+  // Expand / collapse the scholarship paragraph
+  scholarshipToggle.addEventListener('click', () => {
+    const open = scholarshipEl.classList.toggle('open');
+    scholarshipToggle.textContent = open ? '✦ hide the scholarship' : '✦ what the scholars say';
+  });
 
   // Fetch data
   fetch('../src/data/emblems.json')
