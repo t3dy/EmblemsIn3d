@@ -4,7 +4,9 @@
 
 **[GitHub Repository](https://github.com/t3dy/EmblemsIn3d)**
 
-A browser-based digital humanities project that brings two Renaissance texts into Three.js: Michael Maier's alchemical emblem book *Atalanta Fugiens* (Frankfurt, 1617) and Francesco Colonna's dream narrative *Hypnerotomachia Poliphili* (Venice, 1499). No 3D assets are imported — every figure and environment is built from raw Three.js geometry primitives, driven by a SQLite export pipeline, and animated with GSAP looping timelines that encode the cyclic logic of alchemical transformation.
+A browser-based digital humanities project that brings two Renaissance texts into Three.js: Michael Maier's alchemical emblem book *Atalanta Fugiens* (Frankfurt, 1617) and Francesco Colonna's dream narrative *Hypnerotomachia Poliphili* (Venice, 1499). No 3D models are imported — the five hand-built showcase scenes are raw Three.js geometry primitives animated with GSAP looping timelines that encode the cyclic logic of alchemical transformation, while the other 46 emblems are rendered as **lit carved 3-D reliefs of their original woodcuts** (the plate image drives a displacement map and a runtime Sobel normal map under a raking key light) and can lift their extracted figures into a **2.5-D parallax diorama**. Everything is driven by a SQLite export pipeline.
+
+Guided **Tours** then connect these models to the research — the scholarship, the alchemical signs, the four-stage *opus*, and the documented links between the two books.
 
 ---
 
@@ -19,6 +21,10 @@ A browser-based digital humanities project that brings two Renaissance texts int
 | [`games/fugue-scroll.html`](https://t3dy.github.io/EmblemsIn3d/games/fugue-scroll.html) | Fugue Scroll — all 51 emblems as scroll sections |
 | [`games/stage-sorter.html`](https://t3dy.github.io/EmblemsIn3d/games/stage-sorter.html) | Stage Sorter — drag emblems into their correct alchemical stage |
 | [`games/memory.html`](https://t3dy.github.io/EmblemsIn3d/games/memory.html) | Memory — match Roman numerals to English emblem titles |
+
+The 3-D app has **five worlds** (top-right nav): **Hypnerotomachia** (orbitable Fountain of Venus) · **Atalanta Animata** (the gallery wall of 51 lit plates → click to enter a scene) · **Plates** (a 2-D atlas → lightbox with motto, epigram, and "Enter 3-D") · **Tours** · **Archives** (the HP-folio ↔ AF-emblem graph).
+
+Four guided **Tours** fly the camera through the actual emblem scenes while a side rail surfaces the research: **The Scholarship** (each emblem's modern reading), **Chemical Symbolism** (the planetary-metal signs, glyphs, and marginalia-hand notes), **The Great Work** (Nigredo → Rubedo), and **The Two Books** (the 9 documented Hypnerotomachia ↔ Atalanta cross-references). The **Oracle** and **Fugue Scroll** also reveal each emblem's scholarship on demand.
 
 ---
 
@@ -149,7 +155,10 @@ On first visit to an emblem scene: `← →  emblems  ·  A  context  ·  G  gal
 ### Rendering
 
 - **Three.js r168** — ES module from jsDelivr CDN, loaded via `importmap`
-- **EffectComposer + UnrealBloomPass** — post-processing chain; bloom strength varies by scene (0.35 HP fountain, 0.4 gallery, 0.55–0.65 Archives and emblems)
+- **Carved woodcut reliefs** — non-showcase emblems use the plate image as a `displacementMap` (subtle, inverted so inked figures lift off the paper) plus a **runtime Sobel-derived `normalMap`** (generated in-browser from the grayscale via a `<canvas>` pass), so ink lines catch the raking light as engraving. Showcase scenes get the same plate as a dim relief backdrop.
+- **2.5-D diorama** — extracted figure cutouts (from `scripts/build_diorama.py` → `diorama.json`) float as alpha-tested billboards in front of the relief at an inferred depth, parallaxing when orbited.
+- **Image-based lighting** — `RoomEnvironment` baked through `PMREMGenerator` (no HDRI file) gives soft neutral fill + reflections, shared across scenes.
+- **EffectComposer + UnrealBloomPass** — post-processing chain; bloom strength varies by scene
 - **ACESFilmic tonemapping** + **SRGBColorSpace output**
 - **GSAP 3.12.5** — from esm.sh CDN; `gsap.timeline({ repeat: -1 })` for all emblem animations
 
@@ -185,10 +194,14 @@ Every figure and environment object is built from primitives — no `.glb` or `.
 
 ### Lighting
 
-- `PointLight` — glow sources, stage-specific colours (e.g., deep red for NIGREDO, silver for ALBEDO)
-- `DirectionalLight` — sun / rim light in garden and gallery scenes
-- `AmbientLight` — fill; kept low to preserve drama
-- Emblem figures are dramatically uplit; HP fountain uses warm afternoon sun + cool sky fill
+Each emblem scene uses a four-light rig plus image-based fill so forms read clearly while the stage palette stays for mood:
+
+- **Key** — warm-white `DirectionalLight` raking from upper-left (reveals relief carving); deliberately *neutral*, not stage-tinted, so the imagery reads
+- **Fill** — cool, soft `DirectionalLight` from the opposite side
+- **Rim** — stage-tinted `DirectionalLight` from behind for atmosphere and silhouette separation
+- **Ground bounce** — tinted `PointLight` near the floor (also drives the showcase GSAP timelines)
+- **Hemisphere + IBL** — warm-parchment/dark-wood `HemisphereLight` and the shared `RoomEnvironment` map
+- HP fountain uses warm afternoon sun + cool sky fill; the gallery wall plates are emissive-floored so they stay bright while gaining carved shading
 
 ### Audio
 
@@ -235,6 +248,13 @@ Queries both databases and emits six JSON files into `data/`:
 | `world_links.json` | 9 editorial HP↔AF cross-references with scholarly commentary |
 
 Column names are discovered dynamically using `PRAGMA table_info` rather than hardcoded, because the `annotations` table schema differed from initial assumptions (see Bug Log item 9).
+
+Two further data files are authored outside that pipeline:
+
+| Output file | Source | Contents |
+|-------------|--------|----------|
+| `tours.json` | hand-authored | The four guided tours (stops, ledes, accents); the Two Books tour is generated at runtime from `world_links.json` |
+| `diorama.json` | `scripts/build_diorama.py` | Per-emblem, depth-ordered cutout-layer manifest cropped + web-optimized from a sibling computer-vision extraction of the emblems (143 layers across 51 emblems) |
 
 ### `world_links.json` Schema
 
