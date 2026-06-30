@@ -113,6 +113,9 @@ export class EmblemScene {
       default: this._buildWoodcutRelief(pal); break;
     }
 
+    // Showcase scenes get their source woodcut as a dim carved backdrop
+    if ([4, 5, 10, 33, 50].includes(this.data.number)) this._addReliefBackdrop(pal);
+
     // Update bloom strength
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = pal.bloom;
@@ -875,6 +878,47 @@ export class EmblemScene {
     this._tl = tl;
   }
 
+  // Load a plate and turn a material into a lit relief of it. Shared by the main
+  // relief (46 generic emblems) and the showcase backdrops.
+  _applyReliefTextures(mat, num, { depth = 0.11, normalStrength = 2.6, normalScale = 1.5, tint = 0xffffff } = {}) {
+    _emblemTexLoader.load(emblemImagePath(num), (tex) => {
+      const maxA = this.renderer.capabilities?.getMaxAnisotropy?.() || 4;
+      tex.colorSpace = THREE.SRGBColorSpace;
+      tex.anisotropy = maxA;
+      mat.map = tex;
+      mat.displacementMap  = tex;
+      mat.displacementScale = -depth;       // raise the dark ink off the paper
+      mat.displacementBias  =  depth * 0.92; // keep the paper plane near z=0
+      mat.color.set(tint);
+      try {
+        const nrm = buildNormalMap(tex.image, { width: 700, strength: normalStrength });
+        nrm.anisotropy = maxA;
+        mat.normalMap = nrm;
+        mat.normalScale.set(normalScale, normalScale);
+      } catch (e) { /* normal map is enhancement-only; relief still works */ }
+      mat.needsUpdate = true;
+    });
+  }
+
+  // A large, dim carved-relief of the emblem set far behind a showcase scene's
+  // animated figures — grounds the abstract action in its source woodcut so the
+  // hand-built scenes also read as 3-D renderings of the emblem.
+  _addReliefBackdrop(pal) {
+    const W = 8.6, H = 10.2;
+    const geo = new THREE.PlaneGeometry(W, H, 150, 178);
+    const mat = new THREE.MeshStandardMaterial({
+      color: 0x6a5f50, roughness: 0.9, metalness: 0.0, envMapIntensity: 0.22,
+    });
+    const bd = new THREE.Mesh(geo, mat);
+    bd.position.set(0, 1.6, -5.4);
+    this.scene.add(bd);
+    this._disposables.push(geo, mat);
+    // Dim warm tint so it recedes behind the foreground action
+    this._applyReliefTextures(mat, this.data.number, {
+      depth: 0.16, normalStrength: 2.0, normalScale: 1.0, tint: 0x9a8f80,
+    });
+  }
+
   // ── Woodcut relief (default for the 46 non-showcase emblems) ────────────────
   // The actual emblem plate carved into 3-D: the image drives a displacement map
   // and a Sobel-derived normal map, so the ink lines read as engraved relief
@@ -923,25 +967,7 @@ export class EmblemScene {
     this.scene.add(edge);
     this._disposables.push(edgeG, edgeMat);
 
-    // Load the plate, then derive displacement + normal from it
-    _emblemTexLoader.load(emblemImagePath(this.data.number), (tex) => {
-      const maxA = this.renderer.capabilities?.getMaxAnisotropy?.() || 4;
-      tex.colorSpace = THREE.SRGBColorSpace;
-      tex.anisotropy = maxA;
-      mat.map = tex;
-      mat.displacementMap   = tex;
-      mat.displacementScale  = -depth;      // raise the dark ink off the paper
-      mat.displacementBias   =  depth * 0.92; // keep the paper plane near z=0
-      mat.color.set(0xffffff);
-      try {
-        const nrm = buildNormalMap(tex.image, { width: 700, strength: 2.6 });
-        nrm.anisotropy = maxA;
-        mat.normalMap = nrm;
-        mat.normalScale.set(1.5, 1.5);
-        this._reliefNormal = nrm;
-      } catch (e) { /* normal map is enhancement-only; relief still works */ }
-      mat.needsUpdate = true;
-    });
+    this._applyReliefTextures(mat, this.data.number, { depth, normalStrength: 2.6, normalScale: 1.5 });
 
     // Gentle living sway + a slow kindling ground glow
     const tl = gsap.timeline({ repeat: -1, yoyo: true });
@@ -974,18 +1000,15 @@ export class EmblemScene {
     ].filter(Boolean));
     this._streams.forEach(s => s.dispose());
     this._streams = [];
-    // Relief textures aren't reached by the material traversal below
-    if (this._relief?.material) {
-      this._relief.material.map?.dispose();
-      this._relief.material.normalMap?.dispose();
-    }
     this._disposables.forEach(d => d?.dispose?.());
     this.scene.traverse(obj => {
       if (obj.geometry) obj.geometry.dispose();
-      if (obj.material) {
-        if (Array.isArray(obj.material)) obj.material.forEach(m => m.dispose());
-        else obj.material.dispose();
-      }
+      const mats = obj.material ? (Array.isArray(obj.material) ? obj.material : [obj.material]) : [];
+      mats.forEach(m => {
+        if (m.map) m.map.dispose();          // also covers displacementMap (same object)
+        if (m.normalMap) m.normalMap.dispose();
+        m.dispose();
+      });
     });
   }
 }
