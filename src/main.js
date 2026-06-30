@@ -19,6 +19,15 @@ const STAGE_COLORS = {
   RUBEDO:     '#ffd700',
 };
 
+// Relative path to the woodcut plate for an emblem (works on GitHub Pages
+// project sites where a leading "/" would resolve to the wrong root).
+function emblemImagePath(num) {
+  return `../images/emblems/emblem-${String(num).padStart(2, '0')}.jpg`;
+}
+
+// Shared texture loader for the 3D gallery wall.
+const textureLoader = new THREE.TextureLoader();
+
 // ─── State ────────────────────────────────────────────────────────────────────
 
 const state = {
@@ -207,6 +216,9 @@ function buildGallery() {
   }
 
   hideTextCard();
+  hidePlatesOverlay();
+  document.getElementById('annotation-panel').style.display = 'none';
+  if (state.annotationTimer) clearTimeout(state.annotationTimer);
   state.inGallery = true;
   hideHUD();
   setActiveWorldBtn('btn-af');
@@ -216,71 +228,68 @@ function buildGallery() {
   scene.fog = new THREE.FogExp2(0x060402, 0.04);
 
   const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 200);
-  camera.position.set(0, 8, 22);
+  camera.position.set(0, 0, 30);
   camera.lookAt(0, 0, 0);
 
-  const ambLight = new THREE.AmbientLight(0x180e06, 1.0);
-  scene.add(ambLight);
+  // Bright, even lighting. The plates themselves are UNLIT textured planes
+  // (always fully visible), but ambient + hemisphere keep the gold borders and
+  // any standard material readable.
+  scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+  scene.add(new THREE.HemisphereLight(0xffe8c8, 0x1a120a, 0.9));
 
-  const COLS    = 10;
-  const SPACING = 3.8;
+  const COLS      = 9;
+  const SPACING_X = 3.2;
+  const SPACING_Y = 4.0;
+  const ROWS      = Math.ceil(state.emblems.length / COLS);
   const SHOWCASE_SET = new Set(SHOWCASE);
 
+  // Dim stage tint shown until each woodcut texture finishes loading
   const STAGE_HEX = {
-    NIGREDO: 0x2a0800, ALBEDO: 0x0a1520, CITRINITAS: 0x1a1200, RUBEDO: 0x200000,
-  };
-  const SHOWCASE_HEX = {
-    NIGREDO: 0x5a1a00, ALBEDO: 0x1a3545, CITRINITAS: 0x3a2a00, RUBEDO: 0x4a0808,
-  };
-  const STAGE_EMISSIVE = {
-    NIGREDO: 0x4a1200, ALBEDO: 0x2a5068, CITRINITAS: 0x6a4a00, RUBEDO: 0x8a1400,
+    NIGREDO: 0x3a1408, ALBEDO: 0x14242e, CITRINITAS: 0x2a2008, RUBEDO: 0x300808,
   };
 
+  const CARD_W = 2.6, CARD_H = 3.2;
   const cards = [];
 
   state.emblems.forEach((emb, idx) => {
     const col = idx % COLS;
     const row = Math.floor(idx / COLS);
-    const x   = (col - (COLS - 1) / 2) * SPACING;
-    const y   = -(row - 2) * SPACING;
+    const x   = (col - (COLS - 1) / 2) * SPACING_X;
+    const y   = -(row - (ROWS - 1) / 2) * SPACING_Y;
 
     const isShowcase = SHOWCASE_SET.has(emb.number);
     const stage = emb.alchemical_stage || 'NIGREDO';
 
-    const sz  = isShowcase ? 3.0 : 2.2;
-    const geo = new THREE.BoxGeometry(sz, sz, 0.08);
-    const mat = new THREE.MeshStandardMaterial({
-      color: isShowcase ? SHOWCASE_HEX[stage] : STAGE_HEX[stage],
-      emissive: isShowcase ? STAGE_EMISSIVE[stage] : 0x000000,
-      emissiveIntensity: isShowcase ? 0.4 : 0.0,
-      roughness: 0.7, metalness: 0.2,
+    const geo = new THREE.PlaneGeometry(CARD_W, CARD_H);
+    const mat = new THREE.MeshBasicMaterial({
+      color: STAGE_HEX[stage] || 0x2a1810,
+      side: THREE.DoubleSide,
     });
+    // Load the woodcut plate; swap it in at full brightness once ready
+    textureLoader.load(emblemImagePath(emb.number), (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      mat.map = tex;
+      mat.color.set(0xffffff);
+      mat.needsUpdate = true;
+    });
+
     const card = new THREE.Mesh(geo, mat);
-    card.position.set(x, y, 0);
+    const baseScale = isShowcase ? 1.18 : 1.0;
+    card.scale.set(baseScale, baseScale, 1);
+    card.position.set(x, y, isShowcase ? 0.15 : 0);
     card.userData = { emblemNumber: emb.number, label: emb.label, isShowcase };
     scene.add(card);
-    cards.push({ card, geo, mat, isShowcase });
 
-    // Gold border for showcase emblems
+    let border = null;
     if (isShowcase) {
-      const edgesG = new THREE.EdgesGeometry(geo);
-      const edgesMat = new THREE.LineBasicMaterial({ color: 0xc8a040 });
-      const border = new THREE.LineSegments(edgesG, edgesMat);
+      const edgesG   = new THREE.EdgesGeometry(geo);
+      const edgesMat = new THREE.LineBasicMaterial({ color: 0xe0b850 });
+      border = new THREE.LineSegments(edgesG, edgesMat);
       border.position.copy(card.position);
+      border.scale.copy(card.scale);
       scene.add(border);
     }
-  });
-
-  // Add a point light per stage cluster
-  [
-    { pos: [-18, 4, 2], color: 0xff3300, intensity: 3 },  // NIGREDO cluster
-    { pos: [-5,  4, 2], color: 0xaaccff, intensity: 2 },  // ALBEDO
-    { pos: [ 8,  4, 2], color: 0xffcc00, intensity: 3 },  // CITRINITAS
-    { pos: [20,  4, 2], color: 0xff6600, intensity: 4 },  // RUBEDO
-  ].forEach(({ pos, color, intensity }) => {
-    const l = new THREE.PointLight(color, intensity, 18);
-    l.position.set(...pos);
-    scene.add(l);
+    cards.push({ card, geo, mat, isShowcase, border, baseScale });
   });
 
   // Tooltip label
@@ -326,8 +335,7 @@ function buildGallery() {
   };
 
   const onWheel = (e) => {
-    camera.position.z = Math.max(8, Math.min(45, camera.position.z + e.deltaY * 0.02));
-    camera.position.y = Math.max(0, Math.min(20, camera.position.y + e.deltaY * 0.01));
+    camera.position.z = Math.max(14, Math.min(50, camera.position.z + e.deltaY * 0.02));
   };
 
   canvas.addEventListener('mousemove', onMouseMove);
@@ -340,7 +348,7 @@ function buildGallery() {
     canvas.removeEventListener('wheel',     onWheel);
     if (tooltip) tooltip.style.opacity = '0';
     canvas.style.cursor = 'default';
-    cards.forEach(({ geo, mat }) => { geo.dispose(); mat.dispose(); });
+    cards.forEach(({ geo, mat }) => { if (mat.map) mat.map.dispose(); geo.dispose(); mat.dispose(); });
     scene.traverse(o => {
       if (o.geometry) o.geometry.dispose();
       if (o.material) o.material.dispose();
@@ -361,16 +369,109 @@ function buildGallery() {
     update: (dt) => {
       galleryT += dt;
       camera.position.y = baseY + Math.sin(galleryT * 0.2) * 0.5;
-      // Pulse showcase card emissive
-      cards.forEach(({ card, mat, isShowcase }) => {
+      // Gentle "breathing" pulse on the showcase plates
+      cards.forEach(({ card, border, isShowcase, baseScale }) => {
         if (isShowcase) {
-          mat.emissiveIntensity = 0.3 + Math.sin(galleryT * 1.5 + card.position.x) * 0.15;
+          const s = baseScale * (1 + Math.sin(galleryT * 1.4 + card.position.x) * 0.02);
+          card.scale.set(s, s, 1);
+          if (border) border.scale.set(s, s, 1);
         }
       });
     },
     dispose: cleanup,
   };
+
+  showHint('Scroll to zoom · click a plate to enter its world · ✦ = built scene · Plates tab = full atlas');
 }
+
+// ─── Plates atlas (2-D image-card tab + lightbox) ─────────────────────────────
+
+let _platesBuilt = false;
+
+function buildPlatesGrid() {
+  if (_platesBuilt) return;
+  const grid = document.getElementById('plates-grid');
+  if (!grid) return;
+  const SHOWCASE_SET = new Set(SHOWCASE);
+  grid.innerHTML = state.emblems.map(emb => {
+    const showcase = SHOWCASE_SET.has(emb.number);
+    const numeral  = emb.roman_numeral || (emb.number === 0 ? '—' : emb.number);
+    const title    = (emb.label || '').replace(/"/g, '&quot;');
+    return `
+      <button class="plate-card${showcase ? ' showcase' : ''}" onclick="window.openPlate(${emb.number})" title="${title}">
+        ${showcase ? '<span class="pc-star">✦</span>' : ''}
+        <img loading="lazy" src="${emblemImagePath(emb.number)}" alt="Emblem ${numeral}"/>
+        <span class="pc-meta"><span class="pc-num">${numeral}</span><span class="pc-title">${title}</span></span>
+      </button>`;
+  }).join('');
+  _platesBuilt = true;
+}
+
+function showPlatesOverlay() {
+  buildPlatesGrid();
+  hideHUD();
+  hideTextCard();
+  document.getElementById('annotation-panel').style.display = 'none';
+  setActiveWorldBtn('btn-plates');
+  state.inGallery = false;
+  const el = document.getElementById('plates-overlay');
+  if (el) { el.style.display = 'block'; el.scrollTop = 0; }
+  showHint('Click a plate to read it · ← → to flip through · Esc to close');
+}
+
+function hidePlatesOverlay() {
+  const el = document.getElementById('plates-overlay');
+  if (el) el.style.display = 'none';
+  closePlate();
+}
+
+function openPlate(num) {
+  const emb = state.emblems.find(e => e.number === num);
+  if (!emb) return;
+  state._plateNum = num;
+  const stage   = emb.alchemical_stage || 'NIGREDO';
+  const col     = STAGE_COLORS[stage] || '#8b4513';
+  const numeral = emb.roman_numeral || (emb.number === 0 ? '—' : emb.number);
+  const img = document.getElementById('lb-img');
+  img.src = emblemImagePath(num);
+  img.alt = emb.label || ('Emblem ' + numeral);
+  const epigram = (emb.epigram_english || '').trim();
+  document.getElementById('lb-text').innerHTML = `
+    <div class="lb-badge" style="color:${col};border-color:${col}">${stage}</div>
+    <div class="lb-num" style="color:${col}">${numeral}</div>
+    <div class="lb-title">${emb.label || ''}</div>
+    ${emb.motto_latin   ? `<div class="lb-motto-la">${emb.motto_latin}</div>` : ''}
+    ${emb.motto_english ? `<div class="lb-motto-en">&ldquo;${emb.motto_english}&rdquo;</div>` : ''}
+    ${epigram ? `<div class="lb-epigram">${epigram}</div>` : ''}
+    <div class="lb-actions">
+      <button onclick="window.platePrev()">&larr; Prev</button>
+      <button onclick="window.enterPlate3D()">Enter 3-D World &#9656;</button>
+      <button onclick="window.plateNext()">Next &rarr;</button>
+    </div>`;
+  document.getElementById('plate-lightbox').style.display = 'flex';
+}
+
+function closePlate() {
+  const el = document.getElementById('plate-lightbox');
+  if (el) el.style.display = 'none';
+}
+
+function plateStep(dir) {
+  const nums = state.emblems.map(e => e.number);
+  const i = nums.indexOf(state._plateNum);
+  if (i < 0) return;
+  openPlate(nums[(i + dir + nums.length) % nums.length]);
+}
+
+window.openPlate    = openPlate;
+window.closePlate   = closePlate;
+window.platePrev    = () => plateStep(-1);
+window.plateNext    = () => plateStep(1);
+window.enterPlate3D = () => {
+  const num = state._plateNum;
+  hidePlatesOverlay();
+  fadeSwitch(() => launchEmblemScene(num));
+};
 
 // ─── Navigation helpers ───────────────────────────────────────────────────────
 
@@ -392,8 +493,10 @@ function setActiveWorldBtn(id) {
 
 window.switchWorld = function (world) {
   state.world = world;
+  if (world !== 'PLATES') hidePlatesOverlay();
   fadeSwitch(() => {
-    if (world === 'AF')        buildGallery();
+    if (world === 'PLATES')    showPlatesOverlay();
+    else if (world === 'AF')   buildGallery();
     else if (world === 'HP')   launchHPScene();
     else                       launchArchivesScene();
   });
@@ -565,6 +668,20 @@ function showMessage(title, msg) {
 // ─── Keyboard navigation ──────────────────────────────────────────────────────
 
 window.addEventListener('keydown', (e) => {
+  // Plates atlas captures keys while open
+  const platesOpen = document.getElementById('plates-overlay')?.style.display === 'block';
+  if (platesOpen) {
+    const lbOpen = document.getElementById('plate-lightbox')?.style.display === 'flex';
+    if (lbOpen) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); plateStep(1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); plateStep(-1); }
+      if (e.key === 'Escape')     closePlate();
+    } else if (e.key === 'Escape' || e.key === 'g' || e.key === 'G') {
+      window.switchWorld('AF');
+    }
+    return;
+  }
+
   if (!state.inGallery) {
     if (e.key === 'ArrowRight' || e.key === 'ArrowUp')    showcaseStep(1);
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowDown')  showcaseStep(-1);

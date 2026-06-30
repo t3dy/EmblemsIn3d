@@ -8,15 +8,20 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { background: #0a0804; overflow: hidden; font-family: 'Georgia', serif; color: #f5f0e8; }
 
-    /* PixiJS woodcut canvas — sits BEHIND Three.js */
+    /* PixiJS woodcut canvas — sits BEHIND Three.js.
+       Explicit 100vw/100vh: a <canvas> is a replaced element, so position:fixed
+       + inset:0 alone leaves it at its intrinsic 300x150 and the renderer sizes
+       the whole scene into that tiny box. */
     #woodcut-canvas {
       position: fixed; inset: 0; z-index: 0;
+      width: 100vw; height: 100vh; display: block;
       pointer-events: none;
     }
 
     /* Three.js canvas */
     #three-canvas {
       position: fixed; inset: 0; z-index: 1;
+      width: 100vw; height: 100vh; display: block;
     }
 
     /* UI overlay */
@@ -148,6 +153,94 @@
       font-size: 0.62rem; color: #4a3828; letter-spacing: 0.1em; margin-top: 0.4rem;
     }
 
+    /* ── Plates atlas overlay ─────────────────────────────────────── */
+    #plates-overlay {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(6,4,2,0.97);
+      overflow-y: auto; pointer-events: all;
+      padding: 4.6rem 1.5rem 3rem;
+    }
+    #plates-overlay .plates-head { text-align: center; margin-bottom: 1.6rem; }
+    #plates-overlay .plates-head h2 {
+      font-size: 1.3rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878;
+    }
+    #plates-overlay .plates-head p {
+      font-size: 0.74rem; color: #6b5d4d; letter-spacing: 0.05em; margin-top: 0.45rem;
+    }
+    #plates-grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      max-width: 1180px; margin: 0 auto;
+    }
+    .plate-card {
+      position: relative; cursor: pointer; overflow: hidden;
+      border: 1px solid #2a1a0a; background: #100b06;
+      padding: 0; font-family: inherit; color: inherit; text-align: left;
+      transition: border-color 0.18s, transform 0.18s;
+      display: flex; flex-direction: column;
+    }
+    .plate-card:hover { border-color: #c8a040; transform: translateY(-3px); }
+    .plate-card.showcase { border-color: #6a4a18; }
+    .plate-card img {
+      width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; background: #1a1209;
+    }
+    .plate-card .pc-meta {
+      padding: 0.4rem 0.55rem; display: flex; align-items: baseline; gap: 0.45rem;
+    }
+    .plate-card .pc-num   { font-size: 0.72rem; color: #c8a040; flex-shrink: 0; }
+    .plate-card .pc-title {
+      font-size: 0.66rem; color: #9a8a74; line-height: 1.3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .plate-card .pc-star {
+      position: absolute; top: 0.35rem; right: 0.45rem; font-size: 0.72rem; color: #e0b850;
+    }
+
+    /* Lightbox */
+    #plate-lightbox {
+      display: none; position: fixed; inset: 0; z-index: 45;
+      background: rgba(3,2,1,0.94); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; padding: 2rem; pointer-events: all;
+    }
+    #plate-lightbox .lb-inner {
+      display: flex; gap: 2rem; max-width: 1000px; width: 100%; max-height: 88vh;
+    }
+    #plate-lightbox .lb-img-wrap { flex: 0 0 auto; max-width: 52%; display: flex; align-items: center; }
+    #plate-lightbox .lb-img-wrap img {
+      max-width: 100%; max-height: 84vh; object-fit: contain; border: 1px solid #4a2a10;
+    }
+    #plate-lightbox .lb-text {
+      flex: 1 1 auto; overflow-y: auto; padding-right: 0.5rem;
+      display: flex; flex-direction: column; gap: 0.7rem;
+    }
+    #plate-lightbox .lb-badge {
+      font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.18rem 0.55rem; border: 1px solid; width: fit-content;
+    }
+    #plate-lightbox .lb-num   { font-size: 2.6rem; font-weight: 100; line-height: 1; }
+    #plate-lightbox .lb-title { font-size: 1.3rem; color: #f0e8d8; }
+    #plate-lightbox .lb-motto-la { font-style: italic; color: #c8a878; font-size: 0.92rem; line-height: 1.5; }
+    #plate-lightbox .lb-motto-en { color: #9a8a74; font-size: 0.86rem; line-height: 1.5; }
+    #plate-lightbox .lb-epigram  { color: #7a6858; font-size: 0.8rem; line-height: 1.7; white-space: pre-line; }
+    #plate-lightbox .lb-actions  { display: flex; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap; }
+    #plate-lightbox .lb-actions button {
+      background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
+      font-family: inherit; font-size: 0.78rem; padding: 0.4rem 0.9rem; cursor: pointer;
+      letter-spacing: 0.04em; transition: border-color 0.18s, color 0.18s;
+    }
+    #plate-lightbox .lb-actions button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #plate-lightbox .lb-close {
+      position: absolute; top: 1rem; right: 1.3rem;
+      background: none; border: none; color: #8b6a3a; font-size: 1.7rem; cursor: pointer;
+    }
+    #plate-lightbox .lb-close:hover { color: #f5f0e8; }
+    @media (max-width: 720px) {
+      #plate-lightbox { padding: 1rem; }
+      #plate-lightbox .lb-inner { flex-direction: column; overflow-y: auto; }
+      #plate-lightbox .lb-img-wrap { max-width: 100%; justify-content: center; }
+      #plate-lightbox .lb-img-wrap img { max-height: 46vh; }
+    }
+
     /* Loading screen */
     #loading {
       position: fixed; inset: 0; z-index: 100;
@@ -181,6 +274,7 @@
     <div id="world-nav">
       <button id="btn-hp" onclick="window.switchWorld('HP')">Hypnerotomachia</button>
       <button id="btn-af" class="active" onclick="window.switchWorld('AF')">Atalanta Animata</button>
+      <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
       <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
     </div>
 
@@ -194,6 +288,22 @@
   <div id="gallery-tooltip"></div>
   <div id="center-message"><h2></h2><p></p></div>
   <div id="text-card"></div>
+
+  <!-- Plates atlas: every emblem image as a clickable card -->
+  <div id="plates-overlay">
+    <div class="plates-head">
+      <h2>The Plates &mdash; Atalanta Fugiens</h2>
+      <p>Frontispiece &amp; fifty emblems · click any plate to enlarge it, read its motto and epigram, or enter its 3-D world · ✦ marks a fully-built scene</p>
+    </div>
+    <div id="plates-grid"></div>
+  </div>
+  <div id="plate-lightbox">
+    <button class="lb-close" onclick="window.closePlate()" title="Close (Esc)">&times;</button>
+    <div class="lb-inner">
+      <div class="lb-img-wrap"><img id="lb-img" src="" alt=""/></div>
+      <div class="lb-text" id="lb-text"></div>
+    </div>
+  </div>
 
   <!-- Fade-to-black overlay for world transitions -->
   <div id="fade-overlay" style="
@@ -227,6 +337,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=9"></script>
+  <script type="module" src="./main.js?v=10"></script>
 </body>
 </html>
