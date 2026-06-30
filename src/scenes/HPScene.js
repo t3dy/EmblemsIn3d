@@ -20,9 +20,10 @@ const PAL = {
 };
 
 export class HPScene {
-  constructor(renderer, composer) {
+  constructor(renderer, composer, sceneKey = 'fountain') {
     this.renderer  = renderer;
     this.composer  = composer;
+    this.sceneKey  = sceneKey;
     this.scene     = new THREE.Scene();
     this.camera    = new THREE.PerspectiveCamera(
       50, window.innerWidth / window.innerHeight, 0.1, 100
@@ -31,6 +32,7 @@ export class HPScene {
     this._streams  = [];
     this._t        = 0;
     this._disp     = [];
+    this._orbs     = null;
     this._controls = null;
   }
 
@@ -38,27 +40,39 @@ export class HPScene {
     this.scene.background = new THREE.Color(PAL.bg);
     this.scene.fog = new THREE.FogExp2(PAL.bg, 0.055);
 
-    this.camera.position.set(0, 3.5, 12);
-    this.camera.lookAt(0, 1.5, 0);
+    const palace = this.sceneKey === 'planetary_palace';
+    if (palace) {
+      this.camera.position.set(0, 2.2, 13);
+      this._camTarget = new THREE.Vector3(0, 1.1, 0);
+    } else {
+      this.camera.position.set(0, 3.5, 12);
+      this._camTarget = new THREE.Vector3(0, 1.4, 0);
+    }
+    this.camera.lookAt(this._camTarget);
 
-    // Orbit the fountain — drag to look around the garden room
+    // Orbit — drag to look around the room
     this._controls = new OrbitControls(this.camera, this.renderer.domElement);
     this._controls.enableDamping = true;
     this._controls.dampingFactor = 0.08;
     this._controls.enablePan     = false;
     this._controls.minDistance   = 5;
     this._controls.maxDistance   = 22;
-    this._controls.maxPolarAngle = Math.PI * 0.495; // stay above the garden floor
-    this._controls.target.set(0, 1.4, 0);
+    this._controls.maxPolarAngle = Math.PI * 0.495; // stay above the floor
+    this._controls.target.copy(this._camTarget);
     this._controls.update();
 
     this._setupLighting();
     this._buildGround();
-    this._buildFountain();
-    this._buildGarden();
-    this._buildVenus();
-    this._buildWaterParticles();
-    this._buildTimeline();
+
+    if (palace) {
+      this._buildPlanetaryPalace();
+    } else {
+      this._buildFountain();
+      this._buildGarden();
+      this._buildVenus();
+      this._buildWaterParticles();
+      this._buildTimeline();
+    }
 
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = PAL.bloom;
@@ -298,10 +312,106 @@ export class HPScene {
     this._tl = tl;
   }
 
+  // ── Planetary Palace (Folio 88) ─────────────────────────────────────────────
+  // The seven planetary metals on pedestals, Saturn's lead → Sol's gold → Luna's
+  // silver, in the Chaldean order so the Sun sits at the centre. A colonnade
+  // flanks the hall. Each station carries an engraved plaque with its glyph.
+  _PALACE_METALS() {
+    return [
+      { name: 'Saturn',  metal: 'Lead',        glyph: '♄', color: 0x55555e, emissive: 0x111114, metalness: 0.5, rough: 0.6 },
+      { name: 'Jupiter', metal: 'Tin',         glyph: '♃', color: 0x9aa0a8, emissive: 0x1a1c20, metalness: 0.7, rough: 0.4 },
+      { name: 'Mars',    metal: 'Iron',        glyph: '♂', color: 0x9a3a28, emissive: 0x3a0a04, metalness: 0.6, rough: 0.5 },
+      { name: 'Sol',     metal: 'Gold',        glyph: '☉', color: 0xffd24a, emissive: 0x6a4a00, metalness: 1.0, rough: 0.15 },
+      { name: 'Venus',   metal: 'Copper',      glyph: '♀', color: 0xc06a3a, emissive: 0x2a1004, metalness: 0.8, rough: 0.35 },
+      { name: 'Mercury', metal: 'Quicksilver', glyph: '☿', color: 0xc8d2da, emissive: 0x202428, metalness: 1.0, rough: 0.10 },
+      { name: 'Luna',    metal: 'Silver',      glyph: '☽', color: 0xe2e2ea, emissive: 0x222228, metalness: 0.95, rough: 0.2 },
+    ];
+  }
+
+  _makePlaqueTexture(m) {
+    const c = document.createElement('canvas');
+    c.width = 256; c.height = 132;
+    const x = c.getContext('2d');
+    x.fillStyle = 'rgba(12,9,5,0.9)'; x.fillRect(0, 0, 256, 132);
+    x.strokeStyle = '#6a5a3a'; x.lineWidth = 3; x.strokeRect(4, 4, 248, 124);
+    x.textAlign = 'center';
+    const col = '#' + m.color.toString(16).padStart(6, '0');
+    x.fillStyle = col; x.font = '58px serif';      x.fillText(m.glyph, 128, 58);
+    x.fillStyle = '#ecdfc4'; x.font = '24px Georgia'; x.fillText(m.metal, 128, 94);
+    x.fillStyle = '#9a875f'; x.font = '15px Georgia'; x.fillText(m.name.toUpperCase(), 128, 117);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+
+  _buildPlanetaryPalace() {
+    const METALS = this._PALACE_METALS();
+    const N = METALS.length, SPAN = 13;
+    this._orbs = [];
+
+    // Colonnade flanking the hall
+    const colMat = new THREE.MeshStandardMaterial({ color: PAL.stone, roughness: 0.82, metalness: 0.05 });
+    this._disp.push(colMat);
+    for (const side of [-1, 1]) {
+      for (let i = 0; i < 5; i++) {
+        const cg  = new THREE.CylinderGeometry(0.26, 0.32, 5.2, 14);
+        const col = new THREE.Mesh(cg, colMat);
+        col.position.set(side * 5.0, 1.1, -4 + i * 2.3);
+        this.scene.add(col);
+        const capg = new THREE.BoxGeometry(0.85, 0.32, 0.85);
+        const cap  = new THREE.Mesh(capg, colMat);
+        cap.position.set(side * 5.0, 3.75, -4 + i * 2.3);
+        this.scene.add(cap);
+        this._disp.push(cg, capg);
+      }
+    }
+
+    // Seven planetary stations
+    const pedMat = new THREE.MeshStandardMaterial({ color: PAL.stone, roughness: 0.85 });
+    this._disp.push(pedMat);
+    METALS.forEach((m, i) => {
+      const px = (i - (N - 1) / 2) * (SPAN / (N - 1));
+
+      const pg  = new THREE.CylinderGeometry(0.34, 0.46, 1.3, 16);
+      const ped = new THREE.Mesh(pg, pedMat);
+      ped.position.set(px, -0.85, 0);
+      this.scene.add(ped); this._disp.push(pg);
+
+      const og  = new THREE.SphereGeometry(0.42, 28, 20);
+      const om  = new THREE.MeshStandardMaterial({
+        color: m.color, emissive: m.emissive, emissiveIntensity: 0.55,
+        metalness: m.metalness, roughness: m.rough,
+      });
+      const orb = new THREE.Mesh(og, om);
+      orb.position.set(px, 0.6, 0);
+      this.scene.add(orb); this._disp.push(og, om);
+
+      const pl = new THREE.PointLight(m.color, 0.7, 3.6);
+      pl.position.set(px, 0.6, 0.4);
+      this.scene.add(pl);
+
+      const plqT = this._makePlaqueTexture(m);
+      const plqG = new THREE.PlaneGeometry(1.15, 0.6);
+      const plqM = new THREE.MeshBasicMaterial({ map: plqT, transparent: true });
+      const plq  = new THREE.Mesh(plqG, plqM);
+      plq.position.set(px, -0.25, 0.52);
+      this.scene.add(plq); this._disp.push(plqG, plqM, plqT);
+
+      this._orbs.push({ orb, pl, base: 0.6, phase: i * 0.7 });
+    });
+  }
+
   update(dt) {
     this._t += dt;
     if (this._controls) this._controls.update();
     this._streams.forEach(s => s.update(this._t));
+    if (this._orbs) {
+      for (const { orb, pl, base, phase } of this._orbs) {
+        orb.position.y = base + Math.sin(this._t * 1.2 + phase) * 0.12;
+        orb.rotation.y += dt * 0.5;
+        pl.intensity = 0.55 + Math.sin(this._t * 1.5 + phase) * 0.3;
+      }
+    }
   }
 
   dispose() {

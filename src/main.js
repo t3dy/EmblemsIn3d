@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPScene } from './scenes/HPScene.js?v=6';
+import { HPScene } from './scenes/HPScene.js?v=7';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -702,7 +702,23 @@ window.backToGallery = function () { buildGallery(); };
 
 // ─── HP World ─────────────────────────────────────────────────────────────────
 
-async function launchHPScene() {
+// The built HP rooms (more hp_scenes exist in world_links but aren't modelled yet)
+const HP_ROOMS = [
+  { key: 'fountain',         name: 'Fountain of Venus',   folio: 80, emblem: 1,
+    hint: 'Drag to orbit the fountain · ← → other HP rooms · ← Atalanta to return' },
+  { key: 'planetary_palace', name: 'The Planetary Palace', folio: 88, emblem: 17,
+    hint: 'The seven metals, Saturn to Sol · drag to orbit · ← → other HP rooms' },
+];
+let _hpRoomIdx = 0;
+function hpRoomIdxForFolio(folio) {
+  const i = HP_ROOMS.findIndex(r => r.folio === folio);
+  return i >= 0 ? i : 0;
+}
+
+async function launchHPScene(roomIdx = _hpRoomIdx) {
+  _hpRoomIdx = ((roomIdx % HP_ROOMS.length) + HP_ROOMS.length) % HP_ROOMS.length;
+  const room = HP_ROOMS[_hpRoomIdx];
+
   if (state.activeScene) { state.activeScene.dispose(); state.activeScene = null; }
   state.inGallery = false;
   state.currentEmblem = null;
@@ -710,19 +726,21 @@ async function launchHPScene() {
   hideHUD();
   hideTextCard();
 
-  const scene = new HPScene(renderer, composer);
+  const scene = new HPScene(renderer, composer, room.key);
   await scene.build();
   composer.passes[0] = new RenderPass(scene.scene, scene.camera);
   state.activeScene = scene;
 
   AlchemicalAudio.setStage('ALBEDO');
-  state.currentAnnotations = findLinkedAnnotations(1); // Emblem I → folio 80
+  state.currentAnnotations = findLinkedAnnotations(room.emblem);
   scheduleAnnotation();
 
-  const link = state.worldLinks?.find(l => l.hp_scene === 'fountain');
-  showHPHUD('Fountain of Venus', link?.hp_folio ?? 80, link?.af_emblems ?? []);
-  showHint('Drag to orbit the fountain · scroll to zoom · ← Atalanta to return');
+  const link = state.worldLinks?.find(l => l.hp_folio === room.folio);
+  showHPHUD(room.name, room.folio, link?.af_emblems ?? []);
+  showHint(room.hint);
 }
+window.hpRoomNext = () => fadeSwitch(() => launchHPScene(_hpRoomIdx + 1));
+window.hpRoomPrev = () => fadeSwitch(() => launchHPScene(_hpRoomIdx - 1));
 
 // ─── Archives world ───────────────────────────────────────────────────────────
 
@@ -736,7 +754,7 @@ async function launchArchivesScene() {
   const scene = new ArchivesScene(
     state.worldLinks,
     state.emblems,
-    (folio) => fadeSwitch(() => launchHPScene()),    // HP node click
+    (folio) => fadeSwitch(() => launchHPScene(hpRoomIdxForFolio(folio))),    // HP node click → room for that folio
     (num)   => fadeSwitch(() => launchEmblemScene(num)), // AF node click
     renderer,
     composer,
@@ -895,8 +913,14 @@ window.addEventListener('keydown', (e) => {
   }
 
   if (!state.inGallery) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowUp')    showcaseStep(1);
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowDown')  showcaseStep(-1);
+    if (state.world === 'HP') {
+      // In the Hypnerotomachia world, arrows move between the built HP rooms
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown')     window.hpRoomNext();
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')   window.hpRoomPrev();
+    } else {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowUp')    showcaseStep(1);
+      if (e.key === 'ArrowLeft'  || e.key === 'ArrowDown')  showcaseStep(-1);
+    }
     if (e.key === 'a' || e.key === 'A') showAnnotation();
   }
   if (e.key === 'Escape' || e.key === 'g' || e.key === 'G') buildGallery();
