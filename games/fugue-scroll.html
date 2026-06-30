@@ -198,6 +198,19 @@
       line-height: 1.75;
     }
 
+    /* Scholarship reveal — connects the scroll to the research */
+    .scholar-toggle {
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; font-size: 0.72rem; letter-spacing: 0.08em;
+      opacity: 0.85; transition: opacity 0.2s; padding: 0.3rem 0; margin-top: 0.5rem;
+    }
+    .scholar-toggle:hover { opacity: 1; }
+    .scholarship {
+      display: none; font-size: 0.78rem; line-height: 1.75; color: #9a8a74;
+      max-width: 600px; margin: 0.6rem auto 0; text-align: left;
+    }
+    .scholarship.open { display: block; }
+
     /* Frontispiece (emblem 0) — slightly different treatment */
     .emblem-section.frontispiece .emblem-title {
       font-size: 1.1rem;
@@ -436,6 +449,24 @@
         }
         ep.textContent = text;
         inner.appendChild(ep);
+      }
+
+      // Scholarship — collapsible, connects the scroll to the research
+      if (emb.discourse_summary) {
+        const tog = document.createElement('button');
+        tog.className = 'scholar-toggle';
+        tog.type = 'button';
+        tog.style.color = conf.colour;
+        tog.textContent = '✦ what the scholars say';
+        const sch = document.createElement('p');
+        sch.className = 'scholarship';
+        sch.textContent = emb.discourse_summary;
+        tog.addEventListener('click', () => {
+          const open = sch.classList.toggle('open');
+          tog.textContent = open ? '✦ hide the scholarship' : '✦ what the scholars say';
+        });
+        inner.appendChild(tog);
+        inner.appendChild(sch);
       }
 
       section.appendChild(inner);
