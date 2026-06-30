@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { EmblemScene } from './scenes/EmblemScene.js?v=7';
+import { EmblemScene } from './scenes/EmblemScene.js?v=8';
 import { HPScene } from './scenes/HPScene.js?v=6';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
@@ -44,6 +44,7 @@ const state = {
   tours: null,
   tour: null,
   tourStop: 0,
+  diorama: null,
 };
 
 // ─── Renderer ─────────────────────────────────────────────────────────────────
@@ -98,18 +99,20 @@ function setProgress(pct, text) {
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
   const V = '6'; // bump when data files are re-exported
-  const [er, sr, ar, wr, tr] = await Promise.all([
+  const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
     fetch(`./data/hp_annotations.json?v=${V}`),
     fetch(`./data/world_links.json?v=${V}`),
     fetch(`./data/tours.json?v=${V}`),
+    fetch(`./data/diorama.json?v=${V}`).catch(() => null),
   ]);
   state.emblems     = await er.json();
   state.symbols     = await sr.json();
   state.annotations = await ar.json();
   state.worldLinks  = await wr.json();
   state.tours       = await tr.json();
+  state.diorama     = dr && dr.ok ? await dr.json() : [];
   setProgress(50, 'Preparing scenes…');
 }
 
@@ -186,7 +189,8 @@ async function launchEmblemScene(emblemNumber) {
   state.currentEmblem = emblemData;
   state.inGallery = false;
 
-  const scene = new EmblemScene(emblemData, renderer, composer);
+  const dioramaLayers = state.diorama?.find(d => d.number === emblemNumber)?.layers || null;
+  const scene = new EmblemScene(emblemData, renderer, composer, dioramaLayers);
   await scene.build();
 
   // Wire composer to this scene

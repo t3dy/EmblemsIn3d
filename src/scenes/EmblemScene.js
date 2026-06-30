@@ -71,10 +71,11 @@ function bodyMat(color, opts = {}) {
 }
 
 export class EmblemScene {
-  constructor(data, renderer, composer) {
+  constructor(data, renderer, composer, dioramaLayers = null) {
     this.data     = data;
     this.renderer = renderer;
     this.composer = composer;
+    this.dioramaLayers = dioramaLayers;
     this.scene    = new THREE.Scene();
     this.camera   = new THREE.PerspectiveCamera(
       45, window.innerWidth / window.innerHeight, 0.1, 100
@@ -900,6 +901,40 @@ export class EmblemScene {
     });
   }
 
+  // ── 2.5-D diorama ───────────────────────────────────────────────────────────
+  // Float each extracted figure cutout (from images/cutouts via diorama.json) as
+  // a billboard in front of the relief plate, at its source position and an
+  // inferred depth — so the figures lift off the page and parallax when orbited.
+  // Parented to the relief so they sway with it. No-op for sparse emblems.
+  _buildDioramaLayers(W, H, relief) {
+    const layers = this.dioramaLayers;
+    if (!Array.isArray(layers) || layers.length < 2) return;
+    const maxA = this.renderer.capabilities?.getMaxAnisotropy?.() || 4;
+    layers.forEach((L) => {
+      const w = Math.max(0.05, L.nw * W);
+      const h = Math.max(0.05, L.nh * H);
+      const geo = new THREE.PlaneGeometry(w, h);
+      const mat = new THREE.MeshStandardMaterial({
+        alphaTest: 0.5, side: THREE.DoubleSide,
+        roughness: 0.85, metalness: 0.0, envMapIntensity: 0.5,
+      });
+      mat.visible = false; // reveal once the cutout texture loads
+      const m = new THREE.Mesh(geo, mat);
+      // relative to the relief plate (which sits at y=0.7): centre on the source
+      // position, lifted forward by depth (back layers ~flush, front ~0.75 out)
+      m.position.set((L.cx - 0.5) * W, (0.5 - L.cy) * H, 0.05 + L.depth * 0.7);
+      relief.add(m);
+      this._disposables.push(geo, mat);
+      _emblemTexLoader.load(`../images/cutouts/${L.file}`, (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        tex.anisotropy = maxA;
+        mat.map = tex;
+        mat.visible = true;
+        mat.needsUpdate = true;
+      });
+    });
+  }
+
   // A large, dim carved-relief of the emblem set far behind a showcase scene's
   // animated figures — grounds the abstract action in its source woodcut so the
   // hand-built scenes also read as 3-D renderings of the emblem.
@@ -967,7 +1002,23 @@ export class EmblemScene {
     this.scene.add(edge);
     this._disposables.push(edgeG, edgeMat);
 
-    this._applyReliefTextures(mat, this.data.number, { depth, normalStrength: 2.6, normalScale: 1.5 });
+    // Soft contact shadow grounding the plate on the floor
+    const shG = new THREE.CircleGeometry(2.45, 40);
+    const shMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.42, depthWrite: false });
+    const shadow = new THREE.Mesh(shG, shMat);
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.set(0, -1.48, 0.35);
+    shadow.scale.set(1, 0.5, 1);
+    this.scene.add(shadow);
+    this._disposables.push(shG, shMat);
+
+    // Warm parchment tint + crisper carving so it reads as an aged engraved plate
+    this._applyReliefTextures(mat, this.data.number, {
+      depth, normalStrength: 2.9, normalScale: 1.7, tint: 0xf0e6cf,
+    });
+
+    // Float the figure cutouts in front of the plate (2.5-D diorama parallax)
+    this._buildDioramaLayers(W, H, relief);
 
     // Gentle living sway + a slow kindling ground glow
     const tl = gsap.timeline({ repeat: -1, yoyo: true });
