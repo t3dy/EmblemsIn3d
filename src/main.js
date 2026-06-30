@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { EmblemScene } from './scenes/EmblemScene.js?v=8';
+import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
 import { HPScene } from './scenes/HPScene.js?v=6';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
@@ -245,11 +245,16 @@ function buildGallery() {
   camera.position.set(0, 0, 30);
   camera.lookAt(0, 0, 0);
 
-  // Bright, even lighting. The plates themselves are UNLIT textured planes
-  // (always fully visible), but ambient + hemisphere keep the gold borders and
-  // any standard material readable.
-  scene.add(new THREE.AmbientLight(0xffffff, 1.5));
-  scene.add(new THREE.HemisphereLight(0xffe8c8, 0x1a120a, 0.9));
+  // The plates are lit carved reliefs, kept bright by an emissive floor (so they
+  // can't darken below the old unlit look) plus a raking key for dimensional
+  // shading, hemisphere fill, and image-based light for a soft sheen.
+  scene.environment = getEnvMap(renderer);
+  scene.environmentIntensity = 0.35;
+  scene.add(new THREE.AmbientLight(0xffffff, 0.4));
+  scene.add(new THREE.HemisphereLight(0xffe8c8, 0x1a120a, 0.8));
+  const galleryKey = new THREE.DirectionalLight(0xfff2dc, 1.6);
+  galleryKey.position.set(-6, 8, 10);
+  scene.add(galleryKey);
 
   const COLS      = 9;
   const SPACING_X = 3.2;
@@ -275,22 +280,37 @@ function buildGallery() {
     const stage = emb.alchemical_stage || 'NIGREDO';
 
     const geo = new THREE.PlaneGeometry(CARD_W, CARD_H);
-    const mat = new THREE.MeshBasicMaterial({
+    const mat = new THREE.MeshStandardMaterial({
       color: STAGE_HEX[stage] || 0x2a1810,
+      roughness: 0.85, metalness: 0.0, envMapIntensity: 0.3,
       side: THREE.DoubleSide,
     });
-    // Load the woodcut plate; swap it in at full brightness once ready
+    // Load the woodcut; use it as colour AND emissive so the plate keeps the old
+    // unlit brightness as a floor while the key light adds carved dimensional shading.
     textureLoader.load(emblemImagePath(emb.number), (tex) => {
       tex.colorSpace = THREE.SRGBColorSpace;
       mat.map = tex;
+      mat.emissiveMap = tex;
+      mat.emissive.set(0xffffff);
+      mat.emissiveIntensity = 0.7;
       mat.color.set(0xffffff);
       mat.needsUpdate = true;
     });
 
-    const card = new THREE.Mesh(geo, mat);
+    const zc = isShowcase ? 0.15 : 0;
     const baseScale = isShowcase ? 1.18 : 1.0;
+
+    // Backing plaque for carved-edge depth when the gallery camera drifts
+    const backGeo = new THREE.BoxGeometry(CARD_W + 0.12, CARD_H + 0.12, 0.14);
+    const backMat = new THREE.MeshStandardMaterial({ color: 0x1a1008, roughness: 0.9, metalness: 0.1, envMapIntensity: 0.25 });
+    const back = new THREE.Mesh(backGeo, backMat);
+    back.position.set(x, y, zc - 0.09);
+    back.scale.set(baseScale, baseScale, 1);
+    scene.add(back);
+
+    const card = new THREE.Mesh(geo, mat);
     card.scale.set(baseScale, baseScale, 1);
-    card.position.set(x, y, isShowcase ? 0.15 : 0);
+    card.position.set(x, y, zc);
     card.userData = { emblemNumber: emb.number, label: emb.label, isShowcase };
     scene.add(card);
 

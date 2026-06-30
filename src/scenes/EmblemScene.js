@@ -9,7 +9,7 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 // every MeshStandardMaterial. Generated once from RoomEnvironment (no HDRI file
 // needed) and shared across all scenes for the app's lifetime.
 let _sharedEnv = null;
-function getEnvMap(renderer) {
+export function getEnvMap(renderer) {
   if (_sharedEnv) return _sharedEnv;
   const pmrem = new THREE.PMREMGenerator(renderer);
   _sharedEnv = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
