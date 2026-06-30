@@ -6,3 +6,7 @@ Thumbs.db
 node_modules/
 *.log
 .env
+
+# Diorama cutouts are build artifacts of scripts/build_diorama.py (regenerable
+# from sibling EmblemPrintShop); committed with the renderer once visually verified.
+images/cutouts/
