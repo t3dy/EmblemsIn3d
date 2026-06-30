@@ -4,6 +4,7 @@
 
 import * as THREE from 'three';
 import { gsap } from 'gsap';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 
 // HP world palette — warm garden gold, not alchemical darkness
@@ -30,6 +31,7 @@ export class HPScene {
     this._streams  = [];
     this._t        = 0;
     this._disp     = [];
+    this._controls = null;
   }
 
   async build() {
@@ -38,6 +40,17 @@ export class HPScene {
 
     this.camera.position.set(0, 3.5, 12);
     this.camera.lookAt(0, 1.5, 0);
+
+    // Orbit the fountain — drag to look around the garden room
+    this._controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this._controls.enableDamping = true;
+    this._controls.dampingFactor = 0.08;
+    this._controls.enablePan     = false;
+    this._controls.minDistance   = 5;
+    this._controls.maxDistance   = 22;
+    this._controls.maxPolarAngle = Math.PI * 0.495; // stay above the garden floor
+    this._controls.target.set(0, 1.4, 0);
+    this._controls.update();
 
     this._setupLighting();
     this._buildGround();
@@ -287,10 +300,12 @@ export class HPScene {
 
   update(dt) {
     this._t += dt;
+    if (this._controls) this._controls.update();
     this._streams.forEach(s => s.update(this._t));
   }
 
   dispose() {
+    if (this._controls) { this._controls.dispose(); this._controls = null; }
     if (this._tl) { this._tl.kill(); this._tl = null; }
     gsap.killTweensOf([this._venus?.rotation, this._waterLight, this._venusLight]);
     this._streams.forEach(s => s.dispose());

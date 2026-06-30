@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene } from './scenes/EmblemScene.js?v=4';
-import { HPScene } from './scenes/HPScene.js?v=5';
+import { HPScene } from './scenes/HPScene.js?v=6';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -525,6 +525,7 @@ async function launchHPScene() {
 
   const link = state.worldLinks?.find(l => l.hp_scene === 'fountain');
   showHPHUD('Fountain of Venus', link?.hp_folio ?? 80, link?.af_emblems ?? []);
+  showHint('Drag to orbit the fountain · scroll to zoom · ← Atalanta to return');
 }
 
 // ─── Archives world ───────────────────────────────────────────────────────────
