@@ -186,10 +186,11 @@ footer a:hover { color: var(--dim); }
 
   <p class="desc">
     Three.js worlds, GSAP animation timelines, and browser games built from two
-    Renaissance emblem books. Navigate the alchemical stages of the
-    <em>Atalanta Fugiens</em>, explore the HP gardens, cross-reference
-    both corpora in a 3D bipartite graph, and hear each stage rendered
-    in generative Tone.js audio.
+    Renaissance emblem books. Every plate is rendered as a lit, <em>carved 3-D
+    relief</em> of its original woodcut — figures even lift off the page into a
+    2.5-D diorama. Navigate the alchemical stages of the <em>Atalanta Fugiens</em>,
+    explore the HP gardens, and take guided <em>tours</em> that connect the models
+    to the scholarship, the alchemical signs, and the links between the two books.
   </p>
 
   <div class="stage-strip" style="justify-content:center">
@@ -267,16 +268,30 @@ footer a:hover { color: var(--dim); }
 <!-- ══ THREE WORLDS ═══════════════════════════════════════════════════════ -->
 <div class="divider"></div>
 <div class="wrap">
-  <div class="section-label">Three worlds</div>
+  <div class="section-label">Five worlds</div>
 
   <div class="grid grid-3">
 
     <a class="card" href="src/index.html">
       <div class="badge" style="color:var(--r);border-color:var(--r);">Three.js · GSAP · Tone.js</div>
       <h3>Atalanta Animata</h3>
-      <p>51-card 3D gallery coloured by alchemical stage. Showcase emblems (IV, V, X, XXXIII, L) are larger with gold EdgesGeometry borders and pulse emissive. Hover tooltip, click-to-enter, scroll-wheel zoom, parallax camera drift.</p>
+      <p>A wall of all 51 woodcut plates, lit and dimensional. Click any plate to enter its scene: showcase emblems (IV, V, X, XXXIII, L) are hand-built animations before their source woodcut; the rest are lit carved reliefs that lift their figures into a 2.5-D diorama. Hover tooltip, click-to-enter, scroll-zoom, orbit.</p>
       <p style="margin-top:.4rem;font-size:.72rem;color:#4a3828;">Press <kbd style="font-family:monospace;font-size:.68rem;padding:0 .25rem;border:1px solid #3a2a18">G</kbd> to return from any scene.</p>
       <div class="arr">Gallery → click emblem → scene →</div>
+    </a>
+
+    <a class="card" href="src/index.html">
+      <div class="badge" style="color:#b48ad0;border-color:#b48ad0;">Guided · research</div>
+      <h3>Tours</h3>
+      <p>Four guided journeys that fly the camera through the emblem scenes while a side rail surfaces the research: <em>The Scholarship</em>, <em>Chemical Symbolism</em> (planetary-metal signs + glyphs), <em>The Great Work</em> (Nigredo → Rubedo), and <em>The Two Books</em> — the 9 documented Hypnerotomachia ↔ Atalanta cross-references.</p>
+      <div class="arr">Tours button →</div>
+    </a>
+
+    <a class="card" href="src/index.html">
+      <div class="badge" style="color:#c8a878;border-color:#c8a878;">2-D atlas · lightbox</div>
+      <h3>Plates</h3>
+      <p>Every emblem image as a clickable card. Expand any plate to a lightbox with its motto (Latin &amp; English), full epigram, and an "Enter 3-D" hand-off into the scene. Arrow-key through the whole atlas.</p>
+      <div class="arr">Plates button →</div>
     </a>
 
     <a class="card" href="src/index.html">
