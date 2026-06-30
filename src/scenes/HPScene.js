@@ -34,6 +34,7 @@ export class HPScene {
     this._disp     = [];
     this._orbs     = null;
     this._doors    = null;
+    this._quinta   = null;
     this._controls = null;
   }
 
@@ -43,12 +44,16 @@ export class HPScene {
 
     const palace = this.sceneKey === 'planetary_palace';
     const doors  = this.sceneKey === 'three_doors';
+    const quinta = this.sceneKey === 'quinta_essentia';
     if (palace) {
       this.camera.position.set(0, 2.2, 13);
       this._camTarget = new THREE.Vector3(0, 1.1, 0);
     } else if (doors) {
       this.camera.position.set(0, 1.9, 12.5);
       this._camTarget = new THREE.Vector3(0, 1.5, 0);
+    } else if (quinta) {
+      this.camera.position.set(0, 2.4, 12);
+      this._camTarget = new THREE.Vector3(0, 1.6, -0.5);
     } else {
       this.camera.position.set(0, 3.5, 12);
       this._camTarget = new THREE.Vector3(0, 1.4, 0);
@@ -73,6 +78,8 @@ export class HPScene {
       this._buildPlanetaryPalace();
     } else if (doors) {
       this._buildThreeDoors();
+    } else if (quinta) {
+      this._buildQuintaEssentia();
     } else {
       this._buildFountain();
       this._buildGarden();
@@ -470,10 +477,81 @@ export class HPScene {
     });
   }
 
+  // ── Quinta Essentia (Folio 164) ─────────────────────────────────────────────
+  // The fifth essence: a radiant gold dodecahedron (Plato's aether) above its
+  // altar, the four elements ranged before it.
+  _buildQuintaEssentia() {
+    const altMat = new THREE.MeshStandardMaterial({ color: PAL.stone, roughness: 0.8, metalness: 0.1 });
+    this._disp.push(altMat);
+    const ag = new THREE.CylinderGeometry(0.8, 1.0, 1.4, 20);
+    const altar = new THREE.Mesh(ag, altMat);
+    altar.position.set(0, -0.6, -1.5);
+    this.scene.add(altar); this._disp.push(ag);
+    const stepG = new THREE.CylinderGeometry(1.5, 1.7, 0.3, 24);
+    const step  = new THREE.Mesh(stepG, altMat);
+    step.position.set(0, -1.3, -1.5);
+    this.scene.add(step); this._disp.push(stepG);
+
+    // The quintessence
+    const dg  = new THREE.DodecahedronGeometry(0.82, 0);
+    const dm  = new THREE.MeshStandardMaterial({ color: 0xffd24a, emissive: 0xc89020, emissiveIntensity: 1.1, metalness: 0.9, roughness: 0.15 });
+    const dod = new THREE.Mesh(dg, dm);
+    dod.position.set(0, 1.7, -1.5);
+    this.scene.add(dod); this._disp.push(dg, dm);
+    const dl = new THREE.PointLight(0xffd060, 2.4, 9);
+    dl.position.set(0, 1.7, -1.0);
+    this.scene.add(dl);
+    this._quinta = { dod, dl, orbs: [] };
+
+    // The four elements ranged before the altar
+    const ELEMENTS = [
+      { x: -3, title: 'Earth', sub: 'TERRA', color: 0x6a7a3a },
+      { x: -1, title: 'Water', sub: 'AQUA',  color: 0x3a7ab0 },
+      { x:  1, title: 'Air',   sub: 'AER',   color: 0xc8cca0 },
+      { x:  3, title: 'Fire',  sub: 'IGNIS', color: 0xe06028 },
+    ];
+    const pedMat = new THREE.MeshStandardMaterial({ color: PAL.stone, roughness: 0.85 });
+    this._disp.push(pedMat);
+    ELEMENTS.forEach((el, i) => {
+      const pg  = new THREE.CylinderGeometry(0.3, 0.4, 1.0, 14);
+      const ped = new THREE.Mesh(pg, pedMat);
+      ped.position.set(el.x, -1.0, 1.2);
+      this.scene.add(ped); this._disp.push(pg);
+
+      const og  = new THREE.SphereGeometry(0.36, 22, 16);
+      const om  = new THREE.MeshStandardMaterial({ color: el.color, emissive: el.color, emissiveIntensity: 0.4, metalness: 0.3, roughness: 0.5 });
+      const orb = new THREE.Mesh(og, om);
+      orb.position.set(el.x, -0.2, 1.2);
+      this.scene.add(orb); this._disp.push(og, om);
+
+      const pl = new THREE.PointLight(el.color, 0.55, 3);
+      pl.position.set(el.x, -0.2, 1.6);
+      this.scene.add(pl);
+
+      const plqT = this._makeTextPlaque(el.title, el.sub, el.color);
+      const plqG = new THREE.PlaneGeometry(1.0, 0.32);
+      const plqM = new THREE.MeshBasicMaterial({ map: plqT, transparent: true });
+      const plq  = new THREE.Mesh(plqG, plqM);
+      plq.position.set(el.x, -1.05, 1.65);
+      this.scene.add(plq); this._disp.push(plqG, plqM, plqT);
+
+      this._quinta.orbs.push({ orb, pl, base: -0.2, phase: i * 1.2 });
+    });
+  }
+
   update(dt) {
     this._t += dt;
     if (this._controls) this._controls.update();
     this._streams.forEach(s => s.update(this._t));
+    if (this._quinta) {
+      this._quinta.dod.rotation.y += dt * 0.4;
+      this._quinta.dod.rotation.x += dt * 0.15;
+      this._quinta.dl.intensity = 2.2 + Math.sin(this._t * 1.3) * 0.6;
+      for (const { orb, pl, base, phase } of this._quinta.orbs) {
+        orb.position.y = base + Math.sin(this._t * 1.1 + phase) * 0.1;
+        pl.intensity = 0.5 + Math.sin(this._t * 1.4 + phase) * 0.25;
+      }
+    }
     if (this._orbs) {
       for (const { orb, pl, base, phase } of this._orbs) {
         orb.position.y = base + Math.sin(this._t * 1.2 + phase) * 0.12;

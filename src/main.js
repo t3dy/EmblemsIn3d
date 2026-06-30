@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPScene } from './scenes/HPScene.js?v=8';
+import { HPScene } from './scenes/HPScene.js?v=9';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -710,6 +710,8 @@ const HP_ROOMS = [
     hint: 'The seven metals, Saturn to Sol · drag to orbit · ← → other HP rooms' },
   { key: 'three_doors',      name: 'The Three Doors',      folio: 119, emblem: 19,
     hint: 'Virtue · the Middle Way · Pleasure · drag to orbit · ← → other HP rooms' },
+  { key: 'quinta_essentia',  name: 'Quinta Essentia',      folio: 164, emblem: 46,
+    hint: 'The fifth essence above the four elements · drag to orbit · ← → other HP rooms' },
 ];
 let _hpRoomIdx = 0;
 function hpRoomIdxForFolio(folio) {
