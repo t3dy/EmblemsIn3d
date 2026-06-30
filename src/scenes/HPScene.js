@@ -33,6 +33,7 @@ export class HPScene {
     this._t        = 0;
     this._disp     = [];
     this._orbs     = null;
+    this._doors    = null;
     this._controls = null;
   }
 
@@ -41,9 +42,13 @@ export class HPScene {
     this.scene.fog = new THREE.FogExp2(PAL.bg, 0.055);
 
     const palace = this.sceneKey === 'planetary_palace';
+    const doors  = this.sceneKey === 'three_doors';
     if (palace) {
       this.camera.position.set(0, 2.2, 13);
       this._camTarget = new THREE.Vector3(0, 1.1, 0);
+    } else if (doors) {
+      this.camera.position.set(0, 1.9, 12.5);
+      this._camTarget = new THREE.Vector3(0, 1.5, 0);
     } else {
       this.camera.position.set(0, 3.5, 12);
       this._camTarget = new THREE.Vector3(0, 1.4, 0);
@@ -66,6 +71,8 @@ export class HPScene {
 
     if (palace) {
       this._buildPlanetaryPalace();
+    } else if (doors) {
+      this._buildThreeDoors();
     } else {
       this._buildFountain();
       this._buildGarden();
@@ -401,6 +408,68 @@ export class HPScene {
     });
   }
 
+  // ── The Three Doors (Folio 119) ─────────────────────────────────────────────
+  // Poliphilo's moral choice: Virtue, the Middle Way, or Pleasure — three lit
+  // portals, the central via media a little taller and brighter.
+  _makeTextPlaque(title, sub, color) {
+    const c = document.createElement('canvas');
+    c.width = 320; c.height = 96;
+    const x = c.getContext('2d');
+    x.fillStyle = 'rgba(12,9,5,0.9)'; x.fillRect(0, 0, 320, 96);
+    x.strokeStyle = '#6a5a3a'; x.lineWidth = 3; x.strokeRect(4, 4, 312, 88);
+    x.textAlign = 'center';
+    x.fillStyle = '#' + color.toString(16).padStart(6, '0'); x.font = '30px Georgia'; x.fillText(title, 160, 44);
+    x.fillStyle = '#9a875f'; x.font = '14px Georgia'; x.fillText(sub, 160, 72);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  }
+
+  _buildThreeDoors() {
+    const stoneMat = new THREE.MeshStandardMaterial({ color: PAL.stone, roughness: 0.82, metalness: 0.05 });
+    this._disp.push(stoneMat);
+    this._doors = [];
+    const DOORS = [
+      { x: -4.2, title: 'Virtue',         sub: 'THE STEEP ASCENT',  color: 0x8ab0d8 },
+      { x:  0.0, title: 'The Middle Way', sub: 'VIA MEDIA',         color: 0xb8a848 },
+      { x:  4.2, title: 'Pleasure',       sub: 'THE FLOWERED GATE', color: 0xd86a5a },
+    ];
+    DOORS.forEach((d, i) => {
+      const H = i === 1 ? 3.9 : 3.4;
+      const top = H - 1.5;
+      for (const s of [-1, 1]) {
+        const jg = new THREE.BoxGeometry(0.34, H, 0.5);
+        const jamb = new THREE.Mesh(jg, stoneMat);
+        jamb.position.set(d.x + s * 0.95, top - H / 2, 0);
+        this.scene.add(jamb); this._disp.push(jg);
+      }
+      const lg = new THREE.BoxGeometry(2.45, 0.4, 0.6);
+      const lintel = new THREE.Mesh(lg, stoneMat);
+      lintel.position.set(d.x, top + 0.2, 0);
+      this.scene.add(lintel); this._disp.push(lg);
+
+      const portalH = H - 0.5;
+      const pg = new THREE.PlaneGeometry(1.7, portalH);
+      const pm = new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: 0.32, side: THREE.DoubleSide, depthWrite: false });
+      const portal = new THREE.Mesh(pg, pm);
+      portal.position.set(d.x, top - portalH / 2, -0.1);
+      this.scene.add(portal); this._disp.push(pg, pm);
+
+      const pl = new THREE.PointLight(d.color, 1.2, 6);
+      pl.position.set(d.x, 1.0, 0.7);
+      this.scene.add(pl);
+
+      const plqT = this._makeTextPlaque(d.title, d.sub, d.color);
+      const plqG = new THREE.PlaneGeometry(1.7, 0.5);
+      const plqM = new THREE.MeshBasicMaterial({ map: plqT, transparent: true });
+      const plq = new THREE.Mesh(plqG, plqM);
+      plq.position.set(d.x, -1.15, 0.55);
+      this.scene.add(plq); this._disp.push(plqG, plqM, plqT);
+
+      this._doors.push({ portal: pm, pl, phase: i * 1.3, baseOpacity: 0.32, baseInt: 1.2 });
+    });
+  }
+
   update(dt) {
     this._t += dt;
     if (this._controls) this._controls.update();
@@ -410,6 +479,13 @@ export class HPScene {
         orb.position.y = base + Math.sin(this._t * 1.2 + phase) * 0.12;
         orb.rotation.y += dt * 0.5;
         pl.intensity = 0.55 + Math.sin(this._t * 1.5 + phase) * 0.3;
+      }
+    }
+    if (this._doors) {
+      for (const d of this._doors) {
+        const s = Math.sin(this._t * 1.1 + d.phase);
+        d.portal.opacity = d.baseOpacity + s * 0.12;
+        d.pl.intensity   = d.baseInt + s * 0.4;
       }
     }
   }
