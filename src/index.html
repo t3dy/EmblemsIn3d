@@ -241,6 +241,77 @@
       #plate-lightbox .lb-img-wrap img { max-height: 46vh; }
     }
 
+    /* ── Guided tours ─────────────────────────────────────────────── */
+    #tours-menu {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(6,4,2,0.97); overflow-y: auto;
+      flex-direction: column; align-items: center;
+      padding: 4.6rem 1.5rem 3rem; pointer-events: all;
+    }
+    #tours-menu .tours-head { text-align: center; max-width: 680px; margin-bottom: 2rem; }
+    #tours-menu .tours-head h2 { font-size: 1.4rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878; }
+    #tours-menu .tours-head p { font-size: 0.82rem; color: #7a6858; line-height: 1.7; margin-top: 0.7rem; }
+    #tours-menu-grid {
+      display: grid; gap: 1.2rem; width: 100%; max-width: 980px;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    }
+    .tour-card {
+      text-align: left; cursor: pointer; color: inherit; font-family: inherit;
+      background: rgba(255,255,255,0.015); border: 1px solid #2a1a0a;
+      border-top: 2px solid var(--accent, #8b4513);
+      padding: 1.6rem 1.5rem; display: flex; flex-direction: column; gap: 0.55rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .tour-card:hover { background: rgba(255,255,255,0.04); transform: translateY(-3px); }
+    .tour-card .tc-kicker { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .tour-card h3 { font-size: 1.2rem; font-weight: normal; color: #f0e8d8; }
+    .tour-card > p { font-size: 0.8rem; color: #c8a878; font-style: italic; line-height: 1.5; }
+    .tour-card .tc-intro { font-size: 0.73rem; color: #7a6858; font-style: normal; line-height: 1.65; }
+    .tour-card .tc-go { font-size: 0.74rem; margin-top: 0.4rem; letter-spacing: 0.04em; }
+
+    /* Tour narration rail (right side, leaves the model visible) */
+    #tour-panel {
+      display: none; position: fixed; top: 0; right: 0; bottom: 0; z-index: 32;
+      width: min(390px, 92vw); flex-direction: column;
+      background: linear-gradient(to right, rgba(6,4,2,0.84), rgba(8,6,3,0.97));
+      border-left: 1px solid rgba(139,69,19,0.4);
+      backdrop-filter: blur(3px); pointer-events: all;
+    }
+    #tour-panel .tp-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 1.4rem; border-bottom: 1px solid rgba(139,69,19,0.2);
+    }
+    #tour-panel .tp-tour  { font-size: 0.78rem; letter-spacing: 0.1em; }
+    #tour-panel .tp-count { font-size: 0.66rem; color: #6b5d4d; letter-spacing: 0.08em; }
+    #tour-panel .tp-body  { flex: 1 1 auto; overflow-y: auto; padding: 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.65rem; }
+    #tour-panel .tp-badge { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.15rem 0.5rem; border: 1px solid; width: fit-content; }
+    #tour-panel .tp-numeral { font-size: 2.4rem; font-weight: 100; line-height: 1; }
+    #tour-panel .tp-title { font-size: 1.15rem; color: #f0e8d8; line-height: 1.3; }
+    #tour-panel .tp-symbol { display: flex; align-items: center; gap: 0.8rem; margin: 0.2rem 0; }
+    #tour-panel .tp-glyph { font-size: 2.6rem; line-height: 1; }
+    #tour-panel .tp-sym-name { font-size: 1.0rem; color: #e8ddc8; }
+    #tour-panel .tp-sym-row { font-size: 0.72rem; color: #8a7a5a; letter-spacing: 0.03em; margin-top: 0.15rem; }
+    #tour-panel .tp-sym-notes { font-size: 0.76rem; color: #9a8a74; line-height: 1.6; font-style: italic; }
+    #tour-panel .tp-lede { font-size: 0.84rem; color: #d8c8a8; line-height: 1.65; }
+    #tour-panel .tp-rule { height: 1px; background: rgba(139,69,19,0.25); margin: 0.35rem 0 0.1rem; }
+    #tour-panel .tp-scholar-label { font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase; color: #6b5d4d; }
+    #tour-panel .tp-discourse { font-size: 0.78rem; color: #8a7a64; line-height: 1.7; }
+    #tour-panel .tp-nav { display: flex; gap: 0.5rem; padding: 1rem 1.4rem; border-top: 1px solid rgba(139,69,19,0.2); }
+    #tour-panel .tp-nav button {
+      flex: 1 1 auto; background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
+      font-family: inherit; font-size: 0.74rem; padding: 0.45rem 0.5rem; cursor: pointer;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    #tour-panel .tp-nav button:hover:not(:disabled) { border-color: #c8a040; color: #f5f0e8; }
+    #tour-panel .tp-nav button:disabled { opacity: 0.3; cursor: default; }
+    #tour-panel .tp-nav .tp-exit { flex: 0 0 auto; }
+    @media (max-width: 640px) {
+      #tour-panel {
+        top: auto; width: 100vw; max-height: 56vh;
+        border-left: none; border-top: 1px solid rgba(139,69,19,0.4);
+      }
+    }
+
     /* Loading screen */
     #loading {
       position: fixed; inset: 0; z-index: 100;
@@ -275,6 +346,7 @@
       <button id="btn-hp" onclick="window.switchWorld('HP')">Hypnerotomachia</button>
       <button id="btn-af" class="active" onclick="window.switchWorld('AF')">Atalanta Animata</button>
       <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
+      <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
       <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
     </div>
 
@@ -304,6 +376,16 @@
       <div class="lb-text" id="lb-text"></div>
     </div>
   </div>
+
+  <!-- Guided tours: menu + narration rail -->
+  <div id="tours-menu">
+    <div class="tours-head">
+      <h2>Guided Tours</h2>
+      <p>Three journeys that connect the 3-D emblems to the research — the scholarship, the chemical signs, and the alchemical process. Each tour flies you through the models and surfaces what the sources say at every stop.</p>
+    </div>
+    <div id="tours-menu-grid"></div>
+  </div>
+  <div id="tour-panel"></div>
 
   <!-- Fade-to-black overlay for world transitions -->
   <div id="fade-overlay" style="
@@ -337,6 +419,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=11"></script>
+  <script type="module" src="./main.js?v=12"></script>
 </body>
 </html>

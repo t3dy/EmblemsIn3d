@@ -41,6 +41,9 @@ const state = {
   activeScene: null,
   inGallery: false,
   annotationTimer: null,
+  tours: null,
+  tour: null,
+  tourStop: 0,
 };
 
 // ─── Renderer ─────────────────────────────────────────────────────────────────
@@ -95,16 +98,18 @@ function setProgress(pct, text) {
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
   const V = '6'; // bump when data files are re-exported
-  const [er, sr, ar, wr] = await Promise.all([
+  const [er, sr, ar, wr, tr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
     fetch(`./data/hp_annotations.json?v=${V}`),
     fetch(`./data/world_links.json?v=${V}`),
+    fetch(`./data/tours.json?v=${V}`),
   ]);
   state.emblems     = await er.json();
   state.symbols     = await sr.json();
   state.annotations = await ar.json();
   state.worldLinks  = await wr.json();
+  state.tours       = await tr.json();
   setProgress(50, 'Preparing scenes…');
 }
 
@@ -191,8 +196,9 @@ async function launchEmblemScene(emblemNumber) {
   updateHUD(emblemData);
   setActiveWorldBtn('btn-af');
 
-  // Show content card for generic scenes (all 46 non-showcase emblems)
-  if (scene.isGeneric) {
+  // Show content card for generic scenes (suppressed during a tour — the tour
+  // rail carries the text instead)
+  if (scene.isGeneric && !state.tour) {
     showTextCard(emblemData);
   } else {
     hideTextCard();
@@ -201,10 +207,12 @@ async function launchEmblemScene(emblemNumber) {
   // Stage audio
   AlchemicalAudio.setStage(emblemData.alchemical_stage || 'NIGREDO');
 
-  // Linked HP annotations (auto-surface after 6s, or press A)
+  // Linked HP annotations (auto-surface after 6s, or press A) — off during tours
   state.currentAnnotations = findLinkedAnnotations(emblemData.number);
-  scheduleAnnotation();
-  showHint('Drag to rotate  ·  ← →  navigate  ·  A  context  ·  G  gallery');
+  if (!state.tour) {
+    scheduleAnnotation();
+    showHint('Drag to rotate  ·  ← →  navigate  ·  A  context  ·  G  gallery');
+  }
 }
 
 // ─── Gallery ──────────────────────────────────────────────────────────────────
@@ -217,6 +225,8 @@ function buildGallery() {
 
   hideTextCard();
   hidePlatesOverlay();
+  clearTour();
+  hideToursMenu();
   document.getElementById('annotation-panel').style.display = 'none';
   if (state.annotationTimer) clearTimeout(state.annotationTimer);
   state.inGallery = true;
@@ -473,6 +483,152 @@ window.enterPlate3D = () => {
   fadeSwitch(() => launchEmblemScene(num));
 };
 
+// ─── Guided tours (connect the 3-D models to the research) ────────────────────
+
+// Light inline formatting for tour ledes: **bold** and *italic*
+function fmtProse(s) {
+  return (s || '')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
+
+function glyphFor(sym) {
+  if (!sym || !sym.symbol_unicode) return '';
+  const cp = parseInt(String(sym.symbol_unicode).replace(/^U\+/i, ''), 16);
+  return Number.isFinite(cp) ? String.fromCodePoint(cp) : '';
+}
+
+let _toursMenuBuilt = false;
+
+function buildToursMenu() {
+  if (_toursMenuBuilt) return;
+  const wrap = document.getElementById('tours-menu-grid');
+  if (!wrap || !state.tours) return;
+  wrap.innerHTML = Object.values(state.tours).map(t => `
+    <button class="tour-card" style="--accent:${t.accent}" onclick="window.startTour('${t.id}')">
+      <div class="tc-kicker" style="color:${t.accent}">Guided tour · ${t.stops.length} stops</div>
+      <h3>${t.title}</h3>
+      <p>${t.subtitle}</p>
+      <p class="tc-intro">${fmtProse(t.intro)}</p>
+      <span class="tc-go" style="color:${t.accent}">Begin the tour &rarr;</span>
+    </button>`).join('');
+  _toursMenuBuilt = true;
+}
+
+function showToursMenu() {
+  clearTour();
+  hideHUD();
+  hideTextCard();
+  hidePlatesOverlay();
+  document.getElementById('annotation-panel').style.display = 'none';
+  setActiveWorldBtn('btn-tours');
+  state.inGallery = false;
+  buildToursMenu();
+  const el = document.getElementById('tours-menu');
+  if (el) { el.style.display = 'flex'; el.scrollTop = 0; }
+}
+
+function hideToursMenu() {
+  const el = document.getElementById('tours-menu');
+  if (el) el.style.display = 'none';
+}
+
+function clearTour() {
+  state.tour = null;
+  const p = document.getElementById('tour-panel');
+  if (p) p.style.display = 'none';
+}
+
+async function startTour(id) {
+  const tour = state.tours && state.tours[id];
+  if (!tour) return;
+  hideToursMenu();
+  state.tour = tour;
+  state.tourStop = 0;
+  await tourGoto(0);
+}
+
+async function tourGoto(i) {
+  const tour = state.tour;
+  if (!tour) return;
+  const n = tour.stops.length;
+  state.tourStop = Math.max(0, Math.min(n - 1, i));
+  const stop = tour.stops[state.tourStop];
+  await launchEmblemScene(stop.emblem);  // show the actual model
+  hideHUD();                              // the rail replaces the default HUD
+  hideTextCard();
+  renderTourPanel();
+}
+
+function tourNext() { tourGoto(state.tourStop + 1); }
+function tourPrev() { tourGoto(state.tourStop - 1); }
+
+function renderTourPanel() {
+  const tour = state.tour;
+  const panel = document.getElementById('tour-panel');
+  if (!tour || !panel) return;
+  const i = state.tourStop, n = tour.stops.length;
+  const stop = tour.stops[i];
+  const emb  = state.emblems.find(e => e.number === stop.emblem) || {};
+  const accent  = tour.accent || '#c8a040';
+  const numeral = emb.roman_numeral || (emb.number === 0 ? '—' : emb.number);
+  const discourse = (emb.discourse_summary || '').trim();
+
+  let extra = '';
+  if (stop.symbol) {
+    const sym = (state.symbols || []).find(s => s.symbol_name === stop.symbol);
+    if (sym) {
+      const g = glyphFor(sym);
+      const meta = [sym.metal, sym.planet, sym.gender].filter(Boolean).join(' · ');
+      extra = `
+        <div class="tp-symbol">
+          ${g ? `<span class="tp-glyph" style="color:${accent}">${g}</span>` : ''}
+          <div class="tp-sym-meta">
+            <div class="tp-sym-name">${sym.symbol_name}</div>
+            ${meta ? `<div class="tp-sym-row">${meta}</div>` : ''}
+          </div>
+        </div>
+        ${sym.notes ? `<p class="tp-sym-notes">${sym.notes}</p>` : ''}`;
+    }
+  }
+
+  let badge = '';
+  if (stop.stage) {
+    const c = STAGE_COLORS[stop.stage] || accent;
+    badge = `<span class="tp-badge" style="color:${c};border-color:${c}">${stop.stage}${stop.stageTitle ? ' · ' + stop.stageTitle : ''}</span>`;
+  } else if (!stop.symbol && emb.alchemical_stage) {
+    const c = STAGE_COLORS[emb.alchemical_stage] || accent;
+    badge = `<span class="tp-badge" style="color:${c};border-color:${c}">${emb.alchemical_stage}</span>`;
+  }
+
+  panel.innerHTML = `
+    <div class="tp-head">
+      <span class="tp-tour" style="color:${accent}">${tour.title}</span>
+      <span class="tp-count">Stop ${i + 1} / ${n}</span>
+    </div>
+    <div class="tp-body">
+      ${badge}
+      <div class="tp-numeral" style="color:${accent}">${numeral}</div>
+      <div class="tp-title">${emb.label || ''}</div>
+      ${extra}
+      <p class="tp-lede">${fmtProse(stop.lede)}</p>
+      ${discourse ? `<div class="tp-rule"></div><div class="tp-scholar-label">From the scholarship</div><p class="tp-discourse">${discourse}</p>` : ''}
+    </div>
+    <div class="tp-nav">
+      <button onclick="window.tourPrev()" ${i === 0 ? 'disabled' : ''}>&larr; Prev</button>
+      <button class="tp-exit" onclick="window.exitTour()">&#9632; Tours</button>
+      <button onclick="window.tourNext()" ${i === n - 1 ? 'disabled' : ''}>Next &rarr;</button>
+    </div>`;
+  panel.style.display = 'flex';
+  panel.querySelector('.tp-body').scrollTop = 0;
+  setActiveWorldBtn('btn-tours');
+}
+
+window.startTour = startTour;
+window.tourNext  = tourNext;
+window.tourPrev  = tourPrev;
+window.exitTour  = () => { clearTour(); showToursMenu(); };
+
 // ─── Navigation helpers ───────────────────────────────────────────────────────
 
 function showcaseStep(dir) {
@@ -494,11 +650,13 @@ function setActiveWorldBtn(id) {
 window.switchWorld = function (world) {
   state.world = world;
   if (world !== 'PLATES') hidePlatesOverlay();
+  if (world !== 'TOURS')  { clearTour(); hideToursMenu(); }
   fadeSwitch(() => {
-    if (world === 'PLATES')    showPlatesOverlay();
-    else if (world === 'AF')   buildGallery();
-    else if (world === 'HP')   launchHPScene();
-    else                       launchArchivesScene();
+    if (world === 'PLATES')     showPlatesOverlay();
+    else if (world === 'TOURS') showToursMenu();
+    else if (world === 'AF')    buildGallery();
+    else if (world === 'HP')    launchHPScene();
+    else                        launchArchivesScene();
   });
 };
 
@@ -669,6 +827,21 @@ function showMessage(title, msg) {
 // ─── Keyboard navigation ──────────────────────────────────────────────────────
 
 window.addEventListener('keydown', (e) => {
+  // A running tour captures the arrow keys for stop-to-stop navigation
+  if (state.tour) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown')   { e.preventDefault(); tourNext(); }
+    else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); tourPrev(); }
+    else if (e.key === 'Escape')                            window.exitTour();
+    else if (e.key === 'g' || e.key === 'G')                window.switchWorld('AF');
+    return;
+  }
+  // Tours menu (no tour running yet)
+  const toursMenuOpen = document.getElementById('tours-menu')?.style.display === 'flex';
+  if (toursMenuOpen) {
+    if (e.key === 'Escape' || e.key === 'g' || e.key === 'G') window.switchWorld('AF');
+    return;
+  }
+
   // Plates atlas captures keys while open
   const platesOpen = document.getElementById('plates-overlay')?.style.display === 'block';
   if (platesOpen) {

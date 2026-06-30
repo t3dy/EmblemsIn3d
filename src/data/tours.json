@@ -1,0 +1,54 @@
+{
+  "scholarship": {
+    "id": "scholarship",
+    "title": "The Scholarship",
+    "subtitle": "What five centuries of readers have found in Maier's emblems",
+    "accent": "#c8a040",
+    "intro": "Every emblem in this world carries a paragraph of modern scholarship — the readings of De Jong, Tilton, and the alchemical commentators. This tour flies you through nine emblems and surfaces what the scholars say about each. Use ← → to move between stops.",
+    "stops": [
+      { "emblem": 0, "lede": "Maier's frontispiece is an instruction manual disguised as a myth. De Jong calls the whole book a *lusus serius* — a serious game in which image, music, and verse each chase the same fleeing truth." },
+      { "emblem": 1, "lede": "The opening emblems set Maier's cosmology in place: the philosophers' child is nursed by the elements themselves. Read how wind and earth divide the labor of generation." },
+      { "emblem": 5, "lede": "The most-studied of the toad emblems. Scholars trace its nursing imagery to the Pseudo-Aristotelian *Tractatulus de Practica Lapidis* and to Cleopatra's death by asp-venom." },
+      { "emblem": 16, "lede": "The winged and wingless lion is Maier's emblem of fixation: the volatile must be made to stay. The discourse reads the two lions as one substance caught in two states." },
+      { "emblem": 21, "lede": "The famous geometric formula — circle, square, triangle, circle. Maier encodes the entire opus as a problem in squaring the circle." },
+      { "emblem": 26, "lede": "Lady Sapientia and the Tree of Life. Here the alchemical and sapiential traditions fuse; Wisdom herself presides over the citrine dawn." },
+      { "emblem": 33, "lede": "The hermaphrodite lies in darkness and calls for fire — one of the most reproduced images in the book. The rebis awaiting its reddening." },
+      { "emblem": 44, "lede": "Osiris killed and resurrected. Maier reads Egyptian myth as veiled chemistry: the dismembered god is the matter that dies to be recomposed." },
+      { "emblem": 50, "lede": "The Dragon kills the woman and is killed with her. The work closes where it began — in a death that is also generation. The discourse names this the final fixation." }
+    ]
+  },
+  "symbolism": {
+    "id": "symbolism",
+    "title": "Chemical Symbolism",
+    "subtitle": "The planetary metals and their signs, read through the emblems",
+    "accent": "#a0c4d8",
+    "intro": "Renaissance alchemy spoke in a sign-language of seven metals, seven planets, and two genders. This tour pairs each sign — drawn from the marginalia hands that annotated the 1499 Hypnerotomachia — with an emblem where that principle is central. Pairings are interpretive; the glyph and its lore are real.",
+    "stops": [
+      { "symbol": "Saturn", "emblem": 5, "lede": "Lead — Saturn — is the base matter, the *prima materia* at its most opaque. The toad nursed to death is the Saturnine body that must rot before anything can rise." },
+      { "symbol": "Luna", "emblem": 3, "lede": "Silver, the Moon, the feminine principle. The woman washing the sheets enacts the *albedo* — the lunar whitening that purifies the blackened matter." },
+      { "symbol": "Sol", "emblem": 24, "lede": "Gold, the Sun, king of metals and goal of the work. The robed Alchemical King is Sol made manifest — the perfected body." },
+      { "symbol": "Mercury", "emblem": 33, "lede": "Quicksilver — Mercurius — neither wholly male nor female but both. The hermaphrodite in darkness is the mercurial spirit, waiting to be fixed." },
+      { "symbol": "Sulphur", "emblem": 50, "lede": "Sulphur, the masculine fixing fire. In the final emblem the dragon — sulphurous, devouring — completes the union by dying into its opposite." },
+      { "symbol": "Venus", "emblem": 34, "lede": "Copper — Venus — the principle of union and desire. The celestial conception is a hierogamy, a sacred marriage under Venus's sign." },
+      { "symbol": "Mars", "emblem": 16, "lede": "Iron — Mars — strength and fixity. The lion, read as the martial principle, must lose its wings to become fixed." },
+      { "symbol": "Hermaphrodite", "emblem": 38, "lede": "The Rebis — the 'two-thing' — standing at last. Not a metal but the union of all of them: Sol and Luna made a single body. The end of the symbolic road." }
+    ]
+  },
+  "great-work": {
+    "id": "great-work",
+    "title": "The Great Work",
+    "subtitle": "Nigredo · Albedo · Citrinitas · Rubedo — the four stages of the opus",
+    "accent": "#cc3300",
+    "intro": "The alchemical *magnum opus* moves through four colors: the blackening, the whitening, the yellowing, and the reddening. Maier's fifty emblems are sequenced along this arc. This tour walks the process from death to the stone, two emblems per stage.",
+    "stops": [
+      { "stage": "NIGREDO", "stageTitle": "The Blackening", "emblem": 5, "lede": "The work begins in death. The matter is putrefied, reduced to a black chaos — the toad swelling on the nurse's milk, the prima materia killing what feeds it." },
+      { "stage": "NIGREDO", "stageTitle": "The Blackening", "emblem": 4, "lede": "The first conjunction is an incest: brother and sister, Sol and Luna, joined before they are purified. Union precedes cleansing." },
+      { "stage": "ALBEDO", "stageTitle": "The Whitening", "emblem": 3, "lede": "The black matter is washed. The woman at the river enacts the albedo — the lunar, silver purification that follows putrefaction." },
+      { "stage": "ALBEDO", "stageTitle": "The Whitening", "emblem": 6, "lede": "Sow your gold in the white foliated earth. The purified white ground is now fertile; the seed of gold is planted in it." },
+      { "stage": "CITRINITAS", "stageTitle": "The Yellowing", "emblem": 24, "lede": "Between white and red comes the citrine dawn. The Alchemical King is robed — the matter takes on the solar color of approaching gold." },
+      { "stage": "CITRINITAS", "stageTitle": "The Yellowing", "emblem": 26, "lede": "Lady Sapientia presides over the Tree of Life. Citrinitas is the stage of wisdom, the light breaking just before the final fire." },
+      { "stage": "RUBEDO", "stageTitle": "The Reddening", "emblem": 33, "lede": "The hermaphrodite calls for fire. Rubedo is the marriage consummated in heat — the red king and white queen made one body." },
+      { "stage": "RUBEDO", "stageTitle": "The Reddening", "emblem": 50, "lede": "The Dragon kills the woman and dies with her: the final fixation. The stone is achieved where death and generation become the same act. The work is complete." }
+    ]
+  }
+}
