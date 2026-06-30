@@ -915,10 +915,20 @@ document.addEventListener('keydown', _unlockAudio);
   try {
     resizeAll(); // safe here — composer + bloom are defined
     await loadData();
-    setProgress(80, 'Opening Emblem V…');
+    setProgress(80, 'Opening the world…');
 
-    // Start directly on the first showcase emblem (Woman & Toad)
-    await launchEmblemScene(5);
+    // Deep-link from the URL hash: games link in via #emblem=N, and a tour can
+    // be opened via #tour=scholarship|symbolism|great-work. Default: Emblem V.
+    const hash      = location.hash || '';
+    const embMatch  = hash.match(/emblem=(\d+)/);
+    const tourMatch = hash.match(/tour=([\w-]+)/);
+    if (tourMatch && state.tours && state.tours[tourMatch[1]]) {
+      await startTour(tourMatch[1]);
+    } else if (embMatch && state.emblems.some(e => e.number === +embMatch[1])) {
+      await launchEmblemScene(+embMatch[1]);
+    } else {
+      await launchEmblemScene(5); // first showcase emblem (Woman & Toad)
+    }
     setProgress(100, 'Ready');
 
     setTimeout(() => {
