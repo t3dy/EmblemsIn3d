@@ -4,6 +4,7 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
 import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=4';
+import { AFWorldScene } from './scenes/AFWorldScene.js?v=1';
 import { DreamMode } from './systems/DreamMode.js?v=1';
 import { DREAM_STOPS } from './data/hp_dream.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
@@ -701,6 +702,7 @@ window.switchWorld = function (world) {
     else if (world === 'TOURS') showToursMenu();
     else if (world === 'AF')    buildGallery();
     else if (world === 'HP')    launchHPWorld();
+    else if (world === 'THEATRUM') launchAFWorld();
     else                        launchArchivesScene();
   });
 };
@@ -842,6 +844,63 @@ window.toggleHPStyle = () => {
   const style = state.hpStyle === 'woodcut' ? 'lit' : 'woodcut';
   fadeSwitch(() => launchHPWorld({ style, spawn }));
 };
+
+// ─── Theatrum Chemicum — the unified Atalanta Fugiens world ───────────────────
+
+function showAFWorldHUD(emb) {
+  const stageEl = document.getElementById('hud-stage');
+  if (emb) {
+    const stage = emb.alchemical_stage || 'NIGREDO';
+    const col = STAGE_COLORS[stage] || '#8b4513';
+    stageEl.textContent = stage;
+    stageEl.style.color = col;
+    stageEl.style.borderColor = col;
+    const numeral = emb.roman_numeral || (emb.number === 0 ? 'Frontispiece' : emb.number);
+    document.getElementById('hud-title').textContent = `${numeral} · ${emb.label || ''}`;
+    document.getElementById('hud-motto').textContent = emb.motto_english || emb.motto_latin || '';
+  } else {
+    stageEl.textContent = 'THEATRUM CHEMICUM';
+    stageEl.style.color = '#c8a440';
+    stageEl.style.borderColor = '#c8a440';
+    document.getElementById('hud-title').textContent = 'The Rotunda of the Fifty-One Emblems';
+    document.getElementById('hud-motto').textContent = 'Nigredo → Albedo → Citrinitas → Rubedo, around the Stone';
+  }
+  const navEl = document.getElementById('emblem-nav');
+  if (navEl) navEl.style.display = 'none';
+  document.getElementById('back-btn').style.display = 'inline-block';
+  document.getElementById('back-btn').textContent = '← Gallery';
+  document.getElementById('back-btn').onclick = () => fadeSwitch(() => buildGallery());
+  document.getElementById('emblem-hud').style.display = 'block';
+}
+
+async function launchAFWorld({ station = null } = {}) {
+  if (state.activeScene) { state.activeScene.dispose(); state.activeScene = null; }
+  state.world = 'THEATRUM';
+  state.inGallery = false;
+  state.currentEmblem = null;
+  setActiveWorldBtn('btn-theatrum');
+  hideHUD();
+  hideTextCard();
+
+  const scene = new AFWorldScene(renderer, composer, state.emblems, { station });
+  scene.onStation = (emb) => {
+    showAFWorldHUD(emb);
+    if (emb) {
+      state.currentAnnotations = findLinkedAnnotations(emb.number);
+      if (state.currentAnnotations.length) scheduleAnnotation();
+      AlchemicalAudio.setStage(emb.alchemical_stage || 'NIGREDO');
+    }
+  };
+  scene.onEnter = (num) => fadeSwitch(() => launchEmblemScene(num));
+  await scene.build();
+  composer.passes[0] = new RenderPass(scene.scene, scene.camera);
+  state.activeScene = scene;
+
+  AlchemicalAudio.setStage('NIGREDO');
+  showAFWorldHUD(null);
+  showHint('W A S D walk · 1–4 the four stages · 5 the Stone · walk to an emblem, click its plate to enter');
+}
+
 
 // ─── Archives world ───────────────────────────────────────────────────────────
 
@@ -1020,7 +1079,7 @@ window.addEventListener('keydown', (e) => {
   }
 
   if (!state.inGallery) {
-    if (state.world === 'HP') {
+    if (state.world === 'HP' || state.world === 'THEATRUM') {
       // The dream garden handles its own movement keys (WASD / arrows / 1–5);
       // only Escape / G below apply here.
     } else {
@@ -1095,7 +1154,10 @@ document.addEventListener('keydown', _unlockAudio);
     const tourMatch = hash.match(/tour=([\w-]+)/);
     const hpMatch   = hash.match(/[#&]hp(?:=(woodcut|lit))?\b/);
     const dreamMatch = hash.match(/[#&]dream\b/);
-    if (dreamMatch) {
+    const theatrumMatch = hash.match(/[#&]theatrum/);
+    if (theatrumMatch) {
+      await launchAFWorld();
+    } else if (dreamMatch) {
       await launchHPWorld({ dream: true, chooser: false });
     } else if (hpMatch) {
       await launchHPWorld({ style: hpMatch[1] || 'lit' });
