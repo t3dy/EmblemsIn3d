@@ -186,11 +186,13 @@ footer a:hover { color: var(--dim); }
 
   <p class="desc">
     Three.js worlds, GSAP animation timelines, and browser games built from two
-    Renaissance emblem books. Every plate is rendered as a lit, <em>carved 3-D
-    relief</em> of its original woodcut — figures even lift off the page into a
-    2.5-D diorama. Navigate the alchemical stages of the <em>Atalanta Fugiens</em>,
-    explore the HP gardens, and take guided <em>tours</em> that connect the models
-    to the scholarship, the alchemical signs, and the links between the two books.
+    Renaissance emblem books — including two <em>playable walking-simulator
+    worlds</em>. Walk the <em>Dream Garden of Poliphilo</em> (the whole journey of
+    the 1499 <em>Hypnerotomachia</em>, from the dark wood to the shore of Cythera,
+    with a click-to-continue <em>Poliphilo&rsquo;s Dream</em> story mode and a 3-D
+    woodcut rendering), and the <em>Theatrum Chemicum</em> — all 51 <em>Atalanta
+    Fugiens</em> emblems enacted as animated vignettes around one great rotunda.
+    Guided <em>tours</em> connect the models to the scholarship.
   </p>
 
   <div class="stage-strip" style="justify-content:center">
@@ -201,7 +203,9 @@ footer a:hover { color: var(--dim); }
   </div>
 
   <div class="cta-row">
-    <a class="cta cta-p" href="src/index.html">Enter 3D World</a>
+    <a class="cta cta-p" href="src/index.html#hp">Walk the Dream Garden</a>
+    <a class="cta cta-p" href="src/index.html#dream">Poliphilo&rsquo;s Dream</a>
+    <a class="cta cta-s" href="src/index.html#theatrum">Theatrum Chemicum</a>
     <a class="cta cta-s" href="games/index.html">Emblem Games</a>
     <a class="cta cta-s" href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>
   </div>
@@ -268,7 +272,7 @@ footer a:hover { color: var(--dim); }
 <!-- ══ THREE WORLDS ═══════════════════════════════════════════════════════ -->
 <div class="divider"></div>
 <div class="wrap">
-  <div class="section-label">Five worlds</div>
+  <div class="section-label">Six worlds</div>
 
   <div class="grid grid-3">
 
@@ -294,12 +298,18 @@ footer a:hover { color: var(--dim); }
       <div class="arr">Plates button →</div>
     </a>
 
-    <a class="card" href="src/index.html">
-      <div class="badge" style="color:#c8a440;border-color:#c8a440;">Three.js · Particles · GSAP</div>
-      <h3>Fountain of Venus</h3>
-      <p>HP garden world at folio 80. Three-tier stone fountain (TorusGeometry rims, CircleGeometry water), Venus figure in offering pose atop column. Cypress trees, garden hedges, warm afternoon lighting. Three water ParticleStreams (top tier → mid tier → basin spray).</p>
-      <p style="margin-top:.4rem;font-size:.72rem;color:#4a3828;">Press <kbd style="font-family:monospace;font-size:.68rem;padding:0 .25rem;border:1px solid #3a2a18">A</kbd> for linked HP marginalia.</p>
+    <a class="card" href="src/index.html#hp">
+      <div class="badge" style="color:#c8a440;border-color:#c8a440;">Walking simulator · story mode</div>
+      <h3>The Dream Garden of Poliphilo</h3>
+      <p>The whole journey of the <em>Hypnerotomachia</em> as one first-person world: the dark wood and the wolf, the Great Portal and its dragon, Queen Eleuterylida with her five named sense-nymphs, the Three Doors, the Elephant &amp; Obelisk, the four Triumphs, the Fountain of Venus, and Cupid&rsquo;s boat to Cythera. Walk freely (WASD, 1–9 teleports) or follow <em>Poliphilo&rsquo;s Dream</em> — a twelve-scene click-to-continue story with Polia and the nymphs as guides. A toggle re-renders the entire garden as a 3-D 1499 woodcut.</p>
       <div class="arr">Hypnerotomachia button →</div>
+    </a>
+
+    <a class="card" href="src/index.html#theatrum">
+      <div class="badge" style="color:var(--c);border-color:var(--c);">Walking simulator · 51 vignettes</div>
+      <h3>Theatrum Chemicum</h3>
+      <p>All fifty-one emblems as one explorable rotunda, ordered around the promenade by the stages of the Work — Nigredo → Albedo → Citrinitas → Rubedo. Every station pairs the lit carved-relief plate with an <em>animated primitive-geometry vignette</em> enacting the emblem; the Philosopher&rsquo;s Stone turns inside an ouroboros at the hub. Walk up for the motto and epigram, click a plate to enter its full 3-D scene.</p>
+      <div class="arr">Theatrum button →</div>
     </a>
 
     <a class="card" href="src/index.html">

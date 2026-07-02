@@ -741,7 +741,7 @@ export class HPWorldScene {
 
     // Distant Cythera: a mound crowned by the amphitheatre of Venus
     const isle = new THREE.Group();
-    const im = S.key === 'woodcut' ? S.mat({ tone: 0.12 }) : S.mat({ color: 0x2a3a22, roughness: 0.95 });
+    const im = S.key === 'woodcut' ? S.mat({ tone: 0.12, rim: 0 }) : S.mat({ color: 0x2a3a22, roughness: 0.95 });
     const mound = this._m(new THREE.ConeGeometry(9, 3.2, 24), im, 0, 1.2, 0, { parent: isle });
     mound.scale.y = 0.7;
     for (let i = 0; i < 12; i++) {
