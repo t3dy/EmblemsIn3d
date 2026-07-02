@@ -22,7 +22,7 @@ Guided **Tours** then connect these models to the research — the scholarship, 
 | [`games/stage-sorter.html`](https://t3dy.github.io/EmblemsIn3d/games/stage-sorter.html) | Stage Sorter — drag emblems into their correct alchemical stage |
 | [`games/memory.html`](https://t3dy.github.io/EmblemsIn3d/games/memory.html) | Memory — match Roman numerals to English emblem titles |
 
-The 3-D app has **five worlds** (top-right nav): **Hypnerotomachia** (orbitable Fountain of Venus) · **Atalanta Animata** (the gallery wall of 51 lit plates → click to enter a scene) · **Plates** (a 2-D atlas → lightbox with motto, epigram, and "Enter 3-D") · **Tours** · **Archives** (the HP-folio ↔ AF-emblem graph).
+The 3-D app has **five worlds** (top-right nav): **Hypnerotomachia** (the Dream Garden of Poliphilo — a single walkable world holding all five HP wonders, renderable as a lit garden *or* as a 3-D woodcut) · **Atalanta Animata** (the gallery wall of 51 lit plates → click to enter a scene) · **Plates** (a 2-D atlas → lightbox with motto, epigram, and "Enter 3-D") · **Tours** · **Archives** (the HP-folio ↔ AF-emblem graph).
 
 Four guided **Tours** fly the camera through the actual emblem scenes while a side rail surfaces the research: **The Scholarship** (each emblem's modern reading), **Chemical Symbolism** (the planetary-metal signs, glyphs, and marginalia-hand notes), **The Great Work** (Nigredo → Rubedo), and **The Two Books** (the 9 documented Hypnerotomachia ↔ Atalanta cross-references). The **Oracle** and **Fugue Scroll** also reveal each emblem's scholarship on demand.
 
@@ -65,11 +65,16 @@ A `CapsuleGeometry` hermaphrodite figure. `PlaneGeometry` wings (start `scale.x=
 **Emblem L — The Philosopher's Stone** (RUBEDO, 16s)
 An `OctahedronGeometry` philosopher's stone sits on a `CylinderGeometry` pedestal. An ouroboros dragon ring: 16 `CapsuleGeometry` segments arranged in a circle of radius 2.2. A crown descends. 12-ray `LineSegments` fade from opacity 0 to 0.9. A circular `ouroStream` particle loop. Subject: completion of the Great Work.
 
-#### 3. Fountain of Venus — HP Garden World (ALBEDO)
+#### 3. The Dream Garden of Poliphilo — Unified HP World
 
-`HPScene.js`. A 3-tier stone fountain: three `TorusGeometry` rims, `CylinderGeometry` bowls, `CircleGeometry` water surfaces with animated opacity. A Venus figure in offering pose atop a column. Cypress trees (`ConeGeometry`) and garden hedges (`BoxGeometry`). Three water `ParticleStreams` cascade top → mid → basin → spray. Lighting: warm afternoon `DirectionalLight` sun + cool `AmbientLight` sky fill + `PointLight` pulse on the water surface.
+`HPWorldScene.js`. All the Hypnerotomachia designs in **one explorable first-person world**, laid out as the book's processional journey: enter through a gate of twin obelisks, pass the **Three Doors** (f.119 — Virtue, the Middle Way, Pleasure — a wall you actually walk through), reach the plaza of the **Elephant & Obelisk** (f.25), visit the **Planetary Palace** (f.88, seven metals in Chaldean order, west court) and the **Quinta Essentia** altar court (f.164, east), and arrive at the **Fountain of Venus** grove (f.80, a 3-tier fountain with cascading `ParticleStreams` and Venus in offering pose). WASD/arrows walk, drag looks, 1–5 teleport-glide between the wonders; circle/AABB colliders keep the walk honest; nearing a station surfaces its folio, `world_links` cross-references, and BL marginalia in the HUD.
 
-Bloom strength: 0.35 (lower than the AF emblem scenes; the HP world is gentler, more diurnal).
+The world has **two renderings**, toggleable in place (your position is preserved):
+
+- **Lit** — the warm garden: `MeshStandardMaterial`, coloured point lights, cast shadows, IBL sheen on the metals, bloom 0.35.
+- **Woodcut** — the same geometry as a 3-D rendering of the 1499 woodcuts: every surface is cream paper with shading quantised into cross-hatch ink bands (a Lambert material with a hatching stage injected via `onBeforeCompile`), rim ink + inverted-hull outlines, radiating ink rays instead of bloom, and a single raking shadow light — the papercraft trick from the sibling EmblemPapercraft project. Deep link: `src/#hp=woodcut`.
+
+Method notes: [`docs/UNIFIED_HP_WORLD.md`](docs/UNIFIED_HP_WORLD.md).
 
 #### 4. Archives — Bipartite Scholarly Graph
 

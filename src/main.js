@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPScene } from './scenes/HPScene.js?v=9';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -45,6 +45,7 @@ const state = {
   tour: null,
   tourStop: 0,
   diorama: null,
+  hpStyle: 'lit',   // 'lit' | 'woodcut' — rendering of the HP dream garden
 };
 
 // ─── Renderer ─────────────────────────────────────────────────────────────────
@@ -141,6 +142,8 @@ function updateHUD(emblemData) {
   }
 
   document.getElementById('back-btn').style.display = 'inline-block';
+  const styleBtn = document.getElementById('btn-hp-style');
+  if (styleBtn) styleBtn.style.display = 'none';
 }
 
 function hideHUD() {
@@ -148,6 +151,8 @@ function hideHUD() {
   const navEl = document.getElementById('emblem-nav');
   if (navEl) navEl.style.display = 'none';
   document.getElementById('back-btn').style.display = 'none';
+  const styleBtn = document.getElementById('btn-hp-style');
+  if (styleBtn) styleBtn.style.display = 'none';
 }
 
 // ─── Generic emblem text card ─────────────────────────────────────────────────
@@ -693,58 +698,71 @@ window.switchWorld = function (world) {
     if (world === 'PLATES')     showPlatesOverlay();
     else if (world === 'TOURS') showToursMenu();
     else if (world === 'AF')    buildGallery();
-    else if (world === 'HP')    launchHPScene();
+    else if (world === 'HP')    launchHPWorld();
     else                        launchArchivesScene();
   });
 };
 
 window.backToGallery = function () { buildGallery(); };
 
-// ─── HP World ─────────────────────────────────────────────────────────────────
+// ─── HP World — the unified Dream Garden ──────────────────────────────────────
 
-// The built HP rooms (more hp_scenes exist in world_links but aren't modelled yet)
-const HP_ROOMS = [
-  { key: 'fountain',         name: 'Fountain of Venus',   folio: 80, emblem: 1,
-    hint: 'Drag to orbit the fountain · ← → other HP rooms · ← Atalanta to return' },
-  { key: 'planetary_palace', name: 'The Planetary Palace', folio: 88, emblem: 17,
-    hint: 'The seven metals, Saturn to Sol · drag to orbit · ← → other HP rooms' },
-  { key: 'three_doors',      name: 'The Three Doors',      folio: 119, emblem: 19,
-    hint: 'Virtue · the Middle Way · Pleasure · drag to orbit · ← → other HP rooms' },
-  { key: 'quinta_essentia',  name: 'Quinta Essentia',      folio: 164, emblem: 46,
-    hint: 'The fifth essence above the four elements · drag to orbit · ← → other HP rooms' },
-];
-let _hpRoomIdx = 0;
-function hpRoomIdxForFolio(folio) {
-  const i = HP_ROOMS.findIndex(r => r.folio === folio);
-  return i >= 0 ? i : 0;
+function stationKeyForFolio(folio) {
+  const st = HP_STATIONS.find(s => s.folio === folio);
+  return st ? st.key : null;
 }
 
-async function launchHPScene(roomIdx = _hpRoomIdx) {
-  _hpRoomIdx = ((roomIdx % HP_ROOMS.length) + HP_ROOMS.length) % HP_ROOMS.length;
-  const room = HP_ROOMS[_hpRoomIdx];
+function setHPStyleBtn(visible) {
+  const btn = document.getElementById('btn-hp-style');
+  if (!btn) return;
+  btn.style.display = visible ? 'inline-block' : 'none';
+  btn.textContent = state.hpStyle === 'woodcut' ? 'Lit view' : 'Woodcut view';
+}
 
+async function launchHPWorld({ station = null, style = null, spawn = null } = {}) {
+  if (style) state.hpStyle = style;
   if (state.activeScene) { state.activeScene.dispose(); state.activeScene = null; }
+  state.world = 'HP';
   state.inGallery = false;
   state.currentEmblem = null;
   setActiveWorldBtn('btn-hp');
   hideHUD();
   hideTextCard();
 
-  const scene = new HPScene(renderer, composer, room.key);
+  const scene = new HPWorldScene(renderer, composer, { style: state.hpStyle, station, spawn });
+
+  // As the dreamer nears a wonder, surface its folio, links, and marginalia
+  scene.onStation = (st) => {
+    if (st) {
+      const link = state.worldLinks?.find(l => l.hp_folio === st.folio);
+      showHPHUD(st.name, st.folio, link?.af_emblems ?? []);
+      state.currentAnnotations = st.emblem != null ? findLinkedAnnotations(st.emblem) : [];
+      if (state.currentAnnotations.length) scheduleAnnotation();
+    } else {
+      showHPHUD('The Dream Garden of Poliphilo', null, []);
+      state.currentAnnotations = [];
+      document.getElementById('annotation-panel').style.display = 'none';
+    }
+    setHPStyleBtn(true);
+  };
+
   await scene.build();
   composer.passes[0] = new RenderPass(scene.scene, scene.camera);
   state.activeScene = scene;
 
   AlchemicalAudio.setStage('ALBEDO');
-  state.currentAnnotations = findLinkedAnnotations(room.emblem);
-  scheduleAnnotation();
-
-  const link = state.worldLinks?.find(l => l.hp_folio === room.folio);
-  showHPHUD(room.name, room.folio, link?.af_emblems ?? []);
-  showHint(room.hint);
+  showHPHUD('The Dream Garden of Poliphilo', null, []);
+  setHPStyleBtn(true);
+  showHint('W A S D / arrows walk · Shift run · drag to look · 1–5 the five wonders');
 }
-window.hpRoomNext = () => fadeSwitch(() => launchHPScene(_hpRoomIdx + 1));
-window.hpRoomPrev = () => fadeSwitch(() => launchHPScene(_hpRoomIdx - 1));
+
+// Swap between the lit garden and the 3-D woodcut without losing your place
+window.toggleHPStyle = () => {
+  if (!(state.activeScene instanceof HPWorldScene)) return;
+  const spawn = state.activeScene.getSpawnState();
+  const style = state.hpStyle === 'woodcut' ? 'lit' : 'woodcut';
+  fadeSwitch(() => launchHPWorld({ style, spawn }));
+};
 
 // ─── Archives world ───────────────────────────────────────────────────────────
 
@@ -758,7 +776,7 @@ async function launchArchivesScene() {
   const scene = new ArchivesScene(
     state.worldLinks,
     state.emblems,
-    (folio) => fadeSwitch(() => launchHPScene(hpRoomIdxForFolio(folio))),    // HP node click → room for that folio
+    (folio) => fadeSwitch(() => launchHPWorld({ station: stationKeyForFolio(folio) })), // HP node click → that wonder
     (num)   => fadeSwitch(() => launchEmblemScene(num)), // AF node click
     renderer,
     composer,
@@ -796,7 +814,11 @@ function showHPHUD(sceneName, folio, linkedEmblems = []) {
 
   document.getElementById('hud-title').textContent = sceneName;
   document.getElementById('hud-motto').textContent =
-    linkedEmblems.length ? `Folio ${folio} · linked to AF Emblem${linkedEmblems.length > 1 ? 's' : ''} ${linkedEmblems.join(', ')}` : `Folio ${folio}`;
+    folio == null
+      ? 'Walk the dream — five wonders in one garden'
+      : linkedEmblems.length
+        ? `Folio ${folio} · linked to AF Emblem${linkedEmblems.length > 1 ? 's' : ''} ${linkedEmblems.join(', ')}`
+        : `Folio ${folio}`;
 
   const navEl = document.getElementById('emblem-nav');
   if (navEl) navEl.style.display = 'none';
@@ -918,14 +940,13 @@ window.addEventListener('keydown', (e) => {
 
   if (!state.inGallery) {
     if (state.world === 'HP') {
-      // In the Hypnerotomachia world, arrows move between the built HP rooms
-      if (e.key === 'ArrowRight' || e.key === 'ArrowDown')     window.hpRoomNext();
-      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')   window.hpRoomPrev();
+      // The dream garden handles its own movement keys (WASD / arrows / 1–5);
+      // only Escape / G below apply here.
     } else {
       if (e.key === 'ArrowRight' || e.key === 'ArrowUp')    showcaseStep(1);
       if (e.key === 'ArrowLeft'  || e.key === 'ArrowDown')  showcaseStep(-1);
+      if (e.key === 'a' || e.key === 'A') showAnnotation();
     }
-    if (e.key === 'a' || e.key === 'A') showAnnotation();
   }
   if (e.key === 'Escape' || e.key === 'g' || e.key === 'G') buildGallery();
 });
@@ -961,6 +982,9 @@ function animate() {
   composer.render();
 }
 
+// Debug handle so the view can be driven from the console during development
+window._hp = { renderer, composer, state, clock };
+
 // ─── Audio unlock (browser requires a user gesture before AudioContext) ───────
 
 const _unlockAudio = async () => {
@@ -988,7 +1012,10 @@ document.addEventListener('keydown', _unlockAudio);
     const hash      = location.hash || '';
     const embMatch  = hash.match(/emblem=(\d+)/);
     const tourMatch = hash.match(/tour=([\w-]+)/);
-    if (tourMatch && state.tours && state.tours[tourMatch[1]]) {
+    const hpMatch   = hash.match(/[#&]hp(?:=(woodcut|lit))?\b/);
+    if (hpMatch) {
+      await launchHPWorld({ style: hpMatch[1] || 'lit' });
+    } else if (tourMatch && state.tours && state.tours[tourMatch[1]]) {
       await startTour(tourMatch[1]);
     } else if (embMatch && state.emblems.some(e => e.number === +embMatch[1])) {
       await launchEmblemScene(+embMatch[1]);
