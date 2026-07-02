@@ -3,7 +3,9 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=1';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=4';
+import { DreamMode } from './systems/DreamMode.js?v=1';
+import { DREAM_STOPS } from './data/hp_dream.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -719,7 +721,7 @@ function setHPStyleBtn(visible) {
   btn.textContent = state.hpStyle === 'woodcut' ? 'Lit view' : 'Woodcut view';
 }
 
-async function launchHPWorld({ station = null, style = null, spawn = null } = {}) {
+async function launchHPWorld({ station = null, style = null, spawn = null, chooser = true, dream = false } = {}) {
   if (style) state.hpStyle = style;
   if (state.activeScene) { state.activeScene.dispose(); state.activeScene = null; }
   state.world = 'HP';
@@ -753,8 +755,85 @@ async function launchHPWorld({ station = null, style = null, spawn = null } = {}
   AlchemicalAudio.setStage('ALBEDO');
   showHPHUD('The Dream Garden of Poliphilo', null, []);
   setHPStyleBtn(true);
-  showHint('W A S D / arrows walk · Shift run · drag to look · 1–5 the five wonders');
+
+  if (dream) {
+    startDream();
+  } else if (chooser && !station && !spawn) {
+    showHPMode(true);
+  } else {
+    showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders');
+  }
 }
+
+// ─── Poliphilo's Dream (story mode) ───────────────────────────────────────────
+
+function showHPMode(on) {
+  const el = document.getElementById('hp-mode');
+  if (el) el.style.display = on ? 'flex' : 'none';
+}
+
+window.hpExplore = () => {
+  showHPMode(false);
+  showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders');
+};
+
+window.hpDream = () => {
+  showHPMode(false);
+  startDream();
+};
+
+const dreamUI = {
+  setActive(on, finished) {
+    document.body.classList.toggle('dreaming', on);
+    if (on) {
+      hideHUD();
+      document.getElementById('annotation-panel').style.display = 'none';
+      if (state.annotationTimer) clearTimeout(state.annotationTimer);
+    } else {
+      showHPHUD('The Dream Garden of Poliphilo', null, []);
+      setHPStyleBtn(true);
+      showHint(finished
+        ? 'The dream is over — the garden is yours. W A S D to walk · 1–9 the wonders'
+        : 'W A S D / arrows walk · drag to look · 1–9 the wonders');
+    }
+  },
+  showTravel({ index, total, title }) {
+    document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
+    document.getElementById('dream-title').textContent = title;
+    document.getElementById('dream-text').innerHTML = '<span class="dp-walking">— following the path —</span>';
+    document.getElementById('dream-quote-wrap').style.display = 'none';
+    document.getElementById('dream-next').textContent = 'Hurry ▸';
+  },
+  showBeat({ index, total, title, text, quote, source, isFinal }) {
+    document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
+    document.getElementById('dream-title').textContent = title;
+    document.getElementById('dream-text').textContent = text;
+    const qw = document.getElementById('dream-quote-wrap');
+    if (quote) {
+      qw.style.display = 'block';
+      document.getElementById('dream-quote').textContent = quote;
+      document.getElementById('dream-source').textContent = source ? '— ' + source : '';
+    } else {
+      qw.style.display = 'none';
+    }
+    document.getElementById('dream-next').textContent = isFinal ? 'Wake ▸' : 'Continue ▸';
+  },
+};
+
+function startDream() {
+  const scene = state.activeScene;
+  if (!(scene instanceof HPWorldScene) || scene.dream) return;
+  // the dream begins in the dark wood
+  scene.walker.player.pos.set(0, 0, 49.5);
+  scene.walker.player.yaw = 0;
+  scene.walker.player.pitch = -0.02;
+  scene.dream = new DreamMode(scene, dreamUI, DREAM_STOPS);
+  scene.dream.start();
+}
+
+window.dreamNext = () => state.activeScene?.dream?.advance();
+window.dreamSkip = () => state.activeScene?.dream?.skipStop();
+window.dreamExit = () => state.activeScene?.dream?.end(false);
 
 // Swap between the lit garden and the 3-D woodcut without losing your place
 window.toggleHPStyle = () => {
@@ -909,6 +988,8 @@ function showMessage(title, msg) {
 // ─── Keyboard navigation ──────────────────────────────────────────────────────
 
 window.addEventListener('keydown', (e) => {
+  // Poliphilo's Dream owns the keyboard (Space/Enter advance, Esc wakes)
+  if (state.activeScene?.dream) return;
   // A running tour captures the arrow keys for stop-to-stop navigation
   if (state.tour) {
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown')   { e.preventDefault(); tourNext(); }
@@ -1013,7 +1094,10 @@ document.addEventListener('keydown', _unlockAudio);
     const embMatch  = hash.match(/emblem=(\d+)/);
     const tourMatch = hash.match(/tour=([\w-]+)/);
     const hpMatch   = hash.match(/[#&]hp(?:=(woodcut|lit))?\b/);
-    if (hpMatch) {
+    const dreamMatch = hash.match(/[#&]dream\b/);
+    if (dreamMatch) {
+      await launchHPWorld({ dream: true, chooser: false });
+    } else if (hpMatch) {
       await launchHPWorld({ style: hpMatch[1] || 'lit' });
     } else if (tourMatch && state.tours && state.tours[tourMatch[1]]) {
       await startTour(tourMatch[1]);

@@ -136,9 +136,9 @@ export function createLitStyle() {
       sun.position.set(16, 22, 10);
       sun.castShadow = true;
       sun.shadow.mapSize.set(2048, 2048);
-      sun.shadow.camera.left = -48; sun.shadow.camera.right = 48;
-      sun.shadow.camera.top  =  48; sun.shadow.camera.bottom = -48;
-      sun.shadow.camera.near = 2;   sun.shadow.camera.far = 90;
+      sun.shadow.camera.left = -58; sun.shadow.camera.right = 58;
+      sun.shadow.camera.top  =  58; sun.shadow.camera.bottom = -58;
+      sun.shadow.camera.near = 2;   sun.shadow.camera.far = 130;
       sun.shadow.bias = -0.0008;
       sun.shadow.radius = 2.5;
       scene.add(sun);
@@ -206,9 +206,9 @@ export function createWoodcutStyle() {
       sun.position.set(-20, 28, 18);
       sun.castShadow = true;
       sun.shadow.mapSize.set(2048, 2048);
-      sun.shadow.camera.left = -48; sun.shadow.camera.right = 48;
-      sun.shadow.camera.top  =  48; sun.shadow.camera.bottom = -48;
-      sun.shadow.camera.near = 2;   sun.shadow.camera.far = 100;
+      sun.shadow.camera.left = -58; sun.shadow.camera.right = 58;
+      sun.shadow.camera.top  =  58; sun.shadow.camera.bottom = -58;
+      sun.shadow.camera.near = 2;   sun.shadow.camera.far = 130;
       sun.shadow.bias = -0.0006;
       sun.shadow.radius = 3;
       scene.add(sun);

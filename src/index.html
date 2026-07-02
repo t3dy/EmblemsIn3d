@@ -312,6 +312,66 @@
       }
     }
 
+    /* ── Poliphilo's Dream (story mode) ───────────────────────────── */
+    #dream-bar-top, #dream-bar-bottom {
+      position: fixed; left: 0; right: 0; height: 64px; z-index: 25;
+      background: #050402; pointer-events: none;
+      transition: transform 0.7s ease;
+    }
+    #dream-bar-top    { top: 0;    transform: translateY(-100%); }
+    #dream-bar-bottom { bottom: 0; transform: translateY(100%); }
+    body.dreaming #dream-bar-top    { transform: translateY(0); }
+    body.dreaming #dream-bar-bottom { transform: translateY(0); }
+
+    #dream-panel {
+      display: none; position: fixed; z-index: 30;
+      left: 50%; bottom: 5.2rem; transform: translateX(-50%);
+      width: min(640px, 92vw);
+      background: rgba(8,6,3,0.93); border: 1px solid rgba(200,160,64,0.35);
+      padding: 1.2rem 1.5rem 1rem; pointer-events: all;
+      backdrop-filter: blur(3px);
+    }
+    body.dreaming #dream-panel { display: block; }
+    #dream-panel .dp-kicker {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 0.55rem;
+    }
+    #dream-panel #dream-stop  { font-size: 0.62rem; letter-spacing: 0.16em; color: #8a7a5a; text-transform: uppercase; }
+    #dream-panel #dream-title { font-size: 1.02rem; color: #e8c96a; letter-spacing: 0.04em; }
+    #dream-panel #dream-text  { font-size: 0.88rem; color: #e6dcc4; line-height: 1.7; min-height: 3.2em; }
+    #dream-panel #dream-quote-wrap { display: none; margin-top: 0.7rem; padding-left: 0.9rem; border-left: 2px solid rgba(200,160,64,0.5); }
+    #dream-panel #dream-quote  { font-style: italic; font-size: 0.86rem; color: #d8b96a; line-height: 1.6; }
+    #dream-panel #dream-source { font-size: 0.66rem; color: #8a7a5a; margin-top: 0.3rem; letter-spacing: 0.05em; }
+    #dream-panel .dp-nav { display: flex; gap: 0.5rem; margin-top: 0.9rem; justify-content: flex-end; }
+    #dream-panel .dp-nav button {
+      background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
+      font-family: inherit; font-size: 0.76rem; padding: 0.4rem 0.9rem; cursor: pointer;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    #dream-panel .dp-nav button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #dream-panel .dp-nav #dream-next { border-color: #8b5a13; color: #e8c96a; }
+    #dream-panel .dp-walking { font-size: 0.74rem; color: #8a7a5a; font-style: italic; }
+
+    /* HP mode chooser (Explore / Dream) */
+    #hp-mode {
+      display: none; position: fixed; inset: 0; z-index: 42;
+      background: rgba(4,3,1,0.82); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; pointer-events: all;
+    }
+    #hp-mode .hpm-inner { text-align: center; max-width: 760px; padding: 1rem; }
+    #hp-mode h2 { font-size: 1.5rem; font-weight: normal; letter-spacing: 0.14em; color: #e8c96a; }
+    #hp-mode .hpm-sub { font-size: 0.82rem; color: #9a8a74; margin-top: 0.6rem; line-height: 1.7; }
+    #hp-mode .hpm-cards { display: flex; gap: 1.2rem; margin-top: 1.8rem; justify-content: center; flex-wrap: wrap; }
+    #hp-mode .hpm-card {
+      width: 280px; text-align: left; cursor: pointer; color: inherit; font-family: inherit;
+      background: rgba(255,255,255,0.02); border: 1px solid #3a2a14;
+      padding: 1.4rem 1.4rem 1.2rem; transition: border-color 0.2s, transform 0.2s;
+    }
+    #hp-mode .hpm-card:hover { border-color: #c8a040; transform: translateY(-3px); }
+    #hp-mode .hpm-card h3 { font-size: 1.05rem; font-weight: normal; color: #f0e8d8; margin-bottom: 0.5rem; }
+    #hp-mode .hpm-card p  { font-size: 0.75rem; color: #8a7a64; line-height: 1.65; }
+    #hp-mode .hpm-card .hpm-kicker { font-size: 0.6rem; letter-spacing: 0.16em; color: #c8a040; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+
     /* Loading screen */
     #loading {
       position: fixed; inset: 0; z-index: 100;
@@ -388,6 +448,38 @@
   </div>
   <div id="tour-panel"></div>
 
+  <!-- Poliphilo's Dream: letterbox + narration panel + mode chooser -->
+  <div id="dream-bar-top"></div>
+  <div id="dream-bar-bottom"></div>
+  <div id="dream-panel">
+    <div class="dp-kicker"><span id="dream-title"></span><span id="dream-stop"></span></div>
+    <div id="dream-text"></div>
+    <div id="dream-quote-wrap"><div id="dream-quote"></div><div id="dream-source"></div></div>
+    <div class="dp-nav">
+      <button id="dream-exit" onclick="window.dreamExit()" title="Leave the dream (Esc)">&#10005; Wake</button>
+      <button id="dream-skip" onclick="window.dreamSkip()" title="Skip to the next scene">Skip scene &#8631;</button>
+      <button id="dream-next" onclick="window.dreamNext()" title="Continue (Space)">Continue &#9656;</button>
+    </div>
+  </div>
+  <div id="hp-mode">
+    <div class="hpm-inner">
+      <h2>The Dream Garden of Poliphilo</h2>
+      <p class="hpm-sub">The scenes of the <em>Hypnerotomachia Poliphili</em> (Venice, 1499) as one continuous world &mdash; the dark wood, the great portal, the court of Queen Eleuterylida, the three doors, the triumphs, the fountain of Venus, and the shore to Cythera.</p>
+      <div class="hpm-cards">
+        <button class="hpm-card" onclick="window.hpExplore()">
+          <span class="hpm-kicker">Walking simulator</span>
+          <h3>Walk Freely</h3>
+          <p>Explore at your own pace. W A S D / arrows to walk, Shift to run, drag to look, 1&ndash;9 to visit the wonders. Named figures &mdash; the wolf, the Queen, the five sense-nymphs, Polia &mdash; keep their places.</p>
+        </button>
+        <button class="hpm-card" onclick="window.hpDream()">
+          <span class="hpm-kicker">Story mode &middot; click to continue</span>
+          <h3>Poliphilo&rsquo;s Dream</h3>
+          <p>Follow the plot of the book in twelve scenes. Polia and the nymphs guide you through the garden while the narration follows the 1499 text, its inscriptions, and its famous acrostic.</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Fade-to-black overlay for world transitions -->
   <div id="fade-overlay" style="
     position:fixed;inset:0;z-index:50;background:#060402;
@@ -420,6 +512,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=23"></script>
+  <script type="module" src="./main.js?v=26"></script>
 </body>
 </html>

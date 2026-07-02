@@ -1,34 +1,58 @@
 // HPWorldScene.js — the Dream Garden of Poliphilo: one continuous, explorable
-// world holding every Hypnerotomachia design as a station along the book's
-// processional journey.
+// world holding the Hypnerotomachia's scenes as stations along the book's
+// processional journey, north to south:
 //
-//   gate of obelisks (start) → the Three Doors wall (f.119) → the plaza of the
-//   Elephant & Obelisk (f.25) → west: the Planetary Palace (f.88) · east: the
-//   Quinta Essentia court (f.164) → and beyond, the Fountain of Venus (f.80).
+//   the dark wood (selva oscura, with the wolf) → the Great Pyramid-Portal
+//   (with the dragon) → the Three Doors wall (f.119) → the plaza of the
+//   Elephant & Obelisk (f.25) → west: the Planetary Palace (f.88) and the
+//   court of Queen Eleuterylida with her five sense-nymphs · east: the
+//   Quinta Essentia court (f.164) and Polia's garden → the Fountain of Venus
+//   ringed by the four Triumphs of Jupiter → the shore where Cupid's boat
+//   waits for Cythera.
 //
-// First-person: WASD / arrows to walk, drag to look, 1–5 teleports between the
-// wonders. The whole world is built once against a render-style interface
-// (src/shaders/HPStyles.js) so it can be dressed as the warm lit garden or as
-// a 3-D rendering of the 1499 woodcuts (paper, hatching, ink outlines, one
-// raking shadow light — the EmblemPapercraft method).
+// First-person (src/systems/Walker.js): WASD / arrows walk, drag to look,
+// 1–9 teleport between the wonders. Named NPCs (src/systems/Cast.js) people
+// the world in free-walk; Poliphilo's Dream mode (src/systems/DreamMode.js)
+// walks the player through the story with narration.
+//
+// The whole world is built once against a render-style interface
+// (src/shaders/HPStyles.js): the warm lit garden, or a 3-D rendering of the
+// 1499 woodcuts (paper, hatching, ink outlines, one raking shadow light —
+// the EmblemPapercraft method).
 
 import * as THREE from 'three';
 import { ParticleStream } from '../systems/Particles.js?v=3';
-import { createStyle, INK } from '../shaders/HPStyles.js?v=1';
+import { Walker } from '../systems/Walker.js?v=2';
+import { makeCast } from '../systems/Cast.js?v=2';
+import { createStyle } from '../shaders/HPStyles.js?v=3';
 import { getEnvMap } from './EmblemScene.js?v=9';
 
-// pos/look are [x, z] on the ground plane; folio/emblem feed the HUD + research
+// pos/look are [x, z] on the ground plane; folio/emblem feed the HUD + research.
+// The first nine are reachable with digit keys 1–9 (journey order).
 export const HP_STATIONS = [
-  { key: 'fountain',         name: 'Fountain of Venus',    folio: 80,  emblem: 1,
-    pos: [0, -10.5],  look: [0, -20],  radius: 9, pitch: 0.16 },
-  { key: 'planetary_palace', name: 'The Planetary Palace', folio: 88,  emblem: 17,
-    pos: [-11.5, 0],  look: [-20, 0],  radius: 9 },
-  { key: 'three_doors',      name: 'The Three Doors',      folio: 119, emblem: 19,
-    pos: [0, 21],     look: [0, 12],   radius: 9, pitch: 0.05 },
-  { key: 'quinta_essentia',  name: 'Quinta Essentia',      folio: 164, emblem: 46,
-    pos: [13, 0],     look: [21, 0],   radius: 8 },
-  { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25, emblem: null,
+  { key: 'wood',             name: 'The Dark Wood',          folio: 2,   emblem: null,
+    pos: [0, 45],     look: [0, 38],   radius: 9 },
+  { key: 'portal',           name: 'The Great Portal',       folio: 13,  emblem: null,
+    pos: [0, 37],     look: [0, 26],   radius: 7, pitch: 0.2 },
+  { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62, emblem: null,
+    pos: [-12.8, 23], look: [-23.5, 18.5], radius: 9 },
+  { key: 'three_doors',      name: 'The Three Doors',        folio: 119, emblem: 19,
+    pos: [0, 21],     look: [0, 12],   radius: 6, pitch: 0.05 },
+  { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,  emblem: null,
     pos: [0, 6.5],    look: [0, 0],    radius: 6 },
+  { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,  emblem: 17,
+    pos: [-11.5, 0],  look: [-20, 0],  radius: 9 },
+  { key: 'quinta_essentia',  name: 'Quinta Essentia',        folio: 164, emblem: 46,
+    pos: [13, 0],     look: [21, 0],   radius: 8 },
+  { key: 'fountain',         name: 'Fountain of Venus',      folio: 80,  emblem: 1,
+    pos: [0, -10.5],  look: [0, -20],  radius: 8, pitch: 0.16 },
+  { key: 'cythera',          name: 'The Shore to Cythera',   folio: 193, emblem: null,
+    pos: [0, -33],    look: [0, -46],  radius: 8 },
+  // Discoverable, not on the digit row:
+  { key: 'polia',            name: "Polia's Garden",         folio: 143, emblem: null,
+    pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
+  { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158, emblem: null,
+    pos: [5.5, -4.5], look: [10.6, -9.4], radius: 5 },
 ];
 
 const EYE = 1.7;
@@ -44,9 +68,9 @@ const METALS = [
 ];
 
 const DOORS = [
-  { x: -4.6, w: 2.0, h: 3.3, title: 'Virtue',         sub: 'THE STEEP ASCENT',  color: 0x8ab0d8 },
-  { x:  0.0, w: 2.4, h: 3.9, title: 'The Middle Way', sub: 'VIA MEDIA',         color: 0xb8a848 },
-  { x:  4.6, w: 2.0, h: 3.3, title: 'Pleasure',       sub: 'THE FLOWERED GATE', color: 0xd86a5a },
+  { x: -4.6, w: 2.0, h: 3.3, title: 'Gloria Dei',   sub: 'THE STEEP ASCENT',  color: 0x8ab0d8 },
+  { x:  0.0, w: 2.4, h: 3.9, title: 'Gloria Mundi', sub: 'THE MIDDLE WAY',    color: 0xb8a848 },
+  { x:  4.6, w: 2.0, h: 3.3, title: 'Mater Amoris', sub: 'THE FLOWERED GATE', color: 0xd86a5a },
 ];
 
 const ELEMENTS = [
@@ -56,6 +80,23 @@ const ELEMENTS = [
   { deg: 243, title: 'Fire',  sub: 'IGNIS', color: 0xe06028 },
 ];
 
+// The five nymphs of the senses who receive Poliphilo at the bath (their
+// names are the Greek senses, as given in the book).
+const SENSE_NYMPHS = [
+  { name: 'Aphea',     sense: 'Touch',   robe: 0xc88a9a },
+  { name: 'Osfressia', sense: 'Smell',   robe: 0x9ab08a },
+  { name: 'Orassia',   sense: 'Sight',   robe: 0x8a9ac8 },
+  { name: 'Achoe',     sense: 'Hearing', robe: 0xc8b06a },
+  { name: 'Geussia',   sense: 'Taste',   robe: 0xb08ac0 },
+];
+
+const TRIUMPHS = [
+  { key: 'europa', title: 'Triumph of Europa', motif: 'bull',  pos: [10.6, -9.4],  color: 0xc8a040 },
+  { key: 'leda',   title: 'Triumph of Leda',   motif: 'swan',  pos: [-10.6, -9.4], color: 0xb0c0d8 },
+  { key: 'danae',  title: 'Triumph of Danaë',  motif: 'gold',  pos: [-10.6, -30.6], color: 0xe0c060 },
+  { key: 'semele', title: 'Triumph of Semele', motif: 'fire',  pos: [10.6, -30.6], color: 0xd86a3a },
+];
+
 export class HPWorldScene {
   constructor(renderer, composer, { style = 'lit', station = null, spawn = null } = {}) {
     this.renderer = renderer;
@@ -63,42 +104,45 @@ export class HPWorldScene {
     this.styleKey = style;
     this.style    = createStyle(style);
     this.scene    = new THREE.Scene();
-    this.camera   = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 220);
+    this.camera   = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 260);
     this.camera.rotation.order = 'YXZ';
     this.onStation = null;         // callback(station | null) as the player nears a wonder
 
-    // Player state — spawn override (style toggle keeps your place), else at
-    // the requested station, else outside the gate looking down the axis.
+    this.walker = new Walker(renderer, {
+      eye: EYE,
+      bounds: { minX: -36, maxX: 36, minZ: -41.5, maxZ: 50 },
+      onDigit: (n) => { const st = HP_STATIONS[n - 1]; if (st) this.teleport(st.key); },
+    });
+
     const st = station && HP_STATIONS.find(s => s.key === station);
     if (spawn) {
-      this.player = { pos: new THREE.Vector3(spawn.pos[0], 0, spawn.pos[2] ?? spawn.pos[1]), yaw: spawn.yaw, pitch: spawn.pitch };
+      this.walker.player.pos.set(spawn.pos[0], 0, spawn.pos[2] ?? spawn.pos[1]);
+      this.walker.player.yaw = spawn.yaw; this.walker.player.pitch = spawn.pitch;
     } else if (st) {
-      this.player = { pos: new THREE.Vector3(st.pos[0], 0, st.pos[1]), yaw: this._yawToward(st.pos, st.look), pitch: st.pitch ?? -0.04 };
+      this.walker.player.pos.set(st.pos[0], 0, st.pos[1]);
+      this.walker.player.yaw = this.walker.yawToward(st.pos, st.look);
+      this.walker.player.pitch = st.pitch ?? -0.04;
     } else {
-      this.player = { pos: new THREE.Vector3(0, 0, 30), yaw: 0, pitch: -0.02 };
+      this.walker.player.pos.set(0, 0, 44);   // wake in the dark wood
+      this.walker.player.yaw = 0;
+      this.walker.player.pitch = -0.02;
     }
 
     this._t = 0;
     this._streams = [];
-    this._keys = new Set();
-    this._colliders = [];          // { x, z, r }
-    this._walls = [];              // { x0, x1, z0, z1 }
-    this._orbs = [];               // bobbing pedestal orbs (palace + quinta elements)
-    this._pulses = [];             // point lights that breathe (lit style)
-    this._portals = [];            // shimmering door veils (lit style)
+    this._orbs = [];
+    this._pulses = [];
+    this._portals = [];
     this._quinta = null;
     this._venus = null;
-    this._water = [];
-    this._bob = 0;
-    this._tp = null;               // in-flight teleport tween
+    this._boat = null;
+    this._floats = [];
+    this._npcs = [];               // { g, phase, sway }
+    this.npcs = {};                // key → group (for the dream's cameos)
     this._stTimer = 0;
-    this._nearStation = undefined; // undefined = not yet evaluated
+    this._nearStation = undefined;
     this._disp = [];
-  }
-
-  _yawToward(from, to) {
-    // forward = (-sin yaw, 0, -cos yaw)
-    return Math.atan2(-(to[0] - from[0]), -(to[1] - from[1]));
+    this.dream = null;             // set by main when Dream mode starts
   }
 
   async build() {
@@ -113,6 +157,7 @@ export class HPWorldScene {
       this.scene.environmentIntensity = 0.3;
     }
     S.setupLights(this.scene);
+    this.cast = makeCast(S);
 
     // Shared materials
     this._stoneMat = S.mat({ color: 0x8a7a5a, roughness: 0.85 });
@@ -122,19 +167,24 @@ export class HPWorldScene {
     this._leafMat  = S.mat({ color: 0x1a3010, roughness: 0.9 });
 
     this._buildGround();
-    this._buildGate();
+    this._buildWood();
+    this._buildGreatPortal();
+    this._buildCourt();
+    this._buildPoliaGarden();
     this._buildDoorsWall();
     this._buildElephant();
     this._buildPalace();
     this._buildQuinta();
     this._buildFountain();
+    this._buildTriumphs();
+    this._buildCythera();
     this._buildTrees();
 
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
 
-    this._initControls();
-    this._applyCamera();
+    this.walker.attach();
+    this.walker.applyTo(this.camera);
   }
 
   // ── Small helpers ─────────────────────────────────────────────────────────
@@ -152,7 +202,23 @@ export class HPWorldScene {
     return m;
   }
 
-  _circleCol(x, z, r) { this._colliders.push({ x, z, r }); }
+  _circleCol(x, z, r) { this.walker.colliders.push({ x, z, r }); }
+  _wallCol(x0, x1, z0, z1) { this.walker.walls.push({ x0, x1, z0, z1 }); }
+
+  // Place a named NPC: registers for idle sway and the npcs registry
+  _npc(key, group, x, z, faceYaw = 0, { label = null, sub = '', labelY = 2.0, sway = 0.05 } = {}) {
+    group.position.set(x, 0, z);
+    group.rotation.y = faceYaw;
+    this.scene.add(group);
+    if (label) {
+      const l = this.cast.label(label, { sub });
+      l.position.y = labelY;
+      group.add(l);
+    }
+    this.npcs[key] = group;
+    this._npcs.push({ g: group, phase: this._npcs.length * 1.7, baseY: group.rotation.y, sway });
+    return group;
+  }
 
   _plaqueTexture({ glyph = null, glyphColor = null, main, sub }, wide = false) {
     const P = this.style.plaqueColors;
@@ -184,33 +250,97 @@ export class HPWorldScene {
     return this._m(new THREE.PlaneGeometry(w, h), mat, x, y, z, { ry, cast: false, receive: false });
   }
 
-  // ── Ground, paths, perimeter ──────────────────────────────────────────────
+  // ── Ground, paths ─────────────────────────────────────────────────────────
 
   _buildGround() {
     const S = this.style;
     const groundMat = S.key === 'woodcut'
       ? S.mat({ tone: 0.10, rim: 0 })
       : S.mat({ color: 0x223014, roughness: 0.98, metalness: 0.0 });
-    this._m(new THREE.PlaneGeometry(110, 110, 4, 4), groundMat, 0, 0, 0, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(130, 130, 4, 4), groundMat, 0, 0, -2, { rx: -Math.PI / 2, cast: false });
 
     const pathMat = S.key === 'woodcut'
       ? S.mat({ tone: 0.03, rim: 0 })
       : S.mat({ color: 0x6a5a40, roughness: 0.92 });
 
-    // Main processional axis, cross paths to the two courts, plaza + grove discs
-    this._m(new THREE.PlaneGeometry(3.4, 64), pathMat, 0, 0.012, 1, { rx: -Math.PI / 2, cast: false });
+    // Main processional axis (wood → shore), two cross paths to the courts
+    this._m(new THREE.PlaneGeometry(3.4, 86), pathMat, 0, 0.012, 7, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.PlaneGeometry(38, 2.8), pathMat, 0, 0.012, 0, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(38, 2.8), pathMat, 0, 0.012, 20, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(7, 40), pathMat, 0, 0.014, 0, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(8.5, 40), pathMat, 0, 0.014, -20, { rx: -Math.PI / 2, cast: false });
   }
 
-  _buildGate() {
-    // Twin obelisks flanking the entrance, hedge walls running outward
-    for (const s of [-1, 1]) {
-      this._obelisk(s * 3.4, 26, 1.3, 3.4);
-      this._m(new THREE.BoxGeometry(13, 1.1, 0.7), this._hedgeMat, s * 10.4, 0.55, 26);
-      this._walls.push({ x0: s * 10.4 - 6.5, x1: s * 10.4 + 6.5, z0: 25.65, z1: 26.35 });
+  // ── The Dark Wood (the selva oscura where the dream begins) ──────────────
+
+  _buildWood() {
+    const S = this.style;
+    // A darker floor under the wood
+    const duffMat = S.key === 'woodcut'
+      ? S.mat({ tone: 0.2, rim: 0 })
+      : S.mat({ color: 0x141c0c, roughness: 0.98 });
+    this._m(new THREE.PlaneGeometry(70, 22), duffMat, 0, 0.008, 43, { rx: -Math.PI / 2, cast: false });
+
+    // Dense deterministic scatter of trees, keeping the path clear
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < 64; i++) {
+      const x = (rnd(i, 1) - 0.5) * (i % 3 ? 30 : 62);  // dense core, scattered fringe
+      const z = 34.5 + rnd(i, 2) * 16;
+      if (Math.abs(x) < 2.7) continue;                  // the path survives
+      const s = 0.9 + rnd(i, 3) * 0.8;
+      const kind = rnd(i, 4) < 0.6 ? 'cypress' : 'broad';
+      const t = this.cast.props.tree(kind, s * 1.3);
+      t.position.set(x, 0, z);
+      t.rotation.y = rnd(i, 5) * Math.PI;
+      this.scene.add(t);
+      this._circleCol(x, z, 0.5);
     }
+
+    // The hungry wolf, watching the path
+    const wolf = this.cast.animals.wolf(1.15);
+    this._npc('wolf', wolf, 4.2, 40.5, -2.2, { label: 'The Wolf', labelY: 1.5, sway: 0.03 });
+
+    // A small spring (Poliphilo's thirst)
+    const spring = this.cast.props.pool(1.1);
+    spring.position.set(-3.6, 0, 37.5);
+    this.scene.add(spring);
+    this._circleCol(-3.6, 37.5, 0.9);
+  }
+
+  // ── The Great Portal (the colossal pyramid-gate) ──────────────────────────
+
+  _buildGreatPortal() {
+    const Z = 26;
+    // Massive piers flanking a tall passage
+    for (const s of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(7.2, 6.4, 2.2), this._stoneMat, s * 5.4, 3.2, Z, { outline: true });
+      this._wallCol(s * 5.4 - 3.6, s * 5.4 + 3.6, Z - 1.1, Z + 1.1);
+      // pier reliefs
+      this._m(new THREE.BoxGeometry(0.5, 5.2, 0.3), this._darkStoneMat, s * 2.4, 2.6, Z + 1.15);
+    }
+    // Lintel + frieze
+    this._m(new THREE.BoxGeometry(18, 1.4, 2.4), this._stoneMat, 0, 7.1, Z);
+    this._plaque({ main: 'FESTINA LENTE', sub: 'THE HIEROGLYPHS OF THE GREAT PORTAL' }, 4.6, 1.1, 0, 6.4, Z + 1.25, 0, true);
+
+    // Stepped pyramid above, crowned by an obelisk
+    let w = 15;
+    for (let i = 0; i < 4; i++) {
+      this._m(new THREE.BoxGeometry(w, 0.85, 2.4 - i * 0.3), this._stoneMat, 0, 8.2 + i * 0.85, Z);
+      w *= 0.72;
+    }
+    this._m(new THREE.CylinderGeometry(0.12, 0.5, 4.2, 4), this._stoneMat, 0, 13.5, Z, { outline: true });
+    this._m(new THREE.SphereGeometry(0.14, 10, 8), this._stoneMat, 0, 15.7, Z);
+
+    // Flanking obelisks and hedge walls
+    for (const s of [-1, 1]) {
+      this._obelisk(s * 11.2, Z, 1.3, 3.4);
+      this._m(new THREE.BoxGeometry(9, 1.1, 0.7), this._hedgeMat, s * 17.8, 0.55, Z);
+      this._wallCol(s * 17.8 - 4.5, s * 17.8 + 4.5, Z - 0.35, Z + 0.35);
+    }
+
+    // The dragon that drove Poliphilo through the vaults
+    const dragon = this.cast.animals.dragon(1.6);
+    this._npc('dragon', dragon, 3.4, 23.2, 2.6, { label: 'The Dragon', labelY: 1.6, sway: 0.06 });
   }
 
   _obelisk(x, z, base, height) {
@@ -220,24 +350,102 @@ export class HPWorldScene {
     this._circleCol(x, z, base * 0.7);
   }
 
+  // ── The Court of Queen Eleuterylida (free will) ───────────────────────────
+
+  _buildCourt() {
+    const CX = -19, CZ = 20;
+    this._m(new THREE.BoxGeometry(14, 0.22, 11), this._darkStoneMat, CX - 1, 0.11, CZ, { cast: false });
+
+    // Throne on a dais, the Queen enthroned
+    this._m(new THREE.CylinderGeometry(1.6, 1.9, 0.35, 18), this._stoneMat, CX - 4.5, 0.18, CZ, { cast: false });
+    this._m(new THREE.BoxGeometry(1.0, 0.55, 0.9), this._stoneMat, CX - 4.7, 0.62, CZ);
+    this._m(new THREE.BoxGeometry(1.0, 1.7, 0.22), this._stoneMat, CX - 5.2, 1.2, CZ, { outline: true });
+    this._circleCol(CX - 4.7, CZ, 1.4);
+    const queen = this.cast.figure({ h: 1.0, robe: 0xc8a030, pose: 'offer', crowned: true });
+    this._npc('queen', queen, CX - 4.35, CZ, Math.PI / 2, { label: 'Eleuterylida', sub: 'QUEEN · FREE WILL', labelY: 2.1, sway: 0.02 });
+    queen.position.y = 0.62;   // seated on the throne
+
+    // The five nymphs of the senses, arced before the throne
+    SENSE_NYMPHS.forEach((n, i) => {
+      const a = (-0.65 + (i / 4) * 1.3);
+      const x = CX - 4.5 + Math.cos(a) * 3.6, z = CZ + Math.sin(a) * 3.6;
+      const g = this.cast.nymph({ name: n.name, robe: n.robe, h: 0.95, pose: i === 2 ? 'offer' : 'stand' });
+      this._npc('nymph_' + n.name.toLowerCase(), g, x, z, Math.PI / 2 + a, { label: n.name, sub: n.sense.toUpperCase(), labelY: 2.0 });
+      this._circleCol(x, z, 0.4);
+    });
+
+    // The bath of the nymphs
+    const bath = this.cast.props.pool(2.4);
+    bath.position.set(CX + 3.5, 0, CZ + 2.8);
+    this.scene.add(bath);
+    this._circleCol(CX + 3.5, CZ + 2.8, 1.7);
+
+    // Fountain jets over the bath (lit sparkle)
+    const stream = new ParticleStream({
+      count: 40, source: new THREE.Vector3(CX + 3.5, 1.6, CZ + 2.8),
+      target: new THREE.Vector3(CX + 3.9, 0.2, CZ + 3.1),
+      color: 0xd0e8ff, size: 0.03, speed: 0.8, arc: 0.2,
+    });
+    stream.opacity = 0.5; stream.active = true;
+    this.style.tuneStream(stream);
+    this.scene.add(stream.points);
+    this._streams.push(stream);
+  }
+
+  // ── Polia's Garden (the nymph with the torch) ─────────────────────────────
+
+  _buildPoliaGarden() {
+    const CX = 19, CZ = 20;
+    this._m(new THREE.BoxGeometry(11, 0.22, 10), this._darkStoneMat, CX, 0.11, CZ, { cast: false });
+
+    // Pergola
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const c = this.cast.props.column(1.7);
+      c.position.set(CX + sx * 2.4, 0, CZ + sz * 2.4);
+      this.scene.add(c);
+      this._circleCol(CX + sx * 2.4, CZ + sz * 2.4, 0.4);
+    }
+    for (const sz of [-1, 1]) this._m(new THREE.BoxGeometry(5.6, 0.22, 0.4), this._trunkMat, CX, 3.0, CZ + sz * 2.4);
+    for (const sx of [-1, 1]) this._m(new THREE.BoxGeometry(0.4, 0.22, 5.6), this._trunkMat, CX + sx * 2.4, 3.0, CZ);
+    this._m(new THREE.BoxGeometry(6.2, 0.14, 6.2), this._hedgeMat, CX, 3.2, CZ, { cast: false });
+
+    // Polia and Poliphilo, and her torch
+    const polia = this.cast.figure({ h: 1.0, robe: 0xe8ddc0, pose: 'offer' });
+    this._npc('polia', polia, CX + 0.9, CZ, Math.PI / 2, { label: 'Polia', sub: 'THE LONG-SOUGHT', labelY: 2.1, sway: 0.03 });
+    const poliphilo = this.cast.figure({ h: 1.0, robe: 0x3a3a5a, pose: 'reach' });
+    this._npc('poliphilo', poliphilo, CX - 0.9, CZ, -Math.PI / 2, { label: 'Poliphilo', sub: 'THE DREAMER', labelY: 2.1, sway: 0.03 });
+
+    // The torch between them
+    this._m(new THREE.CylinderGeometry(0.05, 0.07, 1.1, 8), this._trunkMat, CX, 0.55, CZ - 0.8);
+    const flame = this.cast.props.fire(0.5);
+    flame.position.set(CX, 1.1, CZ - 0.8);
+    this.scene.add(flame);
+    this._torch = flame;
+    const tl = this.style.pointLight(0xff9040, 1.4, 6);
+    if (tl) { tl.position.set(CX, 1.6, CZ - 0.8); this.scene.add(tl); this._pulses.push({ pl: tl, base: 1.4, phase: 0.8 }); }
+
+    // Rose hedges
+    for (const sz of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(8, 0.8, 0.5), this._hedgeMat, CX, 0.4, CZ + sz * 4.6);
+      this._wallCol(CX - 4, CX + 4, CZ + sz * 4.6 - 0.25, CZ + sz * 4.6 + 0.25);
+    }
+  }
+
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
 
   _buildDoorsWall() {
     const S = this.style;
     const Z = 12, WALL_H = 4.8;
 
-    // Wall segments between the openings
     const edges = [-14, ...DOORS.flatMap(d => [d.x - d.w / 2 - 0.6, d.x + d.w / 2 + 0.6]), 14];
     for (let i = 0; i < edges.length; i += 2) {
       const a = edges[i], b = edges[i + 1];
       this._m(new THREE.BoxGeometry(b - a, WALL_H, 0.7), this._stoneMat, (a + b) / 2, WALL_H / 2, Z);
-      this._walls.push({ x0: a, x1: b, z0: Z - 0.35, z1: Z + 0.35 });
+      this._wallCol(a, b, Z - 0.35, Z + 0.35);
     }
-    // Cornice
     this._m(new THREE.BoxGeometry(28.6, 0.35, 1.0), this._darkStoneMat, 0, WALL_H + 0.17, Z);
 
     DOORS.forEach((d, i) => {
-      // Fill above each opening + jamb trims
       const over = WALL_H - d.h;
       this._m(new THREE.BoxGeometry(d.w + 1.2, over, 0.7), this._stoneMat, d.x, d.h + over / 2, Z);
       for (const s of [-1, 1]) {
@@ -245,28 +453,30 @@ export class HPWorldScene {
       }
       this._m(new THREE.BoxGeometry(d.w + 0.8, 0.3, 0.85), this._darkStoneMat, d.x, d.h + 0.15, Z);
 
-      // Title plaque over the door, facing the approaching dreamer (+z side)
       this._plaque({ main: d.title, sub: d.sub, glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
         1.9, 0.55, d.x, d.h + 0.75, Z + 0.42, 0, true);
 
-      // Lit style: a shimmering coloured veil you pass through; woodcut: open air
       const pm = S.portalMat(d.color);
       if (pm) {
-        const portal = this._m(new THREE.PlaneGeometry(d.w, d.h - 0.1), pm, d.x, (d.h - 0.1) / 2, Z, { cast: false, receive: false });
+        this._m(new THREE.PlaneGeometry(d.w, d.h - 0.1), pm, d.x, (d.h - 0.1) / 2, Z, { cast: false, receive: false });
         this._portals.push({ mat: pm, base: pm.opacity, phase: i * 1.3 });
         const pl = S.pointLight(d.color, 1.2, 6);
         if (pl) { pl.position.set(d.x, 1.4, Z + 1.0); this.scene.add(pl); this._pulses.push({ pl, base: 1.2, phase: i * 1.3 }); }
-        void portal;
       }
     });
 
-    // Pediment over the central door — a flattened triangular prism whose apex
-    // points up (thetaStart π puts one triangle vertex at local -z → world +y
-    // once the prism is laid on its side).
+    // Pediment over the central door — apex up (thetaStart π puts a vertex at
+    // local -z → world +y once the prism is laid on its side)
     const ped = this._m(
       new THREE.CylinderGeometry(1.6, 1.6, 0.55, 3, 1, false, Math.PI),
       this._stoneMat, 0, WALL_H + 0.55, Z, { rx: Math.PI / 2, outline: true });
-    ped.scale.set(2.0, 1, 0.62); // wide along the wall, squat in height
+    ped.scale.set(2.0, 1, 0.62);
+
+    // Logistica and Thelemia, Poliphilo's guides to the choice
+    const logistica = this.cast.nymph({ name: 'Logistica', robe: 0x7a90b8, h: 0.95, pose: 'point' });
+    this._npc('logistica', logistica, -2.6, 15.5, 0.6, { label: 'Logistica', sub: 'REASON', labelY: 2.0 });
+    const thelemia = this.cast.nymph({ name: 'Thelemia', robe: 0xc87a8a, h: 0.95, pose: 'beckon' });
+    this._npc('thelemia', thelemia, 2.6, 15.5, -0.6, { label: 'Thelemia', sub: 'DESIRE', labelY: 2.0 });
   }
 
   // ── The Elephant & Obelisk (f.25) — plaza centrepiece ─────────────────────
@@ -278,24 +488,18 @@ export class HPWorldScene {
     g.rotation.y = Math.PI; // head toward the arriving dreamer (+z)
     this.scene.add(g);
 
-    // Plinth
     this._m(new THREE.BoxGeometry(3.4, 0.7, 2.2), this._stoneMat, 0, 0.35, 0, { parent: g, outline: true });
 
-    // Body (facing -z, toward the fountain)
     const body = this._m(new THREE.SphereGeometry(0.85, 20, 14), eleMat, 0, 2.0, 0, { parent: g, outline: true });
     body.scale.set(1.0, 0.85, 1.5);
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
       this._m(new THREE.CylinderGeometry(0.16, 0.19, 1.1, 10), eleMat, sx * 0.42, 1.25, sz * 0.6, { parent: g });
     }
-    const head = this._m(new THREE.SphereGeometry(0.5, 16, 12), eleMat, 0, 2.25, -1.35, { parent: g, outline: true });
-    void head;
-    for (const s of [-1, 1]) { // ears
-      const ear = this._m(new THREE.CircleGeometry(0.34, 14), S.mat({ color: 0x6a6058, tone: 0.12, side: THREE.DoubleSide }), s * 0.45, 2.35, -1.25, { ry: s * Math.PI / 2.6, cast: false, parent: g });
-      void ear;
-      // tusks
+    this._m(new THREE.SphereGeometry(0.5, 16, 12), eleMat, 0, 2.25, -1.35, { parent: g, outline: true });
+    for (const s of [-1, 1]) {
+      this._m(new THREE.CircleGeometry(0.34, 14), S.mat({ color: 0x6a6058, tone: 0.12, side: THREE.DoubleSide }), s * 0.45, 2.35, -1.25, { ry: s * Math.PI / 2.6, cast: false, parent: g });
       this._m(new THREE.ConeGeometry(0.05, 0.5, 8), eleMat, s * 0.2, 1.85, -1.72, { rx: -Math.PI / 2.4, parent: g });
     }
-    // Trunk — a curved tube
     const trunkCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 2.05, -1.72),
       new THREE.Vector3(0, 1.62, -1.98),
@@ -304,22 +508,19 @@ export class HPWorldScene {
     ]);
     this._m(new THREE.TubeGeometry(trunkCurve, 12, 0.09, 8), eleMat, 0, 0, 0, { parent: g });
 
-    // The obelisk it carries
     this._m(new THREE.BoxGeometry(0.95, 0.22, 0.95), this._stoneMat, 0, 2.85, 0, { parent: g });
     this._m(new THREE.CylinderGeometry(0.09, 0.30, 2.5, 4), this._stoneMat, 0, 4.2, 0, { parent: g, outline: true });
     this._m(new THREE.SphereGeometry(0.1, 10, 8), this._stoneMat, 0, 5.5, 0, { parent: g });
 
-    this._walls.push({ x0: -1.8, x1: 1.8, z0: -1.3, z1: 1.3 });
+    this._wallCol(-1.8, 1.8, -1.3, 1.3);
   }
 
   // ── The Planetary Palace (f.88) — west court ──────────────────────────────
 
   _buildPalace() {
     const S = this.style;
-    // Court floor
     this._m(new THREE.BoxGeometry(15, 0.24, 11), this._darkStoneMat, -20.5, 0.12, 0, { cast: false });
 
-    // Colonnades with entablature
     for (const side of [-1, 1]) {
       for (let i = 0; i < 6; i++) {
         const x = -26 + i * 2.2, z = side * 4.2;
@@ -331,7 +532,6 @@ export class HPWorldScene {
       this._m(new THREE.BoxGeometry(12.6, 0.5, 0.95), this._darkStoneMat, -20.5, 4.63, side * 4.2);
     }
 
-    // Seven planetary stations, Chaldean order, along the north side of the hall
     METALS.forEach((m, i) => {
       const x = -26 + i * (11 / 6), z = -1.9;
       this._m(new THREE.CylinderGeometry(0.34, 0.46, 1.3, 16), this._stoneMat, x, 0.89, z);
@@ -353,13 +553,11 @@ export class HPWorldScene {
     const S = this.style;
     const CX = 21.5, CZ = 0;
 
-    // Stepped dais + altar
     this._m(new THREE.CylinderGeometry(2.6, 2.9, 0.28, 28), this._stoneMat, CX, 0.14, CZ, { cast: false });
     this._m(new THREE.CylinderGeometry(1.9, 2.2, 0.28, 24), this._stoneMat, CX, 0.42, CZ, { cast: false });
     this._m(new THREE.CylinderGeometry(0.8, 1.0, 1.3, 20), this._stoneMat, CX, 1.2, CZ, { outline: true });
     this._circleCol(CX, CZ, 2.4);
 
-    // The quintessence — a slowly turning dodecahedron above the altar
     const dod = this._m(new THREE.DodecahedronGeometry(0.82, 0),
       S.key === 'woodcut' ? S.glowMat() : S.glowMat({ color: 0xffd24a, emissive: 0xc89020, emissiveIntensity: 1.1, metalness: 0.9, roughness: 0.15 }),
       CX, 3.2, CZ, { outline: 1.05 });
@@ -367,7 +565,6 @@ export class HPWorldScene {
     if (dl) { dl.position.set(CX, 3.2, CZ + 0.5); this.scene.add(dl); }
     this._quinta = { dod, dl };
 
-    // Woodcut glory — radiating ink rays, the way the plates draw radiance
     if (S.rays) {
       const pts = [];
       for (let i = 0; i < 16; i++) {
@@ -382,7 +579,6 @@ export class HPWorldScene {
       this._quinta.rays = rays;
     }
 
-    // The four elements, ranged in an arc on the approach side
     ELEMENTS.forEach((el, i) => {
       const a = (el.deg * Math.PI) / 180;
       const x = CX + Math.cos(a) * 4.6, z = CZ + Math.sin(a) * 4.6;
@@ -401,7 +597,6 @@ export class HPWorldScene {
       this._circleCol(x, z, 0.6);
     });
 
-    // Twin obelisks behind the altar
     this._obelisk(25.5, -3.4, 1.1, 3.0);
     this._obelisk(25.5,  3.4, 1.1, 3.0);
   }
@@ -413,23 +608,20 @@ export class HPWorldScene {
     const FX = 0, FZ = -20;
     const waterMat = S.waterMat();
 
-    // Octagonal plinth + great basin
     this._m(new THREE.CylinderGeometry(3.6, 3.9, 0.5, 8), this._stoneMat, FX, 0.25, FZ, { cast: false, outline: true });
     this._m(new THREE.CylinderGeometry(3.15, 3.3, 0.95, 28, 1, true), this._stoneMat, FX, 0.95, FZ);
     this._m(new THREE.TorusGeometry(3.15, 0.14, 10, 36), this._stoneMat, FX, 1.42, FZ, { rx: Math.PI / 2, outline: true });
-    this._water.push(this._m(new THREE.CircleGeometry(3.05, 36), waterMat, FX, 1.3, FZ, { rx: -Math.PI / 2, cast: false }));
+    this._m(new THREE.CircleGeometry(3.05, 36), waterMat, FX, 1.3, FZ, { rx: -Math.PI / 2, cast: false });
     this._circleCol(FX, FZ, 4.1);
 
-    // Central stem + two upper tiers
     this._m(new THREE.CylinderGeometry(0.2, 0.26, 3.4, 12), this._stoneMat, FX, 2.2, FZ);
     const tiers = [{ r: 1.5, y: 2.6 }, { r: 0.85, y: 3.6 }];
     for (const t of tiers) {
       this._m(new THREE.CylinderGeometry(t.r, t.r * 0.55, 0.35, 24, 1, true), this._stoneMat, FX, t.y - 0.1, FZ);
       this._m(new THREE.TorusGeometry(t.r, 0.09, 8, 30), this._stoneMat, FX, t.y + 0.08, FZ, { rx: Math.PI / 2 });
-      this._water.push(this._m(new THREE.CircleGeometry(t.r * 0.92, 28), waterMat, FX, t.y + 0.05, FZ, { rx: -Math.PI / 2, cast: false }));
+      this._m(new THREE.CircleGeometry(t.r * 0.92, 28), waterMat, FX, t.y + 0.05, FZ, { rx: -Math.PI / 2, cast: false });
     }
 
-    // Venus atop — offering pose over the waters
     const vMat = S.mat({ color: 0xd4c0a0, roughness: 0.6, metalness: 0.15 });
     const v = new THREE.Group();
     this._m(new THREE.CylinderGeometry(0.3, 0.36, 0.22, 12), this._stoneMat, 0, 0, 0, { parent: v });
@@ -443,7 +635,6 @@ export class HPWorldScene {
     this.scene.add(v);
     this._venus = v;
 
-    // Cascades: tier → tier → basin, plus a fine spray
     const specs = [
       { from: [FX, 3.72, FZ], to: [FX + 0.35, 2.7, FZ + 0.3], count: 60, size: 0.03, speed: 0.9, arc: 0.05 },
       { from: [FX, 2.68, FZ], to: [FX + 0.7, 1.35, FZ - 0.5], count: 90, size: 0.04, speed: 0.75, arc: 0.15 },
@@ -463,11 +654,105 @@ export class HPWorldScene {
       this._streams.push(stream);
     }
 
-    // Water glow (lit style only)
     const wl = S.pointLight(0x80c0ff, 1.6, 8);
     if (wl) { wl.position.set(FX, 1.8, FZ); this.scene.add(wl); this._pulses.push({ pl: wl, base: 1.6, phase: 0 }); }
     const vl = S.pointLight(0xc8a44a, 1.1, 6);
     if (vl) { vl.position.set(FX, 4.6, FZ); this.scene.add(vl); this._pulses.push({ pl: vl, base: 1.1, phase: 1.7 }); }
+  }
+
+  // ── The Four Triumphs of Jupiter — floats ringing the grove ──────────────
+
+  _buildTriumphs() {
+    for (const t of TRIUMPHS) {
+      const [x, z] = t.pos;
+      const g = new THREE.Group();
+      const chariot = this.cast.props.chariot(1.5, { color: t.color });
+      g.add(chariot);
+
+      // Team of two horses hitched ahead
+      for (const s of [-1, 1]) {
+        const h = this.cast.animals.horse(0.95);
+        h.position.set(s * 0.7, 0.0, -2.6);
+        g.add(h);
+      }
+      // Motif on the platform
+      let motif;
+      if (t.motif === 'bull') { motif = this.cast.animals.bull(1.0); motif.position.y = 0.9; const r = this.cast.nymph({ robe: 0xe8ddc0, h: 0.7 }); r.position.set(0, 1.45, 0.1); g.add(r); }
+      else if (t.motif === 'swan') { motif = this.cast.animals.swan(1.8); motif.position.y = 0.9; }
+      else if (t.motif === 'gold') {
+        motif = this.cast.props.tower(0.8); motif.position.y = 0.9;
+        for (let i = 0; i < 6; i++) {
+          const d = this._m(new THREE.SphereGeometry(0.05, 8, 6),
+            this.style.mat({ color: 0xffd24a, emissive: 0xa07010, emissiveIntensity: 0.8, metalness: 0.9, roughness: 0.2 }),
+            (Math.sin(i * 2.4) * 0.4), 2.1 - (i % 3) * 0.35, (Math.cos(i * 1.7) * 0.4), { parent: g, cast: false });
+          void d;
+        }
+      }
+      else { motif = this.cast.props.fire(1.2); motif.position.y = 0.75; const f = this.cast.figure({ h: 0.7, robe: 0xc86a50 }); f.position.set(0, 0.9, 0.5); g.add(f); }
+      g.add(motif);
+
+      const lbl = this.cast.label(t.title, { sub: 'TRIUMPHUS' });
+      lbl.position.set(0, 3.4, 0);
+      g.add(lbl);
+
+      g.position.set(x, 0, z);
+      // face along the ring, counter-clockwise around the fountain
+      g.rotation.y = Math.atan2(-(x - 0), -(z - -20)) + Math.PI / 2;
+      this.scene.add(g);
+      this._floats.push({ g, wheels: [], phase: Math.random() * 6 });
+      this._wallCol(x - 1.3, x + 1.3, z - 1.6, z + 1.6);
+    }
+  }
+
+  // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
+
+  _buildCythera() {
+    const S = this.style;
+    // The sea
+    const sea = this._m(new THREE.PlaneGeometry(130, 26), S.waterMat(), 0, 0.03, -50, { rx: -Math.PI / 2, cast: false });
+    void sea;
+    // Sand strip
+    const sandMat = S.key === 'woodcut' ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0x9a8a64, roughness: 0.95 });
+    this._m(new THREE.PlaneGeometry(130, 4.5), sandMat, 0, 0.016, -35.5, { rx: -Math.PI / 2, cast: false });
+
+    // Pier out over the water
+    for (let i = 0; i < 4; i++) {
+      this._m(new THREE.BoxGeometry(2.2, 0.12, 1.6), this._trunkMat, 0, 0.22, -38.2 - i * 1.7);
+      for (const s of [-1, 1]) this._m(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 6), this._trunkMat, s * 0.95, 0.05, -38.2 - i * 1.7);
+    }
+    // Sea rails: keep the walker on the pier
+    this._wallCol(-30, -1.2, -37, -60);
+    this._wallCol(1.2, 30, -37, -60);
+    this._wallCol(-2, 2, -44.6, -60);
+
+    // Cupid's boat, riding at the pier's end
+    const boat = this.cast.props.boat(2.0);
+    boat.position.set(0, 0.1, -46.5);
+    this.scene.add(boat);
+    this._boat = boat;
+    const cupid = this.cast.figure({ h: 0.62, winged: true, pose: 'beckon' });
+    cupid.position.set(0, 1.15, -45.6);
+    boat.userData.cupid = cupid;
+    this.scene.add(cupid);
+    const cl = this.cast.label('Cupid', { sub: 'THE FERRYMAN' });
+    cl.position.set(0, 1.5, 0);
+    cupid.add(cl);
+    this.npcs.cupid = cupid;
+
+    // Distant Cythera: a mound crowned by the amphitheatre of Venus
+    const isle = new THREE.Group();
+    const im = S.key === 'woodcut' ? S.mat({ tone: 0.12 }) : S.mat({ color: 0x2a3a22, roughness: 0.95 });
+    const mound = this._m(new THREE.ConeGeometry(9, 3.2, 24), im, 0, 1.2, 0, { parent: isle });
+    mound.scale.y = 0.7;
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      this._m(new THREE.CylinderGeometry(0.16, 0.2, 1.6, 8), this._stoneMat, Math.cos(a) * 3.4, 3.0, Math.sin(a) * 3.4, { parent: isle });
+    }
+    this._m(new THREE.TorusGeometry(3.4, 0.18, 8, 28), this._stoneMat, 0, 3.9, 0, { rx: Math.PI / 2, parent: isle });
+    const gl = S.pointLight(0xffd060, 2.0, 20);
+    if (gl) { gl.position.set(0, 4.5, 0); isle.add(gl); }
+    isle.position.set(0, 0, -58);
+    this.scene.add(isle);
   }
 
   // ── Garden fabric ─────────────────────────────────────────────────────────
@@ -479,153 +764,52 @@ export class HPWorldScene {
       this._circleCol(x, z, 0.5 * s);
     };
 
-    // Ring around the fountain grove (gap on the approach side, +z)
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
       if (Math.abs(a - Math.PI / 2) < 0.38) continue;
+      if (Math.abs(a - Math.PI * 1.5) < 0.38) continue;   // open toward the shore too
       put(Math.cos(a) * 11.5, -20 + Math.sin(a) * 11.5, 1.1);
     }
-    // Avenue pairs along the approach
-    for (const z of [17, 21.5]) { put(-5.2, z); put(5.2, z); }
-    // Flanking the cross paths
+    for (const z of [15.5, 24.5]) { put(-5.2, z); put(5.2, z); }
     for (const s of [-1, 1]) {
       put(s * 9, 5.4); put(s * 9, -5.4);
       put(s * 13.5, 5.8, 0.9); put(s * 13.5, -5.8, 0.9);
     }
-    // Behind the two courts
     put(-29, 7, 1.2); put(-29, -7, 1.2);
     put(28, 8, 1.2); put(28, -8, 1.2);
+    put(-27, 15, 1.0); put(27, 14.5, 1.0);
 
-    // Low hedges framing the plaza quadrants
     for (const [x, z, w, d] of [[-8.5, 8.8, 6, 0.5], [8.5, 8.8, 6, 0.5], [-8.5, -8.8, 6, 0.5], [8.5, -8.8, 6, 0.5]]) {
       this._m(new THREE.BoxGeometry(w, 0.9, d), this._hedgeMat, x, 0.45, z);
-      this._walls.push({ x0: x - w / 2, x1: x + w / 2, z0: z - d / 2, z1: z + d / 2 });
+      this._wallCol(x - w / 2, x + w / 2, z - d / 2, z + d / 2);
     }
   }
 
-  // ── First-person controls ─────────────────────────────────────────────────
-
-  _initControls() {
-    const el = this.renderer.domElement;
-    this._onKeyDown = (e) => {
-      const d = e.code.match(/^Digit([1-5])$/);
-      if (d) { this.teleport(HP_STATIONS[+d[1] - 1].key); return; }
-      this._keys.add(e.code);
-    };
-    this._onKeyUp = (e) => this._keys.delete(e.code);
-    window.addEventListener('keydown', this._onKeyDown);
-    window.addEventListener('keyup', this._onKeyUp);
-
-    this._dragging = false;
-    this._onPD = (e) => {
-      this._dragging = true; this._px = e.clientX; this._py = e.clientY;
-      el.setPointerCapture?.(e.pointerId);
-    };
-    this._onPM = (e) => {
-      if (!this._dragging) return;
-      const dx = e.clientX - this._px, dy = e.clientY - this._py;
-      this._px = e.clientX; this._py = e.clientY;
-      this.player.yaw  -= dx * 0.0034;
-      this.player.pitch = THREE.MathUtils.clamp(this.player.pitch - dy * 0.0028, -1.15, 1.15);
-    };
-    this._onPU = () => { this._dragging = false; };
-    el.addEventListener('pointerdown', this._onPD);
-    el.addEventListener('pointermove', this._onPM);
-    window.addEventListener('pointerup', this._onPU);
-  }
+  // ── Interaction API (used by main.js and DreamMode) ───────────────────────
 
   teleport(key) {
     const st = HP_STATIONS.find(s => s.key === key);
-    if (!st) return;
-    const p = this.player;
-    let dyaw = this._yawToward(st.pos, st.look) - p.yaw;
-    while (dyaw >  Math.PI) dyaw -= Math.PI * 2;
-    while (dyaw < -Math.PI) dyaw += Math.PI * 2;
-    this._tp = {
-      t: 0, dur: 0.7,
-      fx: p.pos.x, fz: p.pos.z, fyaw: p.yaw, fpitch: p.pitch,
-      tx: st.pos[0], tz: st.pos[1], tyaw: p.yaw + dyaw, tpitch: st.pitch ?? -0.04,
-    };
+    if (!st || this.walker.locked) return;
+    const yaw = this.walker.yawToward(st.pos, st.look);
+    this.walker.teleportTo(st.pos[0], st.pos[1], yaw, st.pitch ?? -0.04);
   }
 
-  // Preserves the walker's exact place across a style toggle
   getSpawnState() {
-    return { pos: [this.player.pos.x, this.player.pos.z], yaw: this.player.yaw, pitch: this.player.pitch };
-  }
-
-  _collide(p) {
-    const R = 0.45;
-    for (const c of this._colliders) {
-      const dx = p.x - c.x, dz = p.z - c.z;
-      const r = c.r + R, d2 = dx * dx + dz * dz;
-      if (d2 < r * r && d2 > 1e-6) {
-        const d = Math.sqrt(d2);
-        p.x = c.x + (dx / d) * r;
-        p.z = c.z + (dz / d) * r;
-      }
-    }
-    for (const w of this._walls) {
-      if (p.x > w.x0 - R && p.x < w.x1 + R && p.z > w.z0 - R && p.z < w.z1 + R) {
-        const pl = p.x - (w.x0 - R), pr = (w.x1 + R) - p.x;
-        const pn = p.z - (w.z0 - R), pf = (w.z1 + R) - p.z;
-        const m = Math.min(pl, pr, pn, pf);
-        if (m === pl) p.x = w.x0 - R;
-        else if (m === pr) p.x = w.x1 + R;
-        else if (m === pn) p.z = w.z0 - R;
-        else p.z = w.z1 + R;
-      }
-    }
-    p.x = THREE.MathUtils.clamp(p.x, -36, 36);
-    p.z = THREE.MathUtils.clamp(p.z, -34, 33);
-  }
-
-  _applyCamera() {
-    const p = this.player;
-    this.camera.position.set(p.pos.x, EYE + Math.sin(this._bob) * 0.035, p.pos.z);
-    this.camera.rotation.set(p.pitch, p.yaw, 0);
+    const p = this.walker.player;
+    return { pos: [p.pos.x, p.pos.z], yaw: p.yaw, pitch: p.pitch };
   }
 
   update(dt) {
     this._t += dt;
-    const p = this.player;
+    if (this.dream) this.dream.update(dt);
+    this.walker.update(dt);
+    this.walker.applyTo(this.camera);
 
-    if (this._tp) {
-      // Teleport glide
-      const tp = this._tp;
-      tp.t += dt;
-      const k = Math.min(1, tp.t / tp.dur);
-      const e = k * k * (3 - 2 * k);
-      p.pos.x = tp.fx + (tp.tx - tp.fx) * e;
-      p.pos.z = tp.fz + (tp.tz - tp.fz) * e;
-      p.yaw   = tp.fyaw + (tp.tyaw - tp.fyaw) * e;
-      p.pitch = tp.fpitch + (tp.tpitch - tp.fpitch) * e;
-      if (k >= 1) this._tp = null;
-    } else {
-      // Walk
-      const K = this._keys;
-      if (K.has('ArrowLeft'))  p.yaw += dt * 1.9;
-      if (K.has('ArrowRight')) p.yaw -= dt * 1.9;
-      const f = new THREE.Vector3(-Math.sin(p.yaw), 0, -Math.cos(p.yaw));
-      const r = new THREE.Vector3(Math.cos(p.yaw), 0, -Math.sin(p.yaw));
-      const mv = new THREE.Vector3();
-      if (K.has('KeyW') || K.has('ArrowUp'))   mv.add(f);
-      if (K.has('KeyS') || K.has('ArrowDown')) mv.sub(f);
-      if (K.has('KeyA')) mv.sub(r);
-      if (K.has('KeyD')) mv.add(r);
-      if (mv.lengthSq() > 0) {
-        const speed = (K.has('ShiftLeft') || K.has('ShiftRight')) ? 10 : 5.2;
-        mv.normalize().multiplyScalar(speed * dt);
-        p.pos.add(mv);
-        this._collide(p.pos);
-        this._bob += dt * (K.has('ShiftLeft') || K.has('ShiftRight') ? 11 : 7.5);
-      }
-    }
-    this._applyCamera();
-
-    // Station proximity → HUD callback (throttled)
+    // Station proximity → HUD callback (throttled; quiet during the dream)
     this._stTimer += dt;
-    if (this._stTimer > 0.25) {
+    if (this._stTimer > 0.25 && !this.dream) {
       this._stTimer = 0;
+      const p = this.walker.player;
       let near = null, best = Infinity;
       for (const st of HP_STATIONS) {
         const dx = p.pos.x - st.pos[0], dz = p.pos.z - st.pos[1];
@@ -657,16 +841,33 @@ export class HPWorldScene {
       if (this._quinta.dl) this._quinta.dl.intensity = 2.2 + Math.sin(this._t * 1.3) * 0.6;
       if (this._quinta.rays) this._quinta.rays.rotation.x += dt * 0.1;
     }
+    // NPC idle sway
+    for (const n of this._npcs) {
+      n.g.rotation.y = n.baseY + Math.sin(this._t * 0.8 + n.phase) * n.sway;
+    }
+    // The boat rides the swell; Cupid with it
+    if (this._boat) {
+      const bobY = Math.sin(this._t * 0.9) * 0.08;
+      this._boat.position.y = 0.1 + bobY;
+      this._boat.rotation.z = Math.sin(this._t * 0.7) * 0.03;
+      const c = this._boat.userData.cupid;
+      if (c) c.position.y = 1.15 + bobY;
+    }
+    // Triumph floats breathe in place
+    for (const f of this._floats) {
+      f.g.position.y = Math.sin(this._t * 0.9 + f.phase) * 0.02;
+    }
+    // Torch flames flicker
+    if (this._torch) {
+      const s = 1 + Math.sin(this._t * 7) * 0.12;
+      this._torch.scale.set(s, 1 / s, s);
+    }
   }
 
   dispose() {
-    window.removeEventListener('keydown', this._onKeyDown);
-    window.removeEventListener('keyup', this._onKeyUp);
-    window.removeEventListener('pointerup', this._onPU);
-    const el = this.renderer.domElement;
-    el.removeEventListener('pointerdown', this._onPD);
-    el.removeEventListener('pointermove', this._onPM);
-
+    this.dream?.dispose?.();
+    this.dream = null;
+    this.walker.dispose();
     this.renderer.shadowMap.enabled = false;
     this._streams.forEach(s => s.dispose());
     this._streams = [];
