@@ -93,14 +93,14 @@ export const VIGNETTES = {
   },
   // VII — The young bird that falls back into the nest
   7: ({ g, C, THREE }) => {
-    const tree = C.props.tree('broad', 1.1); tree.position.set(-0.3, 0, -0.4); g.add(tree);
+    const tree = C.props.tree('broad', 1.0); tree.position.set(-0.85, 0, -0.35); g.add(tree);
     const nest = new THREE.Mesh(new THREE.TorusGeometry(0.18, 0.05, 8, 14), C.props.tree('broad', 0.1).children[0].material);
-    nest.rotation.x = Math.PI / 2; nest.position.set(0.25, 1.5, 0.1); g.add(nest);
-    const sitter = C.animals.bird(0.8); sitter.position.set(0.25, 1.5, 0.1); g.add(sitter);
+    nest.rotation.x = Math.PI / 2; nest.position.set(-0.35, 1.32, 0.15); g.add(nest);
+    const sitter = C.animals.bird(0.8); sitter.position.set(-0.35, 1.32, 0.15); g.add(sitter);
     const flyer = C.animals.bird(0.8, { flying: true }); g.add(flyer);
     return (t) => {
       const k = (Math.sin(t * 1.1) + 1) / 2;
-      flyer.position.set(0.25, 1.55 + k * 0.7, 0.1);
+      flyer.position.set(-0.35, 1.4 + k * 0.7, 0.15);
       flyer.rotation.z = Math.sin(t * 6) * 0.15;
     };
   },
@@ -476,13 +476,13 @@ export const VIGNETTES = {
   },
   // XLIII — Listen to the screech-owl; the bird-catcher
   43: ({ g, C, S, THREE }) => {
-    const tree = C.props.tree('broad', 1.2); tree.position.set(0, 0, -0.4); g.add(tree);
+    const tree = C.props.tree('broad', 1.05); tree.position.set(-0.9, 0, -0.35); g.add(tree);
     const owl = C.animals.bird(1.2, { color: 0x8a7a5a });
-    owl.position.set(0, 1.55, 0.05); g.add(owl);
+    owl.position.set(-0.45, 1.4, 0.1); g.add(owl);
     const em = S.mat({ color: 0xffc040, emissive: 0xa06000, emissiveIntensity: 0.8 });
     for (const s of [-1, 1]) {
       const eye = new THREE.Mesh(new THREE.SphereGeometry(0.035, 6, 5), em);
-      eye.position.set(s * 0.05, 1.82, -0.1); g.add(eye);
+      eye.position.set(-0.45 + s * 0.05, 1.67, -0.05); g.add(eye);
     }
     const b1 = C.animals.bird(0.7, { flying: true }); g.add(b1);
     const b2 = C.animals.crow(0.7); g.add(b2);

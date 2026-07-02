@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=2';
 import { makeCast } from '../systems/Cast.js?v=2';
-import { createStyle } from '../shaders/HPStyles.js?v=3';
+import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 
 // pos/look are [x, z] on the ground plane; folio/emblem feed the HUD + research.
@@ -157,6 +157,7 @@ export class HPWorldScene {
       this.scene.environmentIntensity = 0.3;
     }
     S.setupLights(this.scene);
+    if (S.sky) addSkyDome(this.scene, S.sky);
     this.cast = makeCast(S);
 
     // Shared materials

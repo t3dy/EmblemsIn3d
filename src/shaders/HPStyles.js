@@ -89,13 +89,64 @@ function lum(colorHex) {
   return 0.299 * c.r + 0.587 * c.g + 0.114 * c.b;
 }
 
+// A twilight dome: vertical gradient (horizon → zenith) plus a sprinkle of
+// stars, so the lit worlds read against a dream-sky instead of raw black.
+export function addSkyDome(scene, { top = 0x101a2e, horizon = 0x4a3826, stars = 320 } = {}) {
+  const geo = new THREE.SphereGeometry(190, 24, 12);
+  const mat = new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    depthWrite: false,
+    uniforms: {
+      uTop:     { value: new THREE.Color(top) },
+      uHorizon: { value: new THREE.Color(horizon) },
+    },
+    vertexShader: /* glsl */`
+      varying vec3 vP;
+      void main() {
+        vP = position;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }`,
+    fragmentShader: /* glsl */`
+      varying vec3 vP;
+      uniform vec3 uTop, uHorizon;
+      void main() {
+        float h = clamp(normalize(vP).y * 1.7, 0.0, 1.0);
+        gl_FragColor = vec4(mix(uHorizon, uTop, h), 1.0);
+      }`,
+  });
+  const dome = new THREE.Mesh(geo, mat);
+  dome.renderOrder = -10;
+  scene.add(dome);
+
+  if (stars > 0) {
+    const pos = new Float32Array(stars * 3);
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 269.5) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < stars; i++) {
+      const az = rnd(i, 1) * Math.PI * 2;
+      const el = 0.12 + rnd(i, 2) * 1.35;       // keep off the horizon
+      const r = 180;
+      pos[i * 3]     = Math.cos(az) * Math.cos(el) * r;
+      pos[i * 3 + 1] = Math.sin(el) * r;
+      pos[i * 3 + 2] = Math.sin(az) * Math.cos(el) * r;
+    }
+    const sg = new THREE.BufferGeometry();
+    sg.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const sm = new THREE.PointsMaterial({ color: 0xcfd8e8, size: 1.6, sizeAttenuation: false, transparent: true, opacity: 0.75, depthWrite: false });
+    const points = new THREE.Points(sg, sm);
+    points.renderOrder = -9;
+    scene.add(points);
+  }
+  return dome;
+}
+
 // ── Lit style ─────────────────────────────────────────────────────────────────
 
 export function createLitStyle() {
   return {
     key: 'lit',
-    bg: 0x0b0e06,
-    fog: { color: 0x0b0e06, density: 0.020 },
+    bg: 0x101a2e,
+    fog: { color: 0x3a2c1c, density: 0.016 },
+    sky: { top: 0x101a2e, horizon: 0x4a3826, stars: 320 },
     bloom: 0.35,
     useEnv: true,
 
@@ -147,8 +198,8 @@ export function createLitStyle() {
       sky.position.set(-10, 12, -8);
       scene.add(sky);
 
-      scene.add(new THREE.HemisphereLight(0xd8e8ff, 0x1a2208, 0.5));
-      scene.add(new THREE.AmbientLight(0x2a3015, 0.7));
+      scene.add(new THREE.HemisphereLight(0xb8c8e8, 0x2a2410, 0.8));
+      scene.add(new THREE.AmbientLight(0x3a3420, 0.8));
       return { sun };
     },
 

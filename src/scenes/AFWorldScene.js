@@ -13,8 +13,8 @@
 import * as THREE from 'three';
 import { Walker } from '../systems/Walker.js?v=2';
 import { makeCast } from '../systems/Cast.js?v=2';
-import { createLitStyle } from '../shaders/HPStyles.js?v=3';
-import { buildVignette } from '../data/af_vignettes.js?v=1';
+import { createLitStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
+import { buildVignette } from '../data/af_vignettes.js?v=2';
 import { getEnvMap } from './EmblemScene.js?v=9';
 
 const STAGE_ORDER = ['NIGREDO', 'ALBEDO', 'CITRINITAS', 'RUBEDO'];
@@ -69,8 +69,9 @@ export class AFWorldScene {
 
   async build() {
     const S = this.style;
-    this.scene.background = new THREE.Color(0x0a0806);
-    this.scene.fog = new THREE.FogExp2(0x0a0806, 0.016);
+    this.scene.background = new THREE.Color(0x0c0a16);
+    this.scene.fog = new THREE.FogExp2(0x241408, 0.013);
+    addSkyDome(this.scene, { top: 0x0c0a16, horizon: 0x3a2210, stars: 380 });
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.scene.environment = getEnvMap(this.renderer);
