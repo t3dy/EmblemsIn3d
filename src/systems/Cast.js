@@ -32,7 +32,7 @@ export function makeCast(S) {
   // A human figure ~1.7 * h tall. Poses: stand | reach (arms up) | point
   // (right arm forward) | recline (lying) | sit | beckon (right arm raised).
   function figure({ h = 1, skin = SKIN, robe = null, pose = 'stand', crowned = false,
-                    winged = false, twoHeaded = false } = {}) {
+                    winged = false, twoHeaded = false, hat = null, beard = false } = {}) {
     const g = new THREE.Group();
     const sm = M(skin, { roughness: 0.6 });
     const parts = g.userData;
@@ -50,6 +50,17 @@ export function makeCast(S) {
       parts.head = head;
     }
     if (crowned) add(g, mesh(new THREE.TorusGeometry(0.11 * h, 0.028 * h, 6, 14), M(0xffd24a, { metalness: 0.9, roughness: 0.2 }), 0, 1.63 * h)).rotation.x = Math.PI / 2.3;
+    if (hat === 'brim') {   // the philosopher's flat-brimmed hat of the plates
+      const hm = M(0x2e2620, { roughness: 0.85 });
+      add(g, mesh(new THREE.CylinderGeometry(0.2 * h, 0.2 * h, 0.02 * h, 14), hm, 0, 1.62 * h));
+      add(g, mesh(new THREE.CylinderGeometry(0.085 * h, 0.1 * h, 0.11 * h, 12), hm, 0, 1.68 * h));
+    } else if (hat === 'cap') {
+      add(g, mesh(new THREE.SphereGeometry(0.115 * h, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), M(0x5a3a2a, { roughness: 0.8 }), 0, 1.58 * h));
+    }
+    if (beard) {
+      const b = add(g, mesh(new THREE.ConeGeometry(0.06 * h, 0.16 * h, 8), M(0xcfc4b0, { roughness: 0.9 }), 0, 1.4 * h, 0.09 * h));
+      b.rotation.x = Math.PI;   // pointing down from the chin
+    }
 
     const armGeo = new THREE.CapsuleGeometry(0.05 * h, 0.42 * h, 4, 8);
     const mkArm = (sx) => {
@@ -437,6 +448,88 @@ export function makeCast(S) {
       add(g, mesh(new THREE.BoxGeometry(0.36 * s, 0.1 * s, 0.36 * s), cm, 0, 0.05 * s));
       add(g, mesh(new THREE.CylinderGeometry(0.11 * s, 0.13 * s, 1.5 * s, 12), cm, 0, 0.85 * s));
       add(g, mesh(new THREE.BoxGeometry(0.34 * s, 0.12 * s, 0.34 * s), cm, 0, 1.66 * s));
+      return g;
+    },
+    // Giant dividers — the philosopher's compasses of Emblem XXI / the Rebis
+    compasses: (s = 1) => {
+      const g = new THREE.Group();
+      const cm = M(0x8a8a92, { metalness: 0.8, roughness: 0.35 });
+      for (const sx of [-1, 1]) {
+        const leg = mesh(new THREE.CylinderGeometry(0.016 * s, 0.028 * s, 1.1 * s, 8), cm, sx * 0.19 * s, 0.55 * s, 0);
+        leg.rotation.z = sx * 0.35;
+        add(g, leg);
+      }
+      add(g, mesh(new THREE.SphereGeometry(0.05 * s, 10, 8), cm, 0, 1.06 * s));
+      return g;
+    },
+    bed: (s = 1) => {
+      const g = new THREE.Group();
+      const wood = M(0x5a3a22, { roughness: 0.85 });
+      add(g, mesh(new THREE.BoxGeometry(1.9 * s, 0.16 * s, 0.9 * s), wood, 0, 0.3 * s));
+      add(g, mesh(new THREE.BoxGeometry(0.14 * s, 0.75 * s, 0.9 * s), wood, -0.95 * s, 0.5 * s));
+      for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]])
+        add(g, mesh(new THREE.CylinderGeometry(0.04 * s, 0.05 * s, 0.3 * s, 8), wood, sx * 0.88 * s, 0.15 * s, sz * 0.38 * s));
+      add(g, mesh(new THREE.BoxGeometry(1.8 * s, 0.1 * s, 0.82 * s), M(0xe8dcc2, { roughness: 0.95 }), 0.03 * s, 0.42 * s));
+      add(g, mesh(new THREE.BoxGeometry(0.4 * s, 0.1 * s, 0.6 * s), M(0xf2ead6, { roughness: 0.95 }), -0.68 * s, 0.5 * s));
+      return g;
+    },
+    table: (s = 1) => {
+      const g = new THREE.Group();
+      const wood = M(0x6a4a2c, { roughness: 0.85 });
+      add(g, mesh(new THREE.BoxGeometry(1.3 * s, 0.08 * s, 0.8 * s), wood, 0, 0.62 * s));
+      for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]])
+        add(g, mesh(new THREE.BoxGeometry(0.07 * s, 0.6 * s, 0.07 * s), wood, sx * 0.56 * s, 0.3 * s, sz * 0.32 * s));
+      return g;
+    },
+    // Distant town skyline — Merian's horizon, pale with aerial perspective
+    town: (s = 1) => {
+      const g = new THREE.Group();
+      const pale = M(0x8e94a0, { roughness: 0.9 });
+      const roof = M(0x7a7484, { roughness: 0.9 });
+      const blocks = [[-0.5, 0.16, 0.1], [-0.25, 0.24, 0.12], [0, 0.14, 0.16], [0.22, 0.3, 0.1], [0.46, 0.18, 0.12]];
+      for (const [x, h, w] of blocks) {
+        add(g, mesh(new THREE.BoxGeometry(w * s, h * s, 0.08 * s), pale, x * s, h * s / 2, 0));
+      }
+      add(g, mesh(new THREE.ConeGeometry(0.045 * s, 0.16 * s, 6), roof, -0.25 * s, 0.32 * s, 0));
+      add(g, mesh(new THREE.ConeGeometry(0.04 * s, 0.2 * s, 6), roof, 0.22 * s, 0.4 * s, 0));
+      return g;
+    },
+    hill: (s = 1, color = 0x55644e) => {
+      const g = new THREE.Group();
+      const h = add(g, mesh(new THREE.SphereGeometry(0.7 * s, 14, 8), M(color, { roughness: 0.98 }), 0, 0));
+      h.scale.set(1.6, 0.42, 0.8);
+      return g;
+    },
+    cloud: (s = 1) => {
+      const g = new THREE.Group();
+      const cm = M(0xd8dce4, { roughness: 0.7 });
+      for (const [x, y, r] of [[0, 0, 0.2], [-0.22, -0.04, 0.14], [0.22, -0.03, 0.15]]) {
+        const c = mesh(new THREE.SphereGeometry(r * s, 10, 7), cm, x * s, y * s, 0);
+        c.scale.y = 0.6;
+        g.add(c);
+      }
+      return g;
+    },
+    ship: (s = 1) => {
+      const g = new THREE.Group();
+      const hm = M(0x4a3826, { roughness: 0.9 });
+      const hull = add(g, mesh(new THREE.SphereGeometry(0.22 * s, 10, 7, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), hm, 0, 0.16 * s));
+      hull.scale.set(0.5, 0.7, 1.5);
+      add(g, mesh(new THREE.CylinderGeometry(0.012 * s, 0.015 * s, 0.42 * s, 6), hm, 0, 0.36 * s));
+      const sail = mesh(new THREE.PlaneGeometry(0.22 * s, 0.26 * s), M(0xe4dcc8, { side: THREE.DoubleSide }), 0, 0.42 * s, 0.01 * s);
+      g.add(sail);
+      return g;
+    },
+    // An open grave: raised stone rim around a dark pit (Emblem L)
+    grave: (s = 1) => {
+      const g = new THREE.Group();
+      const stone = M(0x7a7266, { roughness: 0.9 });
+      add(g, mesh(new THREE.BoxGeometry(1.9 * s, 0.22 * s, 0.18 * s), stone, 0, 0.11 * s, -0.55 * s));
+      add(g, mesh(new THREE.BoxGeometry(1.9 * s, 0.22 * s, 0.18 * s), stone, 0, 0.11 * s, 0.55 * s));
+      add(g, mesh(new THREE.BoxGeometry(0.18 * s, 0.22 * s, 0.95 * s), stone, -0.86 * s, 0.11 * s, 0));
+      add(g, mesh(new THREE.BoxGeometry(0.18 * s, 0.22 * s, 0.95 * s), stone, 0.86 * s, 0.11 * s, 0));
+      const pit = mesh(new THREE.BoxGeometry(1.55 * s, 0.04 * s, 0.92 * s), M(0x14100c, { roughness: 1 }), 0, 0.03 * s, 0);
+      g.add(pit);
       return g;
     },
     pool: (s = 1) => {

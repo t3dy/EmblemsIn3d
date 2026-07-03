@@ -12,17 +12,17 @@
 
 import * as THREE from 'three';
 import { Walker } from '../systems/Walker.js?v=2';
-import { makeCast } from '../systems/Cast.js?v=2';
+import { makeCast } from '../systems/Cast.js?v=3';
 import { createLitStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
-import { buildVignette } from '../data/af_vignettes.js?v=2';
+import { buildVignette } from '../data/af_vignettes.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 
 const STAGE_ORDER = ['NIGREDO', 'ALBEDO', 'CITRINITAS', 'RUBEDO'];
 const STAGE_COLORS = { NIGREDO: 0xcc3300, ALBEDO: 0x8ab0d8, CITRINITAS: 0xddaa00, RUBEDO: 0xff5500 };
 const STAGE_LATIN  = { NIGREDO: 'The Blackening', ALBEDO: 'The Whitening', CITRINITAS: 'The Yellowing', RUBEDO: 'The Reddening' };
 
-const RING_R = 30;        // station circle
-const DAIS_R = 26.8;      // vignette circle
+const RING_R = 33.5;      // station circle
+const DAIS_R = 29.8;      // vignette circle
 const EYE = 1.7;
 
 function emblemImagePath(num) {
@@ -51,7 +51,7 @@ export class AFWorldScene {
 
     this.walker = new Walker(renderer, {
       eye: EYE,
-      bounds: { minX: -36, maxX: 36, minZ: -36, maxZ: 36 },
+      bounds: { minX: -40, maxX: 40, minZ: -40, maxZ: 40 },
       onDigit: (n) => {
         if (n >= 1 && n <= 4) this.teleportStage(STAGE_ORDER[n - 1]);
         else if (n === 5) this.teleportCenter();
@@ -119,13 +119,13 @@ export class AFWorldScene {
 
   _buildGround() {
     const S = this.style;
-    this._m(new THREE.PlaneGeometry(110, 110, 4, 4), S.mat({ color: 0x1c1810, roughness: 0.98 }), 0, 0, 0, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(120, 120, 4, 4), S.mat({ color: 0x1c1810, roughness: 0.98 }), 0, 0, 0, { rx: -Math.PI / 2, cast: false });
     const pathMat = S.mat({ color: 0x54452e, roughness: 0.92 });
     // Promenade ring + four radial ways + hub plaza
-    this._m(new THREE.RingGeometry(24.5, 28.6, 72), pathMat, 0, 0.012, 0, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.RingGeometry(26.6, 31.4, 72), pathMat, 0, 0.011, 0, { rx: -Math.PI / 2, cast: false });
     for (let i = 0; i < 4; i++) {
       const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
-      const p = this._m(new THREE.PlaneGeometry(2.6, 17), pathMat, Math.cos(a) * 17, 0.012, Math.sin(a) * 17, { rx: -Math.PI / 2, cast: false });
+      const p = this._m(new THREE.PlaneGeometry(2.6, 20), pathMat, Math.cos(a) * 18.5, 0.012, Math.sin(a) * 18.5, { rx: -Math.PI / 2, cast: false });
       p.rotation.z = -a + Math.PI / 2;
     }
     this._m(new THREE.CircleGeometry(9, 44), pathMat, 0, 0.014, 0, { rx: -Math.PI / 2, cast: false });
@@ -136,7 +136,7 @@ export class AFWorldScene {
     const N = this.order.length;
     const plateGeo = new THREE.PlaneGeometry(2.3, 2.9);
     const backGeo = new THREE.BoxGeometry(2.7, 3.5, 0.3);
-    const daisGeo = new THREE.CylinderGeometry(1.9, 2.05, 0.18, 22);
+    const daisGeo = new THREE.CylinderGeometry(2.15, 2.3, 0.18, 24);
 
     this.order.forEach((emb, i) => {
       const a = Math.PI / 2 + (i / N) * Math.PI * 2;   // start at south gate, go round
@@ -179,7 +179,7 @@ export class AFWorldScene {
       const update = buildVignette(emb.number, { g: vg, C: this.cast, S, THREE });
 
       this.walker.colliders.push({ x: sx, z: sz, r: 1.5 });
-      this.walker.colliders.push({ x: vx, z: vz, r: 1.9 });
+      this.walker.colliders.push({ x: vx, z: vz, r: 2.1 });
       this._stations.push({ emblem: emb, angle: a, x: sx, z: sz, vx, vz, update, plate });
     });
 
@@ -190,11 +190,11 @@ export class AFWorldScene {
       if (stage === prevStage) return;
       prevStage = stage;
       const a = Math.PI / 2 + ((i - 0.5) / this.order.length) * Math.PI * 2;
-      const gx = Math.cos(a) * 26.5, gz = Math.sin(a) * 26.5;
+      const gx = Math.cos(a) * 31.9, gz = Math.sin(a) * 31.9;
       const rotY = Math.atan2(-Math.cos(a), -Math.sin(a));
       for (const s of [-1, 1]) {
-        const px = gx + Math.cos(a + Math.PI / 2) * s * 2.4;
-        const pz = gz + Math.sin(a + Math.PI / 2) * s * 2.4;
+        const px = gx + Math.cos(a + Math.PI / 2) * s * 1.4;
+        const pz = gz + Math.sin(a + Math.PI / 2) * s * 1.4;
         this._m(new THREE.CylinderGeometry(0.14, 0.2, 3.4, 10), this._stoneMat, px, 1.7, pz);
         const orb = this._m(new THREE.SphereGeometry(0.22, 14, 10),
           S.glowMat({ color: STAGE_COLORS[stage], emissiveIntensity: 0.8, metalness: 0.4, roughness: 0.4 }),
