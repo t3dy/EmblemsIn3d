@@ -147,8 +147,13 @@ export class HPWorldScene {
 
   async build() {
     const S = this.style;
-    this.scene.background = new THREE.Color(S.bg);
-    this.scene.fog = new THREE.FogExp2(S.fog.color, S.fog.density);
+    // The shared style is a twilight; the lit garden here is lifted to a bright,
+    // warm late afternoon so nothing reads as dark. (Woodcut keeps its paper.)
+    const lit = S.key !== 'woodcut';
+    this.scene.background = new THREE.Color(lit ? 0x9fb6d6 : S.bg);
+    this.scene.fog = lit
+      ? new THREE.FogExp2(0xd0be9e, 0.0072)
+      : new THREE.FogExp2(S.fog.color, S.fog.density);
 
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -157,15 +162,34 @@ export class HPWorldScene {
       this.scene.environmentIntensity = 0.3;
     }
     S.setupLights(this.scene);
-    if (S.sky) addSkyDome(this.scene, S.sky);
+    if (lit) addSkyDome(this.scene, { top: 0x86a4cc, horizon: 0xf0d6a8, stars: 0 });
+    else if (S.sky) addSkyDome(this.scene, S.sky);
+    // Lit garden: a bright afternoon key with enough fill to stay sunny, while
+    // the raking sun still gives carved stone a lit side and a shadowed side.
+    if (lit) this._tuneLitLighting();
     this.cast = makeCast(S);
 
     // Shared materials
-    this._stoneMat = S.mat({ color: 0x8a7a5a, roughness: 0.85 });
-    this._darkStoneMat = S.mat({ color: 0x6a5c44, roughness: 0.9 });
+    this._stoneMat = S.mat({ color: 0x8a7a5a, roughness: 0.92 });
+    this._darkStoneMat = S.mat({ color: 0x6a5c44, roughness: 0.95 });
     this._hedgeMat = S.mat({ color: 0x243818, roughness: 0.95 });
     this._trunkMat = S.mat({ color: 0x3a2810, roughness: 0.9 });
     this._leafMat  = S.mat({ color: 0x1a3010, roughness: 0.9 });
+
+    // In the lit garden, dress the flat materials with procedural surface —
+    // pitted ashlar for stone, mottled foliage for hedges — so the megaliths
+    // stop reading as smooth boxes. (The woodcut style ignores maps: its
+    // hatching shader overwrites the fragment colour, so we skip it there.)
+    if (S.key !== 'woodcut') {
+      // The map carries the full albedo, so the material colour must be white —
+      // otherwise colour × map multiplies and the surface reads far too dark.
+      const stoneTex = this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 6, courses: 4, repeat: 2 });
+      this._stoneMat.color.set(0xffffff); this._stoneMat.map = stoneTex; this._stoneMat.roughnessMap = stoneTex;
+      this._darkStoneMat.color.set(0xffffff);
+      this._darkStoneMat.map = this._surfaceTexture({ base: '#8a7a5c', dark: '#3a2e18', light: '#c8b890', veins: 5, courses: 5, repeat: 2 });
+      this._hedgeMat.color.set(0xffffff);
+      this._hedgeMat.map = this._surfaceTexture({ base: '#33501f', dark: '#16260e', light: '#557a30', blobs: 90, speckle: 3200, repeat: 3 });
+    }
 
     this._buildGround();
     this._buildWood();
@@ -251,6 +275,94 @@ export class HPWorldScene {
     return this._m(new THREE.PlaneGeometry(w, h), mat, x, y, z, { ry, cast: false, receive: false });
   }
 
+  // Punch up the lit garden: the shared style floods the scene with fill
+  // (ambient + hemisphere ≈ the key), which flattens everything. Bias toward
+  // the raking sun so surfaces gain a lit side and a shadowed side.
+  _tuneLitLighting() {
+    this.scene.traverse(o => {
+      if (o.isAmbientLight) { o.intensity = 0.85; o.color.set(0x4a4632); }
+      else if (o.isHemisphereLight) o.intensity = 1.15;
+      else if (o.isDirectionalLight && o.castShadow) o.intensity = 2.6;
+    });
+    if (this.scene.environment) this.scene.environmentIntensity = 0.42;
+  }
+
+  // A deterministic procedural surface baked to a canvas: a stone/foliage base
+  // clouded with tonal blobs, dusted with speckle, optionally cut by carved
+  // veins and horizontal ashlar courses. Blobs are drawn wrapped (±size) so the
+  // texture tiles seamlessly and can repeat across the colossal masonry.
+  _surfaceTexture({ base, dark, light, blobs = 60, speckle = 2400, veins = 0, courses = 0, repeat = 2 } = {}) {
+    const N = 256;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+
+    x.fillStyle = base; x.fillRect(0, 0, N, N);
+
+    // Tonal cloud, wrapped for seamless tiling
+    for (let i = 0; i < blobs; i++) {
+      const px = rnd(i, 1) * N, py = rnd(i, 2) * N, r = 14 + rnd(i, 3) * 50;
+      const dv = rnd(i, 4) - 0.5;
+      const col = dv < 0 ? dark : light;
+      const a = (0.05 + Math.abs(dv) * 0.13).toFixed(3);
+      for (const ox of [-N, 0, N]) for (const oy of [-N, 0, N]) {
+        if (Math.abs(px + ox - N / 2) > N || Math.abs(py + oy - N / 2) > N) continue;
+        const g = x.createRadialGradient(px + ox, py + oy, 0, px + ox, py + oy, r);
+        g.addColorStop(0, this._rgba(col, a));
+        g.addColorStop(1, this._rgba(col, '0'));
+        x.fillStyle = g; x.beginPath(); x.arc(px + ox, py + oy, r, 0, 7); x.fill();
+      }
+    }
+
+    // Ashlar courses: faint recessed mortar lines, running-bond verticals
+    if (courses > 0) {
+      x.lineWidth = 2;
+      for (let r = 1; r < courses; r++) {
+        const y = (r / courses) * N + (rnd(r, 7) - 0.5) * 4;
+        x.strokeStyle = this._rgba(dark, '0.5'); x.beginPath(); x.moveTo(0, y); x.lineTo(N, y); x.stroke();
+        x.strokeStyle = this._rgba(light, '0.28'); x.beginPath(); x.moveTo(0, y + 1.5); x.lineTo(N, y + 1.5); x.stroke();
+        const off = (r % 2) * (N / 6);
+        for (let b = 0; b < 4; b++) {
+          const vx = off + b * (N / 4) + (rnd(r * 5 + b, 9) - 0.5) * 10;
+          const y0 = (r / courses) * N, y1 = ((r + 1) / courses) * N;
+          x.strokeStyle = this._rgba(dark, '0.4'); x.beginPath(); x.moveTo(vx, y0); x.lineTo(vx, y1); x.stroke();
+        }
+      }
+    }
+
+    // Speckle grit
+    for (let i = 0; i < speckle; i++) {
+      const px = rnd(i, 5) * N, py = rnd(i, 6) * N, d = rnd(i, 7);
+      x.fillStyle = d < 0.5 ? this._rgba(dark, (0.05 + d * 0.22).toFixed(3)) : this._rgba(light, (0.04 + (d - 0.5) * 0.18).toFixed(3));
+      x.fillRect(px, py, 1, 1);
+    }
+
+    // Carved veins / cracks
+    for (let i = 0; i < veins; i++) {
+      x.lineWidth = 0.8 + rnd(i, 20) * 0.7;
+      x.strokeStyle = this._rgba(dark, (0.14 + rnd(i, 8) * 0.16).toFixed(3));
+      let px = rnd(i, 9) * N, py = rnd(i, 10) * N;
+      x.beginPath(); x.moveTo(px, py);
+      const steps = 6 + Math.floor(rnd(i, 11) * 6);
+      for (let s = 0; s < steps; s++) { px += (rnd(i, s + 12) - 0.5) * 64; py += (rnd(i, s + 40) - 0.5) * 64; x.lineTo(px, py); }
+      x.stroke();
+    }
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(repeat, repeat);
+    t.anisotropy = 4;
+    this._disp.push(t);
+    return t;
+  }
+
+  _rgba(hex, a) {
+    const n = parseInt(hex.slice(1), 16);
+    return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
+  }
+
   // ── Ground, paths ─────────────────────────────────────────────────────────
 
   _buildGround() {
@@ -258,11 +370,20 @@ export class HPWorldScene {
     const groundMat = S.key === 'woodcut'
       ? S.mat({ tone: 0.10, rim: 0 })
       : S.mat({ color: 0x223014, roughness: 0.98, metalness: 0.0 });
-    this._m(new THREE.PlaneGeometry(130, 130, 4, 4), groundMat, 0, 0, -2, { rx: -Math.PI / 2, cast: false });
-
     const pathMat = S.key === 'woodcut'
       ? S.mat({ tone: 0.03, rim: 0 })
       : S.mat({ color: 0x6a5a40, roughness: 0.92 });
+
+    // Break the flat sward and the smooth path into meadow and gravel. The map
+    // is the albedo, so the material colour is white (else it multiplies dark).
+    if (S.key !== 'woodcut') {
+      groundMat.color.set(0xffffff);
+      groundMat.map = this._surfaceTexture({ base: '#3a5423', dark: '#1c3010', light: '#5c7e36', blobs: 80, speckle: 4200, repeat: 22 });
+      pathMat.color.set(0xffffff);
+      pathMat.map = this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 });
+    }
+
+    this._m(new THREE.PlaneGeometry(130, 130, 4, 4), groundMat, 0, 0, -2, { rx: -Math.PI / 2, cast: false });
 
     // Main processional axis (wood → shore), two cross paths to the courts
     this._m(new THREE.PlaneGeometry(3.4, 86), pathMat, 0, 0.012, 7, { rx: -Math.PI / 2, cast: false });
