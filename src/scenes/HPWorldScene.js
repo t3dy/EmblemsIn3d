@@ -137,6 +137,9 @@ export class HPWorldScene {
     this._venus = null;
     this._boat = null;
     this._floats = [];
+    this._waters = [];             // spinning water discs
+    this._sea = null;              // breathing sea material
+    this._motes = null;            // drifting pollen in the lit garden
     this._npcs = [];               // { g, phase, sway }
     this.npcs = {};                // key → group (for the dream's cameos)
     this._stTimer = 0;
@@ -183,12 +186,14 @@ export class HPWorldScene {
     if (S.key !== 'woodcut') {
       // The map carries the full albedo, so the material colour must be white —
       // otherwise colour × map multiplies and the surface reads far too dark.
+      // A NoColorSpace clone of the same canvas doubles as bump + roughness, so
+      // mortar lines and veins catch the raking sun as actual relief.
       const stoneTex = this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 6, courses: 4, repeat: 2 });
-      this._stoneMat.color.set(0xffffff); this._stoneMat.map = stoneTex; this._stoneMat.roughnessMap = stoneTex;
-      this._darkStoneMat.color.set(0xffffff);
-      this._darkStoneMat.map = this._surfaceTexture({ base: '#8a7a5c', dark: '#3a2e18', light: '#c8b890', veins: 5, courses: 5, repeat: 2 });
-      this._hedgeMat.color.set(0xffffff);
-      this._hedgeMat.map = this._surfaceTexture({ base: '#33501f', dark: '#16260e', light: '#557a30', blobs: 90, speckle: 3200, repeat: 3 });
+      const darkTex  = this._surfaceTexture({ base: '#8a7a5c', dark: '#3a2e18', light: '#c8b890', veins: 5, courses: 5, repeat: 2 });
+      const hedgeTex = this._surfaceTexture({ base: '#33501f', dark: '#16260e', light: '#557a30', blobs: 90, speckle: 3200, repeat: 3 });
+      this._dress(this._stoneMat, stoneTex, 0.4);
+      this._dress(this._darkStoneMat, darkTex, 0.4);
+      this._dress(this._hedgeMat, hedgeTex, 0.25);
     }
 
     this._buildGround();
@@ -204,6 +209,7 @@ export class HPWorldScene {
     this._buildTriumphs();
     this._buildCythera();
     this._buildTrees();
+    if (lit) this._buildMotes();
 
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
@@ -241,7 +247,12 @@ export class HPWorldScene {
       group.add(l);
     }
     this.npcs[key] = group;
-    this._npcs.push({ g: group, phase: this._npcs.length * 1.7, baseY: group.rotation.y, sway });
+    const n = { g: group, phase: this._npcs.length * 1.7, baseY: group.rotation.y, sway };
+    // Figures expose arm pivots (Cast.js userData) — breathe them a little so
+    // the poses live instead of freezing.
+    const { armL, armR } = group.userData;
+    if (armL && armR) { n.armL = armL; n.armR = armR; n.aL = armL.rotation.z; n.aR = armR.rotation.z; }
+    this._npcs.push(n);
     return group;
   }
 
@@ -363,6 +374,72 @@ export class HPWorldScene {
     return `rgba(${(n >> 16) & 255},${(n >> 8) & 255},${n & 255},${a})`;
   }
 
+  // Dress a lit material with a procedural canvas: the sRGB canvas is the
+  // albedo; a linear (NoColorSpace) clone drives bump + roughness, so the
+  // painted mortar and veins also read as relief under the raking sun.
+  _dress(mat, tex, bumpScale = 0.3) {
+    mat.color.set(0xffffff);
+    mat.map = tex;
+    const lin = tex.clone();
+    lin.colorSpace = THREE.NoColorSpace;
+    lin.needsUpdate = true;
+    this._disp.push(lin);
+    mat.bumpMap = lin;
+    mat.bumpScale = bumpScale;
+    mat.roughnessMap = lin;
+  }
+
+  // Concentric-ripple water albedo, so the slow spin of the fountain discs
+  // is visible as moving water rather than a featureless plate.
+  _waterTexture() {
+    const N = 256;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 269.5) * 43758.5453; return v - Math.floor(v); };
+    x.fillStyle = '#2a4a6a'; x.fillRect(0, 0, N, N);
+    for (let i = 0; i < 46; i++) {
+      const r = 8 + rnd(i, 1) * 120;
+      const a0 = rnd(i, 2) * Math.PI * 2, span = 0.5 + rnd(i, 3) * 2.2;
+      x.lineWidth = 1 + rnd(i, 4) * 1.6;
+      x.strokeStyle = rnd(i, 5) < 0.7
+        ? `rgba(140,190,230,${(0.08 + rnd(i, 6) * 0.14).toFixed(3)})`
+        : `rgba(16,36,58,${(0.10 + rnd(i, 6) * 0.12).toFixed(3)})`;
+      x.beginPath(); x.arc(N / 2, N / 2, r, a0, a0 + span); x.stroke();
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    this._disp.push(t);
+    return t;
+  }
+
+  // ── Pollen motes — the air of the afternoon made visible ─────────────────
+
+  _buildMotes() {
+    const N = 220;
+    const pos = new Float32Array(N * 3);
+    const seeds = new Float32Array(N * 2);
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < N; i++) {
+      pos[i * 3]     = (rnd(i, 1) - 0.5) * 58;
+      pos[i * 3 + 1] = 0.3 + rnd(i, 2) * 5.5;
+      pos[i * 3 + 2] = (rnd(i, 3) - 0.5) * 76 - 2;
+      seeds[i * 2]     = rnd(i, 4) * Math.PI * 2;   // wobble phase
+      seeds[i * 2 + 1] = 0.06 + rnd(i, 5) * 0.10;   // fall speed
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const mat = new THREE.PointsMaterial({
+      color: 0xffe8b0, size: 0.055, transparent: true, opacity: 0.35,
+      depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true,
+    });
+    const points = new THREE.Points(geo, mat);
+    points.frustumCulled = false;
+    this.scene.add(points);
+    this._motes = { points, pos, seeds, n: N };
+  }
+
   // ── Ground, paths ─────────────────────────────────────────────────────────
 
   _buildGround() {
@@ -374,13 +451,11 @@ export class HPWorldScene {
       ? S.mat({ tone: 0.03, rim: 0 })
       : S.mat({ color: 0x6a5a40, roughness: 0.92 });
 
-    // Break the flat sward and the smooth path into meadow and gravel. The map
-    // is the albedo, so the material colour is white (else it multiplies dark).
+    // Break the flat sward and the smooth path into meadow and gravel, with a
+    // little bump relief so the gravel catches the afternoon sun.
     if (S.key !== 'woodcut') {
-      groundMat.color.set(0xffffff);
-      groundMat.map = this._surfaceTexture({ base: '#3a5423', dark: '#1c3010', light: '#5c7e36', blobs: 80, speckle: 4200, repeat: 22 });
-      pathMat.color.set(0xffffff);
-      pathMat.map = this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 });
+      this._dress(groundMat, this._surfaceTexture({ base: '#3a5423', dark: '#1c3010', light: '#5c7e36', blobs: 80, speckle: 4200, repeat: 22 }), 0.15);
+      this._dress(pathMat, this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 }), 0.3);
     }
 
     this._m(new THREE.PlaneGeometry(130, 130, 4, 4), groundMat, 0, 0, -2, { rx: -Math.PI / 2, cast: false });
@@ -729,11 +804,16 @@ export class HPWorldScene {
     const S = this.style;
     const FX = 0, FZ = -20;
     const waterMat = S.waterMat();
+    // Rippled water: without a map, the spinning discs would read as still.
+    if (S.key !== 'woodcut') {
+      waterMat.color.set(0xffffff);          // the map carries the blue
+      waterMat.map = this._waterTexture();
+    }
 
     this._m(new THREE.CylinderGeometry(3.6, 3.9, 0.5, 8), this._stoneMat, FX, 0.25, FZ, { cast: false, outline: true });
     this._m(new THREE.CylinderGeometry(3.15, 3.3, 0.95, 28, 1, true), this._stoneMat, FX, 0.95, FZ);
     this._m(new THREE.TorusGeometry(3.15, 0.14, 10, 36), this._stoneMat, FX, 1.42, FZ, { rx: Math.PI / 2, outline: true });
-    this._m(new THREE.CircleGeometry(3.05, 36), waterMat, FX, 1.3, FZ, { rx: -Math.PI / 2, cast: false });
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(3.05, 36), waterMat, FX, 1.3, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.10 });
     this._circleCol(FX, FZ, 4.1);
 
     this._m(new THREE.CylinderGeometry(0.2, 0.26, 3.4, 12), this._stoneMat, FX, 2.2, FZ);
@@ -741,7 +821,7 @@ export class HPWorldScene {
     for (const t of tiers) {
       this._m(new THREE.CylinderGeometry(t.r, t.r * 0.55, 0.35, 24, 1, true), this._stoneMat, FX, t.y - 0.1, FZ);
       this._m(new THREE.TorusGeometry(t.r, 0.09, 8, 30), this._stoneMat, FX, t.y + 0.08, FZ, { rx: Math.PI / 2 });
-      this._m(new THREE.CircleGeometry(t.r * 0.92, 28), waterMat, FX, t.y + 0.05, FZ, { rx: -Math.PI / 2, cast: false });
+      this._waters.push({ m: this._m(new THREE.CircleGeometry(t.r * 0.92, 28), waterMat, FX, t.y + 0.05, FZ, { rx: -Math.PI / 2, cast: false }), rate: -0.16 });
     }
 
     const vMat = S.mat({ color: 0xd4c0a0, roughness: 0.6, metalness: 0.15 });
@@ -830,9 +910,9 @@ export class HPWorldScene {
 
   _buildCythera() {
     const S = this.style;
-    // The sea
+    // The sea (its material breathes gently in update)
     const sea = this._m(new THREE.PlaneGeometry(130, 26), S.waterMat(), 0, 0.03, -50, { rx: -Math.PI / 2, cast: false });
-    void sea;
+    if (sea.material.transparent) this._sea = { mat: sea.material, base: sea.material.opacity };
     // Sand strip
     const sandMat = S.key === 'woodcut' ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0x9a8a64, roughness: 0.95 });
     this._m(new THREE.PlaneGeometry(130, 4.5), sandMat, 0, 0.016, -35.5, { rx: -Math.PI / 2, cast: false });
@@ -963,9 +1043,28 @@ export class HPWorldScene {
       if (this._quinta.dl) this._quinta.dl.intensity = 2.2 + Math.sin(this._t * 1.3) * 0.6;
       if (this._quinta.rays) this._quinta.rays.rotation.x += dt * 0.1;
     }
-    // NPC idle sway
+    // NPC idle sway + arm breathing (the poses live instead of freezing)
     for (const n of this._npcs) {
       n.g.rotation.y = n.baseY + Math.sin(this._t * 0.8 + n.phase) * n.sway;
+      if (n.armL) {
+        n.armL.rotation.z = n.aL + Math.sin(this._t * 0.9 + n.phase) * 0.05;
+        n.armR.rotation.z = n.aR - Math.sin(this._t * 0.9 + n.phase + 0.9) * 0.05;
+      }
+    }
+    // Water: the fountain discs turn, the sea breathes
+    for (const w of this._waters) w.m.rotation.z += dt * w.rate;
+    if (this._sea) this._sea.mat.opacity = this._sea.base + Math.sin(this._t * 0.5) * 0.05;
+    // Pollen drifts down through the afternoon light and recycles
+    if (this._motes) {
+      const { pos, seeds, n, points } = this._motes;
+      for (let i = 0; i < n; i++) {
+        const ph = seeds[i * 2], fall = seeds[i * 2 + 1];
+        pos[i * 3]     += Math.sin(this._t * 0.4 + ph) * dt * 0.12;
+        pos[i * 3 + 1] -= fall * dt;
+        pos[i * 3 + 2] += Math.cos(this._t * 0.3 + ph * 1.7) * dt * 0.12;
+        if (pos[i * 3 + 1] < 0.15) pos[i * 3 + 1] = 5.8;
+      }
+      points.geometry.attributes.position.needsUpdate = true;
     }
     // The boat rides the swell; Cupid with it
     if (this._boat) {
