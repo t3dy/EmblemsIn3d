@@ -23,7 +23,7 @@
 import * as THREE from 'three';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=2';
-import { makeCast } from '../systems/Cast.js?v=3';
+import { makeCast } from '../systems/Cast.js?v=4';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -68,10 +68,18 @@ const METALS = [
   { name: 'Luna',    metal: 'Silver',      glyph: '☽', color: 0xe2e2ea, emissive: 0x222228, metalness: 0.95, rough: 0.2 },
 ];
 
+// The three gates as the book letters them (Dallington 1592; see
+// docs/HP_SOURCEBOOK.md §4). Poliphilo's right hand carries Theodoxia, his left
+// Cosmodoxia, "and the thirde, Erototrophos" — so MATER AMORIS is the middle
+// door, and it is the one he chooses. Each is titled on the plate in Greek,
+// Latin, Hebrew and Arabic; we give the Greek and the Latin.
 const DOORS = [
-  { x: -4.6, w: 2.0, h: 3.3, title: 'Gloria Dei',   sub: 'THE STEEP ASCENT',  color: 0x8ab0d8 },
-  { x:  0.0, w: 2.4, h: 3.9, title: 'Gloria Mundi', sub: 'THE MIDDLE WAY',    color: 0xb8a848 },
-  { x:  4.6, w: 2.0, h: 3.3, title: 'Mater Amoris', sub: 'THE FLOWERED GATE', color: 0xd86a5a },
+  { x: -4.6, w: 2.0, h: 3.3, title: 'Gloria Dei',   greek: 'ΘΕΟΔΟΞΙΑ',     sub: 'THEODOXIA · THE STEEP ASCENT',
+    keeper: 'Thende',     color: 0x8ab0d8 },
+  { x:  0.0, w: 2.4, h: 3.9, title: 'Mater Amoris', greek: 'ΕΡΩΤΟΤΡΟΦΟΣ',  sub: 'EROTOTROPHOS · THE CHOSEN GATE',
+    keeper: 'Philtronia', color: 0xd86a5a },
+  { x:  4.6, w: 2.0, h: 3.3, title: 'Gloria Mundi', greek: 'ΚΟΣΜΟΔΟΞΙΑ',   sub: 'COSMODOXIA · THE GLORY OF THE WORLD',
+    keeper: 'Euclelia',   color: 0xb8a848 },
 ];
 
 const ELEMENTS = [
@@ -83,19 +91,33 @@ const ELEMENTS = [
 
 // The five nymphs of the senses who receive Poliphilo at the bath (their
 // names are the Greek senses, as given in the book).
+// Each carries the object by which the book identifies her: "she that carrieth
+// the boxes and white cloathes Offressia. This other with the shining Glasse …
+// Orassia. Shee that carrieth the sounding Harpe is called Achol, and shee that
+// beareth the casting bottle of precious Lyquor … Genshra." Aphea, who is Touch,
+// carries nothing — she is the one who says "giue mee thy hand."
+// (Dallington 1592; docs/HP_SOURCEBOOK.md §3.)
 const SENSE_NYMPHS = [
-  { name: 'Aphea',     sense: 'Touch',   robe: 0xc88a9a },
-  { name: 'Osfressia', sense: 'Smell',   robe: 0x9ab08a },
-  { name: 'Orassia',   sense: 'Sight',   robe: 0x8a9ac8 },
-  { name: 'Achoe',     sense: 'Hearing', robe: 0xc8b06a },
-  { name: 'Geussia',   sense: 'Taste',   robe: 0xb08ac0 },
+  { name: 'Aphea',     sense: 'Touch',   robe: 0xc88a9a, attribute: null,     pose: 'offer' },
+  { name: 'Osfressia', sense: 'Smell',   robe: 0x9ab08a, attribute: 'casket' },
+  { name: 'Orassia',   sense: 'Sight',   robe: 0x8a9ac8, attribute: 'mirror' },
+  { name: 'Achoe',     sense: 'Hearing', robe: 0xc8b06a, attribute: 'harp' },
+  { name: 'Geussia',   sense: 'Taste',   robe: 0xb08ac0, attribute: 'flask' },
 ];
 
+// Each car is drawn by SIX beasts, not a pair, and every beast carries a riding
+// nymph musician: "the two next the Tryumph were apparelled in blewe silke, like
+// the collour of a Peacockes necke. The middlemost in bright Crymosen: and the
+// two formost in an Emerald greene." Europa's team is centaurs got of Ixion,
+// Leda's six white elephants coupled two and two, and the mystical car goes
+// "very leisurely" behind six leopards in vine-withes.
+// (Dallington 1592; docs/HP_SOURCEBOOK.md §5.)
+const TRIUMPH_LIVERY = [0x2a5aa0, 0x2a5aa0, 0xc02840, 0xc02840, 0x1e8a54, 0x1e8a54];
 const TRIUMPHS = [
-  { key: 'europa', title: 'Triumph of Europa', motif: 'bull',  pos: [10.6, -9.4],  color: 0xc8a040 },
-  { key: 'leda',   title: 'Triumph of Leda',   motif: 'swan',  pos: [-10.6, -9.4], color: 0xb0c0d8 },
-  { key: 'danae',  title: 'Triumph of Danaë',  motif: 'gold',  pos: [-10.6, -30.6], color: 0xe0c060 },
-  { key: 'semele', title: 'Triumph of Semele', motif: 'fire',  pos: [10.6, -30.6], color: 0xd86a3a },
+  { key: 'europa', title: 'Triumph of Europa', motif: 'bull',  team: 'centaur',  pos: [10.6, -9.4],  color: 0xc8a040 },
+  { key: 'leda',   title: 'Triumph of Leda',   motif: 'swan',  team: 'elephant', pos: [-10.6, -9.4], color: 0xb0c0d8 },
+  { key: 'danae',  title: 'Triumph of Danaë',  motif: 'gold',  team: 'horse',    pos: [-10.6, -30.6], color: 0xe0c060 },
+  { key: 'semele', title: 'Triumph of Semele', motif: 'fire',  team: 'leopard',  pos: [10.6, -30.6], color: 0xd86a3a },
 ];
 
 export class HPWorldScene {
@@ -142,6 +164,7 @@ export class HPWorldScene {
     this._sea = null;              // breathing sea material
     this._motes = null;            // drifting pollen in the lit garden
     this._meadows = [];            // instanced grass / flower fields (lit only)
+    this._vanes = [];              // weathervanes that turn with the wind
     this._npcs = [];               // { g, phase, sway }
     this.npcs = {};                // key → group (for the dream's cameos)
     this._stTimer = 0;
@@ -510,6 +533,7 @@ export class HPWorldScene {
   // ── The Great Portal (the colossal pyramid-gate) ──────────────────────────
 
   _buildGreatPortal() {
+    const S = this.style;
     const Z = 26;
     // Massive piers flanking a tall passage
     for (const s of [-1, 1]) {
@@ -522,14 +546,48 @@ export class HPWorldScene {
     this._m(new THREE.BoxGeometry(18, 1.4, 2.4), this._stoneMat, 0, 7.1, Z);
     this._plaque({ main: 'FESTINA LENTE', sub: 'THE HIEROGLYPHS OF THE GREAT PORTAL' }, 4.6, 1.1, 0, 6.4, Z + 1.25, 0, true);
 
-    // Stepped pyramid above, crowned by an obelisk
-    let w = 15;
-    for (let i = 0; i < 4; i++) {
-      this._m(new THREE.BoxGeometry(w, 0.85, 2.4 - i * 0.3), this._stoneMat, 0, 8.2 + i * 0.85, Z);
-      w *= 0.72;
+    // The stepped pyramid. The book gives it 1,410 courses rising off a plinth
+    // six furlongs square; at garden scale we read that as many shallow courses
+    // rather than four fat ones, so the mass tapers the way the plate draws it.
+    // (docs/HP_SOURCEBOOK.md §1.)
+    const COURSES = 26;
+    for (let i = 0; i < COURSES; i++) {
+      const t = i / COURSES;
+      const w = 17.5 * (1 - t * 0.86);
+      const d = 3.0 * (1 - t * 0.55);
+      this._m(new THREE.BoxGeometry(w, 0.42, d), this._stoneMat, 0, 8.3 + i * 0.42, Z, { cast: i % 4 === 0 });
     }
-    this._m(new THREE.CylinderGeometry(0.12, 0.5, 4.2, 4), this._stoneMat, 0, 13.5, Z, { outline: true });
-    this._m(new THREE.SphereGeometry(0.14, 10, 8), this._stoneMat, 0, 15.7, Z);
+    const TOP = 8.3 + COURSES * 0.42;
+
+    // "a huge Cube or foure square stone of forme like a dye" closes the pyramid
+    this._m(new THREE.BoxGeometry(1.9, 1.9, 1.9), this._stoneMat, 0, TOP + 0.95, Z, { outline: true });
+
+    // Four harpies of cast metal at the cube's corners, "their steales and clawes
+    // armed," meeting over the diagonal to make the obelisk's socket
+    const harpyMat = S.key === 'woodcut'
+      ? S.mat({ tone: 0.2 })
+      : S.mat({ color: 0x8a6a2a, metalness: 0.9, roughness: 0.35 });
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const hx = sx * 0.72, hz = Z + sz * 0.72;
+      // clawed foot, body, and a swept wing leaning in toward the socket
+      this._m(new THREE.ConeGeometry(0.16, 0.34, 6), harpyMat, hx, TOP + 2.06, hz);
+      this._m(new THREE.CapsuleGeometry(0.1, 0.26, 4, 8), harpyMat, hx, TOP + 2.42, hz);
+      const wing = this._m(new THREE.ConeGeometry(0.1, 0.6, 4), harpyMat, hx * 0.55, TOP + 2.66, Z + sz * 0.4);
+      wing.rotation.z = -sx * 0.55; wing.rotation.x = -sz * 0.45;
+    }
+    // The socket the four of them make, dressed with cast leaves and fruit
+    this._m(new THREE.CylinderGeometry(0.42, 0.52, 0.3, 12), harpyMat, 0, TOP + 2.9, Z);
+
+    // The obelisk: two paces broad, seven high, of mirror-polished Theban stone
+    this._m(new THREE.CylinderGeometry(0.13, 0.42, 4.6, 4), this._stoneMat, 0, TOP + 5.35, Z, { outline: true });
+    // Its copper turning-base, and on it the winged Fortuna who spins in the wind
+    this._m(new THREE.CylinderGeometry(0.16, 0.16, 0.14, 10), harpyMat, 0, TOP + 7.72, Z);
+    this._buildFortuna(0, TOP + 7.85, Z, harpyMat);
+
+    // The Medusa whose gaping mouth is the door to the spiral stair. The book
+    // sets her "vpon the right hand as I went" — the dreamer walks south out of
+    // the wood, so his right is +x.
+    this._buildMedusaDoor(5.4, Z + 1.16);
 
     // Flanking obelisks and hedge walls
     for (const s of [-1, 1]) {
@@ -541,6 +599,73 @@ export class HPWorldScene {
     // The dragon that drove Poliphilo through the vaults
     const dragon = this.cast.animals.dragon(1.6);
     this._npc('dragon', dragon, 3.4, 23.2, 2.6, { label: 'The Dragon', labelY: 1.6, sway: 0.06 });
+  }
+
+  // The winged nymph on the obelisk's point: robe "blowne abroad with the winde,"
+  // two wings from the shoulder blades, face turned back toward them, her right
+  // hand holding a cornucopia "stopped vp, and the mouth downewarde." She turns
+  // with every gust — the whole point of her — so she is registered in _vanes.
+  _buildFortuna(x, y, z, metalMat) {
+    const g = new THREE.Group();
+    const S = this.style;
+    const skin = S.key === 'woodcut' ? S.mat({ tone: 0.02 }) : S.mat({ color: 0xc8a860, metalness: 0.75, roughness: 0.4 });
+
+    this._m(new THREE.ConeGeometry(0.17, 0.5, 10), metalMat, 0, 0.25, 0, { parent: g });   // wind-blown robe
+    this._m(new THREE.CapsuleGeometry(0.075, 0.2, 4, 8), skin, 0, 0.62, 0, { parent: g });
+    this._m(new THREE.SphereGeometry(0.075, 10, 8), skin, 0, 0.8, -0.02, { parent: g });
+    for (const s of [-1, 1]) {                                                             // the spread wings
+      const w = this._m(new THREE.ConeGeometry(0.075, 0.62, 4), metalMat, s * 0.16, 0.68, 0.1, { parent: g });
+      w.rotation.z = s * 1.15; w.rotation.x = -0.5;
+    }
+    const horn = this.cast.attributes.cornucopia(1.1);   // held out, mouth down
+    horn.position.set(0.26, 0.6, 0.02);
+    horn.rotation.z = Math.PI * 0.85;
+    g.add(horn);
+    this._m(new THREE.CapsuleGeometry(0.03, 0.2, 4, 6), skin, -0.13, 0.62, 0.03, { parent: g }).rotation.z = 0.5;
+
+    g.position.set(x, y, z);
+    this.scene.add(g);
+    this._vanes.push({ g, rate: 0.55, phase: 0 });
+    return g;
+  }
+
+  // Medusa's head carved on the pier, her mouth the entrance to the spiral
+  // stair, her viper hair with "most shining stones" set for eyes.
+  _buildMedusaDoor(x, z) {
+    const S = this.style;
+    const g = new THREE.Group();
+    const face = this._darkStoneMat;
+
+    this._m(new THREE.CircleGeometry(1.15, 24), face, 0, 0, 0, { parent: g, cast: false });
+    // the writhing hair, ringing the face
+    const snake = S.key === 'woodcut' ? S.mat({ tone: 0.22 }) : S.mat({ color: 0x4a4234, roughness: 0.7 });
+    for (let i = 0; i < 14; i++) {
+      const a = (i / 14) * Math.PI * 2;
+      const r = 1.12;
+      const s = this._m(new THREE.CapsuleGeometry(0.07, 0.34, 4, 6), snake,
+        Math.cos(a) * r, Math.sin(a) * r, 0.06, { parent: g });
+      s.rotation.z = a + Math.PI / 2;
+      // the shining stones set in their eyes
+      this._m(new THREE.SphereGeometry(0.032, 8, 6),
+        S.key === 'woodcut' ? S.glowMat() : S.mat({ color: 0xffd870, emissive: 0xc09020, emissiveIntensity: 1.2, metalness: 0.9, roughness: 0.15 }),
+        Math.cos(a) * (r + 0.2), Math.sin(a) * (r + 0.2), 0.14, { parent: g, cast: false });
+    }
+    // brows and hollow eyes
+    for (const s of [-1, 1]) {
+      this._m(new THREE.SphereGeometry(0.15, 10, 8), S.key === 'woodcut' ? S.mat({ tone: 0.4 }) : S.mat({ color: 0x0e0c08, roughness: 1 }),
+        s * 0.34, 0.3, 0.07, { parent: g, cast: false });
+      this._m(new THREE.BoxGeometry(0.42, 0.07, 0.1), snake, s * 0.34, 0.52, 0.1, { parent: g }).rotation.z = -s * 0.22;
+    }
+    // the gaping mouth — the doorway itself, dark all the way in
+    this._m(new THREE.PlaneGeometry(0.62, 0.78),
+      S.key === 'woodcut' ? S.mat({ tone: 0.45, rim: 0 }) : S.mat({ color: 0x080604, roughness: 1 }),
+      0, -0.42, 0.09, { parent: g, cast: false });
+
+    g.position.set(x, 3.1, z);
+    this.scene.add(g);
+    this._plaque({ main: 'ΛΙΧΑΣ ΩΡΘΩΣΕΝ ΜΕ', sub: 'LICHAS THE LIBYAN SET ME UP' },
+      1.7, 0.42, x, 1.5, z + 0.02, 0, true);
+    return g;
   }
 
   _obelisk(x, z, base, height) {
@@ -565,11 +690,15 @@ export class HPWorldScene {
     this._npc('queen', queen, CX - 4.35, CZ, Math.PI / 2, { label: 'Eleuterylida', sub: 'QUEEN · FREE WILL', labelY: 2.1, sway: 0.02 });
     queen.position.y = 0.62;   // seated on the throne
 
-    // The five nymphs of the senses, arced before the throne
+    // The five nymphs of the senses, arced before the throne, each carrying the
+    // attribute the book gives her (harp, glass, casket, casting bottle).
     SENSE_NYMPHS.forEach((n, i) => {
       const a = (-0.65 + (i / 4) * 1.3);
       const x = CX - 4.5 + Math.cos(a) * 3.6, z = CZ + Math.sin(a) * 3.6;
-      const g = this.cast.nymph({ name: n.name, robe: n.robe, h: 0.95, pose: i === 2 ? 'offer' : 'stand' });
+      const g = this.cast.nymph({
+        name: n.name, robe: n.robe, h: 0.95,
+        pose: n.pose || 'stand', attribute: n.attribute,
+      });
       this._npc('nymph_' + n.name.toLowerCase(), g, x, z, Math.PI / 2 + a, { label: n.name, sub: n.sense.toUpperCase(), labelY: 2.0 });
       this._circleCol(x, z, 0.4);
     });
@@ -653,8 +782,11 @@ export class HPWorldScene {
       }
       this._m(new THREE.BoxGeometry(d.w + 0.8, 0.3, 0.85), this._darkStoneMat, d.x, d.h + 0.15, Z);
 
+      // Greek above, Latin below — the plate letters each gate in four scripts
       this._plaque({ main: d.title, sub: d.sub, glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
-        1.9, 0.55, d.x, d.h + 0.75, Z + 0.42, 0, true);
+        2.3, 0.6, d.x, d.h + 0.72, Z + 0.42, 0, true);
+      this._plaque({ main: d.greek, sub: 'KEPT BY ' + d.keeper.toUpperCase(), glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
+        2.0, 0.5, d.x, d.h + 1.28, Z + 0.42, 0, true);
 
       const pm = S.portalMat(d.color);
       if (pm) {
@@ -672,8 +804,10 @@ export class HPWorldScene {
       this._stoneMat, 0, WALL_H + 0.55, Z, { rx: Math.PI / 2, outline: true });
     ped.scale.set(2.0, 1, 0.62);
 
-    // Logistica and Thelemia, Poliphilo's guides to the choice
-    const logistica = this.cast.nymph({ name: 'Logistica', robe: 0x7a90b8, h: 0.95, pose: 'point' });
+    // Logistica and Thelemia, Poliphilo's guides to the choice. Logistica argues
+    // the hard gate with a lute (borrowed from Thelemia) and, when he chooses the
+    // flowered one, casts it on the ground and breaks it.
+    const logistica = this.cast.nymph({ name: 'Logistica', robe: 0x7a90b8, h: 0.95, pose: 'point', attribute: 'lute' });
     this._npc('logistica', logistica, -2.6, 15.5, 0.6, { label: 'Logistica', sub: 'REASON', labelY: 2.0 });
     const thelemia = this.cast.nymph({ name: 'Thelemia', robe: 0xc87a8a, h: 0.95, pose: 'beckon' });
     this._npc('thelemia', thelemia, 2.6, 15.5, -0.6, { label: 'Thelemia', sub: 'DESIRE', labelY: 2.0 });
@@ -681,14 +815,37 @@ export class HPWorldScene {
 
   // ── The Elephant & Obelisk (f.25) — plaza centrepiece ─────────────────────
 
+  // The book insists on the materials here: the beast is "of more blacke stone
+  // than the Obsidium, powdered ouer with small spottes of golde and glimces of
+  // siluer," carrying an obelisk of GREEN Lacedaemonian stone, with tusks of
+  // pure white, a Latin motto on the breast-strap and a Greek/Arabic frontlet
+  // over the face. Seven steps climb the porphyry base, and a little door under
+  // the saddle opens into the body. (Dallington 1592; docs/HP_SOURCEBOOK.md §2.)
   _buildElephant() {
     const S = this.style;
-    const eleMat = S.mat({ color: 0x7a7068, tone: 0.08, roughness: 0.8, metalness: 0.05 });
+    const eleMat = S.key === 'woodcut'
+      ? S.mat({ color: 0x101014, tone: 0.3, roughness: 0.5 })
+      : S.mat({ color: 0x0e0e12, roughness: 0.35, metalness: 0.25 });
+    // Obsidian dusted with gold and silver: a dark base speckled bright, used as
+    // albedo + relief so the flanks glitter under the raking sun.
+    if (S.key !== 'woodcut') {
+      this._dress(eleMat, this._surfaceTexture({
+        base: '#17151c', dark: '#050408', light: '#ffe89a', blobs: 22, speckle: 9000, repeat: 2,
+      }), 0.12);
+      eleMat.roughness = 0.42;
+      eleMat.metalness = 0.3;
+    }
     const g = new THREE.Group();
     g.rotation.y = Math.PI; // head toward the arriving dreamer (+z)
     this.scene.add(g);
 
+    // Porphyry base — 12 paces by 5 by 3 in the book, kept to garden scale here
     this._m(new THREE.BoxGeometry(3.4, 0.7, 2.2), this._stoneMat, 0, 0.35, 0, { parent: g, outline: true });
+    // The seven steps at the hinder part of the base
+    for (let i = 0; i < 7; i++) {
+      this._m(new THREE.BoxGeometry(1.5, 0.1, 0.16), this._darkStoneMat,
+        0, 0.05 + i * 0.1, 1.1 + (7 - i) * 0.16, { parent: g, cast: false });
+    }
 
     const body = this._m(new THREE.SphereGeometry(0.85, 20, 14), eleMat, 0, 2.0, 0, { parent: g, outline: true });
     body.scale.set(1.0, 0.85, 1.5);
@@ -698,8 +855,19 @@ export class HPWorldScene {
     this._m(new THREE.SphereGeometry(0.5, 16, 12), eleMat, 0, 2.25, -1.35, { parent: g, outline: true });
     for (const s of [-1, 1]) {
       this._m(new THREE.CircleGeometry(0.34, 14), S.mat({ color: 0x6a6058, tone: 0.12, side: THREE.DoubleSide }), s * 0.45, 2.35, -1.25, { ry: s * Math.PI / 2.6, cast: false, parent: g });
-      this._m(new THREE.ConeGeometry(0.05, 0.5, 8), eleMat, s * 0.2, 1.85, -1.72, { rx: -Math.PI / 2.4, parent: g });
+      // Tusks "of puer white stone" — not the beast's black
+      this._m(new THREE.ConeGeometry(0.05, 0.5, 8),
+        S.key === 'woodcut' ? S.mat({ tone: -0.05 }) : S.mat({ color: 0xf0ead8, roughness: 0.45 }),
+        s * 0.2, 1.85, -1.72, { rx: -Math.PI / 2.4, parent: g });
     }
+    // The goldsmith's frontlet over the face, lettered in Greek and Arabic, and
+    // the Latin motto on the breast-strap. (_plaque adds to the scene, not to
+    // `g`, so these carry world coordinates: the group is turned through π, so
+    // the head faces +z.)
+    this._plaque({ main: 'ΠΟΝΟΣ ΚΑΙ ΕΥΦΥΙΑ', sub: 'LABOUR AND NATIVE WIT' },
+      0.6, 0.19, 0, 2.46, 1.76, 0, true);
+    this._plaque({ main: 'CEREBRVM EST IN CAPITE', sub: 'THE BRAIN IS IN THE HEAD' },
+      0.68, 0.2, 0, 1.72, 1.42, 0, true);
     const trunkCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 2.05, -1.72),
       new THREE.Vector3(0, 1.62, -1.98),
@@ -708,9 +876,46 @@ export class HPWorldScene {
     ]);
     this._m(new THREE.TubeGeometry(trunkCurve, 12, 0.09, 8), eleMat, 0, 0, 0, { parent: g });
 
-    this._m(new THREE.BoxGeometry(0.95, 0.22, 0.95), this._stoneMat, 0, 2.85, 0, { parent: g });
-    this._m(new THREE.CylinderGeometry(0.09, 0.30, 2.5, 4), this._stoneMat, 0, 4.2, 0, { parent: g, outline: true });
-    this._m(new THREE.SphereGeometry(0.1, 10, 8), this._stoneMat, 0, 5.5, 0, { parent: g });
+    // Brass saddle with its two girths, and the quadrangle that seats the obelisk
+    const brass = S.mat({ color: 0xb08a3a, metalness: 0.85, roughness: 0.35, tone: 0.05 });
+    this._m(new THREE.BoxGeometry(1.15, 0.14, 1.5), brass, 0, 2.78, 0, { parent: g });
+    for (const sz of [-0.55, 0.55]) {
+      const girth = this._m(new THREE.TorusGeometry(0.86, 0.045, 6, 20), brass, 0, 1.95, sz, { parent: g });
+      girth.rotation.y = Math.PI / 2;
+      girth.scale.set(1, 0.95, 1);
+    }
+    this._m(new THREE.BoxGeometry(0.95, 0.22, 0.95), this._stoneMat, 0, 2.92, 0, { parent: g });
+
+    // The obelisk of green Lacedaemonian stone — two paces broad, seven high —
+    // crowned with its shining ball
+    // Lacedaemonian green is porfido verde antico — a dark grey-green flecked
+    // paler, not an emerald
+    const greenStone = S.key === 'woodcut'
+      ? S.mat({ tone: 0.16 })
+      : S.mat({ color: 0x46543f, roughness: 0.55, metalness: 0.05 });
+    if (S.key !== 'woodcut') {
+      this._dress(greenStone, this._surfaceTexture({
+        base: '#46543f', dark: '#232d20', light: '#8a9a6e', blobs: 34, speckle: 2600, repeat: 2,
+      }), 0.2);
+      greenStone.roughness = 0.55;
+    }
+    this._m(new THREE.CylinderGeometry(0.09, 0.30, 2.5, 4), greenStone, 0, 4.28, 0, { parent: g, outline: true });
+    this._m(new THREE.SphereGeometry(0.12, 12, 10),
+      S.key === 'woodcut' ? S.glowMat() : S.mat({ color: 0xe8d070, metalness: 0.95, roughness: 0.15, emissive: 0x6a5010, emissiveIntensity: 0.5 }),
+      0, 5.62, 0, { parent: g });
+
+    // "there was cut out and made a little doore and hollowed entrance … by the
+    // which a conuenient going vp into the body of the Olephant was offered me."
+    // Inside stands the sepulchre and its everlasting lamp; the door is dark and
+    // the lamp shows through it.
+    this._m(new THREE.PlaneGeometry(0.42, 0.62),
+      S.key === 'woodcut' ? S.mat({ tone: 0.42, rim: 0 }) : S.mat({ color: 0x0a0806, roughness: 1 }),
+      0.44, 2.0, 0.86, { ry: 0.5, parent: g, cast: false });
+    // beside the steps at the beast's rear, where the door is
+    this._plaque({ main: 'QVAERE ET INVENIES', sub: 'THE TOMB WITHIN THE BEAST' },
+      0.72, 0.22, 0, 0.95, -1.18, Math.PI, true);
+    const lamp = S.pointLight(0xffb050, 0.9, 3.2);
+    if (lamp) { lamp.position.set(0.5, 2.0, 0.9); g.add(lamp); this._pulses.push({ pl: lamp, base: 0.9, phase: 2.2 }); }
 
     this._wallCol(-1.8, 1.8, -1.3, 1.3);
   }
@@ -874,11 +1079,18 @@ export class HPWorldScene {
       const chariot = this.cast.props.chariot(1.5, { color: t.color });
       g.add(chariot);
 
-      // Team of two horses hitched ahead
-      for (const s of [-1, 1]) {
-        const h = this.cast.animals.horse(0.95);
-        h.position.set(s * 0.7, 0.0, -2.6);
-        g.add(h);
+      // The team: six beasts, coupled two and two, each ridden by a nymph
+      // musician in her rank's livery
+      for (let i = 0; i < 6; i++) {
+        const sx = (i % 2 ? 1 : -1) * 0.72;
+        const row = Math.floor(i / 2);                 // 0 = nearest the car
+        const z = -2.5 - row * 1.75;
+        const beast = this._triumphBeast(t.team);
+        beast.position.set(sx, 0, z);
+        g.add(beast);
+        const rider = this.cast.nymph({ robe: TRIUMPH_LIVERY[i], h: 0.62 });
+        rider.position.set(sx, t.team === 'elephant' ? 1.15 : 0.82, z + 0.1);
+        g.add(rider);
       }
       // Motif on the platform
       let motif;
@@ -907,6 +1119,36 @@ export class HPWorldScene {
       this._floats.push({ g, wheels: [], phase: Math.random() * 6 });
       this._wallCol(x - 1.3, x + 1.3, z - 1.6, z + 1.6);
     }
+  }
+
+  // A draught beast for a triumphal car. Centaurs and leopards aren't in the
+  // Cast's bestiary, so both are composed from what is: a horse with a rider's
+  // torso grown out of the withers, and a spotted tawny cat.
+  _triumphBeast(kind) {
+    const S = this.style;
+    if (kind === 'elephant') {
+      const g = this.cast.animals.horse(1.0);
+      g.scale.set(1.25, 1.15, 1.3);
+      const trunk = this._m(new THREE.CapsuleGeometry(0.05, 0.34, 4, 6),
+        S.mat({ color: 0xe8e4d8, roughness: 0.8 }), 0, 0.62, -0.78, { parent: g });
+      trunk.rotation.x = 0.5;
+      return g;
+    }
+    if (kind === 'leopard') {
+      const g = this.cast.animals.lion(0.9);
+      g.traverse(o => { if (o.isMesh && o.material?.color) o.material = S.mat({ color: 0xd8a838, roughness: 0.75 }); });
+      return g;
+    }
+    if (kind === 'centaur') {
+      const g = this.cast.animals.horse(0.95);
+      const torso = this.cast.figure({ h: 0.62, robe: null, pose: 'reach' });
+      torso.position.set(0, 0.72, -0.5);
+      // only the upper body rises from the withers
+      torso.traverse(o => { if (o.isMesh && o.position.y < 0.55) o.visible = false; });
+      g.add(torso);
+      return g;
+    }
+    return this.cast.animals.horse(0.95);
   }
 
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
@@ -1140,6 +1382,10 @@ export class HPWorldScene {
     }
     // The meadow leans with the travelling gusts
     for (const f of this._meadows) f.update(this._t);
+    // Fortuna turns on her pin: a slow drift with the gusts, never a clean spin
+    for (const v of this._vanes) {
+      v.g.rotation.y += dt * v.rate * (0.6 + 0.4 * Math.sin(this._t * 0.31 + v.phase));
+    }
     // Water: the fountain discs turn, the sea breathes
     for (const w of this._waters) w.m.rotation.z += dt * w.rate;
     if (this._sea) this._sea.mat.opacity = this._sea.base + Math.sin(this._t * 0.5) * 0.05;

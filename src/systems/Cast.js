@@ -101,13 +101,96 @@ export function makeCast(S) {
     return g;
   }
 
-  // A robed nymph; `name` is remembered for labels.
-  function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand' } = {}) {
+  // A robed nymph; `name` is remembered for labels. `attribute` puts an
+  // identifying object in her hands, the way the 1499 text identifies the five
+  // nymphs of the senses by what each carries (see docs/HP_SOURCEBOOK.md §3):
+  // Osfressia the perfume casket, Orassia the shining glass, Achoe the sounding
+  // harp, Geussia the casting bottle. Aphea carries nothing — she offers her hand.
+  function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand', attribute = null } = {}) {
     const g = figure({ h, robe, pose });
     add(g, mesh(new THREE.SphereGeometry(0.135 * h, 10, 8), M(0x6a4a28, { roughness: 0.85 }), 0, 1.56 * h));
     g.userData.name = name;
+    if (attribute && attributes[attribute]) {
+      const item = attributes[attribute](h);
+      // Carried at the right hand, tilted slightly out from the body.
+      item.position.set(0.3 * h, 1.06 * h, 0.16 * h);
+      item.rotation.y = -0.45;
+      g.add(item);
+      g.userData.attribute = item;
+    }
     return g;
   }
+
+  // ── Carried attributes (the senses' emblems) ──────────────────────────────
+
+  const attributes = {
+    // Achoe, Hearing: "shee that carrieth the sounding Harpe"
+    harp: (h = 1) => {
+      const g = new THREE.Group();
+      const wm = M(0x8a5a2a, { roughness: 0.6 });
+      const sm = M(0xf0e0b0, { metalness: 0.5, roughness: 0.35 });
+      // Curved pillar + soundbox, the angular harp of the woodcuts
+      const arc = mesh(new THREE.TorusGeometry(0.17 * h, 0.022 * h, 6, 16, Math.PI * 0.95), wm, 0, 0.1 * h);
+      arc.rotation.z = -0.5;
+      add(g, arc);
+      add(g, mesh(new THREE.BoxGeometry(0.035 * h, 0.34 * h, 0.05 * h), wm, -0.11 * h, 0.02 * h, 0)).rotation.z = 0.22;
+      for (let i = 0; i < 5; i++) {
+        add(g, mesh(new THREE.CylinderGeometry(0.004 * h, 0.004 * h, (0.1 + i * 0.036) * h, 4), sm,
+          (-0.07 + i * 0.036) * h, (0.02 + i * 0.012) * h, 0));
+      }
+      return g;
+    },
+    // Orassia, Sight: "This other with the shining Glasse (our delightes)"
+    mirror: (h = 1) => {
+      const g = new THREE.Group();
+      const fm = M(0xd8b048, { metalness: 0.9, roughness: 0.2 });
+      add(g, mesh(new THREE.TorusGeometry(0.085 * h, 0.016 * h, 6, 18), fm, 0, 0.08 * h)).rotation.y = Math.PI / 2;
+      const disc = mesh(new THREE.CircleGeometry(0.078 * h, 20),
+        M(0xeaf2ff, { metalness: 1.0, roughness: 0.05 }), 0, 0.08 * h, 0);
+      disc.rotation.y = Math.PI / 2;
+      add(g, disc);
+      add(g, mesh(new THREE.CylinderGeometry(0.014 * h, 0.018 * h, 0.13 * h, 8), fm, 0, -0.05 * h));
+      return g;
+    },
+    // Osfressia, Smell: "she that carrieth the boxes and white cloathes"
+    casket: (h = 1) => {
+      const g = new THREE.Group();
+      const bm = M(0x7a4a30, { roughness: 0.7 });
+      const gm = M(0xd8b048, { metalness: 0.9, roughness: 0.25 });
+      add(g, mesh(new THREE.BoxGeometry(0.2 * h, 0.11 * h, 0.14 * h), bm, 0, 0.055 * h));
+      add(g, mesh(new THREE.BoxGeometry(0.21 * h, 0.02 * h, 0.15 * h), gm, 0, 0.12 * h));
+      // the folded white silk veils, carried on top
+      add(g, mesh(new THREE.BoxGeometry(0.15 * h, 0.045 * h, 0.11 * h), M(0xf4efe2, { roughness: 0.9 }), 0, 0.15 * h));
+      return g;
+    },
+    // Geussia, Taste: "shee that beareth the casting bottle of precious Lyquor"
+    flask: (h = 1) => {
+      const g = new THREE.Group();
+      const gm = M(0xd8b048, { metalness: 0.9, roughness: 0.22 });
+      const body = add(g, mesh(new THREE.SphereGeometry(0.075 * h, 14, 10), gm, 0, 0.08 * h));
+      body.scale.set(1, 1.15, 0.85);
+      add(g, mesh(new THREE.CylinderGeometry(0.018 * h, 0.026 * h, 0.09 * h, 8), gm, 0, 0.18 * h));
+      add(g, mesh(new THREE.SphereGeometry(0.022 * h, 8, 6), M(0x9a3040, { roughness: 0.4 }), 0, 0.23 * h));
+      return g;
+    },
+    // Logistica's borrowed lute — she breaks it at the third gate
+    lute: (h = 1) => {
+      const g = new THREE.Group();
+      const wm = M(0x8a5a2a, { roughness: 0.6 });
+      const bowl = add(g, mesh(new THREE.SphereGeometry(0.11 * h, 14, 10), wm, 0, 0.08 * h));
+      bowl.scale.set(1, 0.75, 0.6);
+      add(g, mesh(new THREE.BoxGeometry(0.03 * h, 0.3 * h, 0.045 * h), wm, 0, 0.2 * h)).rotation.z = -0.3;
+      return g;
+    },
+    // The cornucopia of the portal's Fortuna — "stopped vp, and the mouth downewarde"
+    cornucopia: (h = 1) => {
+      const g = new THREE.Group();
+      const gm = M(0xd8b048, { metalness: 0.85, roughness: 0.3 });
+      const horn = add(g, mesh(new THREE.ConeGeometry(0.075 * h, 0.28 * h, 10, 1, true), gm, 0, 0));
+      horn.rotation.z = 0.5;
+      return g;
+    },
+  };
 
   // Floating name/title label (billboard sprite)
   function label(text, { sub = '', color = '#f0e4c8', scale = 1 } = {}) {
@@ -543,5 +626,5 @@ export function makeCast(S) {
     },
   };
 
-  return { figure, nymph, label, animal: (kind, s, opts) => (animals[kind] || animals.bird)(s, opts), prop: (kind, s, opts) => (props[kind] || props.tree)(kind in props ? s : 'broad', opts), animals, props };
+  return { figure, nymph, label, attributes, animal: (kind, s, opts) => (animals[kind] || animals.bird)(s, opts), prop: (kind, s, opts) => (props[kind] || props.tree)(kind in props ? s : 'broad', opts), animals, props };
 }
