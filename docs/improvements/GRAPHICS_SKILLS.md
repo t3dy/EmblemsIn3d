@@ -36,7 +36,10 @@ Every borrowed technique must pass the house rules before it ships:
 
 ## Ranked adoptions
 
-### 1. The living meadow — `threejs-procedural-vegetation` ★ the transformation
+### 1. The living meadow — `threejs-procedural-vegetation` ★ the transformation — CORE IMPLEMENTED
+> Shipped on `hp-v2` as [src/systems/Meadow.js](../../src/systems/Meadow.js): grass tufts +
+> wildflower drifts + rose drifts (three instanced fields, analytic path masking, rooted
+> gust wind, FogExp2 match, mobile tier). Ivy and the knot-garden parterre remain open.
 The sward is currently one textured plane; hedges are boxes; trees are ~80 cone/sphere
 props. This is the single loudest "not yet a garden" signal, and the skill's
 `grass-system.js` pattern is a direct fit: **authored blade clusters as one

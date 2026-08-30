@@ -26,6 +26,7 @@ import { Walker } from '../systems/Walker.js?v=2';
 import { makeCast } from '../systems/Cast.js?v=3';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
+import { createMeadowField } from '../systems/Meadow.js?v=1';
 
 // pos/look are [x, z] on the ground plane; folio/emblem feed the HUD + research.
 // The first nine are reachable with digit keys 1–9 (journey order).
@@ -140,6 +141,7 @@ export class HPWorldScene {
     this._waters = [];             // spinning water discs
     this._sea = null;              // breathing sea material
     this._motes = null;            // drifting pollen in the lit garden
+    this._meadows = [];            // instanced grass / flower fields (lit only)
     this._npcs = [];               // { g, phase, sway }
     this.npcs = {};                // key → group (for the dream's cameos)
     this._stTimer = 0;
@@ -210,6 +212,7 @@ export class HPWorldScene {
     this._buildCythera();
     this._buildTrees();
     if (lit) this._buildMotes();
+    if (lit) this._buildMeadow();
 
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
@@ -987,6 +990,90 @@ export class HPWorldScene {
     }
   }
 
+  // ── The meadow — instanced grass and flower drifts over the open sward ────
+  // (Lit garden only; the woodcut page keeps its clean paper ground.)
+
+  // Open-ground distance to the nearest paved/blocked feature, capped at 2 u.
+  // 0 means "on the path" — the meadow fields use it to mask the processional
+  // axis, the plazas, the court slabs, the wood duff, and the shore.
+  _meadowClearance(x, z) {
+    const rect = (x0, x1, z0, z1) => {
+      const dx = Math.max(x0 - x, 0, x - x1);
+      const dz = Math.max(z0 - z, 0, z - z1);
+      return Math.hypot(dx, dz);
+    };
+    const circle = (cx, cz, r) => Math.max(0, Math.hypot(x - cx, z - cz) - r);
+    let d = 2;
+    d = Math.min(d,
+      rect(-1.9, 1.9, -36, 51),          // main processional axis
+      rect(-19.5, 19.5, -1.65, 1.65),    // cross path to the courts
+      rect(-19.5, 19.5, 18.35, 21.65),   // cross path, upper
+      circle(0, 0, 7.2),                 // Elephant plaza
+      circle(0, -20, 8.8),               // fountain grove
+      rect(-27.5, -12.5, 14, 26),        // court of Eleuterylida slab
+      rect(13, 25, 14.5, 25.5),          // Polia's garden slab
+      rect(-28.5, -12.5, -6, 6),         // Planetary Palace slab
+      circle(21.5, 0, 6.2),              // Quinta Essentia round
+      circle(25.5, -3.4, 1.5), circle(25.5, 3.4, 1.5),
+      rect(-14.5, 14.5, 10.6, 13.4),     // Three Doors wall
+      rect(-19, 19, 24.2, 27.8),         // Great Portal piers
+      rect(-35.5, 35.5, 31.5, 55),       // dark-wood duff
+      rect(-70, 70, -70, -33),           // sand strip and sea
+    );
+    for (const t of TRIUMPHS) d = Math.min(d, circle(t.pos[0], t.pos[1], 2.4));
+    return d;
+  }
+
+  _buildMeadow() {
+    const mobile = /Mobi|Android/i.test(navigator.userAgent);
+    const clearance = (x, z) => this._meadowClearance(x, z);
+    const sun = new THREE.Vector3(16, 22, 10).normalize();   // the lit style's key
+    const common = { clearance, sunDirection: sun, fogColor: 0xd0be9e, fogDensity: 0.0072 };
+
+    // The sward itself: clumped tufts, gold-green in the afternoon light
+    const grass = createMeadowField({
+      ...common,
+      count: mobile ? 8000 : 22000,
+      seed: 7331,
+      blade: { height: 0.42, width: 0.05, segments: 3, planes: 3 },
+      colors: { root: 0x2e4a1e, tip: 0x7a9c42, rootB: 0x3c5a22, tipB: 0xa8b050, back: 0xd8c860 },
+      wind: { windStrength: 0.16, windSpeed: 1.15 },
+    });
+
+    // Wildflower drifts: cream-and-gold spikes gathered only where the clump
+    // noise crests, so they read as scattered drifts, not a second crop
+    const wildflowers = createMeadowField({
+      ...common,
+      count: mobile ? 400 : 1000,
+      seed: 4211,
+      accept: (x, z, clump) => clump > 0.72,
+      blade: { height: 0.48, width: 0.04, segments: 3, planes: 2, flare: 1.4 },
+      colors: { root: 0x3a5423, tip: 0xdcc98e, rootB: 0x3a5423, tipB: 0xd8a850, back: 0xe8d090 },
+      wind: { windStrength: 0.2, windSpeed: 1.15 },
+      scale: 0.85,
+    });
+
+    // Rose drifts fringing Polia's garden and the Queen's court
+    const roseBand = (x, z) =>
+      (x > 11 && x < 27.5 && z > 12 && z < 28) ||
+      (x > -29.5 && x < -11 && z > 12 && z < 28);
+    const roses = createMeadowField({
+      ...common,
+      count: mobile ? 600 : 1500,
+      seed: 9042,
+      accept: (x, z, clump) => roseBand(x, z) && clump > 0.3,
+      blade: { height: 0.5, width: 0.05, segments: 3, planes: 2, flare: 1.3 },
+      colors: { root: 0x2e4a1e, tip: 0xc84a5a, rootB: 0x35521f, tipB: 0xe07a8a, back: 0xe8a0a0 },
+      wind: { windStrength: 0.18, windSpeed: 1.1 },
+      scale: 0.9,
+    });
+
+    for (const f of [grass, wildflowers, roses]) {
+      this.scene.add(f.mesh);
+      this._meadows.push(f);
+    }
+  }
+
   // ── Interaction API (used by main.js and DreamMode) ───────────────────────
 
   teleport(key) {
@@ -1051,6 +1138,8 @@ export class HPWorldScene {
         n.armR.rotation.z = n.aR - Math.sin(this._t * 0.9 + n.phase + 0.9) * 0.05;
       }
     }
+    // The meadow leans with the travelling gusts
+    for (const f of this._meadows) f.update(this._t);
     // Water: the fountain discs turn, the sea breathes
     for (const w of this._waters) w.m.rotation.z += dt * w.rate;
     if (this._sea) this._sea.mat.opacity = this._sea.base + Math.sin(this._t * 0.5) * 0.05;
