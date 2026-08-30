@@ -14,6 +14,7 @@
 | [AUDIO.md](AUDIO.md) | Sound: ambient, positional, UI | Positional water/fire sources via Tone.Panner3D |
 | [UX_NAVIGATION.md](UX_NAVIGATION.md) | Controls, wayfinding, mobile | 🍎 Station compass strip on the HUD |
 | [SCHOLARSHIP.md](SCHOLARSHIP.md) | Content: annotations, quests, sources | Wire the nymph sourcebook + a "Seeker's Work" quest layer for HP |
+| [GRAPHICS_SKILLS.md](GRAPHICS_SKILLS.md) | Adopting the Three.js graphics agent-skills pack | Instanced meadow grass with path masking, then the book-scale Great Portal |
 
 **Implemented immediately after writing** (see git log): bump maps (TEXTURES §1),
 water-surface animation (ANIMATION §4), arm-gesture idle (ANIMATION §1), pollen motes
