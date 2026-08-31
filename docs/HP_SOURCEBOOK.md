@@ -225,5 +225,11 @@ Ranked by meaning-per-triangle, with the ones taken in this pass marked ✔:
 7. The enterable elephant interior (§2) — the lamp, the sepulchre, *QVAERE ET INVENIES*.
    The best candidate for the "Antiquarian's Eye" quest's first find.
 8. The horse and the colossus (§6) — the missing two thirds of the ruins field.
-9. Dallington's own English in Dream mode — replace summary narration with the 1592
-   text where it is vivid, since it is free to quote at length.
+9. ✔ **Dallington's own English in Dream mode** — the narration now runs two voices:
+   our prose summary carries the plot (nobody reads 400 pages standing in a garden),
+   and the book's own words appear verbatim in a gold italic blockquote with the
+   edition named beneath, so a quotation is never mistakable for our paraphrase.
+   Twelve quotations across the twelve scenes. Note the ceiling: Dallington breaks
+   off partway through Book I (FINIS at the seaside temple), so the Fountain of
+   Venus, Cythera and the awakening have no English to quote and run on summary plus
+   the 1499 Latin — the acrostic, Polia's epitaph, the title-page motto.

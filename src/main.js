@@ -6,7 +6,7 @@ import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
 import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=21';
 import { AFWorldScene } from './scenes/AFWorldScene.js?v=11';
 import { DreamMode } from './systems/DreamMode.js?v=1';
-import { DREAM_STOPS } from './data/hp_dream.js?v=1';
+import { DREAM_STOPS } from './data/hp_dream.js?v=2';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 

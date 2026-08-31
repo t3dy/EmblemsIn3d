@@ -1,11 +1,27 @@
 // hp_dream.js — the script of "Poliphilo's Dream": twelve stops that walk the
 // player through the plot of the Hypnerotomachia Poliphili (Venice, 1499).
 //
-// Prose summaries are original, written to follow the book closely. Quoted
-// matter is limited to public-domain sources: the Latin/Greek of the 1499
-// edition itself (mottoes, inscriptions, the famous acrostic) and the title
-// of the Elizabethan English version (R. D., London, 1592). Where the 1499
-// hieroglyphs are "read", the reading is the book's own Latin gloss.
+// Two voices, and the player can always tell which is which.
+//
+//   `text`  — our own prose summary, written to follow the book closely.
+//             This carries the plot: nobody is going to read all 400 pages
+//             of the Hypnerotomachia standing in a garden.
+//   `quote` — the book's own words, verbatim, rendered in the panel as an
+//             italic blockquote with a rule and an attribution line. Never
+//             paraphrase into this field.
+//
+// Quoted matter is public domain throughout, and of two kinds:
+//   · Robert Dallington's Elizabethan English — "Hypnerotomachia: The Strife
+//     of Loue in a Dreame," London, 1592 — kept in its original spelling.
+//     That translation breaks off partway through the first book (it ends at
+//     the seaside temple), so the later stops have no English to quote and
+//     run on summary and inscription alone.
+//   · The Latin and Greek of the 1499 Aldine edition itself: the mottoes,
+//     the door inscriptions, the hieroglyphs' own glosses, the acrostic and
+//     Polia's epitaph.
+//
+// Joscelyn Godwin's 1999 translation is in copyright and is not used here in
+// any form. See docs/HP_SOURCEBOOK.md for the rights note.
 //
 // Each stop: path (waypoints [x, z] continuing from wherever the player
 // stands), look/pitch to settle the camera, an optional guide who walks
@@ -19,10 +35,10 @@ export const DREAM_STOPS = [
     look: [3.5, 39],
     beats: [
       { text: 'Poliphilo has passed a night of sighs. Polia — the name means "many things," and to him means one thing only — will not have him. Toward dawn, at last, sleep takes him. And in sleep the dream begins: he finds himself on a wide silent plain, and beyond it this wood, so thick that neither light nor path survives beneath the crowns.' },
-      { text: 'He walks until walking loses its direction. Thorns take his clothes; roots take his feet. Somewhere a wolf crosses his way, mouth full, eyes indifferent, and is gone — the first living thing the dream has shown him, and no comfort at all.' },
-      { text: 'Parched and lost, he prays to Jupiter and stumbles free of the trees. A stream sings somewhere ahead — but each time he kneels to drink, a distant music draws the water from his mind. Exhausted, he sleeps again; and within the first dream a second opens, deeper, where the marvels wait.',
-        quote: 'Hypnerotomachia: The Strife of Loue in a Dreame.',
-        source: 'title of the English version, London 1592' },
+      { text: 'He walks until walking loses its direction. Thorns take his clothes; roots take his feet. Then, on his left hand, a wolf — mouth full, eyes indifferent. It is the first living thing the dream has shown him, and no comfort at all.',
+        quote: '“At the sight whereof immediatly, my hayre stood right vp, and I would haue cryed out, but could not: and presently the Woolfe ranne away.”',
+        source: 'R. D., The Strife of Loue in a Dreame, London 1592' },
+      { text: 'Parched and lost, he prays to Jupiter and stumbles free of the trees. A stream sings somewhere ahead — but each time he kneels to drink, a distant music draws the water from his mind. Exhausted, he sleeps again; and within the first dream a second opens, deeper, where the marvels wait.' },
     ],
   },
   {
@@ -32,7 +48,10 @@ export const DREAM_STOPS = [
     look: [0, 26],
     pitch: 0.2,
     beats: [
-      { text: 'The second dream sets him down in a valley closed by a work no human age could match: a stepped mountain of stone, part pyramid, part gate, crowned with an obelisk that needles the sky. Poliphilo the lover is also Poliphilo the antiquarian — he forgets his fear and begins, helplessly, to measure it.' },
+      { text: 'The second dream sets him down in a valley closed by a work no human age could match: a stepped mountain of Parian marble, part pyramid, part gate, sealing the valley between two peaks. The book counts its courses — one thousand four hundred and ten — and crowns it with a cube, four harpies of cast metal, and an obelisk. Poliphilo the lover is also Poliphilo the antiquarian: he forgets his fear and begins, helplessly, to measure it.',
+        quote: '“With what art inuented? with what power, humaine force, and incredible meanes, enuying (if I may speake it) the workmanship of the heauens, such and so mightie weights should be transported and carryed into the skyes?”',
+        source: 'R. D., The Strife of Loue in a Dreame, London 1592' },
+      { text: 'On the point of the obelisk a winged nymph turns on a copper pin — her robe blown abroad, her face looking back over her wings, a horn of plenty stopped and held mouth-downward in her right hand. She grinds as she turns, and the whole mountain rings with it. On the pier to his right, the head of Medusa gapes: her mouth is the door, and the stair to the summit begins in it.' },
       { text: 'He reads the carved signs on the threshold as the ancients wrote them, in pictures: an anchor, a dolphin, a circle, an eye. The book spells out their sentence in Latin — the emperor’s old paradox of speed and patience.',
         quote: 'Semper festina tarde — always hasten slowly.',
         source: 'the hieroglyphs of the great portal, as the book glosses them' },
@@ -46,7 +65,10 @@ export const DREAM_STOPS = [
     look: [0, 0],
     pitch: 0.12,
     beats: [
-      { text: 'Among the ruins stands a marvel he circles three times before believing: an elephant of black stone, saddled not with a rider but with an obelisk, as if patience itself had been made to carry the sky. Within its flanks, the book says, lie two tombs — a king and a queen of some perished age.' },
+      { text: 'Among the ruins stands a marvel he circles three times before believing: an elephant of stone blacker than obsidian and dusted over with gold and silver, so polished it gives back whatever stands before it. It is saddled in brass, not with a rider but with an obelisk of green Lacedaemonian stone. Its breast-strap says CEREBRVM EST IN CAPITE — the brain is in the head; the frontlet over its face says, in Greek, labour and native wit.' },
+      { text: 'Seven steps climb the porphyry base, and beneath the saddle a little door opens into the beast’s body. Inside, by the light of a lamp that never goes out, stand two sepulchres — a king and a queen of some perished age. The king’s shield carries a warning in Hebrew, Greek and Latin.',
+        quote: 'NVDVS ESSEM, BESTIA NI ME TEXISSET.\nQVAERE, ET INVENIES.\n\nNaked I would be, had not the beast couered me.\nSeeke, and thou shalt finde.',
+        source: 'inscription within the elephant, 1499 edition' },
       { text: 'Poliphilo reads the beast as he read the gate — as a sentence in things. Strength bearing wisdom; the slowest animal carrying the most heaven-pointed stone. The dream is teaching him its grammar: everything here means, and nothing explains.',
         quote: 'Patientia est ornamentum, custodia et protectio vitae.',
         source: 'hieroglyphic gloss of the 1499 edition — patience is the ornament, guard and protection of life' },
@@ -60,7 +82,10 @@ export const DREAM_STOPS = [
     look: [-20, 20],
     guide: { name: 'Achoe', sub: 'HEARING', robe: 0xc8b06a },
     beats: [
-      { text: 'Five nymphs find him trembling at a fountain’s lip and laugh his fear away. They are the five senses, and they bear the names of their offices in Greek: Aphea who is Touch, Osfressia who is Smell, Orassia who is Sight, Achoe who is Hearing, Geussia who is Taste. They bathe with him, anoint him, and lead him — teasing him all the way — to their mistress.' },
+      { text: 'Five nymphs find him trembling at a fountain’s lip and laugh his fear away. They are the five senses, and each is known by what she carries. One of them takes his hand and introduces the company.',
+        quote: '“Giue mee thy hand, thou art verie welcome. Thou seest at this present here, that we are fiue companions, and I am called Aphea, and she that carrieth the boxes and white cloathes Offressia. This other with the shining Glasse (our delightes) her name is Orassia. Shee that carrieth the sounding Harpe is called Achol, and shee that beareth the casting bottle of precious Lyquor, is called Genshra.”',
+        source: 'R. D., The Strife of Loue in a Dreame, London 1592' },
+      { text: 'Aphea is Touch, and carries nothing — she is the one who offers her hand. Osfressia is Smell, with her caskets of perfume and folded white silks; Orassia is Sight, with her glass; Achoe is Hearing, with her harp; Geussia is Taste, with her golden bottle. They bathe with him in an eight-sided bath roofed with crystal, anoint him, and lead him — teasing him all the way — to their mistress.' },
       { text: 'Queen Eleuterylida — Free Will herself — keeps a court where the very floor is a lesson in geometry. She feasts Poliphilo from vessels that outdo kingdoms: courses served in gold, in jasper, in emerald; a ballet danced as a living game of chess; wine that makes the memory of the wood seem another man’s misfortune.' },
       { text: 'The Queen hears his story, and appoints him two companions for the road that no one may walk alone: Logistica, who is Reason, and Thelemia, who is Desire. "They will bring you," she says, "to the three gates in the mountain, where every dreamer must choose."' },
     ],
@@ -73,11 +98,13 @@ export const DREAM_STOPS = [
     pitch: 0.06,
     guide: { name: 'Logistica', sub: 'REASON', robe: 0x7a90b8 },
     beats: [
-      { text: 'In the living rock stand three doors, and over each a name in Greek, Latin, Hebrew and Arabic. To the left, the steep gate of the ascetics; in the centre, the worldly gate of works and fame; to the right, a gate wreathed in flowers.',
-        quote: 'Gloria Dei · Gloria Mundi · Mater Amoris',
-        source: 'the inscriptions of the three doors, f.119' },
-      { text: 'Logistica argues the left-hand door with all the force of Reason — the hard climb, the imperishable reward. She plays a hymn to it on her lyre. Behind the first door an old woman in rags waits on a barren crag; behind the second, crowned Labour with her sword. Poliphilo’s eyes keep sliding to the third.' },
-      { text: 'At the flowered gate a company of nymphs looks out, and among them — he is almost sure — a face he knows. Thelemia smiles. Logistica, defeated, hurls down her lyre and departs without a word. Poliphilo, being Poliphilo, chooses the Mother of Love. The door closes behind him like water.' },
+      { text: 'Three doors are hewn out of the living rock, in a place so barren it carries no grass at all, and over each a name in Greek, Latin, Hebrew and Arabic. On his right the steep gate of God’s glory; on his left the world’s; and in the middle the gate that nurses love.',
+        quote: 'ΘΕΟΔΟΞΙΑ · ΕΡΩΤΟΤΡΟΦΟΣ · ΚΟΣΜΟΔΟΞΙΑ\nGLORIA DEI · MATER AMORIS · GLORIA MVNDI',
+        source: 'the inscriptions of the three doors, 1499 edition, f.119' },
+      { text: 'Behind the first, an old woman in rags on a crumbling rock, her arm bare and pointing to heaven. Behind the second, a brown fierce-eyed woman lifting a naked sword with a gold crown and a palm branch crossed upon it. Logistica borrows Thelemia’s lute, strikes a Dorian tune, and sings for the hard road.',
+        quote: '“O Poliphilus, be not wearie to take paynes in thys place, for when labour and trauell is ouer-come, there will be a tyme of rest.”',
+        source: 'Logistica’s song — R. D., The Strife of Loue in a Dreame, London 1592' },
+      { text: 'At the middle gate stands Philtronia, whose regards are wanton and whose ground is all small herbs and flowers and water sliding over amber gravel. A company of nymphs looks out, and among them — he is almost sure — a face he knows. Thelemia smiles. Logistica casts her lute on the ground and breaks it. Poliphilo, being Poliphilo, chooses the Mother of Love.' },
     ],
   },
   {
@@ -113,8 +140,10 @@ export const DREAM_STOPS = [
     look: [10.6, -9.4],
     guide: { name: 'Polia', sub: 'THE LONG-SOUGHT', robe: 0xe8ddc0 },
     beats: [
-      { text: 'Across the meadow roll four triumphal cars, wheels of jasper, teams garlanded, each celebrating one of Jupiter’s loves. First Europa, borne over the sea on the white bull; the nymphs around her car sing the abduction as if it were a wedding.' },
-      { text: 'Then Leda and the swan, drawn in state; then Danaë, whose tower could not keep out a god who came as golden rain. The dreamers of 1499 read these as love’s power over heaven itself — Jupiter transformed by desire into bull, swan, gold.' },
+      { text: 'Across the meadow roll four triumphal cars, each celebrating one of Jupiter’s loves. The first has wheels of Scythian emerald and a body of table diamonds set in gold, cornucopias at its four corners and harpies’ feet beneath. On it rides Europa, half-naked on the white bull, holding him by the horns. Six centaurs draw it, crowned with ivy, and on each centaur rides a nymph with an instrument.',
+        quote: '“…singing so sweetly with little rounde mouthes, and playing vppon their instruments, within so celestiall a manner, as woulde keepe a man from euer dying.”',
+        source: 'R. D., The Strife of Loue in a Dreame, London 1592' },
+      { text: 'Their liveries are ranked: the two nearest the car in blue silk the colour of a peacock’s neck, the middle two in crimson, the two foremost in emerald green — censers, then gold trumpets with silk banners, then antique cornets. Then Leda and the swan behind six white elephants coupled two and two; then Danaë, whose tower could not keep out a god who came as golden rain.' },
       { text: 'Last comes the car of Semele, who asked to see the god unveiled and was consumed — fire riding on jasper wheels. Glory, the pageant says, is dangerous to mortals; love is a splendour at the edge of burning. Polia watches Poliphilo watch the flames.' },
     ],
   },
