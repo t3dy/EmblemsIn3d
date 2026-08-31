@@ -43,6 +43,15 @@ the middle of that line —
 
 ## Notes
 
+**Confidence: medium.** The gem-lore and the column order are secure — Colonna
+names each stone plainly and the Plinian comparisons are identifiable. Two
+weaker areas: the mouldings of the kerb (*cimasula, socco, arulette,
+undiculatione*) are a technical vocabulary I have rendered by their standard
+Vitruvian equivalents without being certain Colonna means exactly those members;
+and the geometrical construction in the last paragraph is compressed to the
+point of obscurity, so I have translated it literally rather than smoothing it
+into a proof. **A reviewer should look hardest at the last paragraph.**
+
 - **The seven columns and their stones**, in the order Colonna gives them:
   sapphire (right of the entrance), emerald (left), turquoise, a melilot-coloured
   opaque stone, jasper, topaz, and — alone, and hexagonal rather than round —

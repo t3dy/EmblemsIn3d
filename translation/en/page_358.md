@@ -41,6 +41,12 @@ astonishing fountain.
 
 ## Notes
 
+**Confidence: medium.** The chapter argument is secure. The body is one enormous
+periodic sentence — a chain of *per…* clauses hung on "I did not know to which
+sense to apply my attention" — and English will not hold a period that long, so
+I have broken it with semicolons. The sense is not in doubt; the shape has been
+compromised, and a reviewer might well restore more of it than I dared.
+
 - **`Eutrapela`** — Greek εὐτράπελος, "graceful, ready in speech, well-turned."
   Colonna uses it as an epithet for Polia rather than a name. Rendered "the
   graceful Polia."

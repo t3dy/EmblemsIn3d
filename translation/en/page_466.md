@@ -39,6 +39,10 @@ Farewell.
 
 ## Notes
 
+**Confidence: high.** This leaf is Latin, not macaronic Italian, and it is
+straightforward funerary Latin at that. Two abbreviations and one line-broken
+word had to be expanded, all noted below and none of them doubtful.
+
 - **`MYROPOLIUM`** — literally an unguent- or perfume-seller's shop
   (μυροπώλιον). Colonna is calling the tomb a perfumery because what is stored in
   it is fragrance: the *flos omnem redolens virtutem* of the next line. Kept

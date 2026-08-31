@@ -48,6 +48,31 @@ This translation closes that gap.
    `Notes` section. Never guess silently.
 4. Set the page's manifest status to `drafted`, then `verified` once its
    suspect readings have been checked against the facsimile.
+5. **Open every page's `Notes` with a confidence line**, in exactly this form so
+   the scripts can read it:
+
+   ```
+   **Confidence: high|medium|low.** One or two sentences saying what is secure,
+   what is not, and where a reviewer should look first.
+   ```
+
+### What the confidence levels mean
+
+There is no second reader on this translation, and there should be. The
+confidence line is how a future reviewer — or Ted, or a stranger who knows the
+Italian better than we do — decides where to spend their attention instead of
+reading all 275 pages evenly.
+
+| | Means |
+|---|---|
+| **high** | Plain narrative or Latin. I would defend every sentence. Allusions identified, no structural guesswork. |
+| **medium** | The sense is secure but something was compromised: a period too long for English and broken up, technical vocabulary rendered by its standard equivalent without certainty, a compressed passage translated literally rather than smoothed. |
+| **low** | Something is genuinely unresolved — corrupt transcription across a whole clause, a coinage I cannot place, or syntax admitting more than one reading. Say which, and flag it in the text with `[?…]`. |
+
+Being generous with **medium** is the point. A page marked high that turns out
+to be shaky costs more than a page marked medium that turns out to be fine.
+`scripts/translation_status.py` prints which pages a reviewer should start with:
+everything marked low or unstated.
 
 **Recovery after any interruption is "read the manifest," never "re-derive
 where we left off."**

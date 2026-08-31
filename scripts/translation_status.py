@@ -66,6 +66,15 @@ def reconcile(man):
             rec["uncertain"] = len(marks)
         else:
             rec.pop("uncertain", None)
+        # Every page states how sure the translator is of it, so a later
+        # reviewer knows where to look first.
+        c = re.search(r"\*\*Confidence:\s*(high|medium|low)\.?\*\*\s*(.*)", text, re.I)
+        if c:
+            rec["confidence"] = c.group(1).lower()
+            rec["confidence_note"] = c.group(2).strip()
+        else:
+            rec["confidence"] = "unstated"
+            rec.pop("confidence_note", None)
     return man
 
 
@@ -94,6 +103,17 @@ def report(man, next_n=0):
         drafted = [p for p, r in pages.items() if r.get("uncertain")]
         print(f"  {unc} uncertain reading(s) awaiting the facsimile, on "
               f"page(s) {', '.join(sorted(drafted, key=int))}")
+    conf = {}
+    for r in pages.values():
+        if r["status"] in ("drafted", "verified"):
+            conf[r.get("confidence", "unstated")] = conf.get(r.get("confidence", "unstated"), 0) + 1
+    if conf:
+        print("  confidence  " + "  ".join(f"{k} {v}" for k, v in sorted(conf.items())))
+        low = sorted((p for p, r in pages.items()
+                      if r.get("confidence") in ("low", "unstated")
+                      and r["status"] in ("drafted", "verified")), key=int)
+        if low:
+            print(f"    a reviewer should start with page(s) {', '.join(low)}")
     print()
 
     by_ch = {}

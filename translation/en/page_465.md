@@ -42,6 +42,11 @@ thongs of Polia's love. 1467, on the Kalends of May.*
 
 ## Notes
 
+**Confidence: high.** The narrative Italian here is unusually plain for Colonna
+and the classical allusions (Alcmena, Psyche's box, Philomela and Tereus) are all
+securely identifiable. The one weak point is the corrupt Greek noted below,
+which is isolated to three words and does not affect the sense of the passage.
+
 - **`eme ebiasato?`** — the transcription reads `Tereus Tereus, eme ebiasato?`
   and is corrupt here. The underlying Greek is almost certainly a form of
   ἐβιάσατο, "he forced/violated (me)" — Philomela naming her rape as she sings.

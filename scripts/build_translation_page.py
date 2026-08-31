@@ -130,9 +130,16 @@ def main():
             body, notes = md_to_html(en_file.read_text(encoding="utf-8"))
             notes_html = f'<div class="notes"><h4>Notes</h4>{notes}</div>' if notes.strip() else ""
             badge = "verified" if rec["status"] == "verified" else "drafted"
+            conf = rec.get("confidence", "unstated")
+            conf_html = (
+                f'<span class="conf conf-{conf}" title="'
+                f'{html.escape(rec.get("confidence_note", ""))}">'
+                f'confidence: {conf}</span>'
+            )
             rows.append(
                 f'<div class="spread" id="p{n}">'
-                f'<div class="folio">p. {n}<span class="badge {badge}">{badge}</span></div>'
+                f'<div class="folio">p. {n}<span class="folio-r">{conf_html}'
+                f'<span class="badge {badge}">{badge}</span></span></div>'
                 f'<div class="cols"><div class="it" lang="it">{it}</div>'
                 f'<div class="en">{body}{notes_html}</div></div></div>'
             )
@@ -206,6 +213,12 @@ def main():
   .folio{{display:flex;justify-content:space-between;align-items:center;
          padding:.5rem .9rem;border-bottom:1px solid var(--rule);
          font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;color:#6a5236}}
+  .folio-r{{display:flex;gap:.45rem;align-items:center}}
+  .conf{{font-size:.58rem;padding:.15rem .5rem;border:1px solid;cursor:help}}
+  .conf-high{{color:#9dbb82;border-color:#3f5a2e}}
+  .conf-medium{{color:var(--gold);border-color:var(--gold-dk)}}
+  .conf-low{{color:#d08a5a;border-color:#7a4a28}}
+  .conf-unstated{{color:#5a4632;border-color:var(--rule)}}
   .badge{{font-size:.58rem;padding:.15rem .5rem;border:1px solid}}
   .badge.verified{{color:#9dbb82;border-color:#4f6a3a}}
   .badge.drafted{{color:var(--gold);border-color:var(--gold-dk)}}

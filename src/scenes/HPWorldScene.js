@@ -1018,19 +1018,116 @@ export class HPWorldScene {
       waterMat.map = this._waterTexture();
     }
 
-    this._m(new THREE.CylinderGeometry(3.6, 3.9, 0.5, 8), this._stoneMat, FX, 0.25, FZ, { cast: false, outline: true });
-    this._m(new THREE.CylinderGeometry(3.15, 3.3, 0.95, 28, 1, true), this._stoneMat, FX, 0.95, FZ);
-    this._m(new THREE.TorusGeometry(3.15, 0.14, 10, 36), this._stoneMat, FX, 1.42, FZ, { rx: Math.PI / 2, outline: true });
-    this._waters.push({ m: this._m(new THREE.CircleGeometry(3.05, 36), waterMat, FX, 1.3, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.10 });
-    this._circleCol(FX, FZ, 4.1);
+    // Built from chapter XXIII of the 1499, translated at translation/en/
+    // page_358–360.md: a kerb of the blackest stone, "heptagonal on the outside
+    // and round within," carrying seven lathe-turned columns swelling with
+    // entasis — sapphire, emerald, turquoise, a melilot-coloured opaque stone,
+    // jasper, topaz, and a seventh of Indian beryl that is hexagonal where the
+    // others are round. Gold bases, capitals, architrave and cornice; the
+    // arcade between the columns taking the stone of its neighbour; a small
+    // altar over each capital carrying a gold planetary figure a third the
+    // column's height; the zodiac in the frieze beneath them; a veinless
+    // crystal cupola over all; and at its peak an egg-shaped carbuncle the size
+    // of an ostrich's.
+    const woodcut = S.key === 'woodcut';
+    const gold = woodcut ? S.mat({ tone: 0.02 }) : S.mat({ color: 0xd9b25a, metalness: 0.95, roughness: 0.22 });
+    const black = woodcut ? S.mat({ tone: 0.3 }) : S.mat({ color: 0x121016, roughness: 0.45, metalness: 0.15 });
+    const gem = (color) => woodcut
+      ? S.mat({ tone: 0.12 })
+      : S.mat({ color, roughness: 0.18, metalness: 0.35, emissive: color, emissiveIntensity: 0.16 });
 
-    this._m(new THREE.CylinderGeometry(0.2, 0.26, 3.4, 12), this._stoneMat, FX, 2.2, FZ);
-    const tiers = [{ r: 1.5, y: 2.6 }, { r: 0.85, y: 3.6 }];
-    for (const t of tiers) {
-      this._m(new THREE.CylinderGeometry(t.r, t.r * 0.55, 0.35, 24, 1, true), this._stoneMat, FX, t.y - 0.1, FZ);
-      this._m(new THREE.TorusGeometry(t.r, 0.09, 8, 30), this._stoneMat, FX, t.y + 0.08, FZ, { rx: Math.PI / 2 });
-      this._waters.push({ m: this._m(new THREE.CircleGeometry(t.r * 0.92, 28), waterMat, FX, t.y + 0.05, FZ, { rx: -Math.PI / 2, cast: false }), rate: -0.16 });
-    }
+    // The seven, in the order the book sets them round the ring. Sapphire and
+    // emerald answer one another across the entrance (the dreamer arrives from
+    // the north); the beryl stands alone, opposite, facing the midpoint between
+    // them. Each carries its planet, Saturn at the right of the front.
+    const COLS = [
+      { stone: 0x1e3f96, name: 'sapphire',  planet: 'Saturn',  glyph: '♄', hex: false },
+      { stone: 0xcdbb63, name: 'melilot',   planet: 'Jupiter', glyph: '♃', hex: false },
+      { stone: 0xbcd2cb, name: 'jasper',    planet: 'Mars',    glyph: '♂', hex: false },
+      { stone: 0x8fd0c0, name: 'beryl',     planet: 'Sol',     glyph: '☉', hex: true  },
+      { stone: 0xdca62c, name: 'topaz',     planet: 'Venus',   glyph: '♀', hex: false },
+      { stone: 0x2ba2ad, name: 'turquoise', planet: 'Mercury', glyph: '☿', hex: false },
+      { stone: 0x0d7548, name: 'emerald',   planet: 'Luna',    glyph: '☽', hex: false },
+    ];
+    const R = 2.95, COL_H = 3.0, KERB = 0.42;
+
+    // The floor of the theatre, and the kerb: seven-sided without, round within
+    this._m(new THREE.CylinderGeometry(5.4, 5.4, 0.12, 7), black, FX, 0.06, FZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(R + 0.55, R + 0.6, KERB, 7), black, FX, KERB / 2, FZ, { cast: false, outline: true });
+    this._m(new THREE.CylinderGeometry(R + 0.12, R + 0.12, KERB * 0.5, 36, 1, true), black, FX, KERB * 0.72, FZ, { cast: false });
+    this._m(new THREE.TorusGeometry(R + 0.14, 0.045, 8, 40), gold, FX, KERB + 0.02, FZ, { rx: Math.PI / 2 });
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(R + 0.06, 40), waterMat, FX, KERB - 0.06, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.09 });
+    this._circleCol(FX, FZ, R + 0.85);
+
+    // The seven columns, the arcade between them, the altars and their planets
+    const ang = (i) => Math.PI + (i - 3) * (Math.PI * 2 / 7);
+    COLS.forEach((c, i) => {
+      const a = ang(i);
+      const x = FX + Math.sin(a) * R, z = FZ + Math.cos(a) * R;
+      const mat = gem(c.stone);
+      this._m(new THREE.BoxGeometry(0.44, 0.1, 0.44), gold, x, KERB + 0.05, z, { ry: -a });
+      // entasis: a shaft that swells and is drawn in again toward the capital
+      const shaft = this._m(new THREE.CylinderGeometry(0.145, 0.175, COL_H, c.hex ? 6 : 16), mat, x, KERB + 0.1 + COL_H / 2, z, { ry: -a, outline: true });
+      shaft.scale.x = shaft.scale.z = 1.0;
+      this._m(new THREE.SphereGeometry(0.19, 12, 8), mat, x, KERB + 0.1 + COL_H * 0.42, z).scale.set(1, 0.42, 1);
+      this._m(new THREE.BoxGeometry(0.42, 0.12, 0.42), gold, x, KERB + 0.17 + COL_H, z, { ry: -a });
+
+      // the planet's name and glyph, read from outside at eye height
+      this._plaque({ glyph: c.glyph, glyphColor: '#e8c860', main: c.planet, sub: c.name.toUpperCase() },
+        0.72, 0.38, x + Math.sin(a) * 0.5, KERB + 0.62, z + Math.cos(a) * 0.5, a);
+
+      // the arcade: a real arch springing between this column and the next,
+      // taking the stone of its neighbour
+      const mid = (a + ang(i + 1)) / 2;
+      const mx = FX + Math.sin(mid) * R, mz = FZ + Math.cos(mid) * R;
+      const half = R * Math.sin(Math.PI / 7);
+      const arch = this._m(new THREE.TorusGeometry(half, 0.075, 8, 18, Math.PI),
+        gem(COLS[(i + 1) % 7].stone), mx, KERB + 0.1 + COL_H * 0.74, mz, { ry: -mid });
+      arch.scale.y = 0.62;
+      this._m(new THREE.BoxGeometry(half * 2, 0.1, 0.16), gold, mx, KERB + 0.17 + COL_H, mz, { ry: -mid });
+    });
+
+    // the crown: cornice ring, and the zodiac frieze running beneath it
+    this._m(new THREE.CylinderGeometry(R + 0.24, R + 0.24, 0.1, 7), gold, FX, KERB + 0.3 + COL_H, FZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(R + 0.06, R + 0.06, 0.24, 7, 1, true), gold, FX, KERB + 0.42 + COL_H, FZ, { cast: false });
+
+    // The seven planetary figures stand on the angles of the crown, OUTSIDE the
+    // springing of the cupola, each a third the height of the column below it
+    const crownY = KERB + 0.35 + COL_H;
+    const fig = COL_H / 3;
+    COLS.forEach((c, i) => {
+      const a = ang(i);
+      const x = FX + Math.sin(a) * (R + 0.16), z = FZ + Math.cos(a) * (R + 0.16);
+      this._m(new THREE.CylinderGeometry(0.11, 0.14, 0.14, 8), gold, x, crownY + 0.07, z);
+      // "an image of a planet with its proper attribute" — a gold figure, not a
+      // finial, standing a third the height of the column beneath it
+      const g = this.cast.figure({
+        h: fig / 1.7, robe: 0xd9b25a, skin: 0xd9b25a,
+        pose: c.planet === 'Sol' ? 'reach' : 'offer',
+        crowned: c.planet === 'Sol',
+      });
+      g.position.set(x, crownY + 0.14, z);
+      g.rotation.y = a;                      // facing outward, off the crown
+      this.scene.add(g);
+      this._npcs.push({ g, phase: i * 0.9, baseY: a, sway: 0.015 });
+    });
+
+    // the crystal cupola springs inside the crown, so the planets stand clear
+    const DOME_R = R * 0.8;
+    const crystal = woodcut
+      ? S.mat({ tone: -0.12, rim: 0.5 })
+      : S.mat({ color: 0xd4e8f2, roughness: 0.04, metalness: 0.08, transparent: true, opacity: 0.2 });
+    const dome = this._m(new THREE.SphereGeometry(DOME_R, 28, 14, 0, Math.PI * 2, 0, Math.PI / 2),
+      crystal, FX, KERB + 0.46 + COL_H, FZ, { cast: false, receive: false });
+    dome.scale.y = 0.78;
+    this._m(new THREE.TorusGeometry(DOME_R, 0.06, 8, 36), gold, FX, KERB + 0.48 + COL_H, FZ, { rx: Math.PI / 2 });
+    const carb = this._m(new THREE.SphereGeometry(0.19, 16, 12),
+      woodcut ? S.glowMat() : S.mat({ color: 0xd8322a, emissive: 0xa01810, emissiveIntensity: 1.5, metalness: 0.6, roughness: 0.15 }),
+      FX, KERB + 0.46 + COL_H + DOME_R * 0.78 + 0.16, FZ, { outline: true });
+    carb.scale.y = 1.35;
+    this._orbs.push({ orb: carb, base: carb.position.y, phase: 0.4, spin: true });
+    const cl = S.pointLight(0xff5030, 1.5, 9);
+    if (cl) { cl.position.set(FX, carb.position.y, FZ); this.scene.add(cl); this._pulses.push({ pl: cl, base: 1.5, phase: 0.4 }); }
 
     const vMat = S.mat({ color: 0xd4c0a0, roughness: 0.6, metalness: 0.15 });
     const v = new THREE.Group();
@@ -1041,15 +1138,18 @@ export class HPWorldScene {
     [[-0.24, -0.65], [0.24, 0.65]].forEach(([x, rz]) => {
       this._m(new THREE.CapsuleGeometry(0.06, 0.42, 4, 8), vMat, x, 1.16, 0, { rz, parent: v });
     });
-    v.position.set(FX, 4.05, FZ);
+    // The divine Mother stands at the centre, under the crystal — the figure the
+    // torn curtain reveals in the chapter
+    v.position.set(FX, KERB + 0.05, FZ);
+    v.scale.setScalar(1.35);
     this.scene.add(v);
     this._venus = v;
 
     const specs = [
-      { from: [FX, 3.72, FZ], to: [FX + 0.35, 2.7, FZ + 0.3], count: 60, size: 0.03, speed: 0.9, arc: 0.05 },
-      { from: [FX, 2.68, FZ], to: [FX + 0.7, 1.35, FZ - 0.5], count: 90, size: 0.04, speed: 0.75, arc: 0.15 },
-      { from: [FX - 0.4, 2.68, FZ + 0.2], to: [FX - 1.2, 1.35, FZ + 0.8], count: 70, size: 0.035, speed: 0.7, arc: 0.2 },
-      { from: [FX + 1.0, 1.5, FZ], to: [FX + 2.2, 1.32, FZ + 0.9], count: 40, size: 0.025, speed: 1.2, arc: 0.35 },
+      { from: [FX, 2.5, FZ], to: [FX + 0.45, 0.7, FZ + 0.4], count: 60, size: 0.03, speed: 0.9, arc: 0.1 },
+      { from: [FX, 2.4, FZ], to: [FX - 1.0, 0.6, FZ - 0.6], count: 90, size: 0.04, speed: 0.75, arc: 0.2 },
+      { from: [FX - 0.3, 2.3, FZ + 0.2], to: [FX - 1.4, 0.55, FZ + 1.0], count: 70, size: 0.035, speed: 0.7, arc: 0.25 },
+      { from: [FX + 0.3, 2.3, FZ - 0.2], to: [FX + 1.5, 0.55, FZ - 0.9], count: 40, size: 0.025, speed: 1.2, arc: 0.3 },
     ];
     for (const sp of specs) {
       const stream = new ParticleStream({
@@ -1065,9 +1165,9 @@ export class HPWorldScene {
     }
 
     const wl = S.pointLight(0x80c0ff, 1.6, 8);
-    if (wl) { wl.position.set(FX, 1.8, FZ); this.scene.add(wl); this._pulses.push({ pl: wl, base: 1.6, phase: 0 }); }
+    if (wl) { wl.position.set(FX, 1.2, FZ); this.scene.add(wl); this._pulses.push({ pl: wl, base: 1.6, phase: 0 }); }
     const vl = S.pointLight(0xc8a44a, 1.1, 6);
-    if (vl) { vl.position.set(FX, 4.6, FZ); this.scene.add(vl); this._pulses.push({ pl: vl, base: 1.1, phase: 1.7 }); }
+    if (vl) { vl.position.set(FX, 2.6, FZ); this.scene.add(vl); this._pulses.push({ pl: vl, base: 1.1, phase: 1.7 }); }
   }
 
   // ── The Four Triumphs of Jupiter — floats ringing the grove ──────────────

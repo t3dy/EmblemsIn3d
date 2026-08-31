@@ -1009,20 +1009,28 @@
       "status": "verified",
       "words": 295,
       "sha1": "f99b52835d15",
-      "en_words": 507
+      "en_words": 580,
+      "confidence": "medium",
+      "confidence_note": "The chapter argument is secure. The body is one enormous"
     },
     "359": {
       "chapter": "XXIII",
       "status": "verified",
       "words": 333,
       "sha1": "bfcce8251ac5",
-      "en_words": 664
+      "en_words": 755,
+      "confidence": "medium",
+      "confidence_note": "The gem-lore and the column order are secure — Colonna"
     },
     "360": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "drafted",
       "words": 391,
-      "sha1": "a459c0ff558e"
+      "sha1": "a459c0ff558e",
+      "en_words": 802,
+      "uncertain": 2,
+      "confidence": "medium",
+      "confidence_note": "The architecture, the planetary order and the crystal"
     },
     "361": {
       "chapter": "XXIII",
@@ -1653,15 +1661,19 @@
       "status": "drafted",
       "words": 327,
       "sha1": "7bf117649b63",
-      "en_words": 538,
-      "uncertain": 2
+      "en_words": 588,
+      "uncertain": 2,
+      "confidence": "high",
+      "confidence_note": "The narrative Italian here is unusually plain for Colonna"
     },
     "466": {
       "chapter": "Epitaphium Poliae",
       "status": "verified",
       "words": 80,
       "sha1": "9e2960faa6ad",
-      "en_words": 421
+      "en_words": 456,
+      "confidence": "high",
+      "confidence_note": "This leaf is Latin, not macaronic Italian, and it is"
     },
     "467": {
       "chapter": "Errori",
