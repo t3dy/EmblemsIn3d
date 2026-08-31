@@ -1,0 +1,1671 @@
+{
+  "work": "Hypnerotomachia Poliphili, Aldus Manutius, Venice 1499",
+  "source": "it.wikisource.org, Pagina:Hypnerotomachia Poliphili.djvu (MIT Press facsimile)",
+  "rights": "1499 original is public domain; a faithful transcription carries no new copyright. Godwin 1999 is in copyright and is not consulted.",
+  "range": {
+    "first_page": 193,
+    "last_page": 467,
+    "why": "Dallington's 1592 English stops at page 193, mid-chapter XVII."
+  },
+  "status_values": [
+    "unfetched",
+    "fetched",
+    "drafted",
+    "verified"
+  ],
+  "pages": {
+    "193": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 198,
+      "sha1": "4b98db4d2c90"
+    },
+    "194": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 250,
+      "sha1": "716ad4d7013f"
+    },
+    "195": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 0,
+      "sha1": "da39a3ee5e6b"
+    },
+    "196": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 432,
+      "sha1": "dc5421127ff5"
+    },
+    "197": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 398,
+      "sha1": "1626d4781a37"
+    },
+    "198": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 342,
+      "sha1": "aa7de07a569e"
+    },
+    "199": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 411,
+      "sha1": "8116d17b44e2"
+    },
+    "200": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 421,
+      "sha1": "6b24a18e6bfe"
+    },
+    "201": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 390,
+      "sha1": "05e6fb7130ad"
+    },
+    "202": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 399,
+      "sha1": "c8745b174fdc"
+    },
+    "203": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 419,
+      "sha1": "9b39d3742b53"
+    },
+    "204": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 372,
+      "sha1": "31c793255b90"
+    },
+    "205": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 2,
+      "sha1": "fae297055830"
+    },
+    "206": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 364,
+      "sha1": "7e96c752385a"
+    },
+    "207": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 279,
+      "sha1": "b3f56504422f"
+    },
+    "208": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 262,
+      "sha1": "ee82c17c2dfc"
+    },
+    "209": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 343,
+      "sha1": "09233c8f1a51"
+    },
+    "210": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 366,
+      "sha1": "a5488e841d06"
+    },
+    "211": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 216,
+      "sha1": "ce44b7f91276"
+    },
+    "212": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 367,
+      "sha1": "fbcd19215a4e"
+    },
+    "213": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 380,
+      "sha1": "b92b774f2cca"
+    },
+    "214": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 271,
+      "sha1": "5cd931bcef7b"
+    },
+    "215": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 185,
+      "sha1": "e880a8d7add4"
+    },
+    "216": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 393,
+      "sha1": "57af1eb861f7"
+    },
+    "217": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 225,
+      "sha1": "2f61267e6f41"
+    },
+    "218": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 234,
+      "sha1": "199f67e2e69d"
+    },
+    "219": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 297,
+      "sha1": "6db5703e1830"
+    },
+    "220": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 199,
+      "sha1": "aefb74cc2735"
+    },
+    "221": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 319,
+      "sha1": "df3e17d73e09"
+    },
+    "222": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 269,
+      "sha1": "5d293aeb0684"
+    },
+    "223": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 111,
+      "sha1": "f1f3b22195bb"
+    },
+    "224": {
+      "chapter": "XVII",
+      "status": "fetched",
+      "words": 284,
+      "sha1": "13dcfd0abed6"
+    },
+    "225": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 376,
+      "sha1": "d5be7fc9cae8"
+    },
+    "226": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 383,
+      "sha1": "7f1719c25f91"
+    },
+    "227": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 409,
+      "sha1": "3bc9b963ac9f"
+    },
+    "228": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 289,
+      "sha1": "2232a33d1af9"
+    },
+    "229": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 211,
+      "sha1": "bcbcbc3fb178"
+    },
+    "230": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 406,
+      "sha1": "01c15adf7a3a"
+    },
+    "231": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 205,
+      "sha1": "15a7b804ca49"
+    },
+    "232": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 195,
+      "sha1": "50060af1e61f"
+    },
+    "233": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 249,
+      "sha1": "41b2f783ddcc"
+    },
+    "234": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 224,
+      "sha1": "d2bf6aa98da8"
+    },
+    "235": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 437,
+      "sha1": "da5c9c7b00a1"
+    },
+    "236": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 471,
+      "sha1": "88c213aa02f3"
+    },
+    "237": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 445,
+      "sha1": "af6e6117f178"
+    },
+    "238": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 135,
+      "sha1": "49e3284842bc"
+    },
+    "239": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 455,
+      "sha1": "1e3f4146c0f9"
+    },
+    "240": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 451,
+      "sha1": "d5f9649c1369"
+    },
+    "241": {
+      "chapter": "XVIII",
+      "status": "fetched",
+      "words": 391,
+      "sha1": "6c8fd0cecffd"
+    },
+    "242": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 405,
+      "sha1": "cd028f319658"
+    },
+    "243": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 227,
+      "sha1": "71fc132834e0"
+    },
+    "244": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 140,
+      "sha1": "e7eb0c69dbf4"
+    },
+    "245": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 179,
+      "sha1": "5116a2371aef"
+    },
+    "246": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 212,
+      "sha1": "76e5f1895d00"
+    },
+    "247": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 297,
+      "sha1": "35251509cef3"
+    },
+    "248": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 296,
+      "sha1": "1f8f2f3d4521"
+    },
+    "249": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 451,
+      "sha1": "0b00afa18f62"
+    },
+    "250": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 427,
+      "sha1": "9d53e1095422"
+    },
+    "251": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 169,
+      "sha1": "fe6c08ecc978"
+    },
+    "252": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 190,
+      "sha1": "b313d90fe422"
+    },
+    "253": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 73,
+      "sha1": "4f162baf08ec"
+    },
+    "254": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 229,
+      "sha1": "8b97e75753de"
+    },
+    "255": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 216,
+      "sha1": "834151ebcf8f"
+    },
+    "256": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 227,
+      "sha1": "ea68a34118fb"
+    },
+    "257": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 174,
+      "sha1": "239536a66609"
+    },
+    "258": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 269,
+      "sha1": "9fe71c2fd041"
+    },
+    "259": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 245,
+      "sha1": "07ce14f1a81d"
+    },
+    "260": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 231,
+      "sha1": "26646f3a75e5"
+    },
+    "261": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 220,
+      "sha1": "8bf217774b5f"
+    },
+    "262": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 123,
+      "sha1": "0936ccf03567"
+    },
+    "263": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 321,
+      "sha1": "cad687665d8c"
+    },
+    "264": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 216,
+      "sha1": "559825e8e2db"
+    },
+    "265": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 406,
+      "sha1": "7e7b7463da6d"
+    },
+    "266": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 436,
+      "sha1": "c4d0066d577b"
+    },
+    "267": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 9,
+      "sha1": "d79716f3e471"
+    },
+    "268": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 4,
+      "sha1": "62987e1ffc6f"
+    },
+    "269": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 122,
+      "sha1": "f557e14b47c2"
+    },
+    "270": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 106,
+      "sha1": "8a1e29c3501e"
+    },
+    "271": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 105,
+      "sha1": "3c67817c7995"
+    },
+    "272": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 404,
+      "sha1": "83c7703955d1"
+    },
+    "273": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 398,
+      "sha1": "17d94db0cced"
+    },
+    "274": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 374,
+      "sha1": "939f385c4db9"
+    },
+    "275": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 392,
+      "sha1": "1911df7dcc4d"
+    },
+    "276": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 395,
+      "sha1": "bf19347ef573"
+    },
+    "277": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 379,
+      "sha1": "f18d14b7c398"
+    },
+    "278": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 375,
+      "sha1": "5c1a5c9618b7"
+    },
+    "279": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 404,
+      "sha1": "7ff6418c7cbf"
+    },
+    "280": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 410,
+      "sha1": "0010d6fc1ce5"
+    },
+    "281": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 424,
+      "sha1": "a1fbc16b5b61"
+    },
+    "282": {
+      "chapter": "XIX",
+      "status": "fetched",
+      "words": 435,
+      "sha1": "ea1e1380e1b0"
+    },
+    "283": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 319,
+      "sha1": "d511ca0c561b"
+    },
+    "284": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 261,
+      "sha1": "ac381fc3f588"
+    },
+    "285": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 354,
+      "sha1": "31cb5fc6cae3"
+    },
+    "286": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 448,
+      "sha1": "e314dba8e705"
+    },
+    "287": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 437,
+      "sha1": "7b00cb291d6d"
+    },
+    "288": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 453,
+      "sha1": "3a3027eb989b"
+    },
+    "289": {
+      "chapter": "XX",
+      "status": "fetched",
+      "words": 317,
+      "sha1": "8e8ed6efdb56"
+    },
+    "290": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 313,
+      "sha1": "24b521ccd242"
+    },
+    "291": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 292,
+      "sha1": "83123c83bc25"
+    },
+    "292": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 442,
+      "sha1": "a9aaebeb60c5"
+    },
+    "293": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 426,
+      "sha1": "9dee3eb9cb1b"
+    },
+    "294": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 423,
+      "sha1": "0bd771503c6b"
+    },
+    "295": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 396,
+      "sha1": "0bafdbfdae4c"
+    },
+    "296": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 433,
+      "sha1": "fa0c0c6b0a0b"
+    },
+    "297": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 426,
+      "sha1": "22c4483276f0"
+    },
+    "298": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 417,
+      "sha1": "deeb28093e7a"
+    },
+    "299": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 430,
+      "sha1": "afb2032d8f4b"
+    },
+    "300": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 312,
+      "sha1": "35de26444516"
+    },
+    "301": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 306,
+      "sha1": "364fbf2f7b97"
+    },
+    "302": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 347,
+      "sha1": "764758d75687"
+    },
+    "303": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 313,
+      "sha1": "8309b7293aa6"
+    },
+    "304": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 210,
+      "sha1": "450308ec7f95"
+    },
+    "305": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 361,
+      "sha1": "540f6b170471"
+    },
+    "306": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 269,
+      "sha1": "7b1938eee0b3"
+    },
+    "307": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 260,
+      "sha1": "5a06c321e186"
+    },
+    "308": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 253,
+      "sha1": "17e1ffb2d0d4"
+    },
+    "309": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 387,
+      "sha1": "afac7fab6cce"
+    },
+    "310": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 239,
+      "sha1": "543943b98117"
+    },
+    "311": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 202,
+      "sha1": "14d2e61f24e4"
+    },
+    "312": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 393,
+      "sha1": "413795297878"
+    },
+    "313": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 392,
+      "sha1": "893fbf16b146"
+    },
+    "314": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 406,
+      "sha1": "350cf62b9f99"
+    },
+    "315": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 389,
+      "sha1": "cbda1d355951"
+    },
+    "316": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 373,
+      "sha1": "a0b074af8048"
+    },
+    "317": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 327,
+      "sha1": "28a799894b42"
+    },
+    "318": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 384,
+      "sha1": "48ed02224d26"
+    },
+    "319": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 251,
+      "sha1": "a504f18437ad"
+    },
+    "320": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 415,
+      "sha1": "fefe77673ae6"
+    },
+    "321": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 253,
+      "sha1": "fa5b78097476"
+    },
+    "322": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 320,
+      "sha1": "fd5ae12e4c13"
+    },
+    "323": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 273,
+      "sha1": "a6fb08e3352a"
+    },
+    "324": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 332,
+      "sha1": "51af26ab173e"
+    },
+    "325": {
+      "chapter": "XXI",
+      "status": "fetched",
+      "words": 424,
+      "sha1": "c6bacd8d3645"
+    },
+    "326": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 266,
+      "sha1": "ed4b64d63e53"
+    },
+    "327": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 109,
+      "sha1": "c2d8f6f3d766"
+    },
+    "328": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 148,
+      "sha1": "99021c8dfa65"
+    },
+    "329": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 182,
+      "sha1": "db475d8c1397"
+    },
+    "330": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 300,
+      "sha1": "8373ef1c4a94"
+    },
+    "331": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 291,
+      "sha1": "28b31a614dac"
+    },
+    "332": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 389,
+      "sha1": "a884397cbd18"
+    },
+    "333": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 383,
+      "sha1": "6c416055739a"
+    },
+    "334": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 407,
+      "sha1": "147e0fc0bef3"
+    },
+    "335": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 401,
+      "sha1": "d1a8b357ceae"
+    },
+    "336": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 259,
+      "sha1": "d9b7410d9e5d"
+    },
+    "337": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 417,
+      "sha1": "7120fab78790"
+    },
+    "338": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 306,
+      "sha1": "e5cf6eb66953"
+    },
+    "339": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 387,
+      "sha1": "57a18f525975"
+    },
+    "340": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 184,
+      "sha1": "c6c833e020b7"
+    },
+    "341": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 329,
+      "sha1": "294f7869c909"
+    },
+    "342": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 380,
+      "sha1": "ce85d9918b0a"
+    },
+    "343": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 414,
+      "sha1": "bcf5121b64bf"
+    },
+    "344": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 325,
+      "sha1": "ea91891ce251"
+    },
+    "345": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 323,
+      "sha1": "776e18056d2f"
+    },
+    "346": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 203,
+      "sha1": "09dc15c959c1"
+    },
+    "347": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 204,
+      "sha1": "7c539e1bb9d8"
+    },
+    "348": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 367,
+      "sha1": "620d831d0338"
+    },
+    "349": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 234,
+      "sha1": "f3d2d33fa243"
+    },
+    "350": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 293,
+      "sha1": "1540f04ac2a4"
+    },
+    "351": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 120,
+      "sha1": "ff36a8a04d64"
+    },
+    "352": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 402,
+      "sha1": "886af79548a1"
+    },
+    "353": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 416,
+      "sha1": "ea7a63c8808d"
+    },
+    "354": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 408,
+      "sha1": "e91efdc563ea"
+    },
+    "355": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 353,
+      "sha1": "0860fefe65ee"
+    },
+    "356": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 360,
+      "sha1": "7c30adeb00b5"
+    },
+    "357": {
+      "chapter": "XXII",
+      "status": "fetched",
+      "words": 383,
+      "sha1": "820da824c44f"
+    },
+    "358": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 295,
+      "sha1": "f99b52835d15"
+    },
+    "359": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 333,
+      "sha1": "bfcce8251ac5"
+    },
+    "360": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 391,
+      "sha1": "a459c0ff558e"
+    },
+    "361": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 396,
+      "sha1": "17b2a7777ab1"
+    },
+    "362": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 368,
+      "sha1": "78e0bc4f63f0"
+    },
+    "363": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 395,
+      "sha1": "3f4736d5546b"
+    },
+    "364": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 399,
+      "sha1": "c5a5d0b5bc8e"
+    },
+    "365": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 413,
+      "sha1": "3cbbfb4e3850"
+    },
+    "366": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 398,
+      "sha1": "ccebea61ea7a"
+    },
+    "367": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 414,
+      "sha1": "90a289dc2314"
+    },
+    "368": {
+      "chapter": "XXIII",
+      "status": "fetched",
+      "words": 255,
+      "sha1": "dcfc3a1663c6"
+    },
+    "369": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 291,
+      "sha1": "643355fa3b0a"
+    },
+    "370": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 395,
+      "sha1": "f146395b86de"
+    },
+    "371": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 368,
+      "sha1": "2f34b7bac40c"
+    },
+    "372": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 384,
+      "sha1": "2c2b4d9bbdbe"
+    },
+    "373": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 150,
+      "sha1": "73d4978a1356"
+    },
+    "374": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 190,
+      "sha1": "107e422d1aba"
+    },
+    "375": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 162,
+      "sha1": "58e4c7567ae3"
+    },
+    "376": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 424,
+      "sha1": "c2fbcfa108f4"
+    },
+    "377": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 287,
+      "sha1": "6e6b75de6d24"
+    },
+    "378": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 159,
+      "sha1": "e057c090de9d"
+    },
+    "379": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 25,
+      "sha1": "3cbd40ac55d7"
+    },
+    "380": {
+      "chapter": "XXIV",
+      "status": "fetched",
+      "words": 0,
+      "sha1": "da39a3ee5e6b"
+    },
+    "381": {
+      "chapter": "XXV",
+      "status": "fetched",
+      "words": 328,
+      "sha1": "40919cd7eb45"
+    },
+    "382": {
+      "chapter": "XXV",
+      "status": "fetched",
+      "words": 448,
+      "sha1": "3418899b2167"
+    },
+    "383": {
+      "chapter": "XXV",
+      "status": "fetched",
+      "words": 432,
+      "sha1": "3571f7768a41"
+    },
+    "384": {
+      "chapter": "XXV",
+      "status": "fetched",
+      "words": 452,
+      "sha1": "0caf0f4a3a1d"
+    },
+    "385": {
+      "chapter": "XXV",
+      "status": "fetched",
+      "words": 427,
+      "sha1": "31a28c66a347"
+    },
+    "386": {
+      "chapter": "XXV",
+      "status": "fetched",
+      "words": 425,
+      "sha1": "59aeefd70b9a"
+    },
+    "387": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 351,
+      "sha1": "6920d60de789"
+    },
+    "388": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 450,
+      "sha1": "a3bc97608f02"
+    },
+    "389": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 423,
+      "sha1": "7e7a53593bcf"
+    },
+    "390": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 450,
+      "sha1": "aeb7fe0410bb"
+    },
+    "391": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 440,
+      "sha1": "9d4190fe0cb1"
+    },
+    "392": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 445,
+      "sha1": "be7e81e4e610"
+    },
+    "393": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 482,
+      "sha1": "8b6be926e963"
+    },
+    "394": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 477,
+      "sha1": "f6764b2767b0"
+    },
+    "395": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 468,
+      "sha1": "ec7175b49050"
+    },
+    "396": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 237,
+      "sha1": "152a29f32969"
+    },
+    "397": {
+      "chapter": "XXVI",
+      "status": "fetched",
+      "words": 129,
+      "sha1": "61e53d0c065d"
+    },
+    "398": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 353,
+      "sha1": "02af474624ae"
+    },
+    "399": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 412,
+      "sha1": "6c1242ad298c"
+    },
+    "400": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 197,
+      "sha1": "8b8cb3bdf598"
+    },
+    "401": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 243,
+      "sha1": "bad6497c9570"
+    },
+    "402": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 391,
+      "sha1": "7787c7328924"
+    },
+    "403": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 216,
+      "sha1": "9a4e671e2c2e"
+    },
+    "404": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 396,
+      "sha1": "a89c1f4fa2ba"
+    },
+    "405": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 383,
+      "sha1": "d30f2bce4934"
+    },
+    "406": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 411,
+      "sha1": "b46e0a7a4b02"
+    },
+    "407": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 417,
+      "sha1": "c359a7ba6cc5"
+    },
+    "408": {
+      "chapter": "XXVII",
+      "status": "fetched",
+      "words": 421,
+      "sha1": "ca0d172d27c6"
+    },
+    "409": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 320,
+      "sha1": "52d545d2c000"
+    },
+    "410": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 389,
+      "sha1": "108545af8717"
+    },
+    "411": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 431,
+      "sha1": "7759e822f59b"
+    },
+    "412": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 451,
+      "sha1": "fc841b402eb4"
+    },
+    "413": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 417,
+      "sha1": "a832999f0972"
+    },
+    "414": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 463,
+      "sha1": "c9068f72a451"
+    },
+    "415": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 455,
+      "sha1": "9273ad4642ef"
+    },
+    "416": {
+      "chapter": "XXVIII",
+      "status": "fetched",
+      "words": 449,
+      "sha1": "72b17cefa7b5"
+    },
+    "417": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 327,
+      "sha1": "66d389a0596e"
+    },
+    "418": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 424,
+      "sha1": "5df85881ca05"
+    },
+    "419": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 414,
+      "sha1": "045e699bc825"
+    },
+    "420": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 414,
+      "sha1": "4eb46089f341"
+    },
+    "421": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 176,
+      "sha1": "cf801d81866a"
+    },
+    "422": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 212,
+      "sha1": "7443586a7d2f"
+    },
+    "423": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 180,
+      "sha1": "88748d50ab3c"
+    },
+    "424": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 399,
+      "sha1": "7760be7d0545"
+    },
+    "425": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 405,
+      "sha1": "2834ec6e31af"
+    },
+    "426": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 215,
+      "sha1": "250bb3fb4364"
+    },
+    "427": {
+      "chapter": "XXIX",
+      "status": "fetched",
+      "words": 420,
+      "sha1": "e385c580997e"
+    },
+    "428": {
+      "chapter": "XXX",
+      "status": "fetched",
+      "words": 358,
+      "sha1": "dd0e20b534e9"
+    },
+    "429": {
+      "chapter": "XXX",
+      "status": "fetched",
+      "words": 216,
+      "sha1": "5774b0c86fcb"
+    },
+    "430": {
+      "chapter": "XXX",
+      "status": "fetched",
+      "words": 415,
+      "sha1": "7fea99dbe3b4"
+    },
+    "431": {
+      "chapter": "XXX",
+      "status": "fetched",
+      "words": 196,
+      "sha1": "f7221e130724"
+    },
+    "432": {
+      "chapter": "XXXI",
+      "status": "fetched",
+      "words": 364,
+      "sha1": "d8f81e2c3665"
+    },
+    "433": {
+      "chapter": "XXXI",
+      "status": "fetched",
+      "words": 420,
+      "sha1": "56ba31a805a9"
+    },
+    "434": {
+      "chapter": "XXXI",
+      "status": "fetched",
+      "words": 394,
+      "sha1": "b92525076fb8"
+    },
+    "435": {
+      "chapter": "XXXI",
+      "status": "fetched",
+      "words": 199,
+      "sha1": "e42f395ccdf6"
+    },
+    "436": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 332,
+      "sha1": "cc358773fd7f"
+    },
+    "437": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 394,
+      "sha1": "d7490d2c282f"
+    },
+    "438": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 413,
+      "sha1": "31bfcd6ef468"
+    },
+    "439": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 394,
+      "sha1": "ef73ec4c1eab"
+    },
+    "440": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 413,
+      "sha1": "ecfe9f9ff541"
+    },
+    "441": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 423,
+      "sha1": "c1323b8a86ea"
+    },
+    "442": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 409,
+      "sha1": "2252b14fcf74"
+    },
+    "443": {
+      "chapter": "XXXII",
+      "status": "fetched",
+      "words": 234,
+      "sha1": "2d0fa9dee7f1"
+    },
+    "444": {
+      "chapter": "XXXIII",
+      "status": "fetched",
+      "words": 374,
+      "sha1": "ce4bb138225d"
+    },
+    "445": {
+      "chapter": "XXXIII",
+      "status": "fetched",
+      "words": 429,
+      "sha1": "9321c37a36b5"
+    },
+    "446": {
+      "chapter": "XXXIII",
+      "status": "fetched",
+      "words": 221,
+      "sha1": "9565042855ac"
+    },
+    "447": {
+      "chapter": "XXXIII",
+      "status": "fetched",
+      "words": 431,
+      "sha1": "33aa068cd395"
+    },
+    "448": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 369,
+      "sha1": "c5183be5c3e8"
+    },
+    "449": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 437,
+      "sha1": "e5864b012f3f"
+    },
+    "450": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 452,
+      "sha1": "4382d1c4e402"
+    },
+    "451": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 450,
+      "sha1": "26c85234b96e"
+    },
+    "452": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 431,
+      "sha1": "017621e2eeda"
+    },
+    "453": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 399,
+      "sha1": "d5fcb9b6ea33"
+    },
+    "454": {
+      "chapter": "XXXIV",
+      "status": "fetched",
+      "words": 425,
+      "sha1": "602e6a94ba52"
+    },
+    "455": {
+      "chapter": "XXXV",
+      "status": "fetched",
+      "words": 330,
+      "sha1": "e4d3c4432298"
+    },
+    "456": {
+      "chapter": "XXXV",
+      "status": "fetched",
+      "words": 235,
+      "sha1": "edfb8c42df15"
+    },
+    "457": {
+      "chapter": "XXXV",
+      "status": "fetched",
+      "words": 183,
+      "sha1": "f6cc4f6bb4df"
+    },
+    "458": {
+      "chapter": "XXXV",
+      "status": "fetched",
+      "words": 194,
+      "sha1": "cc8434ac55e3"
+    },
+    "459": {
+      "chapter": "XXXV",
+      "status": "fetched",
+      "words": 426,
+      "sha1": "666df220e2b5"
+    },
+    "460": {
+      "chapter": "XXXV",
+      "status": "fetched",
+      "words": 383,
+      "sha1": "2d08f2d570b0"
+    },
+    "461": {
+      "chapter": "XXXVI",
+      "status": "fetched",
+      "words": 351,
+      "sha1": "7e472a977640"
+    },
+    "462": {
+      "chapter": "XXXVII",
+      "status": "fetched",
+      "words": 307,
+      "sha1": "e3cf48e4f551"
+    },
+    "463": {
+      "chapter": "XXXVII",
+      "status": "fetched",
+      "words": 386,
+      "sha1": "77fcb11e78a9"
+    },
+    "464": {
+      "chapter": "XXXVII",
+      "status": "fetched",
+      "words": 321,
+      "sha1": "403dacc5f798"
+    },
+    "465": {
+      "chapter": "XXXVIII",
+      "status": "drafted",
+      "words": 327,
+      "sha1": "7bf117649b63",
+      "en_words": 538,
+      "uncertain": 2
+    },
+    "466": {
+      "chapter": "Epitaphium Poliae",
+      "status": "verified",
+      "words": 80,
+      "sha1": "9e2960faa6ad",
+      "en_words": 421
+    },
+    "467": {
+      "chapter": "Errori",
+      "status": "fetched",
+      "words": 1408,
+      "sha1": "09185e88238a"
+    }
+  }
+}
