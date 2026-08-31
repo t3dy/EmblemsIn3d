@@ -103,13 +103,40 @@ Colonna coins compulsively. Consistent choices so far:
 
 Total in range: **90,646 words**.
 
+## Where the books divide
+
+Corrected 2026-08-31 after reading the chapter arguments rather than guessing
+from page counts. **Book I ends with chapter XXIV. Book II — Polia telling her
+own side — opens at chapter XXV, facsimile page 381**, with the argument
+*"Poliphilo begins the second book of his Hypnerotomachia, in which he and
+Polia, conversing, tell by turns how and by what various chance they came to
+love."*
+
+So Cythera and the Fountain of Venus are in **XXI–XXIV**, not XXV–XXIX. The
+chapter arguments give the shape:
+
+| Ch. | p. | What happens |
+|---|---:|---|
+| XX | 283 | the nymphs rest the oars and sing; Polia sings against them |
+| XXI | 290 | arrival at Cythera — its plants, herbs and birds; the boat; Cupid descends |
+| XXII | 326 | the landing, the trophies, the triumphal car |
+| **XXIII** | **358** | **the Fountain of Venus at the centre of the theatre; the curtain is torn; Venus revealed in her majesty** |
+| XXIV | 369 | out of the theatre to a sacred spring; the tomb of Adonis |
+| XXV+ | 381 | Book II: Polia's plague, her vow to Diana, Poliphilo dead in the temple |
+
 ## Order of work
 
-Out of order deliberately, so the Dream Garden gets its missing scenes early:
+Out of reading order deliberately, so the Dream Garden gets its missing scenes
+first:
 
-1. **XXXVIII + Epitaphium Poliae** — the awakening and Polia's epitaph. One
-   page each, and they complete the story mode's final stop. ✔ drafted
-2. **XXV–XXIX** — Cythera and the Fountain of Venus, the stops that currently
-   have no English at all.
-3. **XVII onward, in order** — the long grind, chapter by chapter.
-4. **Book II last** — self-contained, and nothing in the world depends on it yet.
+1. **XXXVIII + Epitaphium Poliae** — the awakening and Polia's epitaph. ✔ drafted
+2. **XXIII** — the Fountain of Venus. The single highest-value chapter in the
+   range: it is the scene our climax station depicts, and the one the whole
+   world is built to walk toward.
+3. **XXI, XXII, XXIV** — the rest of Cythera.
+4. **XX** — the singing at the oars.
+5. **XVII–XIX** — the remainder of Book I, in order. The long grind.
+6. **Book II (XXV–XXXVII)** — self-contained, and nothing in the world depends
+   on it yet.
+7. **Errori** — the 1499 errata leaf, last, and possibly never; it is not
+   narrative.

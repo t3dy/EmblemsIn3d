@@ -1006,15 +1006,17 @@
     },
     "358": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 295,
-      "sha1": "f99b52835d15"
+      "sha1": "f99b52835d15",
+      "en_words": 507
     },
     "359": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 333,
-      "sha1": "bfcce8251ac5"
+      "sha1": "bfcce8251ac5",
+      "en_words": 664
     },
     "360": {
       "chapter": "XXIII",

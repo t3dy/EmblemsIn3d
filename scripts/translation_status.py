@@ -31,11 +31,18 @@ READING_ORDER = [
     "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "Epitaphium Poliae", "Errori",
 ]
 # Deliberately out of reading order: the Dream Garden's missing scenes first.
+# Book I runs to chapter XXIV; Book II — Polia's own narration — opens at XXV,
+# page 381. Cythera and the Fountain of Venus are therefore in XXI–XXIV, not
+# XXV–XXIX as first assumed, and XXIII is the single most valuable chapter in
+# the range: the fountain, the torn curtain, and Venus revealed.
 WORK_ORDER = (
-    ["XXXVIII", "Epitaphium Poliae"]
-    + ["XXV", "XXVI", "XXVII", "XXVIII", "XXIX"]
-    + ["XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV"]
-    + ["XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII"]
+    ["XXXVIII", "Epitaphium Poliae"]      # the ending — done
+    + ["XXIII"]                           # the Fountain of Venus, our climax station
+    + ["XXI", "XXII", "XXIV"]             # Cythera: arrival, landing, the sacred fount
+    + ["XX"]                              # the nymphs singing at the oars
+    + ["XVII", "XVIII", "XIX"]            # the rest of Book I, in order
+    + ["XXV", "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII",
+       "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII"]   # Book II
     + ["Errori"]
 )
 
