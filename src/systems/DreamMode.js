@@ -120,6 +120,7 @@ export class DreamMode {
       index: this.i, total: this.stops.length, title: st.title,
       beat: this.beat, beats: st.beats.length,
       text: b.text, quote: b.quote || null, source: b.source || null,
+      voice: b.voice || (b.quote ? '1592' : null), page: b.page || null, draft: !!b.draft,
       isFinal: this.i === this.stops.length - 1 && this.beat === st.beats.length - 1,
     });
   }

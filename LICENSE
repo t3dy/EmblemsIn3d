@@ -1,0 +1,45 @@
+Emblems in 3D — licensing summary
+=================================
+
+This repository holds four kinds of material under different terms. See
+LICENSECHOICES.md for the reasoning, and CREDITS.md for third-party material.
+
+1. CODE — MIT (below)
+   src/, scripts/, games/, and the build tooling.
+
+2. THE TRANSLATION — CC0 1.0 Universal (public domain dedication)
+   translation/en/ and the English of the post-1592 chapters wherever it
+   appears. See translation/LICENSE. Citation is requested, not required.
+
+3. EVERYTHING ELSE WE AUTHORED — CC BY 4.0
+   World and scene designs, editorial commentary (including world_links.json),
+   the Dream mode prose summaries, and the documents under docs/ and research/.
+   https://creativecommons.org/licenses/by/4.0/
+
+4. THIRD-PARTY MATERIAL — under its own terms, not relicensed here.
+   Three.js (MIT), Tone.js (MIT), GSAP (its own licence — see CREDITS.md),
+   and the images credited on research/nymphs.html, one of which is CC BY-SA 4.0
+   and requires attribution. Source texts of 1499 and 1592 are public domain.
+
+
+MIT License (applies to item 1 above)
+
+Copyright (c) 2026 the Emblems in 3D project
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

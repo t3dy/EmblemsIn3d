@@ -5,8 +5,8 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
 import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=21';
 import { AFWorldScene } from './scenes/AFWorldScene.js?v=11';
-import { DreamMode } from './systems/DreamMode.js?v=1';
-import { DREAM_STOPS } from './data/hp_dream.js?v=2';
+import { DreamMode } from './systems/DreamMode.js?v=2';
+import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -806,15 +806,34 @@ const dreamUI = {
     document.getElementById('dream-quote-wrap').style.display = 'none';
     document.getElementById('dream-next').textContent = 'Hurry ▸';
   },
-  showBeat({ index, total, title, text, quote, source, isFinal }) {
+  showBeat({ index, total, title, text, quote, source, voice, page, draft, isFinal }) {
     document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
     document.getElementById('dream-title').textContent = title;
     document.getElementById('dream-text').textContent = text;
     const qw = document.getElementById('dream-quote-wrap');
     if (quote) {
       qw.style.display = 'block';
+      // Three voices speak in this panel and they carry different authority, so
+      // the reader is told which one before reading a word rather than after.
+      // (See TRANSLATIONDISPLAYCHOICES.md.)
+      const v = voice || '1592';
+      qw.dataset.voice = v;
+      const tagEl = document.getElementById('dream-voice');
+      tagEl.textContent = ({
+        '1592': '1592 · Dallington',
+        '1499': '1499 · the book itself',
+        'ours': 'translated for this project' + (draft ? ' · draft' : ''),
+      })[v] || v;
       document.getElementById('dream-quote').textContent = quote;
       document.getElementById('dream-source').textContent = source ? '— ' + source : '';
+      // Only our own translation invites checking, so only it links out.
+      const link = document.getElementById('dream-parallel');
+      if (v === 'ours' && page) {
+        link.style.display = 'inline';
+        link.href = `../research/translation.html#p${page}`;
+      } else {
+        link.style.display = 'none';
+      }
     } else {
       qw.style.display = 'none';
     }

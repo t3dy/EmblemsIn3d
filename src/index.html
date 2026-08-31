@@ -339,9 +339,23 @@
     #dream-panel #dream-stop  { font-size: 0.62rem; letter-spacing: 0.16em; color: #8a7a5a; text-transform: uppercase; }
     #dream-panel #dream-title { font-size: 1.02rem; color: #e8c96a; letter-spacing: 0.04em; }
     #dream-panel #dream-text  { font-size: 0.88rem; color: #e6dcc4; line-height: 1.7; min-height: 3.2em; }
+    /* Three voices quote in this panel — Dallington 1592, the 1499 book itself,
+       and our own translation — and each gets its own rule colour and a tag, so
+       a reader knows which one is speaking before reading it. */
     #dream-panel #dream-quote-wrap { display: none; margin-top: 0.7rem; padding-left: 0.9rem; border-left: 2px solid rgba(200,160,64,0.5); }
+    #dream-panel #dream-voice  { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: #9a8558; margin-bottom: 0.35rem; }
     #dream-panel #dream-quote  { font-style: italic; font-size: 0.86rem; color: #d8b96a; line-height: 1.6; white-space: pre-line; }
     #dream-panel #dream-source { font-size: 0.66rem; color: #8a7a5a; margin-top: 0.3rem; letter-spacing: 0.05em; }
+    #dream-panel #dream-parallel { display: none; font-size: 0.62rem; letter-spacing: 0.06em; color: #7fa8c0; margin-top: 0.35rem; pointer-events: all; text-decoration: none; }
+    #dream-panel #dream-parallel:hover { color: #b8d8e8; }
+    /* 1499 — epigraphy: paler, warmer */
+    #dream-panel #dream-quote-wrap[data-voice="1499"] { border-left-color: rgba(220,196,140,0.55); }
+    #dream-panel #dream-quote-wrap[data-voice="1499"] #dream-voice { color: #b8a476; }
+    #dream-panel #dream-quote-wrap[data-voice="1499"] #dream-quote { color: #e2cf9c; font-style: normal; letter-spacing: 0.04em; }
+    /* ours — deliberately cool against the warm world, reading as a modern hand */
+    #dream-panel #dream-quote-wrap[data-voice="ours"] { border-left-color: rgba(120,168,192,0.6); }
+    #dream-panel #dream-quote-wrap[data-voice="ours"] #dream-voice { color: #7fa8c0; }
+    #dream-panel #dream-quote-wrap[data-voice="ours"] #dream-quote { color: #cfe0e8; }
     #dream-panel .dp-nav { display: flex; gap: 0.5rem; margin-top: 0.9rem; justify-content: flex-end; }
     #dream-panel .dp-nav button {
       background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
@@ -455,7 +469,7 @@
   <div id="dream-panel">
     <div class="dp-kicker"><span id="dream-title"></span><span id="dream-stop"></span></div>
     <div id="dream-text"></div>
-    <div id="dream-quote-wrap"><div id="dream-quote"></div><div id="dream-source"></div></div>
+    <div id="dream-quote-wrap"><div id="dream-voice"></div><div id="dream-quote"></div><div id="dream-source"></div><a id="dream-parallel" target="_blank" rel="noopener">see the Italian ↗</a></div>
     <div class="dp-nav">
       <button id="dream-exit" onclick="window.dreamExit()" title="Leave the dream (Esc)">&#10005; Wake</button>
       <button id="dream-skip" onclick="window.dreamSkip()" title="Skip to the next scene">Skip scene &#8631;</button>
@@ -513,6 +527,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=50"></script>
+  <script type="module" src="./main.js?v=51"></script>
 </body>
 </html>
