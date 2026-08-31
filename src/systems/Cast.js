@@ -101,42 +101,215 @@ export function makeCast(S) {
     return g;
   }
 
-  // A robed nymph; `name` is remembered for labels. `attribute` puts an
-  // identifying object in her hands, the way the 1499 text identifies the five
-  // nymphs of the senses by what each carries (see docs/HP_SOURCEBOOK.md §3):
-  // Osfressia the perfume casket, Orassia the shining glass, Achoe the sounding
-  // harp, Geussia the casting bottle. Aphea carries nothing — she offers her hand.
-  function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand', attribute = null } = {}) {
-    const g = figure({ h, robe, pose });
-    add(g, mesh(new THREE.SphereGeometry(0.135 * h, 10, 8), M(0x6a4a28, { roughness: 0.85 }), 0, 1.56 * h));
-    g.userData.name = name;
+  // ── The nymph ─────────────────────────────────────────────────────────────
+  //
+  // Not a cone with a head on it. The project's own sourcebook
+  // (research/nymphs.html) sets the brief from three places:
+  //   · the 1499 woodcuts — "high-belted gowns, sleeves gathered at the
+  //     shoulder, hair bound with fillets … fewer folds, clearer silhouette";
+  //   · Cellini's Fontainebleau nymph — the elongated Mannerist body, which
+  //     "reads beautifully at low poly counts, all silhouette and sweep";
+  //   · Goujon's Innocents naiads — "carve the folds as geometry … few, long,
+  //     directional."
+  // So: a LatheGeometry gown cinched at a high waist and falling in four long
+  // folds, Mannerist proportions (~8½ heads, small head, long limbs), jointed
+  // arms that clear the silhouette and end in hands, a neck, and hair bound
+  // with a fillet over a chignon.
+
+  // The gown: one turned profile from hem to shoulder, then displaced into a
+  // few long vertical folds that fade out as they rise to the waist.
+  function gownGeometry(h) {
+    const profile = [
+      [0.000, 0.000], [0.250, 0.000],   // hem, closed at the centre
+      [0.238, 0.055], [0.212, 0.200],
+      [0.184, 0.380], [0.158, 0.560],
+      [0.138, 0.740], [0.120, 0.890],
+      [0.106, 0.980],                   // the high waist — the 1499 cinch
+      [0.126, 1.090], [0.132, 1.210],   // bodice
+      [0.124, 1.310], [0.072, 1.362],   // shoulder slope into the neck
+    ].map(([r, y]) => new THREE.Vector2(Math.max(r, 0.0001) * h, y * h));
+
+    const geo = new THREE.LatheGeometry(profile, 16);
+    const pos = geo.attributes.position;
+    const waist = 0.98 * h;
+    for (let i = 0; i < pos.count; i++) {
+      const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+      const r = Math.hypot(x, z);
+      if (r < 1e-4 || y > waist) continue;
+      // Goujon's flow-lines: four long folds, deepest at the hem
+      const theta = Math.atan2(z, x);
+      const ramp = 1 - y / waist;
+      const k = 1 + Math.sin(theta * 4) * 0.055 * ramp;
+      pos.setX(i, x * k);
+      pos.setZ(i, z * k);
+    }
+    geo.computeVertexNormals();
+    return geo;
+  }
+
+  // Shoulder → elbow → hand, so a pose bends where an arm bends and the hand
+  // carries whatever she has been given.
+  function makeArm(sx, h, skinMat, robeMat) {
+    const pivot = new THREE.Group();
+    pivot.position.set(sx * 0.118 * h, 1.292 * h, 0);
+    // sleeve gathered at the shoulder
+    const puff = mesh(new THREE.SphereGeometry(0.055 * h, 10, 8), robeMat, 0, 0.012 * h, 0);
+    puff.scale.set(1, 0.85, 1);
+    puff.castShadow = true;
+    pivot.add(puff);
+    const upper = mesh(new THREE.CapsuleGeometry(0.031 * h, 0.20 * h, 4, 8), skinMat, 0, -0.13 * h, 0);
+    upper.castShadow = true;
+    pivot.add(upper);
+
+    const elbow = new THREE.Group();
+    elbow.position.set(0, -0.265 * h, 0);
+    const fore = mesh(new THREE.CapsuleGeometry(0.026 * h, 0.18 * h, 4, 8), skinMat, 0, -0.115 * h, 0);
+    fore.castShadow = true;
+    elbow.add(fore);
+
+    const hand = new THREE.Group();
+    hand.position.set(0, -0.238 * h, 0);
+    const palm = mesh(new THREE.SphereGeometry(0.030 * h, 8, 6), skinMat, 0, 0, 0);
+    palm.scale.set(0.85, 1.15, 0.7);
+    palm.castShadow = true;
+    hand.add(palm);
+    elbow.add(hand);
+    pivot.add(elbow);
+    pivot.userData.elbow = elbow;
+    pivot.userData.hand = hand;
+    return pivot;
+  }
+
+  // How far each carried object drops from the palm to sit in the grip
+  const ATTRIBUTE_GRIP = {
+    harp: -0.15, mirror: -0.03, casket: -0.09, flask: -0.11, lute: -0.11, cornucopia: 0,
+  };
+
+  // [shoulder z (out/in), shoulder x (fore/aft), elbow bend]
+  const NYMPH_POSES = {
+    stand:   { L: [-0.20,  0.05, 0.30], R: [ 0.20,  0.05, 0.30] },
+    offer:   { L: [-0.36, -0.55, 0.80], R: [ 0.36, -0.55, 0.80] },
+    carry:   { L: [-0.18,  0.06, 0.26], R: [ 0.30, -0.75, 1.05] },
+    point:   { L: [-0.17,  0.06, 0.32], R: [ 0.26, -1.35, 0.10] },
+    beckon:  { L: [-0.17,  0.06, 0.32], R: [ 0.26, -1.95, 1.15] },
+    reach:   { L: [-0.80, -0.30, 0.18], R: [ 0.80, -0.30, 0.18] },
+    sit:     { L: [-0.26, -0.45, 0.90], R: [ 0.26, -0.45, 0.90] },
+    recline: { L: [-0.30, -0.15, 0.50], R: [ 0.30, -0.15, 0.50] },
+  };
+
+  // A gowned nymph. `attribute` puts an identifying object in her right hand,
+  // the way the 1499 text identifies the five nymphs of the senses by what each
+  // carries (docs/HP_SOURCEBOOK.md §3): Osfressia the perfume casket, Orassia
+  // the shining glass, Achoe the sounding harp, Geussia the casting bottle.
+  // Aphea carries nothing — she is the one who offers her hand.
+  function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand',
+                   attribute = null, hair = 0x4a3018, crowned = false, winged = false } = {}) {
+    const g = new THREE.Group();
+    const parts = g.userData;
+    const skinMat = M(SKIN, { roughness: 0.6 });
+    const robeMat = M(robe);
+
+    add(g, mesh(gownGeometry(h), robeMat, 0, 0, 0));
+    // a girdle at the high waist — the belt the woodcuts always draw
+    const belt = add(g, mesh(new THREE.TorusGeometry(0.112 * h, 0.014 * h, 6, 20),
+      M(0xd8c088, { metalness: 0.6, roughness: 0.4 }), 0, 0.978 * h));
+    belt.rotation.x = Math.PI / 2;
+
+    add(g, mesh(new THREE.CylinderGeometry(0.036 * h, 0.045 * h, 0.10 * h, 8), skinMat, 0, 1.40 * h));
+    const head = add(g, mesh(new THREE.SphereGeometry(0.100 * h, 14, 12), skinMat, 0, 1.552 * h));
+    head.scale.set(0.94, 1.08, 0.96);
+    parts.head = head;
+
+    // hair: a bound mass swept back off the brow, a fillet, and a chignon
+    // behind. The cap must stop above the eyes — drawn any lower it reads as a
+    // visor rather than a hairline.
+    const hairMat = M(hair, { roughness: 0.85 });
+    const cap = add(g, mesh(new THREE.SphereGeometry(0.104 * h, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.5), hairMat, 0, 1.556 * h, -0.010 * h));
+    cap.scale.set(1.0, 1.05, 1.06);
+    add(g, mesh(new THREE.SphereGeometry(0.056 * h, 10, 8), hairMat, 0, 1.508 * h, -0.094 * h));
+    const fillet = add(g, mesh(new THREE.TorusGeometry(0.101 * h, 0.0075 * h, 6, 20),
+      M(0xd8c9a8, { roughness: 0.55 }), 0, 1.594 * h, -0.004 * h));
+    fillet.rotation.x = Math.PI / 2 - 0.2;
+
+    if (crowned) {
+      const cr = add(g, mesh(new THREE.TorusGeometry(0.098 * h, 0.024 * h, 6, 14),
+        M(0xffd24a, { metalness: 0.9, roughness: 0.2 }), 0, 1.632 * h));
+      cr.rotation.x = Math.PI / 2.3;
+    }
+
+    parts.armL = makeArm(-1, h, skinMat, robeMat);
+    parts.armR = makeArm( 1, h, skinMat, robeMat);
+    g.add(parts.armL); g.add(parts.armR);
+
+    const P = NYMPH_POSES[attribute && pose === 'stand' ? 'carry' : pose] || NYMPH_POSES.stand;
+    for (const [pivot, spec] of [[parts.armL, P.L], [parts.armR, P.R]]) {
+      pivot.rotation.z = spec[0];
+      pivot.rotation.x = spec[1];
+      pivot.userData.elbow.rotation.x = spec[2];
+    }
+
+    if (winged) {
+      const wg = new THREE.PlaneGeometry(0.46 * h, 0.84 * h);
+      const wm = M(0xe8e0d0, { side: THREE.DoubleSide });
+      for (const s of [-1, 1]) {
+        const w = mesh(wg, wm, s * 0.26 * h, 1.16 * h, -0.06 * h);
+        w.rotation.y = s * 0.5; w.rotation.z = s * 0.6;
+        g.add(w);
+        if (s < 0) parts.wingL = w; else parts.wingR = w;
+      }
+    }
+
     if (attribute && attributes[attribute]) {
       const item = attributes[attribute](h);
-      // Carried at the right hand, tilted slightly out from the body.
-      item.position.set(0.3 * h, 1.06 * h, 0.16 * h);
-      item.rotation.y = -0.45;
-      g.add(item);
-      g.userData.attribute = item;
+      parts.armR.userData.hand.add(item);   // travels with the pose
+      // each attribute is modelled standing on its own base, so it needs
+      // dropping until the grip falls in the palm
+      const drop = ATTRIBUTE_GRIP[attribute] ?? -0.06;
+      item.position.set(0, drop * h, 0.03 * h);
+      parts.attribute = item;
     }
+
+    // Contrapposto, cheaply: a Renaissance figure is never symmetrical about
+    // its own axis. Tilt the head (and counter-tilt the shoulders) by a small
+    // amount derived from the name, so each nymph stands a little differently
+    // and none of them looks stamped.
+    const seed = Array.from(name).reduce((a, c) => a + c.charCodeAt(0), name.length);
+    const tilt = ((seed % 7) - 3) * 0.026;
+    parts.head.rotation.z = tilt;
+    cap.rotation.z = tilt; fillet.rotation.z = tilt;
+    parts.armL.rotation.z -= tilt * 0.5;
+    parts.armR.rotation.z -= tilt * 0.5;
+
+    if (pose === 'recline') { g.rotation.z = Math.PI / 2; g.position.y = 0.22 * h; }
+    parts.name = name;
     return g;
   }
 
   // ── Carried attributes (the senses' emblems) ──────────────────────────────
 
   const attributes = {
-    // Achoe, Hearing: "shee that carrieth the sounding Harpe"
+    // Achoe, Hearing: "shee that carrieth the sounding Harpe". The angular
+    // harp of the plates: a triangle of soundbox, neck and forepillar, strung
+    // across the opening.
     harp: (h = 1) => {
       const g = new THREE.Group();
       const wm = M(0x8a5a2a, { roughness: 0.6 });
       const sm = M(0xf0e0b0, { metalness: 0.5, roughness: 0.35 });
-      // Curved pillar + soundbox, the angular harp of the woodcuts
-      const arc = mesh(new THREE.TorusGeometry(0.17 * h, 0.022 * h, 6, 16, Math.PI * 0.95), wm, 0, 0.1 * h);
-      arc.rotation.z = -0.5;
-      add(g, arc);
-      add(g, mesh(new THREE.BoxGeometry(0.035 * h, 0.34 * h, 0.05 * h), wm, -0.11 * h, 0.02 * h, 0)).rotation.z = 0.22;
-      for (let i = 0; i < 5; i++) {
-        add(g, mesh(new THREE.CylinderGeometry(0.004 * h, 0.004 * h, (0.1 + i * 0.036) * h, 4), sm,
-          (-0.07 + i * 0.036) * h, (0.02 + i * 0.012) * h, 0));
+      const H = 0.26 * h, W = 0.15 * h;
+      // soundbox: the deep member the strings are pinned to, leaning back
+      const box = add(g, mesh(new THREE.CapsuleGeometry(0.021 * h, H * 0.86, 4, 8), wm, 0, H / 2, 0));
+      box.rotation.z = 0.16;
+      // forepillar, from the foot out to the top of the neck
+      const pillar = add(g, mesh(new THREE.CapsuleGeometry(0.013 * h, Math.hypot(W, H) * 0.82, 4, 8), wm, W / 2, H / 2, 0));
+      pillar.rotation.z = -Math.atan2(W, H);
+      // neck across the top
+      const neck = add(g, mesh(new THREE.CapsuleGeometry(0.012 * h, W * 0.7, 4, 8), wm, W / 2, H * 0.98, 0));
+      neck.rotation.z = Math.PI / 2 - 0.22;
+      for (let i = 0; i < 6; i++) {
+        const t = (i + 1) / 7;
+        const len = H * (1 - t) * 0.92 + 0.02 * h;
+        add(g, mesh(new THREE.CylinderGeometry(0.0035 * h, 0.0035 * h, len, 3), sm,
+          W * t, H * (1 - t * 0.5) - len / 2 + H * 0.02, 0));
       }
       return g;
     },
