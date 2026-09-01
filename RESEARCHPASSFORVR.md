@@ -130,12 +130,18 @@ Found by this pass; each is small and each is a real error.
 
 ## What to build next, in order
 
-1. **Cythera.** The concentric island: *bosco* of twenty tree compartments, three
-   orders of *prati* with 240 fruit trees, the river under a citrus pergola, six
-   terraces on seven-step flights with gates for the chariots, two rings of knot
-   garden, and the theatre with its tiered flower-bed auditorium around the
-   fountain we have already built. Plan in [GARDENS.md §5](GARDENS.md). *This is
-   the project's largest remaining build and its most important.*
+1. ✔ **Cythera — first pass built** (2026-09-01, `_buildCytheraIsle`). The
+   concentric island stands at (0, −150), reached by Cupid's boat (digit 0, 9
+   returns): sward and sand, twelve radial roads, the *bosco* in twelve wedge
+   plantations inside its cypress rim, the *prati* with topiary and pool
+   centrepieces and fruit trees inside the bitter-orange espalier, the ring
+   river with its four cardinal bridges and citrus-pergola arches, three
+   terraces with knot-work tops and flower-bed rings breaking at the gated
+   crossroads, and the theatre floor holding a second building of the
+   seven-column fountain — the dream repeating its climax, as the narration
+   always said it did. Still open from Segre's plan: the seven-step flights
+   themselves (the terraces meet the corridors at grade), the full twenty road
+   count, and per-compartment tree species rather than two kinds alternating.
 2. **The Venus fountain's enclosure.** One session, completes a finished station,
    and stages the book's central argument as an object: a gold structure carrying
    real roses.

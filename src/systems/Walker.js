@@ -38,7 +38,9 @@ export class Walker {
   attach() {
     const el = this.renderer.domElement;
     this._onKeyDown = (e) => {
-      const d = e.code.match(/^Digit([1-9])$/);
+      // 0 is passed through too — the HP world uses it for the crossing to
+      // Cythera, which is a voyage rather than a numbered wonder.
+      const d = e.code.match(/^Digit([0-9])$/);
       if (d && this.onDigit && !this.locked) { this.onDigit(+d[1]); return; }
       this._keys.add(e.code);
     };

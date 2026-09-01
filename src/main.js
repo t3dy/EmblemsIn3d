@@ -3,8 +3,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=30';
-import { AFWorldScene } from './scenes/AFWorldScene.js?v=11';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=32';
+import { AFWorldScene } from './scenes/AFWorldScene.js?v=12';
 import { DreamMode } from './systems/DreamMode.js?v=2';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
@@ -763,7 +763,7 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   } else if (chooser && !station && !spawn) {
     showHPMode(true);
   } else {
-    showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders');
+    showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
   }
 }
 
@@ -776,7 +776,7 @@ function showHPMode(on) {
 
 window.hpExplore = () => {
   showHPMode(false);
-  showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders');
+  showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
 };
 
 window.hpDream = () => {
@@ -795,8 +795,8 @@ const dreamUI = {
       showHPHUD('The Dream Garden of Poliphilo', null, []);
       setHPStyleBtn(true);
       showHint(finished
-        ? 'The dream is over — the garden is yours. W A S D to walk · 1–9 the wonders'
-        : 'W A S D / arrows walk · drag to look · 1–9 the wonders');
+        ? 'The dream is over — the garden is yours. W A S D to walk · 1–9 the wonders · 0 sails to Cythera'
+        : 'W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera');
     }
   },
   showTravel({ index, total, title }) {

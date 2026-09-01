@@ -22,7 +22,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../systems/Particles.js?v=3';
-import { Walker } from '../systems/Walker.js?v=2';
+import { Walker } from '../systems/Walker.js?v=3';
 import { makeCast } from '../systems/Cast.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
@@ -54,6 +54,11 @@ export const HP_STATIONS = [
     pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
   { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158, emblem: null,
     pos: [5.5, -4.5], look: [10.6, -9.4], radius: 5 },
+  // The island itself — reached by Cupid's boat (digit 0), returned from by 9:
+  { key: 'cythera_isle',     name: 'The Gardens of Cythera', folio: 290, emblem: null,
+    pos: [0, -104], look: [0, -150], radius: 13 },
+  { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358, emblem: 33,
+    pos: [0, -133.5], look: [0, -150], radius: 11, pitch: 0.05 },
 ];
 
 const EYE = 1.7;
@@ -133,8 +138,15 @@ export class HPWorldScene {
 
     this.walker = new Walker(renderer, {
       eye: EYE,
-      bounds: { minX: -36, maxX: 36, minZ: -41.5, maxZ: 50 },
-      onDigit: (n) => { const st = HP_STATIONS[n - 1]; if (st) this.teleport(st.key); },
+      // Bounds now reach the island of Cythera (centre 0,-150, radius 50);
+      // the open sea between shore and island is fenced by walls and a ring
+      // of coast colliders, so the crossing is by boat (digit 0) only.
+      bounds: { minX: -58, maxX: 58, minZ: -206, maxZ: 50 },
+      onDigit: (n) => {
+        if (n === 0) { this.teleport('cythera_isle'); return; }   // Cupid ferries the willing
+        const st = HP_STATIONS[n - 1];
+        if (st) this.teleport(st.key);
+      },
     });
 
     const st = station && HP_STATIONS.find(s => s.key === station);
@@ -157,7 +169,7 @@ export class HPWorldScene {
     this._pulses = [];
     this._portals = [];
     this._quinta = null;
-    this._venus = null;
+    this._venuses = [];            // the goddess turns at each of her fountains
     this._boat = null;
     this._floats = [];
     this._waters = [];             // spinning water discs
@@ -234,6 +246,7 @@ export class HPWorldScene {
     this._buildFountain();
     this._buildTriumphs();
     this._buildCythera();
+    this._buildCytheraIsle();
     this._buildTrees();
     if (lit) this._buildMotes();
     if (lit) this._buildMeadow();
@@ -1075,9 +1088,13 @@ export class HPWorldScene {
 
   // ── Fountain of Venus (f.80) — the climax grove ───────────────────────────
 
-  _buildFountain() {
+  // The mainland grove carries a dream-echo of this fountain; the true one
+  // stands at the centre of the theatre on Cythera, and the Dream narration
+  // has always said so ("in the isle of Cythera, where this fountain truly
+  // belongs"). The builder takes its place so both can exist — the dream
+  // repeats its climax, which is what dreams do.
+  _buildFountain(FX = 0, FZ = -20) {
     const S = this.style;
-    const FX = 0, FZ = -20;
     const waterMat = S.waterMat();
     // Rippled water: without a map, the spinning discs would read as still.
     if (S.key !== 'woodcut') {
@@ -1223,7 +1240,7 @@ export class HPWorldScene {
     v.position.set(FX, BASIN_Y, FZ);
     v.scale.setScalar(1.35);
     this.scene.add(v);
-    this._venus = v;
+    this._venuses.push(v);
     // hair floating "scattered in a gyre and very long" on the surface
     const hairRing = this._m(new THREE.TorusGeometry(0.5, 0.055, 6, 24),
       woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xd8b24a, metalness: 0.5, roughness: 0.4 }),
@@ -1365,22 +1382,26 @@ export class HPWorldScene {
 
   _buildCythera() {
     const S = this.style;
-    // The sea (its material breathes gently in update)
-    const sea = this._m(new THREE.PlaneGeometry(130, 26), S.waterMat(), 0, 0.03, -50, { rx: -Math.PI / 2, cast: false });
+    // The sea now runs all the way to the island (its material breathes in update)
+    const sea = this._m(new THREE.PlaneGeometry(170, 185), S.waterMat(), 0, 0.03, -126, { rx: -Math.PI / 2, cast: false });
     if (sea.material.transparent) this._sea = { mat: sea.material, base: sea.material.opacity };
     // Sand strip
     const sandMat = S.key === 'woodcut' ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0x9a8a64, roughness: 0.95 });
-    this._m(new THREE.PlaneGeometry(130, 4.5), sandMat, 0, 0.016, -35.5, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(130, 4.5), sandMat, 0, 0.05, -35.5, { rx: -Math.PI / 2, cast: false });
 
     // Pier out over the water
     for (let i = 0; i < 4; i++) {
       this._m(new THREE.BoxGeometry(2.2, 0.12, 1.6), this._trunkMat, 0, 0.22, -38.2 - i * 1.7);
       for (const s of [-1, 1]) this._m(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 6), this._trunkMat, s * 0.95, 0.05, -38.2 - i * 1.7);
     }
-    // Sea rails: keep the walker on the pier
-    this._wallCol(-30, -1.2, -37, -60);
-    this._wallCol(1.2, 30, -37, -60);
-    this._wallCol(-2, 2, -44.6, -60);
+    // Sea rails: the crossing is Cupid's to make, not the walker's. Everything
+    // seaward of the shore is fenced; the island keeps its own coast.
+    this._wallCol(-58, -1.2, -37, -96);
+    this._wallCol(1.2, 58, -37, -96);
+    this._wallCol(-2, 2, -44.6, -96);
+    // How to sail (digit 0 → the island; 9 returns)
+    this._plaque({ main: 'AD CYTHERAM', sub: 'PRESS 0 — CUPID FERRIES THE WILLING' },
+      1.7, 0.42, 1.6, 1.15, -41.5, Math.PI * 0.06, true);
 
     // Cupid's boat, riding at the pier's end
     const boat = this.cast.props.boat(2.0);
@@ -1396,20 +1417,273 @@ export class HPWorldScene {
     cupid.add(cl);
     this.npcs.cupid = cupid;
 
-    // Distant Cythera: a mound crowned by the amphitheatre of Venus
-    const isle = new THREE.Group();
-    const im = S.key === 'woodcut' ? S.mat({ tone: 0.12, rim: 0 }) : S.mat({ color: 0x2a3a22, roughness: 0.95 });
-    const mound = this._m(new THREE.ConeGeometry(9, 3.2, 24), im, 0, 1.2, 0, { parent: isle });
-    mound.scale.y = 0.7;
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      this._m(new THREE.CylinderGeometry(0.16, 0.2, 1.6, 8), this._stoneMat, Math.cos(a) * 3.4, 3.0, Math.sin(a) * 3.4, { parent: isle });
+    // (The old distant-isle mock stood here at z = -58. The real island is now
+    // built by _buildCytheraIsle at z = -150, hazed by the same fog that used
+    // to stand in for it.)
+  }
+
+  // ── The Island of Cythera ─────────────────────────────────────────────────
+  //
+  // Built from Segre's reconstruction of the book's plan (GARDENS.md §5): a
+  // perfect circle cut by radial roads converging on the theatre of Venus at
+  // the centre, in three concentric claustri — the bosco of tree plantations,
+  // the prati of flowery lawns and fruit trees, and, across the river, the
+  // terraced inner gardens with their knot beds rising toward the theatre.
+  // The terracing breaks at the four crossroads, "marked by ornate gates and
+  // used for the passage of triumphal chariots" — which is why a walker can
+  // reach the fountain at grade. Planting inverts the usual logic: tallest
+  // trees at the rim, lowest beds at the centre, wild to tame going inward.
+  _buildCytheraIsle() {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const CX = 0, CZ = -150, R = 50;
+    const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
+    const STEP = Math.PI / 6;                       // twelve radial roads
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+
+    // Sand rim and sward
+    const sandMat = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
+    this._m(new THREE.CircleGeometry(R + 2.6, 56), sandMat, CX, 0.05, CZ, { rx: -Math.PI / 2, cast: false });
+    const swardMat = lit ? S.mat({ color: 0x223014, roughness: 0.98 }) : S.mat({ tone: 0.10, rim: 0 });
+    if (lit) this._dress(swardMat, this._surfaceTexture({ base: '#3a5423', dark: '#1c3010', light: '#5c7e36', blobs: 80, speckle: 4200, repeat: 20 }), 0.15);
+    this._m(new THREE.CircleGeometry(R, 56), swardMat, CX, 0.07, CZ, { rx: -Math.PI / 2, cast: false });
+
+    // The coast: a ring of colliders keeps the walk on the island
+    for (let i = 0; i < 40; i++) {
+      const a = (i / 40) * Math.PI * 2;
+      const [x, z] = pos(a, 54);
+      this._circleCol(x, z, 4.6);
     }
-    this._m(new THREE.TorusGeometry(3.4, 0.18, 8, 28), this._stoneMat, 0, 3.9, 0, { rx: Math.PI / 2, parent: isle });
-    const gl = S.pointLight(0xffd060, 2.0, 20);
-    if (gl) { gl.position.set(0, 4.5, 0); isle.add(gl); }
-    isle.position.set(0, 0, -58);
-    this.scene.add(isle);
+
+    // Radial roads. The four cardinals run all the way in (and bridge the
+    // river); the other eight stop at the river's outer bank.
+    const isleTrack = lit ? S.mat({ color: 0x6a5a40, roughness: 0.92 }) : S.mat({ tone: 0.03, rim: 0 });
+    if (lit) this._dress(isleTrack, this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 }), 0.3);
+    for (let k = 0; k < 12; k++) {
+      const a = k * STEP, cardinal = k % 3 === 0;
+      const r0 = cardinal ? 7.6 : 22.2, r1 = 49;
+      const [x, z] = pos(a, (r0 + r1) / 2);
+      this._m(new THREE.PlaneGeometry(2.6, r1 - r0), isleTrack, x, 0.09, z,
+        { rx: -Math.PI / 2, rz: -a - Math.PI / 2, cast: false });
+    }
+
+    // ── Outer claustro: the bosco ─────────────────────────────────────────
+    // Twelve wedge plantations, each one kind of tree, with the cypress
+    // enclosure at the rim.
+    for (let k = 0; k < 12; k++) {
+      const a0 = k * STEP;
+      const kind = k % 2 ? 'broad' : 'cypress';
+      for (let t = 0; t < 5; t++) {
+        const a = a0 + (0.14 + rnd(k * 7 + t, 1) * 0.72) * STEP;
+        const r = 37 + rnd(k * 7 + t, 2) * 9.5;
+        const [x, z] = pos(a, r);
+        const tree = this.cast.props.tree(kind, 0.9 + rnd(k * 7 + t, 3) * 0.5);
+        tree.position.set(x, 0.07, z);
+        tree.rotation.y = rnd(k * 7 + t, 4) * Math.PI;
+        this.scene.add(tree);
+        this._circleCol(x, z, 0.5);
+      }
+      // one enclosure cypress at mid-wedge, on the rim
+      const [ex, ez] = pos(a0 + STEP / 2, 48.2);
+      const cy = this.cast.props.tree('cypress', 1.25);
+      cy.position.set(ex, 0.07, ez);
+      this.scene.add(cy);
+      this._circleCol(ex, ez, 0.55);
+    }
+
+    // ── Middle claustro: the prati ────────────────────────────────────────
+    // Flowery lawns, each with a fountain or a topiary at its centre and
+    // fruit trees about it; bounded inside by the bitter-orange espalier.
+    // (chords short enough to leave every radial road its full 2.6 u of way)
+    for (let i = 0; i < 24; i++) {
+      const a = (i + 0.5) * (Math.PI / 12);
+      const [x, z] = pos(a, 34.2);
+      this._m(new THREE.BoxGeometry(6.2, 1.05, 0.5), this._hedgeMat, x, 0.55, z, { ry: -a + Math.PI / 2 });
+      this._circleCol(x, z, 2.2);
+      for (const s of [-1.9, 0, 1.9]) {
+        const [ox, oz] = pos(a + s / 34.2, 34.2);
+        this._m(new THREE.SphereGeometry(0.14, 8, 6),
+          lit ? S.mat({ color: 0xd8842a, roughness: 0.5 }) : S.mat({ tone: 0.06 }),
+          ox, 1.22, oz, { cast: false });
+      }
+    }
+    for (let k = 0; k < 12; k++) {
+      const am = k * STEP + STEP / 2;
+      const [cx, cz] = pos(am, 27.5);
+      if (k % 2 === 0) {
+        // topiary: the clipped work the book says is trimmed every day
+        this._m(new THREE.CylinderGeometry(0.09, 0.13, 0.95, 8), this._trunkMat, cx, 0.55, cz);
+        this._m(new THREE.SphereGeometry(0.6, 12, 10), this._leafMat, cx, 1.35, cz, { outline: true });
+        this._m(new THREE.SphereGeometry(0.32, 10, 8), this._leafMat, cx, 2.1, cz, { outline: true });
+      } else {
+        const pool = this.cast.props.pool(1.0);
+        pool.position.set(cx, 0.07, cz);
+        this.scene.add(pool);
+      }
+      this._circleCol(cx, cz, 1.1);
+      for (const [da, rr] of [[-0.11, 25], [0.11, 30.4]]) {
+        const [tx, tz] = pos(am + da, rr);
+        const ft = this.cast.props.tree('broad', 0.75);
+        ft.position.set(tx, 0.07, tz);
+        this.scene.add(ft);
+        this._circleCol(tx, tz, 0.45);
+      }
+    }
+
+    // ── The river, its banks, its bridges, and the citrus pergola ─────────
+    const riverMat = S.waterMat();
+    if (lit) { riverMat.color.set(0xffffff); riverMat.map = this._waterTexture(); }
+    this._waters.push({
+      m: this._m(new THREE.RingGeometry(19, 21.6, 48), riverMat, CX, 0.08, CZ, { rx: -Math.PI / 2, cast: false }),
+      rate: 0.02,
+    });
+    for (const r of [19, 21.6]) {
+      this._m(new THREE.TorusGeometry(r, 0.13, 8, 48), this._stoneMat, CX, 0.12, CZ, { rx: Math.PI / 2, cast: false });
+    }
+    // keep the walk out of the water, except at the bridges
+    for (let i = 0; i < 28; i++) {
+      const a = (i / 28) * Math.PI * 2;
+      const near = Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI)));
+      if (near < 0.22) continue;
+      const [x, z] = pos(a, 20.3);
+      this._circleCol(x, z, 1.5);
+    }
+    for (let q = 0; q < 4; q++) {
+      const a = q * Math.PI / 2;
+      const [x, z] = pos(a, 20.3);
+      this._m(new THREE.BoxGeometry(2.8, 0.16, 3.6), this._stoneMat, x, 0.2, z, { ry: Math.PI / 2 - a });
+    }
+    // citrus pergola arching the river — trained trees as architecture
+    const citrusLeaf = lit ? S.mat({ color: 0x2a4a1c, roughness: 0.9 }) : S.mat({ tone: 0.2 });
+    const citrusFruit = lit ? S.mat({ color: 0xe8c23a, roughness: 0.4, emissive: 0x4a3a00, emissiveIntensity: 0.3 }) : S.mat({ tone: 0.02 });
+    for (let i = 0; i < 8; i++) {
+      const a = (i + 0.5) * (Math.PI / 4);
+      const g = new THREE.Group();
+      this._m(new THREE.TorusGeometry(1.7, 0.09, 6, 14, Math.PI), this._trunkMat, 0, 0.1, 0, { parent: g });
+      for (const phi of [0.5, 1.05, 1.57, 2.09, 2.64]) {
+        this._m(new THREE.SphereGeometry(0.34, 8, 6), citrusLeaf,
+          Math.cos(phi) * 1.7, 0.1 + Math.sin(phi) * 1.7, 0, { parent: g, cast: false });
+      }
+      for (const phi of [0.85, 2.3]) {
+        this._m(new THREE.SphereGeometry(0.1, 8, 6), citrusFruit,
+          Math.cos(phi) * 1.55, 0.1 + Math.sin(phi) * 1.55, 0.22, { parent: g, cast: false });
+      }
+      const [x, z] = pos(a, 20.3);
+      g.position.set(x, 0, z);
+      g.rotation.y = -a;
+      this.scene.add(g);
+    }
+
+    // ── Inner claustro: three terraces rising to the theatre ──────────────
+    // Arcs with gaps at the cardinals; conifers in geometric array on the
+    // first, knot gardens on the second and third, flower-bed rings at each
+    // edge — the auditorium turned into beds, as the book turns it.
+    const knot = lit ? this._knotTexture() : null;
+    const tiers = [
+      { r0: 8, r1: 11, h: 0.42, bed: 0xc84a5a },
+      { r0: 11, r1: 14, h: 0.84, bed: 0xe07a8a },
+      { r0: 14, r1: 17, h: 1.26, bed: 0xd8a850 },
+    ];
+    const terraceMat = lit ? S.mat({ color: 0x8a7a5a, roughness: 0.9 }) : S.mat({ tone: 0.08 });
+    if (lit) this._dress(terraceMat, this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 4, courses: 3, repeat: 3 }), 0.3);
+    tiers.forEach((t, ti) => {
+      const gap = 0.17;
+      for (let q = 0; q < 4; q++) {
+        const t0 = q * Math.PI / 2 + gap, tl = Math.PI / 2 - 2 * gap;
+        const topMat = (lit && ti > 0)
+          ? new THREE.MeshStandardMaterial({ map: knot, roughness: 0.9, side: THREE.DoubleSide })
+          : terraceMat;
+        this._m(new THREE.RingGeometry(t.r0, t.r1, 20, 1, t0, tl), topMat, CX, t.h, CZ, { rx: -Math.PI / 2, cast: false });
+        this._m(new THREE.CylinderGeometry(t.r1, t.r1, t.h, 20, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
+        if (ti === 0) this._m(new THREE.CylinderGeometry(t.r0, t.r0, t.h, 20, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
+      }
+      // the flower-bed ring at the tier's inner lip
+      const bedMat = lit ? S.mat({ color: t.bed, roughness: 0.7, emissive: t.bed, emissiveIntensity: 0.12 }) : S.mat({ tone: 0.16 });
+      this._m(new THREE.TorusGeometry(t.r0 + 0.4, 0.17, 8, 40), bedMat, CX, t.h + 0.1, CZ, { rx: Math.PI / 2, cast: false });
+    });
+    // conifers in array on the first terrace; spice wood on the third
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2;
+      if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(a - q * Math.PI / 2))) < 0.28) continue;
+      const [x, z] = pos(a, 9.5);
+      this._m(new THREE.ConeGeometry(0.3, 1.35, 7), this._leafMat, x, 1.17, z, { cast: false });
+    }
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2 + 0.31;
+      if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.3) continue;
+      const [x, z] = pos(a, 15.5);
+      const sp = this.cast.props.tree('broad', 0.55);
+      sp.position.set(x, 1.26, z);
+      this.scene.add(sp);
+    }
+    // terrace guards: the walk enters only by the four crossroads
+    for (let i = 0; i < 22; i++) {
+      const a = (i / 22) * Math.PI * 2;
+      const near = Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI)));
+      if (near < 0.3) continue;
+      const [gx, gz] = pos(a, 16.4);
+      this._circleCol(gx, gz, 2.1);
+      if (i % 2 === 0) { const [hx, hz] = pos(a, 9.7); this._circleCol(hx, hz, 1.7); }
+    }
+    // corridor walls (the cardinals are axis-aligned, so AABBs serve)
+    this._wallCol(-2.1, -1.5, CZ + 7.6, CZ + 17.4); this._wallCol(1.5, 2.1, CZ + 7.6, CZ + 17.4);
+    this._wallCol(-2.1, -1.5, CZ - 17.4, CZ - 7.6); this._wallCol(1.5, 2.1, CZ - 17.4, CZ - 7.6);
+    this._wallCol(CX + 7.6, CX + 17.4, CZ - 2.1, CZ - 1.5); this._wallCol(CX + 7.6, CX + 17.4, CZ + 1.5, CZ + 2.1);
+    this._wallCol(CX - 17.4, CX - 7.6, CZ - 2.1, CZ - 1.5); this._wallCol(CX - 17.4, CX - 7.6, CZ + 1.5, CZ + 2.1);
+    // the ornate gates at the four crossroads
+    for (let q = 0; q < 4; q++) {
+      const a = q * Math.PI / 2;
+      for (const s of [-1.9, 1.9]) {
+        const [x, z] = pos(a, 18.6);
+        this._obelisk(x - Math.sin(a) * s, z + Math.cos(a) * s, 0.75, 2.1);
+      }
+    }
+
+    // ── The theatre floor, and the fountain the whole island converges on ──
+    this._m(new THREE.CircleGeometry(7.8, 40), this._darkStoneMat, CX, 0.06, CZ, { rx: -Math.PI / 2, cast: false });
+    this._buildFountain(CX, CZ);
+
+    // ── The landing ───────────────────────────────────────────────────────
+    for (let i = 0; i < 3; i++) {
+      this._m(new THREE.BoxGeometry(2.2, 0.12, 1.5), this._trunkMat, 0, 0.2, -99.4 - i * 1.6);
+    }
+    const skiff = this.cast.props.boat(1.6);
+    skiff.position.set(2.6, 0.1, -99.2);
+    skiff.rotation.y = 0.5;
+    this.scene.add(skiff);
+    this._floats.push({ g: skiff, wheels: [], phase: 2.4 });
+    this._plaque({ main: 'CYTHERA', sub: 'THE ISLAND OF VENUS · PRESS 9 TO RETURN' },
+      1.25, 0.32, -2.5, 1.1, -108, 0.35, true);
+  }
+
+  // The knot-garden pattern for the terrace beds: interlaced diagonal bands
+  // in box-green and gravel-gold — the "tapeti charaini," carpets from Cairo,
+  // the book compares its beds to (GARDENS.md §5).
+  _knotTexture() {
+    const N = 256;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.fillStyle = '#31491d'; x.fillRect(0, 0, N, N);
+    x.lineWidth = 11;
+    for (let i = -4; i <= 4; i++) {
+      x.strokeStyle = '#a8904a';
+      x.beginPath(); x.moveTo(i * 64, 0); x.lineTo(i * 64 + N, N); x.stroke();
+      x.strokeStyle = '#4e7a2c';
+      x.beginPath(); x.moveTo(i * 64, 0); x.lineTo(i * 64 - N, N); x.stroke();
+    }
+    // the over-under of the weave: punch the base colour at alternate crossings
+    x.fillStyle = '#31491d';
+    for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) {
+      if ((i + j) % 2) x.fillRect(i * 32 + 12, j * 32 + 12, 9, 9);
+    }
+    x.strokeStyle = '#243615'; x.lineWidth = 6; x.strokeRect(3, 3, N - 6, N - 6);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(5, 5);
+    this._disp.push(t);
+    return t;
   }
 
   // ── Garden fabric ─────────────────────────────────────────────────────────
@@ -1477,6 +1751,28 @@ export class HPWorldScene {
     return d;
   }
 
+  // Open ground on the island of Cythera: the prati and bosco annuli, minus
+  // the twelve radial roads, the espalier ring, the lawn centrepieces, and
+  // everything inside the river.
+  _isleClearance(x, z) {
+    const dx = x, dz = z + 150;
+    const rr = Math.hypot(dx, dz);
+    if (rr > 48.6 || rr < 22.2) return 0;
+    let d = Math.min(2, 48.6 - rr, rr - 22.2);
+    // radial roads every 30°
+    const STEP = Math.PI / 6;
+    let a = Math.atan2(dz, dx) % STEP;
+    if (a < 0) a += STEP;
+    const arc = Math.min(a, STEP - a) * rr;
+    d = Math.min(d, arc - 1.6);
+    // the bitter-orange espalier ring
+    d = Math.min(d, Math.abs(rr - 34.2) - 1.0);
+    // lawn centrepieces at mid-wedge, r 27.5
+    const arcMid = Math.abs(a - STEP / 2) * rr;
+    d = Math.min(d, Math.hypot(rr - 27.5, arcMid) - 1.5);
+    return d;
+  }
+
   _buildMeadow() {
     const mobile = /Mobi|Android/i.test(navigator.userAgent);
     const clearance = (x, z) => this._meadowClearance(x, z);
@@ -1521,7 +1817,31 @@ export class HPWorldScene {
       scale: 0.9,
     });
 
-    for (const f of [grass, wildflowers, roses]) {
+    // Cythera's own sward and its flowery mead — denser in flower than the
+    // mainland, because the island is the flowery mead perfected
+    const isleClear = (x, z) => this._isleClearance(x, z);
+    const isleGrass = createMeadowField({
+      ...common, clearance: isleClear,
+      count: mobile ? 4000 : 12000,
+      seed: 5150,
+      bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
+      blade: { height: 0.4, width: 0.05, segments: 3, planes: 3 },
+      colors: { root: 0x2e4a1e, tip: 0x7a9c42, rootB: 0x3c5a22, tipB: 0xa8b050, back: 0xd8c860 },
+      wind: { windStrength: 0.18, windSpeed: 1.2 },
+    });
+    const isleFlowers = createMeadowField({
+      ...common, clearance: isleClear,
+      count: mobile ? 900 : 2600,
+      seed: 611,
+      bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
+      accept: (x, z, clump) => clump > 0.52,
+      blade: { height: 0.5, width: 0.045, segments: 3, planes: 2, flare: 1.45 },
+      colors: { root: 0x35521f, tip: 0xd86a7a, rootB: 0x3a5423, tipB: 0xe8c860, back: 0xf0d0a0 },
+      wind: { windStrength: 0.2, windSpeed: 1.2 },
+      scale: 0.9,
+    });
+
+    for (const f of [grass, wildflowers, roses, isleGrass, isleFlowers]) {
       this.scene.add(f.mesh);
       this._meadows.push(f);
     }
@@ -1566,7 +1886,7 @@ export class HPWorldScene {
 
     // Living world
     this._streams.forEach(s => s.update(this._t));
-    if (this._venus) this._venus.rotation.y += dt * 0.2;
+    for (const v of this._venuses) v.rotation.y += dt * 0.2;
     for (const { orb, base, phase, spin } of this._orbs) {
       orb.position.y = base + Math.sin(this._t * 1.15 + phase) * 0.1;
       if (spin) orb.rotation.y += dt * 0.5;

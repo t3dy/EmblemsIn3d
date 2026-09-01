@@ -11,7 +11,7 @@
 // emblem scene.
 
 import * as THREE from 'three';
-import { Walker } from '../systems/Walker.js?v=2';
+import { Walker } from '../systems/Walker.js?v=3';
 import { makeCast } from '../systems/Cast.js?v=8';
 import { createLitStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { buildVignette } from '../data/af_vignettes.js?v=4';
