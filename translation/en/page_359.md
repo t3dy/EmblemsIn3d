@@ -55,8 +55,13 @@ into a proof. **A reviewer should look hardest at the last paragraph.**
 - **The seven columns and their stones**, in the order Colonna gives them:
   sapphire (right of the entrance), emerald (left), turquoise, a melilot-coloured
   opaque stone, jasper, topaz, and — alone, and hexagonal rather than round —
-  Indian beryl. Seven columns for the seven planets is the obvious reading and
-  Colonna does not make it, so neither do we.
+  Indian beryl. Colonna does not say the seven are the seven planets.
+  **A sixteenth-century reader did.** The annotator called Hand B, working on the
+  British Library copy, labelled the heptagonal-fountain woodcut with the
+  alchemical sign of a different metal at each of its seven angles, one per
+  planet (`hp.db`, `folio_descriptions` y7r, "Fons Heptagonis: The Seven
+  Metals"). The planetary reading is therefore not a modern imposition but a
+  documented contemporary one, and the Dream Garden follows it on that authority.
 - **`enthesiata, overo ventriculata`** — *entasis*, the swelling of a column
   shaft that Vitruvius prescribes so a column does not appear pinched. Colonna
   glosses his own Greek with the plainer Italian, so the translation keeps both:

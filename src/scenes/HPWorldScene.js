@@ -224,6 +224,7 @@ export class HPWorldScene {
     this._buildGround();
     this._buildWood();
     this._buildGreatPortal();
+    this._buildBridge();
     this._buildCourt();
     this._buildPoliaGarden();
     this._buildDoorsWall();
@@ -544,7 +545,12 @@ export class HPWorldScene {
     }
     // Lintel + frieze
     this._m(new THREE.BoxGeometry(18, 1.4, 2.4), this._stoneMat, 0, 7.1, Z);
-    this._plaque({ main: 'FESTINA LENTE', sub: 'THE HIEROGLYPHS OF THE GREAT PORTAL' }, 4.6, 1.1, 0, 6.4, Z + 1.25, 0, true);
+    // The portal's own brass table, which the book says is lettered in Latin,
+    // Greek and Arabic and dedicates the work to the Sun. (FESTINA LENTE used to
+    // hang here and does not belong: Curran shows the anchor-and-dolphin
+    // hieroglyph is on the BRIDGE into Eleuterylida's realm — see
+    // ARCHITECTURE.md §4 and _buildBridge below.)
+    this._plaque({ main: 'SOLI DICATVM', sub: 'DEDICATED TO THE SVN · LAT · GRAECE · ARABICE' }, 4.6, 1.1, 0, 6.4, Z + 1.25, 0, true);
 
     // The stepped pyramid. The book gives it 1,410 courses rising off a plinth
     // six furlongs square; at garden scale we read that as many shallow courses
@@ -719,6 +725,67 @@ export class HPWorldScene {
     this.style.tuneStream(stream);
     this.scene.add(stream.points);
     this._streams.push(stream);
+  }
+
+  // ── The Bridge into Eleuterylida's realm ─────────────────────────────────
+  //
+  // The book carries its most famous device here, not on the great portal: a
+  // circle, an anchor, and a dolphin twined about it, glossed in Greek as
+  // ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ — always hasten slowly. Curran traces the anchor and
+  // dolphin to a coin of Titus and Suetonius' report of a motto of Augustus,
+  // and notes that in 1502 Aldus Manutius took it for the mark of his own
+  // press. So the book printed in 1499 contains the emblem its printer would
+  // adopt three years later, and a visitor who reads it here is looking at the
+  // Aldine dolphin before it was Aldine. (ARCHITECTURE.md §4.)
+  _buildBridge() {
+    const S = this.style;
+    const BX = -11, BZ = 20;
+    const woodcut = S.key === 'woodcut';
+
+    // a watercourse crossing the processional cross-path
+    const streamMat = S.waterMat();
+    if (!woodcut) { streamMat.color.set(0xffffff); streamMat.map = this._waterTexture(); }
+    this._waters.push({
+      m: this._m(new THREE.PlaneGeometry(3.0, 15), streamMat, BX, 0.06, BZ, { rx: -Math.PI / 2, cast: false }),
+      rate: 0.04,
+    });
+    this._m(new THREE.BoxGeometry(3.4, 0.5, 15.4), this._darkStoneMat, BX, -0.2, BZ, { cast: false });
+
+    // the deck and its two parapets
+    this._m(new THREE.BoxGeometry(4.6, 0.26, 3.6), this._stoneMat, BX, 0.34, BZ, { cast: false, outline: true });
+    for (const s of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(4.6, 0.62, 0.26), this._stoneMat, BX, 0.75, BZ + s * 1.7, { outline: true });
+      this._wallCol(BX - 2.3, BX + 2.3, BZ + s * 1.7 - 0.13, BZ + s * 1.7 + 0.13);
+      // The three signs are carved on the INNER face of each parapet, so that a
+      // walker crossing the bridge reads them as Poliphilo does — in passing,
+      // at arm's length. On the outer faces they would face the water.
+      const gz = BZ + s * 1.54;
+      const glyph = woodcut ? S.mat({ tone: 0.24 }) : S.mat({ color: 0x5a4c34, roughness: 0.85 });
+      const ring = this._m(new THREE.TorusGeometry(0.16, 0.032, 8, 20), glyph, BX - 1.45, 0.78, gz);
+      ring.rotation.y = Math.PI / 2;
+      // the anchor: shank, stock, and its curved arms
+      this._m(new THREE.BoxGeometry(0.045, 0.4, 0.045), glyph, BX, 0.8, gz);
+      this._m(new THREE.BoxGeometry(0.28, 0.045, 0.045), glyph, BX, 0.96, gz);
+      const arms = this._m(new THREE.TorusGeometry(0.13, 0.03, 6, 14, Math.PI), glyph, BX, 0.63, gz);
+      arms.rotation.z = Math.PI;
+      // the dolphin twined about it
+      const dolph = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(BX + 1.18, 0.60, gz),
+        new THREE.Vector3(BX + 1.62, 0.72, gz),
+        new THREE.Vector3(BX + 1.52, 1.00, gz),
+        new THREE.Vector3(BX + 1.16, 0.90, gz),
+        new THREE.Vector3(BX + 1.30, 0.68, gz),
+      ]);
+      this._m(new THREE.TubeGeometry(dolph, 20, 0.042, 6), glyph, 0, 0, 0);
+      // read from the deck, one parapet giving the motto and the other its afterlife
+      if (s > 0) {
+        this._plaque({ main: 'ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ', sub: 'SEMPER FESTINA TARDE · ALWAYS HASTEN SLOWLY' },
+          1.62, 0.3, BX, 1.26, BZ + 1.5, Math.PI, true);
+      } else {
+        this._plaque({ main: 'ALDVS TOOK THIS FOR HIS PRESS, 1502', sub: 'THE ALDINE DOLPHIN BEFORE IT WAS ALDINE' },
+          1.62, 0.3, BX, 1.26, BZ - 1.5, 0, true);
+      }
+    }
   }
 
   // ── Polia's Garden (the nymph with the torch) ─────────────────────────────
@@ -1039,7 +1106,14 @@ export class HPWorldScene {
     // The seven, in the order the book sets them round the ring. Sapphire and
     // emerald answer one another across the entrance (the dreamer arrives from
     // the north); the beryl stands alone, opposite, facing the midpoint between
-    // them. Each carries its planet, Saturn at the right of the front.
+    // them.
+    //
+    // The planets are not Colonna's — he names the stones and stops. They are
+    // Hand B's: the annotator of the British Library copy inked the sign of a
+    // different metal at each of the seven angles of this fountain's woodcut,
+    // one per planet (hp.db folio_descriptions y7r, "Fons Heptagonis"). We are
+    // following a documented sixteenth-century reading of this exact plate, not
+    // imposing a modern one. See ARCHITECTURE.md §5.
     const COLS = [
       { stone: 0x1e3f96, name: 'sapphire',  planet: 'Saturn',  glyph: '♄', hex: false },
       { stone: 0xcdbb63, name: 'melilot',   planet: 'Jupiter', glyph: '♃', hex: false },
@@ -1386,6 +1460,7 @@ export class HPWorldScene {
       rect(-1.9, 1.9, -36, 51),          // main processional axis
       rect(-19.5, 19.5, -1.65, 1.65),    // cross path to the courts
       rect(-19.5, 19.5, 18.35, 21.65),   // cross path, upper
+      rect(-13, -9, 12.5, 27.5),         // the bridge and its watercourse
       circle(0, 0, 7.2),                 // Elephant plaza
       circle(0, -20, 8.8),               // fountain grove
       rect(-27.5, -12.5, 14, 26),        // court of Eleuterylida slab
