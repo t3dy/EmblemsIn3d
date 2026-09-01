@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Poliphilo's Commonplace Book · a visual novel</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #0b0805;
+    --panel:   #120d08;
+    --rule:    #241812;
+    --fg:      #efe7d8;
+    --dim:     #8a7358;
+    --faint:   #5a4632;
+    --gold:    #c8a878;
+    --gold-dk: #8b4513;
+    --reason:  #7fa8c0;   /* Logistica — cool */
+    --desire:  #c86a7a;   /* Thelemia — warm  */
+    --ok:      #9dbb82;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: Georgia, 'Times New Roman', serif; line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  /* ── The stage. A painted backdrop by default; see mountStage() for the
+        documented hook that swaps in the live 3-D world. ───────────────── */
+  #stage {
+    position: fixed; inset: 0; z-index: 0; overflow: hidden;
+    background:
+      radial-gradient(120% 80% at 50% 8%, #2b2418 0%, #140f0a 55%, #0b0805 100%);
+    transition: background 1.2s ease;
+  }
+  #stage::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(80% 60% at 50% 40%, transparent 0%, rgba(11,8,5,.75) 100%);
+  }
+  #stage.wood      { background: radial-gradient(110% 80% at 50% 10%, #1d2617 0%, #10160e 55%, #080b06 100%); }
+  #stage.portal    { background: radial-gradient(110% 80% at 50% 6%,  #3a3226 0%, #1d1912 55%, #0b0805 100%); }
+  #stage.elephant  { background: radial-gradient(110% 80% at 50% 30%, #241f20 0%, #14100f 55%, #090707 100%); }
+  #stage.court     { background: radial-gradient(110% 80% at 50% 22%, #2e2a34 0%, #191722 55%, #0a0810 100%); }
+  #stage.three_doors { background: radial-gradient(110% 80% at 50% 18%, #332a22 0%, #1a1611 55%, #0b0805 100%); }
+
+  .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 1.4rem 5rem; }
+
+  /* ── Masthead ────────────────────────────────────────────────────────── */
+  header { padding: 2.6rem 0 1.4rem; text-align: center; }
+  .kicker { font-size: .6rem; letter-spacing: .32em; text-transform: uppercase; color: var(--faint); }
+  header h1 {
+    font-weight: normal; letter-spacing: .05em; color: var(--gold);
+    font-size: clamp(1.5rem, 4vw, 2.3rem); line-height: 1.15; margin: .7rem 0 .3rem;
+  }
+  header h1 em { color: var(--fg); font-style: italic; }
+  header .sub { color: var(--dim); font-size: .82rem; }
+
+  /* ── Layout ──────────────────────────────────────────────────────────── */
+  .cols { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 1.6rem; align-items: start; }
+  @media (max-width: 900px) { .cols { grid-template-columns: 1fr; } }
+
+  /* ── Scene ───────────────────────────────────────────────────────────── */
+  .scene {
+    background: rgba(12,9,5,.88); border: 1px solid var(--rule);
+    padding: 1.6rem 1.7rem 1.4rem; backdrop-filter: blur(3px);
+  }
+  .scene .act { font-size: .6rem; letter-spacing: .22em; text-transform: uppercase; color: var(--faint); }
+  .scene h2 { font-weight: normal; color: var(--gold); font-size: 1.35rem; margin: .35rem 0 1rem; letter-spacing: .02em; }
+  .scene p { margin-bottom: .9rem; font-size: .95rem; }
+
+  blockquote {
+    margin: 1.1rem 0; padding-left: 1rem; border-left: 2px solid rgba(200,168,120,.5);
+    white-space: pre-line;
+  }
+  blockquote .v {
+    font-size: .56rem; letter-spacing: .16em; text-transform: uppercase;
+    color: #9a8558; margin-bottom: .35rem;
+  }
+  blockquote .q { font-style: italic; font-size: .87rem; color: #d8b96a; }
+  blockquote .s { font-size: .64rem; color: var(--dim); margin-top: .35rem; letter-spacing: .04em; }
+  blockquote[data-voice="1499"] { border-left-color: rgba(220,196,140,.55); }
+  blockquote[data-voice="1499"] .q { font-style: normal; color: #e2cf9c; letter-spacing: .03em; }
+  blockquote[data-voice="1499"] .v { color: #b8a476; }
+  blockquote[data-voice="ours"] { border-left-color: rgba(120,168,192,.6); }
+  blockquote[data-voice="ours"] .q { color: #cfe0e8; }
+  blockquote[data-voice="ours"] .v { color: var(--reason); }
+
+  /* ── Choices ─────────────────────────────────────────────────────────── */
+  .choices { margin-top: 1.2rem; display: flex; flex-direction: column; gap: .55rem; }
+  .choice {
+    width: 100%; text-align: left; cursor: pointer;
+    background: rgba(255,255,255,.02); border: 1px solid var(--rule);
+    color: var(--fg); font-family: inherit; font-size: .9rem; line-height: 1.6;
+    padding: .8rem 1rem; transition: border-color .18s, background .18s, transform .18s;
+  }
+  .choice:hover:not(:disabled) { border-color: var(--gold-dk); background: rgba(200,168,120,.06); transform: translateX(3px); }
+  .choice:disabled { cursor: default; opacity: .5; }
+  .choice .tag {
+    display: inline-block; font-size: .56rem; letter-spacing: .12em; text-transform: uppercase;
+    border: 1px solid; padding: .06rem .38rem; margin-right: .45rem; vertical-align: 1px;
+  }
+  .tag.need { color: var(--gold); border-color: var(--gold-dk); }
+  .tag.locked { color: #d08a5a; border-color: #7a4a28; }
+  .tag.reason { color: var(--reason); border-color: #3d5a68; }
+  .tag.desire { color: var(--desire); border-color: #6a3540; }
+  .choice .why { display: block; font-size: .72rem; color: var(--faint); margin-top: .35rem; }
+
+  /* ── Result ──────────────────────────────────────────────────────────── */
+  .result { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px solid var(--rule); }
+  .result p { font-size: .93rem; }
+  .gains { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .8rem; }
+  .gain {
+    font-size: .62rem; letter-spacing: .08em; color: var(--ok);
+    border: 1px solid #3f5a2e; padding: .12rem .45rem;
+    animation: pop .5s ease;
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+  .next {
+    margin-top: 1.1rem; background: none; border: 1px solid var(--gold-dk); color: var(--gold);
+    font-family: inherit; font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: .5rem 1.1rem; cursor: pointer; transition: background .18s, color .18s;
+  }
+  .next:hover { background: var(--gold-dk); color: #fff; }
+
+  /* ── Sidebar: the notebook ───────────────────────────────────────────── */
+  aside { position: sticky; top: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+  .card { background: rgba(12,9,5,.9); border: 1px solid var(--rule); padding: 1rem 1.1rem; }
+  .card h3 {
+    font-weight: normal; font-size: .62rem; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--faint); margin-bottom: .8rem;
+  }
+
+  /* axis */
+  .axis-bar { height: 5px; background: linear-gradient(90deg, var(--reason), #3a3028 50%, var(--desire)); position: relative; }
+  .axis-bar i { position: absolute; top: -4px; width: 2px; height: 13px; background: var(--fg); transition: left .5s ease; }
+  .axis-ends { display: flex; justify-content: space-between; font-size: .58rem; letter-spacing: .1em; margin-top: .45rem; }
+  .axis-ends .l { color: var(--reason); } .axis-ends .r { color: var(--desire); }
+  .axis-note { font-size: .68rem; color: var(--faint); margin-top: .5rem; font-style: italic; }
+
+  /* loci */
+  .locus { margin-bottom: .55rem; }
+  .locus .top { display: flex; justify-content: space-between; align-items: baseline; font-size: .74rem; }
+  .locus .nm { color: var(--fg); }
+  .locus .ct { color: var(--faint); font-size: .66rem; }
+  .locus .track { height: 3px; background: #1d1510; margin-top: .22rem; }
+  .locus .track i { display: block; height: 100%; background: var(--gold-dk); transition: width .5s ease; }
+  .locus.ready .nm { color: var(--ok); }
+  .locus.ready .track i { background: var(--ok); }
+
+  .pts { font-size: .8rem; color: var(--gold); margin-top: .3rem; }
+  .pts b { font-size: 1.1rem; }
+
+  /* branches */
+  .branch { border: 1px solid var(--rule); padding: .7rem .8rem; margin-bottom: .55rem; }
+  .branch.chosen { border-color: var(--gold-dk); }
+  .branch .gk { color: var(--gold); font-size: .78rem; letter-spacing: .04em; }
+  .branch .lt { color: var(--dim); font-size: .66rem; font-style: italic; }
+  .skill { display: flex; gap: .45rem; align-items: flex-start; margin-top: .5rem; font-size: .72rem; }
+  .skill button {
+    flex: 0 0 auto; background: none; border: 1px solid var(--rule); color: var(--dim);
+    font-family: inherit; font-size: .62rem; padding: .1rem .4rem; cursor: pointer;
+  }
+  .skill button:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+  .skill button:disabled { opacity: .35; cursor: default; }
+  .skill.owned button { color: var(--ok); border-color: #3f5a2e; }
+  .skill .sn { color: var(--fg); }
+  .skill .sd { color: var(--faint); font-size: .68rem; }
+
+  /* excerpta */
+  .exc { font-size: .72rem; color: var(--dim); border-left: 1px solid var(--rule); padding-left: .6rem; margin-bottom: .5rem; }
+  .exc b { color: var(--gold); font-weight: normal; font-size: .62rem; letter-spacing: .1em; text-transform: uppercase; display: block; }
+
+  footer { max-width: 1180px; margin: 2rem auto 0; padding: 2rem 1.4rem 4rem; border-top: 1px solid var(--rule);
+           color: var(--faint); font-size: .72rem; line-height: 1.85; position: relative; z-index: 1; }
+  footer a { color: var(--dim); }
+  .reset { background: none; border: 1px solid var(--rule); color: var(--faint); font-family: inherit;
+           font-size: .64rem; letter-spacing: .1em; text-transform: uppercase; padding: .3rem .7rem; cursor: pointer; }
+  .reset:hover { border-color: var(--gold-dk); color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div id="stage"></div>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Emblems in 3D · a visual novel</div>
+    <h1>Poliphilo's <em>Commonplace Book</em></h1>
+    <div class="sub">Walk the dream as a reader who can be wrong.</div>
+  </header>
+
+  <div class="cols">
+    <main id="scene" class="scene"></main>
+    <aside id="sheet"></aside>
+  </div>
+</div>
+
+<footer>
+  <p><strong>What this is.</strong> A prototype of the gamified Hypnerotomachia — see
+  <a href="../GAMIFYVRHP.md">GAMIFYVRHP.md</a>. Five encounters, the Reason/Desire axis,
+  seven commonplace-book loci, and the three doors as a skill tree. Progress is kept in this
+  browser only.</p>
+  <p style="margin-top:.7rem">Quotations are public domain and tagged by voice: Robert
+  Dallington's English (London, 1592), the Aldine's own Latin and Greek (1499), and our own
+  translation of the part Dallington never reached, released CC0. Godwin's 1999 translation is
+  in copyright and is not used.</p>
+  <p style="margin-top:1rem"><button class="reset" id="reset">Begin again</button>
+  &nbsp; <a href="../index.html">← Emblems in 3D</a> &nbsp;
+  <a href="../src/index.html#hp">Walk the Dream Garden →</a></p>
+</footer>
+
+<script type="module">
+import { LOCI, BRANCHES, SCENES, DOOR_OUTCOMES } from './data.js?v=1';
+
+const SAVE = 'hp-novel-v1';
+// Excerpta per skill point. Tuned by playing the whole prototype: at 5 a
+// complete run earned nothing at all and the skill tree — the thing this is
+// meant to demonstrate — never came into play. At 3 a five-scene run yields
+// two or three points, enough to buy into a branch and feel the choice.
+const THRESHOLD = 3;
+
+const blank = () => ({
+  i: 0, axis: 0, points: 0, spent: 0,
+  loci: Object.fromEntries(Object.keys(LOCI).map(k => [k, 0])),
+  banked: Object.fromEntries(Object.keys(LOCI).map(k => [k, 0])),
+  skills: [], door: null, excerpta: [], done: false,
+});
+
+let S = load();
+
+function load() {
+  try {
+    const raw = localStorage.getItem(SAVE);
+    if (raw) return Object.assign(blank(), JSON.parse(raw));
+  } catch (e) { /* private window, cleared storage — start fresh */ }
+  return blank();
+}
+function save() {
+  try { localStorage.setItem(SAVE, JSON.stringify(S)); } catch (e) { /* not fatal */ }
+}
+
+/* Points are earned per THRESHOLD excerpta in a locus. `banked` records how many
+   have already been converted, so a locus keeps counting past its first point. */
+function award() {
+  for (const k of Object.keys(LOCI)) {
+    const earned = Math.floor(S.loci[k] / THRESHOLD);
+    if (earned > S.banked[k]) { S.points += earned - S.banked[k]; S.banked[k] = earned; }
+  }
+}
+
+const has = (id) => S.skills.includes(id);
+
+/* A `need` of {hieroglyphica: 2} counts excerpta, not skill points — kept
+   generous so the prototype opens up as you read rather than locking down. */
+function meetsNeed(need) {
+  if (!need) return true;
+  return Object.entries(need).every(([k, v]) => S.loci[k] >= v);
+}
+
+// ── Render ─────────────────────────────────────────────────────────────────
+
+function renderScene() {
+  const el = document.getElementById('scene');
+  const stage = document.getElementById('stage');
+
+  if (S.done) { renderEnd(el, stage); return; }
+
+  const sc = SCENES[S.i];
+  stage.className = sc.station || '';
+
+  let h = `<div class="act">Act ${sc.act} · scene ${S.i + 1} of ${SCENES.length}</div>
+           <h2>${sc.title}</h2>`;
+  h += sc.body.map(p => `<p>${p}</p>`).join('');
+  if (sc.quote) h += quoteHTML(sc.quote);
+
+  if (sc.isDoorChoice) {
+    h += `<div class="choices">`;
+    for (const [id, b] of Object.entries(BRANCHES)) {
+      h += `<button class="choice" data-door="${id}">
+              <span class="tag need">${b.greek}</span><strong>${b.latin}</strong>
+              <span class="why">Kept by ${b.keeper}. ${b.blurb}</span></button>`;
+    }
+    h += `</div>`;
+  } else {
+    h += `<div class="choices">`;
+    sc.choices.forEach((c, n) => {
+      const ok = meetsNeed(c.need);
+      const tags = [];
+      if (c.need) {
+        const txt = Object.entries(c.need).map(([k, v]) => `${LOCI[k].label} ${v}`).join(', ');
+        tags.push(`<span class="tag ${ok ? 'need' : 'locked'}">${ok ? txt : 'needs ' + txt}</span>`);
+      }
+      if (c.axis <= -0.4) tags.push(`<span class="tag reason">Logistica</span>`);
+      if (c.axis >= 0.4) tags.push(`<span class="tag desire">Thelemia</span>`);
+      h += `<button class="choice" data-n="${n}" ${ok ? '' : 'disabled'}>
+              ${tags.join('')}${c.text}
+              ${ok ? '' : `<span class="why">${c.locked || 'You do not yet know enough to try.'}</span>`}
+            </button>`;
+    });
+    h += `</div>`;
+  }
+  el.innerHTML = h;
+
+  el.querySelectorAll('[data-n]').forEach(b =>
+    b.addEventListener('click', () => choose(+b.dataset.n)));
+  el.querySelectorAll('[data-door]').forEach(b =>
+    b.addEventListener('click', () => chooseDoor(b.dataset.door)));
+}
+
+function quoteHTML(q) {
+  const label = { '1592': '1592 · Dallington', '1499': '1499 · the book itself',
+                  'ours': 'translated for this project' }[q.voice] || q.voice;
+  return `<blockquote data-voice="${q.voice}">
+            <div class="v">${label}</div>
+            <div class="q">${q.text}</div>
+            <div class="s">— ${q.source}</div>
+          </blockquote>`;
+}
+
+function choose(n) {
+  const sc = SCENES[S.i];
+  const c = sc.choices[n];
+  S.axis = Math.max(-1, Math.min(1, S.axis + (c.axis || 0)));
+  const gained = [];
+  for (const [k, v] of Object.entries(c.gain || {})) { S.loci[k] += v; gained.push([k, v]); }
+  award();
+  S.excerpta.push({ scene: sc.title, text: c.result });
+  save();
+
+  const el = document.getElementById('scene');
+  el.querySelectorAll('.choice').forEach(b => b.disabled = true);
+  const div = document.createElement('div');
+  div.className = 'result';
+  div.innerHTML = `<p>${c.result}</p>
+    ${gained.length ? `<div class="gains">${gained.map(([k, v]) =>
+      `<span class="gain">${LOCI[k].label} +${v}</span>`).join('')}</div>` : ''}
+    <button class="next">${S.i + 1 >= SCENES.length ? 'Close the book' : 'Onward ▸'}</button>`;
+  el.appendChild(div);
+  div.querySelector('.next').addEventListener('click', () => {
+    S.i++; if (S.i >= SCENES.length) S.done = true;
+    save(); renderAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  renderSheet();
+}
+
+function chooseDoor(id) {
+  S.door = id; S.done = true; save(); renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderEnd(el, stage) {
+  stage.className = 'three_doors';
+  const b = S.door ? BRANCHES[S.door] : null;
+  const lean = S.axis < -0.3 ? 'Logistica had the better of you'
+             : S.axis > 0.3 ? 'Thelemia had the better of you'
+             : 'You held the middle, which neither of them advised';
+  const top = Object.entries(S.loci).sort((a, c) => c[1] - a[1])[0];
+  el.innerHTML = `
+    <div class="act">The prototype ends here</div>
+    <h2>${b ? b.latin : 'The book closes'}</h2>
+    ${b ? `<p>${DOOR_OUTCOMES[S.door]}</p>` : ''}
+    <p><strong>${lean}.</strong> Your fullest heading is <strong>${LOCI[top[0]].label}</strong>
+       — ${LOCI[top[0]].gloss} — with ${top[1]} excerpta entered.</p>
+    <p>Beyond this door the book runs on for another three hundred pages: the planetary
+       palace, the four triumphs behind their teams of six, the temple rites, the
+       polyandrion full of tombs, the concentric island of Cythera, and the fountain where
+       Poliphilo tears the veil. Those encounters are designed but not yet built — see
+       <a href="../GAMIFYVRHP.md" style="color:var(--gold)">GAMIFYVRHP.md</a> §4.</p>
+    ${quoteHTML({ voice: 'ours',
+      text: '“Sighing, risen and released from the sweet sleep, I woke of a sudden into the '
+          + 'small hours, saying: Farewell then, Polia.”',
+      source: 'ch. XXXVIII — translated from the 1499 Aldine for this project' })}
+    <button class="next" id="again">Begin again</button>`;
+  el.querySelector('#again').addEventListener('click', reset);
+}
+
+function renderSheet() {
+  const el = document.getElementById('sheet');
+  const pct = (S.axis + 1) / 2 * 100;
+  const free = S.points - S.spent;
+
+  let h = `<div class="card">
+    <h3>Logistica &amp; Thelemia</h3>
+    <div class="axis-bar"><i style="left:${pct}%"></i></div>
+    <div class="axis-ends"><span class="l">Reason</span><span class="r">Desire</span></div>
+    <div class="axis-note">${S.axis < -0.3 ? 'She is winning the argument.'
+      : S.axis > 0.3 ? 'You are not listening to Logistica.'
+      : 'Both are still walking with you.'}</div>
+  </div>`;
+
+  h += `<div class="card"><h3>The Commonplace Book</h3>`;
+  for (const [k, m] of Object.entries(LOCI)) {
+    const v = S.loci[k];
+    const into = v % THRESHOLD, ready = v >= THRESHOLD;
+    // Landing exactly on a threshold should read as a filled heading, not as an
+    // empty one — otherwise the bar collapses at the moment you earn the point.
+    const fill = (v > 0 && into === 0) ? 100 : (into / THRESHOLD) * 100;
+    h += `<div class="locus ${ready ? 'ready' : ''}">
+            <div class="top"><span class="nm">${m.label}</span><span class="ct">${v}</span></div>
+            <div class="track"><i style="width:${fill}%"></i></div>
+          </div>`;
+  }
+  h += `<div class="pts">Skill points: <b>${free}</b>${S.points ? ` <span style="color:var(--faint);font-size:.7rem">of ${S.points} earned</span>` : ''}</div>
+        </div>`;
+
+  h += `<div class="card"><h3>The Three Doors</h3>`;
+  for (const [id, b] of Object.entries(BRANCHES)) {
+    h += `<div class="branch ${S.door === id ? 'chosen' : ''}">
+            <div class="gk">${b.greek}</div><div class="lt">${b.latin}</div>`;
+    for (const s of b.skills) {
+      const owned = has(s.id);
+      const can = !owned && free >= s.cost;
+      h += `<div class="skill ${owned ? 'owned' : ''}">
+              <button data-skill="${s.id}" data-cost="${s.cost}" ${owned || !can ? 'disabled' : ''}>
+                ${owned ? '✓' : s.cost}
+              </button>
+              <div><span class="sn">${s.name}</span><br><span class="sd">${s.text}</span></div>
+            </div>`;
+    }
+    h += `</div>`;
+  }
+  h += `</div>`;
+
+  if (S.excerpta.length) {
+    h += `<div class="card"><h3>Excerpta</h3>`;
+    h += S.excerpta.slice(-4).reverse().map(e =>
+      `<div class="exc"><b>${e.scene}</b>${e.text.slice(0, 130)}${e.text.length > 130 ? '…' : ''}</div>`).join('');
+    h += `</div>`;
+  }
+
+  el.innerHTML = h;
+  el.querySelectorAll('[data-skill]').forEach(btn =>
+    btn.addEventListener('click', () => {
+      S.skills.push(btn.dataset.skill);
+      S.spent += +btn.dataset.cost;
+      save(); renderSheet();
+    }));
+}
+
+function renderAll() { renderScene(); renderSheet(); }
+
+function reset() {
+  S = blank(); save(); renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+document.getElementById('reset').addEventListener('click', reset);
+
+/* ── Mount point for the live 3-D stage ──────────────────────────────────
+   The Dream Garden (src/scenes/HPWorldScene.js) can render behind this UI
+   instead of the CSS backdrop: build the scene, park its camera at the
+   station named by `SCENES[i].station`, and append its canvas to #stage.
+   Every improvement to the world then improves the novel for free. Left
+   unwired in the prototype so this page stands alone. */
+function mountStage(/* renderer, composer */) { /* see GAMIFYVRHP.md §5 */ }
+
+renderAll();
+</script>
+</body>
+</html>
