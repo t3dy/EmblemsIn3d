@@ -1034,15 +1034,22 @@
     },
     "361": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "drafted",
       "words": 396,
-      "sha1": "17b2a7777ab1"
+      "sha1": "17b2a7777ab1",
+      "en_words": 840,
+      "uncertain": 2,
+      "confidence": "medium",
+      "confidence_note": "The narrative — Polia's refusal, the arrow passing from"
     },
     "362": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 368,
-      "sha1": "78e0bc4f63f0"
+      "sha1": "78e0bc4f63f0",
+      "en_words": 807,
+      "confidence": "medium",
+      "confidence_note": "This is a blazon — a head-to-toe catalogue — and the"
     },
     "363": {
       "chapter": "XXIII",

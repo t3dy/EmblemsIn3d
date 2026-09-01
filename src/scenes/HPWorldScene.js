@@ -1056,7 +1056,12 @@ export class HPWorldScene {
     this._m(new THREE.CylinderGeometry(R + 0.55, R + 0.6, KERB, 7), black, FX, KERB / 2, FZ, { cast: false, outline: true });
     this._m(new THREE.CylinderGeometry(R + 0.12, R + 0.12, KERB * 0.5, 36, 1, true), black, FX, KERB * 0.72, FZ, { cast: false });
     this._m(new THREE.TorusGeometry(R + 0.14, 0.045, 8, 40), gold, FX, KERB + 0.02, FZ, { rx: Math.PI / 2 });
-    this._waters.push({ m: this._m(new THREE.CircleGeometry(R + 0.06, 40), waterMat, FX, KERB - 0.06, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.09 });
+    // The basin is sunk below the pavement, because the goddess stands in it
+    // "up to her ample and divine flanks" — not on a pedestal above the water.
+    const WATER_Y = KERB - 0.06, BASIN_Y = -0.55;
+    this._m(new THREE.CircleGeometry(R + 0.06, 36), black, FX, BASIN_Y, FZ, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.CylinderGeometry(R + 0.06, R + 0.06, WATER_Y - BASIN_Y, 36, 1, true), black, FX, (WATER_Y + BASIN_Y) / 2, FZ, { cast: false });
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(R + 0.06, 40), waterMat, FX, WATER_Y, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.09 });
     this._circleCol(FX, FZ, R + 0.85);
 
     // The seven columns, the arcade between them, the altars and their planets
@@ -1138,18 +1143,49 @@ export class HPWorldScene {
     [[-0.24, -0.65], [0.24, 0.65]].forEach(([x, rz]) => {
       this._m(new THREE.CapsuleGeometry(0.06, 0.42, 4, 8), vMat, x, 1.16, 0, { rz, parent: v });
     });
-    // The divine Mother stands at the centre, under the crystal — the figure the
-    // torn curtain reveals in the chapter
-    v.position.set(FX, KERB + 0.05, FZ);
+    // The divine Mother stands in the salt fountain itself, the water taking her
+    // at the flanks, her hair floating out on it — the figure the torn curtain
+    // reveals (ch. XXIII, translation/en/page_362.md).
+    v.position.set(FX, BASIN_Y, FZ);
     v.scale.setScalar(1.35);
     this.scene.add(v);
     this._venus = v;
+    // hair floating "scattered in a gyre and very long" on the surface
+    const hairRing = this._m(new THREE.TorusGeometry(0.5, 0.055, 6, 24),
+      woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xd8b24a, metalness: 0.5, roughness: 0.4 }),
+      FX, WATER_Y + 0.02, FZ, { rx: Math.PI / 2, cast: false });
+    hairRing.scale.set(1, 1, 0.45);
+    this._waters.push({ m: hairRing, rate: 0.05 });
+
+    // The curtain of Hymen, hung between the sapphire and emerald columns —
+    // the pair that answer one another across the entrance — and split, as
+    // Poliphilo left it when he struck it with Cupid's arrow.
+    const curtMat = woodcut
+      ? S.mat({ tone: 0.14, side: THREE.DoubleSide })
+      : S.mat({ color: 0xb0654a, roughness: 0.75, side: THREE.DoubleSide });
+    const cz = FZ + R, halfSpan = R * Math.sin(Math.PI / 7);
+    for (const s of [-1, 1]) {
+      // each half hangs back against its column, leaving the goddess in the gap
+      const panel = this._m(new THREE.PlaneGeometry(halfSpan * 0.5, 1.5, 2, 4),
+        curtMat, FX + s * (halfSpan * 0.74), KERB + 0.12 + 0.75, cz - 0.06, { cast: false });
+      panel.rotation.y = s * 0.62;
+      panel.rotation.z = s * 0.05;
+    }
+    // the tie-rings the curtain hung from, still on their rod
+    this._m(new THREE.CylinderGeometry(0.022, 0.022, halfSpan * 1.9, 6), gold,
+      FX, KERB + 0.12 + 1.5, cz - 0.06, { rz: Math.PI / 2 });
+    this._plaque({ main: 'ΥΜΗΝ', sub: 'THE CURTAIN OF HYMEN, TORN' },
+      0.86, 0.32, FX, KERB + 0.12 + 1.72, cz - 0.02, 0, true);
+    // the fountain's own motto, cut into the stone in refined silver, set on the
+    // kerb where a reader walking up to it would meet it
+    this._plaque({ main: 'ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ', sub: 'AS A SPARK, SO ENCHANTMENT' },
+      1.3, 0.28, FX, KERB * 0.62, FZ + R + 0.62, 0, true);
 
     const specs = [
-      { from: [FX, 2.5, FZ], to: [FX + 0.45, 0.7, FZ + 0.4], count: 60, size: 0.03, speed: 0.9, arc: 0.1 },
-      { from: [FX, 2.4, FZ], to: [FX - 1.0, 0.6, FZ - 0.6], count: 90, size: 0.04, speed: 0.75, arc: 0.2 },
-      { from: [FX - 0.3, 2.3, FZ + 0.2], to: [FX - 1.4, 0.55, FZ + 1.0], count: 70, size: 0.035, speed: 0.7, arc: 0.25 },
-      { from: [FX + 0.3, 2.3, FZ - 0.2], to: [FX + 1.5, 0.55, FZ - 0.9], count: 40, size: 0.025, speed: 1.2, arc: 0.3 },
+      { from: [FX, 2.0, FZ], to: [FX + 0.5, WATER_Y, FZ + 0.45], count: 60, size: 0.03, speed: 0.9, arc: 0.1 },
+      { from: [FX, 1.9, FZ], to: [FX - 1.1, WATER_Y, FZ - 0.6], count: 90, size: 0.04, speed: 0.75, arc: 0.2 },
+      { from: [FX - 0.3, 1.8, FZ + 0.2], to: [FX - 1.5, WATER_Y, FZ + 1.1], count: 70, size: 0.035, speed: 0.7, arc: 0.25 },
+      { from: [FX + 0.3, 1.8, FZ - 0.2], to: [FX + 1.6, WATER_Y, FZ - 1.0], count: 40, size: 0.025, speed: 1.2, arc: 0.3 },
     ];
     for (const sp of specs) {
       const stream = new ParticleStream({
