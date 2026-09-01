@@ -1093,7 +1093,14 @@ export class HPWorldScene {
   // has always said so ("in the isle of Cythera, where this fountain truly
   // belongs"). The builder takes its place so both can exist — the dream
   // repeats its climax, which is what dreams do.
-  _buildFountain(FX = 0, FZ = -20) {
+  // `enclosure` adds the setting Hunt reads as the resolution of the book's
+  // whole art-versus-nature argument (GARDENS.md §7): a balustrade patterned
+  // like book-matched sliced marble, a flowery mead that is at once meadow and
+  // garden, and a pergola whose structure is the finest gold carrying roses
+  // that — unlike the silk ones met earlier — are natural. Artifice in the
+  // structure, nature in the growth: the thesis built as an object. Only the
+  // true fountain, on Cythera, gets it; the mainland grove is the dream-echo.
+  _buildFountain(FX = 0, FZ = -20, { enclosure = false } = {}) {
     const S = this.style;
     const waterMat = S.waterMat();
     // Rippled water: without a map, the spinning discs would read as still.
@@ -1295,6 +1302,62 @@ export class HPWorldScene {
     if (wl) { wl.position.set(FX, 1.2, FZ); this.scene.add(wl); this._pulses.push({ pl: wl, base: 1.6, phase: 0 }); }
     const vl = S.pointLight(0xc8a44a, 1.1, 6);
     if (vl) { vl.position.set(FX, 2.6, FZ); this.scene.add(vl); this._pulses.push({ pl: vl, base: 1.1, phase: 1.7 }); }
+
+    if (!enclosure) return;
+
+    // ── The enclosure ─────────────────────────────────────────────────────
+    const woodcut2 = S.key === 'woodcut';
+    const goldE = woodcut2 ? S.mat({ tone: 0.02 }) : S.mat({ color: 0xd9b25a, metalness: 0.95, roughness: 0.22 });
+    const leafE = woodcut2 ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2e4a1c, roughness: 0.9 });
+    const roseE = woodcut2 ? S.mat({ tone: 0.14 }) : S.mat({ color: 0xc84a5a, roughness: 0.6, emissive: 0x501018, emissiveIntensity: 0.2 });
+    const roseE2 = woodcut2 ? S.mat({ tone: 0.1 }) : S.mat({ color: 0xe8a0b0, roughness: 0.6 });
+
+    // The flowery mead: "at once meadow and garden," ringing the fountain
+    const meadMat = woodcut2 ? S.mat({ tone: 0.12, rim: 0 }) : S.mat({ color: 0x2e4a1c, roughness: 0.95 });
+    if (!woodcut2) this._dress(meadMat, this._surfaceTexture({ base: '#3f5a26', dark: '#22371a', light: '#6b8a3a', blobs: 70, speckle: 3600, repeat: 6 }), 0.15);
+    this._m(new THREE.RingGeometry(4.3, 6.9, 40), meadMat, FX, 0.135, FZ, { rx: -Math.PI / 2, cast: false });
+    const rnd2 = (i, k) => { const v = Math.sin(i * 61.7 + k * 199.5) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < 26; i++) {
+      const a = rnd2(i, 1) * Math.PI * 2, r = 4.6 + rnd2(i, 2) * 2.1;
+      this._m(new THREE.SphereGeometry(0.07, 6, 5), i % 3 ? roseE2 : (woodcut2 ? S.mat({ tone: -0.02 }) : S.mat({ color: 0xf0ead0, roughness: 0.6 })),
+        FX + Math.cos(a) * r, 0.15, FZ + Math.sin(a) * r, { cast: false });
+    }
+
+    // The gold pergola carrying real roses: eight posts, a gold ring beam,
+    // and the growth wound along it
+    for (let i = 0; i < 8; i++) {
+      const a = (i + 0.5) * Math.PI / 4;
+      const px = FX + Math.cos(a) * 5.7, pz = FZ + Math.sin(a) * 5.7;
+      this._m(new THREE.CylinderGeometry(0.07, 0.09, 2.5, 8), goldE, px, 1.25, pz, { outline: true });
+      this._circleCol(px, pz, 0.35);
+    }
+    this._m(new THREE.TorusGeometry(5.7, 0.07, 8, 48), goldE, FX, 2.55, FZ, { rx: Math.PI / 2 });
+    for (let i = 0; i < 22; i++) {
+      const a = (i / 22) * Math.PI * 2;
+      const gx = FX + Math.cos(a) * 5.7, gz = FZ + Math.sin(a) * 5.7;
+      this._m(new THREE.SphereGeometry(0.2, 7, 6), leafE, gx, 2.55 + (i % 2 ? 0.14 : -0.12), gz, { cast: false });
+      if (i % 2 === 0) this._m(new THREE.SphereGeometry(0.1, 6, 5), roseE, gx, 2.78, gz, { cast: false });
+    }
+
+    // The balustrade: arcs of book-matched sliced marble breaking at the
+    // cardinals, a gold rail atop
+    const zz = woodcut2 ? null : this._zigzagTexture();
+    const balMat = woodcut2
+      ? S.mat({ tone: 0.06 })
+      : new THREE.MeshStandardMaterial({ map: zz, roughness: 0.35, side: THREE.DoubleSide });
+    const gapB = 0.24;
+    for (let q = 0; q < 4; q++) {
+      const t0 = q * Math.PI / 2 + gapB, tl = Math.PI / 2 - 2 * gapB;
+      this._m(new THREE.CylinderGeometry(7.0, 7.0, 0.72, 24, 1, true, Math.PI / 2 - (t0 + tl), tl), balMat, FX, 0.46, FZ, { cast: false });
+    }
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2;
+      const near = Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI)));
+      if (near < 0.3) continue;
+      const bx = FX + Math.cos(a) * 7.0, bz = FZ + Math.sin(a) * 7.0;
+      this._m(new THREE.TorusGeometry(0.5, 0.045, 6, 10, Math.PI * 1.2), goldE, bx, 0.86, bz, { cast: false }).rotation.y = -a;
+      this._circleCol(bx, bz, 0.7);
+    }
   }
 
   // ── The Four Triumphs of Jupiter — floats ringing the grove ──────────────
@@ -1340,11 +1403,18 @@ export class HPWorldScene {
       g.add(lbl);
 
       g.position.set(x, 0, z);
-      // face along the ring, counter-clockwise around the fountain
-      g.rotation.y = Math.atan2(-(x - 0), -(z - -20)) + Math.PI / 2;
       this.scene.add(g);
-      this._floats.push({ g, wheels: [], phase: Math.random() * 6 });
-      this._wallCol(x - 1.3, x + 1.3, z - 1.6, z + 1.6);
+      // The processions PROCESS now — the second-largest block of images in
+      // the 1499 was parked here for a year (PROCESSIONS.md §1). Each car
+      // circuits the grove; a live circle collider travels with it so the
+      // walk stays honest around a moving thing.
+      const cx = 0, czz = -20;
+      const orbitR = 14.2;    // clears the grove cypresses inside and the shore outside
+      const theta = Math.atan2(z - czz, x - cx);
+      const col = { x, z, r: 2.3 };
+      this.walker.colliders.push(col);
+      this._floats.push({ g, wheels: [], phase: Math.random() * 6,
+        orbit: { cx, cz: czz, r: orbitR, theta, om: 0.032 }, col });
     }
   }
 
@@ -1641,7 +1711,7 @@ export class HPWorldScene {
 
     // ── The theatre floor, and the fountain the whole island converges on ──
     this._m(new THREE.CircleGeometry(7.8, 40), this._darkStoneMat, CX, 0.06, CZ, { rx: -Math.PI / 2, cast: false });
-    this._buildFountain(CX, CZ);
+    this._buildFountain(CX, CZ, { enclosure: true });
 
     // ── The landing ───────────────────────────────────────────────────────
     for (let i = 0; i < 3; i++) {
@@ -1654,6 +1724,33 @@ export class HPWorldScene {
     this._floats.push({ g: skiff, wheels: [], phase: 2.4 });
     this._plaque({ main: 'CYTHERA', sub: 'THE ISLAND OF VENUS · PRESS 9 TO RETURN' },
       1.25, 0.32, -2.5, 1.1, -108, 0.35, true);
+  }
+
+  // Book-matched sliced marble for the fountain's balustrade — the zig-zag
+  // Hunt compares to the revetments of Torcello (GARDENS.md §7).
+  _zigzagTexture() {
+    const N = 256;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.fillStyle = '#e6dfd0'; x.fillRect(0, 0, N, N);
+    const colors = ['#7e937e', '#b8ab90', '#8a7a6a'];
+    const wave = 32, amp = 15, band = 22;
+    for (let row = 0; row < 5; row++) {
+      const y0 = row * 52 + 8;
+      x.fillStyle = colors[row % colors.length];
+      x.beginPath();
+      x.moveTo(0, y0);
+      for (let px = 0; px <= N; px += wave) { x.lineTo(px + wave / 2, y0 + amp); x.lineTo(px + wave, y0); }
+      for (let px = N; px >= 0; px -= wave) { x.lineTo(px, y0 + band); x.lineTo(px - wave / 2, y0 + band + amp); }
+      x.closePath(); x.fill();
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(8, 1);
+    this._disp.push(t);
+    return t;
   }
 
   // The knot-garden pattern for the terrace beds: interlaced diagonal bands
@@ -1710,7 +1807,9 @@ export class HPWorldScene {
     put(28, 8, 1.2); put(28, -8, 1.2);
     put(-27, 15, 1.0); put(27, 14.5, 1.0);
 
-    for (const [x, z, w, d] of [[-8.5, 8.8, 6, 0.5], [8.5, 8.8, 6, 0.5], [-8.5, -8.8, 6, 0.5], [8.5, -8.8, 6, 0.5]]) {
+    // (Only the northern hedge pair remains: the southern pair stood exactly
+    // on the triumphs' processional circuit and was garden fabric, not book.)
+    for (const [x, z, w, d] of [[-8.5, 8.8, 6, 0.5], [8.5, 8.8, 6, 0.5]]) {
       this._m(new THREE.BoxGeometry(w, 0.9, d), this._hedgeMat, x, 0.45, z);
       this._wallCol(x - w / 2, x + w / 2, z - d / 2, z + d / 2);
     }
@@ -1940,9 +2039,19 @@ export class HPWorldScene {
       const c = this._boat.userData.cupid;
       if (c) c.position.y = 1.15 + bobY;
     }
-    // Triumph floats breathe in place
+    // Triumph floats process around the grove (and breathe); the skiff at
+    // Cythera's landing, which has no orbit, only bobs
     for (const f of this._floats) {
       f.g.position.y = Math.sin(this._t * 0.9 + f.phase) * 0.02;
+      if (!f.orbit) continue;
+      const o = f.orbit;
+      o.theta += o.om * dt;
+      const x = o.cx + Math.cos(o.theta) * o.r;
+      const z = o.cz + Math.sin(o.theta) * o.r;
+      f.g.position.x = x; f.g.position.z = z;
+      // teams hitched at local −z, so forward = travel tangent → yaw = π − θ
+      f.g.rotation.y = Math.PI - o.theta;
+      f.col.x = x; f.col.z = z;
     }
     // Torch flames flicker
     if (this._torch) {
