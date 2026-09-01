@@ -46,6 +46,11 @@
   #stage.elephant  { background: radial-gradient(110% 80% at 50% 30%, #241f20 0%, #14100f 55%, #090707 100%); }
   #stage.court     { background: radial-gradient(110% 80% at 50% 22%, #2e2a34 0%, #191722 55%, #0a0810 100%); }
   #stage.three_doors { background: radial-gradient(110% 80% at 50% 18%, #332a22 0%, #1a1611 55%, #0b0805 100%); }
+  #stage.planetary_palace { background: radial-gradient(110% 80% at 50% 20%, #2a2b33 0%, #171820 55%, #08090c 100%); }
+  #stage.polia { background: radial-gradient(110% 80% at 50% 34%, #3a2c22 0%, #1c1510 55%, #0b0805 100%); }
+  #stage.triumphs { background: radial-gradient(110% 80% at 50% 26%, #2f3326 0%, #191c14 55%, #090b07 100%); }
+  #stage.quinta_essentia { background: radial-gradient(110% 80% at 50% 16%, #3a3324 0%, #1d1a12 55%, #0b0905 100%); }
+  #stage.fountain { background: radial-gradient(110% 80% at 50% 30%, #26313a 0%, #141a20 55%, #080b0e 100%); }
 
   .wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 0 1.4rem 5rem; }
 
@@ -90,6 +95,14 @@
   blockquote[data-voice="ours"] .v { color: var(--reason); }
 
   /* ── Choices ─────────────────────────────────────────────────────────── */
+  /* The guides comment but never block — see GAMIFYVRHP.md §2. */
+  .guide {
+    margin: 1rem 0 .2rem; padding: .55rem .8rem; font-size: .8rem; font-style: italic;
+    border-left: 2px solid var(--rule); color: var(--dim); background: rgba(255,255,255,.015);
+  }
+  .guide.reason { border-left-color: var(--reason); color: #a8c2d0; }
+  .guide.desire { border-left-color: var(--desire); color: #d3a3ac; }
+
   .choices { margin-top: 1.2rem; display: flex; flex-direction: column; gap: .55rem; }
   .choice {
     width: 100%; text-align: left; cursor: pointer;
@@ -105,6 +118,7 @@
   }
   .tag.need { color: var(--gold); border-color: var(--gold-dk); }
   .tag.locked { color: #d08a5a; border-color: #7a4a28; }
+  .tag.branch { color: var(--ok); border-color: #3f5a2e; }
   .tag.reason { color: var(--reason); border-color: #3d5a68; }
   .tag.desire { color: var(--desire); border-color: #6a3540; }
   .choice .why { display: block; font-size: .72rem; color: var(--faint); margin-top: .35rem; }
@@ -224,11 +238,25 @@ const SAVE = 'hp-novel-v1';
 const THRESHOLD = 3;
 
 const blank = () => ({
-  i: 0, axis: 0, points: 0, spent: 0,
+  i: 0, axis: 0, points: 0, spent: 0, run: 1,
   loci: Object.fromEntries(Object.keys(LOCI).map(k => [k, 0])),
   banked: Object.fromEntries(Object.keys(LOCI).map(k => [k, 0])),
   skills: [], door: null, excerpta: [], done: false,
 });
+
+/* New Game+ — "you keep what you learned, you make the choice again."
+   The notebook persists (loci, banked, excerpta) and so do the points it earned,
+   so the run is a re-spec as well as a re-reading. The door, the skills bought
+   with those points, and the axis all reset. */
+function newGamePlus() {
+  S = Object.assign(blank(), {
+    run: (S.run || 1) + 1,
+    loci: S.loci, banked: S.banked, points: S.points,
+    excerpta: S.excerpta,
+  });
+  save(); renderAll();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
 let S = load();
 
@@ -253,6 +281,8 @@ function award() {
 }
 
 const has = (id) => S.skills.includes(id);
+const skillById = (id) =>
+  Object.values(BRANCHES).flatMap(b => b.skills).find(s => s.id === id);
 
 /* A `need` of {hieroglyphica: 2} counts excerpta, not skill points — kept
    generous so the prototype opens up as you read rather than locking down. */
@@ -272,10 +302,17 @@ function renderScene() {
   const sc = SCENES[S.i];
   stage.className = sc.station || '';
 
-  let h = `<div class="act">Act ${sc.act} · scene ${S.i + 1} of ${SCENES.length}</div>
+  let h = `<div class="act">Act ${sc.act} · scene ${S.i + 1} of ${SCENES.length}${S.run > 1 ? ` · reading ${S.run}` : ''}</div>
            <h2>${sc.title}</h2>`;
   h += sc.body.map(p => `<p>${p}</p>`).join('');
   if (sc.quote) h += quoteHTML(sc.quote);
+
+  // The guides speak according to where the axis stands. They never remove a
+  // choice; they only tell you whose company you are keeping.
+  if (sc.guide) {
+    const lean = S.axis < -0.3 ? 'reason' : S.axis > 0.3 ? 'desire' : 'mid';
+    h += `<div class="guide ${lean === 'mid' ? '' : lean}">${sc.guide[lean]}</div>`;
+  }
 
   if (sc.isDoorChoice) {
     h += `<div class="choices">`;
@@ -288,11 +325,17 @@ function renderScene() {
   } else {
     h += `<div class="choices">`;
     sc.choices.forEach((c, n) => {
-      const ok = meetsNeed(c.need);
+      const needOk = meetsNeed(c.need);
+      const branchOk = !c.branch || has(c.branch);
+      const ok = needOk && branchOk;
       const tags = [];
       if (c.need) {
         const txt = Object.entries(c.need).map(([k, v]) => `${LOCI[k].label} ${v}`).join(', ');
-        tags.push(`<span class="tag ${ok ? 'need' : 'locked'}">${ok ? txt : 'needs ' + txt}</span>`);
+        tags.push(`<span class="tag ${needOk ? 'need' : 'locked'}">${needOk ? txt : 'needs ' + txt}</span>`);
+      }
+      if (c.branch) {
+        const sk = skillById(c.branch);
+        tags.push(`<span class="tag ${branchOk ? 'branch' : 'locked'}">${sk ? sk.name : c.branch}</span>`);
       }
       if (c.axis <= -0.4) tags.push(`<span class="tag reason">Logistica</span>`);
       if (c.axis >= 0.4) tags.push(`<span class="tag desire">Thelemia</span>`);
@@ -348,35 +391,114 @@ function choose(n) {
   renderSheet();
 }
 
+/* The doors are the middle of the book, not the end of it: choosing one opens
+   its branch and the story continues through it. */
 function chooseDoor(id) {
-  S.door = id; S.done = true; save(); renderAll();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  S.door = id;
+  S.excerpta.push({ scene: 'The Three Doors', text: DOOR_OUTCOMES[id] });
+  save();
+  const el = document.getElementById('scene');
+  el.querySelectorAll('.choice').forEach(b => b.disabled = true);
+  const div = document.createElement('div');
+  div.className = 'result';
+  div.innerHTML = `<p>${DOOR_OUTCOMES[id]}</p>
+    <p style="color:var(--dim);font-size:.85rem">The branch of <strong>${BRANCHES[id].latin}</strong>
+       is open to you. Spend your points on it in the margin, and what you buy will show up in the
+       encounters ahead.</p>
+    <button class="next">Through the gate ▸</button>`;
+  el.appendChild(div);
+  div.querySelector('.next').addEventListener('click', () => {
+    S.i++; save(); renderAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  renderSheet();
 }
 
 function renderEnd(el, stage) {
-  stage.className = 'three_doors';
+  stage.className = 'fountain';
   const b = S.door ? BRANCHES[S.door] : null;
   const lean = S.axis < -0.3 ? 'Logistica had the better of you'
              : S.axis > 0.3 ? 'Thelemia had the better of you'
              : 'You held the middle, which neither of them advised';
-  const top = Object.entries(S.loci).sort((a, c) => c[1] - a[1])[0];
+  const ranked = Object.entries(S.loci).sort((a, c) => c[1] - a[1]);
+  const total = ranked.reduce((n, [, v]) => n + v, 0);
   el.innerHTML = `
-    <div class="act">The prototype ends here</div>
-    <h2>${b ? b.latin : 'The book closes'}</h2>
-    ${b ? `<p>${DOOR_OUTCOMES[S.door]}</p>` : ''}
-    <p><strong>${lean}.</strong> Your fullest heading is <strong>${LOCI[top[0]].label}</strong>
-       — ${LOCI[top[0]].gloss} — with ${top[1]} excerpta entered.</p>
-    <p>Beyond this door the book runs on for another three hundred pages: the planetary
-       palace, the four triumphs behind their teams of six, the temple rites, the
-       polyandrion full of tombs, the concentric island of Cythera, and the fountain where
-       Poliphilo tears the veil. Those encounters are designed but not yet built — see
-       <a href="../GAMIFYVRHP.md" style="color:var(--gold)">GAMIFYVRHP.md</a> §4.</p>
+    <div class="act">End of Book I${S.run > 1 ? ` · reading ${S.run}` : ''}</div>
+    <h2>Here Book I closes</h2>
+    <p>Polia begins her own story at this fountain, and the second book is hers: the plague that
+       made her vow herself to Diana, the visions that punished her coldness, and the moment she
+       took the fainting Poliphilo in her arms. Two dreams told toward each other — that is the
+       whole machine of the book.</p>
+    <p><strong>${lean}.</strong> You went through
+       ${b ? `<strong>${b.latin}</strong>` : 'no gate at all'}, and entered ${total} excerpta under
+       ${ranked.filter(([, v]) => v > 0).length} headings. Your fullest is
+       <strong>${LOCI[ranked[0][0]].label}</strong> — ${LOCI[ranked[0][0]].gloss}.</p>
     ${quoteHTML({ voice: 'ours',
       text: '“Sighing, risen and released from the sweet sleep, I woke of a sudden into the '
           + 'small hours, saying: Farewell then, Polia.”',
       source: 'ch. XXXVIII — translated from the 1499 Aldine for this project' })}
-    <button class="next" id="again">Begin again</button>`;
-  el.querySelector('#again').addEventListener('click', reset);
+    <p style="color:var(--dim);font-size:.85rem">Book II, the polyandrion and the concentric island
+       of Cythera are designed but not yet written — see
+       <a href="../GAMIFYVRHP.md" style="color:var(--gold)">GAMIFYVRHP.md</a> §4.</p>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1.2rem">
+      <button class="next" id="ngplus">Read it again ▸</button>
+      <button class="next" id="export">Export the commonplace book</button>
+    </div>
+    <p style="color:var(--faint);font-size:.75rem;margin-top:.7rem">Reading it again keeps everything
+      you have learned and returns your skill points to be spent differently. Only the door, the
+      skills and the argument between your guides reset.</p>`;
+  el.querySelector('#ngplus').addEventListener('click', newGamePlus);
+  el.querySelector('#export').addEventListener('click', exportBook);
+}
+
+/* The notebook as a real artifact: a printable commonplace book of the run,
+   excerpta under their headings, with the quotations and their sources. Opened
+   in a new window rather than downloaded, since a viewer-initiated download is
+   the kind of thing browsers block. */
+function exportBook() {
+  const when = new Date().toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+  const b = S.door ? BRANCHES[S.door] : null;
+  const ranked = Object.entries(S.loci).filter(([, v]) => v > 0).sort((a, c) => c[1] - a[1]);
+  const esc = (s) => String(s).replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
+
+  const doc = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<title>Poliphilo's Commonplace Book</title><style>
+ body{max-width:44em;margin:3rem auto;padding:0 1.5rem;font-family:Georgia,serif;line-height:1.75;color:#1a1510}
+ h1{font-weight:normal;font-size:1.9rem;letter-spacing:.02em;margin-bottom:.2rem}
+ .sub{color:#6a5c48;font-size:.9rem;margin-bottom:2rem}
+ h2{font-weight:normal;font-size:1.1rem;letter-spacing:.14em;text-transform:uppercase;
+    color:#8b4513;margin:2.2rem 0 .3rem;border-bottom:1px solid #ddd2c0;padding-bottom:.3rem}
+ .gloss{color:#6a5c48;font-style:italic;font-size:.85rem;margin-bottom:.9rem}
+ .ex{margin-bottom:1rem}.ex b{display:block;font-weight:normal;font-size:.72rem;letter-spacing:.1em;
+    text-transform:uppercase;color:#8b4513}
+ .meta{background:#f6f1e7;border:1px solid #e0d6c2;padding:1rem 1.2rem;margin-bottom:1.5rem;font-size:.9rem}
+ footer{margin-top:3rem;border-top:1px solid #ddd2c0;padding-top:1rem;font-size:.78rem;color:#6a5c48}
+ @media print{body{margin:0}.noprint{display:none}}
+</style></head><body>
+<h1>Poliphilo's Commonplace Book</h1>
+<div class="sub">A reading of the <em>Hypnerotomachia Poliphili</em> (Venice: Aldus Manutius, 1499) · ${when}</div>
+<div class="meta">
+  <div>Gate taken: <strong>${b ? esc(b.latin) + ' — ' + esc(b.greek) : 'none'}</strong></div>
+  <div>Between the guides: <strong>${S.axis < -0.3 ? 'inclined to Logistica (Reason)'
+      : S.axis > 0.3 ? 'inclined to Thelemia (Desire)' : 'holding the middle'}</strong></div>
+  <div>Skills taken: <strong>${S.skills.length ? S.skills.map(id => esc(skillById(id)?.name || id)).join(', ') : 'none'}</strong></div>
+  <div>Readings: <strong>${S.run}</strong></div>
+</div>
+${ranked.map(([k, v]) => `<h2>${esc(LOCI[k].label)} <span style="float:right;font-size:.8rem;color:#8b4513">${v}</span></h2>
+  <div class="gloss">${esc(LOCI[k].gloss)}</div>`).join('')}
+<h2>The excerpta, in the order they were entered</h2>
+${S.excerpta.map(e => `<div class="ex"><b>${esc(e.scene)}</b>${esc(e.text)}</div>`).join('')}
+<footer>
+<p>Assembled by playing <em>Poliphilo's Commonplace Book</em>, part of Emblems in 3D. Quotations
+encountered in play are public domain: Robert Dallington's English (London, 1592), the Aldine's own
+Latin and Greek (1499), and a new translation of the part Dallington never reached, released CC0.
+Joscelyn Godwin's 1999 translation is in copyright and was not used.</p>
+<p class="noprint" style="margin-top:.8rem"><button onclick="window.print()">Print</button></p>
+</footer></body></html>`;
+
+  const w = window.open('', '_blank');
+  if (w) { w.document.write(doc); w.document.close(); }
+  else alert('Allow pop-ups for this page to open your commonplace book.');
 }
 
 function renderSheet() {
