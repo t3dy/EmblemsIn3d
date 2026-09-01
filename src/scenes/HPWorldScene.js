@@ -23,7 +23,7 @@
 import * as THREE from 'three';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=3';
-import { makeCast } from '../systems/Cast.js?v=8';
+import { makeCast } from '../systems/Cast.js?v=13';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -246,7 +246,15 @@ export class HPWorldScene {
     this._buildFountain();
     this._buildTriumphs();
     this._buildCythera();
-    this._buildCytheraIsle();
+    // The island is ~700 objects of its own. It lives in one group so that
+    // when the player is deep in the mainland garden — where the haze has
+    // already nearly swallowed it — it stops being drawn at all. From the
+    // shore southward it is always shown.
+    this._isleGroup = new THREE.Group();
+    this.scene.add(this._isleGroup);
+    const _realScene = this.scene;
+    this.scene = this._isleGroup;      // reroute every add inside the builder
+    try { this._buildCytheraIsle(); } finally { this.scene = _realScene; }
     this._buildTrees();
     if (lit) this._buildMotes();
     if (lit) this._buildMeadow();
@@ -2012,6 +2020,8 @@ export class HPWorldScene {
     }
     // The meadow leans with the travelling gusts
     for (const f of this._meadows) f.update(this._t);
+    // Cythera draws only from the shore southward (the haze covers the seam)
+    if (this._isleGroup) this._isleGroup.visible = this.walker.player.pos.z < -24;
     // Fortuna turns on her pin: a slow drift with the gusts, never a clean spin
     for (const v of this._vanes) {
       v.g.rotation.y += dt * v.rate * (0.6 + 0.4 * Math.sin(this._t * 0.31 + v.phase));

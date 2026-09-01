@@ -20,12 +20,117 @@ export function makeCast(S) {
     return mats.get(key);
   };
   const SKIN   = 0xd8c4a4;
+  const lit = S.key !== 'woodcut';
   const add = (g, mesh) => { mesh.castShadow = true; mesh.receiveShadow = true; g.add(mesh); return mesh; };
   const mesh = (geo, mat, x = 0, y = 0, z = 0) => {
     const m = new THREE.Mesh(geo, mat);
     m.position.set(x, y, z);
     return m;
   };
+
+  // ── Painterly detail (lit rendering only; the woodcut keeps its line) ─────
+
+  // A fine weave, used as a shared bump map so every robe reads as cloth
+  // rather than plastic (TEXTURES.md §5).
+  let _weave = null;
+  function weave() {
+    if (_weave) return _weave;
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const x = c.getContext('2d');
+    x.fillStyle = '#808080'; x.fillRect(0, 0, 64, 64);
+    for (let i = 0; i < 64; i += 2) {
+      x.fillStyle = i % 4 ? '#8a8a8a' : '#747474';
+      x.fillRect(i, 0, 1, 64); x.fillRect(0, i, 64, 1);
+    }
+    for (let i = 0; i < 260; i++) {
+      const v = Math.sin(i * 127.1) * 43758.5453, r = v - Math.floor(v);
+      x.fillStyle = r > 0.5 ? '#8e8e8e' : '#727272';
+      x.fillRect((r * 6151) % 64 | 0, (r * 9277) % 64 | 0, 1, 1);
+    }
+    _weave = new THREE.CanvasTexture(c);
+    _weave.colorSpace = THREE.NoColorSpace;
+    _weave.wrapS = _weave.wrapT = THREE.RepeatWrapping;
+    _weave.repeat.set(6, 6);
+    return _weave;
+  }
+
+  // A robe material: the shared colour cache, plus the weave (lit only) and a
+  // silk-adjacent roughness. Cached separately from plain colours.
+  function RobeM(color) {
+    const m = M(color, { roughness: 0.62, metalness: 0.03 });
+    if (lit && !m.bumpMap) { m.bumpMap = weave(); m.bumpScale = 0.012; }
+    return m;
+  }
+
+  // The face, painted once and mapped onto the head sphere. Drawn in neutral
+  // tone on near-white so the material colour carries the skin (a gold planet
+  // statue gets chased-metal features, a nymph gets paint): almond eyes with
+  // dark iris under a lid line, arched brows, the shadow of a nose, a small
+  // rosebud mouth, soft blush. The figures' canonical front is +z (the beard
+  // and the carried attributes sit there), and sphere UV puts +z at u = 0.25,
+  // so the face is painted there.
+  let _face = null;
+  function faceTexture() {
+    if (_face) return _face;
+    const W = 256, H = 128;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const g0 = x.createLinearGradient(0, 0, 0, H);
+    g0.addColorStop(0, '#f4ece0'); g0.addColorStop(0.55, '#f0e6d6'); g0.addColorStop(1, '#e6d6c2');
+    x.fillStyle = g0; x.fillRect(0, 0, W, H);
+    // eyes sit just BELOW the sphere's equator: the nymphs' hair cap covers
+    // the whole upper hemisphere, so anything above v = 0.5 is under hair
+    const cx = W * 0.25, ey = H * 0.555;
+    const soft = (px, py, r, col, a) => {
+      const gr = x.createRadialGradient(px, py, 0, px, py, r);
+      gr.addColorStop(0, col.replace('A', a)); gr.addColorStop(1, col.replace('A', '0'));
+      x.fillStyle = gr; x.beginPath(); x.arc(px, py, r, 0, 7); x.fill();
+    };
+    // blush and eye-socket shading
+    for (const s of [-1, 1]) soft(cx + s * 15, ey + 17, 11, 'rgba(196,110,100,A)', '0.30');
+    for (const s of [-1, 1]) soft(cx + s * 9.5, ey - 1, 7, 'rgba(150,110,80,A)', '0.28');
+    // eyes: lid line, iris, lash corner
+    for (const s of [-1, 1]) {
+      const ex = cx + s * 9.5;
+      x.strokeStyle = 'rgba(66,44,28,0.9)'; x.lineWidth = 1.6;
+      x.beginPath(); x.ellipse(ex, ey, 4.6, 2.4, 0, Math.PI, 2 * Math.PI); x.stroke();
+      x.fillStyle = 'rgba(74,50,30,0.95)';
+      x.beginPath(); x.arc(ex, ey - 0.4, 1.7, 0, 7); x.fill();
+      x.strokeStyle = 'rgba(90,62,40,0.8)'; x.lineWidth = 1.2;
+      x.beginPath(); x.ellipse(ex, ey + 1.2, 4.2, 1.6, 0, 0, Math.PI); x.stroke();
+      // brow
+      x.strokeStyle = 'rgba(96,66,40,0.85)'; x.lineWidth = 1.8;
+      x.beginPath(); x.ellipse(ex + s * 0.6, ey - 5.4, 5.4, 2.6, s * 0.12, Math.PI * 1.15, Math.PI * 1.85); x.stroke();
+    }
+    // nose: a shadow, not a line
+    soft(cx - 1.6, ey + 8, 4.5, 'rgba(150,110,80,A)', '0.22');
+    x.fillStyle = 'rgba(120,84,58,0.5)';
+    for (const s of [-1, 1]) { x.beginPath(); x.arc(cx + s * 1.8, ey + 10.5, 0.8, 0, 7); x.fill(); }
+    // mouth: small, full, slightly parted
+    x.fillStyle = 'rgba(164,74,70,0.9)';
+    x.beginPath(); x.ellipse(cx, ey + 16.5, 3.6, 1.5, 0, 0, Math.PI); x.fill();
+    x.beginPath(); x.ellipse(cx - 1.5, ey + 15.2, 1.8, 1.2, 0, Math.PI, 2 * Math.PI); x.fill();
+    x.beginPath(); x.ellipse(cx + 1.5, ey + 15.2, 1.8, 1.2, 0, Math.PI, 2 * Math.PI); x.fill();
+    x.strokeStyle = 'rgba(110,50,46,0.65)'; x.lineWidth = 0.9;
+    x.beginPath(); x.moveTo(cx - 3.2, ey + 15.4); x.quadraticCurveTo(cx, ey + 16.6, cx + 3.2, ey + 15.4); x.stroke();
+    // chin and jaw shading
+    soft(cx, ey + 24, 8, 'rgba(150,110,80,A)', '0.16');
+    _face = new THREE.CanvasTexture(c);
+    _face.colorSpace = THREE.SRGBColorSpace;
+    return _face;
+  }
+
+  // One face material per skin tone (the texture is shared)
+  function FaceM(skin) {
+    if (!lit) return M(skin, { roughness: 0.6 });
+    const key = 'face' + skin;
+    if (!mats.has(key)) {
+      mats.set(key, new THREE.MeshStandardMaterial({ color: skin, roughness: 0.55, map: faceTexture() }));
+    }
+    return mats.get(key);
+  }
 
   // ── People ────────────────────────────────────────────────────────────────
 
@@ -38,15 +143,18 @@ export function makeCast(S) {
     const parts = g.userData;
 
     if (robe != null) {
-      add(g, mesh(new THREE.ConeGeometry(0.26 * h, 0.85 * h, 12), M(robe), 0, 0.425 * h));
+      add(g, mesh(new THREE.ConeGeometry(0.26 * h, 0.85 * h, 12), RobeM(robe), 0, 0.425 * h));
     } else {
       for (const s of [-1, 1]) add(g, mesh(new THREE.CapsuleGeometry(0.065 * h, 0.55 * h, 4, 8), sm, s * 0.1 * h, 0.38 * h));
     }
-    add(g, mesh(new THREE.CapsuleGeometry(0.16 * h, 0.5 * h, 6, 10), robe != null ? M(robe) : sm, 0, 1.05 * h));
+    add(g, mesh(new THREE.CapsuleGeometry(0.16 * h, 0.5 * h, 6, 10), robe != null ? RobeM(robe) : sm, 0, 1.05 * h));
+    // a neck, so the head no longer floats on the shoulders
+    add(g, mesh(new THREE.CylinderGeometry(0.05 * h, 0.062 * h, 0.12 * h, 8), sm, 0, 1.38 * h));
 
     const heads = twoHeaded ? [-0.12, 0.12] : [0];
     for (const hx of heads) {
-      const head = add(g, mesh(new THREE.SphereGeometry(0.13 * h, 12, 10), sm, hx * h, 1.52 * h));
+      const head = add(g, mesh(new THREE.SphereGeometry(0.13 * h, 14, 12), FaceM(skin), hx * h, 1.52 * h));
+      head.scale.set(0.95, 1.06, 0.97);
       parts.head = head;
     }
     if (crowned) add(g, mesh(new THREE.TorusGeometry(0.11 * h, 0.028 * h, 6, 14), M(0xffd24a, { metalness: 0.9, roughness: 0.2 }), 0, 1.63 * h)).rotation.x = Math.PI / 2.3;
@@ -69,6 +177,11 @@ export function makeCast(S) {
       const a = mesh(armGeo, sm, 0, -0.24 * h, 0);
       a.castShadow = true;
       pivot.add(a);
+      // a hand: every existing gesture reads better ending in one
+      const hd = mesh(new THREE.SphereGeometry(0.042 * h, 8, 6), sm, 0, -0.5 * h, 0);
+      hd.scale.set(0.85, 1.15, 0.7);
+      hd.castShadow = true;
+      pivot.add(hd);
       g.add(pivot);
       return pivot;
     };
@@ -91,7 +204,8 @@ export function makeCast(S) {
       const wg = new THREE.PlaneGeometry(0.5 * h, 0.9 * h);
       const wm = M(0xe8e0d0, { side: THREE.DoubleSide });
       for (const s of [-1, 1]) {
-        const w = mesh(wg, wm, s * 0.3 * h, 1.15 * h, 0.12 * h);
+        // wings spring from the shoulder blades — the BACK, which is −z
+        const w = mesh(wg, wm, s * 0.3 * h, 1.15 * h, -0.12 * h);
         w.rotation.y = s * 0.5; w.rotation.z = s * 0.6;
         g.add(w);
         if (s < 0) parts.wingL = w; else parts.wingR = w;
@@ -123,23 +237,26 @@ export function makeCast(S) {
       [0.000, 0.000], [0.250, 0.000],   // hem, closed at the centre
       [0.238, 0.055], [0.212, 0.200],
       [0.184, 0.380], [0.158, 0.560],
-      [0.138, 0.740], [0.120, 0.890],
-      [0.106, 0.980],                   // the high waist — the 1499 cinch
-      [0.126, 1.090], [0.132, 1.210],   // bodice
-      [0.124, 1.310], [0.072, 1.362],   // shoulder slope into the neck
+      [0.138, 0.740], [0.118, 0.890],
+      [0.104, 0.980],                   // the high waist — the 1499 cinch
+      [0.128, 1.080], [0.138, 1.160],   // the bust
+      [0.130, 1.230],
+      [0.122, 1.310], [0.072, 1.362],   // shoulder slope into the neck
     ].map(([r, y]) => new THREE.Vector2(Math.max(r, 0.0001) * h, y * h));
 
-    const geo = new THREE.LatheGeometry(profile, 16);
+    const geo = new THREE.LatheGeometry(profile, 20);
     const pos = geo.attributes.position;
     const waist = 0.98 * h;
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
       const r = Math.hypot(x, z);
       if (r < 1e-4 || y > waist) continue;
-      // Goujon's flow-lines: four long folds, deepest at the hem
+      // Goujon's flow-lines: four long folds, deepest at the hem, with a
+      // finer second order of creases between them — the painters' trick of
+      // large form carrying small incident
       const theta = Math.atan2(z, x);
       const ramp = 1 - y / waist;
-      const k = 1 + Math.sin(theta * 4) * 0.055 * ramp;
+      const k = 1 + (Math.sin(theta * 4) * 0.055 + Math.sin(theta * 9 + 1.7) * 0.020) * ramp;
       pos.setX(i, x * k);
       pos.setZ(i, z * k);
     }
@@ -207,16 +324,22 @@ export function makeCast(S) {
     const g = new THREE.Group();
     const parts = g.userData;
     const skinMat = M(SKIN, { roughness: 0.6 });
-    const robeMat = M(robe);
+    const robeMat = RobeM(robe);
+    const trimM = M(0xd8b048, { metalness: 0.75, roughness: 0.35 });
 
     add(g, mesh(gownGeometry(h), robeMat, 0, 0, 0));
-    // a girdle at the high waist — the belt the woodcuts always draw
-    const belt = add(g, mesh(new THREE.TorusGeometry(0.112 * h, 0.014 * h, 6, 20),
+    // gold trim at hem and neckline — the border every quattrocento painter
+    // gives a gown — and the girdle at the high waist the woodcuts draw
+    const hemBand = add(g, mesh(new THREE.TorusGeometry(0.244 * h, 0.010 * h, 6, 28), trimM, 0, 0.028 * h));
+    hemBand.rotation.x = Math.PI / 2;
+    const neckBand = add(g, mesh(new THREE.TorusGeometry(0.076 * h, 0.008 * h, 6, 18), trimM, 0, 1.352 * h));
+    neckBand.rotation.x = Math.PI / 2;
+    const belt = add(g, mesh(new THREE.TorusGeometry(0.110 * h, 0.014 * h, 6, 20),
       M(0xd8c088, { metalness: 0.6, roughness: 0.4 }), 0, 0.978 * h));
     belt.rotation.x = Math.PI / 2;
 
     add(g, mesh(new THREE.CylinderGeometry(0.036 * h, 0.045 * h, 0.10 * h, 8), skinMat, 0, 1.40 * h));
-    const head = add(g, mesh(new THREE.SphereGeometry(0.100 * h, 14, 12), skinMat, 0, 1.552 * h));
+    const head = add(g, mesh(new THREE.SphereGeometry(0.100 * h, 16, 14), FaceM(SKIN), 0, 1.552 * h));
     head.scale.set(0.94, 1.08, 0.96);
     parts.head = head;
 
@@ -387,29 +510,196 @@ export function makeCast(S) {
 
   // ── Beasts ────────────────────────────────────────────────────────────────
 
-  function quadruped({ s = 1, color = 0x8a7a64, bulk = 1, neck = 0.18, headR = 0.14 } = {}) {
+  // A quadruped with actual anatomy: a barrel with chest and haunch masses, a
+  // neck that connects, a skull with muzzle, ears and eyes, two-segment legs
+  // that end in feet, and a tail. The head is a GROUP (userData.head), so
+  // species pin horns, manes and antlers into it in local coordinates.
+  // Front is −z, as before; overall silhouette heights match the old blob so
+  // every placed animal keeps its ground.
+  function quadruped({ s = 1, color = 0x8a7a64, bulk = 1, neck = 0.18, headR = 0.14,
+                       tail = 'down', earR = 0.32, dark = null } = {}) {
     const g = new THREE.Group();
     const bm = M(color, { roughness: 0.85 });
-    const body = add(g, mesh(new THREE.SphereGeometry(0.32 * s, 14, 10), bm, 0, 0.5 * s));
-    body.scale.set(1.5 * bulk, 0.85, 0.9);
-    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]])
-      add(g, mesh(new THREE.CylinderGeometry(0.05 * s, 0.06 * s, 0.42 * s, 8), bm, sx * 0.16 * s, 0.21 * s, sz * 0.26 * s * bulk));
-    const head = add(g, mesh(new THREE.SphereGeometry(headR * s, 12, 8), bm, 0, (0.62 + neck) * s, -0.5 * s * bulk));
+    const dm = M(dark ?? Math.max(0, color - 0x282018), { roughness: 0.9 });
+
+    // barrel + musculature
+    const barrel = add(g, mesh(new THREE.CapsuleGeometry(0.20 * s * (0.85 + 0.15 * bulk), 0.44 * s * bulk, 6, 12), bm, 0, 0.52 * s));
+    barrel.rotation.x = Math.PI / 2;
+    const chest = add(g, mesh(new THREE.SphereGeometry(0.225 * s, 12, 10), bm, 0, 0.53 * s, -0.24 * s * bulk));
+    chest.scale.set(0.95, 1.02, 1.0);
+    const haunch = add(g, mesh(new THREE.SphereGeometry(0.235 * s, 12, 10), bm, 0, 0.54 * s, 0.26 * s * bulk));
+    haunch.scale.set(0.98, 1.05, 1.0);
+
+    // legs: shoulder/hip → knee/hock → foot, with the hind pair jointed
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const hind = sz > 0;
+      const leg = new THREE.Group();
+      leg.position.set(sx * 0.145 * s, 0.5 * s, sz * 0.27 * s * bulk);
+      const upper = mesh(new THREE.CylinderGeometry(0.042 * s, 0.058 * s, 0.26 * s, 8), bm, 0, -0.13 * s, 0);
+      upper.rotation.x = hind ? -0.3 : 0.1;
+      upper.castShadow = true; leg.add(upper);
+      const lower = mesh(new THREE.CylinderGeometry(0.026 * s, 0.038 * s, 0.26 * s, 7), bm,
+        0, -0.36 * s, hind ? 0.045 * s : -0.012 * s);
+      lower.rotation.x = hind ? 0.14 : 0;
+      lower.castShadow = true; leg.add(lower);
+      const foot = mesh(new THREE.CylinderGeometry(0.045 * s, 0.05 * s, 0.055 * s, 8), dm,
+        0, -0.475 * s, hind ? 0.06 * s : -0.015 * s);
+      foot.castShadow = true; leg.add(foot);
+      g.add(leg);
+    }
+
+    // neck, connecting shoulder to skull
+    const headY = (0.66 + neck) * s, headZ = -0.5 * s * bulk;
+    const nx = { y: 0.58 * s, z: -0.28 * s * bulk };
+    const nLen = Math.hypot(headY - nx.y, headZ - nx.z) * 1.1;
+    const neckM = add(g, mesh(new THREE.CylinderGeometry(0.068 * s, 0.105 * s, nLen, 9), bm,
+      0, (headY + nx.y) / 2, (headZ + nx.z) / 2));
+    neckM.rotation.x = -Math.atan2(-(headZ - nx.z), headY - nx.y);
+
+    // the head: skull, muzzle, nose, ears, eyes — pinned as a group
+    const head = new THREE.Group();
+    head.position.set(0, headY, headZ);
+    const skull = mesh(new THREE.SphereGeometry(headR * s, 12, 10), bm, 0, 0, 0);
+    skull.scale.set(0.9, 0.95, 1.05); skull.castShadow = true; head.add(skull);
+    const muzzle = mesh(new THREE.CapsuleGeometry(headR * 0.52 * s, headR * 0.6 * s, 5, 8), bm,
+      0, -headR * 0.28 * s, -headR * 0.85 * s);
+    muzzle.rotation.x = Math.PI / 2 - 0.25; muzzle.castShadow = true; head.add(muzzle);
+    head.add(mesh(new THREE.SphereGeometry(headR * 0.16 * s, 6, 5), dm, 0, -headR * 0.1 * s, -headR * 1.42 * s));
+    for (const sx of [-1, 1]) {
+      const ear = mesh(new THREE.ConeGeometry(headR * earR * s, headR * 0.85 * s, 6), bm,
+        sx * headR * 0.55 * s, headR * 0.85 * s, headR * 0.25 * s);
+      ear.rotation.x = 0.35; ear.rotation.z = -sx * 0.3; head.add(ear);
+      const eyeM = lit ? M(0x180f08, { roughness: 0.25, emissive: 0x140a04, emissiveIntensity: 0.3 }) : M(0x180f08);
+      head.add(mesh(new THREE.SphereGeometry(headR * 0.14 * s, 6, 5), eyeM,
+        sx * headR * 0.62 * s, headR * 0.12 * s, -headR * 0.62 * s));
+    }
+    g.add(head);
+
+    // the tail: everything that stands at a station is seen from behind
+    let tailMesh = null;
+    const t0 = new THREE.Vector3(0, 0.6 * s, 0.3 * s * bulk);
+    if (tail === 'brush') {
+      tailMesh = mesh(new THREE.ConeGeometry(0.062 * s, 0.34 * s, 7), bm, 0, 0.55 * s, 0.42 * s * bulk);
+      tailMesh.rotation.x = 1.9;
+    } else if (tail === 'tuft') {
+      const curve = new THREE.CatmullRomCurve3([t0,
+        new THREE.Vector3(0, 0.44 * s, 0.44 * s * bulk), new THREE.Vector3(0.03 * s, 0.24 * s, 0.5 * s * bulk)]);
+      tailMesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 8, 0.018 * s, 5), bm);
+      g.add(mesh(new THREE.SphereGeometry(0.045 * s, 6, 5), dm, 0.03 * s, 0.22 * s, 0.5 * s * bulk));
+    } else if (tail === 'hair') {
+      tailMesh = mesh(new THREE.ConeGeometry(0.055 * s, 0.42 * s, 7), dm, 0, 0.42 * s, 0.36 * s * bulk);
+      tailMesh.rotation.x = Math.PI - 0.25;
+    } else {
+      const curve = new THREE.CatmullRomCurve3([t0,
+        new THREE.Vector3(0, 0.5 * s, 0.42 * s * bulk), new THREE.Vector3(0.02 * s, 0.34 * s, 0.46 * s * bulk)]);
+      tailMesh = new THREE.Mesh(new THREE.TubeGeometry(curve, 8, 0.02 * s, 5), bm);
+    }
+    if (tailMesh) { tailMesh.castShadow = true; g.add(tailMesh); }
+
     g.userData.head = head;
     g.userData.mat = bm;
+    g.userData.tail = tailMesh;
+    g.userData.headR = headR * s;
     return g;
   }
 
   const animals = {
-    wolf:   (s = 1) => { const g = quadruped({ s, color: 0x7a7268 }); add(g, mesh(new THREE.ConeGeometry(0.06 * s, 0.22 * s, 6), g.userData.mat, 0, 0.78 * s, -0.62 * s)).rotation.x = -1.4; return g; },
-    dog:    (s = 1) => quadruped({ s: s * 0.8, color: 0x9a8668 }),
-    lion:   (s = 1) => { const g = quadruped({ s, color: 0xc09a4a, bulk: 1.15 }); const mane = mesh(new THREE.SphereGeometry(0.2 * s, 10, 8), M(0x8a6428, { roughness: 0.9 }), 0, 0.8 * s, -0.52 * s); g.add(mane); return g; },
-    stag:   (s = 1) => { const g = quadruped({ s, color: 0xa08458, neck: 0.28 }); for (const sx of [-1, 1]) { const a = mesh(new THREE.ConeGeometry(0.02 * s, 0.3 * s, 5), g.userData.mat, sx * 0.08 * s, 1.05 * s, -0.5 * s); a.rotation.z = sx * 0.5; g.add(a); } return g; },
-    unicorn:(s = 1) => { const g = quadruped({ s, color: 0xe8e2d4, neck: 0.28 }); const horn = mesh(new THREE.ConeGeometry(0.025 * s, 0.32 * s, 6), M(0xf4eeda), 0, 1.1 * s, -0.55 * s); horn.rotation.x = -0.9; g.add(horn); return g; },
-    bull:   (s = 1) => { const g = quadruped({ s, color: 0x6a5038, bulk: 1.25 }); for (const sx of [-1, 1]) { const hn = mesh(new THREE.ConeGeometry(0.03 * s, 0.18 * s, 6), M(0xe4dcc4), sx * 0.12 * s, 0.92 * s, -0.55 * s); hn.rotation.z = sx * 1.0; g.add(hn); } return g; },
-    sow:    (s = 1) => quadruped({ s: s * 0.85, color: 0xc4a090, bulk: 1.3, neck: 0.02, headR: 0.12 }),
-    goat:   (s = 1) => { const g = quadruped({ s: s * 0.85, color: 0xb0a898 }); for (const sx of [-1, 1]) { const hn = mesh(new THREE.ConeGeometry(0.02 * s, 0.14 * s, 5), M(0x8a8274), sx * 0.06 * s, 0.95 * s, -0.45 * s); hn.rotation.x = 0.7; g.add(hn); } return g; },
-    horse:  (s = 1) => quadruped({ s: s * 1.1, color: 0x7a5a3a, neck: 0.35 }),
+    wolf: (s = 1) => {
+      const g = quadruped({ s, color: 0x58514a, tail: 'brush', earR: 0.42, dark: 0x2e2a24 });
+      // the darker saddle along the back, and a grizzled throat
+      const saddle = mesh(new THREE.SphereGeometry(0.2 * s, 10, 8), M(0x3c3831, { roughness: 0.95 }), 0, 0.66 * s, 0.04 * s);
+      saddle.scale.set(0.95, 0.5, 1.7); g.add(saddle);
+      const throat = mesh(new THREE.SphereGeometry(0.09 * s, 8, 6), M(0x8a8278, { roughness: 0.95 }), 0, 0.52 * s, -0.38 * s);
+      throat.scale.set(0.8, 1.2, 0.9); g.add(throat);
+      return g;
+    },
+    dog: (s = 1) => {
+      const g = quadruped({ s: s * 0.8, color: 0x9a8668, tail: 'up' });
+      const hr = g.userData.headR, hd = g.userData.head;
+      for (const sx of [-1, 1]) {   // floppy ears over the cone ones
+        const e = mesh(new THREE.SphereGeometry(hr * 0.32, 6, 5), g.userData.mat, sx * hr * 0.68, hr * 0.35, hr * 0.15);
+        e.scale.set(0.5, 1.3, 0.8); hd.add(e);
+      }
+      return g;
+    },
+    lion: (s = 1) => {
+      const g = quadruped({ s, color: 0xc09a4a, bulk: 1.15, tail: 'tuft', earR: 0.24, dark: 0x6a4a20 });
+      const hd = g.userData.head, hr = g.userData.headR;
+      const mm = M(0x8a5c24, { roughness: 0.95 });
+      // the mane: a wreath of overlapping locks around the skull
+      for (let i = 0; i < 9; i++) {
+        const a = (i / 9) * Math.PI * 2;
+        const lock = mesh(new THREE.SphereGeometry(hr * 0.55, 7, 6), mm,
+          Math.cos(a) * hr * 0.75, Math.sin(a) * hr * 0.75, hr * 0.45);
+        lock.scale.set(0.9, 0.9, 0.55); hd.add(lock);
+      }
+      hd.add(mesh(new THREE.SphereGeometry(hr * 0.9, 8, 7), mm, 0, -hr * 0.1, hr * 0.75)).scale.set(1.1, 1.15, 0.6);
+      return g;
+    },
+    stag: (s = 1) => {
+      const g = quadruped({ s, color: 0xa08458, neck: 0.28, earR: 0.38 });
+      const hd = g.userData.head, hr = g.userData.headR;
+      const am = M(0x8a7452, { roughness: 0.8 });
+      for (const sx of [-1, 1]) {   // branched antlers: a beam and two tines
+        const beam = mesh(new THREE.ConeGeometry(hr * 0.12, hr * 2.2, 5), am, sx * hr * 0.45, hr * 1.5, hr * 0.2);
+        beam.rotation.z = sx * 0.45; beam.rotation.x = 0.2; hd.add(beam);
+        for (const [ty, tz] of [[1.1, 0.05], [1.8, 0.3]]) {
+          const tine = mesh(new THREE.ConeGeometry(hr * 0.07, hr * 0.8, 4), am,
+            sx * hr * (0.45 + ty * 0.4), hr * ty, hr * tz);
+          tine.rotation.z = sx * 1.1; hd.add(tine);
+        }
+      }
+      return g;
+    },
+    unicorn: (s = 1) => {
+      const g = quadruped({ s, color: 0xe8e2d4, neck: 0.28, tail: 'hair', dark: 0xcfc8b8 });
+      const hd = g.userData.head, hr = g.userData.headR;
+      const horn = mesh(new THREE.ConeGeometry(hr * 0.16, hr * 2.4, 6), M(0xf4eeda), 0, hr * 1.1, -hr * 0.55);
+      horn.rotation.x = 0.5; hd.add(horn);
+      return g;
+    },
+    bull: (s = 1) => {
+      const g = quadruped({ s, color: 0x6a5038, bulk: 1.25, earR: 0.26, dark: 0x3a2c1c });
+      const hd = g.userData.head, hr = g.userData.headR;
+      for (const sx of [-1, 1]) {   // horns curving out and up from the brow
+        const hn = mesh(new THREE.ConeGeometry(hr * 0.16, hr * 1.3, 6), M(0xe4dcc4), sx * hr * 0.8, hr * 0.55, 0);
+        hn.rotation.z = sx * 1.15; hn.rotation.x = -0.2; hd.add(hn);
+      }
+      // the dewlap under the throat
+      const dw = mesh(new THREE.SphereGeometry(0.12 * s, 8, 6), g.userData.mat, 0, 0.42 * s, -0.4 * s);
+      dw.scale.set(0.7, 1.2, 0.9); g.add(dw);
+      return g;
+    },
+    sow: (s = 1) => {
+      const g = quadruped({ s: s * 0.85, color: 0xc4a090, bulk: 1.3, neck: 0.02, headR: 0.12, earR: 0.5, tail: 'up' });
+      const hd = g.userData.head, hr = g.userData.headR;
+      hd.add(mesh(new THREE.CylinderGeometry(hr * 0.32, hr * 0.36, hr * 0.2, 8), M(0xb08878), 0, -hr * 0.15, -hr * 1.3))
+        .rotation.x = Math.PI / 2;
+      return g;
+    },
+    goat: (s = 1) => {
+      const g = quadruped({ s: s * 0.85, color: 0xb0a898, earR: 0.42, tail: 'up' });
+      const hd = g.userData.head, hr = g.userData.headR;
+      for (const sx of [-1, 1]) {
+        const hn = mesh(new THREE.ConeGeometry(hr * 0.1, hr * 1.0, 5), M(0x8a8274), sx * hr * 0.4, hr * 0.7, hr * 0.35);
+        hn.rotation.x = 0.85; hd.add(hn);
+      }
+      hd.add(mesh(new THREE.ConeGeometry(hr * 0.16, hr * 0.6, 5), M(0x9a9284), 0, -hr * 0.75, -hr * 0.7));
+      return g;
+    },
+    horse: (s = 1) => {
+      const g = quadruped({ s: s * 1.1, color: 0x7a5a3a, neck: 0.35, tail: 'hair', earR: 0.3, dark: 0x3c2a16 });
+      // the mane: a crest of dark locks running down the neck
+      const mm = M(0x40301c, { roughness: 0.95 });
+      for (let i = 0; i < 5; i++) {
+        const t = i / 4, ss = s * 1.1;
+        const lock = mesh(new THREE.SphereGeometry(0.052 * ss, 6, 5), mm,
+          0, (0.66 + 0.35 * (1 - t * 0.85)) * ss - t * 0.14 * ss + 0.06 * ss, (-0.5 + t * 0.26) * ss);
+        lock.scale.set(0.55, 1.25, 0.9);
+        g.add(lock);
+      }
+      return g;
+    },
     toad:   (s = 1) => {
       const g = new THREE.Group();
       const bm = M(0x5a6a2a, { roughness: 0.9 });
@@ -428,15 +718,47 @@ export function makeCast(S) {
       }
       add(g, new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, 0.055 * s, 8), bm));
       add(g, mesh(new THREE.SphereGeometry(0.08 * s, 8, 6), bm, pts[10].x, pts[10].y, pts[10].z));
+      g.userData.spine = pts;
+      g.userData.mat = bm;
       return g;
     },
     dragon: (s = 1) => {
-      const g = animals.serpent(s * 1.3, { coil: 0.7 });
-      const wm = M(0x3a4a2a, { side: THREE.DoubleSide });
+      const ss = s * 1.3;
+      const g = animals.serpent(ss, { coil: 0.7 });
+      const pts = g.userData.spine;
+      const dm = M(0x2c3a20, { roughness: 0.8 });
+      // a ridge of spikes down the spine — the crest the woodcut gives it
+      for (let i = 2; i < 10; i++) {
+        const p = pts[i];
+        const sp = mesh(new THREE.ConeGeometry(0.03 * ss, 0.12 * ss, 4), dm, p.x, p.y + 0.06 * ss, p.z);
+        g.add(sp);
+      }
+      // the head made a head: horns, amber eyes, an open jaw
+      const hp = pts[10];
       for (const sx of [-1, 1]) {
-        const w = mesh(new THREE.PlaneGeometry(0.5 * s, 0.35 * s), wm, sx * 0.32 * s, 0.42 * s, -0.45 * s);
-        w.rotation.y = sx * 0.7; w.rotation.z = sx * 0.4;
+        const horn = mesh(new THREE.ConeGeometry(0.022 * ss, 0.16 * ss, 5), dm,
+          hp.x + sx * 0.05 * ss, hp.y + 0.09 * ss, hp.z + 0.03 * ss);
+        horn.rotation.x = 0.5; horn.rotation.z = -sx * 0.35; g.add(horn);
+        const eyeM = lit ? M(0xffb030, { emissive: 0xa06000, emissiveIntensity: 1.1 }) : M(0x181008);
+        add(g, mesh(new THREE.SphereGeometry(0.018 * ss, 6, 5), eyeM,
+          hp.x + sx * 0.055 * ss, hp.y + 0.025 * ss, hp.z - 0.05 * ss));
+      }
+      const jaw = mesh(new THREE.ConeGeometry(0.035 * ss, 0.14 * ss, 5), g.userData.mat,
+        hp.x, hp.y - 0.035 * ss, hp.z - 0.1 * ss);
+      jaw.rotation.x = -Math.PI / 2 + 0.4; jaw.castShadow = true; g.add(jaw);
+      // bat-swept triangular membranes with ribs, not blank slabs
+      const wm = M(0x3a4a2a, { side: THREE.DoubleSide, roughness: 0.75 });
+      for (const sx of [-1, 1]) {
+        const w = mesh(new THREE.CircleGeometry(0.34 * s, 3), wm, sx * 0.34 * s, 0.44 * s, -0.45 * s);
+        w.scale.set(1.7, 1.05, 1);
+        w.rotation.z = sx * 0.75; w.rotation.y = sx * 0.55;
         g.add(w);
+        for (let f = 0; f < 3; f++) {
+          const rib = mesh(new THREE.CylinderGeometry(0.006 * s, 0.011 * s, 0.36 * s, 4), dm,
+            sx * (0.18 + f * 0.12) * s, (0.48 - f * 0.04) * s, -0.45 * s);
+          rib.rotation.z = sx * (0.45 + f * 0.4);
+          g.add(rib);
+        }
       }
       return g;
     },
@@ -458,6 +780,13 @@ export function makeCast(S) {
       b.scale.set(1, 0.85, 1.4);
       add(g, mesh(new THREE.SphereGeometry(0.06 * s, 8, 6), bm, 0, 0.2 * s, -0.15 * s));
       add(g, mesh(new THREE.ConeGeometry(0.02 * s, 0.07 * s, 5), M(0xd8a030), 0, 0.2 * s, -0.23 * s)).rotation.x = -Math.PI / 2;
+      // eyes, and a fanned tail — the difference between a bird and a bead
+      for (const sx of [-1, 1]) {
+        add(g, mesh(new THREE.SphereGeometry(0.012 * s, 5, 4), M(0x181008), sx * 0.045 * s, 0.22 * s, -0.17 * s));
+      }
+      const tailF = add(g, mesh(new THREE.ConeGeometry(0.07 * s, 0.2 * s, 6), bm, 0, 0.12 * s, 0.24 * s));
+      tailF.rotation.x = Math.PI / 2 - 0.35;
+      tailF.scale.z = 0.35;
       const wm = M(color, { side: THREE.DoubleSide });
       for (const sx of [-1, 1]) {
         const w = mesh(new THREE.PlaneGeometry(0.28 * s, 0.14 * s), wm, sx * 0.17 * s, 0.16 * s, 0);
@@ -469,9 +798,22 @@ export function makeCast(S) {
     },
     eagle:  (s = 1) => animals.bird(s * 1.6, { color: 0x6a5a44, flying: true }),
     crow:   (s = 1) => animals.bird(s, { color: 0x2a2a30 }),
-    swan:   (s = 1) => {
+    swan: (s = 1) => {
       const g = animals.bird(s * 1.2, { color: 0xf0ece0 });
-      add(g, mesh(new THREE.CapsuleGeometry(0.025 * s, 0.2 * s, 4, 6), M(0xf0ece0), 0, 0.3 * s, -0.2 * s)).rotation.x = 0.5;
+      // the S-curved neck the straight capsule never gave it
+      const wm = M(0xf0ece0, { roughness: 0.75 });
+      const curve = new THREE.CatmullRomCurve3([
+        new THREE.Vector3(0, 0.2 * s, -0.16 * s),
+        new THREE.Vector3(0, 0.34 * s, -0.3 * s),
+        new THREE.Vector3(0, 0.48 * s, -0.26 * s),
+        new THREE.Vector3(0, 0.54 * s, -0.34 * s),
+      ]);
+      const neck = new THREE.Mesh(new THREE.TubeGeometry(curve, 12, 0.032 * s, 7), wm);
+      neck.castShadow = true; g.add(neck);
+      add(g, mesh(new THREE.SphereGeometry(0.045 * s, 8, 6), wm, 0, 0.55 * s, -0.36 * s));
+      const beak = add(g, mesh(new THREE.ConeGeometry(0.016 * s, 0.07 * s, 5), M(0xd88030), 0, 0.545 * s, -0.42 * s));
+      beak.rotation.x = -Math.PI / 2 + 0.2;
+      add(g, mesh(new THREE.SphereGeometry(0.014 * s, 5, 4), M(0x181008), 0, 0.575 * s, -0.375 * s));
       return g;
     },
     hen:    (s = 1) => { const g = animals.bird(s, { color: 0xc09060 }); add(g, mesh(new THREE.ConeGeometry(0.03 * s, 0.06 * s, 5), M(0xc03020), 0, 0.29 * s, -0.13 * s)); return g; },
