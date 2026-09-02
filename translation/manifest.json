@@ -2190,21 +2190,30 @@
     },
     "434": {
       "chapter": "XXXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 394,
-      "sha1": "b92525076fb8"
+      "sha1": "b92525076fb8",
+      "en_words": 728,
+      "confidence": "medium",
+      "confidence_note": "Polia completes her declaration — Cupid's power penetrates all (no armour resists him), so she"
     },
     "435": {
       "chapter": "XXXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 199,
-      "sha1": "e42f395ccdf6"
+      "sha1": "e42f395ccdf6",
+      "en_words": 518,
+      "confidence": "medium",
+      "confidence_note": "The **kiss** is exchanged (tongue-bite and all), and the **priestess**, moved to tears with the"
     },
     "436": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 332,
-      "sha1": "cc358773fd7f"
+      "sha1": "cc358773fd7f",
+      "en_words": 723,
+      "confidence": "medium",
+      "confidence_note": "The priestess's blessing done, **Poliphilo begins his narration** (chapter XXXII) with a **praise"
     },
     "437": {
       "chapter": "XXXII",
