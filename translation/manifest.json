@@ -166,21 +166,31 @@
     },
     "210": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 366,
-      "sha1": "a5488e841d06"
+      "sha1": "a5488e841d06",
+      "en_words": 648,
+      "confidence": "medium",
+      "confidence_note": "The temple's crowning **lantern**: eight hollow fluted columns carrying a scaled"
     },
     "211": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 216,
-      "sha1": "ce44b7f91276"
+      "sha1": "ce44b7f91276",
+      "en_words": 499,
+      "confidence": "medium",
+      "confidence_note": "The founder's *tour de force* — casting an **unbroken bronze chain** in a piece-"
     },
     "212": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "drafted",
       "words": 367,
-      "sha1": "fbcd19215a4e"
+      "sha1": "fbcd19215a4e",
+      "en_words": 697,
+      "uncertain": 2,
+      "confidence": "medium",
+      "confidence_note": "(low for the door-inscription). The temple's final dimensions, then the **great"
     },
     "213": {
       "chapter": "XVII",
