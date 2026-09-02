@@ -139,21 +139,30 @@
     },
     "207": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 279,
-      "sha1": "b3f56504422f"
+      "sha1": "b3f56504422f",
+      "en_words": 513,
+      "confidence": "medium",
+      "confidence_note": "The suspension of the temple's great **hanging lamp**: four monster-girls turning to"
     },
     "208": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 262,
-      "sha1": "ee82c17c2dfc"
+      "sha1": "ee82c17c2dfc",
+      "en_words": 566,
+      "confidence": "medium",
+      "confidence_note": "The **great crystal lamp** in full: a gourd-shaped inner crystal vessel holds the"
     },
     "209": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 343,
-      "sha1": "09233c8f1a51"
+      "sha1": "09233c8f1a51",
+      "en_words": 620,
+      "confidence": "medium",
+      "confidence_note": "The temple's construction (dry-jointed **Augustan-stone and marble** ashlar, no"
     },
     "210": {
       "chapter": "XVII",
