@@ -85,21 +85,30 @@
     },
     "201": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 390,
-      "sha1": "05e6fb7130ad"
+      "sha1": "05e6fb7130ad",
+      "en_words": 731,
+      "confidence": "medium",
+      "confidence_note": "The temple's walls (incrusted in emblematic precious-marble panels), its"
     },
     "202": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 399,
-      "sha1": "c8745b174fdc"
+      "sha1": "c8745b174fdc",
+      "en_words": 624,
+      "confidence": "medium",
+      "confidence_note": "A largely **engineering** page: the temple's rainwater system (roof-channel →"
     },
     "203": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 419,
-      "sha1": "9b39d3742b53"
+      "sha1": "9b39d3742b53",
+      "en_words": 738,
+      "confidence": "medium",
+      "confidence_note": "The junction where **dome meets pier**: the gilt scaled roof (surpassing the"
     },
     "204": {
       "chapter": "XVII",
