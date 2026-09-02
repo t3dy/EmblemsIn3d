@@ -2136,21 +2136,30 @@
     },
     "428": {
       "chapter": "XXX",
-      "status": "fetched",
+      "status": "verified",
       "words": 358,
-      "sha1": "dd0e20b534e9"
+      "sha1": "dd0e20b534e9",
+      "en_words": 684,
+      "confidence": "medium",
+      "confidence_note": "The opening of **chapter XXX**: its argument (Poliphilo, called forward, supplicates for the"
     },
     "429": {
       "chapter": "XXX",
-      "status": "fetched",
+      "status": "verified",
       "words": 216,
-      "sha1": "5774b0c86fcb"
+      "sha1": "5774b0c86fcb",
+      "en_words": 524,
+      "confidence": "medium",
+      "confidence_note": "**Poliphilo's plea to the priestess** begins: encouraged by Polia's changed aspect, he asks the"
     },
     "430": {
       "chapter": "XXX",
-      "status": "fetched",
+      "status": "verified",
       "words": 415,
-      "sha1": "7fea99dbe3b4"
+      "sha1": "7fea99dbe3b4",
+      "en_words": 799,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's petition in full: he asks the priestess to pray Venus to **command Cupid to strike"
     },
     "431": {
       "chapter": "XXX",
