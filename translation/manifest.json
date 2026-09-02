@@ -1061,21 +1061,30 @@
     },
     "341": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 329,
-      "sha1": "294f7869c909"
+      "sha1": "294f7869c909",
+      "en_words": 629,
+      "confidence": "medium",
+      "confidence_note": "Cupid takes his seat on the golden triumphal car (all gold-plate, jewelled,"
     },
     "342": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 380,
-      "sha1": "ce85d9918b0a"
+      "sha1": "ce85d9918b0a",
+      "en_words": 637,
+      "confidence": "medium",
+      "confidence_note": "The carved diamond on Psyche's shoulder (**Cupid wounding himself while Psyche"
     },
     "343": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 414,
-      "sha1": "bcf5121b64bf"
+      "sha1": "bcf5121b64bf",
+      "en_words": 706,
+      "confidence": "medium",
+      "confidence_note": "The musical procession in full: every antique instrument named (pierced tibia,"
     },
     "344": {
       "chapter": "XXII",
