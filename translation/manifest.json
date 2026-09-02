@@ -899,21 +899,30 @@
     },
     "323": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 273,
-      "sha1": "a6fb08e3352a"
+      "sha1": "a6fb08e3352a",
+      "en_words": 552,
+      "confidence": "medium",
+      "confidence_note": "The first eagle-inscription completes — **ALES MAGNA DICATA OPTIMO"
     },
     "324": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 332,
-      "sha1": "51af26ab173e"
+      "sha1": "51af26ab173e",
+      "en_words": 627,
+      "confidence": "medium",
+      "confidence_note": "The second inscription completes — **SUPERNAE ALITIS BENIGNITAS** (\"The"
     },
     "325": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 424,
-      "sha1": "c6bacd8d3645"
+      "sha1": "c6bacd8d3645",
+      "en_words": 772,
+      "confidence": "high",
+      "confidence_note": "(for the closing measurement-table, which is arithmetic); medium for the grove"
     },
     "326": {
       "chapter": "XXII",
