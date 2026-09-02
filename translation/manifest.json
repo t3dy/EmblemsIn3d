@@ -2433,21 +2433,30 @@
     },
     "461": {
       "chapter": "XXXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 351,
-      "sha1": "7e472a977640"
+      "sha1": "7e472a977640",
+      "en_words": 730,
+      "confidence": "medium",
+      "confidence_note": "The reunion completed: Poliphilo, revived, finds himself \"alive in Polia's arms,\" and prays the"
     },
     "462": {
       "chapter": "XXXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 307,
-      "sha1": "e3cf48e4f551"
+      "sha1": "e3cf48e4f551",
+      "en_words": 664,
+      "confidence": "medium",
+      "confidence_note": "Polia's narration ends and she **finishes the floral chaplet** (woven as she spoke), crowns"
     },
     "463": {
       "chapter": "XXXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 386,
-      "sha1": "77fcb11e78a9"
+      "sha1": "77fcb11e78a9",
+      "en_words": 742,
+      "confidence": "medium",
+      "confidence_note": "The nymphs draw the lovers into a **joyous dance** at the fount, then depart, leaving **Polia and"
     },
     "464": {
       "chapter": "XXXVII",
