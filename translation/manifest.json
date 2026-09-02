@@ -1713,21 +1713,30 @@
     },
     "381": {
       "chapter": "XXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 328,
-      "sha1": "40919cd7eb45"
+      "sha1": "40919cd7eb45",
+      "en_words": 634,
+      "confidence": "medium",
+      "confidence_note": "The opening of **Book II** (chapter XXV): its argument (Polia and Poliphilo will now narrate,"
     },
     "382": {
       "chapter": "XXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 448,
-      "sha1": "3418899b2167"
+      "sha1": "3418899b2167",
+      "en_words": 800,
+      "confidence": "medium",
+      "confidence_note": "Polia's tearful preface: an invocation of the **sacred fountain** (the mirror of Venus's beauty,"
     },
     "383": {
       "chapter": "XXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 432,
-      "sha1": "3571f7768a41"
+      "sha1": "3571f7768a41",
+      "en_words": 804,
+      "confidence": "medium",
+      "confidence_note": "Polia's **genealogy and the founding of Treviso**: her ancestor **Lelio Syliro**, sent as"
     },
     "384": {
       "chapter": "XXV",
