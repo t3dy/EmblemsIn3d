@@ -356,21 +356,30 @@
     },
     "231": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 205,
-      "sha1": "15a7b804ca49"
+      "sha1": "15a7b804ca49",
+      "en_words": 469,
+      "confidence": "medium",
+      "confidence_note": "The prayer ends (the virgins' \"So be it\"), and the **sacrifice of the swans**: the"
     },
     "232": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 195,
-      "sha1": "50060af1e61f"
+      "sha1": "50060af1e61f",
+      "en_words": 500,
+      "confidence": "medium",
+      "confidence_note": "The rite's turning-point: the priestess and Polia wash the sacred blood from their"
     },
     "233": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 249,
-      "sha1": "41b2f783ddcc"
+      "sha1": "41b2f783ddcc",
+      "en_words": 634,
+      "confidence": "high",
+      "confidence_note": "The **miracle and its communion** — the climax of chapter XVIII: from the smoking altar"
     },
     "234": {
       "chapter": "XVIII",
