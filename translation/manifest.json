@@ -482,21 +482,30 @@
     },
     "245": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 179,
-      "sha1": "5116a2371aef"
+      "sha1": "5116a2371aef",
+      "en_words": 428,
+      "confidence": "medium",
+      "confidence_note": "(the two remaining hieroglyph-panels; the inscription itself is on p. 246). The obelisk's"
     },
     "246": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 212,
-      "sha1": "76e5f1895d00"
+      "sha1": "76e5f1895d00",
+      "en_words": 553,
+      "confidence": "high",
+      "confidence_note": "(the two inscriptions are secure and read from the woodcut); medium for the ciborium-"
     },
     "247": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 297,
-      "sha1": "35251509cef3"
+      "sha1": "35251509cef3",
+      "en_words": 617,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo descends through an ivy-choked broken door into the **crypt** beneath the"
     },
     "248": {
       "chapter": "XIX",
