@@ -1088,21 +1088,30 @@
     },
     "344": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 325,
-      "sha1": "ea91891ce251"
+      "sha1": "ea91891ce251",
+      "en_words": 588,
+      "confidence": "medium",
+      "confidence_note": "The rear guard of the triumph: **satyrs and aegipans** bearing gilt ithyphallic"
     },
     "345": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 323,
-      "sha1": "776e18056d2f"
+      "sha1": "776e18056d2f",
+      "en_words": 546,
+      "confidence": "medium",
+      "confidence_note": "The procession moves, under a **roofed rose-pergola**, over a marble pavement"
     },
     "346": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 203,
-      "sha1": "09dc15c959c1"
+      "sha1": "09dc15c959c1",
+      "en_words": 473,
+      "confidence": "medium",
+      "confidence_note": "The procession arrives, with pyrrhic dance and hymns to Venus (\"the divine"
     },
     "347": {
       "chapter": "XXII",
