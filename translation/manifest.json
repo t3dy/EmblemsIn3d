@@ -1848,15 +1848,21 @@
     },
     "396": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 237,
-      "sha1": "152a29f32969"
+      "sha1": "152a29f32969",
+      "en_words": 515,
+      "confidence": "medium",
+      "confidence_note": "Polia's own account of her **absolute cruelty** as Poliphilo dies: rigid, deaf, wrinkle-browed,"
     },
     "397": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 129,
-      "sha1": "61e53d0c065d"
+      "sha1": "61e53d0c065d",
+      "en_words": 445,
+      "confidence": "medium",
+      "confidence_note": "The end of **chapter XXVI**: Polia, unmoved even by his death, **drags the dead Poliphilo by his"
     },
     "398": {
       "chapter": "XXVII",
