@@ -437,15 +437,21 @@
     },
     "240": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 451,
-      "sha1": "d5f9649c1369"
+      "sha1": "d5f9649c1369",
+      "en_words": 765,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's desire mounts to a **crisis of temptation**: gazing on Polia, his whole body"
     },
     "241": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 391,
-      "sha1": "6c8fd0cecffd"
+      "sha1": "6c8fd0cecffd",
+      "en_words": 818,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo **masters the temptation**: recalling the disasters of forced love (Deianira,"
     },
     "242": {
       "chapter": "XIX",
