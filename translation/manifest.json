@@ -818,57 +818,84 @@
     },
     "314": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 406,
-      "sha1": "350cf62b9f99"
+      "sha1": "350cf62b9f99",
+      "en_words": 677,
+      "confidence": "medium",
+      "confidence_note": "The end of the boating-game (fish that carry the girls,"
     },
     "315": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 389,
-      "sha1": "cbda1d355951"
+      "sha1": "cbda1d355951",
+      "en_words": 675,
+      "confidence": "medium",
+      "confidence_note": "The technical description of the terrace-steps (red and black"
     },
     "316": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 373,
-      "sha1": "a0b074af8048"
+      "sha1": "a0b074af8048",
+      "en_words": 684,
+      "confidence": "medium",
+      "confidence_note": "The second seven-step flight, the box-hedge rampart with its"
     },
     "317": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 327,
-      "sha1": "28a799894b42"
+      "sha1": "28a799894b42",
+      "en_words": 581,
+      "confidence": "medium",
+      "confidence_note": "The paving of the cloister-roads (a seven-band section: three"
     },
     "318": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 384,
-      "sha1": "48ed02224d26"
+      "sha1": "48ed02224d26",
+      "en_words": 665,
+      "confidence": "medium",
+      "confidence_note": "The second garden-cloister, reached by a second flight of"
     },
     "319": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 251,
-      "sha1": "a504f18437ad"
+      "sha1": "a504f18437ad",
+      "en_words": 519,
+      "confidence": "medium",
+      "confidence_note": "The full working-out of the box knot-parterre — bands passing"
     },
     "320": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 415,
-      "sha1": "fefe77673ae6"
+      "sha1": "fefe77673ae6",
+      "en_words": 683,
+      "confidence": "medium",
+      "confidence_note": "The exact herb-planting of the first knot-parterre — every band,"
     },
     "321": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 253,
-      "sha1": "fa5b78097476"
+      "sha1": "fa5b78097476",
+      "en_words": 491,
+      "confidence": "medium",
+      "confidence_note": "The completion of the nine-square/octagon knot and its full"
     },
     "322": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 320,
-      "sha1": "fd5ae12e4c13"
+      "sha1": "fd5ae12e4c13",
+      "en_words": 614,
+      "confidence": "medium",
+      "confidence_note": "The altar-and-vase at the parterre's centre (a porphyry altar with four"
     },
     "323": {
       "chapter": "XXI",
