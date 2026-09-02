@@ -1992,21 +1992,30 @@
     },
     "412": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 451,
-      "sha1": "fc841b402eb4"
+      "sha1": "fc841b402eb4",
+      "en_words": 732,
+      "confidence": "medium",
+      "confidence_note": "The nurse turns from myth to a **cautionary exemplum** (its point aimed at Polia): first, praise of"
     },
     "413": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 417,
-      "sha1": "a832999f0972"
+      "sha1": "a832999f0972",
+      "en_words": 789,
+      "confidence": "medium",
+      "confidence_note": "Cupid's revenge on the refusing girl: he strikes her at twenty-eight with the **golden arrow**, and"
     },
     "414": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 463,
-      "sha1": "c9068f72a451"
+      "sha1": "c9068f72a451",
+      "en_words": 785,
+      "confidence": "medium",
+      "confidence_note": "The wedding-night disaster: the lust-maddened girl, married to the **repulsive, impotent old man**"
     },
     "415": {
       "chapter": "XXVIII",
