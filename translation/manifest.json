@@ -221,21 +221,30 @@
     },
     "216": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 393,
-      "sha1": "57af1eb861f7"
+      "sha1": "57af1eb861f7",
+      "en_words": 770,
+      "confidence": "high",
+      "confidence_note": "The **rite of Venus at the well** — the priestess vests herself and Polia (mitre,"
     },
     "217": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 225,
-      "sha1": "2f61267e6f41"
+      "sha1": "2f61267e6f41",
+      "en_words": 533,
+      "confidence": "high",
+      "confidence_note": "The rite completes: the priestess draws **blessed water and gives it to Polia alone** to"
     },
     "218": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 234,
-      "sha1": "199f67e2e69d"
+      "sha1": "199f67e2e69d",
+      "en_words": 574,
+      "confidence": "high",
+      "confidence_note": "The **climax of Book I's later half**: Polia reveals herself fully — *\"I am, without"
     },
     "219": {
       "chapter": "XVII",
