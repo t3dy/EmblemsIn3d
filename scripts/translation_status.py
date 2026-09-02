@@ -54,6 +54,11 @@ def reconcile(man):
         if not src.exists():
             rec["status"] = "unfetched"
             continue
+        # a zero-byte source page is a blank leaf (a book-division turn); it is
+        # not translation work and is dropped from the denominator
+        if src.stat().st_size == 0:
+            rec["status"] = "blank"
+            continue
         if not en.exists():
             rec["status"] = "fetched"
             rec.pop("uncertain", None)
@@ -79,7 +84,7 @@ def reconcile(man):
 
 
 def report(man, next_n=0):
-    pages = man["pages"]
+    pages = {p: r for p, r in man["pages"].items() if r["status"] != "blank"}
     counts = {}
     for rec in pages.values():
         counts[rec["status"]] = counts.get(rec["status"], 0) + 1

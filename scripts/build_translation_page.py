@@ -121,6 +121,8 @@ def main():
         pending = []
         for n in nums:
             rec = pages[str(n)]
+            if rec.get("status") == "blank":
+                continue                     # a blank leaf, not a page to show
             en_file = EN / f"page_{n:03d}.md"
             if not en_file.exists():
                 pending.append(n)

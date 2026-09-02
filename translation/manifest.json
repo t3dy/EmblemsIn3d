@@ -28,7 +28,7 @@
     },
     "195": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "blank",
       "words": 0,
       "sha1": "da39a3ee5e6b"
     },
@@ -1117,69 +1117,101 @@
     },
     "370": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 395,
-      "sha1": "f146395b86de"
+      "sha1": "f146395b86de",
+      "en_words": 598,
+      "confidence": "medium",
+      "confidence_note": "Descriptive garden prose; secure in sense. Two soft"
     },
     "371": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 368,
-      "sha1": "2f34b7bac40c"
+      "sha1": "2f34b7bac40c",
+      "en_words": 667,
+      "confidence": "medium",
+      "confidence_note": "A long ekphrasis of the Adonis fountain's setting, secure"
     },
     "372": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 384,
-      "sha1": "2c2b4d9bbdbe"
+      "sha1": "2c2b4d9bbdbe",
+      "en_words": 697,
+      "confidence": "medium",
+      "confidence_note": "The two carved histories on the tomb are secure and"
     },
     "373": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 150,
-      "sha1": "73d4978a1356"
+      "sha1": "73d4978a1356",
+      "en_words": 405,
+      "confidence": "medium",
+      "confidence_note": "The cameo-carving conceit is the difficulty: Venus is"
     },
     "374": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "drafted",
       "words": 190,
-      "sha1": "107e422d1aba"
+      "sha1": "107e422d1aba",
+      "en_words": 491,
+      "uncertain": 2,
+      "confidence": "medium",
+      "confidence_note": "The completion of the cameo-Venus and the Latin distich"
     },
     "375": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 162,
-      "sha1": "58e4c7567ae3"
+      "sha1": "58e4c7567ae3",
+      "en_words": 418,
+      "confidence": "high",
+      "confidence_note": "Plain expository prose — the nymphs explaining the annual"
     },
     "376": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 424,
-      "sha1": "c2fbcfa108f4"
+      "sha1": "c2fbcfa108f4",
+      "en_words": 645,
+      "confidence": "medium",
+      "confidence_note": "The completion of the Adonia rite is secure; the closing"
     },
     "377": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 287,
-      "sha1": "6e6b75de6d24"
+      "sha1": "6e6b75de6d24",
+      "en_words": 511,
+      "confidence": "high",
+      "confidence_note": "This is a formal set speech — the nymph Polyorimene's"
     },
     "378": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 159,
-      "sha1": "e057c090de9d"
+      "sha1": "e057c090de9d",
+      "en_words": 393,
+      "confidence": "high",
+      "confidence_note": "A single flowing sentence of preparation — Polia rising,"
     },
     "379": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 25,
-      "sha1": "3cbd40ac55d7"
+      "sha1": "3cbd40ac55d7",
+      "en_words": 229,
+      "confidence": "high",
+      "confidence_note": "Three lines and the book-division. The Italian colophon"
     },
     "380": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "blank",
       "words": 0,
-      "sha1": "da39a3ee5e6b"
+      "sha1": "da39a3ee5e6b",
+      "note": "blank leaf before Book II title page"
     },
     "381": {
       "chapter": "XXV",
