@@ -455,21 +455,30 @@
     },
     "242": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 405,
-      "sha1": "cd028f319658"
+      "sha1": "cd028f319658",
+      "en_words": 655,
+      "confidence": "medium",
+      "confidence_note": "The opening of **chapter XIX** (the longest in the range): Poliphilo's desire still"
     },
     "243": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 227,
-      "sha1": "71fc132834e0"
+      "sha1": "71fc132834e0",
+      "en_words": 497,
+      "confidence": "medium",
+      "confidence_note": "(the hieroglyph-inventory is a plain description; the interpretations come on p. 244). The"
     },
     "244": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 140,
-      "sha1": "e7eb0c69dbf4"
+      "sha1": "e7eb0c69dbf4",
+      "en_words": 511,
+      "confidence": "high",
+      "confidence_note": "(the two mottoes are secure — the hieroglyphs are given with Poliphilo's own Latin, and both"
     },
     "245": {
       "chapter": "XIX",
