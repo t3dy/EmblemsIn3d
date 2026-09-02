@@ -598,21 +598,30 @@
     },
     "290": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 313,
-      "sha1": "24b521ccd242"
+      "sha1": "24b521ccd242",
+      "en_words": 581,
+      "confidence": "medium",
+      "confidence_note": "The rapturous approach is secure; the boat-description"
     },
     "291": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 292,
-      "sha1": "83123c83bc25"
+      "sha1": "83123c83bc25",
+      "en_words": 570,
+      "confidence": "medium",
+      "confidence_note": "This is one of the book's technical set-pieces — the"
     },
     "292": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 442,
-      "sha1": "a9aaebeb60c5"
+      "sha1": "a9aaebeb60c5",
+      "en_words": 736,
+      "confidence": "medium",
+      "confidence_note": "A great ekphrastic hymn to the island, secure in sense;"
     },
     "293": {
       "chapter": "XXI",
