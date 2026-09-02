@@ -112,21 +112,30 @@
     },
     "204": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 372,
-      "sha1": "31c793255b90"
+      "sha1": "31c793255b90",
+      "en_words": 671,
+      "confidence": "medium",
+      "confidence_note": "The **inextinguishable-fire candelabra** on the pilaster-tops (shell-mouthed,"
     },
     "205": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 2,
-      "sha1": "fae297055830"
+      "sha1": "fae297055830",
+      "en_words": 118,
+      "confidence": "high",
+      "confidence_note": "A blank-of-text woodcut page, carrying only the printer's signature \"n iii\". It is"
     },
     "206": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 364,
-      "sha1": "7e96c752385a"
+      "sha1": "7e96c752385a",
+      "en_words": 714,
+      "confidence": "medium",
+      "confidence_note": "The famous **lament for lost architecture** (\"O unhappy times… how is so beautiful"
     },
     "207": {
       "chapter": "XVII",
