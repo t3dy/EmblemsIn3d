@@ -2019,15 +2019,21 @@
     },
     "415": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 455,
-      "sha1": "9273ad4642ef"
+      "sha1": "9273ad4642ef",
+      "en_words": 826,
+      "confidence": "medium",
+      "confidence_note": "The exemplum's end: the frustrated wife, grieving her **irrecoverable wasted youth** and envying"
     },
     "416": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 449,
-      "sha1": "72b17cefa7b5"
+      "sha1": "72b17cefa7b5",
+      "en_words": 848,
+      "confidence": "medium",
+      "confidence_note": "The nurse's conclusion: **Medusa** turned to snake-hair for scorning suitors (her would-be lovers"
     },
     "417": {
       "chapter": "XXIX",
