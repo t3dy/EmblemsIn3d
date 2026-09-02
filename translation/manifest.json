@@ -780,21 +780,30 @@
     },
     "278": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 375,
-      "sha1": "5c1a5c9618b7"
+      "sha1": "5c1a5c9618b7",
+      "en_words": 599,
+      "confidence": "medium",
+      "confidence_note": "The boat **departs the shore**: the six nymphs turn to face Cupid on the prow (backs to the"
     },
     "279": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 404,
-      "sha1": "7ff6418c7cbf"
+      "sha1": "7ff6418c7cbf",
+      "en_words": 760,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's reflection on Love's irresistibility (no chastity — Diana's, Hippolytus's, Orithyia's"
     },
     "280": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 410,
-      "sha1": "0010d6fc1ce5"
+      "sha1": "0010d6fc1ce5",
+      "en_words": 764,
+      "confidence": "medium",
+      "confidence_note": "The climactic **homage of the marine gods to Cupid**: Nereus and Chloris, Neptune (trident, seal-"
     },
     "281": {
       "chapter": "XIX",
