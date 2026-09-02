@@ -672,39 +672,57 @@
     },
     "266": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 436,
-      "sha1": "c4d0066d577b"
+      "sha1": "c4d0066d577b",
+      "en_words": 754,
+      "confidence": "medium",
+      "confidence_note": "(the *Eros Katoptron* inscription is secure). The completion of the Artemisia tomb: a black"
     },
     "267": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 9,
-      "sha1": "d79716f3e471"
+      "sha1": "d79716f3e471",
+      "en_words": 222,
+      "confidence": "high",
+      "confidence_note": "(the two inscriptions are secure). A woodcut leaf — the illustration of Artemisia's tomb — bearing"
     },
     "268": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 4,
-      "sha1": "62987e1ffc6f"
+      "sha1": "62987e1ffc6f",
+      "en_words": 73,
+      "confidence": "high",
+      "confidence_note": "A near-blank leaf bearing only a typographic ornament (the asterisk device), marking the break"
     },
     "269": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 122,
-      "sha1": "f557e14b47c2"
+      "sha1": "f557e14b47c2",
+      "en_words": 458,
+      "confidence": "high",
+      "confidence_note": "(the epitaph is secure). The wedding-night tragedy of **Sertullius and Rancilia**: a couple, wed"
     },
     "270": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 106,
-      "sha1": "8a1e29c3501e"
+      "sha1": "8a1e29c3501e",
+      "en_words": 332,
+      "confidence": "medium",
+      "confidence_note": "A new **whitest-marble tomb**: fluted flanking columns, a pediment with two **turtledoves"
     },
     "271": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 105,
-      "sha1": "3c67817c7995"
+      "sha1": "3c67817c7995",
+      "en_words": 475,
+      "confidence": "high",
+      "confidence_note": "(the epitaph is secure; a few abbreviations conjecturally expanded). A **jealousy-suicide**:"
     },
     "272": {
       "chapter": "XIX",
