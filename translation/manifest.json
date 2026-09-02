@@ -807,15 +807,21 @@
     },
     "281": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 424,
-      "sha1": "a1fbc16b5b61"
+      "sha1": "a1fbc16b5b61",
+      "en_words": 747,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's **rapture at possessing Polia**, in a great surpassing-catalogue (Endymion, Paris,"
     },
     "282": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 435,
-      "sha1": "ea1e1380e1b0"
+      "sha1": "ea1e1380e1b0",
+      "en_words": 858,
+      "confidence": "medium",
+      "confidence_note": "The meditation on **Love's cosmic fire** — a flame that penetrates the heavens and the abyss, which"
     },
     "283": {
       "chapter": "XX",
