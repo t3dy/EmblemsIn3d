@@ -2163,21 +2163,30 @@
     },
     "431": {
       "chapter": "XXX",
-      "status": "fetched",
+      "status": "verified",
       "words": 196,
-      "sha1": "f7221e130724"
+      "sha1": "f7221e130724",
+      "en_words": 466,
+      "confidence": "medium",
+      "confidence_note": "The end of **chapter XXX**: Poliphilo's plea done, Polia — \"taken by his mellifluous tongue,\" her"
     },
     "432": {
       "chapter": "XXXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 364,
-      "sha1": "d8f81e2c3665"
+      "sha1": "d8f81e2c3665",
+      "en_words": 665,
+      "confidence": "medium",
+      "confidence_note": "**Polia's answering declaration of love** (chapter XXXI): she will repay the cruelty she did him"
     },
     "433": {
       "chapter": "XXXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 420,
-      "sha1": "56ba31a805a9"
+      "sha1": "56ba31a805a9",
+      "en_words": 772,
+      "confidence": "medium",
+      "confidence_note": "Polia's declaration continues: she vows, \"with ratified faith and firm loyalty, wholly amorously"
     },
     "434": {
       "chapter": "XXXI",
