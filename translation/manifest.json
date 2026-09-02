@@ -679,21 +679,31 @@
     },
     "299": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 430,
-      "sha1": "afb2032d8f4b"
+      "sha1": "afb2032d8f4b",
+      "en_words": 675,
+      "confidence": "medium",
+      "confidence_note": "The construction of the *prati* fountains — a stepped round"
     },
     "300": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "drafted",
       "words": 312,
-      "sha1": "35de26444516"
+      "sha1": "35de26444516",
+      "en_words": 621,
+      "uncertain": 1,
+      "confidence": "low",
+      "confidence_note": "This is the hardest page yet: a single continuous description"
     },
     "301": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 306,
-      "sha1": "364fbf2f7b97"
+      "sha1": "364fbf2f7b97",
+      "en_words": 579,
+      "confidence": "medium",
+      "confidence_note": "The central hydra-fountain and the four-step herb platforms"
     },
     "302": {
       "chapter": "XXI",
