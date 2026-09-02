@@ -2217,21 +2217,30 @@
     },
     "437": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 394,
-      "sha1": "d7490d2c282f"
+      "sha1": "d7490d2c282f",
+      "en_words": 710,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo continues his narration: hard-won love is the more precious (no palm without struggle;"
     },
     "438": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 413,
-      "sha1": "31bfcd6ef468"
+      "sha1": "31bfcd6ef468",
+      "en_words": 748,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's account of **falling in love at the temple**: at a festival in Diana's temple he sees"
     },
     "439": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 394,
-      "sha1": "ef73ec4c1eab"
+      "sha1": "ef73ec4c1eab",
+      "en_words": 749,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's beauty-praise completes (Polia's rose-and-lily face, her ivory teeth in a fragrant"
     },
     "440": {
       "chapter": "XXXII",
