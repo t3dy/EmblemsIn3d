@@ -2379,21 +2379,30 @@
     },
     "455": {
       "chapter": "XXXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 330,
-      "sha1": "e4d3c4432298"
+      "sha1": "e4d3c4432298",
+      "en_words": 752,
+      "confidence": "medium",
+      "confidence_note": "**Poliphilo's death** (his soul flees, and he \"dead remained\" prostrate in the temple), and"
     },
     "456": {
       "chapter": "XXXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 235,
-      "sha1": "edfb8c42df15"
+      "sha1": "edfb8c42df15",
+      "en_words": 578,
+      "confidence": "medium",
+      "confidence_note": "The spirit's speech continues: the revival is \"a triumph like our glorious one,\" Poliphilo now the"
     },
     "457": {
       "chapter": "XXXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 183,
-      "sha1": "f6cc4f6bb4df"
+      "sha1": "f6cc4f6bb4df",
+      "en_words": 560,
+      "confidence": "medium",
+      "confidence_note": "The vision's resolution: Venus calls **Cupid** and asks the cause of Poliphilo's injury; Cupid,"
     },
     "458": {
       "chapter": "XXXV",
