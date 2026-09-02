@@ -2271,21 +2271,30 @@
     },
     "443": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 234,
-      "sha1": "2d0fa9dee7f1"
+      "sha1": "2d0fa9dee7f1",
+      "en_words": 559,
+      "confidence": "medium",
+      "confidence_note": "The end of **chapter XXXII**: Poliphilo, reason returning, **repents his curse** (\"against thy own"
     },
     "444": {
       "chapter": "XXXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 374,
-      "sha1": "ce4bb138225d"
+      "sha1": "ce4bb138225d",
+      "en_words": 668,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's decision made, he sends the letter — and **chapter XXXIII gives the first love-letter**"
     },
     "445": {
       "chapter": "XXXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 429,
-      "sha1": "9321c37a36b5"
+      "sha1": "9321c37a36b5",
+      "en_words": 779,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's first letter continues to its plea: he asks Polia (whom he trusts \"most-humane, noble,"
     },
     "446": {
       "chapter": "XXXIII",
