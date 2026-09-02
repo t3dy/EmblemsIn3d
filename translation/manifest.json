@@ -645,21 +645,30 @@
     },
     "263": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 321,
-      "sha1": "cad687665d8c"
+      "sha1": "cad687665d8c",
+      "en_words": 792,
+      "confidence": "high",
+      "confidence_note": "(the epitaph is a continuous, secure Latin narrative). The harrowing epitaph of **Lopidia and"
     },
     "264": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 216,
-      "sha1": "559825e8e2db"
+      "sha1": "559825e8e2db",
+      "en_words": 465,
+      "confidence": "medium",
+      "confidence_note": "After the Lopidia epitaph, a marble tablet with a foliate-crown relief, then the introduction"
     },
     "265": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 406,
-      "sha1": "7e7b7463da6d"
+      "sha1": "7e7b7463da6d",
+      "en_words": 762,
+      "confidence": "high",
+      "confidence_note": "(the two Greek inscriptions are secure and famous). The **tomb of Artemisia and Mausolus** — the"
     },
     "266": {
       "chapter": "XIX",
