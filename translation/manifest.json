@@ -736,21 +736,31 @@
     },
     "305": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 361,
-      "sha1": "540f6b170471"
+      "sha1": "540f6b170471",
+      "en_words": 596,
+      "confidence": "medium",
+      "confidence_note": "The third meadow's topiary — box trained on a chalice-domed"
     },
     "306": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "drafted",
       "words": 269,
-      "sha1": "7b1938eee0b3"
+      "sha1": "7b1938eee0b3",
+      "en_words": 498,
+      "uncertain": 5,
+      "confidence": "medium",
+      "confidence_note": "The close of the third-ring topiary and its herb-and-fruit"
     },
     "307": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 260,
-      "sha1": "5a06c321e186"
+      "sha1": "5a06c321e186",
+      "en_words": 511,
+      "confidence": "medium",
+      "confidence_note": "The summary of the *prati*'s perpetual fecundity, the"
     },
     "308": {
       "chapter": "XXI",
