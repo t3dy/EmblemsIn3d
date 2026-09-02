@@ -707,21 +707,32 @@
     },
     "302": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 347,
-      "sha1": "764758d75687"
+      "sha1": "764758d75687",
+      "en_words": 629,
+      "confidence": "medium",
+      "confidence_note": "The corner fruit-tree topiaries and the second-ring's box"
     },
     "303": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "drafted",
       "words": 313,
-      "sha1": "8309b7293aa6"
+      "sha1": "8309b7293aa6",
+      "en_words": 618,
+      "uncertain": 1,
+      "confidence": "low",
+      "confidence_note": "Like p. 300, this is a single unbroken account of one topiary"
     },
     "304": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "drafted",
       "words": 210,
-      "sha1": "450308ec7f95"
+      "sha1": "450308ec7f95",
+      "en_words": 487,
+      "uncertain": 9,
+      "confidence": "low",
+      "confidence_note": "The corner herb-and-fruit scheme of the second ring is"
     },
     "305": {
       "chapter": "XXI",
