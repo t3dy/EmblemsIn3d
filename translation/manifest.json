@@ -16,15 +16,21 @@
   "pages": {
     "193": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 198,
-      "sha1": "4b98db4d2c90"
+      "sha1": "4b98db4d2c90",
+      "en_words": 539,
+      "confidence": "high",
+      "confidence_note": "This is the join between Dallington (1592) and this translation. The page"
     },
     "194": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 250,
-      "sha1": "716ad4d7013f"
+      "sha1": "716ad4d7013f",
+      "en_words": 523,
+      "confidence": "medium",
+      "confidence_note": "The altar of Priapus under a flower-wreathed, lamp-hung canopy, and the"
     },
     "195": {
       "chapter": "XVII",
@@ -34,15 +40,21 @@
     },
     "196": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 432,
-      "sha1": "dc5421127ff5"
+      "sha1": "dc5421127ff5",
+      "en_words": 732,
+      "confidence": "medium",
+      "confidence_note": "The opening of **chapter XVIII**: the water-nymphs (Napaeae, Naiads,"
     },
     "197": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 398,
-      "sha1": "1626d4781a37"
+      "sha1": "1626d4781a37",
+      "en_words": 740,
+      "confidence": "medium",
+      "confidence_note": "Arrival at the **round Temple of Venus Physizoa**, and the beginning of its"
     },
     "198": {
       "chapter": "XVII",
