@@ -1893,21 +1893,30 @@
     },
     "401": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 243,
-      "sha1": "bad6497c9570"
+      "sha1": "bad6497c9570",
+      "en_words": 496,
+      "confidence": "medium",
+      "confidence_note": "The graphic climax of the vision: the two girls, dragged bleeding through the thorns by the fiery"
     },
     "402": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 391,
-      "sha1": "7787c7328924"
+      "sha1": "7787c7328924",
+      "en_words": 676,
+      "confidence": "medium",
+      "confidence_note": "The vision's grisliest turn: Cupid **cuts the girls in two, tears out their living hearts** and"
     },
     "403": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 216,
-      "sha1": "9a4e671e2c2e"
+      "sha1": "9a4e671e2c2e",
+      "en_words": 528,
+      "confidence": "medium",
+      "confidence_note": "The peak of Polia's terror in the vision: she watches the beasts tear the flesh from the dead"
     },
     "404": {
       "chapter": "XXVII",
