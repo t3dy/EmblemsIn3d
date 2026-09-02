@@ -302,21 +302,30 @@
     },
     "225": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 376,
-      "sha1": "d5be7fc9cae8"
+      "sha1": "d5be7fc9cae8",
+      "en_words": 672,
+      "confidence": "medium",
+      "confidence_note": "The opening of **chapter XVIII**: the surpassing of every ancient rite (Numa, the"
     },
     "226": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 383,
-      "sha1": "7f1719c25f91"
+      "sha1": "7f1719c25f91",
+      "en_words": 716,
+      "confidence": "medium",
+      "confidence_note": "The core of the rite: Polia kindles the incense and myrtle, **sacrifices the two"
     },
     "227": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 409,
-      "sha1": "3bc9b963ac9f"
+      "sha1": "3bc9b963ac9f",
+      "en_words": 752,
+      "confidence": "medium",
+      "confidence_note": "The apparition and its aftermath: the winged spirit (myrtle-crown, **fire-arrow**,"
     },
     "228": {
       "chapter": "XVIII",
