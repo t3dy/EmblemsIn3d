@@ -1794,21 +1794,30 @@
     },
     "390": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 450,
-      "sha1": "aeb7fe0410bb"
+      "sha1": "aeb7fe0410bb",
+      "en_words": 797,
+      "confidence": "medium",
+      "confidence_note": "Polia recounts **Poliphilo's declaration of love** in the temple — his physical collapse"
     },
     "391": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 440,
-      "sha1": "9d4190fe0cb1"
+      "sha1": "9d4190fe0cb1",
+      "en_words": 695,
+      "confidence": "medium",
+      "confidence_note": "The continuation of **Poliphilo's plea**: without Polia he is \"the ivy torn from the poplar,\""
     },
     "392": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 445,
-      "sha1": "be7e81e4e610"
+      "sha1": "be7e81e4e610",
+      "en_words": 819,
+      "confidence": "medium",
+      "confidence_note": "The end of Poliphilo's first plea (his self-torment, his half-mad accusations of Polia as \"sweet"
     },
     "393": {
       "chapter": "XXVI",
