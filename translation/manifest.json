@@ -1018,7 +1018,7 @@
       "status": "verified",
       "words": 333,
       "sha1": "bfcce8251ac5",
-      "en_words": 755,
+      "en_words": 812,
       "confidence": "medium",
       "confidence_note": "The gem-lore and the column order are secure — Colonna"
     },
@@ -1053,9 +1053,12 @@
     },
     "363": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 395,
-      "sha1": "3f4736d5546b"
+      "sha1": "3f4736d5546b",
+      "en_words": 816,
+      "confidence": "medium",
+      "confidence_note": "The tableau is secure — every figure is identifiable —"
     },
     "364": {
       "chapter": "XXIII",

@@ -4,6 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Poliphilo's Commonplace Book · a visual novel</title>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/",
+    "gsap": "https://esm.sh/gsap@3.12.5",
+    "gsap/PixiPlugin": "https://esm.sh/gsap@3.12.5/PixiPlugin"
+  }
+}
+</script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -205,6 +215,7 @@
     <div class="kicker">Emblems in 3D · a visual novel</div>
     <h1>Poliphilo's <em>Commonplace Book</em></h1>
     <div class="sub">Walk the dream as a reader who can be wrong.</div>
+    <button id="raise" class="reset" style="margin-top:.8rem">Raise the garden behind the text ▸</button>
   </header>
 
   <div class="cols">
@@ -301,6 +312,7 @@ function renderScene() {
 
   const sc = SCENES[S.i];
   stage.className = sc.station || '';
+  stage3d?.park(sc.station);
 
   let h = `<div class="act">Act ${sc.act} · scene ${S.i + 1} of ${SCENES.length}${S.run > 1 ? ` · reading ${S.run}` : ''}</div>
            <h2>${sc.title}</h2>`;
@@ -416,6 +428,7 @@ function chooseDoor(id) {
 
 function renderEnd(el, stage) {
   stage.className = 'fountain';
+  stage3d?.park('fountain');
   const b = S.door ? BRANCHES[S.door] : null;
   const lean = S.axis < -0.3 ? 'Logistica had the better of you'
              : S.axis > 0.3 ? 'Thelemia had the better of you'
@@ -572,13 +585,25 @@ function reset() {
 }
 document.getElementById('reset').addEventListener('click', reset);
 
-/* ── Mount point for the live 3-D stage ──────────────────────────────────
-   The Dream Garden (src/scenes/HPWorldScene.js) can render behind this UI
-   instead of the CSS backdrop: build the scene, park its camera at the
-   station named by `SCENES[i].station`, and append its canvas to #stage.
-   Every improvement to the world then improves the novel for free. Left
-   unwired in the prototype so this page stands alone. */
-function mountStage(/* renderer, composer */) { /* see GAMIFYVRHP.md §5 */ }
+/* ── The live 3-D stage ──────────────────────────────────────────────────
+   Opt-in: the Dream Garden itself renders behind the text, camera gliding
+   to the station each scene names. See game/stage3d.js. */
+let stage3d = null;
+const raiseBtn = document.getElementById('raise');
+raiseBtn.addEventListener('click', async () => {
+  raiseBtn.disabled = true;
+  raiseBtn.textContent = 'Raising the garden…';
+  try {
+    const mod = await import('./stage3d.js?v=1');
+    const station = (S.done ? 'fountain' : SCENES[S.i]?.station) || 'wood';
+    stage3d = await mod.mountStage(document.getElementById('stage'), station);
+    raiseBtn.style.display = 'none';
+  } catch (e) {
+    raiseBtn.disabled = false;
+    raiseBtn.textContent = 'The garden would not rise — try again';
+    console.error(e);
+  }
+});
 
 renderAll();
 </script>

@@ -55,6 +55,8 @@ export const HP_STATIONS = [
     pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
   { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158, emblem: null,
     pos: [5.5, -4.5], look: [10.6, -9.4], radius: 5 },
+  { key: 'polyandrion',      name: 'The Polyandrion',        folio: 242, emblem: null,
+    pos: [23, -22], look: [30, -27], radius: 9 },
   // The island itself — reached by Cupid's boat (digit 0), returned from by 9:
   { key: 'cythera_isle',     name: 'The Gardens of Cythera', folio: 290, emblem: null,
     pos: [0, -104], look: [0, -150], radius: 13 },
@@ -247,6 +249,7 @@ export class HPWorldScene {
     this._buildQuinta();
     this._buildFountain();
     this._buildTriumphs();
+    this._buildPolyandrion();
     this._buildCythera();
     // The island is ~700 objects of its own. It lives in one group so that
     // when the player is deep in the mainland garden — where the haze has
@@ -293,6 +296,7 @@ export class HPWorldScene {
     if (this._quinta) { mark(this._quinta.dod); mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
     if (this._boat) { mark(this._boat); mark(this._boat.userData.cupid); }
+    if (this._hiero) { mark(this._hiero.ant); mark(this._hiero.ele); }
 
     // groups that move whole: compile inside, then fence off
     for (const n of this._npcs) {
@@ -815,11 +819,8 @@ export class HPWorldScene {
       this._circleCol(x, z, 0.4);
     });
 
-    // The bath of the nymphs
-    const bath = this.cast.props.pool(2.4);
-    bath.position.set(CX + 3.5, 0, CZ + 2.8);
-    this.scene.add(bath);
-    this._circleCol(CX + 3.5, CZ + 2.8, 1.7);
+    // The bath of the nymphs — the eight-sided bath-house of the book
+    this._buildBath(CX + 3.5, CZ + 2.8);
 
     // Fountain jets over the bath (lit sparkle)
     const stream = new ParticleStream({
@@ -892,6 +893,91 @@ export class HPWorldScene {
           1.62, 0.3, BX, 1.26, BZ - 1.5, 0, true);
       }
     }
+  }
+
+  // ── The eight-sided bath-house ────────────────────────────────────────────
+  //
+  // Built from the book's own description (HP_SOURCEBOOK.md §3): "a marueilous
+  // buildyng of a bathe eight square," paired pilasters at every outer corner,
+  // a frieze of children with green boughs, ring-seats descending into the
+  // water, an eight-square spire glazed with crystal quarrels — and on its
+  // point the trumpet-boy weathervane whose hollow head sounds in the wind.
+  // Over the entrance, in Greek: ΑΣΑΜΙΝΘΟΣ — "bath."
+  _buildBath(BX, BZ) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const gold = woodcut ? S.mat({ tone: 0.02 }) : S.mat({ color: 0xd9b25a, metalness: 0.9, roughness: 0.25 });
+
+    // octagonal basin wall, rim, and the ring-seats stepping down inside
+    this._m(new THREE.CylinderGeometry(2.2, 2.3, 0.85, 8, 1, true), this._stoneMat, BX, 0.42, BZ);
+    this._m(new THREE.TorusGeometry(2.2, 0.09, 8, 8), gold, BX, 0.88, BZ, { rx: Math.PI / 2 });
+    for (let i = 0; i < 3; i++) {
+      this._m(new THREE.CylinderGeometry(1.9 - i * 0.35, 2.0 - i * 0.35, 0.16, 8), this._darkStoneMat,
+        BX, 0.66 - i * 0.2, BZ, { cast: false });
+    }
+    const bathWater = S.waterMat();
+    if (!woodcut) { bathWater.color.set(0xffffff); bathWater.map = this._waterTexture(); }
+    this._waters.push({
+      m: this._m(new THREE.CircleGeometry(1.85, 8), bathWater, BX, 0.62, BZ, { rx: -Math.PI / 2, cast: false }),
+      rate: 0.08,
+    });
+
+    // paired pilasters at each corner, carrying the frieze
+    for (let i = 0; i < 8; i++) {
+      const a = (i + 0.5) * Math.PI / 4;
+      const px = BX + Math.cos(a) * 2.35, pz = BZ + Math.sin(a) * 2.35;
+      for (const s of [-0.12, 0.12]) {
+        const off = a + Math.PI / 2;
+        this._m(new THREE.BoxGeometry(0.16, 2.1, 0.16), this._stoneMat,
+          px + Math.cos(off) * s, 1.05, pz + Math.sin(off) * s, { ry: -a });
+      }
+    }
+    // the frieze of children with their green boughs, then the cornice
+    const friezeM = woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xcbbb98, roughness: 0.8 });
+    this._m(new THREE.CylinderGeometry(2.42, 2.42, 0.3, 8, 1, true), friezeM, BX, 2.25, BZ, { cast: false });
+    for (let i = 0; i < 8; i++) {
+      const a = i * Math.PI / 4;
+      this._m(new THREE.SphereGeometry(0.07, 6, 5), woodcut ? S.mat({ tone: 0.0 }) : S.mat({ color: 0xdcc8a8, roughness: 0.7 }),
+        BX + Math.cos(a) * 2.44, 2.25, BZ + Math.sin(a) * 2.44, { cast: false });
+      this._m(new THREE.SphereGeometry(0.05, 5, 4), this._leafMat,
+        BX + Math.cos(a) * 2.46, 2.36, BZ + Math.sin(a) * 2.46, { cast: false });
+    }
+    this._m(new THREE.CylinderGeometry(2.55, 2.5, 0.14, 8), this._stoneMat, BX, 2.46, BZ);
+
+    // the eight-square spire, glazed with crystal quarrels between gold ribs
+    const quarrels = woodcut
+      ? S.mat({ tone: -0.1, rim: 0.5 })
+      : S.mat({ color: 0xd4e8f2, roughness: 0.06, metalness: 0.1, transparent: true, opacity: 0.28 });
+    this._m(new THREE.ConeGeometry(2.35, 1.9, 8, 1, true), quarrels, BX, 3.45, BZ, { cast: false, receive: false });
+    for (let i = 0; i < 8; i++) {
+      const a = i * Math.PI / 4;
+      const rib = this._m(new THREE.CylinderGeometry(0.03, 0.045, 2.05, 5), gold,
+        BX + Math.cos(a) * 1.12, 3.42, BZ + Math.sin(a) * 1.12);
+      rib.rotation.z = -Math.cos(a) * 0.75;
+      rib.rotation.x = Math.sin(a) * 0.75;
+    }
+
+    // the trigon, the turning stalk, and the trumpet-boy who sounds in the wind
+    this._m(new THREE.ConeGeometry(0.16, 0.3, 3), gold, BX, 4.5, BZ);
+    const vane = new THREE.Group();
+    const brass = woodcut ? S.mat({ tone: 0.04 }) : S.mat({ color: 0xc89a40, metalness: 0.9, roughness: 0.3 });
+    this._m(new THREE.SphereGeometry(0.09, 8, 6), brass, 0, 0.1, 0, { parent: vane });
+    const boy = this.cast.figure({ h: 0.34, robe: null, skin: 0xc89a40, pose: 'reach' });
+    boy.position.y = 0.18;
+    vane.add(boy);
+    const trump = this._m(new THREE.ConeGeometry(0.035, 0.22, 6), brass, 0.05, 0.72, 0.12, { parent: vane });
+    trump.rotation.x = -1.2;
+    const flag = this._m(new THREE.PlaneGeometry(0.3, 0.14), brass, -0.2, 0.55, 0, { parent: vane, cast: false });
+    flag.rotation.y = Math.PI / 2;
+    vane.position.set(BX, 4.62, BZ);
+    this.scene.add(vane);
+    this._vanes.push({ g: vane, rate: 0.8, phase: 1.3 });
+
+    // ΑΣΑΜΙΝΘΟΣ over the way in
+    this._plaque({ main: 'ΑΣΑΜΙΝΘΟΣ', sub: 'THE BATH · EIGHT-SIDED, ROOFED WITH CRYSTAL' },
+      1.5, 0.4, BX, 1.5, BZ + 2.55, 0, true);
+
+    this._circleCol(BX, BZ, 2.6);
   }
 
   // ── Polia's Garden (the nymph with the torch) ─────────────────────────────
@@ -1541,6 +1627,103 @@ export class HPWorldScene {
     return this.cast.animals.horse(0.95);
   }
 
+  // ── The Polyandrion — the ruined temple of the dead ───────────────────────
+  //
+  // Chapter XIX, the longest in the untranslated range, and 27 of the book's
+  // woodcuts: the ruin by the shore where Poliphilo does the thing he is
+  // actually for — reading monuments. A broken temple front, fallen drums, a
+  // half-buried colossus, sarcophagi, and the obelisk of Caesar carrying the
+  // book's best hieroglyph: the ant that grows into an elephant and the
+  // elephant that dwindles into an ant — concord and discord as one
+  // reversible creature (Curran; ARCHITECTURE.md §4). The pair animates.
+  _buildPolyandrion() {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const PX = 30, PZ = -27;
+
+    // a ruin floor of cracked paving, half-lost in the grass
+    const ruinMat = woodcut ? S.mat({ tone: 0.05, rim: 0 }) : S.mat({ color: 0x9a8a6a, roughness: 0.95 });
+    if (!woodcut) this._dress(ruinMat, this._surfaceTexture({ base: '#9a8a6a', dark: '#4a3e28', light: '#cfc0a0', veins: 8, courses: 3, repeat: 4 }), 0.35);
+    this._m(new THREE.CircleGeometry(9, 24), ruinMat, PX, 0.03, PZ, { rx: -Math.PI / 2, cast: false });
+
+    // the temple front: two whole columns, two broken, a surviving architrave
+    const cols = [[-3.2, 3.4, false], [-1.1, 3.4, false], [1.1, 1.6, true], [3.2, 2.3, true]];
+    for (const [dx, hgt, broken] of cols) {
+      this._m(new THREE.BoxGeometry(0.7, 0.22, 0.7), this._stoneMat, PX + dx, 0.11, PZ - 3.4);
+      this._m(new THREE.CylinderGeometry(0.24, 0.3, hgt, 12), this._stoneMat, PX + dx, 0.22 + hgt / 2, PZ - 3.4, { outline: true });
+      if (!broken) this._m(new THREE.BoxGeometry(0.66, 0.26, 0.66), this._stoneMat, PX + dx, 0.35 + hgt, PZ - 3.4);
+      this._circleCol(PX + dx, PZ - 3.4, 0.5);
+    }
+    this._m(new THREE.BoxGeometry(2.9, 0.5, 0.8), this._stoneMat, PX - 2.15, 3.95, PZ - 3.4, { outline: true });
+    // the fallen pediment fragment, face down in the grass
+    const ped = this._m(new THREE.CylinderGeometry(1.5, 1.5, 0.4, 3), this._stoneMat, PX + 3.6, 0.3, PZ - 1.2, { outline: true });
+    ped.rotation.z = Math.PI / 2; ped.rotation.x = 0.3;
+    this._circleCol(PX + 3.6, PZ - 1.2, 1.4);
+
+    // fallen drums, scattered as the quake left them
+    for (const [dx, dz, ry] of [[-4.2, 0.8, 0.4], [-2.6, 1.9, 1.9], [0.4, 2.6, 1.1]]) {
+      const drum = this._m(new THREE.CylinderGeometry(0.28, 0.28, 1.1, 12), this._stoneMat, PX + dx, 0.28, PZ + dz);
+      drum.rotation.z = Math.PI / 2; drum.rotation.y = ry;
+      this._circleCol(PX + dx, PZ + dz, 0.7);
+    }
+
+    // the half-buried colossus: a great head risen out of the ground, tilted,
+    // its features worn to suggestion — the fragment as portrait
+    const head = this._m(new THREE.SphereGeometry(1.15, 20, 16),
+      woodcut ? S.mat({ tone: 0.08 }) : S.mat({ color: 0xb0a284, roughness: 0.85 }),
+      PX - 4.6, 0.15, PZ - 0.6, { outline: true });
+    head.rotation.y = 2.4; head.rotation.z = 0.25;
+    const brow = this._m(new THREE.BoxGeometry(0.9, 0.12, 0.3), this._darkStoneMat, PX - 4.6, 0.75, PZ - 1.4, { cast: false });
+    brow.rotation.z = 0.2;
+    this._circleCol(PX - 4.6, PZ - 0.6, 1.3);
+
+    // sarcophagi, and the open grave
+    for (const [dx, dz, ry] of [[1.6, 0.6, 0.15], [3.4, 2.4, -0.5]]) {
+      this._m(new THREE.BoxGeometry(1.7, 0.7, 0.85), this._stoneMat, PX + dx, 0.35, PZ + dz, { ry, outline: true });
+      const lid = this._m(new THREE.BoxGeometry(1.8, 0.2, 0.95), this._darkStoneMat, PX + dx + 0.35, 0.78, PZ + dz, { ry: ry + 0.1 });
+      lid.rotation.z = 0.06;
+      this._wallCol(PX + dx - 1, PX + dx + 1, PZ + dz - 0.6, PZ + dz + 0.6);
+    }
+    const grave = this.cast.props.grave(1.1);
+    grave.position.set(PX - 1.4, 0.04, PZ + 4.2);
+    grave.rotation.y = 0.3;
+    this.scene.add(grave);
+    this._plaque({ main: 'D · M', sub: 'DIS MANIBVS · TO THE SHADES OF THE DEAD' },
+      0.8, 0.3, PX + 1.6, 1.05, PZ + 1.15, 0.15, true);
+
+    // the obelisk of Caesar, with both its inscriptions
+    this._m(new THREE.BoxGeometry(1.6, 0.8, 1.6), this._stoneMat, PX, 0.4, PZ + 6.5, { outline: true });
+    this._m(new THREE.CylinderGeometry(0.1, 0.42, 4.4, 4), this._stoneMat, PX, 3.0, PZ + 6.5, { outline: true });
+    this._circleCol(PX, PZ + 6.5, 1.1);
+    this._plaque({ main: 'DIVO IVLIO CAESARI SEMP. AVG.', sub: 'THE EGYPTIANS RAISED THIS TO CAESAR, GOVERNOR OF THE WHOLE WORLD' },
+      1.9, 0.42, PX, 1.15, PZ + 7.35, Math.PI, true);
+    this._plaque({ main: 'PACE AC CONCORDIA PARVAE RES CRESCVNT', sub: 'DISCORDIA MAXIMAE DECRESCVNT' },
+      2.0, 0.42, PX - 0.85, 1.15, PZ + 6.5, -Math.PI / 2, true);
+
+    // the ant and the elephant, one reversible creature: as concord waxes the
+    // ant grows to an elephant; as discord waxes the elephant dwindles to an
+    // ant. The two trade sizes in a slow breath.
+    const hieroM = woodcut ? S.mat({ tone: 0.22 }) : S.mat({ color: 0x4a3e2c, roughness: 0.8 });
+    const ant = new THREE.Group();
+    for (const [oy, r] of [[0.05, 0.05], [0.13, 0.065], [0.22, 0.05]]) {
+      const seg = new THREE.Mesh(new THREE.SphereGeometry(r, 7, 5), hieroM);
+      seg.position.set(0, oy, 0);
+      ant.add(seg);
+    }
+    ant.position.set(PX + 0.55, 1.7, PZ + 6.5);
+    this.scene.add(ant);
+    const eleG = new THREE.Group();
+    const eb = new THREE.Mesh(new THREE.SphereGeometry(0.16, 8, 6), hieroM); eb.scale.set(1.3, 1, 1); eleG.add(eb);
+    const eh = new THREE.Mesh(new THREE.SphereGeometry(0.09, 7, 5), hieroM); eh.position.set(-0.2, 0.06, 0); eleG.add(eh);
+    const tr = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.03, 0.18, 5), hieroM); tr.position.set(-0.3, -0.04, 0); tr.rotation.z = 0.7; eleG.add(tr);
+    for (const lx of [-0.08, 0.08]) {
+      const lg = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.035, 0.16, 5), hieroM); lg.position.set(lx, -0.16, 0); eleG.add(lg);
+    }
+    eleG.position.set(PX + 0.55, 2.4, PZ + 6.5);
+    this.scene.add(eleG);
+    this._hiero = { ant, ele: eleG };
+  }
+
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
 
   _buildCythera() {
@@ -1938,6 +2121,7 @@ export class HPWorldScene {
       rect(-19, 19, 24.2, 27.8),         // Great Portal piers
       rect(-35.5, 35.5, 31.5, 55),       // dark-wood duff
       rect(-70, 70, -70, -33),           // sand strip and sea
+      circle(30, -27, 9.3),              // the polyandrion's ruin floor
     );
     for (const t of TRIUMPHS) d = Math.min(d, circle(t.pos[0], t.pos[1], 2.4));
     return d;
@@ -2110,6 +2294,13 @@ export class HPWorldScene {
     // Fortuna turns on her pin: a slow drift with the gusts, never a clean spin
     for (const v of this._vanes) {
       v.g.rotation.y += dt * v.rate * (0.6 + 0.4 * Math.sin(this._t * 0.31 + v.phase));
+    }
+    // Concord and discord, breathing: the ant grows to an elephant while the
+    // elephant dwindles to an ant, and back, forever
+    if (this._hiero) {
+      const k = (Math.sin(this._t * 0.45) + 1) / 2;      // 0 … 1, slow
+      this._hiero.ant.scale.setScalar(0.4 + k * 1.4);
+      this._hiero.ele.scale.setScalar(1.8 - k * 1.4);
     }
     // Water: the fountain discs turn, the sea breathes
     for (const w of this._waters) w.m.rotation.z += dt * w.rate;
