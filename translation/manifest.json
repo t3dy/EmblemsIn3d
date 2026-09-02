@@ -1115,21 +1115,30 @@
     },
     "347": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 204,
-      "sha1": "7c539e1bb9d8"
+      "sha1": "7c539e1bb9d8",
+      "en_words": 480,
+      "confidence": "medium",
+      "confidence_note": "The gate's architecture — its whole order (base, capital, architrave, frieze,"
     },
     "348": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 367,
-      "sha1": "620d831d0338"
+      "sha1": "620d831d0338",
+      "en_words": 670,
+      "confidence": "medium",
+      "confidence_note": "The amphitheatre's fabric: **diaphanous alabaster walls with gilt-bronze"
     },
     "349": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 234,
-      "sha1": "f3d2d33fa243"
+      "sha1": "f3d2d33fa243",
+      "en_words": 509,
+      "confidence": "medium",
+      "confidence_note": "The capitals and entablature above the arcade, then the great **frieze-relief over"
     },
     "350": {
       "chapter": "XXII",
