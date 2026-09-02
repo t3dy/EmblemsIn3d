@@ -747,27 +747,36 @@
       "status": "verified",
       "words": 374,
       "sha1": "939f385c4db9",
-      "en_words": 706,
+      "en_words": 716,
       "confidence": "medium",
       "confidence_note": "The reunion and the arrival of Cupid: Polia reassures Poliphilo (kisses, \"soon I await the God"
     },
     "275": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 392,
-      "sha1": "1911df7dcc4d"
+      "sha1": "1911df7dcc4d",
+      "en_words": 725,
+      "confidence": "medium",
+      "confidence_note": "The full epiphany of **Cupid** and the start of his speech: his blinding beauty (over-gilt hair,"
     },
     "276": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 395,
-      "sha1": "bf19347ef573"
+      "sha1": "bf19347ef573",
+      "en_words": 759,
+      "confidence": "medium",
+      "confidence_note": "Cupid finishes his invitation (only he, as \"navarch and ferryman,\" may carry them to Cythera);"
     },
     "277": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 379,
-      "sha1": "f18d14b7c398"
+      "sha1": "f18d14b7c398",
+      "en_words": 690,
+      "confidence": "medium",
+      "confidence_note": "The six rowing-nymphs described in the book's fullest costume-manner: their pearls (surpassing"
     },
     "278": {
       "chapter": "XIX",

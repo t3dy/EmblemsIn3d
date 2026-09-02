@@ -50,5 +50,6 @@ chapter XIX and leads directly into the crossing (chapter XX). All secure.
 - **the graveyard-therapy resolved.** Polia sent Poliphilo to the tombs to cool his desire (p. 242); it overshot into
   terror (p. 272); now, reunited and instructed, he recovers into "generous magnanimity." The Polyandrion has done its
   work — desire tempered, fidelity proven, patience learned — just as Cupid arrives to reward it.
-- **Chapter XIX complete.** The longest chapter in the range — the whole Polyandrion (obelisk, crypt, Hell-fresco, and
-  the great sequence of love-epitaphs) — is now fully translated, and the narrative flows unbroken into the crossing.
+- **The Polyandrion visit ends here.** The great sequence of tombs is done; the remaining pages of chapter XIX
+  (275–282) cover the **boarding of Cupid's boat and the start of the crossing**, before chapter XX (p. 283) opens with
+  the nymphs resting the oars to sing.
