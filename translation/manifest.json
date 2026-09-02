@@ -1767,21 +1767,30 @@
     },
     "387": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 351,
-      "sha1": "6920d60de789"
+      "sha1": "6920d60de789",
+      "en_words": 712,
+      "confidence": "medium",
+      "confidence_note": "The close of chapter XXV (Polia's coldness — she gave Poliphilo \"not the least sign of love\")"
     },
     "388": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 450,
-      "sha1": "a3bc97608f02"
+      "sha1": "a3bc97608f02",
+      "en_words": 803,
+      "confidence": "medium",
+      "confidence_note": "Polia's **vow to Diana** and cure: abandoned by all but her nurse, she prays to Diana (the only"
     },
     "389": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 423,
-      "sha1": "7e7a53593bcf"
+      "sha1": "7e7a53593bcf",
+      "en_words": 814,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo **finds Polia** at her consecration to Diana and is \"totally lost\" in her again; she,"
     },
     "390": {
       "chapter": "XXVI",
