@@ -154,14 +154,21 @@ chapter arguments give the shape:
 Out of reading order deliberately, so the Dream Garden gets its missing scenes
 first:
 
-1. **XXXVIII + Epitaphium Poliae** — the awakening and Polia's epitaph. ✔ drafted
+1. **XXXVIII + Epitaphium Poliae** — the awakening and Polia's epitaph. ✔ done
 2. **XXIII** — the Fountain of Venus. The single highest-value chapter in the
    range: it is the scene our climax station depicts, and the one the whole
-   world is built to walk toward.
-3. **XXI, XXII, XXIV** — the rest of Cythera.
-4. **XX** — the singing at the oars.
+   world is built to walk toward. ✔ done
+3. **XXI, XXII, XXIV** — the rest of Cythera. ✔ done (XXI, XXII, XXIV all
+   complete). All of Cythera (XXI–XXIV) is now rendered: the island ekphrasis
+   and its two measured plans, the triumph of Cupid and the planted theatre
+   with its obsidian mirror, the Fountain of Venus, and the polyandrion.
+4. **XX** — the singing at the oars (pp. 283–289). ← next
 5. **XVII–XIX** — the remainder of Book I, in order. The long grind.
 6. **Book II (XXV–XXXVII)** — self-contained, and nothing in the world depends
    on it yet.
 7. **Errori** — the 1499 errata leaf, last, and possibly never; it is not
    narrative.
+
+**Progress: 92/273 pages (33.7%) as of 2026-09-02.** Book I chapters complete
+through the range: XX excepted, XXI–XXIV done, XXXVIII done. Remaining Book I:
+XVII (from p.193), XVIII, XIX, XX. All of Book II (XXV–XXXVII) outstanding.

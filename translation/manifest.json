@@ -556,45 +556,66 @@
     },
     "283": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 319,
-      "sha1": "d511ca0c561b"
+      "sha1": "d511ca0c561b",
+      "en_words": 584,
+      "confidence": "medium",
+      "confidence_note": "The end of ch. XIX and the argument and opening of **chapter XX** (the singing at"
     },
     "284": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 261,
-      "sha1": "ac381fc3f588"
+      "sha1": "ac381fc3f588",
+      "en_words": 551,
+      "confidence": "high",
+      "confidence_note": "(the hieroglyph and its reading are secure); medium for the surrounding prose. The"
     },
     "285": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 354,
-      "sha1": "31cb5fc6cae3"
+      "sha1": "31cb5fc6cae3",
+      "en_words": 669,
+      "confidence": "medium",
+      "confidence_note": "Cupid the multiform steersman (seen double, triple, infinite) at the prow, his"
     },
     "286": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 448,
-      "sha1": "e314dba8e705"
+      "sha1": "e314dba8e705",
+      "en_words": 768,
+      "confidence": "medium",
+      "confidence_note": "The great surpassing-conceit of the song: the whole pantheon (Phoebus, Diana,"
     },
     "287": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 437,
-      "sha1": "7b00cb291d6d"
+      "sha1": "7b00cb291d6d",
+      "en_words": 740,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's rapture at Polia during the song: her rose-and-lily breast, her face"
     },
     "288": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 453,
-      "sha1": "3a3027eb989b"
+      "sha1": "3a3027eb989b",
+      "en_words": 771,
+      "confidence": "medium",
+      "confidence_note": "Polia's tender urging that Poliphilo enjoy the song, the surpassing-comparisons for"
     },
     "289": {
       "chapter": "XX",
-      "status": "fetched",
+      "status": "verified",
       "words": 317,
-      "sha1": "8e8ed6efdb56"
+      "sha1": "8e8ed6efdb56",
+      "en_words": 659,
+      "confidence": "medium",
+      "confidence_note": "The close of **chapter XX**: Poliphilo's meditation on the torment of deferral and"
     },
     "290": {
       "chapter": "XXI",
