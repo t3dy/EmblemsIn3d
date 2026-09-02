@@ -1169,33 +1169,48 @@
     },
     "353": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 416,
-      "sha1": "ea7a63c8808d"
+      "sha1": "ea7a63c8808d",
+      "en_words": 640,
+      "confidence": "medium",
+      "confidence_note": "The theatre's seating explained: the **cavea is built of tiers of hollow flower-"
     },
     "354": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 408,
-      "sha1": "e91efdc563ea"
+      "sha1": "e91efdc563ea",
+      "en_words": 697,
+      "confidence": "medium",
+      "confidence_note": "The theatre's materials and its crowning garden: the hollow seat-tiers are of"
     },
     "355": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 353,
-      "sha1": "0860fefe65ee"
+      "sha1": "0860fefe65ee",
+      "en_words": 679,
+      "confidence": "medium",
+      "confidence_note": "The three pergola-gallery pavements — the most extravagant surfaces in the book: the"
     },
     "356": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 360,
-      "sha1": "7c30adeb00b5"
+      "sha1": "7c30adeb00b5",
+      "en_words": 640,
+      "confidence": "medium",
+      "confidence_note": "The theatre in use: **nymphs dancing choral rounds** toward the fountain in three"
     },
     "357": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 383,
-      "sha1": "820da824c44f"
+      "sha1": "820da824c44f",
+      "en_words": 721,
+      "confidence": "medium",
+      "confidence_note": "The chapter closes with the **full planting-scheme of the theatre's flower-tiers**"
     },
     "358": {
       "chapter": "XXIII",
