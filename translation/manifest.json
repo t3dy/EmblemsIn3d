@@ -383,21 +383,30 @@
     },
     "234": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 224,
-      "sha1": "d2bf6aa98da8"
+      "sha1": "d2bf6aa98da8",
+      "en_words": 434,
+      "confidence": "medium",
+      "confidence_note": "The aftermath of the miracle: Poliphilo eats the fruit and feels his whole being"
     },
     "235": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 437,
-      "sha1": "da5c9c7b00a1"
+      "sha1": "da5c9c7b00a1",
+      "en_words": 734,
+      "confidence": "medium",
+      "confidence_note": "The **priestess's blessing** and the lovers' tearful departure from the temple; then"
     },
     "236": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 471,
-      "sha1": "88c213aa02f3"
+      "sha1": "88c213aa02f3",
+      "en_words": 820,
+      "confidence": "medium",
+      "confidence_note": "The lovers come to the ruined **Polyandrion** — the seaside tomb-temple: white-marble"
     },
     "237": {
       "chapter": "XVIII",
