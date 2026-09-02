@@ -2244,21 +2244,30 @@
     },
     "440": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 413,
-      "sha1": "ecfe9f9ff541"
+      "sha1": "ecfe9f9ff541",
+      "en_words": 767,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's rapture: he vows to **worship Polia** as the nations worship their gods, following her"
     },
     "441": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 423,
-      "sha1": "c1323b8a86ea"
+      "sha1": "c1323b8a86ea",
+      "en_words": 753,
+      "confidence": "medium",
+      "confidence_note": "The festival ends and Polia departs; Poliphilo, \"burnt of love, crackling like burnt salt,\""
     },
     "442": {
       "chapter": "XXXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 409,
-      "sha1": "2252b14fcf74"
+      "sha1": "2252b14fcf74",
+      "en_words": 811,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's love-torment at its height: bereft of Polia's \"light,\" his soul \"burns in the furnaced"
     },
     "443": {
       "chapter": "XXXII",
