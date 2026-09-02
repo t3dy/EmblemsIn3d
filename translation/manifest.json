@@ -509,21 +509,30 @@
     },
     "248": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 296,
-      "sha1": "1f8f2f3d4521"
+      "sha1": "1f8f2f3d4521",
+      "en_words": 632,
+      "confidence": "medium",
+      "confidence_note": "(high for the altar-inscription). The crypt's second altar bears the dedication **to Pluto,"
     },
     "249": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 451,
-      "sha1": "0b00afa18f62"
+      "sha1": "0b00afa18f62",
+      "en_words": 762,
+      "confidence": "medium",
+      "confidence_note": "The Hell-mosaic in full: an iron bridge between a **burning lake** (sparks, boiling fire,"
     },
     "250": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 427,
-      "sha1": "9d53e1095422"
+      "sha1": "9d53e1095422",
+      "en_words": 804,
+      "confidence": "medium",
+      "confidence_note": "The **meaning of the Hell-mosaic**, made explicit by its inscription: **the fire punishes"
     },
     "251": {
       "chapter": "XIX",
