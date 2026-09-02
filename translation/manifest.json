@@ -2325,21 +2325,30 @@
     },
     "449": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 437,
-      "sha1": "e5864b012f3f"
+      "sha1": "e5864b012f3f",
+      "en_words": 755,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo sends the **third letter**, Polia unmoved \"as Mount Olympus by the winds\"; the letter"
     },
     "450": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 452,
-      "sha1": "4382d1c4e402"
+      "sha1": "4382d1c4e402",
+      "en_words": 815,
+      "confidence": "medium",
+      "confidence_note": "The third letter continues: Poliphilo's eyes, \"the primary cause of my ruin,\" cannot stop"
     },
     "451": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 450,
-      "sha1": "26c85234b96e"
+      "sha1": "26c85234b96e",
+      "en_words": 839,
+      "confidence": "medium",
+      "confidence_note": "The **end of the third letter** (\"by this way thy iniquitous will and my grief will cease."
     },
     "452": {
       "chapter": "XXXIV",
