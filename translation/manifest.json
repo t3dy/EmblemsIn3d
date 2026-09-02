@@ -1965,21 +1965,30 @@
     },
     "409": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 320,
-      "sha1": "52d545d2c000"
+      "sha1": "52d545d2c000",
+      "en_words": 679,
+      "confidence": "medium",
+      "confidence_note": "The opening of **chapter XXVIII** (the nurse's counsel): its argument (the nurse admonishes Polia"
     },
     "410": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 389,
-      "sha1": "108545af8717"
+      "sha1": "108545af8717",
+      "en_words": 756,
+      "confidence": "medium",
+      "confidence_note": "The nurse's counsel proper begins: \"he who takes counsel cannot perish\"; she warns Polia she may"
     },
     "411": {
       "chapter": "XXVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 431,
-      "sha1": "7759e822f59b"
+      "sha1": "7759e822f59b",
+      "en_words": 796,
+      "confidence": "medium",
+      "confidence_note": "The nurse's argument at its height: **Cupid overpowers even the gods** — Jupiter (made to disguise"
     },
     "412": {
       "chapter": "XXVIII",
