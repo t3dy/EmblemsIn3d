@@ -2118,15 +2118,21 @@
     },
     "426": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 215,
-      "sha1": "250bb3fb4364"
+      "sha1": "250bb3fb4364",
+      "en_words": 530,
+      "confidence": "medium",
+      "confidence_note": "The vision's resolution: **Cupid's flaming torch drives off Diana's ice-chariot**, whose freezing"
     },
     "427": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 420,
-      "sha1": "e385c580997e"
+      "sha1": "e385c580997e",
+      "en_words": 810,
+      "confidence": "medium",
+      "confidence_note": "The close of **chapter XXIX** and the seam into Book I: Polia comes to Venus's temple (finding"
     },
     "428": {
       "chapter": "XXX",
