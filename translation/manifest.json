@@ -275,21 +275,30 @@
     },
     "222": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 269,
-      "sha1": "5d293aeb0684"
+      "sha1": "5d293aeb0684",
+      "en_words": 529,
+      "confidence": "medium",
+      "confidence_note": "The altar completed: its four scrolled handles (all carved with it from **one solid"
     },
     "223": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 111,
-      "sha1": "f1f3b22195bb"
+      "sha1": "f1f3b22195bb",
+      "en_words": 482,
+      "confidence": "high",
+      "confidence_note": "(the Graces-invocation is secure and identified); medium for the altar-detail above it."
     },
     "224": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 284,
-      "sha1": "13dcfd0abed6"
+      "sha1": "13dcfd0abed6",
+      "en_words": 519,
+      "confidence": "high",
+      "confidence_note": "The close of the Graces-prayer and of **chapter XVII** (the responsory \"So be it\";"
     },
     "225": {
       "chapter": "XVIII",
