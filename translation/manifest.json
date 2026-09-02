@@ -1034,21 +1034,30 @@
     },
     "338": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 306,
-      "sha1": "e5cf6eb66953"
+      "sha1": "e5cf6eb66953",
+      "en_words": 593,
+      "confidence": "medium",
+      "confidence_note": "The close of Polia's portrait (cheeks like autumn apples, the Sun-and-"
     },
     "339": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 387,
-      "sha1": "57a18f525975"
+      "sha1": "57a18f525975",
+      "en_words": 683,
+      "confidence": "medium",
+      "confidence_note": "The core of the allegorical procession: **Phileda** gathers the flowers Ennia"
     },
     "340": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 184,
-      "sha1": "c6c833e020b7"
+      "sha1": "c6c833e020b7",
+      "en_words": 474,
+      "confidence": "high",
+      "confidence_note": "(the Greek inscription and its sense are secure); medium for the two vessels'"
     },
     "341": {
       "chapter": "XXII",
