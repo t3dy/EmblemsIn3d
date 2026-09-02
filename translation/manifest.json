@@ -1947,15 +1947,21 @@
     },
     "407": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 417,
-      "sha1": "c359a7ba6cc5"
+      "sha1": "c359a7ba6cc5",
+      "en_words": 737,
+      "confidence": "medium",
+      "confidence_note": "The dream's climax: the executioners **drag Polia from her bed by her hair**, and she — \"more"
     },
     "408": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 421,
-      "sha1": "ca0d172d27c6"
+      "sha1": "ca0d172d27c6",
+      "en_words": 783,
+      "confidence": "medium",
+      "confidence_note": "The end of **chapter XXVII**: Polia wakes drenched, \"more dead than alive,\" heart hammering; her"
     },
     "409": {
       "chapter": "XXVIII",
