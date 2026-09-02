@@ -618,21 +618,30 @@
     },
     "260": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 231,
-      "sha1": "26646f3a75e5"
+      "sha1": "26646f3a75e5",
+      "en_words": 582,
+      "confidence": "medium",
+      "confidence_note": "(the Latin epitaph is secure; the Greek is fragmentary). More tombs: a broken **Greek"
     },
     "261": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 220,
-      "sha1": "8bf217774b5f"
+      "sha1": "8bf217774b5f",
+      "en_words": 633,
+      "confidence": "high",
+      "confidence_note": "(both the Latin epitaph and the hieroglyph-interpretation are secure; some abbreviations expanded). A"
     },
     "262": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 123,
-      "sha1": "0936ccf03567"
+      "sha1": "0936ccf03567",
+      "en_words": 461,
+      "confidence": "high",
+      "confidence_note": "(the hieroglyph-epitaph is secure). The **Egyptian hieroglyph** on the ivory chest decoded — a"
     },
     "263": {
       "chapter": "XIX",
