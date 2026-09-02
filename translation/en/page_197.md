@@ -1,4 +1,4 @@
-# Page 197 — Chapter XVIII
+# Page 197 — Chapter XVII
 
 — mediocrely moved by ardent desire, to behold that more nearly and perfectly, suspecting reasonably
 there to be a great and antique structure; insomuch that, for this, I almost wished to pray my benign

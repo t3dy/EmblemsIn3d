@@ -1,4 +1,4 @@
-# Page 196 — Chapter XVIII
+# Page 196 — Chapter XVII
 
 *(Page 195 is a blank leaf — a full-page woodcut with no text — and is not counted.)*
 
@@ -38,12 +38,12 @@ showing, by which I was not —
 
 ## Notes
 
-**Confidence: medium.** The opening of **chapter XVIII**: the water-nymphs (Napaeae, Naiads,
+**Confidence: medium.** The turn, within **chapter XVII**, from the four triumphs to the temple: the water-nymphs (Napaeae, Naiads,
 Nereids), Pan, the Dryads, and **Zephyr with Chloris** making a Floralian festival by the shore; then
 Poliphilo first sees, above the trees, the **great lead-domed temple** with its octagonal lantern and
 gold triangle-finial — the Temple of Venus Physizoa, which he reaches on p. 197. All secure.
 
-- **Chapter XVIII: the Temple of Venus.** After the four triumphs (chs. XIV–XVII), the narrative turns
+- **The Temple of Venus.** Still within chapter XVII, after the four seasonal triumphs the narrative turns
   to the round temple of *Venus Physizoa* ("life-giving Venus"), a major architectural ekphrasis (its
   geometry begins on p. 197). This is the first great building of Book I's later half, and — like the
   Cythera theatre — a buildable structure described in the book's own dimensions.

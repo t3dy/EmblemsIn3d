@@ -43,9 +43,9 @@
       "status": "verified",
       "words": 432,
       "sha1": "dc5421127ff5",
-      "en_words": 732,
+      "en_words": 740,
       "confidence": "medium",
-      "confidence_note": "The opening of **chapter XVIII**: the water-nymphs (Napaeae, Naiads,"
+      "confidence_note": "The turn, within **chapter XVII**, from the four triumphs to the temple: the water-nymphs (Napaeae, Naiads,"
     },
     "197": {
       "chapter": "XVII",
@@ -58,21 +58,30 @@
     },
     "198": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 342,
-      "sha1": "aa7de07a569e"
+      "sha1": "aa7de07a569e",
+      "en_words": 607,
+      "confidence": "medium",
+      "confidence_note": "The temple's inner elevation: **ten arches on serpentine columns**, with"
     },
     "199": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 411,
-      "sha1": "8116d17b44e2"
+      "sha1": "8116d17b44e2",
+      "en_words": 719,
+      "confidence": "medium",
+      "confidence_note": "The temple's wall-structure: fluted pilasters answering the columns, alabaster"
     },
     "200": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 421,
-      "sha1": "6b24a18e6bfe"
+      "sha1": "6b24a18e6bfe",
+      "en_words": 736,
+      "confidence": "medium",
+      "confidence_note": "The completion of the wall (ten piers, ten arches, the round sacello with its"
     },
     "201": {
       "chapter": "XVII",
