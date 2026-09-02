@@ -1920,21 +1920,30 @@
     },
     "404": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 396,
-      "sha1": "a89c1f4fa2ba"
+      "sha1": "a89c1f4fa2ba",
+      "en_words": 690,
+      "confidence": "medium",
+      "confidence_note": "Polia's lament of grief (tearing her hair, clawing her face — \"with hatred of my adornment\"),"
     },
     "405": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 383,
-      "sha1": "d30f2bce4934"
+      "sha1": "d30f2bce4934",
+      "en_words": 690,
+      "confidence": "medium",
+      "confidence_note": "The day of dread passes; Polia, unable to fathom the vision and afraid to sleep alone, calls her"
     },
     "406": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 411,
-      "sha1": "b46e0a7a4b02"
+      "sha1": "b46e0a7a4b02",
+      "en_words": 756,
+      "confidence": "medium",
+      "confidence_note": "Polia's dream: **two grotesque executioners** — described in repellent, caricatured detail"
     },
     "407": {
       "chapter": "XXVII",
