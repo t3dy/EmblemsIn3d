@@ -2037,21 +2037,30 @@
     },
     "417": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 327,
-      "sha1": "66d389a0596e"
+      "sha1": "66d389a0596e",
+      "en_words": 647,
+      "confidence": "medium",
+      "confidence_note": "The end of the nurse's counsel (**go to the priestess of Venus, confess, and be cured**) and the"
     },
     "418": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 424,
-      "sha1": "5df85881ca05"
+      "sha1": "5df85881ca05",
+      "en_words": 820,
+      "confidence": "medium",
+      "confidence_note": "**Polia's conversion — the flame kindles.** Alone after the nurse's counsel, thinking of the"
     },
     "419": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 414,
-      "sha1": "045e699bc825"
+      "sha1": "045e699bc825",
+      "en_words": 815,
+      "confidence": "medium",
+      "confidence_note": "Polia's conversion completes: after a last catalogue of love's victims (Smilax, Canens, Acis,"
     },
     "420": {
       "chapter": "XXIX",
