@@ -2352,21 +2352,30 @@
     },
     "452": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 431,
-      "sha1": "017621e2eeda"
+      "sha1": "017621e2eeda",
+      "en_words": 776,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's devotion to Cupid (hoping the god will \"draw the same cruel bow in her\" and heal his"
     },
     "453": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 399,
-      "sha1": "d5fcb9b6ea33"
+      "sha1": "d5fcb9b6ea33",
+      "en_words": 769,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo **finds Polia alone in the temple** and — \"swift as a lion at its prey,\" then \"liquefied"
     },
     "454": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 425,
-      "sha1": "602e6a94ba52"
+      "sha1": "602e6a94ba52",
+      "en_words": 784,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's final plea **fails**: no love, no tears (more than Isis wept for Osiris) can soften"
     },
     "455": {
       "chapter": "XXXV",
