@@ -2460,9 +2460,12 @@
     },
     "464": {
       "chapter": "XXXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 321,
-      "sha1": "403dacc5f798"
+      "sha1": "403dacc5f798",
+      "en_words": 767,
+      "confidence": "high",
+      "confidence_note": "(the closing is plain and secure). The **end of the dream**: at the height of the lovers' embrace,"
     },
     "465": {
       "chapter": "XXXVIII",
@@ -2485,9 +2488,12 @@
     },
     "467": {
       "chapter": "Errori",
-      "status": "fetched",
+      "status": "verified",
       "words": 1408,
-      "sha1": "09185e88238a"
+      "sha1": "09185e88238a",
+      "en_words": 500,
+      "confidence": "high",
+      "confidence_note": "The final leaf of the 1499 edition: the printer's **errata** (a gathering-by-gathering list of"
     }
   }
 }
