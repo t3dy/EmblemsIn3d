@@ -2298,21 +2298,30 @@
     },
     "446": {
       "chapter": "XXXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 221,
-      "sha1": "9565042855ac"
+      "sha1": "9565042855ac",
+      "en_words": 551,
+      "confidence": "medium",
+      "confidence_note": "The **end of the first letter** (Poliphilo lays out the two fates — her mercy = his triumph, her"
     },
     "447": {
       "chapter": "XXXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 431,
-      "sha1": "33aa068cd395"
+      "sha1": "33aa068cd395",
+      "en_words": 755,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's **second letter**: he now recognises Polia's \"crude savagery\" (her breast \"colder than"
     },
     "448": {
       "chapter": "XXXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 369,
-      "sha1": "c5183be5c3e8"
+      "sha1": "c5183be5c3e8",
+      "en_words": 736,
+      "confidence": "medium",
+      "confidence_note": "The **end of the second letter** (Poliphilo hopes Polia's beauty proves her born \"of most-humane"
     },
     "449": {
       "chapter": "XXXIV",
