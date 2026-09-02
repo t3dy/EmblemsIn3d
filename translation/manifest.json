@@ -2091,21 +2091,30 @@
     },
     "423": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 180,
-      "sha1": "88748d50ab3c"
+      "sha1": "88748d50ab3c",
+      "en_words": 499,
+      "confidence": "medium",
+      "confidence_note": "The reunion is broken up: **Diana's priestess and nymphs**, hearing the commotion and finding the"
     },
     "424": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 399,
-      "sha1": "7760be7d0545"
+      "sha1": "7760be7d0545",
+      "en_words": 762,
+      "confidence": "medium",
+      "confidence_note": "Polia is **beaten and banished** from Diana's temple (the nymph Algerea seizing her, Polia"
     },
     "425": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 405,
-      "sha1": "2834ec6e31af"
+      "sha1": "2834ec6e31af",
+      "en_words": 759,
+      "confidence": "medium",
+      "confidence_note": "Polia's **total transformation** (\"from cold, fervid; from timid, magnanimous… the rigid breast a"
     },
     "426": {
       "chapter": "XXIX",
