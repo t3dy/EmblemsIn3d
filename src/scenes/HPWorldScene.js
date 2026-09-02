@@ -21,6 +21,7 @@
 // the EmblemPapercraft method).
 
 import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=3';
 import { makeCast } from '../systems/Cast.js?v=13';
@@ -177,6 +178,7 @@ export class HPWorldScene {
     this._motes = null;            // drifting pollen in the lit garden
     this._meadows = [];            // instanced grass / flower fields (lit only)
     this._vanes = [];              // weathervanes that turn with the wind
+    this._trashGeo = new Set();    // originals swallowed by the draw-call compiler
     this._npcs = [];               // { g, phase, sway }
     this.npcs = {};                // key → group (for the dream's cameos)
     this._stTimer = 0;
@@ -262,8 +264,91 @@ export class HPWorldScene {
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
 
+    this._compileDrawCalls();
+
     this.walker.attach();
     this.walker.applyTo(this.camera);
+  }
+
+  // ── The draw-call compiler ────────────────────────────────────────────────
+  //
+  // The cast pass pushed the scene toward three thousand meshes, and the worst
+  // view (the wood spawn, looking down the whole axis) hit ~39 ms. The fix is
+  // the one the graphics-skills pack prescribes (procedural-architecture:
+  // "material-slot BufferGeometry compilation"): everything static that shares
+  // a material becomes ONE mesh, with its transform baked in. Things that move
+  // as a group — the triumph floats, the swaying NPCs — are compiled within
+  // their own group, so a six-elephant team is a handful of draws that still
+  // processes; an NPC keeps its animated arm pivots unmerged and sways on.
+
+  _compileDrawCalls() {
+    const dyn = new Set();
+    const mark = (o) => { if (o && o.traverse) o.traverse(x => dyn.add(x)); };
+
+    // per-frame animated meshes stay their own draws
+    for (const w of this._waters) mark(w.m);
+    for (const o of this._orbs) mark(o.orb);
+    for (const v of this._venuses) mark(v);
+    for (const v of this._vanes) mark(v.g);
+    if (this._quinta) { mark(this._quinta.dod); mark(this._quinta.rays); }
+    if (this._torch) mark(this._torch);
+    if (this._boat) { mark(this._boat); mark(this._boat.userData.cupid); }
+
+    // groups that move whole: compile inside, then fence off
+    for (const n of this._npcs) {
+      const local = new Set(dyn);
+      if (n.armL) n.armL.traverse(x => local.add(x));   // arms keep breathing
+      if (n.armR) n.armR.traverse(x => local.add(x));
+      this._mergeInto(n.g, local);
+      mark(n.g);
+    }
+    for (const f of this._floats) {
+      if (!dyn.has(f.g)) this._mergeInto(f.g, dyn);
+      mark(f.g);
+    }
+
+    this._mergeInto(this._isleGroup, dyn);
+    mark(this._isleGroup);
+    this._mergeInto(this.scene, dyn);
+  }
+
+  _mergeInto(root, exclude) {
+    if (!root) return;
+    root.updateWorldMatrix(true, true);
+    const inv = new THREE.Matrix4().copy(root.matrixWorld).invert();
+    const buckets = new Map();
+    root.traverse(o => {
+      if (o === root || !o.isMesh || o.isInstancedMesh || o.isSprite) return;
+      if (exclude.has(o) || !o.visible) return;
+      const m = o.material;
+      // transparent things keep their own draw order; unique materials
+      // (plaques, the crystal dome) fall below the bucket threshold anyway
+      if (!m || Array.isArray(m) || m.transparent) return;
+      const key = m.uuid + '|' + o.castShadow + '|' + o.receiveShadow;
+      let b = buckets.get(key);
+      if (!b) buckets.set(key, b = { mat: m, cast: o.castShadow, recv: o.receiveShadow, meshes: [] });
+      b.meshes.push(o);
+    });
+    for (const b of buckets.values()) {
+      if (b.meshes.length < 2) continue;
+      const geos = [];
+      const mtx = new THREE.Matrix4();
+      for (const o of b.meshes) {
+        const g2 = o.geometry.clone();
+        mtx.multiplyMatrices(inv, o.matrixWorld);
+        g2.applyMatrix4(mtx);           // bakes positions AND fixes normals
+        geos.push(g2);
+      }
+      let merged = null;
+      try { merged = mergeGeometries(geos, false); } catch (e) { /* mixed attributes — leave unmerged */ }
+      if (!merged) { geos.forEach(g => g.dispose()); continue; }
+      const mm = new THREE.Mesh(merged, b.mat);
+      mm.castShadow = b.cast;
+      mm.receiveShadow = b.recv;
+      root.add(mm);
+      for (const o of b.meshes) { o.removeFromParent(); this._trashGeo.add(o.geometry); }
+      geos.forEach(g => g.dispose());
+    }
   }
 
   // ── Small helpers ─────────────────────────────────────────────────────────
@@ -2077,6 +2162,10 @@ export class HPWorldScene {
     this.renderer.shadowMap.enabled = false;
     this._streams.forEach(s => s.dispose());
     this._streams = [];
+    // originals removed from the graph by the draw-call compiler still hold GPU
+    // buffers; free them here so a style toggle doesn't leak
+    this._trashGeo.forEach(g => g.dispose());
+    this._trashGeo.clear();
     this._disp.forEach(d => d?.dispose?.());
     this.scene.traverse(o => {
       if (o.geometry) o.geometry.dispose();
