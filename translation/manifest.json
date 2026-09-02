@@ -2406,21 +2406,30 @@
     },
     "458": {
       "chapter": "XXXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 194,
-      "sha1": "cc8434ac55e3"
+      "sha1": "cc8434ac55e3",
+      "en_words": 539,
+      "confidence": "medium",
+      "confidence_note": "In the throne-vision, **Cupid strikes Polia's image with the golden arrow** — \"into the delicate"
     },
     "459": {
       "chapter": "XXXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 426,
-      "sha1": "666df220e2b5"
+      "sha1": "666df220e2b5",
+      "en_words": 681,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's soul, granted \"special grace to see arcane visions,\" **contemplates Polia's divine"
     },
     "460": {
       "chapter": "XXXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 383,
-      "sha1": "2d08f2d570b0"
+      "sha1": "2d08f2d570b0",
+      "en_words": 777,
+      "confidence": "medium",
+      "confidence_note": "The vision's climax: **Venus assures Poliphilo** of \"his health, his prosperous love, and his"
     },
     "461": {
       "chapter": "XXXVI",
