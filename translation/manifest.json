@@ -1866,21 +1866,30 @@
     },
     "398": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 353,
-      "sha1": "02af474624ae"
+      "sha1": "02af474624ae",
+      "en_words": 652,
+      "confidence": "medium",
+      "confidence_note": "The opening of **chapter XXVII**: its argument (Polia caught up by a whirlwind into a forest,"
     },
     "399": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 412,
-      "sha1": "6c1242ad298c"
+      "sha1": "6c1242ad298c",
+      "en_words": 736,
+      "confidence": "medium",
+      "confidence_note": "Polia's heart stays frozen even after his death (\"more cruel than Phineus… as if I had mirrored"
     },
     "400": {
       "chapter": "XXVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 197,
-      "sha1": "8b8cb3bdf598"
+      "sha1": "8b8cb3bdf598",
+      "en_words": 545,
+      "confidence": "medium",
+      "confidence_note": "Polia's **vision of Cupid's punishment of cruel women**: set down in a pathless wood, she sees two"
     },
     "401": {
       "chapter": "XXVII",
