@@ -1821,21 +1821,30 @@
     },
     "393": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 482,
-      "sha1": "8b6be926e963"
+      "sha1": "8b6be926e963",
+      "en_words": 764,
+      "confidence": "medium",
+      "confidence_note": "The heart of **Poliphilo's plea**: his love-torment as an endless daily cycle (kindling at"
     },
     "394": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 477,
-      "sha1": "f6764b2767b0"
+      "sha1": "f6764b2767b0",
+      "en_words": 767,
+      "confidence": "medium",
+      "confidence_note": "The continuation of Poliphilo's lament: he lives \"orbicularly\" relapsing through the same"
     },
     "395": {
       "chapter": "XXVI",
-      "status": "fetched",
+      "status": "verified",
       "words": 468,
-      "sha1": "ec7175b49050"
+      "sha1": "ec7175b49050",
+      "en_words": 843,
+      "confidence": "medium",
+      "confidence_note": "The end of Poliphilo's plea and his **death-swoon**: he protests his innocence (he is guilty of"
     },
     "396": {
       "chapter": "XXVI",
