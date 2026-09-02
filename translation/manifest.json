@@ -926,39 +926,57 @@
     },
     "326": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 266,
-      "sha1": "ed4b64d63e53"
+      "sha1": "ed4b64d63e53",
+      "en_words": 556,
+      "confidence": "medium",
+      "confidence_note": "The chapter-argument (the whole triumph of Cupid in précis) and"
     },
     "327": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 109,
-      "sha1": "c2d8f6f3d766"
+      "sha1": "c2d8f6f3d766",
+      "en_words": 316,
+      "confidence": "medium",
+      "confidence_note": "Two more trophies of arms: the second Jovian (laurel, black-eagle"
     },
     "328": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 148,
-      "sha1": "99021c8dfa65"
+      "sha1": "99021c8dfa65",
+      "en_words": 393,
+      "confidence": "high",
+      "confidence_note": "(the two inscriptions are read straight from the woodcut; the trophy-"
     },
     "329": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 182,
-      "sha1": "db475d8c1397"
+      "sha1": "db475d8c1397",
+      "en_words": 379,
+      "confidence": "medium",
+      "confidence_note": "Another emblematic trophy (crescent-wings, crown, ewer, byssus-boss,"
     },
     "330": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 300,
-      "sha1": "8373ef1c4a94"
+      "sha1": "8373ef1c4a94",
+      "en_words": 570,
+      "confidence": "medium",
+      "confidence_note": "(high for the inscription). The gloved dancers and their gold-thread"
     },
     "331": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 291,
-      "sha1": "28b31a614dac"
+      "sha1": "28b31a614dac",
+      "en_words": 529,
+      "confidence": "medium",
+      "confidence_note": "The end of the trophy-train, then **Psyche**, Cupid's divine wife,"
     },
     "332": {
       "chapter": "XXII",
