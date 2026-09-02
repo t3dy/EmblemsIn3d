@@ -791,21 +791,30 @@
     },
     "311": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 202,
-      "sha1": "14d2e61f24e4"
+      "sha1": "14d2e61f24e4",
+      "en_words": 522,
+      "confidence": "high",
+      "confidence_note": "This is Colonna's own scale-plan of Cythera, given both as a"
     },
     "312": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 393,
-      "sha1": "413795297878"
+      "sha1": "413795297878",
+      "en_words": 676,
+      "confidence": "medium",
+      "confidence_note": "The river and its banks — its marble revetment, its"
     },
     "313": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 392,
-      "sha1": "893fbf16b146"
+      "sha1": "893fbf16b146",
+      "en_words": 671,
+      "confidence": "medium",
+      "confidence_note": "The citrus-pergola over the river and the boating-game of"
     },
     "314": {
       "chapter": "XXI",
