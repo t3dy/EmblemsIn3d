@@ -194,21 +194,30 @@
     },
     "213": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 380,
-      "sha1": "b92b774f2cca"
+      "sha1": "b92b774f2cca",
+      "en_words": 698,
+      "confidence": "medium",
+      "confidence_note": "The **self-opening magnetic door**: the priestess prays to the Roman door-gods"
     },
     "214": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 271,
-      "sha1": "5cd931bcef7b"
+      "sha1": "5cd931bcef7b",
+      "en_words": 627,
+      "confidence": "high",
+      "confidence_note": "(the two inscriptions are secure and identified); medium for the surrounding prose. The"
     },
     "215": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 185,
-      "sha1": "e880a8d7add4"
+      "sha1": "e880a8d7add4",
+      "en_words": 505,
+      "confidence": "medium",
+      "confidence_note": "The **ritual implements** borne in procession by the seven virgins for the rite of"
     },
     "216": {
       "chapter": "XVII",
