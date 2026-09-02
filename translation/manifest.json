@@ -726,21 +726,30 @@
     },
     "272": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 404,
-      "sha1": "83c7703955d1"
+      "sha1": "83c7703955d1",
+      "en_words": 740,
+      "confidence": "medium",
+      "confidence_note": "The chapter's turning-point: a mosaic of the **Rape of Proserpina** (Pluto seizing her by"
     },
     "273": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 398,
-      "sha1": "17d94db0cced"
+      "sha1": "17d94db0cced",
+      "en_words": 704,
+      "confidence": "medium",
+      "confidence_note": "Poliphilo's **panic-flight back to Polia**: fearing Neptune might ravish her (as he did"
     },
     "274": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 374,
-      "sha1": "939f385c4db9"
+      "sha1": "939f385c4db9",
+      "en_words": 706,
+      "confidence": "medium",
+      "confidence_note": "The reunion and the arrival of Cupid: Polia reassures Poliphilo (kisses, \"soon I await the God"
     },
     "275": {
       "chapter": "XIX",
