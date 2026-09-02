@@ -1062,39 +1062,58 @@
     },
     "364": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 399,
-      "sha1": "c5a5d0b5bc8e"
+      "sha1": "c5a5d0b5bc8e",
+      "en_words": 687,
+      "confidence": "medium",
+      "confidence_note": "The narrative frame is secure; the difficulty is a chain"
     },
     "365": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 413,
-      "sha1": "3cbbfb4e3850"
+      "sha1": "3cbbfb4e3850",
+      "en_words": 718,
+      "confidence": "medium",
+      "confidence_note": "Venus's speech is long, formal, and syntactically"
     },
     "366": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "drafted",
       "words": 398,
-      "sha1": "ccebea61ea7a"
+      "sha1": "ccebea61ea7a",
+      "en_words": 755,
+      "uncertain": 2,
+      "confidence": "medium",
+      "confidence_note": "The famous wounding is secure and rendered as close to"
     },
     "367": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 414,
-      "sha1": "90a289dc2314"
+      "sha1": "90a289dc2314",
+      "en_words": 718,
+      "confidence": "medium",
+      "confidence_note": "The healing-and-renewal sequence is secure; the two"
     },
     "368": {
       "chapter": "XXIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 255,
-      "sha1": "dcfc3a1663c6"
+      "sha1": "dcfc3a1663c6",
+      "en_words": 568,
+      "confidence": "high",
+      "confidence_note": "This is straightforward descriptive prose — the arming of a"
     },
     "369": {
       "chapter": "XXIV",
-      "status": "fetched",
+      "status": "verified",
       "words": 291,
-      "sha1": "643355fa3b0a"
+      "sha1": "643355fa3b0a",
+      "en_words": 555,
+      "confidence": "medium",
+      "confidence_note": "The chapter argument and the narrative are secure. The"
     },
     "370": {
       "chapter": "XXIV",
