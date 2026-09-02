@@ -2064,21 +2064,30 @@
     },
     "420": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 414,
-      "sha1": "4eb46089f341"
+      "sha1": "4eb46089f341",
+      "en_words": 685,
+      "confidence": "medium",
+      "confidence_note": "Polia, converted, hastens to the temple, finds **Poliphilo lying dead, \"colder than marble,\"** and,"
     },
     "421": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 176,
-      "sha1": "cf801d81866a"
+      "sha1": "cf801d81866a",
+      "en_words": 472,
+      "confidence": "medium",
+      "confidence_note": "Polia's lament peaks (she calls the Furies upon herself, names herself \"bitch, perfid, barbarous\""
     },
     "422": {
       "chapter": "XXIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 212,
-      "sha1": "7443586a7d2f"
+      "sha1": "7443586a7d2f",
+      "en_words": 586,
+      "confidence": "medium",
+      "confidence_note": "The miracle completes: Poliphilo **revives fully** in Polia's arms — she kisses him, bares her"
     },
     "423": {
       "chapter": "XXIX",
