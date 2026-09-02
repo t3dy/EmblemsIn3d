@@ -625,39 +625,57 @@
     },
     "293": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 426,
-      "sha1": "9dee3eb9cb1b"
+      "sha1": "9dee3eb9cb1b",
+      "en_words": 745,
+      "confidence": "medium",
+      "confidence_note": "The description is secure; the closing geometrical"
     },
     "294": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 423,
-      "sha1": "0bd771503c6b"
+      "sha1": "0bd771503c6b",
+      "en_words": 718,
+      "confidence": "medium",
+      "confidence_note": "The geometrical opening and the two plant-catalogues"
     },
     "295": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 396,
-      "sha1": "0bafdbfdae4c"
+      "sha1": "0bafdbfdae4c",
+      "en_words": 697,
+      "confidence": "medium",
+      "confidence_note": "A dense arboreal catalogue — oaks, conifers, box, and a"
     },
     "296": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 433,
-      "sha1": "fa0c0c6b0a0b"
+      "sha1": "fa0c0c6b0a0b",
+      "en_words": 665,
+      "confidence": "medium",
+      "confidence_note": "Another dense fruit-and-nut catalogue, secure in"
     },
     "297": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 426,
-      "sha1": "22c4483276f0"
+      "sha1": "22c4483276f0",
+      "en_words": 757,
+      "confidence": "medium",
+      "confidence_note": "The close of the *bosco* catalogue, the hymn to the"
     },
     "298": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 417,
-      "sha1": "deeb28093e7a"
+      "sha1": "deeb28093e7a",
+      "en_words": 704,
+      "confidence": "medium",
+      "confidence_note": "The tame-beast catalogue is secure and vivid; the garden"
     },
     "299": {
       "chapter": "XXI",
