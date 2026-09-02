@@ -1142,21 +1142,30 @@
     },
     "350": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 293,
-      "sha1": "1540f04ac2a4"
+      "sha1": "1540f04ac2a4",
+      "en_words": 565,
+      "confidence": "medium",
+      "confidence_note": "The upper storeys and the wall's finish: the second and third column-orders (kept,"
     },
     "351": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 120,
-      "sha1": "ff36a8a04d64"
+      "sha1": "ff36a8a04d64",
+      "en_words": 383,
+      "confidence": "high",
+      "confidence_note": "(the dimensions are plain figures); medium for the vaulting description. **The exact"
     },
     "352": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 402,
-      "sha1": "886af79548a1"
+      "sha1": "886af79548a1",
+      "en_words": 745,
+      "confidence": "medium",
+      "confidence_note": "The theatre's interior climax: the **mosaic soffits historiated with \"all the"
     },
     "353": {
       "chapter": "XXII",
