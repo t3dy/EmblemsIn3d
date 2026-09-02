@@ -169,14 +169,23 @@ first:
 7. **Errori** — the 1499 errata leaf, last, and possibly never; it is not
    narrative.
 
-**Progress: 188/273 pages (68.9%) as of 2026-09-02.** ALL OF BOOK I in the range
-is now complete: XVII (from the Dallington seam at p.193), XVIII, XIX, XX,
-XXI–XXIV, and XXXVIII + Epitaphium — every chapter of Book I after the point
-where Dallington stopped is now in English. The narrative flows unbroken from
-the four-Seasons altar (p.193) through the Temple of Venus, the lovers' union,
-the Polyandrion and its epitaphs, the marine crossing, Cythera, the triumph of
-Cupid, the Fountain of Venus, the polyandrion of Adonis, and the awakening.
+**COMPLETE: 273/273 pages, 90,646/90,646 source words (100%) as of 2026-09-02.**
+The entire remainder of the Hypnerotomachia — every page from the Dallington seam
+(p.193, at *Mustulento*) to the Aldine colophon (p.467) — is now in English for
+the first time. Book I: the four-Seasons altar, the Temple of Venus Physizoa and
+the lovers' union, the Polyandrion and its love-epitaphs, the marine crossing,
+Cythera with its gardens/terraces/parterres and the triumph of Cupid, the theatre
+and Fountain of Venus, the Adonis polyandrion, and the awakening (XVII–XXIV,
+XXXVIII, Epitaphium). Book II: Polia's own narration (lineage and the founding of
+Treviso, her plague and vow to Diana, her cruelty and Poliphilo's death, her
+punishment-visions and conversion, the revival), then Poliphilo's narration (the
+festival, the three failed letters, his death and vision at Venus's throne), the
+priestess's blessing, and the dream's end where Polia dissolves into fragrant
+smoke (XXV–XXXVII). Plus the Errori errata leaf.
 
-**Remaining: only Book II (chapters XXV–XXXVII, pp.381–467) — Polia's own
-narration — plus the Errori errata leaf.** This is self-contained and nothing in
-the 3D world depends on it. ~85 pages / ~32,000 words left.
+Confidence: 38 high, 232 medium, 3 low. 29 uncertain readings flagged inline for a
+facsimile-check (start with pp.300, 303, 304). Every page's Notes open with a
+confidence line; `scripts/translation_status.py` reconciles from disk. The full
+parallel-text page is at `research/translation.html`.
+
+**The four-century gap in the English Hypnerotomachia is closed.**
