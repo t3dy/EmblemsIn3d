@@ -591,21 +591,30 @@
     },
     "257": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 174,
-      "sha1": "239536a66609"
+      "sha1": "239536a66609",
+      "en_words": 449,
+      "confidence": "medium",
+      "confidence_note": "A broken vase-inscription (illegible), then a **destroyed tribune** whose mosaic shows a"
     },
     "258": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 269,
-      "sha1": "9fe71c2fd041"
+      "sha1": "9fe71c2fd041",
+      "en_words": 800,
+      "confidence": "high",
+      "confidence_note": "(the epitaph is a continuous, secure Latin narrative). The **epitaph of Leontia and Lollius** —"
     },
     "259": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 245,
-      "sha1": "07ce14f1a81d"
+      "sha1": "07ce14f1a81d",
+      "en_words": 616,
+      "confidence": "high",
+      "confidence_note": "(the Vibius epitaph is secure). After the Leontia-and-Lollius romance, a plainer **suicide-"
     },
     "260": {
       "chapter": "XIX",
