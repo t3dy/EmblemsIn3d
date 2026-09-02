@@ -248,21 +248,30 @@
     },
     "219": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 297,
-      "sha1": "6db5703e1830"
+      "sha1": "6db5703e1830",
+      "en_words": 588,
+      "confidence": "medium",
+      "confidence_note": "The move to the inner rite: Poliphilo near-swooning from sweetness (\"like one fallen"
     },
     "220": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 199,
-      "sha1": "aefb74cc2735"
+      "sha1": "aefb74cc2735",
+      "en_words": 471,
+      "confidence": "medium",
+      "confidence_note": "The inner rite: the priestess and Polia enter the Adytum (Poliphilo kept at the"
     },
     "221": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 319,
-      "sha1": "df3e17d73e09"
+      "sha1": "df3e17d73e09",
+      "en_words": 623,
+      "confidence": "medium",
+      "confidence_note": "A dense architectural description of the **central altar of the Adytum** — a turned,"
     },
     "222": {
       "chapter": "XVII",
