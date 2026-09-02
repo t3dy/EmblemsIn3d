@@ -764,21 +764,30 @@
     },
     "308": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 253,
-      "sha1": "17e1ffb2d0d4"
+      "sha1": "17e1ffb2d0d4",
+      "en_words": 470,
+      "confidence": "medium",
+      "confidence_note": "The architecture of the closing peristyle — its"
     },
     "309": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 387,
-      "sha1": "afac7fab6cce"
+      "sha1": "afac7fab6cce",
+      "en_words": 631,
+      "confidence": "medium",
+      "confidence_note": "The stone-catalogue of the columns, the goldsmith"
     },
     "310": {
       "chapter": "XXI",
-      "status": "fetched",
+      "status": "verified",
       "words": 239,
-      "sha1": "543943b98117"
+      "sha1": "543943b98117",
+      "en_words": 473,
+      "confidence": "medium",
+      "confidence_note": "A bird-catalogue, the aviary counterpart to the plant-lists,"
     },
     "311": {
       "chapter": "XXI",
