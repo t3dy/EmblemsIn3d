@@ -536,21 +536,31 @@
     },
     "251": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 169,
-      "sha1": "fe6c08ecc978"
+      "sha1": "fe6c08ecc978",
+      "en_words": 352,
+      "confidence": "medium",
+      "confidence_note": "The souls of the Hell-mosaic, rendered as \"concreted air\" (shades made visible), each in a"
     },
     "252": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 190,
-      "sha1": "b313d90fe422"
+      "sha1": "b313d90fe422",
+      "en_words": 489,
+      "confidence": "high",
+      "confidence_note": "(the epitaph is secure, read from the woodcut). The first individual **tomb-epitaph**: an"
     },
     "253": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "drafted",
       "words": 73,
-      "sha1": "4f162baf08ec"
+      "sha1": "4f162baf08ec",
+      "en_words": 347,
+      "uncertain": 1,
+      "confidence": "medium",
+      "confidence_note": "(the epitaph's letters are secure; one word, *DIDUS*, is uncertain). A second **tomb-"
     },
     "254": {
       "chapter": "XIX",
