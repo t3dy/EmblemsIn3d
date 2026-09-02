@@ -564,21 +564,30 @@
     },
     "254": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 229,
-      "sha1": "8b97e75753de"
+      "sha1": "8b97e75753de",
+      "en_words": 661,
+      "confidence": "medium",
+      "confidence_note": "(the epitaph is elaborate and several abbreviations are conjecturally expanded). A remarkable"
     },
     "255": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 216,
-      "sha1": "834151ebcf8f"
+      "sha1": "834151ebcf8f",
+      "en_words": 506,
+      "confidence": "medium",
+      "confidence_note": "(the *Have… Vale* epitaph is secure). The little tomb-inscription **\"Hail, Leria, most-loving"
     },
     "256": {
       "chapter": "XIX",
-      "status": "fetched",
+      "status": "verified",
       "words": 227,
-      "sha1": "ea68a34118fb"
+      "sha1": "ea68a34118fb",
+      "en_words": 714,
+      "confidence": "high",
+      "confidence_note": "(the dialogue-epitaph is secure and famous). The chapter's finest inscription: the **dialogue-"
     },
     "257": {
       "chapter": "XIX",
