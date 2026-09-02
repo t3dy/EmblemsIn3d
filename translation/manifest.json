@@ -1740,21 +1740,30 @@
     },
     "384": {
       "chapter": "XXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 452,
-      "sha1": "0caf0f4a3a1d"
+      "sha1": "0caf0f4a3a1d",
+      "en_words": 773,
+      "confidence": "medium",
+      "confidence_note": "The **divine punishment of the Lelii**: Murgania, made to impersonate Venus (hence \"Fada"
     },
     "385": {
       "chapter": "XXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 427,
-      "sha1": "31a28c66a347"
+      "sha1": "31a28c66a347",
+      "en_words": 757,
+      "confidence": "medium",
+      "confidence_note": "The survival and career of **Lelio Mauro** (the one Lelius spared the metamorphosis): captured"
     },
     "386": {
       "chapter": "XXV",
-      "status": "fetched",
+      "status": "verified",
       "words": 425,
-      "sha1": "59aeefd70b9a"
+      "sha1": "59aeefd70b9a",
+      "en_words": 825,
+      "confidence": "medium",
+      "confidence_note": "(the date 1462 and the historical frame are secure). Polia reaches **herself**: born of the Lelian"
     },
     "387": {
       "chapter": "XXVI",
