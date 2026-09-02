@@ -980,39 +980,57 @@
     },
     "332": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 389,
-      "sha1": "a884397cbd18"
+      "sha1": "a884397cbd18",
+      "en_words": 598,
+      "confidence": "medium",
+      "confidence_note": "A long costume-ekphrasis: the companion-nymphs' gems matched to their"
     },
     "333": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 383,
-      "sha1": "6c416055739a"
+      "sha1": "6c416055739a",
+      "en_words": 656,
+      "confidence": "medium",
+      "confidence_note": "The coiffure-passage: the companion-nymphs' hairstyles catalogued"
     },
     "334": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 407,
-      "sha1": "147e0fc0bef3"
+      "sha1": "147e0fc0bef3",
+      "en_words": 668,
+      "confidence": "medium",
+      "confidence_note": "The footwear-passage, completing the costume: purple buskins with gold"
     },
     "335": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 401,
-      "sha1": "d1a8b357ceae"
+      "sha1": "d1a8b357ceae",
+      "en_words": 617,
+      "confidence": "medium",
+      "confidence_note": "The most concentrated jewel-catalogue in the costume passage: the"
     },
     "336": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 259,
-      "sha1": "d9b7410d9e5d"
+      "sha1": "d9b7410d9e5d",
+      "en_words": 522,
+      "confidence": "medium",
+      "confidence_note": "The end of the costume-ekphrasis: the sleeves (upper arm to elbow, then a"
     },
     "337": {
       "chapter": "XXII",
-      "status": "fetched",
+      "status": "verified",
       "words": 417,
-      "sha1": "7120fab78790"
+      "sha1": "7120fab78790",
+      "en_words": 713,
+      "confidence": "medium",
+      "confidence_note": "The moral turn of the chapter: Poliphilo's apostrophe to beauty as \"the"
     },
     "338": {
       "chapter": "XXII",
