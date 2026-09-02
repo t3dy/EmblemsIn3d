@@ -410,21 +410,30 @@
     },
     "237": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 445,
-      "sha1": "af6e6117f178"
+      "sha1": "af6e6117f178",
+      "en_words": 679,
+      "confidence": "medium",
+      "confidence_note": "Polia's account of the **ancient rites of the Polyandrion** — the yearly funeral festival"
     },
     "238": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 135,
-      "sha1": "49e3284842bc"
+      "sha1": "49e3284842bc",
+      "en_words": 408,
+      "confidence": "medium",
+      "confidence_note": "The close of Polia's account of the Polyandrion's rites — the cypress-branches hung and"
     },
     "239": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 455,
-      "sha1": "1e3f4146c0f9"
+      "sha1": "1e3f4146c0f9",
+      "en_words": 829,
+      "confidence": "medium",
+      "confidence_note": "The lovers sit on the shore before the ruin, and the page turns from the Polyandrion to"
     },
     "240": {
       "chapter": "XVIII",
