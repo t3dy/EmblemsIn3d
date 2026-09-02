@@ -329,21 +329,30 @@
     },
     "228": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 289,
-      "sha1": "2232a33d1af9"
+      "sha1": "2232a33d1af9",
+      "en_words": 564,
+      "confidence": "medium",
+      "confidence_note": "The purification-sequence before the great prayer: the priestess **exorcises** all"
     },
     "229": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 211,
-      "sha1": "bcbcbc3fb178"
+      "sha1": "bcbcbc3fb178",
+      "en_words": 491,
+      "confidence": "medium",
+      "confidence_note": "The opening of the **great prayer to Venus** (Erothea): the priestess invokes the"
     },
     "230": {
       "chapter": "XVIII",
-      "status": "fetched",
+      "status": "verified",
       "words": 406,
-      "sha1": "01c15adf7a3a"
+      "sha1": "01c15adf7a3a",
+      "en_words": 740,
+      "confidence": "medium",
+      "confidence_note": "The body of the **prayer to Venus**: Polia's heart offered in the altar-fire; the"
     },
     "231": {
       "chapter": "XVIII",
