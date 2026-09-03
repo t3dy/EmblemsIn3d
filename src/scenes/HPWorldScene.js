@@ -1985,6 +1985,29 @@ export class HPWorldScene {
       }
     }
 
+    // ── The crowning cypress arcade ───────────────────────────────────────
+    // The book crowns the top of the theatre's rings with paired cypresses
+    // "trained to arch and meet over" (Colonna p.354, tr. this repo): a living
+    // colonnade ringing the auditorium. Eight pairs on the top terrace, the
+    // four cardinals left open for the crossroads. Purely decorative — off the
+    // walk, so no colliders.
+    const arcadeR = 16.4, arcH = 1.26, span = 0.5;
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.34) continue;
+      const [cx, cz] = pos(a, arcadeR);
+      const tx = -Math.sin(a), tz = Math.cos(a);        // ground tangent
+      const apex = arcH + 2.6;                            // cypress-top height
+      for (const s of [-span, span]) {
+        const px = cx + tx * s, pz = cz + tz * s;
+        this._m(new THREE.ConeGeometry(0.3, 2.7, 8), this._leafMat, px, arcH + 1.35, pz, { cast: false });
+        this._m(new THREE.CylinderGeometry(0.07, 0.1, arcH + 0.1, 6), this._trunkMat, px, (arcH) / 2, pz, { cast: false });
+      }
+      // the two crowns trained into an arch overhead, and a box-sphere finial
+      this._m(new THREE.TorusGeometry(span, 0.07, 6, 14, Math.PI), this._leafMat, cx, apex, cz, { ry: a + Math.PI / 2, cast: false });
+      this._m(new THREE.SphereGeometry(0.16, 8, 6), this._leafMat, cx, apex + span, cz, { outline: true, cast: false });
+    }
+
     // ── The theatre floor, and the fountain the whole island converges on ──
     this._m(new THREE.CircleGeometry(7.8, 40), this._darkStoneMat, CX, 0.06, CZ, { rx: -Math.PI / 2, cast: false });
     this._buildFountain(CX, CZ, { enclosure: true });
