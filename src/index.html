@@ -376,6 +376,14 @@
     #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
     #tour-panel .tp-note-text { font-size: 0.78rem; color: #c8bca4; line-height: 1.6; }
     #tour-panel .tp-note-text em { color: #e0d4b8; font-style: italic; }
+    #tour-panel .tp-flavor-bar { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.15rem 0 0.1rem; }
+    #tour-panel .tp-flavor {
+      font-family: inherit; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.22rem 0.5rem; border: 1px solid #3a2a1a; background: none; color: #6b5d4d;
+      cursor: pointer; border-radius: 2px; transition: opacity 0.15s;
+    }
+    #tour-panel .tp-flavor.on { background: rgba(255,255,255,0.03); }
+    #tour-panel .tp-flavor:not(.on) { opacity: 0.45; text-decoration: line-through; }
     #tour-panel .tp-nav { display: flex; gap: 0.5rem; padding: 1rem 1.4rem; border-top: 1px solid rgba(139,69,19,0.2); }
     #tour-panel .tp-nav button {
       flex: 1 1 auto; background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
@@ -692,6 +700,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=87"></script>
+  <script type="module" src="./main.js?v=88"></script>
 </body>
 </html>

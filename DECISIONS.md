@@ -2,6 +2,30 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-04 — Creative brief for the whole work (Ted)
+
+- **Fidelity first, interpretation in the commentary.** Model the world as close to the
+  literal 1499 Hypnerotomachia (woodcuts + text) as possible; the commentary layer carries
+  the Renaissance contexts, the competing interpretations, and the *alternate realizations*
+  a scene might have had. Don't impose an aesthetic reading onto the geometry — let the
+  toggleable notes do the interpreting. (The marble Venus is faithful: the book puts a
+  statue in that fountain.)
+- **All four moods coexist:** antiquarian wonder, melancholic dream, erotic-mystical, and
+  uncanny/oneiric. The world should hold every register, not pick one.
+- **All three player stances exist:** you-are-Poliphilo (the first-person love-quest, the
+  Logistica/Thelemia reason-vs-desire choices), the scholar-visitor (the current museum/
+  tour/edition stance), and Polia's side (her Book II counter-narrative, cf. the Dee
+  project's AngelPOV).
+- **Keep it literary; add alchemy as a toggleable commentary flavour.** The primary
+  register stays the love-dream/antiquarian romance, NOT a cipher. But add the alchemical
+  reading — "as charted by James Russell" (Ted) — as a new colour-coded commentary type in
+  the tour's note system, toggleable on/off like every other flavour. **Blocker:** need
+  Russell's actual source (link/PDF/passages) before writing the alchemical glosses — will
+  NOT invent readings and attribute them to a real named scholar. Meanwhile the toggle
+  infrastructure + the empty "alchemical" category can be built.
+  → Implied feature: commentary types become independently **toggleable** in the tour
+    (turn each colour-coded flavour on/off), matching how the POV/render modes toggle.
+
 ## 2026-09-04 — Figures, Gallery, and aesthetic scope (Ted)
 
 - **Imported 3-D models are now allowed.** This *reverses* the founding "primitive-only

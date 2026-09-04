@@ -719,16 +719,51 @@ const NOTE_TYPES = {
   allegory:    { label: 'Allegory & symbolism',    color: '#6aa886' },
   literary:    { label: 'Literary art',            color: '#c87f92' },
   gloss:       { label: 'A difficult word',        color: '#9a9ab0' },
+  alchemical:  { label: 'Alchemical reading',      color: '#4fae9e' },
 };
+
+// The commentary lenses: each colour-coded flavour can be toggled on/off, and the
+// choice is sticky. `null` means "all on" (the default); once the reader touches a
+// chip we track an explicit enabled set.
+let _flavorsOn = (() => {
+  try { const s = localStorage.getItem('hp_flavors'); if (s) return new Set(JSON.parse(s)); } catch (_) {}
+  return null;
+})();
+function flavorOn(type) { return !_flavorsOn || _flavorsOn.has(type); }
+window.toggleFlavor = (type) => {
+  if (!_flavorsOn) _flavorsOn = new Set(Object.keys(NOTE_TYPES));  // start from all-on
+  if (_flavorsOn.has(type)) _flavorsOn.delete(type); else _flavorsOn.add(type);
+  try { localStorage.setItem('hp_flavors', JSON.stringify([..._flavorsOn])); } catch (_) {}
+  renderTourPanel();
+};
+
+// The toggle bar: one chip per flavour actually present in this tour (so empty
+// categories never show). Off flavours read dimmed.
+function renderFlavorBar(tour) {
+  const present = new Set();
+  for (const s of (tour.stops || [])) {
+    if (s.quote) present.add('quotation');
+    for (const nt of (s.notes || [])) present.add(nt.type);
+  }
+  const order = Object.keys(NOTE_TYPES).filter(t => present.has(t));
+  if (order.length < 2) return '';
+  const chips = order.map(t => {
+    const nt = NOTE_TYPES[t], on = flavorOn(t);
+    return `<button class="tp-flavor${on ? ' on' : ''}" onclick="window.toggleFlavor('${t}')"
+      style="${on ? `color:${nt.color};border-color:${nt.color}` : ''}">${nt.label}</button>`;
+  }).join('');
+  return `<div class="tp-flavor-bar" title="Toggle commentary lenses">${chips}</div>`;
+}
 
 function renderNotes(notes) {
   if (!Array.isArray(notes) || !notes.length) return '';
-  const cards = notes.map(nt => {
+  const cards = notes.filter(nt => flavorOn(nt.type)).map(nt => {
     const t = NOTE_TYPES[nt.type] || { label: nt.type || 'Note', color: '#8a7a5a' };
     return `<div class="tp-note" style="border-color:${t.color}">
       <div class="tp-note-label" style="color:${t.color}">${t.label}</div>
       <p class="tp-note-text">${fmtProse(nt.text)}</p></div>`;
   }).join('');
+  if (!cards) return '';
   return `<div class="tp-scholar-label" style="margin-top:.4rem">Commentary</div>
     <div class="tp-notes">${cards}</div>`;
 }
@@ -771,7 +806,8 @@ function renderTourPanel() {
         <div class="tp-title" style="color:${accent};font-size:1.15rem;margin-top:.5rem">${st.name || ''}</div>
         ${st.folio ? `<div class="tp-scholar-label">Facsimile folio ${st.folio}</div>` : ''}
         <p class="tp-lede">${fmtProse(stop.lede)}</p>
-        ${stop.quote ? `<blockquote class="tp-quote" style="border-color:${NOTE_TYPES.quotation.color}">${fmtProse(stop.quote)}${stop.quoteAttr ? `<cite>${fmtProse(stop.quoteAttr)}</cite>` : ''}</blockquote>` : ''}
+        ${renderFlavorBar(tour)}
+        ${stop.quote && flavorOn('quotation') ? `<blockquote class="tp-quote" style="border-color:${NOTE_TYPES.quotation.color}">${fmtProse(stop.quote)}${stop.quoteAttr ? `<cite>${fmtProse(stop.quoteAttr)}</cite>` : ''}</blockquote>` : ''}
         ${renderNotes(stop.notes)}
         <div class="tp-rule"></div>
         ${wcBtn}
