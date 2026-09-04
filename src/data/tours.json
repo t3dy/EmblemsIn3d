@@ -124,6 +124,10 @@
           {
             "type": "neoplatonic",
             "text": "In the Neoplatonic frame the dreamer must first be lost: the soul, forgetful in the body, has to feel its exile before the ascent the whole dream enacts can begin."
+          },
+          {
+            "type": "alchemical",
+            "text": "The alchemical reading also has a documented history: the 1600 French edition of Béroalde de Verville bolted an alchemical frontispiece and preface onto the book, and it was that framing which later fed Jung's use of the HP as alchemical allegory. The lens is partly a reception, layered on more than a century after 1499. (Priki.)"
           }
         ]
       },
@@ -158,8 +162,8 @@
             "text": "The elephant carrying the obelisk was read as an emblem of strength bearing sacred mystery — wisdom made to shoulder the weight of hidden knowledge."
           },
           {
-            "type": "myth",
-            "text": "Its Egyptian needle belongs to the Renaissance dream of a *prisca sapientia*, an original Egyptian wisdom older than Greece — the myth of Hermes Trismegistus behind the hieroglyphs (Curran)."
+            "type": "architecture",
+            "text": "John Bury shows the great pyramid-temple of these opening ruins was reconstructed from Pliny's account of the Mausoleum at Halicarnassus — the author practising the Quattrocento art of rebuilding a lost wonder of the world from words alone. (Bury 1998.)"
           },
           {
             "type": "context",
@@ -200,6 +204,10 @@
           {
             "type": "myth",
             "text": "The dragon in the vaults is the guardian-serpent of threshold myth, the monster at the mouth of the mystery the initiate must survive."
+          },
+          {
+            "type": "architecture",
+            "text": "Liane Lefaivre reads the HP's architecture as a theory of the *body* — buildings conceived on the proportions and desires of the human frame — and on that basis controversially reattributes the whole book from Colonna to Leon Battista Alberti. (Lefaivre 1997.)"
           }
         ]
       },
@@ -302,6 +310,10 @@
           {
             "type": "allegory",
             "text": "Roswitha Stewering rejects the familiar equations of Polia with antiquity or with wisdom. Reading the long landscape and architecture passages as mirrors of the lovers' drawing-together, she takes Polia instead for a microcosm of benevolent *Mother Nature* — the living world the dream walks through, given a woman's form. (Stewering, 1998.)"
+          },
+          {
+            "type": "literary",
+            "text": "Efthymia Priki sets the HP beside the Roman de la Rose and the Byzantine *Livistros and Rodamne*: the speeches that instruct the neophyte lover are not digressions but the engine of the plot — eros taught as initiation. (Priki.)"
           }
         ]
       },
@@ -397,7 +409,7 @@
           },
           {
             "type": "architecture",
-            "text": "The Polyandrion reconstructs the antique tomb-temple in full; one of its epitaphs is Artemisia's, for the Mausoleum of Halicarnassus itself — a lost wonder of the world rebuilt as the shrine of love's dead."
+            "text": "The Polyandrion is a whole antique tomb-temple reconstructed from the imagination — the same Quattrocento art of rebuilding lost monuments from texts that the book practises on the great pyramid, now turned to the architecture of death."
           },
           {
             "type": "myth",
@@ -405,7 +417,7 @@
           },
           {
             "type": "context",
-            "text": "The epitaphs are composed in authentic Roman lapidary Latin: the HP is also a monument of the new humanist *epigraphy*, the fashionable study of ancient inscriptions."
+            "text": "Tamara Griggs reads the book as the culmination of Quattrocento antiquarianism, not a Romantic escape: its epitaphs in lapidary Latin are the same connoisseur's collecting Cyriacus of Ancona pioneered — classical display as courtly self-promotion. (Griggs 1998.)"
           }
         ]
       },
