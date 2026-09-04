@@ -289,6 +289,29 @@
       #gallery-lightbox .lb-text { flex: 1 1 auto; }
     }
 
+    /* ── Tour woodcut viewer ──────────────────────────────────────── */
+    #woodcut-lightbox {
+      display: none; position: fixed; inset: 0; z-index: 47;
+      background: rgba(3,2,1,0.95); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; padding: 2.5rem; pointer-events: all;
+    }
+    #woodcut-lightbox .twc-inner { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; max-height: 90vh; }
+    #woodcut-lightbox img { max-width: min(80vw, 780px); max-height: 80vh; object-fit: contain; background: #e8e0d0; border: 1px solid #4a2a10; }
+    #woodcut-lightbox .twc-meta { display: flex; gap: 1rem; align-items: baseline; color: #c8a878; font-size: 0.82rem; letter-spacing: 0.03em; }
+    #woodcut-lightbox .twc-meta #twc-count { color: #7a6858; font-size: 0.7rem; }
+    #woodcut-lightbox .lb-close { position: absolute; top: 1rem; right: 1.3rem; background: none; border: none; color: #8b6a3a; font-size: 1.7rem; cursor: pointer; }
+    #woodcut-lightbox .lb-close:hover { color: #f5f0e8; }
+    .twc-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(10,8,4,0.7); border: 1px solid #4a2a10; color: #c8a878; font-size: 1.8rem; width: 2.4rem; height: 3.4rem; cursor: pointer; transition: border-color 0.18s, color 0.18s; }
+    .twc-arrow:hover { border-color: #c8a040; color: #f5f0e8; }
+    .twc-prev { left: 1.5rem; } .twc-next { right: 1.5rem; }
+    #tour-panel .tp-woodcut-btn {
+      background: rgba(200,160,64,0.08); border: 1px solid #6a4a18; color: #c8a878;
+      font-family: inherit; font-size: 0.75rem; letter-spacing: 0.03em;
+      padding: 0.4rem 0.7rem; cursor: pointer; width: fit-content;
+      transition: border-color 0.18s, color 0.18s, background 0.18s;
+    }
+    #tour-panel .tp-woodcut-btn:hover { border-color: #c8a040; color: #f5f0e8; background: rgba(200,160,64,0.16); }
+
     /* ── Guided tours ─────────────────────────────────────────────── */
     #tours-menu {
       display: none; position: fixed; inset: 0; z-index: 40;
@@ -536,6 +559,15 @@
     <div id="tours-menu-grid"></div>
   </div>
   <div id="tour-panel"></div>
+  <div id="woodcut-lightbox">
+    <button class="lb-close" onclick="window.closeTourWoodcut()" title="Close (Esc)">&times;</button>
+    <button id="twc-prev" class="twc-arrow twc-prev" onclick="window.tourWoodcutStep(-1)" title="Previous (←)">&#8249;</button>
+    <div class="twc-inner">
+      <img id="twc-img" src="" alt="">
+      <div class="twc-meta"><span id="twc-cap"></span><span id="twc-count"></span></div>
+    </div>
+    <button id="twc-next" class="twc-arrow twc-next" onclick="window.tourWoodcutStep(1)" title="Next (→)">&#8250;</button>
+  </div>
 
   <!-- Poliphilo's Dream: letterbox + narration panel + mode chooser -->
   <div id="dream-bar-top"></div>
@@ -601,6 +633,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=78"></script>
+  <script type="module" src="./main.js?v=80"></script>
 </body>
 </html>

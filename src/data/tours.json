@@ -5,6 +5,31 @@
     "subtitle": "Poliphilo's dream, told station by station through the whole book",
     "accent": "#d8a24a",
     "world": "HP",
+    "woodcuts": {
+      "wood": [
+        {"file": "woodcuts/wood.jpg", "caption": "Poliphilo lost in the dark wood"},
+        {"file": "woodcuts/horse.jpg", "caption": "Poliphilo at the wood's edge"}
+      ],
+      "elephant": [{"file": "woodcuts/portal.jpg", "caption": "The stone elephant bearing the obelisk"}],
+      "portal": [{"file": "woodcuts/queen.jpg", "caption": "Poliphilo flees the dragon in the vaults"}],
+      "court": [
+        {"file": "woodcuts/dragon.jpg", "caption": "A company of the nymphs"},
+        {"file": "woodcuts/bath.jpg", "caption": "The sleeping nymph, with a satyr"}
+      ],
+      "polia": [{"file": "woodcuts/elephant.jpg", "caption": "A nymph in the garden, by a fountain"}],
+      "triumphs": [
+        {"file": "woodcuts/triumph1.jpg", "caption": "A triumphal chariot in procession"},
+        {"file": "woodcuts/triumph2.jpg", "caption": "The loves of the gods"}
+      ],
+      "fountain": [{"file": "woodcuts/priapus.jpg", "caption": "The rite before the altar"}],
+      "polyandrion": [{"file": "woodcuts/polyandrion.jpg", "caption": "A tomb of the Polyandrion, with its epitaph"}],
+      "cythera": [{"file": "woodcuts/boat.jpg", "caption": "The standard of Cupid's boat"}],
+      "cythera_isle": [
+        {"file": "woodcuts/island_plan.jpg", "caption": "A topiary of the island gardens"},
+        {"file": "woodcuts/fountain_venus.jpg", "caption": "A measured plan of the sacred precinct"}
+      ],
+      "cythera_theatre": [{"file": "woodcuts/theatre.jpg", "caption": "The standard of the triumph of Cupid"}]
+    },
     "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world, one wonder at a time, following the story from the dark wood to the Fountain of Venus on Cythera. Halfway along, Dallington's 1592 English runs out — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
     "stops": [
       { "station": "wood", "chapter": "I", "half": "dallington",
@@ -103,6 +128,22 @@
           { "type": "myth", "text": "Bacchus and Ceres flank the fountain, dripping their liquor in: Terence's proverb *sine Cerere et Baccho friget Venus* — without bread and wine, love grows cold. The powers of generation gathered around their queen." },
           { "type": "allegory", "text": "On the trophies of the disarmed gods: *Quis evadet? — Nemo*, 'Who escapes? No one.' Love's dominion is universal; not a god is exempt. The spoils are the very arms of heaven." },
           { "type": "architecture", "text": "The Roman amphitheatre reimagined as pleasure: tiers not of stone seats but of planted terraces, the arena floored with a mirror of black obsidian. Antiquity turned into a garden of vision." }
+        ] },
+      { "station": "cythera_theatre", "chapter": "XXIV", "half": "ours",
+        "lede": "Out of the theatre, Poliphilo and Polia come to a sacred spring and the tomb of Adonis, where Venus's yearly rite of mourning for her slain love is kept. On this note of grief inside the garden of pleasure, the first book closes.",
+        "wc": [{"file": "woodcuts/adonis.jpg", "caption": "A pergola garden with its fountain"}],
+        "notes": [
+          { "type": "myth", "text": "Adonis, gored by the boar and mourned by Venus; from his blood sprang the anemone. Planting his tomb and spring on Cythera turns the myth into horticulture, as the whole island does." },
+          { "type": "allegory", "text": "Book I ends not in consummation but in mourning — love and death paired one last time before Polia takes over the telling in Book II." }
+        ] },
+      { "station": "wood", "chapter": "XXXVIII", "half": "ours",
+        "lede": "At the very height of the embrace Polia dissolves into fragrant smoke, and Poliphilo wakes to the nightingale and the risen sun — the dream, and Polia, gone. The tour ends where it began, in the wood at dawn.",
+        "quote": "Poliphilo, my dear — loving me — farewell.",
+        "quoteAttr": "Polia, dissolving at the dream's end (ch. XXXVII)",
+        "wc": [{"file": "woodcuts/awakening.jpg", "caption": "Cupid brings the lovers before the enthroned gods"}],
+        "notes": [
+          { "type": "literary", "text": "The dream-vision must end in waking: the beloved vanishes at the moment of union, and the book closes on loss — the turn the whole Romance-of-the-Rose tradition is built on." },
+          { "type": "context", "text": "The last leaves carry Polia's epitaph and the Aldine colophon — 'At Venice, in the month of December 1499, in the house of Aldus Manutius, most accurately.'" }
         ] }
     ]
   },

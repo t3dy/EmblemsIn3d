@@ -103,7 +103,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
-  const V = '10'; // bump when data files are re-exported
+  const V = '12'; // bump when data files are re-exported
   const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
@@ -675,6 +675,7 @@ async function startTour(id) {
 async function tourGoto(i) {
   const tour = state.tour;
   if (!tour) return;
+  closeTourWoodcut();
   const n = tour.stops.length;
   state.tourStop = Math.max(0, Math.min(n - 1, i));
   const stop = tour.stops[state.tourStop];
@@ -754,6 +755,12 @@ function renderTourPanel() {
                       : '../research/translation.html#synopsis';
     const linkLabel = ours ? 'Read this chapter in the parallel edition &rarr;'
                            : 'See it in the whole-book synopsis &rarr;';
+    // the 1499 woodcut(s) for this moment — per-stop, else the station's set
+    const wcs = stop.wc || (tour.woodcuts && tour.woodcuts[stop.station]) || [];
+    state._tourWoodcuts = wcs;
+    const wcBtn = wcs.length
+      ? `<button class="tp-woodcut-btn" onclick="window.openTourWoodcut(0)">&#9635; ${wcs.length > 1 ? 'See the ' + wcs.length + ' woodcuts' : 'See the 1499 woodcut'}</button>`
+      : '';
     panel.innerHTML = `
       <div class="tp-head">
         <span class="tp-tour" style="color:${accent}">${tour.title}</span>
@@ -767,6 +774,7 @@ function renderTourPanel() {
         ${stop.quote ? `<blockquote class="tp-quote" style="border-color:${NOTE_TYPES.quotation.color}">${fmtProse(stop.quote)}${stop.quoteAttr ? `<cite>${fmtProse(stop.quoteAttr)}</cite>` : ''}</blockquote>` : ''}
         ${renderNotes(stop.notes)}
         <div class="tp-rule"></div>
+        ${wcBtn}
         <a class="tp-editionlink" href="${href}" target="_blank" rel="noopener" style="color:${accent}">${linkLabel}</a>
       </div>
       <div class="tp-nav">
@@ -840,7 +848,33 @@ function renderTourPanel() {
 window.startTour = startTour;
 window.tourNext  = tourNext;
 window.tourPrev  = tourPrev;
-window.exitTour  = () => { clearTour(); showToursMenu(); };
+window.exitTour  = () => { closeTourWoodcut(); clearTour(); showToursMenu(); };
+
+// The 1499 woodcut for the current tour moment — called up on demand.
+function openTourWoodcut(idx) {
+  const wcs = state._tourWoodcuts || [];
+  if (!wcs.length) return;
+  state._twcIdx = ((idx % wcs.length) + wcs.length) % wcs.length;
+  const wc = wcs[state._twcIdx];
+  const img = document.getElementById('twc-img');
+  img.src = '../images/' + wc.file;
+  img.alt = wc.caption || '';
+  document.getElementById('twc-cap').textContent = wc.caption || '';
+  document.getElementById('twc-count').textContent =
+    wcs.length > 1 ? `${state._twcIdx + 1} / ${wcs.length}` : '';
+  const multi = wcs.length > 1;
+  document.getElementById('twc-prev').style.visibility = multi ? 'visible' : 'hidden';
+  document.getElementById('twc-next').style.visibility = multi ? 'visible' : 'hidden';
+  document.getElementById('woodcut-lightbox').style.display = 'flex';
+}
+function tourWoodcutStep(dir) { openTourWoodcut((state._twcIdx ?? 0) + dir); }
+function closeTourWoodcut() {
+  const el = document.getElementById('woodcut-lightbox');
+  if (el) el.style.display = 'none';
+}
+window.openTourWoodcut  = openTourWoodcut;
+window.tourWoodcutStep  = tourWoodcutStep;
+window.closeTourWoodcut = closeTourWoodcut;
 
 // ─── Navigation helpers ───────────────────────────────────────────────────────
 
@@ -1239,6 +1273,14 @@ window.addEventListener('keydown', (e) => {
   if (state.activeScene?.dream) return;
   // A running tour captures the arrow keys for stop-to-stop navigation
   if (state.tour) {
+    // …unless the woodcut viewer is open, where they page the woodcuts
+    const wcOpen = document.getElementById('woodcut-lightbox')?.style.display === 'flex';
+    if (wcOpen) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown')   { e.preventDefault(); tourWoodcutStep(1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); tourWoodcutStep(-1); }
+      else if (e.key === 'Escape')                            closeTourWoodcut();
+      return;
+    }
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown')   { e.preventDefault(); tourNext(); }
     else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); tourPrev(); }
     else if (e.key === 'Escape')                            window.exitTour();

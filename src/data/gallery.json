@@ -2,30 +2,30 @@
   {
     "id": "hp_frontispiece",
     "category": "The 1499 woodcuts",
-    "title": "Poliphilo in the dark wood",
+    "title": "A woodcut initial",
     "artist": "Hypnerotomachia Poliphili (anon. woodcut)",
     "date": "Venice, 1499",
-    "caption": "The dream begins: Poliphilo strays into the selva oscura.",
+    "caption": "One of the book's ornamented capitals; the great chapter-initials together spell the author's acrostic — POLIAM FRATER FRANCISCVS COLVMNA PERAMAVIT.",
     "file": "gallery/hp_frontispiece.jpg",
     "source": ""
   },
   {
     "id": "hp_elephant",
     "category": "The 1499 woodcuts",
-    "title": "The elephant and obelisk",
+    "title": "A garden fountain",
     "artist": "Hypnerotomachia Poliphili",
     "date": "Venice, 1499",
-    "caption": "The stone elephant with a spiral stair through its belly, bearing an obelisk.",
+    "caption": "A nymph beside a fountain in the antique garden — one of the dream's recurring scenes.",
     "file": "gallery/hp_elephant.jpg",
     "source": ""
   },
   {
     "id": "hp_portal",
     "category": "The 1499 woodcuts",
-    "title": "The great triumphal portal",
+    "title": "The elephant and obelisk",
     "artist": "Hypnerotomachia Poliphili",
     "date": "Venice, 1499",
-    "caption": "The Vitruvian gateway Poliphilo reads stone by stone.",
+    "caption": "The stone elephant with a spiral stair through its belly, bearing an obelisk — the woodcut Bernini later built in stone in the Piazza della Minerva.",
     "file": "gallery/hp_portal.jpg",
     "source": ""
   },
@@ -47,7 +47,7 @@
     "date": "Venice, 1499",
     "caption": "One of the four triumphal chariots of Jove's loves.",
     "file": "gallery/hp_triumph.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Hypnerotomachia_Poliphili_MET_DP102572.jpg"
+    "source": ""
   },
   {
     "id": "hp_priapus",
@@ -147,7 +147,7 @@
     "date": "1502",
     "caption": "The perfect centrally-planned temple the round Temple of Venus anticipates.",
     "file": "gallery/tempietto.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Tempietto_di_San_Pietro_in_Montorio.jpg"
+    "source": ""
   },
   {
     "id": "bernini_elephant",
@@ -157,7 +157,7 @@
     "date": "1667",
     "caption": "Bernini's Piazza della Minerva monument — descended directly from the HP woodcut.",
     "file": "gallery/bernini_elephant.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Elephant_and_Obelisk_-_Bernini.jpg"
+    "source": ""
   },
   {
     "id": "alberti_smn",
@@ -167,7 +167,7 @@
     "date": "1470",
     "caption": "Alberti gave the Quattrocento its architectural mathematics (De re aedificatoria).",
     "file": "gallery/alberti_smn.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:The_facade_of_Santa_Maria_Novella.jpg"
+    "source": ""
   },
   {
     "id": "colosseum",
@@ -177,7 +177,7 @@
     "date": "Rome, 80 AD",
     "caption": "The Roman amphitheatre — the form Cythera's theatre of Venus reimagines as planted tiers.",
     "file": "gallery/colosseum.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Colosseum_in_Rome%2C_Italy_-_April_2007.jpg"
+    "source": ""
   },
   {
     "id": "pantheon",
@@ -187,7 +187,7 @@
     "date": "Rome, c. 125 AD",
     "caption": "The great coffered rotunda — ancestor of every centrally-planned Temple of Venus.",
     "file": "gallery/pantheon.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Pantheon_%28Rome%29%2C_Dome_interior.jpg"
+    "source": ""
   },
   {
     "id": "mantegna_triumph",
@@ -227,7 +227,7 @@
     "date": "1513",
     "caption": "Dürer's line at its most sculptural — a touchstone for the woodcut render mode.",
     "file": "gallery/durer_triumph.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Knight%2C_Death_and_the_Devil_MET_DP159049.jpg"
+    "source": ""
   },
   {
     "id": "roman_de_la_rose",
@@ -247,6 +247,6 @@
     "date": "c. 1485",
     "caption": "Glazed terracotta relief — the Quattrocento's sculptural sweetness.",
     "file": "gallery/della_robbia.jpg",
-    "source": "https://commons.wikimedia.org/wiki/File:Andrea_della_Robbia%2C_Madonna_and_Child_with_Cherubim%2C_c._1485%2C_NGA_129.jpg"
+    "source": ""
   }
 ]
