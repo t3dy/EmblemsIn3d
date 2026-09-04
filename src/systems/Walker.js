@@ -32,11 +32,17 @@ export class Walker {
     this._keys = new Set();
     this._bob = 0;
     this._tp = null;
-    this._dragging = false;
+    this._lookId = null;              // the pointer currently driving look
+    this.moveVec = { x: 0, y: 0 };    // analog joystick: y forward (+), x strafe (+)
+    this.running = false;             // held by an on-screen run toggle
   }
+
+  // The on-screen thumb-stick feeds movement here (values in [-1, 1]).
+  setMove(x, y) { this.moveVec.x = x; this.moveVec.y = y; }
 
   attach() {
     const el = this.renderer.domElement;
+    el.style.touchAction = 'none';    // let us own drags without the page panning/zooming
     this._onKeyDown = (e) => {
       // 0 is passed through too — the HP world uses it for the crossing to
       // Cythera, which is a voyage rather than a numbered wonder.
@@ -48,27 +54,32 @@ export class Walker {
     window.addEventListener('keydown', this._onKeyDown);
     window.addEventListener('keyup', this._onKeyUp);
 
+    // Look is driven by ONE pointer, tracked by id, so a second finger on the
+    // movement stick never hijacks or jumps the camera (two-thumb play).
     this._onPD = (e) => {
-      this._dragging = true; this._px = e.clientX; this._py = e.clientY;
+      if (this.locked || this._lookId !== null) return;
+      this._lookId = e.pointerId; this._px = e.clientX; this._py = e.clientY;
       el.setPointerCapture?.(e.pointerId);
     };
     this._onPM = (e) => {
-      if (!this._dragging || this.locked) return;
+      if (this.locked || e.pointerId !== this._lookId) return;
       const dx = e.clientX - this._px, dy = e.clientY - this._py;
       this._px = e.clientX; this._py = e.clientY;
       this.player.yaw  -= dx * 0.0034;
       this.player.pitch = THREE.MathUtils.clamp(this.player.pitch - dy * 0.0028, -1.15, 1.15);
     };
-    this._onPU = () => { this._dragging = false; };
+    this._onPU = (e) => { if (e.pointerId === this._lookId) this._lookId = null; };
     el.addEventListener('pointerdown', this._onPD);
     el.addEventListener('pointermove', this._onPM);
     window.addEventListener('pointerup', this._onPU);
+    window.addEventListener('pointercancel', this._onPU);
   }
 
   dispose() {
     window.removeEventListener('keydown', this._onKeyDown);
     window.removeEventListener('keyup', this._onKeyUp);
     window.removeEventListener('pointerup', this._onPU);
+    window.removeEventListener('pointercancel', this._onPU);
     const el = this.renderer.domElement;
     el.removeEventListener('pointerdown', this._onPD);
     el.removeEventListener('pointermove', this._onPM);
@@ -142,9 +153,15 @@ export class Walker {
     if (K.has('KeyS') || K.has('ArrowDown')) mv.sub(f);
     if (K.has('KeyA')) mv.sub(r);
     if (K.has('KeyD')) mv.add(r);
+    // analog thumb-stick (mobile): forward on y, strafe on x, magnitude = speed
+    if (this.moveVec.x || this.moveVec.y) {
+      mv.addScaledVector(f, this.moveVec.y);
+      mv.addScaledVector(r, this.moveVec.x);
+    }
     if (mv.lengthSq() > 0) {
-      const run = K.has('ShiftLeft') || K.has('ShiftRight');
-      mv.normalize().multiplyScalar((run ? this.runSpeed : this.speed) * dt);
+      if (mv.lengthSq() > 1) mv.normalize();   // cap keyboard diagonals; keep analog magnitude
+      const run = K.has('ShiftLeft') || K.has('ShiftRight') || this.running;
+      mv.multiplyScalar((run ? this.runSpeed : this.speed) * dt);
       p.pos.add(mv);
       this.collide(p.pos);
       this._bob += dt * (run ? 11 : 7.5);

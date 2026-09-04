@@ -3,8 +3,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=45';
-import { AFWorldScene } from './scenes/AFWorldScene.js?v=19';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=46';
+import { AFWorldScene } from './scenes/AFWorldScene.js?v=20';
 import { DreamMode } from './systems/DreamMode.js?v=2';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
@@ -907,10 +907,106 @@ window.switchWorld = function (world) {
     else if (world === 'HP')    launchHPWorld();
     else if (world === 'THEATRUM') launchAFWorld();
     else                        launchArchivesScene();
+    refreshTouchControls();
   });
 };
 
 window.backToGallery = function () { buildGallery(); };
+
+// ─── Touch controls (mobile walkable worlds) ──────────────────────────────────
+
+// Evaluated live (not frozen at load): emulators and hybrid devices can report
+// touch capability late, and a real touch always reveals the controls.
+let _touchSeen = false;
+window.addEventListener('touchstart', () => { _touchSeen = true; }, { once: true, passive: true });
+function isTouchDevice() {
+  return _touchSeen
+    || window.matchMedia('(pointer: coarse)').matches
+    || navigator.maxTouchPoints > 0;
+}
+
+function currentWalker() {
+  const sc = state.activeScene;
+  return (sc && sc.walker && !sc.dream) ? sc.walker : null;
+}
+
+function closeWonderMenu() {
+  const m = document.getElementById('tc-wonder-menu');
+  if (m) m.hidden = true;
+}
+
+// Show the thumb-stick only in a walkable world, on a touch device, when no
+// overlay / tour / dream is running. Cheap enough to call from the render loop.
+function refreshTouchControls() {
+  const el = document.getElementById('touch-controls');
+  if (!el) return;
+  const sc = state.activeScene;
+  const walkable = isTouchDevice() && !!(sc && sc.walker) && !sc.dream && !state.tour
+    && (state.world === 'HP' || state.world === 'THEATRUM');
+  el.hidden = !walkable;
+  const wbtn = document.getElementById('tc-wonders');
+  if (wbtn) wbtn.style.display = state.world === 'HP' ? '' : 'none';
+  const rbtn = document.getElementById('tc-run');
+  if (rbtn) rbtn.classList.toggle('on', !!currentWalker()?.running);
+  if (!walkable) closeWonderMenu();
+}
+
+window.tcGoto = (key) => {
+  const sc = state.activeScene;
+  if (!(sc instanceof HPWorldScene)) return;
+  closeWonderMenu();
+  sc.teleport(key);
+};
+
+(function initTouchControls() {
+  const stick = document.getElementById('move-stick');
+  const knob = stick && stick.querySelector('.tc-knob');
+  if (stick && knob) {
+    let id = null, cx = 0, cy = 0, R = 1;
+    const setKnob = (dx, dy) => { knob.style.transform = `translate(${dx}px, ${dy}px)`; };
+    stick.addEventListener('pointerdown', (e) => {
+      id = e.pointerId;
+      const r = stick.getBoundingClientRect();
+      cx = r.left + r.width / 2; cy = r.top + r.height / 2; R = r.width * 0.42;
+      try { stick.setPointerCapture(id); } catch (_) {}
+      e.preventDefault();
+    });
+    stick.addEventListener('pointermove', (e) => {
+      if (e.pointerId !== id) return;
+      let dx = e.clientX - cx, dy = e.clientY - cy;
+      const d = Math.hypot(dx, dy);
+      if (d > R) { dx = dx / d * R; dy = dy / d * R; }
+      setKnob(dx, dy);
+      const w = currentWalker(); if (w) w.setMove(dx / R, -dy / R);   // up = forward
+    });
+    const end = (e) => {
+      if (e.pointerId !== id) return;
+      id = null; setKnob(0, 0);
+      const w = currentWalker(); if (w) w.setMove(0, 0);
+    };
+    stick.addEventListener('pointerup', end);
+    stick.addEventListener('pointercancel', end);
+  }
+
+  const runBtn = document.getElementById('tc-run');
+  runBtn && runBtn.addEventListener('click', () => {
+    const w = currentWalker(); if (!w) return;
+    w.running = !w.running;
+    runBtn.classList.toggle('on', w.running);
+  });
+
+  const wBtn = document.getElementById('tc-wonders');
+  wBtn && wBtn.addEventListener('click', () => {
+    const m = document.getElementById('tc-wonder-menu');
+    if (!m) return;
+    if (m.hidden) {
+      m.innerHTML = HP_STATIONS
+        .map(s => `<button onclick="window.tcGoto('${s.key}')">${s.name}</button>`).join('')
+        + `<button onclick="window.tcGoto('cythera_isle')">&#9973; Sail to Cythera</button>`;
+      m.hidden = false;
+    } else m.hidden = true;
+  });
+})();
 
 // ─── HP World — the unified Dream Garden ──────────────────────────────────────
 
@@ -968,6 +1064,7 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   } else {
     showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
   }
+  refreshTouchControls();
 }
 
 // ─── Poliphilo's Dream (story mode) ───────────────────────────────────────────
@@ -980,6 +1077,7 @@ function showHPMode(on) {
 window.hpExplore = () => {
   showHPMode(false);
   showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
+  refreshTouchControls();
 };
 
 window.hpDream = () => {
@@ -1121,6 +1219,7 @@ async function launchAFWorld({ station = null } = {}) {
   AlchemicalAudio.setStage('NIGREDO');
   showAFWorldHUD(null);
   showHint('W A S D walk · 1–4 the four stages · 5 the Stone · walk to an emblem, click its plate to enter');
+  refreshTouchControls();
 }
 
 
@@ -1346,6 +1445,7 @@ if (typeof ResizeObserver !== 'undefined') {
 // ─── Render loop ──────────────────────────────────────────────────────────────
 
 let _lastW = 0;
+let _tcTick = 0;
 function animate() {
   requestAnimationFrame(animate);
   const dt = Math.min(clock.getDelta(), 0.05);
@@ -1353,6 +1453,9 @@ function animate() {
   // Auto-resize when iframe finally has dimensions (first real frame)
   const { w } = getViewport();
   if (w !== _lastW) { _lastW = w; resizeAll(); }
+
+  // Keep the mobile controls in sync with whatever world/mode is up
+  if (++_tcTick % 15 === 0) refreshTouchControls();
 
   if (state.activeScene) {
     state.activeScene.update(dt);

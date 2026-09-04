@@ -477,6 +477,55 @@
     #loading-bar-wrap { width: 260px; height: 2px; background: #2a1a08; }
     #loading-bar { height: 100%; width: 0%; background: #8b4513; transition: width 0.3s; }
     #loading-sub { font-size: 0.75rem; color: #6b5d4d; letter-spacing: 0.08em; }
+
+    /* ── Touch controls (walkable worlds) ─────────────────────────── */
+    #touch-controls { position: fixed; inset: 0; z-index: 12; pointer-events: none; }
+    #touch-controls > * { pointer-events: auto; }
+    #move-stick {
+      position: absolute; left: 1.4rem; bottom: 1.8rem;
+      width: 8.6rem; height: 8.6rem; border-radius: 50%;
+      background: rgba(20,14,8,0.32); border: 1px solid rgba(200,160,64,0.45);
+      touch-action: none; user-select: none; -webkit-user-select: none;
+    }
+    #move-stick .tc-knob {
+      position: absolute; left: 50%; top: 50%; width: 3.5rem; height: 3.5rem;
+      margin: -1.75rem 0 0 -1.75rem; border-radius: 50%;
+      background: rgba(200,168,120,0.5); border: 1px solid rgba(245,240,232,0.55);
+      will-change: transform;
+    }
+    #move-stick .tc-hint {
+      position: absolute; left: 0; right: 0; bottom: 0.7rem; text-align: center;
+      font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(245,240,232,0.4);
+    }
+    #tc-buttons { position: absolute; right: 1.4rem; bottom: 1.9rem; display: flex; flex-direction: column; gap: 0.7rem; align-items: flex-end; }
+    .tc-btn {
+      background: rgba(20,14,8,0.72); border: 1px solid rgba(200,160,64,0.5); color: #f5f0e8;
+      font-family: 'Georgia', serif; font-size: 0.95rem; letter-spacing: 0.03em;
+      padding: 0.75rem 1.2rem; border-radius: 2rem; cursor: pointer; touch-action: manipulation;
+    }
+    .tc-btn.on { background: rgba(200,160,64,0.3); border-color: #c8a040; }
+    #tc-wonder-menu {
+      position: absolute; right: 1.4rem; bottom: 7.4rem; min-width: 13rem; max-height: 56vh;
+      overflow-y: auto; background: rgba(10,8,4,0.96); border: 1px solid #8b4513; padding: 0.35rem;
+      display: flex; flex-direction: column; gap: 0.15rem; -webkit-overflow-scrolling: touch;
+    }
+    #tc-wonder-menu button {
+      text-align: left; background: none; border: none; color: #c8a878;
+      font-family: 'Georgia', serif; font-size: 0.9rem; padding: 0.65rem 0.8rem; cursor: pointer;
+    }
+    #tc-wonder-menu button:active { background: rgba(200,160,64,0.22); color: #f5f0e8; }
+
+    /* ── Responsive (phones/tablets) ──────────────────────────────── */
+    @media (max-width: 720px) {
+      #world-nav { flex-wrap: wrap; justify-content: flex-end; gap: 0.35rem; max-width: 72vw; }
+      #world-nav button { font-size: 0.7rem; padding: 0.32rem 0.6rem; }
+      #emblem-hud { top: 1rem; left: 1rem; max-width: 60vw; }
+      #annotation-panel { bottom: 1rem; max-width: 94%; font-size: 0.82rem; padding: 0.9rem 1.1rem; }
+    }
+    @media (max-width: 720px) and (pointer: coarse) {
+      /* keep the movement stick clear of the tour sheet: only free-explore shows it */
+      #move-stick { bottom: 1.4rem; }
+    }
   </style>
 </head>
 <body>
@@ -569,6 +618,16 @@
     <button id="twc-next" class="twc-arrow twc-next" onclick="window.tourWoodcutStep(1)" title="Next (→)">&#8250;</button>
   </div>
 
+  <!-- Touch controls for the walkable worlds (shown on touch devices) -->
+  <div id="touch-controls" hidden>
+    <div id="move-stick"><div class="tc-knob"></div><span class="tc-hint">move</span></div>
+    <div id="tc-buttons">
+      <button id="tc-wonders" class="tc-btn">Wonders &#9662;</button>
+      <button id="tc-run" class="tc-btn">Run</button>
+    </div>
+    <div id="tc-wonder-menu" hidden></div>
+  </div>
+
   <!-- Poliphilo's Dream: letterbox + narration panel + mode chooser -->
   <div id="dream-bar-top"></div>
   <div id="dream-bar-bottom"></div>
@@ -633,6 +692,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=82"></script>
+  <script type="module" src="./main.js?v=87"></script>
 </body>
 </html>
