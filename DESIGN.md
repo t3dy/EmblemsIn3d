@@ -83,11 +83,14 @@ ARTHURCRAWL's worldview rulesets. The commentary explains what each realization 
    scene at once (not per-scene switches).
 3. **Mood-light = narrative default, player-overridable.**
 
-## Still needed
+## Done
 
-- James Russell's alchemical readings (link / PDF / passages) to write the alchemical
-  commentary flavour faithfully — will NOT invent glosses under a real scholar's name. The
-  toggle + the (empty) alchemical category can ship before the content arrives.
+- **Alchemical commentary flavour is populated** (2026-09-04) from James Russell's Durham PhD
+  (2014) and `hp.db.alchemical_symbols` / `symbol_occurrences` — six attributed notes on the
+  wood, elephant, court, fountain, Cythera island, and theatre nodes, each citing Russell's
+  page and the British Library annotator hand (Hand B, the d'Espagnet mercury alchemist;
+  Hand E, the pseudo-Geber sulphur reader). Toggle + chooser pick it up automatically.
+  Corpus map: `SOURCES.md`.
 
 ## A sensible first slice
 
