@@ -173,6 +173,7 @@ export class HPWorldScene {
     this._portals = [];
     this._quinta = null;
     this._venuses = [];            // the goddess turns at each of her fountains
+    this._venusSlots = [];         // where an imported marble Venus can replace the primitive one
     this._boat = null;
     this._floats = [];
     this._waters = [];             // spinning water discs
@@ -269,8 +270,51 @@ export class HPWorldScene {
 
     this._compileDrawCalls();
 
+    // The goddess the whole world walks toward: a real marble Venus (a CC0 scan
+    // of the antique Capitoline Venus, decimated to ~35k faces) stands in the
+    // fountain in place of the primitive figure. Loaded after compilation so the
+    // imported mesh is never swallowed by the draw-call merge; failure is silent,
+    // and the primitive Venus simply stays.
+    await this._loadVenusStatue();
+
     this.walker.attach();
     this.walker.applyTo(this.camera);
+  }
+
+  async _loadVenusStatue() {
+    if (!this._venusSlots?.length) return;
+    let gltf;
+    try {
+      const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+      gltf = await new GLTFLoader().loadAsync('../assets/models/venus.glb');
+    } catch (e) {
+      return;   // keep the primitive Venus if the model can't be loaded
+    }
+    let proto = null;
+    gltf.scene.traverse(o => { if (o.isMesh && !proto) proto = o; });
+    if (!proto) return;
+    // the scan carries no usable vertex normals, so a lit material renders it
+    // black — recompute them once on the shared geometry
+    proto.geometry.computeVertexNormals();
+
+    const woodcut = this.style.key === 'woodcut';
+    const marble = woodcut
+      ? this.style.mat({ tone: 0.03, side: THREE.DoubleSide })
+      : this.style.mat({ color: 0xe9e3d7, roughness: 0.62, metalness: 0.0 });
+    const H = 2.5;   // her height in world units (the model is normalised to 1)
+
+    for (const slot of this._venusSlots) {
+      const mesh = new THREE.Mesh(proto.geometry, marble);
+      mesh.scale.setScalar(H);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      const g = new THREE.Group();
+      g.add(mesh);
+      g.position.copy(slot.pos);
+      (slot.parent || this.scene).add(g);
+      this._venuses.push(g);                 // turns with the goddess's fountains
+      if (slot.primitive) slot.primitive.visible = false;
+    }
   }
 
   // ── The draw-call compiler ────────────────────────────────────────────────
@@ -1427,6 +1471,8 @@ export class HPWorldScene {
     v.scale.setScalar(1.35);
     this.scene.add(v);
     this._venuses.push(v);
+    // remember this fountain so an imported marble statue can stand in her place
+    this._venusSlots.push({ primitive: v, parent: v.parent, pos: v.position.clone() });
     // hair floating "scattered in a gyre and very long" on the surface
     const hairRing = this._m(new THREE.TorusGeometry(0.5, 0.055, 6, 24),
       woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xd8b24a, metalness: 0.5, roughness: 0.4 }),
