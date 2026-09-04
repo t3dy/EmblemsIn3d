@@ -102,7 +102,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
-  const V = '8'; // bump when data files are re-exported
+  const V = '10'; // bump when data files are re-exported
   const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
@@ -597,7 +597,25 @@ async function tourGoto(i) {
   const n = tour.stops.length;
   state.tourStop = Math.max(0, Math.min(n - 1, i));
   const stop = tour.stops[state.tourStop];
-  await launchEmblemScene(stop.emblem);  // show the actual model
+
+  if (tour.world === 'HP' || stop.station) {
+    // A narrative tour through the Dream Garden: glide to the wonder, then hand
+    // the camera back to the player, who can drag to look around before moving
+    // on. Re-use the running world across stops instead of rebuilding it.
+    if (state.activeScene instanceof HPWorldScene) {
+      state.activeScene.teleport(stop.station);
+    } else {
+      await launchHPWorld({ station: stop.station, chooser: false });
+      showHint('Drag to look around · W A S D to walk · ← → move between stops');
+    }
+    // The tour rail carries all the text, so silence the world's own station
+    // HUD and the auto-surfacing marginalia while a tour is running.
+    if (state.activeScene) state.activeScene.onStation = null;
+    document.getElementById('annotation-panel').style.display = 'none';
+    setActiveWorldBtn('btn-tours');
+  } else {
+    await launchEmblemScene(stop.emblem);  // show the actual model
+  }
   hideHUD();                              // the rail replaces the default HUD
   hideTextCard();
   renderTourPanel();
@@ -606,14 +624,82 @@ async function tourGoto(i) {
 function tourNext() { tourGoto(state.tourStop + 1); }
 function tourPrev() { tourGoto(state.tourStop - 1); }
 
+// The commentary layer: each node of the novel tour carries typed notes, in the
+// voices of a narrative designer, a scholarly gloss-master, and a literary
+// explainer. The type sets a colour-coded border and a label. One registry so
+// the data files only ever store a type key.
+const NOTE_TYPES = {
+  quotation:   { label: 'From the book',           color: '#d8a24a' },
+  context:     { label: 'Renaissance context',     color: '#c98a4a' },
+  architecture:{ label: 'Architectural theory',    color: '#7fa8c0' },
+  neoplatonic: { label: 'Neoplatonic aesthetics',  color: '#b48ad0' },
+  myth:        { label: 'Mythological allusion',   color: '#cf8f5c' },
+  allegory:    { label: 'Allegory & symbolism',    color: '#6aa886' },
+  literary:    { label: 'Literary art',            color: '#c87f92' },
+  gloss:       { label: 'A difficult word',        color: '#9a9ab0' },
+};
+
+function renderNotes(notes) {
+  if (!Array.isArray(notes) || !notes.length) return '';
+  const cards = notes.map(nt => {
+    const t = NOTE_TYPES[nt.type] || { label: nt.type || 'Note', color: '#8a7a5a' };
+    return `<div class="tp-note" style="border-color:${t.color}">
+      <div class="tp-note-label" style="color:${t.color}">${t.label}</div>
+      <p class="tp-note-text">${fmtProse(nt.text)}</p></div>`;
+  }).join('');
+  return `<div class="tp-scholar-label" style="margin-top:.4rem">Commentary</div>
+    <div class="tp-notes">${cards}</div>`;
+}
+
 function renderTourPanel() {
   const tour = state.tour;
   const panel = document.getElementById('tour-panel');
   if (!tour || !panel) return;
   const i = state.tourStop, n = tour.stops.length;
   const stop = tour.stops[i];
-  const emb  = state.emblems.find(e => e.number === stop.emblem) || {};
   const accent  = tour.accent || '#c8a040';
+
+  // Narrative (Dream Garden) stops render their own way: a wonder of the world,
+  // the chapter it belongs to, and a link into the parallel-text edition.
+  if (stop.station) {
+    const st = HP_STATIONS.find(s => s.key === stop.station) || {};
+    const ours = stop.half === 'ours';
+    const badgeCol = ours ? accent : '#8ab0d8';
+    const source = ours ? 'our new translation' : "Dallington's 1592 English";
+    // translated chapters deep-link to their parallel text; Dallington chapters
+    // point at the whole-book synopsis (its first half is his English)
+    const slug = 'ch-' + String(stop.chapter || '').split(/[–-]/)[0].trim().toLowerCase();
+    const href = ours ? `../research/translation.html#${slug}`
+                      : '../research/translation.html#synopsis';
+    const linkLabel = ours ? 'Read this chapter in the parallel edition &rarr;'
+                           : 'See it in the whole-book synopsis &rarr;';
+    panel.innerHTML = `
+      <div class="tp-head">
+        <span class="tp-tour" style="color:${accent}">${tour.title}</span>
+        <span class="tp-count">Stop ${i + 1} / ${n}</span>
+      </div>
+      <div class="tp-body">
+        <span class="tp-badge" style="color:${badgeCol};border-color:${badgeCol}">Chapter ${stop.chapter} · ${source}</span>
+        <div class="tp-title" style="color:${accent};font-size:1.15rem;margin-top:.5rem">${st.name || ''}</div>
+        ${st.folio ? `<div class="tp-scholar-label">Facsimile folio ${st.folio}</div>` : ''}
+        <p class="tp-lede">${fmtProse(stop.lede)}</p>
+        ${stop.quote ? `<blockquote class="tp-quote" style="border-color:${NOTE_TYPES.quotation.color}">${fmtProse(stop.quote)}${stop.quoteAttr ? `<cite>${fmtProse(stop.quoteAttr)}</cite>` : ''}</blockquote>` : ''}
+        ${renderNotes(stop.notes)}
+        <div class="tp-rule"></div>
+        <a class="tp-editionlink" href="${href}" target="_blank" rel="noopener" style="color:${accent}">${linkLabel}</a>
+      </div>
+      <div class="tp-nav">
+        <button onclick="window.tourPrev()" ${i === 0 ? 'disabled' : ''}>&larr; Prev</button>
+        <button class="tp-exit" onclick="window.exitTour()">&#9632; Tours</button>
+        <button onclick="window.tourNext()" ${i === n - 1 ? 'disabled' : ''}>Next &rarr;</button>
+      </div>`;
+    panel.style.display = 'flex';
+    panel.querySelector('.tp-body').scrollTop = 0;
+    setActiveWorldBtn('btn-tours');
+    return;
+  }
+
+  const emb  = state.emblems.find(e => e.number === stop.emblem) || {};
   const numeral = emb.roman_numeral || (emb.number === 0 ? '—' : emb.number);
   const discourse = (emb.discourse_summary || '').trim();
 

@@ -1,4 +1,111 @@
 {
+  "novel": {
+    "id": "novel",
+    "title": "The Novel",
+    "subtitle": "Poliphilo's dream, told station by station through the whole book",
+    "accent": "#d8a24a",
+    "world": "HP",
+    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world, one wonder at a time, following the story from the dark wood to the Fountain of Venus on Cythera. Halfway along, Dallington's 1592 English runs out — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
+    "stops": [
+      { "station": "wood", "chapter": "I", "half": "dallington",
+        "lede": "The book opens in sleeplessness. Poliphilo, wrung all night by his longing for Polia, sinks into sleep only at dawn — and the dream sets him down alone on a wide plain, at the edge of a wood so dense that the sun cannot reach the floor of it. He strays until every path is lost, and the trees close overhead; the terror of it is the first thing the dream makes him feel. Only a prayer, cried out to Jupiter, delivers him from the dark, out to the clear stream where the wonders begin.",
+        "notes": [
+          { "type": "literary", "text": "The dark wood deliberately echoes the opening of Dante's *Inferno* — the *selva oscura*, the soul lost 'midway.' The whole dream is framed as a spiritual itinerary that begins in error and lostness." },
+          { "type": "allegory", "text": "The trackless wood is the soul astray among the senses, before reason and love can guide it: the standard medieval-Renaissance allegory of the *anima* at the outset of its ascent." },
+          { "type": "context", "text": "The author hid his name in an acrostic — the great initials of the thirty-eight chapters spell POLIAM FRATER FRANCISCVS COLVMNA PERAMAVIT, 'Brother Francesco Colonna loved Polia intensely.' Printed by Aldus Manutius in 1499, it is the most celebrated illustrated book of the Renaissance." }
+        ] },
+      { "station": "elephant", "chapter": "III", "half": "dallington",
+        "lede": "Beyond the wood the plain fills with the ruins of a colossal antiquity — the most ambitious architecture the Renaissance imagination ever put on paper. A stepped pyramid climbs to an obelisk that seems to prick the sky; and here a great elephant cut from black stone kneels under a needle of its own, a spiral stair hollowed through its belly. Poliphilo, half in awe and half in an antiquarian's fever, measures every cornice and moulding to the inch, unable to stop reading the stones.",
+        "notes": [
+          { "type": "architecture", "text": "Colonna's obsessive measuring belongs to the new Vitruvian architectural culture of the Quattrocento — Alberti's *De re aedificatoria* (1452). Building had just become a learned, mathematical discipline, and the dream is a fantasia upon it." },
+          { "type": "context", "text": "This elephant bearing an obelisk was later cut in stone: Bernini's monument in the Piazza della Minerva (Rome, 1667) descends directly from this woodcut — the dream-book raising real architecture a century and a half on." },
+          { "type": "gloss", "text": "*Hieroglyph* — following the newly rediscovered Horapollo (a manuscript found in 1419), humanists read Egyptian signs as a silent picture-language of wisdom. Colonna's hieroglyphs are learned inventions, not true Egyptian." }
+        ] },
+      { "station": "portal", "chapter": "IV", "half": "dallington",
+        "lede": "He comes to a triumphal portal of impossible richness, and reads it like a scholar in a trance: the columns squared to the Vitruvian rule, the frieze crowded with sacrifices, the Egyptian hieroglyphs deciphered sign by sign. It is the book's architectural manifesto, beauty offered as proof. But past the threshold, in the black of the vaults, a dragon starts up — and awe turns in an instant to blind panic as Poliphilo flees deeper into the dark.",
+        "notes": [
+          { "type": "architecture", "text": "The portal is the book's Vitruvian showpiece — the orders, the entablature, the ratios all set out to rule. The woodcut works as an architectural treatise disguised as a marvel." },
+          { "type": "neoplatonic", "text": "For Ficino and his circle, beautiful proportion is the visible trace of cosmic harmony: measured ratio in a building mirrors the mathematics of the heavens and draws the soul upward. Colonna's architecture is meant to be felt as metaphysics." },
+          { "type": "literary", "text": "Beauty is at once shadowed by terror — the dragon in the vaults. The dream keeps this rhythm throughout: the sublime treads on the heels of the beautiful." }
+        ] },
+      { "station": "court", "chapter": "VIII–XI", "half": "dallington",
+        "lede": "Out of the dark he is found by five lovely nymphs — the five senses — who calm him, bathe him, and lead him through fabulous gardens to their queen, Eleuterylida, whose name is Free Will. She keeps a palace of gold and gems and a banquet of unmeasured luxury, course after perfumed course. At its end she commends him to two handmaids who will guide the rest of the dream: Logistica, who is Reason, and Thelemia, who is Desire.",
+        "notes": [
+          { "type": "allegory", "text": "Eleuterylida's name is Greek for 'daughter of freedom' (*eleutheria*): Free Will herself, presiding. With the five sense-nymphs and the guides Logistica (Reason) and Thelemia (Will), the court stages the faculties of the soul as a royal household." },
+          { "type": "gloss", "text": "The nymphs' names are the Greek senses — Orassia (sight), Achoe (hearing), Osfressia (smell), Geussia (taste), Aphea (touch). Colonna coins compulsively from Greek; the erudition is half the pleasure." },
+          { "type": "neoplatonic", "text": "The banquet of the senses is not condemned but ordered. The Neoplatonic ladder of love begins on its lowest rung — the beauty of bodies and the delight of the senses — before it climbs toward the divine." }
+        ] },
+      { "station": "three_doors", "chapter": "XII–XIII", "half": "dallington",
+        "lede": "The guides bring him to three doors, three whole lives to choose between, each titled in Greek, Latin, Hebrew and Arabic. Behind the first lies the steep glory of God; behind the third, the glory of the world; behind the middle door, the mother of Love. Poliphilo looks behind each, and chooses the middle — whereupon Logistica, Reason, breaks her lute and leaves him in sorrow, and a nymph he does not yet know to be Polia takes him in charge.",
+        "quote": "ΘΕΟΔΟΞΙΑ · ΕΡΩΤΟΤΡΟΦΟΣ · ΚΟΣΜΟΔΟΞΙΑ",
+        "quoteAttr": "The three doors — the Glory of God, the Mother of Love, the Glory of the World (ch. XII)",
+        "notes": [
+          { "type": "allegory", "text": "The three doors are the three classical lives: the contemplative (Theodoxia, glory of God), the active (Cosmodoxia, glory of the world), and the amorous (Erototrophos). By choosing the middle, voluptuary way, the book sets itself against the ascetic tradition." },
+          { "type": "context", "text": "Each door is lettered in Greek, Latin, Hebrew and Arabic — the emblem of humanist universal learning, the dream of a single wisdom standing behind the sacred tongues." },
+          { "type": "literary", "text": "Reason departs by breaking her lute. Her harmony — the music of the rational soul — falls silent the instant desire is chosen: allegory made a single, unforgettable gesture." }
+        ] },
+      { "station": "polia", "chapter": "XIII", "half": "dallington",
+        "lede": "The unknown nymph becomes his companion, and though he does not yet recognise her, she is Polia herself. She leads him gently on through the gardens toward the triumphs and the temple, and the recognition — when it comes — will turn the whole book: the second half is her turn to tell, in her own voice, how the two of them came to this shore.",
+        "notes": [
+          { "type": "literary", "text": "The beloved leads the lover before he knows her — a Beatrice: Dante's guide reworked as erotic mystery. The delayed recognition is the hinge of the whole book." },
+          { "type": "allegory", "text": "The names carry the book's double desire: Polia is from the Greek for 'ancient things' (and 'many'), Poliphilo 'the lover of Polia' — and so 'the lover of antiquity.' To desire the woman is to desire the classical past." }
+        ] },
+      { "station": "triumphs", "chapter": "XIV", "half": "dallington",
+        "lede": "Four triumphal chariots roll past in procession, celebrating the loves of Jupiter — Europa on her bull, Leda and her swan, Danaë in her golden rain, Semele in her fire — each car drawn by six beasts and ringed with riding nymph-musicians. It is the book's most sustained vision of the antique triumph, gilded and garlanded and exact. It is also the last great set-piece Dallington's Elizabethan English ever reaches: a few pages on, in the next chapter, his translation stops mid-word.",
+        "notes": [
+          { "type": "context", "text": "The *trionfo* — the Roman triumph revived as Renaissance spectacle and poem (Petrarch's *Trionfi*, the carnival cars of Medici Florence). Colonna gives four, for the loves of Jove." },
+          { "type": "myth", "text": "Europa on the bull, Leda and the swan, Danaë in the golden rain, Semele in the fire: the canonical loves of Jupiter — the same set Titian and Correggio would paint as their *poesie*." },
+          { "type": "allegory", "text": "Love triumphs even over the king of the gods — the book building, chariot by chariot, toward its thesis that *amor vincit omnia*, love as cosmic power." }
+        ] },
+      { "station": "fountain", "chapter": "XVII", "half": "ours",
+        "lede": "Here the four-century gap in the English closes. Dallington broke off mid-sentence at the word *Mustulento*; from this round Temple of Venus onward, every word you read is newly translated. Poliphilo lifts his eyes to the sky-reaching cupola, then cannot describe it — the nymph's beauty keeps pulling his gaze away, and he stops to beg the reader's pardon for it. Over the temple door, cut into two tablets of lodestone, the stone that draws iron carries the creed of the whole place.",
+        "quote": "Each is drawn by his own pleasure.",
+        "quoteAttr": "TRAHIT SUA QUEMQUE VOLUPTAS — carved in lodestone above the Temple door (ch. XVII)",
+        "notes": [
+          { "type": "neoplatonic", "text": "'Venus Physizoa' — life-giving Venus, the generative power of the cosmos. In Ficino's two-Venus scheme, love ordered rightly leads the soul from the beauty of the body toward the divine; this temple is that doctrine built in stone." },
+          { "type": "architecture", "text": "A round, domed temple — the centrally-planned sanctuary that was the Renaissance architectural ideal. Colonna's Temple of Venus (1499) is a paper precursor to Bramante's Tempietto (1502) and to the long dream of a perfect circular church." },
+          { "type": "gloss", "text": "The two tablets are cut from lodestone, the magnet that draws iron. The stone that pulls metal carries the words 'each is drawn by his own pleasure' (Virgil, *Eclogue* II) — the material is the meaning." },
+          { "type": "literary", "text": "Poliphilo stops to beg the reader's pardon: he cannot describe the temple because the nymph's beauty keeps stealing his eyes. The old inexpressibility topos, turned into a lover's apology." }
+        ] },
+      { "station": "polyandrion", "chapter": "XIX", "half": "ours",
+        "lede": "The longest chapter takes Poliphilo, alone, through the ruined Polyandrion — the seaside tomb-temple of everyone who ever died of love. He reads epitaph after epitaph, a whole taxonomy of love's deaths: the refused, the jealous, the faithful cut down by fortune. In the crypt, a mosaic of fire and ice torments the shades of lovers, and a fresco of Proserpina carried off frightens him back to Polia. Nothing in the book is more quietly devastating than the close of a young suicide's stone.",
+        "quote": "He lived 19 years, 2 months, 9 days; the hours, no one knows.",
+        "quoteAttr": "The epitaph of Gaius Vibius, dead of love at nineteen (ch. XIX)",
+        "notes": [
+          { "type": "gloss", "text": "*Polyandrion* — Greek, 'the place of the many dead': a communal tomb. Here, the necropolis of everyone undone by love." },
+          { "type": "literary", "text": "Colonna composes whole Roman epitaphs in authentic lapidary Latin. The book is also a humanist exercise in epigraphy — the newly fashionable study of ancient inscriptions — and these stones are its finest inventions." },
+          { "type": "allegory", "text": "A graveyard at the heart of the love-quest: myrtle, Venus's tree, knotted with horse-heads for death's swiftness. Sweetness and mortality are yoked on every stone — a *memento mori* set inside the garden of love." }
+        ] },
+      { "station": "cythera", "chapter": "XX", "half": "ours",
+        "lede": "At the shore Cupid himself arrives by boat to ferry the lovers across. His vessel is a paradox — built prow-for-stern, \"where all the mysteries of love breathed\" — and from its mast flies a cyan-silk standard worked with three hieroglyphs. Poliphilo, ever the reader of signs, deciphers them on the spot. The six nymphs rest their oars and sing a heavenly part-song, Polia answers alone in the Lydian mode, and the boat skims out toward the island.",
+        "quote": "Love conquers all.",
+        "quoteAttr": "AMOR VINCIT OMNIA — the rebus Poliphilo reads on the boat's standard (ch. XX)",
+        "notes": [
+          { "type": "myth", "text": "Cythera is the island sacred to Venus, off whose shore she rose from the sea-foam. The voyage there becomes the great topos of amorous pilgrimage — the one Watteau would paint, two centuries on, as the *Embarkation for Cythera* (1717)." },
+          { "type": "gloss", "text": "The three signs on the sail — a flaming vase, the globe, a binding withy — spell Virgil's *omnia vincit Amor* (*Eclogue* X). Reading pictures as sentences is the book's signature game." },
+          { "type": "literary", "text": "Six nymphs sing a part-song at the rested oars, entering two by two. The page cannot sound it, so it describes the polyphony instead — ekphrasis reaching for music, the book's boast that it fuses all the arts." }
+        ] },
+      { "station": "cythera_isle", "chapter": "XXI", "half": "ours",
+        "lede": "Cythera itself: a perfect circular island, ring within ring, set out from its own measured plan — an outer grove, a river hedged with citrus, seven rising terraces of jewelled knot-gardens planted herb by herb. But Poliphilo can barely attend to the horticulture, so wholly is he consumed by the nearness of Polia; the book's high style keeps breaking, helplessly, into the plainest confession of what he feels.",
+        "quote": "Her amorous and most refulgent eyes, gliding lightning-like through mine to my inmost heart, seditiously stirred up a most bitter conflagration.",
+        "quoteAttr": "Poliphilo, as the boat nears Cythera (ch. XXI)",
+        "notes": [
+          { "type": "architecture", "text": "The island is drawn by compass and rule, ring within ring, from a measured plan — the ideal geometric garden. The knot-parterres set out here are among the ancestors of the Renaissance formal garden and its printed plans." },
+          { "type": "neoplatonic", "text": "The concentric rings are a cosmological diagram as much as a garden: the soul's graded ascent toward the divine centre where Venus waits. Sacred geometry laid out as a walkable itinerary." },
+          { "type": "allegory", "text": "Poliphilo can barely attend to the horticulture for love — the book's two desires, for antiquity and for Polia, pulling against each other. That tension is its engine." }
+        ] },
+      { "station": "cythera_theatre", "chapter": "XXII–XXIII", "half": "ours",
+        "lede": "The whole world has been built to walk toward this. A triumph of Cupid, hung with the disarmed trophies of the gods — one of them lettered *Quis evadet? — Nemo*, \"Who escapes? No one\" — leads the lovers to an obsidian-floored amphitheatre of planted tiers. At its centre stands the most-holy fountain; the curtain before the goddess is drawn away, and Venus is revealed in her majesty, her doves bathing her in spray as the water dripped from Bacchus and Ceres beside her.",
+        "quote": "The white doves dipped their golden bills in the spotless waters and bedewed the little Cytherean body, and the droplets showed on her translucent flesh as nothing other than orient pearls.",
+        "quoteAttr": "The Fountain of Venus revealed (ch. XXIII)",
+        "notes": [
+          { "type": "neoplatonic", "text": "The torn curtain and the revealed goddess is the Neoplatonic moment of vision: after the graded climb, the soul beholds Beauty itself. Everything before was the ascent to this unveiling." },
+          { "type": "myth", "text": "Bacchus and Ceres flank the fountain, dripping their liquor in: Terence's proverb *sine Cerere et Baccho friget Venus* — without bread and wine, love grows cold. The powers of generation gathered around their queen." },
+          { "type": "allegory", "text": "On the trophies of the disarmed gods: *Quis evadet? — Nemo*, 'Who escapes? No one.' Love's dominion is universal; not a god is exempt. The spoils are the very arms of heaven." },
+          { "type": "architecture", "text": "The Roman amphitheatre reimagined as pleasure: tiers not of stone seats but of planted terraces, the arena floored with a mirror of black obsidian. Antiquity turned into a garden of vision." }
+        ] }
+    ]
+  },
   "scholarship": {
     "id": "scholarship",
     "title": "The Scholarship",
