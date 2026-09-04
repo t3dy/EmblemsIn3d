@@ -103,7 +103,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
-  const V = '14'; // bump when data files are re-exported
+  const V = '15'; // bump when data files are re-exported
   const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),

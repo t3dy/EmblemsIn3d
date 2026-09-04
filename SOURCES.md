@@ -56,7 +56,7 @@ Each name has a folder under `scholars\<slug>\` with `profile.md` and the articl
 - **Roswitha Stewering**, *World, Landscape and Polia* + *Text and Woodcuts* — **the nymphs, Polia, and the landscape**; how the woodcuts relate to the text. Primary for modelling the female figures and the garden's world-picture.
 - **Efthymia Priki**, *The Narrative Function of Hieroglyphs* + *Crossing the Text/Image Boundary* — the hieroglyph gates and rebuses (the doors, the boat standard, QUIS EVADET).
 - **Christopher J. Nygren**, *HP and Italian Art circa 1500: Mantegna, Antico, Correggio* + *The Woodcut as Mirror* — the **triumphs and the statuary**; the antique-sculpture aesthetic (grounds the marble Venus and the gods).
-- **Christophe Poncet**, *La scelta di Lorenzo: Botticelli tra poesia e filosofia* — the **Ficinian/Neoplatonic** reading (Venus, the Graces); primary for the neoplatonic commentary flavour.
+- **Christophe Poncet**, *La scelta di Lorenzo: Botticelli tra poesia e filosofia* — a Ficinian reading of Botticelli's *Primavera* (Venus, the Graces). NB: it does **not** engage the HP directly, so it is background for the Neoplatonic *milieu*, not a source for HP-specific claims. Attribute the tour's neoplatonic notes to **Ficino's ladder of love** generally, not to Poncet.
 - **Rosemary Trippe**, *Image, Text, and Vernacular Poetics*.
 - **Georg Leidinger**, *Dürer und die HP* — the woodcut/print connection.
 - **William B. Keller**, *Reading across Word and Image*.
@@ -81,8 +81,10 @@ Each name has a folder under `scholars\<slug>\` with `profile.md` and the articl
 
 1. **Before writing a station description, a commentary note, or modelling a scene**, check
    the relevant scholar folder / `md/` file and `hp.db.folio_descriptions` for that folio.
-2. **Commentary flavours map to clusters:** architectural theory → Lefaivre/Wright/Jarzombek;
-   neoplatonic → Poncet/Ficino; mythological & statuary → Nygren; allegory & the oneiric →
+2. **Commentary flavours map to clusters:** architectural theory & gardens → Lefaivre,
+   Hunt, Segre, Wright/Jarzombek; neoplatonic → Ficino's ladder of love (Poncet is Primavera
+   context, not HP); mythological & statuary / antiquarian beholdership → Nygren; hieroglyphs
+   & Egyptology → Curran; **Polia & the landscape → Stewering**; allegory & the oneiric →
    Gollnick/Priki; the **alchemical flavour → Russell + `alchemical_symbols`**.
 3. **Cite, don't invent.** When a note makes an interpretive claim, it should trace to a
    named scholar in this corpus or to the annotators' evidence — never a fabricated reading.
