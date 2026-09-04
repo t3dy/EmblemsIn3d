@@ -136,6 +136,65 @@ export function makeCast(S) {
 
   // A human figure ~1.7 * h tall. Poses: stand | reach (arms up) | point
   // (right arm forward) | recline (lying) | sit | beckon (right arm raised).
+  // A feathered wing — a Group whose pivot sits at the shoulder root, so a
+  // scene can still flap it by setting rotation.z (as the vignettes do). Two
+  // fanned rows of vane-feathers (flattened 4-sided cones, ridged, curled just
+  // out of plane so they never read as flat cards), a leading-edge bone, and a
+  // few drips of molten wax running off the joint — Cupid's borrowed wings.
+  // `s` is −1 for the left wing, +1 for the right.
+  function featherWing(h, s) {
+    const wing = new THREE.Group();
+    const fMat  = M(0xece4d4, { roughness: 0.72, side: THREE.DoubleSide });
+    const boneM = M(0xd6c9b0, { roughness: 0.7 });
+    const waxM  = M(0xf0cf78, { roughness: 0.28, emissive: lit ? 0x5a3c08 : 0x000000,
+                                emissiveIntensity: lit ? 0.4 : 0 });
+
+    // leading-edge bone, swept outward from the shoulder
+    const bone = mesh(new THREE.CapsuleGeometry(0.022 * h, 0.32 * h, 4, 6), boneM,
+                      s * 0.17 * h, 0.02 * h, 0);
+    bone.rotation.z = -s * (Math.PI / 2.25);
+    wing.add(bone);
+
+    // coverts (short, in front) then primaries (long, sweeping down and back);
+    // the counts are high enough that the vanes overlap into a wing, not a fan
+    const rows = [
+      { n:  8, base: 0.30, grow: 0.24, w: 0.052, z:  0.016, top: 0.02, bot: 0.66 },
+      { n: 12, base: 0.50, grow: 0.52, w: 0.064, z: -0.020, top: 0.10, bot: 1.05 },
+    ];
+    for (const row of rows) {
+      for (let j = 0; j < row.n; j++) {
+        const frac = row.n > 1 ? j / (row.n - 1) : 0;
+        const L = h * (row.base + row.grow * frac);
+        const cone = new THREE.ConeGeometry(row.w * h, L, 4);
+        cone.translate(0, L / 2, 0);          // base at the quill root, tip outward
+        const fm = mesh(cone, fMat, 0, 0, 0);
+        fm.scale.z = 0.33;                     // flatten the diamond into a vane
+        fm.rotation.y = Math.PI / 4;           // turn the ridge to the front
+        const fp = new THREE.Group();
+        fp.add(fm);
+        const down = row.top + (row.bot - row.top) * frac;   // fan angle, top→down
+        fp.rotation.z = -s * (Math.PI / 2 + down);
+        fp.rotation.x = s * 0.07 * frac;       // curl out of plane — never a flat card
+        fp.position.set(s * 0.05 * h, 0, row.z * h - j * 0.007 * h);
+        wing.add(fp);
+      }
+    }
+
+    // molten wax running off the wing — thin at the top, bulbous where it hangs
+    for (const [ox, len] of [[0.05, 0.17], [0.15, 0.24], [0.27, 0.13]]) {
+      const l = len * h;
+      const tail = new THREE.ConeGeometry(0.033 * h, l, 8);
+      tail.translate(0, -l / 2, 0);            // apex at the wing, base hanging down
+      const tm = mesh(tail, waxM, s * ox * h, -0.02 * h, 0.03 * h);
+      wing.add(tm);
+      const bulb = mesh(new THREE.SphereGeometry(0.036 * h, 10, 8), waxM,
+                        s * ox * h, -0.02 * h - l, 0.03 * h);
+      bulb.scale.y = 1.35;
+      wing.add(bulb);
+    }
+    return wing;
+  }
+
   function figure({ h = 1, skin = SKIN, robe = null, pose = 'stand', crowned = false,
                     winged = false, twoHeaded = false, hat = null, beard = false } = {}) {
     const g = new THREE.Group();
@@ -201,12 +260,11 @@ export function makeCast(S) {
     if (pose === 'point' || pose === 'beckon') parts.armR.rotation.x = pose === 'point' ? -1.2 : -0.4;
 
     if (winged) {
-      const wg = new THREE.PlaneGeometry(0.5 * h, 0.9 * h);
-      const wm = M(0xe8e0d0, { side: THREE.DoubleSide });
       for (const s of [-1, 1]) {
         // wings spring from the shoulder blades — the BACK, which is −z
-        const w = mesh(wg, wm, s * 0.3 * h, 1.15 * h, -0.12 * h);
-        w.rotation.y = s * 0.5; w.rotation.z = s * 0.6;
+        const w = featherWing(h, s);
+        w.position.set(s * 0.13 * h, 1.22 * h, -0.11 * h);
+        w.rotation.y = s * 0.42; w.rotation.z = s * 0.5;
         g.add(w);
         if (s < 0) parts.wingL = w; else parts.wingR = w;
       }
@@ -372,11 +430,10 @@ export function makeCast(S) {
     }
 
     if (winged) {
-      const wg = new THREE.PlaneGeometry(0.46 * h, 0.84 * h);
-      const wm = M(0xe8e0d0, { side: THREE.DoubleSide });
       for (const s of [-1, 1]) {
-        const w = mesh(wg, wm, s * 0.26 * h, 1.16 * h, -0.06 * h);
-        w.rotation.y = s * 0.5; w.rotation.z = s * 0.6;
+        const w = featherWing(h, s);
+        w.position.set(s * 0.13 * h, 1.16 * h, -0.06 * h);
+        w.rotation.y = s * 0.42; w.rotation.z = s * 0.5;
         g.add(w);
         if (s < 0) parts.wingL = w; else parts.wingR = w;
       }
