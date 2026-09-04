@@ -1,0 +1,78 @@
+{
+  "_about": "Section-by-section summaries of the whole Hypnerotomachia Poliphili (Venice, 1499), for the digital edition. Chapters I-XVI are covered by Robert Dallington's public-domain 1592 English (to facsimile p.193); chapters XVII-XXXVIII and the closing matter are newly translated in this edition and each links into the parallel text. Continuous chapter numbering I-XXXVIII across both books, matching translation/manifest.json.",
+  "parts": [
+    {
+      "id": "book1-first",
+      "title": "Book I — Poliphilo's Dream",
+      "subtitle": "Chapters I–XVI · in Robert Dallington's 1592 English",
+      "note": "The first half of the dream already exists in English: Robert Dallington's <em>Hypnerotomachia: The Strife of Loue in a Dreame</em> (London, 1592), which runs to facsimile page 193 before breaking off mid-sentence. These summaries orient the reader through Dallington's half; the parallel text below begins where he stopped.",
+      "link": {"href": "https://www.gutenberg.org/ebooks/18459", "label": "Dallington's 1592 English at Project Gutenberg"},
+      "chapters": [
+        {"roman": "I", "translated": false, "summary": "Sleepless with longing for his Polia, Poliphilo falls asleep at dawn and the dream begins. He wakes, within the dream, on a wide plain and strays into a dark, trackless wood where neither light nor path survives; terrified, he prays his way out at last to a clear stream and drinks."},
+        {"roman": "II", "translated": false, "summary": "Following a sweet Dorian music across a flowering country, Poliphilo is so overcome by wonder that he falls asleep <em>within</em> the dream, and wakes into a deeper dream-region strewn with the ruins of antiquity."},
+        {"roman": "III", "translated": false, "summary": "The great antiquities: a colossal stepped pyramid crowned by a needle-obelisk — the vastest structure the imagination can raise — set out with exact measurement, together with a winged horse, elephants of stone, and a bronze colossus he climbs into and through."},
+        {"roman": "IV", "translated": false, "summary": "The triumphal portal. Poliphilo studies a monumental gateway to the last inch — its columns and entablature drawn to the Vitruvian rule, its friezes and Egyptian hieroglyphs decoded — the book's first great architectural ekphrasis and, in effect, its architectural manifesto."},
+        {"roman": "V", "translated": false, "summary": "The dragon. In the dark vaulted passages beyond the gate a fearsome dragon starts up; Poliphilo flees in blind panic through the labyrinthine dark and breaks out into a bright and pleasant land."},
+        {"roman": "VI", "translated": false, "summary": "The five nymphs. Five lovely nymphs — the five senses — find the trembling Poliphilo, put his fear to rest, and invite him to bathe with them."},
+        {"roman": "VII", "translated": false, "summary": "The bath. In a jewelled bath-house the nymphs bathe with him amid teasing, playful eroticism, and spring a trick fountain on him — the book's lightest and most sensuous interlude."},
+        {"roman": "VIII", "translated": false, "summary": "Queen Eleuterylida. The nymphs lead Poliphilo through marvellous gardens to their sovereign, Eleuterylida (Free Will), enthroned in a palace of impossible richness."},
+        {"roman": "IX", "translated": false, "summary": "The palace and its gardens. The queen's residence unfolds: its architecture and precious materials, a great obelisk, a topiary garden, and a water-labyrinth figuring the ages and hazards of human life."},
+        {"roman": "X", "translated": false, "summary": "The banquet. A feast of unmeasured luxury — gold and gem vessels, perfumed dishes served in order, music and dance — described course by course as a set-piece of the senses."},
+        {"roman": "XI", "translated": false, "summary": "The two guides. After the feast the queen shows Poliphilo emblematic marvels and gives him two handmaids to lead him on: Logistica (Reason) and Thelemia (Will, or Desire)."},
+        {"roman": "XII", "translated": false, "summary": "The three doors. The guides bring him to three portals, three ways of life: Theodoxia, the glory of God; Cosmodoxia, the glory of the world; and Erototrophos, the mother of Love. He looks behind each in turn."},
+        {"roman": "XIII", "translated": false, "summary": "The choice of Love. Poliphilo chooses the third door, the amorous life; Reason departs from him in sorrow, and a nymph — Polia, though he does not yet know her — takes him in charge."},
+        {"roman": "XIV", "translated": false, "summary": "The Triumphs of Jove. The nymph leads him to four triumphal chariots celebrating the loves of Jupiter — Europa, Leda, Danaë, and Semele — carved, gilded, and peopled in the book's most sustained ekphrasis of the antique triumph."},
+        {"roman": "XV", "translated": false, "summary": "Vertumnus and Pomona. Further triumphs pass: the seasonal procession of Vertumnus and Pomona, gods of the turning year and the orchard, with rustic sacrifice and song."},
+        {"roman": "XVI", "translated": false, "summary": "Toward the temple. The rustic triumphs continue toward the rites, the offerings are prepared — and the narrative approaches the altar of the Seasons where, on facsimile page 193, at the word <em>Mustulento</em>, Dallington's English breaks off."}
+      ]
+    },
+    {
+      "id": "book1-second",
+      "title": "Book I — Poliphilo's Dream, continued",
+      "subtitle": "Chapters XVII–XXIV · newly translated in this edition",
+      "note": "From here to the end of the book the only prior English was under copyright. These chapters are translated afresh from the 1499 Aldine; each links into the parallel text below.",
+      "chapters": [
+        {"roman": "XVII", "translated": true, "summary": "The four Seasons and the Temple of Venus. Our translation opens with the four Seasons carved on an altar and the rustic rite of Priapus, then the round Temple of Venus Physizoa (\"life-giving Venus\") — its vine-cast bronze dome, its self-opening magnet-door inscribed <em>Trahit sua quemque voluptas</em> (\"each is drawn by his own pleasure\") — where, at the sacred well, Polia at last reveals herself and the lovers are joined."},
+        {"roman": "XVIII", "translated": true, "summary": "The sacrifice and the miraculous rose-bush. Polia, a temple-initiate, burns the incense of Venus and sacrifices the turtledoves; a winged spirit rises from the smoke; the priestess speaks the great prayer to Venus, and from the blood-quenched fire a rose-bush miraculously springs, whose fruit the lovers eat in communion. Then they come out to the ruined Polyandrion, the seaside tomb-temple of those who died of love."},
+        {"roman": "XIX", "translated": true, "summary": "The Polyandrion and its epitaphs — the longest chapter. Poliphilo explores the ruined tomb-temple: the obelisk of Caesar with its ant-and-elephant concord-hieroglyph, the crypt with its fire-and-ice Hell-mosaic of lovers, and a great sequence of love-death epitaphs (Nevia, Leontia and Lollius, and Artemisia's Mausoleum). A Rape-of-Proserpina fresco frightens him back to Polia; Cupid then arrives by boat, and the marine gods do him homage as the crossing begins."},
+        {"roman": "XX", "translated": true, "summary": "The crossing to Cythera. In Cupid's reversible boat, under the hieroglyph-standard <em>Amor vincit omnia</em>, the six nymphs rest their oars and sing; Polia answers alone in the Lydian mode, and the boat skims to the island — \"perseverance alone wears the victor's diadem.\""},
+        {"roman": "XXI", "translated": true, "summary": "The gardens of Cythera. The circular island, ring within ring, is described from its own measured plan: the outer grove, the ring-river with its citrus pergola, the seven-step terraces and their jewelled knot-parterres (planted herb by herb), an aviary of the transformed, and the herb-set inscriptions dedicating the rings to Jupiter."},
+        {"roman": "XXII", "translated": true, "summary": "The triumph of Cupid and the theatre of Venus. The landing, the trophies of the disarmed gods (<em>Quis evadet? — Nemo</em>, \"Who escapes? — No one\"), the masque of allegorical nymphs, and the serpent-drawn car that bears the lovers, bound in roses, to the great amphitheatre — an obsidian-floored theatre of planted tiers and perfumed pavements, where the lovers are unbound and Psyche restores Cupid's golden arrow."},
+        {"roman": "XXIII", "translated": true, "summary": "The Fountain of Venus. At the theatre's centre stands the most-holy fountain; the curtain before the goddess is torn away, and Venus is revealed in her majesty — the scene the whole island, and the whole 3-D world, is built to walk toward."},
+        {"roman": "XXIV", "translated": true, "summary": "The spring of Adonis. Out of the theatre to a sacred spring and the tomb of Adonis, where Venus's yearly rite of mourning for her slain love is told — and Book I closes."}
+      ]
+    },
+    {
+      "id": "book2",
+      "title": "Book II — Polia's Telling",
+      "subtitle": "Chapters XXV–XXXVIII · newly translated in this edition",
+      "note": "The second book turns the whole story over to Polia, who tells it in her own first person to the nymphs at the fountain — her lineage, her cruelty, her punishment and conversion — before Poliphilo takes up his side. It is among the earliest sustained female first-person narrations in the Italian romance tradition.",
+      "chapters": [
+        {"roman": "XXV", "translated": true, "summary": "Book II begins: Polia's lineage. Polia takes up the telling in her own voice — her ancient family, the founding of Treviso from the rivers of the Veneto, and, at her window in the year 1462, Poliphilo's first sight of her."},
+        {"roman": "XXVI", "translated": true, "summary": "The plague and the cruelty. Struck by the plague, Polia vows herself to Diana and enters the chaste temple; when Poliphilo declares his love there, she answers with hatred, watches him die at her feet, and flees — the dark centre of her confession."},
+        {"roman": "XXVII", "translated": true, "summary": "The visions of the punished. A whirlwind carries Polia to a wood where she sees Cupid torturing two cruel women; a nightmare of two executioners follows; terror at last begins to break her frozen heart, and her nurse takes her in to give counsel."},
+        {"roman": "XXVIII", "translated": true, "summary": "The nurse's counsel. By myth, and by a cautionary tale of a girl who refused love in her season and was ruined by it, the nurse argues that Love conquers even the gods — \"adapt the sweet years to love\" — and sends Polia to the priestess of Venus."},
+        {"roman": "XXIX", "translated": true, "summary": "The conversion and the revival. The flame at last kindles in Polia; she hastens to the temple, revives the dead Poliphilo with her tears and her embrace, is beaten from Diana's shrine, and — Venus's fire routing Diana's ice in a vision — comes to the priestess and vows herself to love."},
+        {"roman": "XXX", "translated": true, "summary": "Poliphilo before the priestess. Called forward, Poliphilo petitions the priestess to make the two hearts one; Polia, overcome by a love she can no longer contain, interrupts to answer him."},
+        {"roman": "XXXI", "translated": true, "summary": "Polia's avowal. Polia declares her answering love and seals it with the pledge-kiss; the priestess, seeing them already joined by Love himself, blesses the union."},
+        {"roman": "XXXII", "translated": true, "summary": "Poliphilo's telling begins. Obeying the priestess, Poliphilo praises perseverance and recounts his own side: how he first saw Polia at a festival in Diana's temple and fell instantly in love, and how — unable to speak his heart — he resolved to write."},
+        {"roman": "XXXIII", "translated": true, "summary": "The love-letters. Poliphilo sends two courtly love-letters; Polia, unmoved, receives them \"as a marble statue.\""},
+        {"roman": "XXXIV", "translated": true, "summary": "The third letter, and the death. A third letter fails too — his love, he sees, only hardens her to stone; he finds her alone in the temple and, pleading, collapses and dies at her feet: the death-scene now told from his own side."},
+        {"roman": "XXXV", "translated": true, "summary": "The vision at Venus's throne. His freed soul is borne to Venus's throne, where he complains against Cupid; the god strikes Polia's image with the golden arrow — her conversion, seen from heaven — and gives her to Poliphilo, and Venus's voice, \"which could soften a diamond,\" sends his soul home."},
+        {"roman": "XXXVI", "translated": true, "summary": "The binding. Revived in Polia's arms, Poliphilo prays the priestess to bind the two of them for ever; and Polia brings her long narration to a close."},
+        {"roman": "XXXVII", "translated": true, "summary": "The dream's end. The nymphs return to their dance; the lovers, alone at last, exchange their final avowals — and, at the very height of the embrace, Polia dissolves into fragrant smoke: \"Poliphilo, my dear — loving me — farewell.\""},
+        {"roman": "XXXVIII", "translated": true, "summary": "The awakening. Poliphilo wakes to the nightingale and the risen sun — the dream, and Polia, gone."}
+      ]
+    },
+    {
+      "id": "end-matter",
+      "title": "The closing matter",
+      "subtitle": "Polia's epitaph, and the printer's leaf",
+      "note": "",
+      "chapters": [
+        {"roman": "Epitaphium Poliae", "translated": true, "summary": "Polia's epitaph, and the verse in which Poliphilo speaks — the book's grief made a monument."},
+        {"roman": "Errori", "translated": true, "summary": "The 1499 errata leaf, closed by the Aldine colophon: \"At Venice, in the month of December 1499, in the house of Aldus Manutius, most accurately.\""}
+      ]
+    }
+  ]
+}

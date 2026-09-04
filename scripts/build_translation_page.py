@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / "translation" / "source"
 EN = ROOT / "translation" / "en"
 MANIFEST = ROOT / "translation" / "manifest.json"
+SUMMARIES = ROOT / "translation" / "summaries.json"
 OUT = ROOT / "research" / "translation.html"
 
 READING_ORDER = [
@@ -27,15 +28,14 @@ READING_ORDER = [
     "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "Epitaphium Poliae", "Errori",
 ]
 
-CHAPTER_BLURB = {
-    "XVII": "Where Dallington stops, mid-sentence, at the word <em>Mustulento</em>.",
-    "XXIV": "The polyandrion — the ruined temple and its tombs.",
-    "XXV": "Cythera: the circular island, ring within ring.",
-    "XXVIII": "The amphitheatre and the Fountain of Venus.",
-    "XXX": "Book II begins. Polia tells her own side.",
-    "XXXVIII": "The awakening.",
-    "Epitaphium Poliae": "Polia's epitaph, and the one in which Poliphilo speaks.",
-    "Errori": "The 1499 errata leaf. Not narrative.",
+# The whole-book synopsis (chapters I–XXXVIII + closing matter) lives in
+# translation/summaries.json so the summaries can be edited without touching the
+# build code. The per-chapter blurb over each parallel-text spread is drawn from
+# the same source, so the two can never drift apart.
+SUMMARY_DATA = json.loads(SUMMARIES.read_text(encoding="utf-8"))
+SUMMARY_BY_ROMAN = {
+    ch["roman"]: ch["summary"]
+    for part in SUMMARY_DATA["parts"] for ch in part["chapters"]
 }
 
 
@@ -91,10 +91,62 @@ def italian_html(text: str) -> str:
     return "\n".join(out)
 
 
+def build_synopsis(ch_pages: dict) -> str:
+    """The whole book, section by section — a synopsis of all 38 chapters plus
+    the closing matter, from translation/summaries.json. Chapters we translated
+    link into the parallel text below; Dallington's half links out to his 1592
+    English. This is the reader's map of the entire Hypnerotomachia."""
+    parts_html = []
+    for part in SUMMARY_DATA["parts"]:
+        rows = []
+        for ch in part["chapters"]:
+            roman = ch["roman"]
+            translated = ch.get("translated", False)
+            if translated and roman in ch_pages:
+                a, b = ch_pages[roman]
+                pages = f"pp. {a}–{b}" if a != b else f"p. {a}"
+                slug = "ch-" + roman.replace(" ", "-").lower()
+                num = f'<a class="syn-num" href="#{slug}">{html.escape(roman)}</a>'
+                meta = f'<span class="syn-pages">{pages}</span>'
+            else:
+                num = f'<span class="syn-num syn-num-out">{html.escape(roman)}</span>'
+                meta = '<span class="syn-pages syn-dall">Dallington, 1592</span>'
+            rows.append(
+                f'<div class="syn-row">'
+                f'<div class="syn-head">{num}{meta}</div>'
+                f'<p class="syn-text">{ch["summary"]}</p></div>'
+            )
+        link = part.get("link")
+        link_html = (
+            f'<a class="syn-link" href="{link["href"]}" target="_blank" '
+            f'rel="noopener">{html.escape(link["label"])} ↗</a>'
+            if link else ""
+        )
+        note = f'<p class="syn-note">{part["note"]}</p>' if part.get("note") else ""
+        parts_html.append(
+            f'<div class="syn-part"><div class="syn-part-head">'
+            f'<h3>{html.escape(part["title"])}</h3>'
+            f'<p class="syn-sub">{html.escape(part["subtitle"])}</p>'
+            f'{note}{link_html}</div>'
+            + "\n".join(rows) + "</div>"
+        )
+    return (
+        '<section id="synopsis" class="synopsis">'
+        '<div class="sec-head"><h2>The whole book, section by section</h2>'
+        '<p class="blurb">A synopsis of all thirty-eight chapters and the closing '
+        'matter. The first half is Dallington’s 1592 English; from chapter '
+        'XVII the summaries lead into our own translation — click a chapter '
+        'number to jump to its parallel text.</p></div>'
+        + "\n".join(parts_html) + "</section>"
+    )
+
+
 def main():
     man = json.loads(MANIFEST.read_text(encoding="utf-8"))
     pages = man["pages"]
-    total = len(pages)
+    # blank leaves (versos with no text in the 1499) are not pages that need
+    # translating, so they are left out of every "done / to-do" count
+    total = sum(1 for r in pages.values() if r["status"] != "blank")
     done = sum(1 for r in pages.values() if r["status"] in ("drafted", "verified"))
     src_words = sum(r.get("words", 0) for r in pages.values())
     done_words = sum(r.get("words", 0) for r in pages.values()
@@ -104,19 +156,25 @@ def main():
     for p, rec in pages.items():
         by_ch.setdefault(rec["chapter"], []).append(int(p))
 
+    # page range per translated chapter, for the synopsis
+    ch_pages = {c: (min(ns), max(ns)) for c, ns in by_ch.items()}
+
+    synopsis = build_synopsis(ch_pages)
+
     sections = []
     toc = []
     for chap in READING_ORDER:
         if chap not in by_ch:
             continue
         nums = sorted(by_ch[chap])
-        ch_done = [n for n in nums if pages[str(n)]["status"] in ("drafted", "verified")]
+        countable = [n for n in nums if pages[str(n)]["status"] != "blank"]
+        ch_done = [n for n in countable if pages[str(n)]["status"] in ("drafted", "verified")]
         slug = "ch-" + chap.replace(" ", "-").lower()
-        state = "done" if len(ch_done) == len(nums) else ("part" if ch_done else "todo")
+        state = "done" if len(ch_done) == len(countable) else ("part" if ch_done else "todo")
         toc.append(f'<a href="#{slug}" class="{state}">{html.escape(chap)}'
-                   f'<span>{len(ch_done)}/{len(nums)}</span></a>')
+                   f'<span>{len(ch_done)}/{len(countable)}</span></a>')
 
-        blurb = CHAPTER_BLURB.get(chap, "")
+        blurb = SUMMARY_BY_ROMAN.get(chap, "")
         rows = []
         pending = []
         for n in nums:
@@ -161,7 +219,7 @@ def main():
         sections.append(
             f'<section id="{slug}"><div class="sec-head"><h2>Chapter {html.escape(chap)}</h2>'
             f'<p class="blurb">{blurb}</p>'
-            f'<p class="count">{len(ch_done)} of {len(nums)} pages englished</p></div>'
+            f'<p class="count">{len(ch_done)} of {len(countable)} pages englished</p></div>'
             + "\n".join(rows) + "</section>"
         )
 
@@ -182,6 +240,15 @@ def main():
        line-height:1.7;-webkit-font-smoothing:antialiased}}
   a{{color:var(--gold);text-decoration:none}}
   a:hover{{color:var(--fg)}}
+  .topnav{{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;
+          align-items:center;gap:1rem;padding:.8rem 1.4rem;
+          background:rgba(11,8,5,.86);backdrop-filter:blur(6px);
+          border-bottom:1px solid var(--rule);font-size:.66rem;letter-spacing:.14em;
+          text-transform:uppercase;flex-wrap:wrap}}
+  .topnav>a{{color:var(--gold);font-weight:bold}}
+  .topnav-links{{display:flex;gap:1.2rem;flex-wrap:wrap}}
+  .topnav-links a{{color:var(--dim)}}
+  .topnav-links a:hover{{color:var(--gold)}}
   .masthead{{max-width:1180px;margin:0 auto;padding:4.5rem 2rem 1.5rem;text-align:center}}
   .kicker{{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:#6a5236}}
   .masthead h1{{font-weight:normal;letter-spacing:.05em;color:var(--gold);
@@ -203,6 +270,27 @@ def main():
   .toc a.done{{border-color:#4f6a3a;color:#9dbb82}}
   .toc a.part{{border-color:var(--gold-dk);color:var(--gold)}}
   .toc a:hover{{border-color:var(--gold);color:var(--fg)}}
+  .synopsis .sec-head{{margin-bottom:2.4rem}}
+  .syn-part{{margin-bottom:2.8rem}}
+  .syn-part-head{{margin-bottom:1.4rem}}
+  .syn-part-head h3{{font-weight:normal;color:var(--gold);font-size:1.15rem;
+                    letter-spacing:.03em}}
+  .syn-sub{{color:#7a6448;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+           margin-top:.4rem}}
+  .syn-note{{color:var(--dim);font-size:.83rem;line-height:1.85;margin-top:.8rem;
+            max-width:70ch}}
+  .syn-link{{display:inline-block;margin-top:.7rem;font-size:.72rem;letter-spacing:.06em}}
+  .syn-row{{display:grid;grid-template-columns:8.5rem 1fr;gap:1.2rem;
+           padding:.9rem 0;border-top:1px solid var(--rule);align-items:baseline}}
+  .syn-head{{display:flex;flex-direction:column;gap:.3rem}}
+  .syn-num{{font-size:1rem;color:var(--gold);letter-spacing:.06em}}
+  a.syn-num:hover{{color:var(--fg)}}
+  .syn-num-out{{color:var(--dim)}}
+  .syn-pages{{font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;color:#5a4632}}
+  .syn-dall{{color:#6a5236}}
+  .syn-text{{font-size:.88rem;line-height:1.8;color:var(--fg)}}
+  .syn-text em{{color:var(--gold);font-style:italic}}
+  @media(max-width:640px){{.syn-row{{grid-template-columns:1fr;gap:.4rem}}}}
   section{{max-width:1180px;margin:0 auto;padding:3.5rem 2rem 1rem}}
   .sec-head{{border-bottom:1px solid var(--rule);padding-bottom:1rem;margin-bottom:1.8rem}}
   .sec-head h2{{font-weight:normal;color:var(--gold);font-size:1.5rem;letter-spacing:.04em}}
@@ -259,6 +347,13 @@ def main():
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a href="../index.html">Emblems in 3D</a>
+  <span class="topnav-links">
+    <a href="../src/index.html">Enter the 3-D world</a>
+    <a href="../game/index.html">Play the visual novel</a>
+  </span>
+</nav>
 <div class="masthead">
   <div class="kicker">Emblems in 3D · a working edition</div>
   <h1>Finishing the <em>Hypnerotomachia</em></h1>
@@ -295,8 +390,11 @@ def main():
 </div>
 
 <div class="toc">
+<a href="#synopsis" class="part">Synopsis<span>I–XXXVIII</span></a>
 {chr(10).join(toc)}
 </div>
+
+{synopsis}
 
 {chr(10).join(sections)}
 
