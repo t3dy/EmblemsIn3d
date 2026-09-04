@@ -47,6 +47,7 @@ const state = {
   tours: null,
   tour: null,
   tourStop: 0,
+  gallery: null,
   diorama: null,
   hpStyle: 'lit',   // 'lit' | 'woodcut' — rendering of the HP dream garden
 };
@@ -117,6 +118,7 @@ async function loadData() {
   state.worldLinks  = await wr.json();
   state.tours       = await tr.json();
   state.diorama     = dr && dr.ok ? await dr.json() : [];
+  state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   setProgress(50, 'Preparing scenes…');
 }
 
@@ -515,6 +517,85 @@ window.enterPlate3D = () => {
   fadeSwitch(() => launchEmblemScene(num));
 };
 
+// ─── Gallery — Renaissance exemplars beside the 1499 woodcuts ──────────────────
+
+let _galOverlayBuilt = false;
+
+function buildGalleryOverlay() {
+  if (_galOverlayBuilt) return;
+  const body = document.getElementById('gallery-body');
+  const items = state.gallery || [];
+  if (!body || !items.length) return;
+  // group by category, preserving first-seen order
+  const cats = [];
+  const byCat = new Map();
+  items.forEach((it, i) => {
+    if (!byCat.has(it.category)) { byCat.set(it.category, []); cats.push(it.category); }
+    byCat.get(it.category).push(i);
+  });
+  body.innerHTML = cats.map(cat => {
+    const cards = byCat.get(cat).map(i => {
+      const it = items[i];
+      return `<button class="gal-card" onclick="window.openGalleryImg(${i})" title="${it.title}">
+        <img loading="lazy" src="../images/${it.file}" alt="${it.title}">
+        <div class="gal-cap"><div class="t">${it.title}</div>
+          <div class="a">${it.artist}${it.date ? ' · ' + it.date : ''}</div></div>
+      </button>`;
+    }).join('');
+    return `<div class="gal-cat">${cat}</div><div class="gal-grid">${cards}</div>`;
+  }).join('');
+  _galOverlayBuilt = true;
+}
+
+function showGalleryOverlay() {
+  buildGalleryOverlay();
+  hideHUD();
+  hideTextCard();
+  document.getElementById('annotation-panel').style.display = 'none';
+  setActiveWorldBtn('btn-gallery');
+  state.inGallery = false;
+  const el = document.getElementById('gallery-overlay');
+  if (el) { el.style.display = 'block'; el.scrollTop = 0; }
+  showHint('A gallery of the sources · click any plate to read its provenance · Esc to close');
+}
+
+function hideGalleryOverlay() {
+  const el = document.getElementById('gallery-overlay');
+  if (el) el.style.display = 'none';
+  closeGalleryImg();
+}
+
+function openGalleryImg(i) {
+  const it = (state.gallery || [])[i];
+  if (!it) return;
+  state._galIdx = i;
+  const img = document.getElementById('glb-img');
+  img.src = '../images/' + it.file;
+  img.alt = it.title;
+  document.getElementById('glb-text').innerHTML = `
+    <div class="glb-cat">${it.category}</div>
+    <div class="glb-title">${it.title}</div>
+    <div class="glb-artist">${it.artist}</div>
+    ${it.date ? `<div class="glb-date">${it.date}</div>` : ''}
+    <p class="glb-cap">${it.caption || ''}</p>
+    ${it.source ? `<div class="glb-src">Public domain · <a href="${it.source}" target="_blank" rel="noopener">Wikimedia Commons ↗</a></div>` : ''}`;
+  document.getElementById('gallery-lightbox').style.display = 'flex';
+}
+
+function closeGalleryImg() {
+  const el = document.getElementById('gallery-lightbox');
+  if (el) el.style.display = 'none';
+}
+
+function galleryStep(dir) {
+  const n = (state.gallery || []).length;
+  if (!n) return;
+  openGalleryImg(((state._galIdx ?? 0) + dir + n) % n);
+}
+
+window.openGalleryImg  = openGalleryImg;
+window.closeGalleryImg = closeGalleryImg;
+
 // ─── Guided tours (connect the 3-D models to the research) ────────────────────
 
 // Light inline formatting for tour ledes: **bold** and *italic*
@@ -781,10 +862,12 @@ function setActiveWorldBtn(id) {
 
 window.switchWorld = function (world) {
   state.world = world;
-  if (world !== 'PLATES') hidePlatesOverlay();
-  if (world !== 'TOURS')  { clearTour(); hideToursMenu(); }
+  if (world !== 'PLATES')  hidePlatesOverlay();
+  if (world !== 'GALLERY') hideGalleryOverlay();
+  if (world !== 'TOURS')   { clearTour(); hideToursMenu(); }
   fadeSwitch(() => {
     if (world === 'PLATES')     showPlatesOverlay();
+    else if (world === 'GALLERY') showGalleryOverlay();
     else if (world === 'TOURS') showToursMenu();
     else if (world === 'AF')    buildGallery();
     else if (world === 'HP')    launchHPWorld();
@@ -1183,6 +1266,19 @@ window.addEventListener('keydown', (e) => {
     return;
   }
 
+  const galleryOpen = document.getElementById('gallery-overlay')?.style.display === 'block';
+  if (galleryOpen) {
+    const lbOpen = document.getElementById('gallery-lightbox')?.style.display === 'flex';
+    if (lbOpen) {
+      if (e.key === 'ArrowRight') { e.preventDefault(); galleryStep(1); }
+      if (e.key === 'ArrowLeft')  { e.preventDefault(); galleryStep(-1); }
+      if (e.key === 'Escape')     closeGalleryImg();
+    } else if (e.key === 'Escape' || e.key === 'g' || e.key === 'G') {
+      window.switchWorld('AF');
+    }
+    return;
+  }
+
   if (!state.inGallery) {
     if (state.world === 'HP' || state.world === 'THEATRUM') {
       // The dream garden handles its own movement keys (WASD / arrows / 1–5);
@@ -1260,7 +1356,10 @@ document.addEventListener('keydown', _unlockAudio);
     const hpMatch   = hash.match(/[#&]hp(?:=(woodcut|lit))?\b/);
     const dreamMatch = hash.match(/[#&]dream\b/);
     const theatrumMatch = hash.match(/[#&]theatrum/);
-    if (theatrumMatch) {
+    const galleryMatch = hash.match(/[#&]gallery\b/);
+    if (galleryMatch) {
+      showGalleryOverlay();
+    } else if (theatrumMatch) {
       await launchAFWorld();
     } else if (dreamMatch) {
       await launchHPWorld({ dream: true, chooser: false });
