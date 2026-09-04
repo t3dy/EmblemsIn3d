@@ -384,6 +384,38 @@
     }
     #tour-panel .tp-flavor.on { background: rgba(255,255,255,0.03); }
     #tour-panel .tp-flavor:not(.on) { opacity: 0.45; text-decoration: line-through; }
+    /* Pre-tour commentary chooser */
+    #tour-flavor-chooser {
+      position: fixed; inset: 0; z-index: 44; display: flex; align-items: center; justify-content: center;
+      background: rgba(4,3,1,0.9); backdrop-filter: blur(4px); padding: 1.5rem; pointer-events: all;
+    }
+    #tour-flavor-chooser .fc-card {
+      max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;
+      background: linear-gradient(180deg, rgba(14,10,6,0.98), rgba(8,6,3,0.98));
+      border: 1px solid #6a4a18; border-top: 2px solid #d8a24a; padding: 2rem 2rem 1.6rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    #tour-flavor-chooser .fc-kicker { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8a6a38; }
+    #tour-flavor-chooser h2 { font-size: 1.4rem; font-weight: normal; color: #d8a24a; letter-spacing: 0.02em; }
+    #tour-flavor-chooser .fc-intro { font-size: 0.84rem; color: #a89878; line-height: 1.65; }
+    #tour-flavor-chooser .fc-rows { display: flex; flex-direction: column; gap: 0.1rem; margin: 0.3rem 0; }
+    #tour-flavor-chooser .fc-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.4rem; cursor: pointer; border-radius: 3px; }
+    #tour-flavor-chooser .fc-row:hover { background: rgba(255,255,255,0.03); }
+    #tour-flavor-chooser .fc-row input { width: 1.05rem; height: 1.05rem; accent-color: #c8a040; cursor: pointer; }
+    #tour-flavor-chooser .fc-swatch { width: 0.8rem; height: 0.8rem; border-radius: 2px; flex: 0 0 auto; }
+    #tour-flavor-chooser .fc-label { font-size: 0.9rem; color: #e8dcc4; }
+    #tour-flavor-chooser .fc-quick { display: flex; gap: 0.6rem; margin-top: 0.2rem; }
+    #tour-flavor-chooser .fc-quick button {
+      background: none; border: 1px solid #3a2a1a; color: #a89878; font-family: inherit;
+      font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.4rem 0.8rem; cursor: pointer;
+    }
+    #tour-flavor-chooser .fc-quick button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #tour-flavor-chooser .fc-begin {
+      margin-top: 0.7rem; align-self: flex-start; background: rgba(200,160,64,0.12);
+      border: 1px solid #c8a040; color: #f5f0e8; font-family: inherit; font-size: 0.9rem;
+      letter-spacing: 0.04em; padding: 0.6rem 1.4rem; cursor: pointer;
+    }
+    #tour-flavor-chooser .fc-begin:hover { background: rgba(200,160,64,0.24); }
     #tour-panel .tp-nav { display: flex; gap: 0.5rem; padding: 1rem 1.4rem; border-top: 1px solid rgba(139,69,19,0.2); }
     #tour-panel .tp-nav button {
       flex: 1 1 auto; background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
@@ -616,6 +648,7 @@
     <div id="tours-menu-grid"></div>
   </div>
   <div id="tour-panel"></div>
+  <div id="tour-flavor-chooser" hidden></div>
   <div id="woodcut-lightbox">
     <button class="lb-close" onclick="window.closeTourWoodcut()" title="Close (Esc)">&times;</button>
     <button id="twc-prev" class="twc-arrow twc-prev" onclick="window.tourWoodcutStep(-1)" title="Previous (←)">&#8249;</button>
@@ -700,6 +733,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=88"></script>
+  <script type="module" src="./main.js?v=89"></script>
 </body>
 </html>

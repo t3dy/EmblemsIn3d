@@ -669,8 +669,48 @@ async function startTour(id) {
   hideToursMenu();
   state.tour = { ...tour, stops: resolveTourStops(tour) };
   state.tourStop = 0;
+  // let the reader choose their commentary before the tour begins
+  if (tourFlavorSet(state.tour).length > 1) { showFlavorChooser(); return; }
   await tourGoto(0);
 }
+
+// Pre-tour: choose how much commentary to read (toggleable again mid-tour).
+function showFlavorChooser() {
+  const el = document.getElementById('tour-flavor-chooser');
+  if (!el) { tourGoto(0); return; }
+  const rows = tourFlavorSet(state.tour).map(t => {
+    const nt = NOTE_TYPES[t];
+    return `<label class="fc-row"><input type="checkbox" data-flavor="${t}" ${flavorOn(t) ? 'checked' : ''}>
+      <span class="fc-swatch" style="background:${nt.color}"></span>
+      <span class="fc-label">${nt.label}</span></label>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="fc-card">
+      <div class="fc-kicker">${state.tour.title} · a tour in ${state.tour.stops.length} stops</div>
+      <h2>How much do you want to read?</h2>
+      <p class="fc-intro">Each wonder can carry several flavours of commentary. Turn on the ones you want — the story and the woodcuts are always there — and change your mind any time during the tour with the chips over the panel.</p>
+      <div class="fc-rows">${rows}</div>
+      <div class="fc-quick">
+        <button onclick="window.fcSet(true)">Check all</button>
+        <button onclick="window.fcSet(false)">Just the story</button>
+      </div>
+      <button class="fc-begin" onclick="window.fcBegin()">Begin the tour &rarr;</button>
+    </div>`;
+  el.hidden = false;
+}
+window.fcSet = (all) => {
+  document.querySelectorAll('#tour-flavor-chooser input[data-flavor]').forEach(cb => { cb.checked = all; });
+};
+window.fcBegin = () => {
+  const on = new Set();
+  document.querySelectorAll('#tour-flavor-chooser input[data-flavor]:checked')
+    .forEach(cb => on.add(cb.dataset.flavor));
+  _flavorsOn = on;
+  try { localStorage.setItem('hp_flavors', JSON.stringify([...on])); } catch (_) {}
+  const el = document.getElementById('tour-flavor-chooser');
+  if (el) el.hidden = true;
+  tourGoto(0);
+};
 
 async function tourGoto(i) {
   const tour = state.tour;
@@ -737,15 +777,19 @@ window.toggleFlavor = (type) => {
   renderTourPanel();
 };
 
-// The toggle bar: one chip per flavour actually present in this tour (so empty
-// categories never show). Off flavours read dimmed.
-function renderFlavorBar(tour) {
+// The flavours that actually appear in a tour (so empty categories never show).
+function tourFlavorSet(tour) {
   const present = new Set();
   for (const s of (tour.stops || [])) {
     if (s.quote) present.add('quotation');
     for (const nt of (s.notes || [])) present.add(nt.type);
   }
-  const order = Object.keys(NOTE_TYPES).filter(t => present.has(t));
+  return Object.keys(NOTE_TYPES).filter(t => present.has(t));
+}
+
+// The toggle bar: one chip per flavour present in this tour. Off flavours read dimmed.
+function renderFlavorBar(tour) {
+  const order = tourFlavorSet(tour);
   if (order.length < 2) return '';
   const chips = order.map(t => {
     const nt = NOTE_TYPES[t], on = flavorOn(t);
@@ -884,7 +928,11 @@ function renderTourPanel() {
 window.startTour = startTour;
 window.tourNext  = tourNext;
 window.tourPrev  = tourPrev;
-window.exitTour  = () => { closeTourWoodcut(); clearTour(); showToursMenu(); };
+window.exitTour  = () => {
+  closeTourWoodcut();
+  const fc = document.getElementById('tour-flavor-chooser'); if (fc) fc.hidden = true;
+  clearTour(); showToursMenu();
+};
 
 // The 1499 woodcut for the current tour moment — called up on demand.
 function openTourWoodcut(idx) {
