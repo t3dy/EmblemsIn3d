@@ -21,6 +21,25 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
+### 0. Follow-ups opened by the full-book tour pass (2026-09-05)
+The Novel tour now runs all 38 chapters (34 stops). Writing it exposed geometry the world
+does not yet have:
+
+- **Book II has no scenes at all.** Its thirteen stops are staged at dream stations by
+  design (see `DECISIONS.md`), and each says so — but the temple of Diana, Polia's
+  bed-chamber and the priestess's throne are named in the plates (#152–#168) and modelled
+  nowhere. A decision is needed on whether Book II ever gets its own geography.
+- **The five-senses bath-house** (ch. VI–VII) is not built; the stop is staged at the
+  mainland fountain.
+- **The water-labyrinth** of ch. IX — seven rings, a one-way current, a beast in each —
+  is the book's clearest allegory and does not exist. The stop is staged at the Planetary
+  Palace.
+- **The Temple of Venus rite** (ch. XVIII: the seven virgins, the altar, the rose-bush
+  springing to the cupola) has ten plates and no geometry.
+- Two stops carry `"wc": []` because no genuine plate is in `images/woodcuts/`: **the Great
+  Portal** (ch. IV) and **the Three Doors** (ch. XII–XIII). Source those two plates.
+
+
 ### 1. Architecture — what the detail pass has still not reached "well detailed" everywhere
 Goal set 2026-09-05: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*

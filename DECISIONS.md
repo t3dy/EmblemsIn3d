@@ -2,6 +2,44 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — The tour covers the whole book; the system files become a router (Ted)
+
+Two calls, made in one exchange.
+
+1. **Tour coverage: all of it.** Ted: *"extend it as much as necessary to cover all the
+   scenes in the book. There are no limits to our time and space we are vibe coding, so
+   don't feel like that's too much. This is meant to be a comprehensive digital humanities
+   resource."* The Novel tour therefore grew from 14 stops to **34, covering all 38
+   chapters plus Polia's epitaph** — including the three narrative sections it had missed
+   entirely (FIVE_SENSES, the VENUS_TEMPLE rites, and the whole of Book II).
+
+   **Book II has no geography of its own** in this world — it is set in Treviso, in the
+   temples of Diana and Venus, and its plates are interiors. Decision: stage each Book II
+   stop at the station of the *dream* whose meaning it answers (the Polyandrion for the
+   deaths, the theatre of Venus for the priestess, the Quinta Essentia for the vision among
+   the gods) **and say so in a note**, rather than build a second world or omit the book.
+
+2. **System files: a router plus recipes.** Ted, asked to choose: *"Both — router plus
+   recipes."* So:
+   - **`ROUTER.md`** is the entry point: five hard rules, a task→documents table, the
+     subject briefs, the code map, the agent lanes, and an end-of-session checklist.
+   - **`RECIPES/`** holds one procedure per repeated task, each ending in a
+     *"what has gone wrong here before"* section — the failure, not just the happy path.
+   - **`CLAUDE.md` is now thin** and points at the router; it carries only what must be in
+     context from the first token.
+   - **`15scholars.md`** is the depth layer: what each scholar settles, where their text is
+     on this machine, and *the claim it will not support*.
+   - The planning-era docs (`INDEX.md`, `PLAN.md`, `STATUS.md`, `HANDOFF.md`,
+     `PROJECT_SUMMARY.md`, `COMPLETE_BRIEFING.md`, `SCENES.md`, `VISION.md`,
+     `TWO_WORLDS_FRAMEWORK.md`, `docs/*`) are marked **historical** in the router: mine
+     them for research, never for current status or file layout.
+
+3. **Agent orchestration.** Ted: *"depends on what is best for the project you know more
+   about systems engineering than I do."* Call: **single-agent sequential stays the
+   default**, because the work is coupled through `HPWorldScene.js` and the manual `?v=`
+   chain. Parallel runs only along the five file-disjoint lanes named in `ROUTER.md`, with
+   one agent owning the version bump and the deploy.
+
 ## 2026-09-05 — Art direction: a Botticelli panel you can walk into (Ted)
 
 Answers to a direct art-direction question. These are the goals for the art; read them

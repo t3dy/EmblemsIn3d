@@ -131,13 +131,27 @@ filename does not describe the image. Verified by eye against the plates:
 | `island_plan.jpg` | a topiary on a stepped base |
 | `fountain_venus.jpg` | the heptagonal measured plan of the precinct |
 | `theatre.jpg` | the standard of the triumph of Cupid |
-| `three_doors.jpg` | **not** the three doors — a cart drawing a tiered vessel |
-| `temple_venus.jpg` | **not** a temple — a hanging lamp on chains |
+| `three_doors.jpg` | **not** the three doors — a nymph drawing a wheeled tiered vessel crowned with a golden fruit-tree |
+| `temple_venus.jpg` | **not** a temple — a globular hanging lamp on chains |
+| `awakening.jpg` | **not** the awakening — Cupid with his bow before an enthroned figure and two others in the clouds |
 
 The **captions in `src/data/tours.json` are correct** and were checked against the images;
 the station→woodcut pairings in the novel tour are right. So: when adding or moving a
 woodcut, **open the image and go by the caption, never by the filename.**
 
-**Known gap:** stop 5 (The Three Doors) is the only node of the fourteen with no woodcut,
-because no genuine three-doors plate is in the folder. Left blank deliberately rather than
-showing a wrong image — if the plate is sourced later, add it there.
+### Three of them were re-identified and re-filed (2026-09-05)
+
+Matched by eye against `hp.db.woodcut_catalog`, the three "wrong" images turn out to be real
+plates that simply sat at the wrong stops. They now carry their true captions and their true
+stops in `tours.json`:
+
+| file | catalogue | true subject | now shown at |
+|---|---|---|---|
+| `three_doors.jpg` | **#32**, folio 105 (QUEEN_PALACE) | magnificent vessel with a gold shrub, twice a nymph's height | ch. IX–X, the palace & banquet |
+| `temple_venus.jpg` | **#74**, folio 198 (VENUS_TEMPLE) | globular lamp hung in chains | ch. XVII, the Temple of Venus |
+| `awakening.jpg` | **#166**, folio 447 (BOOK_II_POLIA) | Poliphilo before Venus in the clouds, Cupid listening | ch. XXXV, the vision at Venus's throne |
+
+**Known gap:** the Great Portal (ch. IV) and the Three Doors (ch. XII–XIII) are the stops with
+no woodcut, because no genuine plate for either is in the folder. Left blank deliberately (an
+explicit `"wc": []` on those stops) rather than showing a wrong image — if the plates are
+sourced later, add them there.

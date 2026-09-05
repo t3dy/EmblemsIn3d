@@ -105,7 +105,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
-  const V = '18'; // bump when data files are re-exported
+  const V = '19'; // bump when data files are re-exported
   const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
@@ -896,7 +896,13 @@ function renderTourPanel() {
     const source = ours ? 'our new translation' : "Dallington's 1592 English";
     // translated chapters deep-link to their parallel text; Dallington chapters
     // point at the whole-book synopsis (its first half is his English)
-    const slug = 'ch-' + String(stop.chapter || '').split(/[–-]/)[0].trim().toLowerCase();
+    // "XXX–XXXI" -> ch-xxx ; "Epitaphium Poliae" -> ch-epitaphium-poliae
+    const slug = 'ch-' + String(stop.chapter || '').split(/[–-]/)[0]
+      .trim().toLowerCase().replace(/\s+/g, '-');
+    // roman-numeral chapters read "Chapter XIX"; the closing matter (the
+    // epitaph, the errata leaf) is not a chapter and is named on its own
+    const chLabel = /^[IVXLC]+([–-][IVXLC]+)?$/.test(String(stop.chapter || '').trim())
+      ? 'Chapter ' + stop.chapter : stop.chapter;
     const href = ours ? `../research/translation.html#${slug}`
                       : '../research/translation.html#synopsis';
     const linkLabel = ours ? 'Read this chapter in the parallel edition &rarr;'
@@ -913,7 +919,7 @@ function renderTourPanel() {
         <span class="tp-count">Stop ${i + 1} / ${n}</span>
       </div>
       <div class="tp-body">
-        <span class="tp-badge" style="color:${badgeCol};border-color:${badgeCol}">Chapter ${stop.chapter} · ${source}</span>
+        <span class="tp-badge" style="color:${badgeCol};border-color:${badgeCol}">${chLabel} · ${source}</span>
         <div class="tp-title" style="color:${accent};font-size:1.15rem;margin-top:.5rem">${stop.title || st.name || ''}</div>
         ${st.folio ? `<div class="tp-scholar-label">Facsimile folio ${st.folio}</div>` : ''}
         <p class="tp-lede">${fmtProse(stop.lede)}</p>

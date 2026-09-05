@@ -2,7 +2,7 @@
   "novel": {
     "id": "novel",
     "title": "The Novel",
-    "subtitle": "Poliphilo's dream, told station by station through the whole book",
+    "subtitle": "Poliphilo's dream, stop by stop through all thirty-eight chapters and both books",
     "accent": "#d8a24a",
     "world": "HP",
     "woodcuts": {
@@ -89,13 +89,19 @@
         }
       ]
     },
-    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world, one wonder at a time, following the story from the dark wood to the Fountain of Venus on Cythera. Halfway along, Dallington's 1592 English runs out — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
+    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world in order, one wonder at a time — the whole book, both of its parts: from the dark wood to the unveiling of Venus on Cythera, and then through Book II, in which Polia takes the telling away from Poliphilo and gives her own account of the same events. Halfway along, Dallington's 1592 English runs out mid-sentence — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
     "stops": [
       {
         "station": "wood",
         "chapter": "I",
         "half": "dallington",
         "lede": "The book opens in sleeplessness. Poliphilo, wrung all night by his longing for Polia, sinks into sleep only at dawn — and the dream sets him down alone on a wide plain, at the edge of a wood so dense that the sun cannot reach the floor of it. He strays until every path is lost, and the trees close overhead; the terror of it is the first thing the dream makes him feel. Only a prayer, cried out to Jupiter, delivers him from the dark, out to the clear stream where the wonders begin.",
+        "wc": [
+          {
+            "file": "woodcuts/wood.jpg",
+            "caption": "Poliphilo lost in the dark wood"
+          }
+        ],
         "notes": [
           {
             "type": "literary",
@@ -128,6 +134,45 @@
           {
             "type": "alchemical",
             "text": "The alchemical reading also has a documented history: the 1600 French edition of Béroalde de Verville bolted an alchemical frontispiece and preface onto the book, and it was that framing which later fed Jung's use of the HP as alchemical allegory. The lens is partly a reception, layered on more than a century after 1499. (Priki.)"
+          }
+        ]
+      },
+      {
+        "station": "wood",
+        "title": "The Deeper Dream",
+        "chapter": "II",
+        "half": "dallington",
+        "lede": "Out of the wood at last, Poliphilo follows a sweet Dorian music across a flowering country — and is so overcome by what he sees that he falls asleep *inside* his own dream. He wakes into a second, deeper dream-region, and it is strewn with the ruins of antiquity. Everything that follows — the pyramid, the portal, the gardens, Polia herself — happens two dreams down.",
+        "wc": [
+          {
+            "file": "woodcuts/horse.jpg",
+            "caption": "Poliphilo at the wood's edge"
+          }
+        ],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The book's strangest structural move, and it happens in the second chapter: a dream nested inside a dream. The plate is explicit — woodcut 3 of the 1499 is catalogued as *Poliphilo sleeping under a tree*, a dreamer drawn inside the dream he is already having."
+          },
+          {
+            "type": "allegory",
+            "text": "Falling asleep from wonder is the book's method in miniature. Beauty does not sharpen attention here; it dissolves it, and each dissolution drops the dreamer a level deeper into the world he desires."
+          },
+          {
+            "type": "context",
+            "text": "James Gollnick reads the whole *Hypnerotomachia* through Apuleius's *Golden Ass* — the dream-vision as an initiation, in which the sleeper must be taken out of ordinary waking to be changed. The second sleep is the first threshold of that initiation."
+          },
+          {
+            "type": "gloss",
+            "text": "*Dorian* — one of the ancient musical modes, held to be grave, steady and manly. The music that leads him out of terror is the sober mode, not the voluptuous one; the seduction is gradual."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "In the Ficinian scheme the soul rises to beauty by stages, each leaving more of the body behind. Colonna dramatises the ladder as sleep: to climb, Poliphilo must keep falling asleep."
+          },
+          {
+            "type": "alchemical",
+            "text": "The annotators who read the book as a chemical allegory found their first operation here: the *solutio*, the dissolving of the fixed waking body into a fluid state before anything can be made of it. (Russell, 2014, on the alchemical annotators.)"
           }
         ]
       },
@@ -176,6 +221,7 @@
         "chapter": "IV",
         "half": "dallington",
         "lede": "He comes to a triumphal portal of impossible richness, and reads it like a scholar in a trance: the columns squared to the Vitruvian rule, the frieze crowded with sacrifices, the Egyptian hieroglyphs deciphered sign by sign. It is the book's architectural manifesto, beauty offered as proof. But past the threshold, in the black of the vaults, a dragon starts up — and awe turns in an instant to blind panic as Poliphilo flees deeper into the dark.",
+        "wc": [],
         "notes": [
           {
             "type": "architecture",
@@ -212,10 +258,99 @@
         ]
       },
       {
+        "station": "portal",
+        "title": "The Dragon in the Vaults",
+        "chapter": "V",
+        "half": "dallington",
+        "lede": "Behind the measured beauty of the gate the book turns, without warning, into a nightmare. In the dark vaulted passages beyond the portal a dragon starts up, and the man who has spent a whole chapter counting the modules of an entablature flees in blind panic through the labyrinth, feeling his way, until he breaks out into a bright and pleasant land. It is the only real terror in Book I, and it is placed exactly at the threshold.",
+        "quote": "PATIENTIA",
+        "quoteAttr": "the anchor-and-dolphin device closing the dragon chapter (woodcut 18, folio 59)",
+        "wc": [
+          {
+            "file": "woodcuts/queen.jpg",
+            "caption": "Poliphilo flees the dragon in the vaults"
+          }
+        ],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The pacing is deliberate: the longest, coolest, most technical chapter in the book is followed immediately by the one with no description in it at all, only running. Colonna knows what he is doing to the reader."
+          },
+          {
+            "type": "architecture",
+            "text": "Liane Lefaivre's reading of the building as a body makes these vaults its interior — the passage that has to be gone through in the dark, without measurement, before the gardens on the other side can be entered."
+          },
+          {
+            "type": "allegory",
+            "text": "The gate offered three ways of reading it; the dragon offers none. Between the intelligible façade and the intelligible garden lies a stretch that can only be survived, not interpreted."
+          },
+          {
+            "type": "gloss",
+            "text": "The emblem plate that closes this passage carries the word **PATIENTIA** with an anchor and a dolphin — the device Aldus Manutius took for his own press, *festina lente*, make haste slowly. The printer signs the escape."
+          },
+          {
+            "type": "myth",
+            "text": "The dragon in the underground way is the guardian of every classical descent — the serpent at the threshold that must be passed, not fought. Poliphilo does not kill it; he simply gets out."
+          },
+          {
+            "type": "context",
+            "text": "Woodcut 17 of the 1499 shows the flight itself: a small running figure and a very large beast in a vaulted dark. It is one of the few plates in the book that depicts an *action* rather than an object."
+          }
+        ]
+      },
+      {
+        "station": "fountain",
+        "title": "The Five Nymphs and the Bath",
+        "chapter": "VI–VII",
+        "half": "dallington",
+        "lede": "Five nymphs find him still shaking and put his fear to rest. They are the five senses, and they invite him to bathe. In a jewelled bath-house they swim with him amid teasing and laughter, and spring a trick fountain on him — a hidden jet that soaks him when he steps on a stone. Nearby stands the fountain of the sleeping nymph, water running from her breast, a satyr drawing back the curtain over her. It is the lightest passage in the book and the most frankly erotic.",
+        "wc": [
+          {
+            "file": "woodcuts/bath.jpg",
+            "caption": "The sleeping nymph, with a satyr"
+          },
+          {
+            "file": "woodcuts/dragon.jpg",
+            "caption": "A company of the nymphs"
+          }
+        ],
+        "notes": [
+          {
+            "type": "allegory",
+            "text": "The five nymphs are the five senses, and they arrive the instant the terror ends. The book's argument is being made structurally: the senses are what rescue the soul from the dark, and also what will lead it into every difficulty afterward."
+          },
+          {
+            "type": "gloss",
+            "text": "The *giochi d'acqua* — the practical joke built into the pavement — is a real feature of Renaissance garden design, and the Hypnerotomachia is one of its earliest literary appearances. Villa d'Este and the Boboli would still be soaking visitors a century later."
+          },
+          {
+            "type": "literary",
+            "text": "Roswitha Stewering's study of Polia and the landscape shows how completely the nymphs belong to their setting: the women, the water and the garden are one continuous description, and the figures are legible only against the place that produced them."
+          },
+          {
+            "type": "myth",
+            "text": "The sleeping nymph with the satyr is the *nymphaeum* of the humanist gardens — a real, widely-copied conceit, complete with its supposed antique inscription warning the traveller not to break her sleep. Colonna is quoting a fashion, and helping to make it."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The senses come first on the Ficinian ladder and are not despised there: the ascent begins in the body's delight. What matters is whether the climber stops at the bath."
+          },
+          {
+            "type": "context",
+            "text": "Woodcut 19 (folio 63) is the sleeping-nymph fountain with satyrs, and woodcut 20 (folio 66) is Poliphilo meeting the five. In the 3-D world this fountain and its company are built from those two plates."
+          },
+          {
+            "type": "alchemical",
+            "text": "The annotators marked the bath. The *balneum* — the bath in which the matter is gently worked — is one of the plainest operations in the chemical vocabulary, and a naked bathing scene in a jewelled vessel was hard for such readers to pass by. (Russell, 2014.)"
+          }
+        ]
+      },
+      {
         "station": "court",
-        "chapter": "VIII–XI",
+        "chapter": "VIII",
         "half": "dallington",
         "lede": "Out of the dark he is found by five lovely nymphs — the five senses — who calm him, bathe him, and lead him through fabulous gardens to their queen, Eleuterylida, whose name is Free Will. She keeps a palace of gold and gems and a banquet of unmeasured luxury, course after perfumed course. At its end she commends him to two handmaids who will guide the rest of the dream: Logistica, who is Reason, and Thelemia, who is Desire.",
+        "wc": [],
         "notes": [
           {
             "type": "allegory",
@@ -244,6 +379,83 @@
           {
             "type": "context",
             "text": "Free Will (Eleuterylida) presiding over Reason and Will (Logistica, Thelemia) draws on the faculty-psychology every schooled reader knew — the soul's powers staged as a household."
+          }
+        ]
+      },
+      {
+        "station": "planetary_palace",
+        "title": "The Palace, the Water-Labyrinth and the Banquet",
+        "chapter": "IX–X",
+        "half": "dallington",
+        "lede": "The queen's residence unfolds room by room: walls panelled with the names of the planets, a great obelisk, a topiary garden, and a water-labyrinth in which boats are carried through seven rings by a current that cannot be rowed against — an allegory of a human life, with its dangers waiting at fixed stages. Then the banquet: gold and gem vessels, perfumed dishes served in order, music between courses, and a wheeled silver-gilt vessel twice a nymph's height crowned with a tree of golden fruit.",
+        "wc": [
+          {
+            "file": "woodcuts/three_doors.jpg",
+            "caption": "A wheeled vessel crowned with a tree of golden fruit, from the queen's palace (woodcut 32, folio 105)"
+          }
+        ],
+        "notes": [
+          {
+            "type": "architecture",
+            "text": "Liane Lefaivre's Alberti thesis is at its strongest in these chapters: the palace is not described as a picture but as a set of proportional relations, room to room, in the technical vocabulary of a practising architect rather than a poet."
+          },
+          {
+            "type": "allegory",
+            "text": "The water-labyrinth is the book's clearest single allegory: seven concentric rings, a current that only runs one way, a beast waiting in each ring, and no possibility of turning back. It is a life, and the boat is not steered."
+          },
+          {
+            "type": "gloss",
+            "text": "*Eleuterylida* — from the Greek *eleutheria*, freedom: Free Will. The queen who governs this palace is the faculty of choice, and the labyrinth in her garden is what choice is up against."
+          },
+          {
+            "type": "context",
+            "text": "The banquet is a set-piece of the senses, course by course, and one of the earliest detailed descriptions of a Renaissance feast written to be read for pleasure rather than kept as a household record."
+          },
+          {
+            "type": "literary",
+            "text": "Nine of the plates for these chapters are of *objects* — tripods, basins, vessels, a coral-tree. The narrative all but stops so that the things can be looked at. James Russell calls the book a humanistic activity book; this is where it reads like one."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Free Will entertains the traveller before the three doors, not after. The luxury is not a trap laid for him — it is the equipment of a soul that is still permitted to choose."
+          },
+          {
+            "type": "architecture",
+            "text": "The planetary names panelled on the palace wall (woodcut 25, folio 88) set the seven governors over the interior. This world's Planetary Palace station is built from that plate."
+          }
+        ]
+      },
+      {
+        "station": "quinta_essentia",
+        "title": "Logistica and Thelemia",
+        "chapter": "XI",
+        "half": "dallington",
+        "lede": "After the feast the queen shows Poliphilo a series of emblematic marvels — a triangular obelisk of the mystic Trinity borne on sphinxes; a winged woman with a tortoise; two genii holding a single apple — and then gives him two handmaids to lead him onward. Logistica is Reason. Thelemia is Will, or Desire. From here to the three doors he walks between them, and the book has told the reader in advance that only one of them will still be with him afterwards.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "gloss",
+            "text": "*Logistica*, from *logismos*, calculation or reasoning. *Thelemia*, from *thelema*, will or wish. Rabelais took the second name for his Abbey of Thélème, whose only rule was *do what thou wilt* — one of the book's most consequential loans, traced by Marcel Françon."
+          },
+          {
+            "type": "allegory",
+            "text": "The winged woman with a tortoise carries the motto *Velocitatem sedendo* — temper speed by sitting still. Its companion medallion reads *Medium tenuere beati*, the blessed held the middle way. Reason's whole case is engraved along the walk before Reason has said a word."
+          },
+          {
+            "type": "context",
+            "text": "Efthymia Priki's work on the hieroglyphs shows that these devices are not decoration between episodes: they carry narrative, stating in image what the plot is about to test. The emblems argue for moderation; the next chapter refuses it."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Reason and Will are the two wings of the soul in the Platonic chariot. Colonna gives them to a walker rather than a charioteer, and lets him drop one."
+          },
+          {
+            "type": "literary",
+            "text": "Naming the guides in Greek and putting the mottoes in Latin is the book's habitual trilingual layering — Italian narration, Latin inscription, Greek name — which Giovanni Pozzi's 1964 critical edition was the first to untangle systematically."
+          },
+          {
+            "type": "alchemical",
+            "text": "The triangular obelisk of the mystic Trinity (woodcut 33, folio 119) is exactly the kind of figure the chemical annotators seized on: three principles standing on a triple base. The Quinta Essentia shrine in this world is built at that pitch. (Russell, 2014; `hp.db.alchemical_symbols`.)"
           }
         ]
       },
@@ -354,12 +566,86 @@
         ]
       },
       {
+        "station": "triumphs",
+        "title": "Vertumnus and Pomona",
+        "chapter": "XV",
+        "half": "dallington",
+        "lede": "A fifth procession follows the four triumphs of Jove, and it is unlike them. No exotic team draws it: Vertumnus, god of the turning year, and Pomona of the orchards ride a car heaped with fruit, accompanied on foot by satyrs and nymphs, with rustic sacrifice and song. On its panels are the four Seasons — Spring as Venus and Cupid, Summer as Ceres, Autumn as the wine-god with his ram, Winter as Jupiter Pluvius. After the gods' adulteries, the year itself is given a triumph.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "myth",
+            "text": "Vertumnus is the god who can take any shape, and won Pomona by disguising himself as an old woman to plead his own case. A shape-changer married to an orchard: the loves of Jove were abductions, and this one is a courtship."
+          },
+          {
+            "type": "context",
+            "text": "The plate names the company exactly — *Triumph of Vertumnus and Pomona: satyrs, nymphs* (woodcut 66, folio 166) — and names no draught beast. The car in this world therefore walks, with its satyrs and nymphs beside it, rather than being drawn."
+          },
+          {
+            "type": "allegory",
+            "text": "The four Seasons on its panels (woodcuts 67–70, folio 167) are the argument of the whole procession: love as the year's own motion, and generation as a thing that happens on a calendar rather than by divine caprice."
+          },
+          {
+            "type": "gloss",
+            "text": "*Jupiter Pluvius* — Jupiter the rain-bringer, the winter panel. Each season is given by a deity rather than by weather, which is how a Renaissance antiquary expected to see time personified."
+          },
+          {
+            "type": "literary",
+            "text": "Christopher Nygren reads the triumph plates against Mantegna's *Triumphs of Caesar* and the bronzes of Antico: the book is not illustrating a procession it saw but composing one out of the antique fragments its author had studied."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Between the celestial loves of Jupiter and the temple rites of Venus stands the vegetable world. The ladder passes through the orchard, and does not skip it."
+          }
+        ]
+      },
+      {
+        "station": "triumphs",
+        "title": "The Altar of the Seasons — where the English breaks off",
+        "chapter": "XVI",
+        "half": "dallington",
+        "lede": "The rustic triumphs move on toward the rites; the offerings are prepared; the procession approaches the altar of the Seasons. And there, on facsimile page 193, in the middle of a sentence, at the word *Mustulento*, Robert Dallington's 1592 English stops. It was the only public-domain English the book had, and for four centuries everything past this point — the temple, the tombs, the whole of Cythera, all of Polia's own telling — existed in English only under copyright. **The next stop is the first sentence of our translation.**",
+        "wc": [],
+        "notes": [
+          {
+            "type": "context",
+            "text": "Robert Dallington's *Hypnerotomachia: The Strife of Loue in a Dreame* (London, 1592) renders about two-fifths of Colonna. L. E. Semler's work on it shows the translation is also an abridgement with a Protestant temperature: Dallington trims what he finds idolatrous, and the reader of 1592 gets a cooler book than the reader of 1499."
+          },
+          {
+            "type": "literary",
+            "text": "The break is not a decision, it is an abandonment mid-clause. *Mustulento* — 'of new wine', from *mustum* — is the last word he set. The vintage was being described when the English gave out."
+          },
+          {
+            "type": "gloss",
+            "text": "This edition does not pastiche him. From the next stop the register changes audibly: modern, formal English that keeps the period's cadence without faking it, so the seam between 1592 and now stays honest and visible to the reader."
+          },
+          {
+            "type": "allegory",
+            "text": "There is an accidental fitness in where he stopped. The chapter is about the turning of the year and the pressing of the vintage — about time running out on a season — and the English runs out inside it."
+          },
+          {
+            "type": "context",
+            "text": "Every stop after this one links to the parallel text, Italian beside English, page by page, so any reader can check the translation against the 1499 Aldine."
+          }
+        ]
+      },
+      {
         "station": "fountain",
         "chapter": "XVII",
         "half": "ours",
         "lede": "Here the four-century gap in the English closes. Dallington broke off mid-sentence at the word *Mustulento*; from this round Temple of Venus onward, every word you read is newly translated. Poliphilo lifts his eyes to the sky-reaching cupola, then cannot describe it — the nymph's beauty keeps pulling his gaze away, and he stops to beg the reader's pardon for it. Over the temple door, cut into two tablets of lodestone, the stone that draws iron carries the creed of the whole place.",
         "quote": "Each is drawn by his own pleasure.",
         "quoteAttr": "TRAHIT SUA QUEMQUE VOLUPTAS — carved in lodestone above the Temple door (ch. XVII)",
+        "wc": [
+          {
+            "file": "woodcuts/priapus.jpg",
+            "caption": "The rite before the altar"
+          },
+          {
+            "file": "woodcuts/temple_venus.jpg",
+            "caption": "The globular lamp hung on chains, in the temple's cupola (woodcut 74, folio 198)"
+          }
+        ],
         "notes": [
           {
             "type": "neoplatonic",
@@ -388,6 +674,46 @@
           {
             "type": "allegory",
             "text": "The self-opening magnet door — *each is drawn by his own pleasure* — makes the whole temple an allegory of desire as natural law: the stone that draws iron, and the heart that draws to beauty, are one force."
+          }
+        ]
+      },
+      {
+        "station": "fountain",
+        "title": "The Sacrifice and the Miracle of the Roses",
+        "chapter": "XVIII",
+        "half": "ours",
+        "lede": "Polia, a temple-initiate, burns the incense of Venus and sacrifices the turtledoves; a winged spirit rises out of the smoke. The priestess speaks the great prayer, the swans are cut and their ash boxed beneath the altar, and arcane characters are signed in blood on the pavement and then washed away into the fire. The temple quakes. And out of the smoking altar a rose-bush miraculously springs, filling the sanctuary to the cupola with red roses and fragrant fruit, three white doves in its branches. The priestess plucks three of the fruits, and the three of them eat.",
+        "quote": "Out of the smoking altar I saw purest smoke miraculously issue, germinating, and multiplying itself into a verdant rose-bush — which occupied a great part of the sacred chapel, to the height of the cupola, with vermilion roses and many round fruits, fragrant with wondrous odour.",
+        "quoteAttr": "ch. XVIII, folio 233 — our translation",
+        "wc": [],
+        "notes": [
+          {
+            "type": "myth",
+            "text": "Roses, oyster-shells, sea-water, doves and swans: every element of the rite is one of Venus's own attributes — her flower, her shell, her element and her birds. The sacrifice is assembled out of the goddess's iconography rather than out of any surviving ancient rubric."
+          },
+          {
+            "type": "literary",
+            "text": "The prayer cites Adonis, whose blood became a flower — and then the altar produces a flowering bush. The miracle is set up by its own liturgy, which is a novelist's move, not a priest's."
+          },
+          {
+            "type": "allegory",
+            "text": "A communion: three people eat one fruit each from a bush that grew out of a fire fed with blood. Poliphilo says afterwards that his love was not satisfied but *changed* — transmuted into new qualities. The rite does not end desire; it licenses it."
+          },
+          {
+            "type": "alchemical",
+            "text": "This is the passage the chemical annotators wanted most. Blood quenching a fire, an earthquake, and a red flowering out of the ash is the *rubedo* — the reddening that completes the Work — in narrative form. Near the union scenes the British Library's Hand B adds mercury and cinnabar, the red mercuric ore. (Russell, 2014, p. 167; `hp.db.alchemical_symbols`.)"
+          },
+          {
+            "type": "gloss",
+            "text": "*Praefericulum* — the broad-mouthed bronze vessel that carried offerings at a Roman sacrifice; *simpulum*, the small ladle. Colonna uses the correct antiquarian words throughout, which is part of what made the book valuable to readers who wanted the rite, not the story."
+          },
+          {
+            "type": "context",
+            "text": "The plates follow the ceremony step by step — the seven virgins processing to the altar, Polia's torch quenched in the altar-fountain, the swans and doves offered, and finally the rose-tree rising with its doves (woodcuts 76–85, folios 205–221). It is the most densely illustrated rite in the book."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Ficino's higher Venus does not abolish the lower one; she transfigures her. Poliphilo eats and feels 'like one who returns from the deep sea and breathes' — the same love, raised a rung, not exchanged for another."
           }
         ]
       },
@@ -503,7 +829,8 @@
       },
       {
         "station": "cythera_theatre",
-        "chapter": "XXII–XXIII",
+        "title": "The Triumph of Cupid and the Theatre of Venus",
+        "chapter": "XXII",
         "half": "ours",
         "lede": "The whole world has been built to walk toward this. A triumph of Cupid, hung with the disarmed trophies of the gods — one of them lettered *Quis evadet? — Nemo*, \"Who escapes? No one\" — leads the lovers to an obsidian-floored amphitheatre of planted tiers. At its centre stands the most-holy fountain; the curtain before the goddess is drawn away, and Venus is revealed in her majesty, her doves bathing her in spray as the water dripped from Bacchus and Ceres beside her.",
         "quote": "The white doves dipped their golden bills in the spotless waters and bedewed the little Cytherean body, and the droplets showed on her translucent flesh as nothing other than orient pearls.",
@@ -545,6 +872,55 @@
       },
       {
         "station": "cythera_theatre",
+        "title": "The Fountain of Venus",
+        "chapter": "XXIII",
+        "half": "ours",
+        "lede": "At the centre of the theatre stands the most holy fountain, ringed with columns of sapphire and emerald cut with silver Greek letters. Between two of them hangs a curtain of sandalwood colour, embroidered with the four gold letters **ΥΜΗΝ** — Hymen — and it is this that hides the goddess. Cupid offers the golden arrow to Polia to cut it; she will not. He passes it to Poliphilo, who strikes at once. The emerald column cracks. And the divine form stands revealed in the salt spring. This is the scene the whole island, and this whole 3-D world, is built to walk toward.",
+        "quote": "ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ — as a spark, so enchantment.",
+        "quoteAttr": "cut in ancient Greek and inlaid with silver on the columns of the fountain (ch. XXIII, folio 361)",
+        "wc": [
+          {
+            "file": "woodcuts/fountain_venus.jpg",
+            "caption": "A measured plan of the sacred precinct"
+          }
+        ],
+        "notes": [
+          {
+            "type": "neoplatonic",
+            "text": "The unveiling is the top of Ficino's ladder made literal: the beauty that was approached through bodies, gardens and rites is finally looked at directly. The book gives that moment to a torn curtain and a cracked stone rather than to a doctrine."
+          },
+          {
+            "type": "literary",
+            "text": "Polia refuses the cut and Poliphilo makes it 'with an urgent and headlong passion' — and then notices she is saddened by it. Even at the summit Colonna will not let the two lovers want the same thing at the same moment."
+          },
+          {
+            "type": "architecture",
+            "text": "The measured ground-plan of the fountain is printed in the book itself (woodcut 148, folio 349), as is the plan of the amphitheatre. Colonna gives the reader the drawings a builder would need. The 3-D precinct is laid out from them."
+          },
+          {
+            "type": "gloss",
+            "text": "**ΥΜΗΝ** — Hymen, the marriage-cry and the god of the wedding song, embroidered on the veil that has to be cut. The word on the curtain is what the cutting means."
+          },
+          {
+            "type": "myth",
+            "text": "The water rises from the sarcophagus of Adonis (woodcut 149, folio 363): the spring of Venus is fed by the tomb of her dead lover. The book's central pairing of love and death is built into the plumbing of its holiest object."
+          },
+          {
+            "type": "alchemical",
+            "text": "For the chemical readers this is the *coniunctio* — Venus is copper, the feminine principle, and the union at her spring is the marriage of the two natures. Beroalde de Verville built his entire 1600 French edition on that reading."
+          },
+          {
+            "type": "allegory",
+            "text": "*As a spark, so enchantment.* The Greek cut into the columns is a definition of the whole book: something very small, and very quick, that sets everything alight."
+          },
+          {
+            "type": "context",
+            "text": "Christopher Nygren's work on the antique-sculpture aesthetic explains what the revealed Venus is supposed to look like to a reader of 1499 — not a painting but a recovered marble, seen with the beholder's shock that Mantegna and Antico had taught their patrons to feel."
+          }
+        ]
+      },
+      {
+        "station": "cythera_theatre",
         "title": "The Tomb of Adonis",
         "chapter": "XXIV",
         "half": "ours",
@@ -579,6 +955,365 @@
         ]
       },
       {
+        "station": "court",
+        "title": "Book II — Polia Takes the Telling",
+        "chapter": "XXV",
+        "half": "ours",
+        "lede": "The dream stops and a second book begins. Polia — who has been looked at, followed, described and desired for twenty-four chapters without once being asked — turns to the nymphs at the fountain and tells the story again in her own first person. She begins where a noblewoman would: her ancient family, the founding of Treviso out of the rivers of the Veneto, and then the year 1462, and a window, and a young man in the street below looking up.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The most radical thing in the book. Having built the most elaborate description of a woman in Renaissance prose, Colonna hands her the narration and lets her contradict it. What Poliphilo took for cruelty she explains as terror; what he took for a miracle she remembers as a decision."
+          },
+          {
+            "type": "context",
+            "text": "Book II is dated and placed: Treviso, 1462. After four hundred pages of an unlocatable dream the book suddenly supplies a real town, a real river system and a real year — the same specificity the Colonna-authorship arguments of Emilio Menegazzo and Myriam Billanovich are built on."
+          },
+          {
+            "type": "allegory",
+            "text": "Book I is a soul's ascent through allegorical architecture. Book II is a provincial love affair with a plague in it. The book sets its own machinery beside the thing the machinery was about, and does not reconcile them."
+          },
+          {
+            "type": "gloss",
+            "text": "*Polia* — from the Greek *polios*, 'grey, ancient', and *polis*, the city: antiquity itself, and the city that preserves it. Poliphilo is the lover of Polia, which is to say the lover of the ancient world. Book II is what happens when antiquity is allowed to answer."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The beloved on the ladder is normally a rung. Here she stops being a rung, gives an account of her own fear and her own conversion, and the ascent has to be re-argued from the ground up."
+          },
+          {
+            "type": "context",
+            "text": "Roswitha Stewering's *World, Landscape and Polia* is the study to read against this book: her argument that Polia and the landscape are a single construction is what makes the moment the landscape starts talking so strange."
+          }
+        ]
+      },
+      {
+        "station": "polyandrion",
+        "title": "The Plague, the Vow, and the Cruelty",
+        "chapter": "XXVI",
+        "half": "ours",
+        "lede": "Struck down by the plague, Polia vows herself to Diana if she lives — and lives, and keeps the vow, and enters the chaste temple as a veiled virgin. Poliphilo tracks her there. Sleepless, 'like a prisoner planning escape', he finds her at last alone and praying, and comes to her moribund to declare himself. She freezes her heart into hatred, watches him fall dead at her feet, and drags his body out of the sanctuary so that the shrine will not be polluted. Then she flees. It is the dark centre of the book.",
+        "quote": "More freezing than porphyry.",
+        "quoteAttr": "Polia, of her own heart in Diana's temple (ch. XXVI, folio 389 — our translation)",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "Told from inside the woman who does it, and without excuse. Polia's own word for her heart at this moment is that it was 'more freezing than porphyry' — the hardest and coldest stone a Roman antiquary could name."
+          },
+          {
+            "type": "context",
+            "text": "The vow to Diana is not piety, it is a bargain made under the plague, and Polia says so. The chastity that destroys Poliphilo was contracted in terror of dying, which is the sort of motive allegory does not usually supply."
+          },
+          {
+            "type": "allegory",
+            "text": "Diana against Venus: the cold vow against the warm one. The whole of Book II is the war between those two temples, and this chapter is Diana winning."
+          },
+          {
+            "type": "myth",
+            "text": "Polia's own fear, named later, is of becoming Anaxarete — the girl who watched her lover hang himself for her and was turned to stone at his funeral. She knows the myth she is in the middle of, and cannot get out of it."
+          },
+          {
+            "type": "gloss",
+            "text": "Dragging the body from the sanctuary (woodcut 153, folio 389) is a point of ritual law, not of sentiment: a corpse pollutes a temple. Her first act after killing him is housekeeping."
+          },
+          {
+            "type": "context",
+            "text": "This tour stages Book II at the stations of the dream that answer it. The Polyandrion — the seaside tomb-temple of those who died of love — is where Poliphilo read a hundred epitaphs of lovers killed by cruelty. He was reading his own."
+          }
+        ]
+      },
+      {
+        "station": "polyandrion",
+        "title": "The Visions of the Punished",
+        "chapter": "XXVII",
+        "half": "ours",
+        "lede": "A whirlwind carries Polia into a wood where Cupid is torturing two women who were cruel to their lovers: he brandishes a sword over one kneeling victim, then quarters them and throws the pieces to a lion, a dog and a dragon, which devour them while the god watches from the air. A second nightmare follows, with two executioners in it. She wakes screaming, and terror at last begins to break the frozen heart. Her nurse takes her in.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "allegory",
+            "text": "The punishment fits the crime with legal precision: women who refused to be moved are dismembered and fed to animals, and the god who commands it is the child with the bow. Cupid in this book is not sweet."
+          },
+          {
+            "type": "context",
+            "text": "Three plates in a row are given to the torture (woodcuts 154–156, folios 391–393) — the most violent sequence in a book otherwise full of gardens. The 1499's editorial priorities are not the ones a modern reader expects."
+          },
+          {
+            "type": "literary",
+            "text": "The dream-vision technique of Book I, turned against the dreamer. Poliphilo's dreams showed him wonders; Polia's show her a verdict. Efthymia Priki's work on the initiatory dream reads both as stages of one process — the vision that instructs by terrifying."
+          },
+          {
+            "type": "myth",
+            "text": "The lion, the dog and the dragon belong with the Hell-mosaic in the Polyandrion crypt (woodcut 96, folio 241), which Colonna took from Dante. The two books share a bestiary of punishment."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Fear is the lowest instrument of love and the book uses it without embarrassment: the ascent begins here not in delight but in horror at what refusing delight costs."
+          },
+          {
+            "type": "gloss",
+            "text": "The *Polyandrion* — 'the place of many men' — is where Book I collected the epitaphs of those who died of love. Book II shows the sentencing that fills it."
+          }
+        ]
+      },
+      {
+        "station": "cythera_isle",
+        "title": "The Nurse's Counsel",
+        "chapter": "XXVIII",
+        "half": "ours",
+        "lede": "The nurse argues. She begins with myth — Love conquers even the gods — and moves to a cautionary tale: a beautiful, high-born girl who refused every suitor out of ambitious vanity, wasted her best years in cold unpartnered beds, and at twenty-eight found that Cupid had taken his revenge. Beauty unused, she tells Polia, is like fruit left on the tree. Then she sends her to the priestess of Venus.",
+        "quote": "We ought joyously to adapt the sweet years to Love — opportune, and matured in its coming.",
+        "quoteAttr": "the nurse to Polia (ch. XXVIII, folio 416 — our translation)",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "An old woman talking a young one into love is a scene from Roman comedy and from Boccaccio, dropped into a Neoplatonic allegory without a seam. Book II keeps reaching for the novel the century had not written yet."
+          },
+          {
+            "type": "context",
+            "text": "The argument is a *carpe diem* poem in prose, and it predates almost every famous English one: gather your roses, the sun will not wait, old age brings nothing but vain regret for the years you spent being admired."
+          },
+          {
+            "type": "allegory",
+            "text": "The nurse's case is not that love is good but that time is short. This is the book's only wholly worldly argument, and it is the one that works."
+          },
+          {
+            "type": "gloss",
+            "text": "The governing image is horticultural — the willow that loses its fruit, the tree whose season passes. In a book whose gardens are its theology, being told you are an unpicked orchard is not a small thing to be told."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "This stop is staged in the gardens of Cythera because the nurse's argument is the island's argument in domestic clothes: the ring-terraces are a machine for saying that generation is good and has a season."
+          },
+          {
+            "type": "myth",
+            "text": "'Love conquers even the gods' is the motto of Cupid's own standard on the crossing — *Amor vincit omnia*. The nurse is quoting the boat Poliphilo sailed in, without knowing it."
+          }
+        ]
+      },
+      {
+        "station": "fountain",
+        "title": "The Conversion and the Revival",
+        "chapter": "XXIX",
+        "half": "ours",
+        "lede": "The flame catches at last — 'as Nessus's venom through Hercules's body' — and Polia runs to the temple where the body is still lying. She kneels, weeps over him, takes him into her lap and revives him with her tears and her embrace. The priestesses of Diana beat the two of them out of the sanctuary. That night, in her bed-chamber, she sees Venus's fire rout Diana's ice in the sky; and she goes to the priestess of Venus and vows herself to love.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The revival is the mirror of the death, staged in the same room, and Colonna gives it the same plate composition reversed — she stood over him and left; now she kneels under him and stays (woodcuts 157–158, folios 411–412)."
+          },
+          {
+            "type": "allegory",
+            "text": "Being beaten out of Diana's temple is the conversion made visible: she does not leave the cold shrine by argument, she is expelled from it by the priestesses for the crime of pity."
+          },
+          {
+            "type": "myth",
+            "text": "Nessus's venom is her own simile for falling in love — the shirt that could not be taken off and killed Hercules. She does not describe her conversion as a rescue. She describes it as a poison she cannot get out of her body."
+          },
+          {
+            "type": "gloss",
+            "text": "The sky-vision of Venus against Diana (woodcut 160, folio 415) is the book's cosmology in one image: two goddesses contending over a sleeping woman, warmth against ice, and the warmth winning."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The tears that raise the dead are the book's one true miracle worked by a human being rather than by a god. Ficino's doctrine that love is what animates the world is here literalised on a floor."
+          },
+          {
+            "type": "alchemical",
+            "text": "Death, then revival by a liquid — the *mortificatio* and its resurrection. The annotators who read the Hypnerotomachia as a chemical allegory needed no persuading here; a body killed and brought back by a solvent is the Work's central image. (Russell, 2014.)"
+          }
+        ]
+      },
+      {
+        "station": "cythera_theatre",
+        "title": "Before the Priestess",
+        "chapter": "XXX–XXXI",
+        "half": "ours",
+        "lede": "Called forward, Poliphilo petitions the priestess of Venus to make the two hearts one. Polia — overcome by a love she can no longer hold in — interrupts him before he has finished, answers for herself, declares her love, and seals it with the pledge-kiss. The priestess, seeing them already joined by Love himself, does not so much perform the union as confirm it.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "She interrupts him. After the whole of Book I in which she is described and never consulted, the decisive speech in the book is one Polia makes by cutting across her lover mid-petition."
+          },
+          {
+            "type": "allegory",
+            "text": "The priestess's ruling is that the binding was done before they arrived: authority here ratifies love, it does not create it. The same doctrine as the magnet-door of the temple — each is drawn by his own pleasure — put into a court."
+          },
+          {
+            "type": "context",
+            "text": "The plates show the sequence formally: the couple kneeling before the priestess, then the priestess enthroned with the lovers kissing in her presence (woodcuts 161–163, folios 419–425). The kiss is a legal act, witnessed."
+          },
+          {
+            "type": "gloss",
+            "text": "The pledge-kiss — *osculum* — was a real element of betrothal in Italian custom, with consequences in law. Colonna is not being merely lyrical about a kiss made in front of a magistrate."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Two souls declared one by a third party is the *Symposium*'s myth of the divided being brought to its administrative conclusion. The theatre station is where this world stages it."
+          },
+          {
+            "type": "myth",
+            "text": "Venus's priestess, not Diana's, has the last word — and this tour stages it in the theatre of Venus, where Book I's Cupid unbound the lovers from their roses and Psyche gave the god his golden arrow back."
+          }
+        ]
+      },
+      {
+        "station": "court",
+        "title": "Poliphilo's Telling: the Love-Letters",
+        "chapter": "XXXII–XXXIII",
+        "half": "ours",
+        "lede": "Obeying the priestess, Poliphilo now tells his own side — and it does not match hers. He first saw Polia at a festival in Diana's temple and fell in love on the spot; unable to speak, he resolved to write. Two courtly letters follow, and the book prints them. He calls her breast 'colder than ice, than the salamander that quenches fire', and says that the harder he struggles the more he is caught, 'like a fly in a spider's web'. Polia receives the letters, she says, as a marble statue receives them.",
+        "quote": "Like a fly in a spider's web: the more I struggle, the more I am caught.",
+        "quoteAttr": "Poliphilo's second letter (ch. XXXIII, folio 447 — our translation)",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The same events, twice, from two sides, contradicting each other on motive — one of the earliest sustained uses of that technique in European fiction, and it is buried in the second half of a book most people never finish."
+          },
+          {
+            "type": "context",
+            "text": "The plates show the mechanics of the courtship: Poliphilo writing at a carved desk, and Polia reading the letter in her bed-chamber (woodcuts 164–165, folios 433–435). Two of the very few domestic interiors in the whole book."
+          },
+          {
+            "type": "gloss",
+            "text": "The letters are written in the Petrarchan manner and Poliphilo can see the manner failing him: his own eloquence is what is hardening her. The book is quietly sceptical about its own rhetoric."
+          },
+          {
+            "type": "allegory",
+            "text": "*As a marble statue.* In Book I every beautiful woman is compared to an antique sculpture and that is the highest praise available. Turned on the living Polia, the same figure becomes the accusation."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Love that ascends by contemplating beauty at a distance is exactly what Poliphilo practises here — and it produces two unanswered letters and a corpse. Book II is testing the doctrine, not illustrating it."
+          },
+          {
+            "type": "context",
+            "text": "Rosemary Trippe's work on image, text and vernacular poetics is the study for these chapters: what it means that the letters are set *as letters*, in a book that keeps showing the reader its own materials."
+          }
+        ]
+      },
+      {
+        "station": "polyandrion",
+        "title": "The Death at Her Feet",
+        "chapter": "XXXIV",
+        "half": "ours",
+        "lede": "A third letter fails as the others did. He finds her alone in the temple and pleads with everything he has — and sees, while he is doing it, that his love is not softening her but turning her to stone. Then he collapses and dies at her feet. It is the same scene as chapter XXVI, told now from inside the man it happens to, and the two accounts do not agree about what she was thinking.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "Colonna gives the same death twice, eight chapters apart, in two voices, and lets the reader arbitrate. Book I's whole cast of allegorical guides could not have produced a device this modern."
+          },
+          {
+            "type": "allegory",
+            "text": "His own insight, and the cruellest line in the book: pleading does not soften her, it *stones* her. The lover's rhetoric is the sculptor's chisel, and the statue he keeps praising is one he is carving."
+          },
+          {
+            "type": "gloss",
+            "text": "No tears, he says — not more than Isis wept for Osiris — can move her. The comparison is to the goddess who wept her husband back together, which is precisely what Polia will do to him a few chapters earlier in her own telling."
+          },
+          {
+            "type": "myth",
+            "text": "This tour stages the death at the Polyandrion because that is where Book I put its answer: the seaside tomb-temple of everyone who died of love, its walls covered with their epitaphs. John Bury's study of that architecture reconstructs it from Pliny's Mausoleum of Halicarnassus."
+          },
+          {
+            "type": "context",
+            "text": "*O lector infoelix* — 'unhappy reader' — begins the largest epitaph in the Polyandrion (woodcut 108, folio 252). Book I addressed the reader from those tombs. Book II shows how a body gets into one."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The ladder's failure case, stated plainly. Contemplation of beauty can raise the soul; it can also kill the man doing the contemplating while the beauty looks on."
+          }
+        ]
+      },
+      {
+        "station": "quinta_essentia",
+        "title": "The Vision at Venus's Throne",
+        "chapter": "XXXV",
+        "half": "ours",
+        "lede": "His freed soul is carried up to Venus enthroned in the clouds, and complains there against Cupid. The god answers by drawing his bow: he strikes Polia's image with the golden arrow, 'into the delicate breast of the shown image', and she yields at once — ductile, mild, accusing herself of her own cruelty. Poliphilo watches from heaven the conversion Polia has already described from inside. Then Venus makes Cupid surety for the union, and in a voice that could soften a diamond sends his soul home to his body.",
+        "quote": "A voice which could soften a diamond to tenderness.",
+        "quoteAttr": "of Venus, at the throne (ch. XXXV, folio 460 — our translation)",
+        "wc": [
+          {
+            "file": "woodcuts/awakening.jpg",
+            "caption": "Poliphilo's soul before Venus in the clouds, with Cupid (woodcut 166)"
+          }
+        ],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The book's most extraordinary structural stroke: the same conversion given three times — as Polia's inward struggle, as the nurse's argument, and now as an event in heaven — with no instruction as to which account is the true one."
+          },
+          {
+            "type": "myth",
+            "text": "Cupid shooting the *image* of Polia rather than Polia herself (woodcuts 167–168, folio 448) is the point exactly. The god does not persuade a woman; he alters a picture, and the woman changes. Whose story is this?"
+          },
+          {
+            "type": "gloss",
+            "text": "*A voice that could soften a diamond.* Polia's heart has been porphyry, marble, ice and diamond for the whole of Book II. Venus's grace is defined here as precisely the power those metaphors were waiting for."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "This stop is staged at the Quinta Essentia — the fifth essence, the incorruptible matter of the heavens — because that is where the soul goes when it leaves the body: out of the four elements and up into the fifth."
+          },
+          {
+            "type": "allegory",
+            "text": "Poliphilo's soul is granted 'special grace to see arcane visions', and what it looks at is Polia. The beatific vision in this book has a woman in it, and the gods themselves are said to marvel at her."
+          },
+          {
+            "type": "alchemical",
+            "text": "The soul separated from the body, purified above, and returned to it bearing a sealed name is the *separatio* and return of the chemical philosophers — the volatile spirit driven off and brought back to fix the body. It is the reading Beroalde de Verville built his 1600 edition on. (Russell, 2014.)"
+          },
+          {
+            "type": "context",
+            "text": "The plate for this vision survives and is in this world's gallery: Cupid, bow in hand, approaching the enthroned goddess in the clouds while two figures look on (woodcut 166)."
+          }
+        ]
+      },
+      {
+        "station": "cythera_theatre",
+        "title": "The Binding, and the Dissolution",
+        "chapter": "XXXVI–XXXVII",
+        "half": "ours",
+        "lede": "Revived in Polia's arms, Poliphilo begs the priestess to bind the two of them for ever, and Polia brings her long narration to a close. The nymphs draw them into a dance, feast with them, and take their leave; and the lovers are alone at last. They make their final avowals. And at the very height of the embrace — her arms round his throat, kissing him, tears in her eyes — Polia turns into fragrant musk-and-amber smoke, rises through the air, and is gone.",
+        "quote": "Poliphilo, my dear — loving me — farewell.",
+        "quoteAttr": "Polia's last words, as she dissolves (ch. XXXVII, folio 464 — our translation)",
+        "wc": [],
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The dream ends at the instant of its fulfilment, not after it. Every obstacle has been cleared, the two are alone and consenting, and *that* is the moment the beloved becomes perfume. The book's title is *The Strife of Love in a Dream*; this is its last word on the dream."
+          },
+          {
+            "type": "allegory",
+            "text": "Polia is antiquity — *polios*, the ancient — and antiquity dissolves the moment it is embraced. Everything the humanists wanted from the classical past, and its exact cost, in one image."
+          },
+          {
+            "type": "gloss",
+            "text": "She goes as suffumigation, the smoke of musk and amber: not a ghost fading but incense burning, the substance of an offering going up. She leaves the way an offering leaves an altar."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The ladder's honest ending. What is loved through a body cannot be held as a body, and the ascent completes itself only by taking the beloved away. Ficino's doctrine, but as loss rather than as consolation."
+          },
+          {
+            "type": "myth",
+            "text": "The dissolution belongs with Orpheus turning round and Aeneas grasping three times at Anchises — the classical set-piece of the embrace that closes on air. Colonna gives it to a woman who has just spent thirteen chapters explaining herself."
+          },
+          {
+            "type": "context",
+            "text": "Her last words are the last words of the narrative. The construction is deliberately odd in the Italian and is kept odd here: she names what he did, in the moment she stops being there to receive it."
+          }
+        ]
+      },
+      {
         "station": "wood",
         "title": "The Waking",
         "chapter": "XXXVIII",
@@ -586,12 +1321,7 @@
         "lede": "At the very height of the embrace Polia dissolves into fragrant smoke, and Poliphilo wakes to the nightingale and the risen sun — the dream, and Polia, gone. The tour ends where it began, in the wood at dawn.",
         "quote": "Poliphilo, my dear — loving me — farewell.",
         "quoteAttr": "Polia, dissolving at the dream's end (ch. XXXVII)",
-        "wc": [
-          {
-            "file": "woodcuts/awakening.jpg",
-            "caption": "Cupid brings the lovers before the enthroned gods"
-          }
-        ],
+        "wc": [],
         "notes": [
           {
             "type": "literary",
@@ -616,6 +1346,42 @@
           {
             "type": "literary",
             "text": "James Gollnick reads the ancient dream-romance — Apuleius's *Golden Ass* above all, with its Eros and Psyche — as a genre of initiation: the strange dream coheres as the soul's conversion. The HP wakes its dreamer squarely in that tradition, the whole vision a rite he has undergone. (Gollnick.)"
+          }
+        ]
+      },
+      {
+        "station": "polyandrion",
+        "title": "Polia's Epitaph",
+        "chapter": "Epitaphium Poliae",
+        "half": "ours",
+        "lede": "After the waking the book prints two more things. First a three-line Latin epitaph whose initials, set out from the margin, spell **F · C · I** — part of the acrostic that runs through the whole volume and gives it an author. Then the epitaph in which Poliphilo speaks, addressed to whoever walks past: *here is the perfume-shop of the nymph Polia*. He tells the traveller what she was, admits that the ground is too dry for her to grow again however much he weeps on it, and stops himself.",
+        "quote": "Traveller, make a little pause, I beg you: here is the perfume-shop of the nymph Polia. … Ah, Poliphilo, have done. A flower dried out like this never lives again. Farewell.",
+        "quoteAttr": "Epitaphium Poliae, folio 466 — our translation of the closing Latin leaf",
+        "wc": [],
+        "notes": [
+          {
+            "type": "context",
+            "text": "The initial letters of the chapters spell POLIAM FRATER FRANCISCVS COLVMNA PERAMAVIT — 'Brother Francesco Colonna loved Polia greatly'. The epitaph's F·C·I closes the device. Emilio Menegazzo and Myriam Billanovich built the modern case for the Venetian friar on it; Maurizio Calvesi argued for the Roman Colonna instead. The argument is not settled."
+          },
+          {
+            "type": "literary",
+            "text": "*Here is the perfume-shop of the nymph Polia.* She dissolved into fragrant smoke two leaves ago; the monument names her as the shop that sold the scent. The book keeps its wit at its own graveside."
+          },
+          {
+            "type": "gloss",
+            "text": "*Myropolium* — a perfumer's shop. It is a rare word, and choosing it lets the epitaph call her a place of fragrance while a Roman reader hears a commercial address on a street. Colonna is showing off, in Latin, on a tombstone."
+          },
+          {
+            "type": "allegory",
+            "text": "The whole book in six lines: a flower fragrant with every virtue, ground too parched to grow it again, tears that are not enough, and an instruction to stop. *A flower dried out like this never lives again.*"
+          },
+          {
+            "type": "myth",
+            "text": "*Phoebus, the one you left untouched by your burning, a shadow has felled.* The sun spared her and a shadow took her — the same Phoebus whose envy, in the last chapter, ended the dream by making it morning."
+          },
+          {
+            "type": "context",
+            "text": "Tamara Griggs reads the Hypnerotomachia as an antiquarian enterprise, and its epitaphs as real epigraphic practice: a humanist writing a Roman inscription correctly enough that it could be cut in stone. The Polyandrion in this world is where such stones stand."
           }
         ]
       }

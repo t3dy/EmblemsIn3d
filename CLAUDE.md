@@ -4,75 +4,73 @@
 from the 1499 **Hypnerotomachia Poliphili** (and Maier's Atalanta Fugiens). Live at
 https://emblems-in-3d.vercel.app.*
 
-## Scholarship is on hand — use it, don't invent
+## → Read [ROUTER.md](ROUTER.md) first
 
-There is a full HP research corpus on this machine. **Before describing or modelling any
-scene — gardens, processions, nymphs, architecture, hieroglyphs, tombs, the pagan gods, the
-alchemical readings — consult it.** This is not only for the tour's words: **it governs the
-3-D geometry too.** Before you build or revise a model, figure, garden, gate or ornament in
-`src/scenes/` or `src/systems/Cast.js`, read what the book and the scholarship say about it
-so the shape matches the commentary. `SOURCES.md` has a **"Modelling the 3-D assets" table**
-mapping each object to the scholar and DB tables to read first (Bury for the pyramid/Mausoleum,
-Curran for the hieroglyph gates and obelisks, Stewering for Polia and the nymphs, Hunt & Segre
-for the gardens and parterres, Nygren for the statuary, Lefaivre for the architecture). The
-map is **[SOURCES.md](SOURCES.md)** (read it once per project you touch this in). In short:
+This repo has ~45 markdown files. **`ROUTER.md` is the entry point**: a task table that
+names the two or three documents your task actually needs, and points at a procedure in
+[`RECIPES/`](RECIPES/) for the tasks this project repeats. Do not read the docs
+indiscriminately — route, then work.
 
-- **Working corpus:** `C:\Dev\hypnerotomachia polyphili\` — per-scholar markdown
-  (`scholars\<slug>\`), full-text markdown of every PDF (`md\`), RAG chunks (`chunks\`), a
-  built DH site (`site\`), and manuscript facsimiles. **Read the `.md` files directly.**
-- **Database:** `C:\Dev\hypnerotomachia polyphili\db\hp.db` (27 tables: `folio_descriptions`,
-  `woodcut_catalog`, `alchemical_symbols`, `annotations`, `dictionary_terms`, …). Query with
-  sqlite3; `scripts/export_for_3d.py` already feeds `src/data/hp_*.json` from it.
-- **PDF archive:** `E:\pdf\hypnerotomachia polyphili\` (35 books/articles, incl. **James
-  Russell's** Durham PhD — the source for the alchemical reading).
+This file is deliberately thin. It carries only the rules that must be in context from the
+first token of every session.
 
-**Cite, don't fabricate.** Any interpretive claim in a station description or a commentary
-note must trace to a named scholar in that corpus (or to the annotators' evidence in
-`hp.db`), never an invented reading. The **alchemical** commentary flavour specifically is
-Russell's reception evidence + `hp.db.alchemical_symbols` — attribute it, don't make it up.
+---
 
-## Read the work queue first
+## The five rules
 
-**[NEXTSTEPS.md](NEXTSTEPS.md) is the standing list of everything Ted has asked for that
-is not yet finished. Read it at the start of every session and work it down.** Items stay
-there until they are actually built, verified in the browser, and deployed to both hosts.
+1. **Verify the live artifact before saying "done", "fixed", "working" or "deployed".**
+   Load the real URL or running page and confirm *the specific thing that was asked for*.
+   Re-reading your own diff is not verification. → `RECIPES/verify-live.md`
+2. **Cite, don't invent.** Every interpretive claim — in a station description, a
+   commentary note, or a code comment justifying a shape — traces to a named scholar in the
+   corpus or to the annotators' evidence in `hp.db`. → `SOURCES.md`, `15scholars.md`
+3. **Read the book before you model the book.** This governs the geometry, not only the
+   prose: `hp.db.woodcut_catalog` and `folio_descriptions` outrank your mental image.
+   → `RECIPES/model-an-asset.md`
+4. **Leave the Atalanta side alone** unless the task is Atalanta: `src/data/af_lore.js`,
+   `src/data/af_vignettes.js`, `src/scenes/AFWorldScene.js`, `lab/`,
+   `images/cutouts/emblem-*`. **Never `git add -A src/`** — stage explicit paths.
+5. **Write directional decisions down immediately** — `DECISIONS.md` for calls,
+   `NEXTSTEPS.md` for the standing queue. A decision that lives only in chat gets
+   summarised away and re-litigated.
 
-When Ted asks for something, **add it to NEXTSTEPS.md immediately, in his words, before
-starting the work** — not after. The failure this guards against is real and happened on
-2026-09-05: several explicit requests (the documentation set, the lexicon gallery) were
-acknowledged and never delivered, because each new message pulled attention to the newest
-thing and the older asks were quietly filed as "next". Newest-first is not a priority
-order. **Finishing what was already asked for comes before responding to what was just
-said**, and when reporting, state what is still open rather than letting Ted find it.
+## The scholarship is on hand — use it
 
-## The design vision & decisions
+A full research corpus is on this machine. `SOURCES.md` is the map (including a
+**"Modelling the 3-D assets"** table pairing each object with the scholar to read first);
+`15scholars.md` says what each will and will not support.
 
-- **[DESIGN.md](DESIGN.md)** — "The Dream in Lenses": one faithful world read through
-  stackable lenses (POV + toggleable colour-coded commentary flavours), all four moods,
-  expressive (non-branching) reaction-choices, a single global interpretive lens for
-  alternate 3-D realizations, narrative-default player-overridable mood-light.
-- **[DECISIONS.md](DECISIONS.md)** — binding directional calls, newest first (imported models
-  now allowed; self-hosted gallery; the creative brief; etc.).
-- Fuller background: `VISION.md`, `GARDENS.md`, `PROCESSIONS.md`, `CHARACTERS.md`,
-  `RESEARCH_ROADMAP.md`, `docs/HP_SOURCEBOOK.md`.
+- **Corpus:** `C:\Dev\hypnerotomachia polyphili\` — `md\` (full text of every PDF),
+  `scholars\<slug>\`, `chunks\`, `site\`, facsimiles. Read the `.md` files directly.
+- **Database:** `C:\Dev\hypnerotomachia polyphili\db\hp.db` (27 tables).
+- **PDFs:** `E:\pdf\hypnerotomachia polyphili\`.
+- **Our translation:** `translation/` — chapters XVII–XXXVIII and Book II, ours and CC0.
+  **Godwin (1999) is in copyright, is not in the corpus, and is never used.**
 
-**Keep decisions durable.** When Ted sets a direction or points at a source mid-session,
-record it here / in `DECISIONS.md` / `SOURCES.md` immediately — not only in chat.
+It is a separate git repo: treat it **read-only** from here.
 
 ## Build & deploy
 
-- No build step: static site, Three.js r168 via importmap (jsDelivr), primitives + a few
-  imported glTF models. Translation → `scripts/build_translation_page.py`.
-- **Cache-version chain (manual):** bump `?v=N` on a changed module in every importer, up the
-  chain to `main.js?v=N` in `src/index.html`. Data files use the single `const V` in
-  `main.js` `loadData()`. (e.g. `Cast.js`/`Walker.js` → `HPWorldScene.js`/`AFWorldScene.js`
-  → `main.js` → `src/index.html`.)
-- Deploy: `vercel --prod --yes` (canonical `emblems-in-3d.vercel.app`); also pushed to
-  `github.com/t3dy/EmblemsIn3d` (GitHub Pages). **Verify the live artifact**, don't claim
-  done from the diff.
+No build step: static site, Three.js r168 via importmap (jsDelivr), primitives plus a few
+imported glTF models.
+
+- **Cache-version chain is manual.** Bump `?v=N` on a changed module in **every** importer,
+  up the chain to `main.js?v=N` in `src/index.html`. Data files use the single `const V` in
+  `main.js` `loadData()`. A different `?v=` is a *different module* with separate state.
+  → `RECIPES/bump-cache-versions.md`
+- **Two hosts, both every time:** `vercel --prod --yes && git push origin main`.
+  → `DEPLOY_STATE.md`, `RECIPES/ship-a-release.md`
+- **All CSS is inline in `src/index.html`, which no `?v=` covers.** Never fix a layout bug
+  in CSS alone if the JS can enforce it.
+
+## Design
+
+- **[DESIGN.md](DESIGN.md)** — "The Dream in Lenses": one faithful world read through
+  stackable lenses (POV + toggleable colour-coded commentary flavours), all four moods,
+  expressive non-branching reaction-choices, a single global interpretive lens.
+- **[DECISIONS.md](DECISIONS.md)** — binding directional calls, newest first.
 
 ## Workspace note
 
-This project sits in the `C:\Dev` multi-project workspace (`C:\Dev\CLAUDE.md`). The corpus
-at `C:\Dev\hypnerotomachia polyphili\` is a **separate git repo** — treat it read-only from
-here.
+This project sits in the `C:\Dev` multi-project workspace (`C:\Dev\CLAUDE.md`), whose
+Working Discipline section applies here in full.
