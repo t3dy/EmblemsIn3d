@@ -166,6 +166,15 @@ const TRIUMPH_RELIEFS = {
     { scene: 'Venus and Cupid before Jupiter' },
     { scene: 'Psyche with the lamp' },
   ],
+  // The FOUR SEASONS (#67-70) sit immediately after Vertumnus and Pomona in the
+  // plates, and they are that car's own iconography: Vertumnus is the god of the
+  // turning year, Pomona of orchard fruit. The seasons belong on their car.
+  vertumnus: [
+    { scene: 'Spring — Venus and Cupid',      word: 'VER' },
+    { scene: 'Summer — Ceres with the boy',   word: 'AESTAS' },
+    { scene: 'Autumn — the Wine God with the ram', word: 'AVTVMNVS' },
+    { scene: 'Winter — Jupiter Pluvius',      word: 'HIEMS' },
+  ],
 };
 
 const TRIUMPHS = [
@@ -173,6 +182,12 @@ const TRIUMPHS = [
   { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-10.6, -9.4],  color: 0xb0c0d8 },
   { key: 'danae',   title: 'Triumph of Danaë',     motif: 'gold',  team: 'unicorn',  pos: [-10.6, -30.6], color: 0xe0c060 },
   { key: 'bacchus', title: 'Festival of Bacchus',  motif: 'fire',  team: 'leopard',  pos: [10.6, -30.6],  color: 0xd86a3a },
+  // The fifth procession (#66, "Triumph of Vertumnus and Pomona: satyrs,
+  // nymphs"). It did not exist in the world at all. The plate names no draught
+  // beast — this is the rustic triumph, ACCOMPANIED by satyrs and nymphs on
+  // foot rather than drawn by exotic teams — so it walks with its company.
+  { key: 'vertumnus', title: 'Triumph of Vertumnus and Pomona', motif: 'fruit',
+    team: 'satyr', onFoot: true, pos: [0, -34.2], color: 0x8aa04a },
 ];
 
 export class HPWorldScene {
@@ -1679,6 +1694,12 @@ export class HPWorldScene {
       this._m(new THREE.BoxGeometry(b - a, WALL_H, 0.7), this._stoneMat, (a + b) / 2, WALL_H / 2, Z);
       this._wallCol(a, b, Z - 0.35, Z + 0.35);
     }
+    // The wall was a plain slab with a cap. This is the threshold of the dream
+    // proper — Lefaivre's architectural body at its most explicit — so it gets
+    // the shared classical members: a full entablature along its whole length,
+    // and engaged columns standing to either side of each gate.
+    this._entablature(0, WALL_H - 0.1, Z, 28.8, 1.0);
+    this._frieze(0, WALL_H + 0.62, Z + 0.55, 27.6, 0.5, 'meander');
     this._m(new THREE.BoxGeometry(28.6, 0.35, 1.0), this._darkStoneMat, 0, WALL_H + 0.17, Z);
 
     DOORS.forEach((d, i) => {
@@ -1694,6 +1715,15 @@ export class HPWorldScene {
         2.3, 0.6, d.x, d.h + 0.72, Z + 0.42, 0, true);
       this._plaque({ main: d.greek, sub: 'KEPT BY ' + d.keeper.toUpperCase(), glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
         2.0, 0.5, d.x, d.h + 1.28, Z + 0.42, 0, true);
+
+      // engaged columns flanking the gate, of the order the gate's own colour
+      // suggests; and an egg-and-dart astragal under its lintel
+      for (const sx of [-1, 1]) {
+        const cx2 = d.x + sx * (d.w / 2 + 0.62);
+        const gc = new THREE.Group(); gc.position.set(0, 0, 0); this.scene.add(gc);
+        this._column(cx2, Z + 0.52, d.h + 0.35, { order: 'corinthian', r: 0.17, parent: gc });
+      }
+      this._frieze(d.x, d.h + 0.38, Z + 0.5, d.w + 1.0, 0.24, 'eggdart');
 
       const pm = S.portalMat(d.color);
       if (pm) {
@@ -2125,6 +2155,23 @@ export class HPWorldScene {
       this._quinta.rays = rays;
     }
 
+    // A ring of eight columns about the shrine, carrying a circular entablature.
+    // The Quinta was three stacked drums and a glowing solid; it is a temple and
+    // now stands like one.
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+      const gx = CX + Math.cos(a) * 3.35, gz = CZ + Math.sin(a) * 3.35;
+      const gc = new THREE.Group(); gc.position.y = 0.56; this.scene.add(gc);
+      this._column(gx, gz, 2.9, { order: 'ionic', r: 0.17, parent: gc });
+    }
+    for (let i = 0; i < 8; i++) {                 // the ring architrave, in eight bays
+      const a0 = (i / 8) * Math.PI * 2 + Math.PI / 8;
+      const a1 = ((i + 1) / 8) * Math.PI * 2 + Math.PI / 8;
+      const mx = CX + Math.cos((a0 + a1) / 2) * 3.35, mz = CZ + Math.sin((a0 + a1) / 2) * 3.35;
+      const span = 2 * 3.35 * Math.sin(Math.PI / 8);
+      this._entablature(mx, 3.46, mz, span + 0.22, 0.5, { ry: -(a0 + a1) / 2 });
+    }
+
     ELEMENTS.forEach((el, i) => {
       const a = (el.deg * Math.PI) / 180;
       const x = CX + Math.cos(a) * 4.6, z = CZ + Math.sin(a) * 4.6;
@@ -2239,6 +2286,9 @@ export class HPWorldScene {
       { rx: -Math.PI / 2, cast: false, receive: false }), rate: 0.09 });
     this._caustics(FX, WATER_Y, FZ, R, 0.07);
     this._circleCol(FX, FZ, R + 0.85);
+    // folio 80's own company — the mainland grove only; Cythera's enclosed
+    // fountain keeps the pure chapter-XXIII programme.
+    if (!enclosure) this._buildFolio80Company(FX, FZ, R, KERB);
 
     // The seven columns, the arcade between them, the altars and their planets
     const ang = (i) => Math.PI + (i - 3) * (Math.PI * 2 / 7);
@@ -2478,6 +2528,18 @@ export class HPWorldScene {
         const sx = (i % 2 ? 1 : -1) * 0.72;
         const row = Math.floor(i / 2);                 // 0 = nearest the car
         const z = -2.5 - row * 1.75;
+        if (t.onFoot) {
+          // The rustic triumph walks: satyrs to one side, nymphs to the other,
+          // no beasts and no riders. "satyrs, nymphs" is all the plate gives.
+          const walker = (i % 2)
+            ? this.cast.props.satyr(1.15)
+            : this.cast.nymph({ robe: TRIUMPH_LIVERY[i], h: 0.92 });
+          walker.position.set(sx * 1.15, 0, z);
+          walker.rotation.y = Math.PI + (i % 2 ? 0.2 : -0.2);
+          g.add(walker);
+          this._npcs.push({ g: walker, phase: i * 0.8, baseY: 0, sway: 0.02 });
+          continue;
+        }
         const beast = this._triumphBeast(t.team);
         beast.position.set(sx, 0, z);
         g.add(beast);
@@ -2518,6 +2580,23 @@ export class HPWorldScene {
             (Math.sin(i * 2.4) * 0.4), 2.1 - (i % 3) * 0.35, (Math.cos(i * 1.7) * 0.4), { parent: g, cast: false });
           void d;
         }
+      }
+      else if (t.motif === 'fruit') {
+        // Pomona's heaped orchard fruit, and the two deities standing over it.
+        motif = new THREE.Group();
+        const basket = this._m(new THREE.CylinderGeometry(0.44, 0.34, 0.3, 14, 1, true),
+          this.style.mat({ color: 0x8a6a3a, roughness: 0.9 }), 0, 0.92, 0, { parent: motif });
+        void basket;
+        for (let k = 0; k < 16; k++) {
+          const a = (k / 16) * Math.PI * 2, rr = 0.1 + (k % 4) * 0.09;
+          this._m(new THREE.SphereGeometry(0.075, 8, 6),
+            this.style.mat({ color: [0xc03a2a, 0xd88a20, 0x7a9a2a, 0xa8306a][k % 4], roughness: 0.55 }),
+            Math.cos(a) * rr, 1.08 + (k % 3) * 0.05, Math.sin(a) * rr, { parent: motif, cast: false });
+        }
+        const pomona = this.cast.nymph({ name: 'Pomona', robe: 0xc8a83a, h: 0.85, pose: 'offer' });
+        pomona.position.set(-0.42, 0.62, 0.15); g.add(pomona);
+        const vert = this.cast.figure({ h: 0.9, robe: 0x6a8a3a, pose: 'reach' });
+        vert.position.set(0.42, 0.62, 0.15); g.add(vert);
       }
       else { motif = this.cast.props.fire(1.2); motif.position.y = 0.75; const f = this.cast.figure({ h: 0.7, robe: 0xc86a50 }); f.position.set(0, 0.9, 0.5); g.add(f); }
       g.add(motif);
@@ -2710,6 +2789,91 @@ export class HPWorldScene {
     return g;
   }
 
+  // ── Folio 80: the Graces, the harpies and the griffins ───────────────────
+  //
+  // The station called "Fountain of Venus" is folio 80, and the plate at that
+  // folio is not the gem-columned fountain of chapter XXIII at all —
+  // woodcut_catalog #23 calls it "Third fountain with Graces, harpies,
+  // griffins". Those three were named in the catalogue and modelled nowhere.
+  //
+  // The two fountains are already distinguished in code by `enclosure`: the
+  // Cythera one (enclosed) keeps the pure chapter-XXIII programme of seven
+  // stones and the crystal cupola; the mainland grove is the folio-80 fountain
+  // and gets its own company.
+  _buildFolio80Company(FX, FZ, R, KERB) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const stone = woodcut ? S.mat({ tone: 0.05 })
+                          : S.mat({ color: 0xd8cdb4, roughness: 0.78 });
+    const gold = woodcut ? S.mat({ tone: 0.02 })
+                         : S.mat({ color: 0xc9a244, metalness: 0.85, roughness: 0.3 });
+
+    // THE THREE GRACES, standing together off the kerb as they always stand —
+    // linked, one turned away. When the painted-figure variant is on these are
+    // literally Botticelli's Graces, cut from the Primavera that is already in
+    // the project's gallery, which is the same three women this plate means.
+    const GR = ['Aglaia', 'Euphrosyne', 'Thalia'];
+    GR.forEach((name, i) => {
+      const a = Math.PI * 0.5 + (i - 1) * 0.30;
+      const gx = FX + Math.cos(a) * (R + 2.5), gz = FZ + Math.sin(a) * (R + 2.5);
+      const fig = this.cast.nymph({ name, robe: [0xe6dcc4, 0xd8c8b0, 0xe0d0bc][i], h: 0.98 });
+      this._npc('grace_' + i, fig, gx, gz, -a + Math.PI, { label: name, sub: 'A GRACE', labelY: 2.0 });
+    });
+
+    // THE FOUR HARPIES — bird-bodied women, perched on the kerb's angles,
+    // facing outward. The book's harpy feet are already on the triumphal cars;
+    // here they are whole.
+    for (let i = 0; i < 4; i++) {
+      const a = Math.PI / 4 + i * (Math.PI / 2);
+      const hx = FX + Math.cos(a) * (R + 0.72), hz = FZ + Math.sin(a) * (R + 0.72);
+      const h = new THREE.Group();
+      h.position.set(hx, KERB + 0.04, hz);
+      h.rotation.y = -a + Math.PI / 2;
+      this.scene.add(h);
+      const body = this._m(new THREE.SphereGeometry(0.2, 12, 9), stone, 0, 0.2, 0, { parent: h });
+      body.scale.set(0.8, 1.15, 0.9);
+      this._m(new THREE.CylinderGeometry(0.05, 0.065, 0.1, 8), stone, 0, 0.4, 0, { parent: h });
+      this._m(new THREE.SphereGeometry(0.1, 12, 9), stone, 0, 0.5, 0, { parent: h });   // a woman's head
+      for (const sx of [-1, 1]) {                                   // the wings
+        const w = this._m(new THREE.SphereGeometry(0.24, 10, 7, 0, Math.PI), stone,
+          sx * 0.17, 0.26, -0.05, { parent: h, cast: false });
+        w.scale.set(0.9, 1.0, 0.16);
+        w.rotation.set(0.2, sx * 0.5, sx * 0.55);
+        // the talons
+        this._m(new THREE.ConeGeometry(0.03, 0.1, 5), gold, sx * 0.07, 0.02, 0.04,
+          { parent: h, rx: 2.7, cast: false });
+      }
+      this._m(new THREE.ConeGeometry(0.07, 0.2, 7), stone, 0, 0.14, 0.16, { parent: h, rx: 1.1 });
+      this._npcs.push({ g: h, phase: i * 1.3, baseY: 0, sway: 0.01 });
+    }
+
+    // THE TWO GRIFFINS, flanking the approach — eagle before, lion behind.
+    for (const sx of [-1, 1]) {
+      const g = new THREE.Group();
+      g.position.set(FX + sx * (R + 2.0), 0, FZ + R + 1.6);
+      g.rotation.y = -sx * 0.5;
+      this.scene.add(g);
+      const lion = this.cast.animals.lion(1.05);
+      lion.traverse(o => { if (o.isMesh && o.material?.color) o.material = stone; });
+      g.add(lion);
+      // the eagle's head and beak, and the raised wings
+      const head = this._m(new THREE.SphereGeometry(0.19, 12, 9), stone, 0, 0.95, -0.52, { parent: g });
+      head.scale.set(0.9, 1.0, 1.05);
+      this._m(new THREE.ConeGeometry(0.075, 0.24, 7), gold, 0, 0.92, -0.70, { parent: g, rx: -1.35 });
+      for (const wx of [-1, 1]) {
+        const w = this._m(new THREE.SphereGeometry(0.4, 10, 8, 0, Math.PI), stone,
+          wx * 0.26, 0.86, 0.06, { parent: g, cast: false });
+        w.scale.set(0.85, 1.05, 0.14);
+        w.rotation.set(-0.35, wx * 0.6, wx * 0.75);
+      }
+      this._circleCol(FX + sx * (R + 2.0), FZ + R + 1.6, 0.6);
+      this._npcs.push({ g, phase: sx > 0 ? 0.4 : 2.1, baseY: 0, sway: 0.008 });
+    }
+
+    this._plaque({ main: 'ΧΑΡΙΤΕΣ', sub: 'THE GRACES · WITH HARPIES AND GRIFFINS' },
+      1.5, 0.3, FX, KERB * 0.62, FZ - R - 0.62, Math.PI, true);
+  }
+
   // A carved relief panel: stone ground, a bead border, the scene's figures in
   // low relief, and — where the book gives one — the word cut into it.
   //
@@ -2820,6 +2984,7 @@ export class HPWorldScene {
       g.add(torso);
       return g;
     }
+    if (kind === 'satyr') return this.cast.props.satyr(1.15);   // walks, never drawn
     console.warn('[triumph] no beast built for team "' + kind + '" — falling back to a horse');
     return this.cast.animals.horse(0.95);
   }
