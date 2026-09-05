@@ -1265,12 +1265,35 @@ export function makeCast(S) {
       add(g, mesh(new THREE.BoxGeometry(1.6 * s, 1.0 * s, 0.18 * s), M(0x9a8a6a, { roughness: 0.95 }), 0, 0.5 * s));
       return g;
     },
+    // A column with the members a column has: plinth, torus, scotia and torus
+    // for the attic base, a shaft with entasis and shallow flutes, a necking,
+    // and a Doric echinus under a square abacus. It was a box, a plain cylinder
+    // and another box, which is what made the garden's pergolas read as scaffolding.
     column: (s = 1) => {
       const g = new THREE.Group();
-      const cm = M(0x8a7a5a, { roughness: 0.85 });
-      add(g, mesh(new THREE.BoxGeometry(0.36 * s, 0.1 * s, 0.36 * s), cm, 0, 0.05 * s));
-      add(g, mesh(new THREE.CylinderGeometry(0.11 * s, 0.13 * s, 1.5 * s, 12), cm, 0, 0.85 * s));
-      add(g, mesh(new THREE.BoxGeometry(0.34 * s, 0.12 * s, 0.34 * s), cm, 0, 1.66 * s));
+      const cm = M(0x9a8b6e, { roughness: 0.88 });
+      const dk = M(0x6f6350, { roughness: 0.92 });
+      const R = 0.125 * s;
+      // base
+      add(g, mesh(new THREE.BoxGeometry(R * 3.0, R * 0.42, R * 3.0), cm, 0, R * 0.21));
+      const t1 = add(g, mesh(new THREE.TorusGeometry(R * 1.2, R * 0.19, 6, 16), cm, 0, R * 0.6));
+      t1.rotation.x = Math.PI / 2;
+      add(g, mesh(new THREE.CylinderGeometry(R * 1.06, R * 1.2, R * 0.28, 14), cm, 0, R * 0.85));
+      const t2 = add(g, mesh(new THREE.TorusGeometry(R * 1.06, R * 0.13, 6, 16), cm, 0, R * 1.08));
+      t2.rotation.x = Math.PI / 2;
+      // shaft with entasis, and flutes
+      const y0 = R * 1.2, SH = 1.42 * s;
+      add(g, mesh(new THREE.CylinderGeometry(R * 0.85, R, SH, 16), cm, 0, y0 + SH / 2));
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI * 2;
+        add(g, mesh(new THREE.CylinderGeometry(R * 0.085, R * 0.1, SH * 0.985, 5), dk,
+          Math.cos(a) * R * 0.92, y0 + SH / 2, Math.sin(a) * R * 0.92));
+      }
+      const nk = add(g, mesh(new THREE.TorusGeometry(R * 0.87, R * 0.085, 6, 16), cm, 0, y0 + SH + R * 0.04));
+      nk.rotation.x = Math.PI / 2;
+      // Doric capital
+      add(g, mesh(new THREE.CylinderGeometry(R * 1.24, R * 0.88, R * 0.44, 16), cm, 0, y0 + SH + R * 0.3));
+      add(g, mesh(new THREE.BoxGeometry(R * 2.7, R * 0.26, R * 2.7), cm, 0, y0 + SH + R * 0.65));
       return g;
     },
     // Giant dividers — the philosopher's compasses of Emblem XXI / the Rebis
