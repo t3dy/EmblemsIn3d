@@ -27,9 +27,14 @@ first token of every session.
 3. **Read the book before you model the book.** This governs the geometry, not only the
    prose: `hp.db.woodcut_catalog` and `folio_descriptions` outrank your mental image.
    → `RECIPES/model-an-asset.md`
-4. **Leave the Atalanta side alone** unless the task is Atalanta: `src/data/af_lore.js`,
-   `src/data/af_vignettes.js`, `src/scenes/AFWorldScene.js`, `lab/`,
-   `images/cutouts/emblem-*`. **Never `git add -A src/`** — stage explicit paths.
+4. **The site is the Hypnerotomachia only** (2026-09-05). The Atalanta Fugiens
+   worlds, tours and games were removed from the website; nothing under
+   `src/` loads them any more. Their source files are still on disk —
+   `src/scenes/AFWorldScene.js`, `src/scenes/EmblemScene.js`,
+   `src/scenes/ArchivesScene.js`, `src/data/af_*.js`, `lab/`,
+   `images/emblems/`, `images/cutouts/emblem-*` — **dormant, not wired in.**
+   Do not re-import them, and do not build new Atalanta features.
+   **Never `git add -A src/`** — stage explicit paths.
 5. **Write directional decisions down immediately** — `DECISIONS.md` for calls,
    `NEXTSTEPS.md` for the standing queue. A decision that lives only in chat gets
    summarised away and re-litigated.

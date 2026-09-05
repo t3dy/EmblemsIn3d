@@ -27,41 +27,41 @@ import { Walker } from '../systems/Walker.js?v=4';
 import { makeCast } from '../systems/Cast.js?v=32';
 import { isVariant } from '../systems/AssetVariants.js?v=7';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
-import { getEnvMap } from './EmblemScene.js?v=9';
+import { getEnvMap } from '../systems/EnvMap.js?v=1';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
 
-// pos/look are [x, z] on the ground plane; folio/emblem feed the HUD + research.
+// pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
 export const HP_STATIONS = [
-  { key: 'wood',             name: 'The Dark Wood',          folio: 2,   emblem: null,
+  { key: 'wood',             name: 'The Dark Wood',          folio: 2,
     pos: [0, 45],     look: [0, 38],   radius: 9 },
-  { key: 'portal',           name: 'The Great Portal',       folio: 13,  emblem: null,
+  { key: 'portal',           name: 'The Great Portal',       folio: 13,
     pos: [0, 37],     look: [0, 26],   radius: 7, pitch: 0.2 },
-  { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62, emblem: null,
+  { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62,
     pos: [-12.8, 23], look: [-23.5, 18.5], radius: 9 },
-  { key: 'three_doors',      name: 'The Three Doors',        folio: 119, emblem: 19,
+  { key: 'three_doors',      name: 'The Three Doors',        folio: 119,
     pos: [0, 21],     look: [0, 12],   radius: 6, pitch: 0.05 },
-  { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,  emblem: null,
+  { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,
     pos: [0, 6.5],    look: [0, 0],    radius: 6 },
-  { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,  emblem: 17,
+  { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,
     pos: [-11.5, 0],  look: [-20, 0],  radius: 9 },
-  { key: 'quinta_essentia',  name: 'Quinta Essentia',        folio: 164, emblem: 46,
+  { key: 'quinta_essentia',  name: 'Quinta Essentia',        folio: 164,
     pos: [13, 0],     look: [21, 0],   radius: 8 },
-  { key: 'fountain',         name: 'Fountain of Venus',      folio: 80,  emblem: 1,
+  { key: 'fountain',         name: 'Fountain of Venus',      folio: 80,
     pos: [0, -10.5],  look: [0, -20],  radius: 8, pitch: 0.16 },
-  { key: 'cythera',          name: 'The Shore to Cythera',   folio: 193, emblem: null,
+  { key: 'cythera',          name: 'The Shore to Cythera',   folio: 193,
     pos: [0, -33],    look: [0, -46],  radius: 8 },
   // Discoverable, not on the digit row:
-  { key: 'polia',            name: "Polia's Garden",         folio: 143, emblem: null,
+  { key: 'polia',            name: "Polia's Garden",         folio: 143,
     pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
-  { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158, emblem: null,
+  { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158,
     pos: [5.5, -4.5], look: [10.6, -9.4], radius: 5 },
-  { key: 'polyandrion',      name: 'The Polyandrion',        folio: 242, emblem: null,
+  { key: 'polyandrion',      name: 'The Polyandrion',        folio: 242,
     pos: [23, -22], look: [30, -27], radius: 9 },
   // The island itself — reached by Cupid's boat (digit 0), returned from by 9:
-  { key: 'cythera_isle',     name: 'The Gardens of Cythera', folio: 290, emblem: null,
+  { key: 'cythera_isle',     name: 'The Gardens of Cythera', folio: 290,
     pos: [0, -104], look: [0, -150], radius: 13 },
-  { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358, emblem: 33,
+  { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358,
     pos: [0, -133.5], look: [0, -150], radius: 11, pitch: 0.05 },
 ];
 

@@ -21,6 +21,23 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
+### 0a. Loose ends from removing the Atalanta side (2026-09-05)
+The site is HP-only now (`DECISIONS.md`). Open questions it leaves:
+
+- **The `/v1/` and `/v2/` archives still contain the full Atalanta site**, linked from the
+  landing page as earlier releases. Kept deliberately — but if "embarrassingly crude" covers
+  those too, they can be pulled in one commit.
+- **`lab/emblem5.html`** (the emblem depth-methods lab) is still in the tree. Not linked
+  from anywhere and not part of the site, so left alone.
+- **The dormant Atalanta modules** — `AFWorldScene.js`, `EmblemScene.js`,
+  `ArchivesScene.js`, `src/data/af_*.js`, `images/emblems/` (51 plates, the largest image
+  set in the repo) — are unreferenced weight. Deleting them is a one-line `git rm`; held
+  back only in case the parallel session has uncommitted work in them.
+- **The repository is still called `EmblemsIn3d`** and the canonical URL is still
+  `emblems-in-3d.vercel.app`. Renaming either breaks every existing link, so only the
+  *displayed* name changed. Ted's call whether to rename.
+
+
 ### 0. Follow-ups opened by the full-book tour pass (2026-09-05)
 The Novel tour now runs all 38 chapters (34 stops). Writing it exposed geometry the world
 does not yet have:

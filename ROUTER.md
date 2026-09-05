@@ -26,10 +26,13 @@ a session.
 3. **Read the book before you model the book.** Geometry is sourced too, not only prose.
    `hp.db.woodcut_catalog` and `folio_descriptions` outrank your mental image of the scene.
    → [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md)
-4. **Leave the Atalanta side alone unless the task is Atalanta.** `src/data/af_lore.js`,
-   `src/data/af_vignettes.js`, `src/scenes/AFWorldScene.js`, `lab/`,
-   `images/cutouts/emblem-*` are worked in a separate session. **Never `git add -A src/`** —
-   stage explicit paths. It has swept an Atalanta file into an HP commit twice.
+4. **This site is the Hypnerotomachia only.** On 2026-09-05 the Atalanta Fugiens side
+   was removed from the website — its worlds, its four tours, its games, its plates atlas
+   and the HP↔AF archives graph. Nothing under `src/` imports it any more. The files are
+   still on disk (`src/scenes/AFWorldScene.js`, `EmblemScene.js`, `ArchivesScene.js`,
+   `src/data/af_*.js`, `lab/`, `images/emblems/`) but they are **dormant**: do not re-wire
+   them, and do not add Atalanta features. **Never `git add -A src/`** — stage explicit
+   paths; that habit swept an Atalanta file into an HP commit twice.
 5. **Write directional decisions down the moment they are made** — in
    [`DECISIONS.md`](DECISIONS.md), and the standing queue in
    [`NEXTSTEPS.md`](NEXTSTEPS.md). A decision that lives only in chat gets summarised away
@@ -96,7 +99,10 @@ contain good research and are worth mining, **but do not take a "current status"
 number, or a file layout from them.** For where the project actually is, read
 `NEXTSTEPS.md` and `DECISIONS.md`.
 
-The Atalanta files — `ATALANTA_*.md` — belong to the other session's lane (rule 4).
+The Atalanta documents — `ATALANTA_ANIMATION_STRATEGIES.md`, `ATALANTA_INTEGRATION.md`,
+`ATALANTA_SUMMARY.md` — describe a part of the project that is no longer on the site
+(rule 4 above). Kept as the record of what was built and why; not a guide to anything
+current.
 
 ---
 
@@ -105,20 +111,22 @@ The Atalanta files — `ATALANTA_*.md` — belong to the other session's lane (r
 No build step. Static site, ES modules, Three.js r168 via importmap from jsDelivr.
 
 ```
+index.html              the landing page (the Hypnerotomachia's own front door)
 src/index.html          the app shell — ALL the CSS is inline here, and it is NOT cache-busted
-src/main.js             UI, tours, modes, data loading, the graphics menu
+src/main.js             UI, the tour, the three modes, data loading, the graphics menu
 src/scenes/
   HPWorldScene.js       the Hypnerotomachia world — every station, every model
-  AFWorldScene.js       the Atalanta world            ← other session's lane
-  EmblemScene.js  ArchivesScene.js  HPScene.js
+  AFWorldScene.js  EmblemScene.js  ArchivesScene.js  HPScene.js   ← DORMANT, not imported
 src/systems/
   Cast.js               figures, animals, props, labels
   AssetVariants.js      the swappable-variant registry (one entry per asset class)
   Walker.js             free-walk movement and collision
   DreamMode.js          the narrative game loop
+  EnvMap.js             the one shared PMREM environment
   Particles.js  Meadow.js  AlchemicalAudio.js (a deliberate no-op stub — the site is silent)
 src/shaders/HPStyles.js the four aesthetic registers
-src/data/               tours.json, hp_*.json (exported from hp.db), lexicon, gallery
+src/data/               tours.json (the Novel tour), gallery.json, hp_*.json, lexicon
+game/                   Poliphilo's Commonplace Book — the visual novel
 research/               translation.html, lexicon.html, nymphs.html — the DH pages
 translation/            source/ (Italian), en/ (our English), manifest.json, NOTES.md
 scripts/                export_for_3d.py, build_translation_page.py, cut_figures.py
@@ -150,7 +158,7 @@ will conflict.
 | Tour & commentary | `src/data/tours.json`, `src/data/hp_*.json` | `src/scenes/` |
 | Research pages | `research/*.html`, `scripts/build_*.py` | `src/` |
 | Translation | `translation/` | everything else |
-| Atalanta | `AFWorldScene.js`, `af_*.js`, `lab/` | all of the above |
+| Landing page & docs | `index.html`, `README.md`, the `*.md` briefs | `src/`, `research/` |
 
 Rules for a parallel run: each lane stages only its own paths; **one** agent owns the
 `?v=` bump and the deploy, at the end; and each lane records what it did in `NEXTSTEPS.md`
@@ -164,6 +172,6 @@ before finishing.
 2. Bumped the `?v=` chain for every changed module?
 3. Deployed to **both** hosts?
 4. Recorded new directional calls in `DECISIONS.md` and remaining work in `NEXTSTEPS.md`?
-5. Staged explicit paths — no Atalanta files in the diff (`git status` before committing)?
+5. Staged explicit paths, and checked `git status` before committing?
 
 If any answer is no, say so plainly in the report rather than rounding up to "done".

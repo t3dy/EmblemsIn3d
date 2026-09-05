@@ -95,8 +95,9 @@ python "<scratchpad>/check_tour.py"
 That script (write it again if it has been cleaned up) asserts: every `station` exists in
 `HP_STATIONS`; every note `type` exists in `NOTE_TYPES` in `main.js`; every `wc` file exists
 on disk; every `half: "ours"` chapter resolves to an `id="ch-…"` anchor in
-`research/translation.html`; no stop lacks a lede or notes; all 38 chapters are covered; the
-other four tours survived the edit.
+`research/translation.html`; no stop lacks a lede or notes; all 38 chapters are covered; and
+`tours.json` still holds the Novel tour and nothing else (the four Atalanta tours were
+removed on 2026-09-05).
 
 Then step the tour in the browser and read back every stop — see
 [verify-live.md](verify-live.md):

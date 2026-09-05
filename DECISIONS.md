@@ -2,6 +2,53 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — The site is the Hypnerotomachia alone (Ted)
+
+Ted: *"I'd like to remove all the atalanta stuff from the website as it's embarrassingly
+crude and just focus on the HP stuff."* This **reverses the standing rule 4** ("leave the
+Atalanta side alone"), which existed only because that side was being worked in a parallel
+session.
+
+**Removed from the shipped site:**
+
+| Gone | What it was |
+|---|---|
+| the **Atalanta Animata** world | the wall of 51 lit woodcut plates, and the five hand-built showcase emblem scenes |
+| the **Theatrum** world | all 51 emblems as animated vignettes around a rotunda (`AFWorldScene`) |
+| the **Plates** atlas | the 2-D emblem atlas and its lightbox |
+| the **Archives** graph | the HP-folio ↔ AF-emblem cross-reference network (`ArchivesScene`) |
+| four of the five **tours** | The Scholarship, Chemical Symbolism, The Great Work, The Two Books |
+| the **games** | `games/` — Oracle, Fugue Scroll, Stage Sorter, Memory (deleted from the tree) |
+| the emblem **HUD** | the stage badge, the ←/→ emblem stepper, the "← Gallery" button, the marginalia panel |
+| three **data files** | `emblems.json`, `world_links.json`, `diorama.json` are no longer fetched |
+
+**Kept.** The Gallery (25 plates, all HP-relevant), the visual novel in `game/`, the three
+research pages, and the `/v1/` and `/v2/` archives — those are labelled as *earlier
+releases*, which is a different claim from "this is the project", and the citability
+decision that created them still stands. Say the word and they go too.
+
+**Kept on disk but dormant.** `AFWorldScene.js`, `EmblemScene.js`, `ArchivesScene.js`,
+`src/data/af_*.js`, `lab/`, `images/emblems/`. Nothing imports them; they are not deleted
+because a parallel session may hold uncommitted work in them, and git history has the rest
+anyway. **Do not re-wire them.**
+
+**Consequences worth knowing:**
+
+- The app **opens in the Dream Garden** now, not on an emblem scene. `#emblem=N` and
+  `#theatrum` deep links are gone; `#hp`, `#dream`, `#gallery` and `#tour=novel` remain.
+- The toolbar is Home · Woodcut view · The Dream Garden · Tours · Gallery · Graphics ·
+  Translation · Lexicon — the last two are new, and point at the research pages, which
+  previously had no route in from the app.
+- `getEnvMap()` was the only thing the HP world still needed from `EmblemScene.js`. It is
+  extracted to **`src/systems/EnvMap.js`**, so no emblem code loads to light a garden.
+- `HP_STATIONS` no longer carries its per-station `emblem:` cross-reference.
+- The `Cast.js?v=15` pin in `AFWorldScene.js` no longer matters — nothing loads two
+  versions of `Cast.js` any more.
+- **The displayed site name changed** from "Emblems in 3D" to **"The Dream Garden of
+  Poliphilo"** across the landing page, the app and the research pages. The repository, the
+  Vercel project and both URLs keep their existing names, so no link breaks.
+- The landing page was rewritten from scratch around the HP.
+
 ## 2026-09-05 — The tour covers the whole book; the system files become a router (Ted)
 
 Two calls, made in one exchange.

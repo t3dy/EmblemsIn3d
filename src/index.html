@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HPin3D — Hypnerotomachia & Atalanta Animata</title>
+  <title>The Dream Garden of Poliphilo — Hypnerotomachia Poliphili in 3-D</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     /* The `hidden` attribute must beat any id/class `display` rule below it —
@@ -35,7 +35,6 @@
     }
 
     /* Annotation card */
-    #annotation-panel {
       position: absolute; bottom: 2rem; left: 50%;
       transform: translateX(-50%);
       max-width: 560px; width: 90%;
@@ -46,8 +45,6 @@
       display: none;
       pointer-events: all;
     }
-    #annotation-panel .source { color: #a0784a; font-size: 0.75rem; margin-top: 0.5rem; }
-    #annotation-panel .close-btn {
       position: absolute; top: 0.5rem; right: 0.75rem;
       background: none; border: none; color: #8b4513;
       font-size: 1.1rem; cursor: pointer;
@@ -83,6 +80,16 @@
       transition: border-color 0.2s, color 0.2s;
     }
     #world-nav .wn-home:hover { border-color: #c8a040; color: #f5f0e8; }
+    /* The research pages are also links out of the 3-D app, but they belong to
+       this project rather than to the site's front page, so they read quieter
+       than Home and sit at the end of the bar. */
+    #world-nav .wn-link {
+      text-decoration: none; font-size: 0.8rem; letter-spacing: 0.05em;
+      color: #9a8a6a; background: rgba(10,8,4,0.8);
+      border: 1px solid #3a2a14; padding: 0.4rem 0.8rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #world-nav .wn-link:hover { border-color: #8b4513; color: #f5f0e8; }
     #world-nav button {
       background: rgba(10,8,4,0.8); border: 1px solid #4a2a10;
       color: #c8a878; font-family: 'Georgia', serif; font-size: 0.8rem;
@@ -93,31 +100,13 @@
       border-color: #8b4513; color: #f5f0e8;
     }
 
-    /* Back button + emblem nav */
-    #back-btn {
-      display: none; margin-top: 0.6rem;
-      background: none; border: 1px solid #4a2a10; color: #a0784a;
-      font-family: 'Georgia', serif; font-size: 0.72rem; padding: 0.25rem 0.65rem;
-      cursor: pointer; letter-spacing: 0.06em; pointer-events: all;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    #back-btn:hover { border-color: #8b4513; color: #f5f0e8; }
 
-    #emblem-nav {
-      display: none; gap: 0.5rem; margin-top: 0.5rem;
-      pointer-events: all;
-    }
-    #emblem-nav button {
       background: rgba(10,8,4,0.8); border: 1px solid #4a2a10;
       color: #a0784a; font-size: 1.0rem; padding: 0.15rem 0.6rem;
       cursor: pointer; transition: border-color 0.2s, color 0.2s;
     }
-    #emblem-nav button:hover:not(:disabled) { border-color: #8b4513; color: #f5f0e8; }
-    #emblem-nav button:disabled { opacity: 0.25; cursor: default; }
-    #emblem-nav .key-hint { font-size: 0.62rem; color: #6b5d4d; align-self: center; }
 
     /* Gallery hover tooltip */
-    #gallery-tooltip {
       position: fixed; z-index: 20;
       background: rgba(10,8,4,0.92); border: 1px solid #8b4513;
       color: #c8a878; font-size: 0.72rem; padding: 0.3rem 0.65rem;
@@ -134,125 +123,63 @@
     #center-message h2 { font-size: 1.2rem; font-weight: normal; color: #c8a878; letter-spacing: 0.1em; }
     #center-message p  { font-size: 0.85rem; color: #6b5d4d; text-align: center; line-height: 1.7; }
 
-    /* Generic emblem text card — shown for all 46 non-showcase emblems */
-    #text-card {
-      display: none; position: fixed; z-index: 8;
-      top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: min(520px, 88vw);
-      flex-direction: column; align-items: center; gap: 0.65rem;
-      text-align: center; pointer-events: none;
-      background: rgba(8, 6, 3, 0.72);
-      border: 1px solid rgba(139, 69, 19, 0.25);
-      padding: 2.2rem 2rem 1.8rem;
-      backdrop-filter: blur(2px);
-      animation: fadeInCard 0.8s ease forwards;
-    }
     @keyframes fadeInCard { from { opacity:0; transform: translate(-50%,-50%) translateY(12px); } to { opacity:1; transform: translate(-50%,-50%) translateY(0); } }
-    #text-card .tc-badge {
       font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
       padding: 0.15rem 0.5rem; border: 1px solid; display: inline-block;
     }
-    #text-card .tc-numeral {
       font-size: 3.4rem; font-weight: 100; letter-spacing: 0.04em; line-height: 1;
     }
-    #text-card .tc-title { font-size: 1.25rem; font-weight: normal; color: #f0e8d8; }
-    #text-card .tc-rule  { width: 48px; height: 1px; background: rgba(139,69,19,0.35); }
-    #text-card .tc-motto {
       font-style: italic; font-size: 0.88rem; color: #c8a878; line-height: 1.55;
     }
-    #text-card .tc-epigram {
       font-size: 0.75rem; color: #6b5d4d; line-height: 1.75; max-width: 420px;
     }
-    #text-card .tc-hint {
       font-size: 0.62rem; color: #4a3828; letter-spacing: 0.1em; margin-top: 0.4rem;
     }
 
     /* ── Plates atlas overlay ─────────────────────────────────────── */
-    #plates-overlay {
-      display: none; position: fixed; inset: 0; z-index: 40;
-      background: rgba(6,4,2,0.97);
-      overflow-y: auto; pointer-events: all;
-      padding: 7.2rem 1.5rem 3rem;
-    }
-    #plates-overlay .plates-head { text-align: center; margin-bottom: 1.6rem; }
-    #plates-overlay .plates-head h2 {
       font-size: 1.3rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878;
     }
-    #plates-overlay .plates-head p {
       font-size: 0.74rem; color: #6b5d4d; letter-spacing: 0.05em; margin-top: 0.45rem;
     }
-    #plates-grid {
-      display: grid; gap: 1rem;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      max-width: 1180px; margin: 0 auto;
-    }
-    .plate-card {
       position: relative; cursor: pointer; overflow: hidden;
       border: 1px solid #2a1a0a; background: #100b06;
       padding: 0; font-family: inherit; color: inherit; text-align: left;
       transition: border-color 0.18s, transform 0.18s;
       display: flex; flex-direction: column;
     }
-    .plate-card:hover { border-color: #c8a040; transform: translateY(-3px); }
-    .plate-card.showcase { border-color: #6a4a18; }
-    .plate-card img {
       width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; background: #1a1209;
     }
-    .plate-card .pc-meta {
       padding: 0.4rem 0.55rem; display: flex; align-items: baseline; gap: 0.45rem;
     }
-    .plate-card .pc-num   { font-size: 0.72rem; color: #c8a040; flex-shrink: 0; }
-    .plate-card .pc-title {
       font-size: 0.66rem; color: #9a8a74; line-height: 1.3;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .plate-card .pc-star {
       position: absolute; top: 0.35rem; right: 0.45rem; font-size: 0.72rem; color: #e0b850;
     }
 
     /* Lightbox */
-    #plate-lightbox {
       display: none; position: fixed; inset: 0; z-index: 45;
       background: rgba(3,2,1,0.94); backdrop-filter: blur(3px);
       align-items: center; justify-content: center; padding: 2rem; pointer-events: all;
     }
-    #plate-lightbox .lb-inner {
       display: flex; gap: 2rem; max-width: 1000px; width: 100%; max-height: 88vh;
     }
-    #plate-lightbox .lb-img-wrap { flex: 0 0 auto; max-width: 52%; display: flex; align-items: center; }
-    #plate-lightbox .lb-img-wrap img {
       max-width: 100%; max-height: 84vh; object-fit: contain; border: 1px solid #4a2a10;
     }
-    #plate-lightbox .lb-text {
       flex: 1 1 auto; overflow-y: auto; padding-right: 0.5rem;
       display: flex; flex-direction: column; gap: 0.7rem;
     }
-    #plate-lightbox .lb-badge {
       font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
       padding: 0.18rem 0.55rem; border: 1px solid; width: fit-content;
     }
-    #plate-lightbox .lb-num   { font-size: 2.6rem; font-weight: 100; line-height: 1; }
-    #plate-lightbox .lb-title { font-size: 1.3rem; color: #f0e8d8; }
-    #plate-lightbox .lb-motto-la { font-style: italic; color: #c8a878; font-size: 0.92rem; line-height: 1.5; }
-    #plate-lightbox .lb-motto-en { color: #9a8a74; font-size: 0.86rem; line-height: 1.5; }
-    #plate-lightbox .lb-epigram  { color: #7a6858; font-size: 0.8rem; line-height: 1.7; white-space: pre-line; }
-    #plate-lightbox .lb-actions  { display: flex; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap; }
-    #plate-lightbox .lb-actions button {
       background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
       font-family: inherit; font-size: 0.78rem; padding: 0.4rem 0.9rem; cursor: pointer;
       letter-spacing: 0.04em; transition: border-color 0.18s, color 0.18s;
     }
-    #plate-lightbox .lb-actions button:hover { border-color: #c8a040; color: #f5f0e8; }
-    #plate-lightbox .lb-close {
       position: absolute; top: 1rem; right: 1.3rem;
       background: none; border: none; color: #8b6a3a; font-size: 1.7rem; cursor: pointer;
     }
-    #plate-lightbox .lb-close:hover { color: #f5f0e8; }
     @media (max-width: 720px) {
-      #plate-lightbox { padding: 1rem; }
-      #plate-lightbox .lb-inner { flex-direction: column; overflow-y: auto; }
-      #plate-lightbox .lb-img-wrap { max-width: 100%; justify-content: center; }
-      #plate-lightbox .lb-img-wrap img { max-height: 46vh; }
     }
 
     /* ── Gallery ──────────────────────────────────────────────────── */
@@ -260,6 +187,14 @@
       display: none; position: fixed; inset: 0; z-index: 40;
       background: rgba(6,4,2,0.97); overflow-y: auto; pointer-events: all;
       padding: 7.2rem 1.5rem 3rem;
+    }
+    /* Was scoped to the (removed) plates atlas; the Gallery header uses it too. */
+    .plates-head { text-align: center; margin-bottom: 1.6rem; }
+    .plates-head h2 {
+      font-size: 1.3rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878;
+    }
+    .plates-head p {
+      font-size: 0.74rem; color: #6b5d4d; letter-spacing: 0.05em; margin-top: 0.45rem;
     }
     #gallery-body { max-width: 1180px; margin: 0 auto; }
     .gal-cat {
@@ -381,7 +316,7 @@
     #tour-panel .tp-body { scrollbar-width: thin; scrollbar-color: rgba(200,160,64,0.4) rgba(0,0,0,0.25); }
 
     /* The tour rail is 390px of the right edge — slide the world-nav clear of it
-       while a tour runs, or Plates/Gallery/Tours/Archives sit under the panel.
+       while a tour runs, or the Gallery/Tours overlays sit under the panel.
        On a narrow screen the rail is ~full width, so drop the nav to the left. */
     body.tour-open #world-nav { right: calc(min(390px, 92vw) + 1.2rem); }
     @media (max-width: 900px) { body.tour-open #world-nav { right: auto; left: 1rem; } }
@@ -729,7 +664,6 @@
       #world-nav { flex-wrap: wrap; justify-content: flex-end; gap: 0.35rem; max-width: 72vw; }
       #world-nav button { font-size: 0.7rem; padding: 0.32rem 0.6rem; }
       #emblem-hud { top: 1rem; left: 1rem; max-width: 60vw; }
-      #annotation-panel { bottom: 1rem; max-width: 94%; font-size: 0.82rem; padding: 0.9rem 1.1rem; }
     }
     @media (max-width: 720px) and (pointer: coarse) {
       /* keep the movement stick clear of the tour sheet: only free-explore shows it */
@@ -742,63 +676,30 @@
   <canvas id="three-canvas"></canvas>
 
   <!-- The toolbar lives OUTSIDE #ui. #ui is z-index 10 and creates a stacking
-       context, so while the toolbar was inside it, the Plates / Gallery / Tours
+       context, so while the toolbar was inside it, the Gallery / Tours
        overlays (z-index 40) buried it and there was no way back out of them.
        Out here at z-index 41 it stays above those browsing overlays, and still
        below the true modals (chooser 44, lightboxes 45/47, graphics 46). -->
   <div id="world-nav">
     <a class="wn-home" href="../index.html" title="Back to the home page">&#8962; Home</a>
     <button id="btn-hp-style" style="display:none" onclick="window.toggleHPStyle()">Woodcut view</button>
-    <button id="btn-hp" onclick="window.switchWorld('HP')">Hypnerotomachia</button>
-    <button id="btn-af" class="active" onclick="window.switchWorld('AF')">Atalanta Animata</button>
-    <button id="btn-theatrum" onclick="window.switchWorld('THEATRUM')">Theatrum</button>
-    <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
+    <button id="btn-hp" class="active" onclick="window.switchWorld('HP')">The Dream Garden</button>
+    <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
     <button id="btn-gallery" onclick="window.switchWorld('GALLERY')">Gallery</button>
     <button onclick="window.openGraphics()" title="Choose how each asset is drawn">Graphics</button>
-    <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
-    <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
+    <a class="wn-link" href="../research/translation.html" title="The parallel Italian/English edition">Translation</a>
+    <a class="wn-link" href="../research/lexicon.html" title="The book's own vocabulary, by topic">Lexicon</a>
   </div>
 
   <div id="ui">
     <div id="emblem-hud">
-      <div class="stage-badge" id="hud-stage">NIGREDO</div>
+      <div class="stage-badge" id="hud-stage">HYPNEROTOMACHIA</div>
       <h2 id="hud-title"></h2>
       <div class="motto" id="hud-motto"></div>
-      <div id="emblem-nav">
-        <button id="nav-prev" onclick="window.showcasePrev()" title="Previous emblem (←)">&#8592;</button>
-        <button id="nav-next" onclick="window.showcaseNext()" title="Next emblem (→)">&#8594;</button>
-        <span class="key-hint">&#8592;&#8594; keys &nbsp;|&nbsp; G = gallery</span>
-      </div>
-      <button id="back-btn" onclick="window.backToGallery()">&#8592; Gallery</button>
-    </div>
-
-
-    <div id="annotation-panel">
-      <button class="close-btn" onclick="document.getElementById('annotation-panel').style.display='none'">×</button>
-      <div id="annotation-text"></div>
-      <div id="annotation-source" class="source"></div>
     </div>
   </div>
 
-  <div id="gallery-tooltip"></div>
   <div id="center-message"><h2></h2><p></p></div>
-  <div id="text-card"></div>
-
-  <!-- Plates atlas: every emblem image as a clickable card -->
-  <div id="plates-overlay">
-    <div class="plates-head">
-      <h2>The Plates &mdash; Atalanta Fugiens</h2>
-      <p>Frontispiece &amp; fifty emblems · click any plate to enlarge it, read its motto and epigram, or enter its 3-D world · ✦ marks a fully-built scene</p>
-    </div>
-    <div id="plates-grid"></div>
-  </div>
-  <div id="plate-lightbox">
-    <button class="lb-close" onclick="window.closePlate()" title="Close (Esc)">&times;</button>
-    <div class="lb-inner">
-      <div class="lb-img-wrap"><img id="lb-img" src="" alt=""/></div>
-      <div class="lb-text" id="lb-text"></div>
-    </div>
-  </div>
 
   <!-- Gallery: Renaissance exemplars + the 1499 woodcuts -->
   <div id="gallery-overlay">
@@ -820,7 +721,7 @@
   <div id="tours-menu">
     <div class="tours-head">
       <h2>Guided Tours</h2>
-      <p>Three journeys that connect the 3-D emblems to the research — the scholarship, the chemical signs, and the alchemical process. Each tour flies you through the models and surfaces what the sources say at every stop.</p>
+      <p>The <em>Hypnerotomachia Poliphili</em> walked stop by stop, with the scholarship beside it. Each stop teleports you to that place in the dream and surfaces what the sources say — under nine commentary lenses you can turn on and off.</p>
     </div>
     <div id="tours-menu-grid"></div>
   </div>
@@ -882,7 +783,7 @@
         <button class="hpm-card" onclick="window.hpTour('novel')">
           <span class="hpm-kicker">Guided tour &middot; with the scholarship</span>
           <h3>The Novel</h3>
-          <p>The book read station by station in fourteen stops, with the 1499 woodcut at each and colour-coded commentary you switch on and off &mdash; Renaissance context, architectural theory, allegory, the alchemical reading and more. Choose your flavours before you set out.</p>
+          <p>The whole book read station by station &mdash; <strong>34 stops across all thirty-eight chapters and both parts</strong>, from the dark wood to Polia&rsquo;s epitaph &mdash; with the 1499 woodcuts and colour-coded commentary you switch on and off: Renaissance context, architectural theory, allegory, the alchemical reading and more. Choose your lenses before you set out.</p>
         </button>
       </div>
     </div>
@@ -920,6 +821,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=149"></script>
+  <script type="module" src="./main.js?v=151"></script>
 </body>
 </html>
