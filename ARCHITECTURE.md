@@ -116,6 +116,40 @@ something.
 And the literal half of it — **cloths draped over the building** — the world does not
 have at all. See `NEXTSTEPS.md`.
 
+### Prior art, from 1600-ish: the pyramid used as a hyperlinked index
+
+Worth knowing before anyone writes another word about what this project is *for*.
+
+The annotators of the Buffalo copy did not read the *Hypnerotomachia* linearly. They took
+the full-page woodcut of the **Great Pyramid (f. b1r)**, recognised it as a *conspectus* —
+a showpiece into which the illustrator had crammed as many architectural components as one
+image would hold — and **labelled every component with the Vitruvian feature it derives
+from**, appending beside each label a cross-reference to wherever that feature occurs again
+later in the text.
+
+Russell's own words for what they made (pp. 180–81):
+
+> "The Pyramid is used in a manner which could be compared to a visual menu in a computer
+> program. Similar to the manner in which computer user can view a menu and click on an
+> item, and thus follow a hyperlink directly to topics of interest, a reader can see a
+> section of the Pyramid featuring a given architectural component and move right to an
+> occurrence of that feature in the narrative."
+
+**That is this repository's thesis, executed in ink, four hundred years early.** A walkable
+world whose every member is labelled and links out to the scholarship is not a modern
+imposition on the book — it is what its most careful readers already did to it, using the
+only technology they had. The commentary lenses, the plaques on every member, the deep
+links from each tour stop into the parallel text: all of it has a 1499 precedent, and the
+precedent is in the margins of a copy in Buffalo.
+
+Two things follow for the work:
+
+- **Label the members.** The annotators' instinct was that a named part is a usable part.
+  Where a component in this world is Vitruvian and identifiable, it should say so.
+- **Cross-reference outward.** Their labels always pointed somewhere else in the book. A
+  station that names a feature and does not link to its other occurrences is doing half of
+  what they did.
+
 ### The Colossus — researched, specified, and NOT built
 
 `docs/HP_SOURCEBOOK.md` §5: "the ruins field before the elephant contains 'the horse,

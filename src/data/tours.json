@@ -265,6 +265,10 @@
           {
             "type": "context",
             "text": "Brian Curran sets this obelisk-bearing elephant inside the fifteenth century's intense recovery of Egypt — the obelisks still standing in Rome, the rediscovered Horapollo, antiquarians like Cyriacus of Ancona — and calls the HP a key document of a pre-modern *Egyptology*. (Curran, 1998.)"
+          },
+          {
+            "type": "architecture",
+            "text": "**The Buffalo annotators turned this woodcut into an index, and it is the closest thing to this project that anyone has done before.** They recognised that the Great Pyramid (f. b1r) is a *conspectus* — a showpiece into which the illustrator has crammed as many architectural components as one image will hold — and they labelled **every component with the Vitruvian feature it derives from**, then appended beside each label a cross-reference to wherever that feature appears again later in the text. So instead of reading the book straight through and noting features as they came, they read *outward* from the picture. James Russell's own comparison: the plate works \"in a manner which could be compared to a visual menu in a computer program\" — see a component in the pyramid, follow it straight to its occurrence in the narrative. **A hyperlinked architectural atlas, drawn in the margins of a book printed in 1499.** (Russell, 2014, pp. 180–81.)"
           }
         ]
       },
@@ -395,6 +399,10 @@
           {
             "type": "context",
             "text": "Woodcut 17 of the 1499 shows the flight itself: a small running figure and a very large beast in a vaulted dark. It is one of the few plates in the book that depicts an *action* rather than an object."
+          },
+          {
+            "type": "alchemical",
+            "text": "**Two hands reading the same epigram two different ways.** On f. c6v Poliphilo passes a Greek inscription: *to the blessed Mother, the Goddess Venus, and to her Son, Amor, Bacchus and Demeter have given of their own substances.* Buffalo **Hand E** cuts straight to his own system — *Bacchus et Ceres [Demeter] id est sol et luna*: Bacchus and Demeter **are** Sol and Luna, and the epigram is the chemical wedding. **Hand D**, an Italian hand with no interest in that at all, glosses the same line naturally: *Baccho era creduto dagli antichi esser quella virtù occulta che aiuta le piante a forza de produrre in maturi frutti* — Bacchus was believed by the ancients to be the hidden power that makes plants bring fruit to ripeness. Wine and corn, or gold and silver, in the same margin. (`hp.db.folio_descriptions` c6v; Russell, 2014, pp. 187–88.)"
           }
         ]
       },

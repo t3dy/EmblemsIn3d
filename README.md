@@ -34,7 +34,7 @@ This project does three things with it.
    imagined. Where there is no plate, as with the chess ballet, it is built from the text
    and from what the book's early readers wrote in the margins beside it.
 2. **Reads it.** A 37-stop guided tour covering **all thirty-eight chapters and both
-   parts**, from the dark wood to Polia's epitaph, with 250 typed commentary notes under
+   parts**, from the dark wood to Polia's epitaph, with 252 typed commentary notes under
    nine colour-coded lenses the reader switches on and off. Every interpretive claim traces
    to a named scholar or to the annotators' own evidence.
 3. **Finishes it.** Robert Dallington's *Strife of Loue in a Dreame* (London, 1592) is the
