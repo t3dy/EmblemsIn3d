@@ -1355,13 +1355,96 @@ export function makeCast(S) {
       g.add(pit);
       return g;
     },
+    // A spring basin with the parts a real one has: a sunk bowl so the water
+    // sits BELOW the coping instead of floating on the grass, a moulded coping
+    // ring, a chamfered kerb, and a lip where the overflow runs out. The old
+    // version was a torus and a disc, which read as a puddle with a hoop on it.
     pool: (s = 1) => {
       const g = new THREE.Group();
-      const rim = add(g, mesh(new THREE.TorusGeometry(0.6 * s, 0.06 * s, 8, 22), M(0x8a7a5a), 0, 0.08 * s));
-      rim.rotation.x = Math.PI / 2;
-      const w = mesh(new THREE.CircleGeometry(0.58 * s, 22), S.waterMat(), 0, 0.06 * s, 0);
+      const stone = M(0x9a8b6e, { roughness: 0.92 });
+      const dark  = M(0x4a4234, { roughness: 0.95 });
+      const R = 0.62 * s;
+
+      // the sunk bowl: floor, and a wall standing up to the waterline
+      add(g, mesh(new THREE.CylinderGeometry(R, R * 0.86, 0.3 * s, 24), dark, 0, -0.15 * s));
+      const floor = mesh(new THREE.CircleGeometry(R * 0.9, 24), dark, 0, -0.28 * s, 0);
+      floor.rotation.x = -Math.PI / 2; g.add(floor);
+
+      // coping: a chamfered kerb with a moulded ring on top
+      add(g, mesh(new THREE.CylinderGeometry(R + 0.1 * s, R + 0.14 * s, 0.16 * s, 24), stone, 0, 0.02 * s));
+      const ring = add(g, mesh(new THREE.TorusGeometry(R + 0.1 * s, 0.05 * s, 8, 26), stone, 0, 0.1 * s));
+      ring.rotation.x = Math.PI / 2;
+
+      // the water, set down inside the coping
+      const w = mesh(new THREE.CircleGeometry(R * 0.95, 26), S.waterMat(), 0, 0.0, 0);
       w.rotation.x = -Math.PI / 2;
       g.add(w);
+      g.userData.water = w;
+
+      // the overflow lip, and the wet channel it feeds
+      add(g, mesh(new THREE.BoxGeometry(0.2 * s, 0.07 * s, 0.22 * s), stone, 0, 0.06 * s, R + 0.12 * s));
+      add(g, mesh(new THREE.BoxGeometry(0.13 * s, 0.02 * s, 0.4 * s), dark, 0, 0.02 * s, R + 0.3 * s));
+      return g;
+    },
+
+    // The satyr who draws the veil off the sleeping nymph: goat from the waist
+    // down (shaggy haunches, cloven feet), man above, small horns and a tail.
+    satyr: (s = 1) => {
+      const g = new THREE.Group();
+      const hide = M(0x6b4f32, { roughness: 0.95 });
+      const skin = M(0xc8ab86, { roughness: 0.7 });
+      const horn = M(0x3a2c1c, { roughness: 0.8 });
+      for (const sx of [-1, 1]) {
+        const h = add(g, mesh(new THREE.CapsuleGeometry(0.075 * s, 0.34 * s, 4, 8), hide, sx * 0.09 * s, 0.42 * s));
+        h.scale.set(1.25, 1, 1.25);                                   // shaggy haunch
+        add(g, mesh(new THREE.CylinderGeometry(0.05 * s, 0.055 * s, 0.3 * s, 7), hide, sx * 0.09 * s, 0.14 * s));
+        const hoof = add(g, mesh(new THREE.CylinderGeometry(0.06 * s, 0.05 * s, 0.07 * s, 6), horn, sx * 0.09 * s, 0.03 * s));
+        hoof.scale.z = 1.4;
+      }
+      const torso = add(g, mesh(new THREE.CylinderGeometry(0.145 * s, 0.1 * s, 0.4 * s, 12), skin, 0, 0.8 * s));
+      torso.scale.z = 0.8;
+      add(g, mesh(new THREE.SphereGeometry(0.13 * s, 12, 9), skin, 0, 0.66 * s)).scale.set(1, 0.7, 0.8);
+      add(g, mesh(new THREE.CylinderGeometry(0.045 * s, 0.055 * s, 0.09 * s, 8), skin, 0, 1.03 * s));
+      const head = add(g, mesh(new THREE.SphereGeometry(0.115 * s, 14, 11), FaceM(0xc8ab86), 0, 1.14 * s));
+      head.scale.set(0.95, 1.05, 0.95);
+      for (const sx of [-1, 1]) {
+        const hn = add(g, mesh(new THREE.ConeGeometry(0.028 * s, 0.11 * s, 6), horn, sx * 0.07 * s, 1.26 * s, -0.02 * s));
+        hn.rotation.z = sx * 0.4;
+      }
+      add(g, mesh(new THREE.ConeGeometry(0.05 * s, 0.13 * s, 6), hide, 0, 0.94 * s, 0.12 * s)).rotation.x = -2.6;  // beard/tail tuft
+      // the arms: one raised, holding the veil aside
+      const arm = (sx, rz, rx) => {
+        const pv = new THREE.Group();
+        pv.position.set(sx * 0.17 * s, 0.96 * s, 0);
+        const a = mesh(new THREE.CapsuleGeometry(0.042 * s, 0.34 * s, 4, 8), skin, 0, -0.19 * s, 0);
+        a.castShadow = true; pv.add(a);
+        const hd = mesh(new THREE.SphereGeometry(0.036 * s, 8, 6), skin, 0, -0.4 * s, 0);
+        hd.castShadow = true; pv.add(hd);
+        pv.rotation.z = rz; pv.rotation.x = rx;
+        g.add(pv); return pv;
+      };
+      arm(-1, 2.5, -0.2);      // reaching up for the curtain
+      arm(1, -0.4, 0.1);
+      return g;
+    },
+
+    // A putto: the small winged children who attend the fountain in the plate.
+    putto: (s = 1) => {
+      const g = new THREE.Group();
+      const skin = M(0xe0c5a2, { roughness: 0.68 });
+      const body = add(g, mesh(new THREE.SphereGeometry(0.13 * s, 12, 10), skin, 0, 0.3 * s));
+      body.scale.set(1, 1.15, 0.9);
+      for (const sx of [-1, 1]) {
+        add(g, mesh(new THREE.CapsuleGeometry(0.045 * s, 0.12 * s, 4, 7), skin, sx * 0.07 * s, 0.12 * s));
+        const a = add(g, mesh(new THREE.CapsuleGeometry(0.033 * s, 0.14 * s, 4, 7), skin, sx * 0.14 * s, 0.36 * s));
+        a.rotation.z = sx * 0.9;
+        const w = add(g, mesh(new THREE.SphereGeometry(0.1 * s, 9, 7), M(0xf0e6d2, { roughness: 0.8 }), sx * 0.09 * s, 0.4 * s, -0.09 * s));
+        w.scale.set(0.35, 1.05, 0.7); w.rotation.z = sx * 0.5;
+      }
+      const head = add(g, mesh(new THREE.SphereGeometry(0.105 * s, 13, 10), FaceM(0xe0c5a2), 0, 0.53 * s));
+      head.scale.set(1, 1.02, 0.96);
+      add(g, mesh(new THREE.SphereGeometry(0.108 * s, 10, 7, 0, Math.PI * 2, 0, Math.PI / 1.8),
+        M(0xb98a52, { roughness: 0.85 }), 0, 0.56 * s));                 // curls
       return g;
     },
   };

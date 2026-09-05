@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=20';
+import { makeCast } from '../systems/Cast.js?v=21';
 import { isVariant } from '../systems/AssetVariants.js?v=5';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
@@ -245,6 +245,10 @@ export class HPWorldScene {
     this._buildBridge();
     this._buildCourt();
     this._buildPoliaGarden();
+    // The book's most copied image, and it was missing from the world: set
+    // just north of Polia's garden, facing the dreamer who arrives from the
+    // portal (woodcut_catalog #19; see _buildNymphFountain).
+    this._buildNymphFountain(19, 27.5, 0);
     this._buildDoorsWall();
     this._buildElephant();
     this._buildPalace();
@@ -1278,6 +1282,216 @@ export class HPWorldScene {
   }
 
   // ── Polia's Garden (the nymph with the torch) ─────────────────────────────
+
+  // ── The Sleeping Nymph Fountain ──────────────────────────────────────────
+  //
+  // The book's most influential single image: `hp.db.dictionary_terms` calls it
+  // "one of the book's most widely copied motifs", copied as real fountain
+  // sculpture in Italian and French gardens through the sixteenth century, and
+  // `woodcut_catalog` #19 lists it as "Sleeping nymph fountain with satyrs".
+  // It was missing from the world entirely.
+  //
+  // Modelled part-for-part from the 1499 plate (images/woodcuts/bath.jpg —
+  // the filenames in that folder are unreliable, the captions are not; see
+  // SOURCES.md). The plate shows, and this builds:
+  //   · an aedicula of two Corinthian columns on plinths, carrying an
+  //     entablature and a triangular pediment;
+  //   · a wreath roundel in the tympanum;
+  //   · a tree behind, its foliage spreading across the opening;
+  //   · a curtain hung from the tree and drawn aside;
+  //   · the nymph asleep on drapery over a low plinth, one arm above her head;
+  //   · a satyr at the right, holding the curtain back;
+  //   · two putti at the centre;
+  // and — the part that makes it a fountain rather than a tableau — the spring
+  // issuing beneath her into a basin, which is what the Renaissance copies took.
+  _buildNymphFountain(X, Z, rot = 0) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const g = new THREE.Group();
+    g.position.set(X, 0, Z);
+    g.rotation.y = rot;
+    this.scene.add(g);
+
+    const stone = this._stoneMat;
+    const dark  = this._darkStoneMat;
+    const W = 3.0, COL_H = 2.5, D = 1.5;
+
+    // ── the aedicula ──
+    // stylobate
+    this._m(new THREE.BoxGeometry(W + 0.7, 0.24, D + 0.7), stone, 0, 0.12, 0, { parent: g, cast: false, outline: true });
+    this._m(new THREE.BoxGeometry(W + 0.4, 0.14, D + 0.4), dark, 0, 0.31, 0, { parent: g, cast: false });
+
+    for (const sx of [-1, 1]) {
+      const cx = sx * W / 2;
+      // plinth and base mouldings
+      this._m(new THREE.BoxGeometry(0.5, 0.3, 0.5), stone, cx, 0.53, 0, { parent: g });
+      this._m(new THREE.CylinderGeometry(0.21, 0.25, 0.12, 14), stone, cx, 0.74, 0, { parent: g });
+      // fluted shaft with entasis
+      const sh = this._m(new THREE.CylinderGeometry(0.145, 0.175, COL_H, 16), stone, cx, 0.8 + COL_H / 2, 0, { parent: g, outline: true });
+      sh.scale.x = sh.scale.z = 1;
+      // Corinthian capital: a bell of acanthus with a square abacus over it
+      this._m(new THREE.CylinderGeometry(0.2, 0.15, 0.2, 12), stone, cx, 0.8 + COL_H + 0.1, 0, { parent: g });
+      for (let k = 0; k < 8; k++) {
+        const a = (k / 8) * Math.PI * 2;
+        const lf = this._m(new THREE.ConeGeometry(0.05, 0.17, 5), stone,
+          cx + Math.cos(a) * 0.17, 0.8 + COL_H + 0.1, Math.sin(a) * 0.17, { parent: g, cast: false });
+        lf.rotation.set(Math.sin(a) * 0.5, 0, -Math.cos(a) * 0.5);
+      }
+      this._m(new THREE.BoxGeometry(0.42, 0.08, 0.42), stone, cx, 0.8 + COL_H + 0.24, 0, { parent: g });
+    }
+
+    // entablature: architrave, frieze, cornice
+    const EY = 0.8 + COL_H + 0.28;
+    this._m(new THREE.BoxGeometry(W + 0.6, 0.16, D * 0.55), stone, 0, EY + 0.08, 0, { parent: g });
+    this._m(new THREE.BoxGeometry(W + 0.56, 0.2, D * 0.5), dark, 0, EY + 0.26, 0, { parent: g, cast: false });
+    this._m(new THREE.BoxGeometry(W + 0.8, 0.14, D * 0.62), stone, 0, EY + 0.43, 0, { parent: g });
+
+    // pediment: raking cornice as two tilted bars, with the tympanum behind
+    const PY = EY + 0.5, span = (W + 0.8) / 2, rise = 0.62;
+    const tym = this._m(new THREE.CylinderGeometry(span, span, 0.1, 3), dark, 0, PY + rise / 2, 0,
+      { parent: g, rx: Math.PI / 2, cast: false });
+    tym.rotation.z = 0;
+    tym.scale.set(1, 1, rise / span * 1.15);
+    for (const sx of [-1, 1]) {
+      const bar = this._m(new THREE.BoxGeometry(Math.hypot(span, rise) + 0.1, 0.13, D * 0.62), stone,
+        sx * span / 2, PY + rise / 2, 0, { parent: g });
+      bar.rotation.z = -sx * Math.atan2(rise, span);
+    }
+    // the wreath in the tympanum
+    const wreath = this._m(new THREE.TorusGeometry(0.2, 0.055, 7, 20),
+      woodcut ? S.mat({ tone: 0.04 }) : S.mat({ color: 0x2f4a1c, roughness: 0.9 }),
+      0, PY + rise * 0.42, D * 0.32, { parent: g });
+    wreath.scale.set(1, 0.92, 1);
+    this._m(new THREE.TorusGeometry(0.1, 0.03, 6, 16),
+      woodcut ? S.mat({ tone: 0.0 }) : S.mat({ color: 0xc8a860, metalness: 0.7, roughness: 0.35 }),
+      0, PY + rise * 0.42, D * 0.34, { parent: g, cast: false });
+
+    // ── the tree behind, its foliage spilling through the opening ──
+    // set behind and to the side, so it frames the opening instead of
+    // bulging through the middle of it
+    this._tree(X + 2.4, Z - 2.2, 0.8, 'laurel');
+    this._tree(X - 2.5, Z - 2.4, 0.7, 'myrtle');
+
+    // ── the couch, and the nymph asleep on it ──
+    this._m(new THREE.BoxGeometry(2.1, 0.34, 0.9), stone, -0.1, 0.62, 0.1, { parent: g, outline: true });
+    this._m(new THREE.BoxGeometry(2.2, 0.16, 1.0),
+      woodcut ? S.mat({ tone: 0.1 }) : S.mat({ color: 0xb9a888, roughness: 0.88 }),
+      -0.1, 0.86, 0.1, { parent: g, cast: false });
+
+    // The sleeping nymph herself.
+    //
+    // She is built here rather than taken from the cast, because the cast's
+    // `recline` pose only turns a standing figure on its side — and the nymph's
+    // body is a LatheGeometry gown, which laid on its side reads as a cone with
+    // a ball on the end. A reclining figure has to be built reclining: a torso
+    // laid along the couch, the head propped on the raised arm the plate gives
+    // her, the near leg drawn up over the far one, and the drapery falling
+    // across the hips rather than hanging from the shoulders.
+    const nym = new THREE.Group();
+    nym.position.set(X - 0.32, 0.98, Z + 0.06);
+    nym.rotation.y = rot;
+    this.scene.add(nym);
+    const skinM = woodcut ? S.mat({ tone: -0.02 }) : S.mat({ color: 0xe6cdae, roughness: 0.66 });
+    const clothM = woodcut ? S.mat({ tone: 0.08 }) : S.mat({ color: 0xd8cbb0, roughness: 0.88 });
+    const hairM  = woodcut ? S.mat({ tone: 0.05 }) : S.mat({ color: 0xa9793f, roughness: 0.85 });
+    const P = (geo, mat, x, y, z, rx = 0, ry = 0, rz = 0) => {
+      const m = this._m(geo, mat, x, y, z, { parent: nym, rx, ry, rz });
+      return m;
+    };
+    // torso, laid along +x, shoulders slightly raised on the bolster
+    const torso = P(new THREE.CapsuleGeometry(0.155, 0.42, 6, 12), skinM, -0.1, 0.13, 0, 0, 0, Math.PI / 2);
+    torso.scale.set(1, 1, 0.82);
+    P(new THREE.SphereGeometry(0.15, 12, 9), skinM, 0.2, 0.12, 0).scale.set(1.05, 0.85, 0.8);   // hip mass
+    // the bolster her shoulders rest on
+    P(new THREE.CapsuleGeometry(0.11, 0.5, 5, 10), clothM, -0.5, 0.07, 0, 0, 0, Math.PI / 2);
+    // head, tipped back in sleep, on the raised arm
+    const head = P(new THREE.SphereGeometry(0.125, 14, 11), woodcut ? skinM : S.mat({ color: 0xe6cdae, roughness: 0.6 }),
+      -0.52, 0.26, 0.02, 0, 0, 0.35);
+    head.scale.set(0.96, 1.04, 0.94);
+    P(new THREE.SphereGeometry(0.135, 11, 8, 0, Math.PI * 2, 0, Math.PI / 1.7), hairM, -0.55, 0.29, 0.0, 0.5, 0, 0.4);
+    // the raised arm, bent above the head — the plate's signature gesture
+    P(new THREE.CapsuleGeometry(0.045, 0.28, 4, 8), skinM, -0.66, 0.3, -0.11, 0, 0, 1.15);
+    P(new THREE.CapsuleGeometry(0.042, 0.24, 4, 8), skinM, -0.86, 0.2, -0.12, 0, 0, 2.5);
+    // the near arm, laid across the body
+    P(new THREE.CapsuleGeometry(0.045, 0.3, 4, 8), skinM, -0.16, 0.1, 0.14, 0, 0.5, 1.3);
+    // drapery over the hips and thighs
+    const drp = P(new THREE.CapsuleGeometry(0.19, 0.4, 6, 12), clothM, 0.3, 0.13, 0, 0, 0, Math.PI / 2);
+    drp.scale.set(1, 1, 0.85);
+    // legs: the far one straight, the near one drawn up
+    P(new THREE.CapsuleGeometry(0.085, 0.36, 5, 10), clothM, 0.66, 0.1, -0.09, 0, 0, Math.PI / 2 + 0.1);
+    P(new THREE.CapsuleGeometry(0.08, 0.3, 5, 10), skinM, 0.95, 0.09, -0.1, 0, 0, Math.PI / 2 + 0.06);
+    P(new THREE.CapsuleGeometry(0.085, 0.3, 5, 10), clothM, 0.62, 0.16, 0.12, 0, 0.35, Math.PI / 2 - 0.25);
+    P(new THREE.CapsuleGeometry(0.075, 0.26, 5, 10), skinM, 0.9, 0.1, 0.16, 0, 0.5, Math.PI / 2 + 0.15);
+    for (const fx of [1.14, 1.08]) P(new THREE.SphereGeometry(0.06, 8, 6), skinM, fx, 0.07, fx > 1.1 ? -0.1 : 0.17).scale.set(1.3, 0.7, 0.9);
+    this._npcs.push({ g: nym, phase: 1.2, baseY: 0, sway: 0.006 });   // the slow breath of sleep
+
+    // ── the satyr, holding the curtain aside ──
+    // feet on the stylobate (its top is at y = 0.38), turned inward to the couch
+    const satyr = this.cast.props.satyr(1.25);
+    satyr.position.set(X + 1.24, 0.38, Z + 0.2);
+    satyr.rotation.y = rot + Math.PI * 0.85;
+    this.scene.add(satyr);
+    this._npcs.push({ g: satyr, phase: 0.3, baseY: 0, sway: 0.012 });
+
+    // ── the two putti ──
+    for (const [dx, dz, ph] of [[-0.55, -0.5, 0.2], [-0.15, -0.62, 1.5]]) {
+      const pt = this.cast.props.putto(0.9);
+      pt.position.set(X + dx, 0.82, Z + dz);
+      pt.rotation.y = rot + Math.PI + dx;
+      this.scene.add(pt);
+      this._npcs.push({ g: pt, phase: ph, baseY: 0, sway: 0.02 });
+    }
+
+    // ── the curtain, hung and drawn aside ──
+    // A dyed cloth, not another pale stone: at 0xcbb89a the veil read as a
+    // third column. Madder rose, matte, so it is unmistakably textile.
+    const curt = woodcut
+      ? S.mat({ tone: 0.12, side: THREE.DoubleSide })
+      : S.mat({ color: 0x9c5a52, roughness: 0.94, side: THREE.DoubleSide });
+    // The veil, hung from the architrave and gathered to the satyr's side. A
+    // row of thin cones read as a rake, so this is a single swagged sheet with
+    // a few soft folds standing proud of it, and a gathered bunch at the tie.
+    const HANG = EY - 0.06;
+    // Kept narrow and pushed to the satyr's side: a broad sheet across the
+    // centre hid the nymph, which is the one thing the plate will not do.
+    const swag = this._m(new THREE.CylinderGeometry(0.26, 0.17, 1.25, 14, 1, true), curt,
+      1.02, HANG - 0.6, -0.3, { parent: g, cast: false });
+    swag.scale.set(1, 1, 0.42);
+    swag.rotation.set(0.04, 0.2, -0.16);
+    for (let i = 0; i < 4; i++) {
+      const t = i / 3;
+      const f = this._m(new THREE.CylinderGeometry(0.035, 0.06, 1.2 - t * 0.24, 6, 1, true), curt,
+        0.86 + t * 0.16, HANG - 0.62 + t * 0.06, -0.18 + t * 0.06, { parent: g, cast: false });
+      f.rotation.set(0.05, 0.2, -0.14 - t * 0.06);
+      f.scale.set(1, 1, 0.5);
+    }
+    // the bunch where it is gathered and tied back
+    const bunch = this._m(new THREE.SphereGeometry(0.14, 10, 8), curt, 1.2, HANG - 0.52, -0.06, { parent: g, cast: false });
+    bunch.scale.set(0.7, 1.5, 0.7);
+    this._m(new THREE.TorusGeometry(0.085, 0.024, 6, 14), curt, 1.2, HANG - 0.52, -0.06,
+      { parent: g, cast: false, rz: 0.5 });
+
+    // ── the spring: the part that makes it a fountain ──
+    // water issues from under the couch into a sunk basin at the front
+    const basin = this.cast.props.pool(1.5);
+    basin.position.set(X - 0.1, 0.02, Z + 1.35);
+    this.scene.add(basin);
+    if (basin.userData.water) this._waters.push({ m: basin.userData.water, rate: 0.05 });
+    this._caustics(X - 0.1, 0.04, Z + 1.35, 0.85, 0.05);
+    // the spout, and the fall of water from couch to basin
+    this._m(new THREE.CylinderGeometry(0.055, 0.07, 0.22, 10), dark, -0.1, 0.5, 0.62, { parent: g });
+    const fall = this._m(new THREE.PlaneGeometry(0.1, 0.46),
+      woodcut ? S.mat({ tone: -0.1 }) : S.mat({ color: 0xbcd8e8, roughness: 0.2, transparent: true, opacity: 0.55 }),
+      -0.1, 0.28, 0.7, { parent: g, cast: false, receive: false });
+    fall.rotation.x = 0.22;
+
+    // the inscription the Renaissance copies carried with her
+    this._plaque({ main: 'ΠΑΝΤΩΝ ΤΟΚΑΔΙ', sub: 'TO THE MOTHER OF ALL THINGS' },
+      1.5, 0.34, X, 0.42, Z + 1.02, rot, true);
+
+    this._circleCol(X, Z, 2.2);
+    return g;
+  }
 
   _buildPoliaGarden() {
     const CX = 19, CZ = 20;
