@@ -21,6 +21,23 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
+### 0f. Two modelling failures of the same kind, one session (2026-09-05)
+The `massed` animal build and the supine colossus were both written, both A/B'd in the
+world, and both reverted. **The failure was identical**: correct parts assembled into
+an object with no controlling outline. The lesson is in `AssetVariants.js` and now in
+`ARCHITECTURE.md`, and it is worth stating once more as a rule for this project:
+
+> **At this register the silhouette IS the asset.** Detail that does not serve the
+> outline is not neutral, it is a downgrade. Judge any new figure as a black shape
+> against the sky before judging it lit.
+
+Practically: this toolkit is very good at *architecture* — members, courses, friezes,
+plaques, things with straight edges and clear profiles — and poor at *large organic
+bodies*. The painted-panel figures work because they sidestep the problem entirely by
+being drawn. **Prefer the architectural reading of an object where the source allows
+one** (the colossus is a building in the book, not a statue), or prefer to draw it.
+
+
 ### 0e. Cloths draped on the buildings (2026-09-05, from Lefaivre ch. 8)
 Lefaivre's *Marvelous Body* gives a placement rule the world half-follows and one
 element it does not have at all. In the *mirabilia* register the building-as-body is

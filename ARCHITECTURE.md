@@ -116,6 +116,53 @@ something.
 And the literal half of it — **cloths draped over the building** — the world does not
 have at all. See `NEXTSTEPS.md`.
 
+### The Colossus — researched, specified, and NOT built
+
+`docs/HP_SOURCEBOOK.md` §5: "the ruins field before the elephant contains 'the horse,
+the Colose, and the Elephant' as a set — we build only the elephant." The horse went up
+on 2026-09-05. **The colossus was attempted the same day and reverted** (see below).
+The research stands, and this is the brief for whoever tries again.
+
+**What it is.** Lefaivre, pp. 52–53: a hybrid **sculpture/building**, "the colossus
+supine in the sands." Poliphilo enters it **through the mouth** and finds the interior
+"formed exactly like the inside of a human body. All the internal viscera, nerves,
+bones, muscles, and flesh are there to be seen and visited. Above all the organs are
+listed their names and the different sicknesses generated in them. Each organ has a
+convenient entrance for visitors. Concealed light shafts brightly illuminate the
+interiors of the chambers." There is a chamber **in the heart, "where love is born"**
+(f. b6v), with its own list of cures — **written in Chaldean, and Poliphilo does not
+divulge them.**
+
+**The companion.** "Lying next to it is a female counterpart, which Poliphilo refuses to
+enter." Priki reads her as the book's first figure of loss: the half-hidden female
+colossus "hints at what is lost and which Poliphilo cannot yet pinpoint" — he has
+forgotten Polia and does not know it yet. She should be more buried than him, and she
+should have **no door**.
+
+**Why it belongs to the argument and not to the curiosities.** Lefaivre: the colossus
+and the elephant are "the first architectural structures to be conceived **organically**
+— that is, to forsake the regular geometric outlines associated with the classical canon
+in favor of the irregularly curved forms of a living organism." Nobody thinks this way
+again until the twentieth century. **A building shaped like a body is the
+architectural-body metaphor ceasing to be a metaphor**, which is the thesis of her
+whole book.
+
+**Why the first attempt failed, and what to do differently.** It was built as overlapping
+ellipsoids half-sunk in sand, and it read as a row of green domes — a caterpillar, not a
+man. Two causes, and the second is the important one:
+
+1. It was placed at (−12, −11), **1.6 units from the Triumph of Leda's car**, because I
+   did not read the `TRIUMPHS` table in the same file. Measure against `TRIUMPHS` and
+   `HP_STATIONS` before choosing ground.
+2. **A recumbent, half-buried figure has almost no silhouette**, and at this register the
+   silhouette is the asset. This is the same failure as the rejected `massed` animal
+   build, in the same session. The next attempt should either
+   (a) **stand him up** — a fallen colossus is more legible broken and propped than lying
+   flat — or (b) build him **as architecture rather than as anatomy**: a vaulted hall in
+   the rough outline of a body, entered through a doorway framed as a mouth, which is
+   what the book actually describes and what Lefaivre's "hybrid sculpture/building" means.
+   **(b) is the better reading of the source and plays to what this toolkit is good at.**
+
 ### Still to mine
 
 Chapter 9, *The Divine Body*, and chapter 10, *The Humanist Body* (from which the
