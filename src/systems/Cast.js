@@ -986,23 +986,42 @@ export function makeCast(S) {
 
   // Floating name/title label (billboard sprite)
   function label(text, { sub = '', color = '#f0e4c8', scale = 1 } = {}) {
+    // The canvas used to be a fixed 256px wide with the text centred at 128, so
+    // anything longer than about fourteen characters was clipped at BOTH ends —
+    // "Triumph of Europa" arrived as "riumph of Europ". Measure first, then size
+    // the canvas to the text; and because the sprite's aspect has to match the
+    // canvas or the glyphs squash, derive the sprite's width from that measure
+    // too rather than leaving it hardcoded.
+    const MAIN = 'bold 30px Georgia', SUB = '18px Georgia';
+    const PAD = 22;                       // room for the 6px outline, both sides
+    const H = sub ? 84 : 56;
+
+    const gauge = document.createElement('canvas').getContext('2d');
+    gauge.font = MAIN;
+    let W = gauge.measureText(text).width;
+    if (sub) { gauge.font = SUB; W = Math.max(W, gauge.measureText(sub).width); }
+    W = Math.max(256, Math.ceil(W + PAD * 2));
+
     const c = document.createElement('canvas');
-    c.width = 256; c.height = sub ? 84 : 56;
+    c.width = W; c.height = H;
     const x = c.getContext('2d');
     x.textAlign = 'center';
-    x.font = 'bold 30px Georgia';
+    x.font = MAIN;
     x.strokeStyle = 'rgba(10,8,4,0.85)'; x.lineWidth = 6; x.lineJoin = 'round';
-    x.strokeText(text, 128, 36); x.fillStyle = color; x.fillText(text, 128, 36);
+    x.strokeText(text, W / 2, 36); x.fillStyle = color; x.fillText(text, W / 2, 36);
     if (sub) {
-      x.font = '18px Georgia';
-      x.strokeText(sub, 128, 66); x.fillStyle = '#c8b890'; x.fillText(sub, 128, 66);
+      x.font = SUB;
+      x.strokeText(sub, W / 2, 66); x.fillStyle = '#c8b890'; x.fillText(sub, W / 2, 66);
     }
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
     const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: t, transparent: true, depthWrite: false }));
-    s.scale.set(1.6 * scale, (sub ? 0.52 : 0.35) * scale, 1);
+    const worldH = (sub ? 0.52 : 0.35) * scale;
+    s.scale.set(worldH * (W / H), worldH, 1);
     return s;
   }
+
 
   // ── Beasts ────────────────────────────────────────────────────────────────
 

@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=30';
+import { makeCast } from '../systems/Cast.js?v=31';
 import { isVariant } from '../systems/AssetVariants.js?v=7';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
@@ -505,6 +505,19 @@ export class HPWorldScene {
     return group;
   }
 
+  // Fit a line to the plaque instead of letting it run off the edge. A plaque's
+  // physical size is authored by its caller, so the text yields, not the stone:
+  // step the size down until it fits, with a floor so it never becomes unreadable.
+  _fitFont(x, text, maxW, basePx, family = 'Georgia', minPx = 9) {
+    let px = basePx;
+    x.font = px + 'px ' + family;
+    while (px > minPx && x.measureText(text).width > maxW) {
+      px -= 1;
+      x.font = px + 'px ' + family;
+    }
+    return px;
+  }
+
   _plaqueTexture({ glyph = null, glyphColor = null, main, sub }, wide = false) {
     const P = this.style.plaqueColors;
     const c = document.createElement('canvas');
@@ -515,16 +528,26 @@ export class HPWorldScene {
     x.textAlign = 'center';
     const cx = c.width / 2;
     const accent = P.accent || glyphColor || P.text;
+    // the inscriptions in this book are long — "DEDICATED TO THE SVN · LAT ·
+    // GRAECE · ARABICE" — and at a fixed font on a fixed canvas they were being
+    // clipped at both ends. Everything is measured against the inner width now.
+    const innerW = c.width - 22;
     if (glyph) {
-      x.fillStyle = accent;  x.font = '58px serif';     x.fillText(glyph, cx, 58);
-      x.fillStyle = P.text;  x.font = '24px Georgia';   x.fillText(main, cx, 94);
-      x.fillStyle = P.sub;   x.font = '15px Georgia';   x.fillText(sub, cx, 117);
+      x.fillStyle = accent;
+      this._fitFont(x, glyph, innerW, 58, 'serif', 22);   x.fillText(glyph, cx, 58);
+      x.fillStyle = P.text;
+      this._fitFont(x, main, innerW, 24);                 x.fillText(main, cx, 94);
+      x.fillStyle = P.sub;
+      this._fitFont(x, sub || '', innerW, 15);            if (sub) x.fillText(sub, cx, 117);
     } else {
-      x.fillStyle = accent;  x.font = '30px Georgia';   x.fillText(main, cx, 44);
-      x.fillStyle = P.sub;   x.font = '14px Georgia';   x.fillText(sub, cx, 72);
+      x.fillStyle = accent;
+      this._fitFont(x, main, innerW, 30);                 x.fillText(main, cx, 44);
+      x.fillStyle = P.sub;
+      this._fitFont(x, sub || '', innerW, 14);            if (sub) x.fillText(sub, cx, 72);
     }
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
     this._disp.push(t);
     return t;
   }
