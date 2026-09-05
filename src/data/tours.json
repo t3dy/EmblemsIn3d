@@ -93,6 +93,7 @@
     "stops": [
       {
         "station": "wood",
+        "title": "The Dark Wood",
         "chapter": "I",
         "half": "dallington",
         "lede": "The book opens in sleeplessness. Poliphilo, wrung all night by his longing for Polia, sinks into sleep only at dawn — and the dream sets him down alone on a wide plain, at the edge of a wood so dense that the sun cannot reach the floor of it. He strays until every path is lost, and the trees close overhead; the terror of it is the first thing the dream makes him feel. Only a prayer, cried out to Jupiter, delivers him from the dark, out to the clear stream where the wonders begin.",
@@ -101,6 +102,10 @@
             "file": "woodcuts/wood.jpg",
             "caption": "Poliphilo lost in the dark wood"
           }
+        ],
+        "see": [
+          "The Winged Horse of Unhappiness",
+          "The Human Chess Match"
         ],
         "notes": [
           {
@@ -189,6 +194,11 @@
         "quote": "Waste. Time.",
         "quoteAttr": "*AMISSIO* and *TEMPVS*, the words cut under the two figured sides of the pedestal (f.22–25)",
         "wc": [],
+        "see": [
+          "The Elephant & Obelisk",
+          "The Human Chess Match",
+          "The Dark Wood"
+        ],
         "notes": [
           {
             "type": "allegory",
@@ -230,9 +240,15 @@
       },
       {
         "station": "elephant",
+        "title": "The Elephant & Obelisk",
         "chapter": "III",
         "half": "dallington",
         "lede": "Beyond the wood the plain fills with the ruins of a colossal antiquity — the most ambitious architecture the Renaissance imagination ever put on paper. A stepped pyramid climbs to an obelisk that seems to prick the sky; and here a great elephant cut from black stone kneels under a needle of its own, a spiral stair hollowed through its belly. Poliphilo, half in awe and half in an antiquarian's fever, measures every cornice and moulding to the inch, unable to stop reading the stones.",
+        "see": [
+          "The Winged Horse of Unhappiness",
+          "Reading the Hieroglyphs",
+          "The Great Portal"
+        ],
         "notes": [
           {
             "type": "architecture",
@@ -281,6 +297,11 @@
         "quote": "Out of your labour, to the God of Nature sacrifice freely; little by little you will bring your soul back, subject to God. A steady guard on your life, by tender-heartedly steering, he will keep — and unscathed will he preserve you.",
         "quoteAttr": "*Ex labore Deo naturae sacrifica liberaliter…* — the hieroglyphs at the statue base as Poliphilo reads them (f. c1r; trans. Priki)",
         "wc": [],
+        "see": [
+          "The Elephant & Obelisk",
+          "The Dragon in the Vaults",
+          "The Polyandrion"
+        ],
         "notes": [
           {
             "type": "context",
@@ -322,10 +343,15 @@
       },
       {
         "station": "portal",
+        "title": "The Great Portal",
         "chapter": "IV",
         "half": "dallington",
         "lede": "He comes to a triumphal portal of impossible richness, and reads it like a scholar in a trance: the columns squared to the Vitruvian rule, the frieze crowded with sacrifices, the Egyptian hieroglyphs deciphered sign by sign. It is the book's architectural manifesto, beauty offered as proof. But past the threshold, in the black of the vaults, a dragon starts up — and awe turns in an instant to blind panic as Poliphilo flees deeper into the dark.",
         "wc": [],
+        "see": [
+          "The Elephant & Obelisk",
+          "Reading the Hieroglyphs"
+        ],
         "notes": [
           {
             "type": "architecture",
@@ -378,6 +404,10 @@
             "file": "woodcuts/queen.jpg",
             "caption": "Poliphilo flees the dragon in the vaults"
           }
+        ],
+        "see": [
+          "Reading the Hieroglyphs",
+          "The Human Chess Match"
         ],
         "notes": [
           {
@@ -544,6 +574,11 @@
         "half": "dallington",
         "lede": "After the banquet the queen has her nymphs dance a game of chess. Thirty-two maidens take the squares of a chequered pavement — sixteen in silver, sixteen in gold — and move to music through **three rounds**; when one piece takes another the two kiss before the taken one leaves the board. The 1499 gives this scene no woodcut at all: the most theatrical passage in the book is the one the printer did not illustrate. What survives instead is what its readers wrote in the margins beside it, and they wrote more here than almost anywhere else.",
         "wc": [],
+        "see": [
+          "The Winged Horse of Unhappiness",
+          "The Dragon in the Vaults",
+          "Book II — Polia Takes the Telling"
+        ],
         "notes": [
           {
             "type": "context",
@@ -785,6 +820,7 @@
       },
       {
         "station": "fountain",
+        "title": "The Temple of Venus",
         "chapter": "XVII",
         "half": "ours",
         "lede": "Here the four-century gap in the English closes. Dallington broke off mid-sentence at the word *Mustulento*; from this round Temple of Venus onward, every word you read is newly translated. Poliphilo lifts his eyes to the sky-reaching cupola, then cannot describe it — the nymph's beauty keeps pulling his gaze away, and he stops to beg the reader's pardon for it. Over the temple door, cut into two tablets of lodestone, the stone that draws iron carries the creed of the whole place.",
@@ -799,6 +835,9 @@
             "file": "woodcuts/temple_venus.jpg",
             "caption": "The globular lamp hung on chains, in the temple's cupola (woodcut 74, folio 198)"
           }
+        ],
+        "see": [
+          "The Fountain of Venus"
         ],
         "notes": [
           {
@@ -873,11 +912,16 @@
       },
       {
         "station": "polyandrion",
+        "title": "The Polyandrion",
         "chapter": "XIX",
         "half": "ours",
         "lede": "The longest chapter takes Poliphilo, alone, through the ruined Polyandrion — the seaside tomb-temple of everyone who ever died of love. He reads epitaph after epitaph, a whole taxonomy of love's deaths: the refused, the jealous, the faithful cut down by fortune. In the crypt, a mosaic of fire and ice torments the shades of lovers, and a fresco of Proserpina carried off frightens him back to Polia. Nothing in the book is more quietly devastating than the close of a young suicide's stone.",
         "quote": "He lived 19 years, 2 months, 9 days; the hours, no one knows.",
         "quoteAttr": "The epitaph of Gaius Vibius, dead of love at nineteen (ch. XIX)",
+        "see": [
+          "Reading the Hieroglyphs",
+          "The Great Portal"
+        ],
         "notes": [
           {
             "type": "gloss",
@@ -1038,6 +1082,10 @@
             "caption": "A measured plan of the sacred precinct"
           }
         ],
+        "see": [
+          "The Temple of Venus",
+          "The Triumph of Cupid and the Theatre of Venus"
+        ],
         "notes": [
           {
             "type": "neoplatonic",
@@ -1115,6 +1163,10 @@
         "half": "ours",
         "lede": "The dream stops and a second book begins. Polia — who has been looked at, followed, described and desired for twenty-four chapters without once being asked — turns to the nymphs at the fountain and tells the story again in her own first person. She begins where a noblewoman would: her ancient family, the founding of Treviso out of the rivers of the Veneto, and then the year 1462, and a window, and a young man in the street below looking up.",
         "wc": [],
+        "see": [
+          "The Human Chess Match",
+          "The Dark Wood"
+        ],
         "notes": [
           {
             "type": "literary",

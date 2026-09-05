@@ -188,6 +188,21 @@
       background: rgba(6,4,2,0.97); overflow-y: auto; pointer-events: all;
       padding: 7.2rem 1.5rem 3rem;
     }
+    /* Cross-references between stops — the Buffalo annotators' other half. */
+    .tp-see { margin: 0.9rem 0 0.2rem; }
+    .tp-see-label {
+      font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+      color: #6b5d4d; margin-bottom: 0.45rem;
+    }
+    .tp-see-btn {
+      display: block; width: 100%; text-align: left;
+      background: rgba(200,160,64,0.07); border: 1px solid #3a2c14;
+      color: #c8a878; font-family: Georgia, serif; font-size: 0.76rem;
+      padding: 0.4rem 0.6rem; margin-bottom: 0.32rem; cursor: pointer;
+      transition: border-color .2s, color .2s, background .2s;
+    }
+    .tp-see-btn:hover { border-color: #8b5a1c; color: #f0e8d8; background: rgba(200,160,64,0.14); }
+
     /* Was scoped to the (removed) plates atlas; the Gallery header uses it too. */
     .plates-head { text-align: center; margin-bottom: 1.6rem; }
     .plates-head h2 {
@@ -821,6 +836,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=185"></script>
+  <script type="module" src="./main.js?v=187"></script>
 </body>
 </html>

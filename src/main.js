@@ -83,7 +83,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '26'; // bump when data files are re-exported
+  const V = '27'; // bump when data files are re-exported
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   setProgress(50, 'Preparing the world…');
@@ -355,6 +355,16 @@ async function tourGoto(i) {
 
 function tourNext() { tourGoto(state.tourStop + 1); }
 function tourPrev() { tourGoto(state.tourStop - 1); }
+// Jump to a stop by title. The cross-references in `see` are written as titles
+// rather than indices so that inserting a stop never silently re-points them.
+window.tourSee = (title) => {
+  // `state.tour` IS the running tour object, not its id — the first version
+  // looked it up in `state.tours` by object key and silently did nothing.
+  const t = state.tour;
+  if (!t || !Array.isArray(t.stops)) return;
+  const i = t.stops.findIndex(s2 => (s2.title || '') === title);
+  if (i >= 0) tourGoto(i);
+};
 
 // The commentary layer: each node of the novel tour carries typed notes, in the
 // voices of a narrative designer, a scholarly gloss-master, and a literary
@@ -478,6 +488,21 @@ function renderTourPanel() {
                       : '../research/translation.html#synopsis';
     const linkLabel = ours ? 'Read this chapter in the parallel edition &rarr;'
                            : 'See it in the whole-book synopsis &rarr;';
+    // ── Cross-references, after the annotators of the Buffalo copy ────────
+    // Their labels always pointed onward to the next place a thing occurred;
+    // ours pointed only at the chapter they sat in. `see` is a list of stop
+    // TITLES, resolved here, so a reader can follow a thread — the annotators,
+    // the hieroglyphs, the monuments of the piazza — instead of holding it in
+    // their head. See ARCHITECTURE.md on the labelled Great Pyramid.
+    const seeStops = (stop.see || [])
+      .map(title => ({ title, at: tour.stops.findIndex(s2 => (s2.title || '') === title) }))
+      .filter(x => x.at >= 0 && x.at !== i);
+    const seeBar = seeStops.length ? `
+      <div class="tp-see">
+        <div class="tp-see-label">The same thread elsewhere</div>
+        ${seeStops.map(x => `<button class="tp-see-btn" onclick="window.tourSee(${JSON.stringify(x.title).replace(/"/g, '&quot;')})">${x.title} &rarr;</button>`).join('')}
+      </div>` : '';
+
     // the 1499 woodcut(s) for this moment — per-stop, else the station's set
     const wcs = stop.wc || (tour.woodcuts && tour.woodcuts[stop.station]) || [];
     state._tourWoodcuts = wcs;
@@ -498,6 +523,7 @@ function renderTourPanel() {
         ${stop.quote && flavorOn('quotation') ? `<blockquote class="tp-quote" style="border-color:${NOTE_TYPES.quotation.color}">${fmtProse(stop.quote)}${stop.quoteAttr ? `<cite>${fmtProse(stop.quoteAttr)}</cite>` : ''}</blockquote>` : ''}
         ${renderNotes(stop.notes)}
         <div class="tp-rule"></div>
+        ${seeBar}
         ${wcBtn}
         <a class="tp-editionlink" href="${href}" target="_blank" rel="noopener" style="color:${accent}">${linkLabel}</a>
       </div>
