@@ -136,6 +136,38 @@ const TRIUMPH_LIVERY = [0x2a5aa0, 0x2a5aa0, 0xc02840, 0xc02840, 0x1e8a54, 0x1e8a
 // PROCESSIONS.md calls the fourth "the mystical car" with six leopards, "spotted
 // beasts of yealow shining colour"; panther and leopard are the same beast in
 // period usage, so the team stands and only the title was wrong.
+// The panels on each car's four faces, from the plates themselves
+// (hp.db.woodcut_catalog #44-46, #49-51, #54-56, #58/#60-62) and, for Europa,
+// from PROCESSIONS.md §2 which reads them in order. The last of Europa's is the
+// one that matters: Mars before Jupiter, showing the wound in his impenetrable
+// breastplate and holding the word NEMO — no one is exempt.
+const TRIUMPH_RELIEFS = {
+  europa: [
+    { scene: 'The nymph crowning the bulls' },
+    { scene: 'The ride over the sea' },
+    { scene: 'Cupid shooting among the wounded nations' },
+    { scene: 'Mars before Jupiter, showing the wound', word: 'NEMO' },
+  ],
+  leda: [
+    { scene: 'Leda lying-in' },
+    { scene: 'The eggs presented' },
+    { scene: 'The king offering eggs at the Temple of Apollo' },
+    { scene: 'The Judgment of Paris' },
+  ],
+  danae: [
+    { scene: 'Acrisius, and the building of the tower' },
+    { scene: 'Perseus with the mirror and the Medusa head' },
+    { scene: 'Venus and Mars freed' },
+    { scene: 'Jupiter comforts Cupid' },
+  ],
+  bacchus: [
+    { scene: 'Jupiter and Semele' },
+    { scene: 'Jupiter commits the infant Bacchus to Mercury' },
+    { scene: 'Venus and Cupid before Jupiter' },
+    { scene: 'Psyche with the lamp' },
+  ],
+};
+
 const TRIUMPHS = [
   { key: 'europa',  title: 'Triumph of Europa',    motif: 'bull',  team: 'centaur',  pos: [10.6, -9.4],   color: 0xc8a040 },
   { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-10.6, -9.4],  color: 0xb0c0d8 },
@@ -2414,7 +2446,7 @@ export class HPWorldScene {
     for (const t of TRIUMPHS) {
       const [x, z] = t.pos;
       const g = new THREE.Group();
-      const chariot = this.cast.props.chariot(1.5, { color: t.color });
+      const chariot = this._triumphCar(t, 1.5);
       g.add(chariot);
 
       // The team: six beasts, coupled two and two, each ridden by a nymph
@@ -2547,6 +2579,186 @@ export class HPWorldScene {
     this._m(new THREE.ConeGeometry(0.05, 0.09, 8), gold, hx + 0.1, hy + 0.18, hz + 0.14,
       { parent, rx: -0.8 });
     return true;
+  }
+
+  // ── The triumphal car ────────────────────────────────────────────────────
+  //
+  // The book does not give these cars a cart. Chapter XVII (PROCESSIONS.md §2)
+  // specifies: four wheels of Scythian emerald; a body of table diamonds set in
+  // fine gold, two perfect squares in plan; four INVERTED CORNUCOPIAS at the
+  // corners, mouths up, spilling fruit and flowers cut from precious stones; a
+  // HARPY'S FOOT at each corner of the plinth with acanthus; a FIVE-LEAVED ROSE
+  // where each axle ends; and axles of solid gold.
+  //
+  // And the sides argue. "The reliefs argue" — the panels are not ornament, they
+  // state the car's thesis. Europa's hindmost panel carries Mars before Jupiter
+  // showing the wound in his impenetrable breastplate and holding the word
+  // NEMO: no one is exempt. That is the sentence the whole procession is making.
+  _triumphCar(t, s = 1.5) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const g = new THREE.Group();
+    const body = woodcut ? S.mat({ tone: 0.04 })
+                         : S.mat({ color: t.color, roughness: 0.5, metalness: 0.45 });
+    const gold = woodcut ? S.mat({ tone: 0.02 })
+                         : S.mat({ color: 0xd8b24a, metalness: 0.95, roughness: 0.2 });
+    const emerald = woodcut ? S.mat({ tone: 0.1 })
+                            : S.mat({ color: 0x0d7548, roughness: 0.24, metalness: 0.35,
+                                      emissive: 0x06301d, emissiveIntensity: 0.35 });
+
+    const W = 1.3 * s, L = 2.0 * s, PY = 0.5 * s;
+    // plinth and deck
+    this._m(new THREE.BoxGeometry(W, 0.18 * s, L), body, 0, PY, 0, { parent: g, outline: true });
+    this._m(new THREE.BoxGeometry(W * 1.06, 0.06 * s, L * 1.04), gold, 0, PY + 0.12 * s, 0, { parent: g, cast: false });
+
+    // the four relief panels — the car's own argument, one to a face
+    const P = TRIUMPH_RELIEFS[t.key] || [];
+    const faces = [
+      { x: -W / 2 - 0.012, z: 0, ry: -Math.PI / 2, w: L * 0.86, h: 0.30 * s },
+      { x:  W / 2 + 0.012, z: 0, ry:  Math.PI / 2, w: L * 0.86, h: 0.30 * s },
+      { x: 0, z:  L / 2 + 0.012, ry: 0,            w: W * 0.84, h: 0.30 * s },
+      { x: 0, z: -L / 2 - 0.012, ry: Math.PI,      w: W * 0.84, h: 0.30 * s },
+    ];
+    faces.forEach((f, i) => {
+      const panel = P[i];
+      if (!panel) return;
+      const tex = this._reliefTexture(panel.scene, panel.word || null);
+      const mat = S.mat({ color: 0xffffff, roughness: 0.86, metalness: 0.04 });
+      mat.map = tex; mat.bumpMap = tex; mat.bumpScale = 0.04;
+      this._disp.push(mat);
+      this._m(new THREE.PlaneGeometry(f.w, f.h), mat, f.x, PY + 0.02 * s, f.z,
+        { parent: g, ry: f.ry, cast: false });
+    });
+
+    // four inverted cornucopias at the corners, mouths up, spilling stones
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const cx = sx * (W / 2 - 0.06 * s), cz = sz * (L / 2 - 0.06 * s);
+      const horn = this._m(new THREE.ConeGeometry(0.11 * s, 0.42 * s, 9, 1, true), gold,
+        cx, PY + 0.30 * s, cz, { parent: g });
+      horn.rotation.set(sx * 0.16, 0, sz * 0.16);
+      // the fruit and flowers, cut from precious stones
+      for (let k = 0; k < 5; k++) {
+        const a = (k / 5) * Math.PI * 2;
+        this._m(new THREE.SphereGeometry(0.035 * s, 7, 6),
+          k % 2 ? emerald : S.mat({ color: 0xc0304a, roughness: 0.3, metalness: 0.3 }),
+          cx + Math.cos(a) * 0.07 * s, PY + 0.50 * s + (k % 3) * 0.03 * s, cz + Math.sin(a) * 0.07 * s,
+          { parent: g, cast: false });
+      }
+      // a harpy's foot at each corner of the plinth, with acanthus above it
+      this._m(new THREE.CylinderGeometry(0.028 * s, 0.05 * s, 0.16 * s, 6), gold,
+        cx, PY - 0.14 * s, cz, { parent: g });
+      for (let k = 0; k < 3; k++) {                       // the talons
+        const a = -0.5 + k * 0.5;
+        this._m(new THREE.ConeGeometry(0.018 * s, 0.07 * s, 5), gold,
+          cx + Math.cos(a) * 0.045 * s, PY - 0.23 * s, cz + Math.sin(a) * 0.045 * s,
+          { parent: g, rx: 1.5, cast: false });
+      }
+      const ac = this._m(new THREE.ConeGeometry(0.055 * s, 0.1 * s, 6), gold,
+        cx, PY - 0.04 * s, cz, { parent: g, cast: false });
+      ac.rotation.x = Math.PI;
+    }
+
+    // wheels of Scythian emerald on solid gold axles, a five-leaved rose at each end
+    for (const sz of [-1, 1]) {
+      this._m(new THREE.CylinderGeometry(0.028 * s, 0.028 * s, W * 1.22, 8), gold,
+        0, 0.34 * s, sz * 0.7 * s, { parent: g, rz: Math.PI / 2 });
+      for (const sx of [-1, 1]) {
+        const wx = sx * 0.72 * s;
+        const wheel = this._m(new THREE.TorusGeometry(0.33 * s, 0.055 * s, 8, 22), emerald,
+          wx, 0.34 * s, sz * 0.7 * s, { parent: g, ry: Math.PI / 2, outline: true });
+        void wheel;
+        for (let k = 0; k < 8; k++) {                     // spokes
+          const a = (k / 8) * Math.PI;
+          this._m(new THREE.CylinderGeometry(0.016 * s, 0.016 * s, 0.62 * s, 5), gold,
+            wx, 0.34 * s, sz * 0.7 * s, { parent: g, ry: Math.PI / 2, rx: a, cast: false });
+        }
+        this._m(new THREE.CylinderGeometry(0.07 * s, 0.07 * s, 0.06 * s, 10), gold,
+          wx + sx * 0.03 * s, 0.34 * s, sz * 0.7 * s, { parent: g, rz: Math.PI / 2 });
+        // the five-leaved rose where the axle ends
+        for (let k = 0; k < 5; k++) {
+          const a = (k / 5) * Math.PI * 2;
+          const pet = this._m(new THREE.SphereGeometry(0.032 * s, 7, 5), gold,
+            wx + sx * 0.065 * s, 0.34 * s + Math.sin(a) * 0.055 * s,
+            sz * 0.7 * s + Math.cos(a) * 0.055 * s, { parent: g, cast: false });
+          pet.scale.set(0.5, 1, 1);
+        }
+      }
+    }
+    return g;
+  }
+
+  // A carved relief panel: stone ground, a bead border, the scene's figures in
+  // low relief, and — where the book gives one — the word cut into it.
+  //
+  // Relief is drawn, not lit: each shape is painted once dark and offset down,
+  // then once light and offset up, which is how a chiselled edge catches the
+  // sun. The figures are silhouettes, because that is what low relief is.
+  _reliefTexture(scene, word) {
+    this._reliefs = this._reliefs || {};
+    const key = scene + '|' + (word || '');
+    if (this._reliefs[key]) return this._reliefs[key];
+    const W = 512, H = 192;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#b9ae99'; x.fillRect(0, 0, W, H);
+    const ink = '#6a5f4f', lit = '#e8dfc9';
+    const carve = (draw) => {
+      x.save(); x.translate(0, 2.0); x.fillStyle = ink; x.strokeStyle = ink; draw(); x.restore();
+      x.save(); x.translate(0, -1.4); x.fillStyle = lit; x.strokeStyle = lit; draw(); x.restore();
+    };
+
+    // bead-and-reel border
+    carve(() => {
+      x.lineWidth = 5;
+      x.strokeRect(9, 9, W - 18, H - 18);
+      for (let i = 0; i < 30; i++) {
+        const bx = 16 + i * ((W - 32) / 29);
+        x.beginPath(); x.arc(bx, 15, 3.2, 0, 7); x.fill();
+        x.beginPath(); x.arc(bx, H - 15, 3.2, 0, 7); x.fill();
+      }
+    });
+
+    // a rough seeded crowd of relief figures for the scene
+    const rnd = (i, k) => { const v = Math.sin(i * 61.7 + k * 137.3 + scene.length * 7.1) * 43758.5453; return v - Math.floor(v); };
+    const N = word ? 3 : 5;
+    carve(() => {
+      for (let i = 0; i < N; i++) {
+        const fx = 70 + i * ((W - 190) / Math.max(1, N - 1));
+        const fh = 92 + rnd(i, 1) * 20;
+        const fy = H / 2 + 26;
+        // body
+        x.beginPath();
+        x.moveTo(fx - 13, fy);
+        x.quadraticCurveTo(fx - 16, fy - fh * 0.55, fx - 8, fy - fh * 0.72);
+        x.lineTo(fx + 8, fy - fh * 0.72);
+        x.quadraticCurveTo(fx + 16, fy - fh * 0.55, fx + 13, fy);
+        x.closePath(); x.fill();
+        // head
+        x.beginPath(); x.arc(fx, fy - fh * 0.82, 10, 0, 7); x.fill();
+        // an arm, thrown differently per figure
+        x.lineWidth = 7; x.lineCap = 'round';
+        const up = rnd(i, 2) > 0.5;
+        x.beginPath();
+        x.moveTo(fx + 9, fy - fh * 0.62);
+        x.lineTo(fx + 24, fy - fh * (up ? 0.88 : 0.34));
+        x.stroke();
+      }
+    });
+
+    // the word, cut into the ground
+    if (word) {
+      x.font = 'bold 62px Georgia, serif';
+      x.textAlign = 'center'; x.textBaseline = 'middle';
+      carve(() => { x.fillText(word, W - 108, H / 2); });
+    }
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    this._disp.push(t);
+    this._reliefs[key] = t;
+    return t;
   }
 
   // A draught beast for a triumphal car. Centaurs and leopards aren't in the
