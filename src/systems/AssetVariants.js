@@ -45,7 +45,7 @@ export const ASSETS = {
   },
   figure: {
     label: 'Nymphs & figures',
-    def: 'primitive',
+    def: 'painted',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'A cone for the robe and capsules for the limbs — the founding manifesto look.' },
       { id: 'modelled',  label: 'Modelled', note: 'A turned gown falling in long folds, tapered legs with hips and feet, and a torso wider at the shoulder than the waist — so the figure has a silhouette, not a barrel.' },
@@ -63,7 +63,7 @@ export const ASSETS = {
   },
   water: {
     label: 'Water features',
-    def: 'primitive',
+    def: 'painted',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'Flat coloured discs, still.' },
       { id: 'painted',   label: 'Painterly', note: 'Ripple rings painted into the surface, with a counter-turning caustic sheet drifting over the basins so the water glints instead of shining evenly.' },
@@ -71,7 +71,7 @@ export const ASSETS = {
   },
   ornament: {
     label: 'Wall decoration & ornament',
-    def: 'primitive',
+    def: 'carved',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'Plain masonry with lettering plaques.' },
       { id: 'carved',    label: 'Carved', note: 'A Greek meander and an egg-and-dart along the friezes, and Egyptianising hieroglyph bands down the piers — the sun disc, the eye, the vessel, the anchor, the ear of corn, the ant — read as signs, after Curran.' },

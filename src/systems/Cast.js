@@ -11,7 +11,7 @@
 // head) so scenes and vignettes can animate gestures without traversing.
 
 import * as THREE from 'three';
-import { isVariant, variantOf } from './AssetVariants.js?v=5';
+import { isVariant, variantOf } from './AssetVariants.js?v=6';
 
 export function makeCast(S) {
   const mats = new Map();
@@ -68,7 +68,7 @@ export function makeCast(S) {
   const _paintedRobes = new Map();
   function paintedRobeTexture(color) {
     if (_paintedRobes.has(color)) return _paintedRobes.get(color);
-    const W = 256, H = 256;
+    const W = 512, H = 512;
     const c = document.createElement('canvas');
     c.width = W; c.height = H;
     const x = c.getContext('2d');
@@ -78,18 +78,28 @@ export function makeCast(S) {
     x.fillStyle = `rgb(${r},${g},${b})`; x.fillRect(0, 0, W, H);
     // Long directional folds — few, and running the height of the cloth, which
     // is how Quattrocento drapery is drawn (research/nymphs.html on Goujon).
-    for (let i = 0; i < 9; i++) {
+    // The folds were drawn at 0.55 alpha over gentle gradients and washed out
+    // entirely once lit — the gowns read as smooth cones. Painted drapery in
+    // tempera is high-contrast: a dark core to each fold and a bright ridge
+    // beside it. Drawn at full strength, with a thin specular ridge.
+    for (let i = 0; i < 11; i++) {
       const v = Math.sin(i * 91.7 + color * 0.0007) * 43758.5453;
       const f = v - Math.floor(v);
       const cx = f * W;
-      const w = 8 + f * 26;
+      const w = 7 + f * 20;
       const gd = x.createLinearGradient(cx - w, 0, cx + w, 0);
-      gd.addColorStop(0, shade(0.34));
-      gd.addColorStop(0.45, mix(0.16));
-      gd.addColorStop(1, shade(0.28));
+      gd.addColorStop(0.00, shade(0.55));
+      gd.addColorStop(0.30, shade(0.62));       // the dark core of the fold
+      gd.addColorStop(0.58, mix(0.34));         // the lit ridge beside it
+      gd.addColorStop(0.78, mix(0.10));
+      gd.addColorStop(1.00, shade(0.48));
       x.fillStyle = gd;
-      x.globalAlpha = 0.55;
+      x.globalAlpha = 0.92;
       x.fillRect(cx - w, 0, w * 2, H);
+      // a fine highlight along the crest
+      x.globalAlpha = 0.5;
+      x.fillStyle = mix(0.5);
+      x.fillRect(cx + w * 0.14, 0, Math.max(1, w * 0.10), H);
     }
     x.globalAlpha = 1;
     // A warm ground glaze at the hem, as tempera darkens toward the floor
@@ -132,52 +142,69 @@ export function makeCast(S) {
   let _face = null;
   function faceTexture() {
     if (_face) return _face;
-    const W = 256, H = 128;
+    const W = 512, H = 256;
     const c = document.createElement('canvas');
     c.width = W; c.height = H;
     const x = c.getContext('2d');
+
+    // A painted panel face, not a doll's. The previous version had eyes about a
+    // tenth of the head wide, 0.30-alpha blush roundels and a scarlet rosebud
+    // mouth, which is what made every figure read as a toy. Quattrocento panel
+    // faces are the opposite: low contrast, small features set well down the
+    // head, the modelling carried by soft earth-shadow rather than by line.
+    // Everything here is drawn in muted umber on the flesh ground, at roughly a
+    // third of the old strength, and the texture is twice the resolution so the
+    // small features survive being wrapped on a sphere.
     const g0 = x.createLinearGradient(0, 0, 0, H);
-    g0.addColorStop(0, '#f4ece0'); g0.addColorStop(0.55, '#f0e6d6'); g0.addColorStop(1, '#e6d6c2');
+    g0.addColorStop(0, '#f2e8db'); g0.addColorStop(0.55, '#eddfcd'); g0.addColorStop(1, '#e0cdb6');
     x.fillStyle = g0; x.fillRect(0, 0, W, H);
-    // eyes sit just BELOW the sphere's equator: the nymphs' hair cap covers
-    // the whole upper hemisphere, so anything above v = 0.5 is under hair
-    const cx = W * 0.25, ey = H * 0.555;
+
+    const cx = W * 0.25, ey = H * 0.560;
+    const K = 2;                                    // the texture doubled, so features double too
     const soft = (px, py, r, col, a) => {
       const gr = x.createRadialGradient(px, py, 0, px, py, r);
       gr.addColorStop(0, col.replace('A', a)); gr.addColorStop(1, col.replace('A', '0'));
       x.fillStyle = gr; x.beginPath(); x.arc(px, py, r, 0, 7); x.fill();
     };
-    // blush and eye-socket shading
-    for (const s of [-1, 1]) soft(cx + s * 15, ey + 17, 11, 'rgba(196,110,100,A)', '0.30');
-    for (const s of [-1, 1]) soft(cx + s * 9.5, ey - 1, 7, 'rgba(150,110,80,A)', '0.28');
-    // eyes: lid line, iris, lash corner
-    for (const s of [-1, 1]) {
-      const ex = cx + s * 9.5;
-      x.strokeStyle = 'rgba(66,44,28,0.9)'; x.lineWidth = 1.6;
-      x.beginPath(); x.ellipse(ex, ey, 4.6, 2.4, 0, Math.PI, 2 * Math.PI); x.stroke();
-      x.fillStyle = 'rgba(74,50,30,0.95)';
-      x.beginPath(); x.arc(ex, ey - 0.4, 1.7, 0, 7); x.fill();
-      x.strokeStyle = 'rgba(90,62,40,0.8)'; x.lineWidth = 1.2;
-      x.beginPath(); x.ellipse(ex, ey + 1.2, 4.2, 1.6, 0, 0, Math.PI); x.stroke();
-      // brow
-      x.strokeStyle = 'rgba(96,66,40,0.85)'; x.lineWidth = 1.8;
-      x.beginPath(); x.ellipse(ex + s * 0.6, ey - 5.4, 5.4, 2.6, s * 0.12, Math.PI * 1.15, Math.PI * 1.85); x.stroke();
+
+    // the modelling: temple, socket, cheekbone, jaw — all earth, all faint
+    soft(cx, ey + 30 * K, 20 * K, 'rgba(150,116,86,A)', '0.13');          // under the jaw
+    for (const s2 of [-1, 1]) {
+      soft(cx + s2 * 22 * K, ey + 4 * K, 15 * K, 'rgba(150,116,86,A)', '0.10');   // temple
+      soft(cx + s2 * 9 * K, ey - 1 * K, 7.5 * K, 'rgba(140,106,78,A)', '0.24');   // eye socket
+      soft(cx + s2 * 15 * K, ey + 16 * K, 11 * K, 'rgba(178,132,110,A)', '0.09'); // the faintest warmth
     }
-    // nose: a shadow, not a line
-    soft(cx - 1.6, ey + 8, 4.5, 'rgba(150,110,80,A)', '0.22');
-    x.fillStyle = 'rgba(120,84,58,0.5)';
-    for (const s of [-1, 1]) { x.beginPath(); x.arc(cx + s * 1.8, ey + 10.5, 0.8, 0, 7); x.fill(); }
-    // mouth: small, full, slightly parted
-    x.fillStyle = 'rgba(164,74,70,0.9)';
-    x.beginPath(); x.ellipse(cx, ey + 16.5, 3.6, 1.5, 0, 0, Math.PI); x.fill();
-    x.beginPath(); x.ellipse(cx - 1.5, ey + 15.2, 1.8, 1.2, 0, Math.PI, 2 * Math.PI); x.fill();
-    x.beginPath(); x.ellipse(cx + 1.5, ey + 15.2, 1.8, 1.2, 0, Math.PI, 2 * Math.PI); x.fill();
-    x.strokeStyle = 'rgba(110,50,46,0.65)'; x.lineWidth = 0.9;
-    x.beginPath(); x.moveTo(cx - 3.2, ey + 15.4); x.quadraticCurveTo(cx, ey + 16.6, cx + 3.2, ey + 15.4); x.stroke();
-    // chin and jaw shading
-    soft(cx, ey + 24, 8, 'rgba(150,110,80,A)', '0.16');
+
+    // eyes: smaller, softer, no hard iris disc
+    for (const s2 of [-1, 1]) {
+      const ex = cx + s2 * 9.5 * K;
+      x.strokeStyle = 'rgba(84,60,40,0.78)'; x.lineWidth = 1.9;
+      x.beginPath(); x.ellipse(ex, ey, 3.3 * K, 1.7 * K, 0, Math.PI, 2 * Math.PI); x.stroke();
+      x.fillStyle = 'rgba(84,62,42,0.80)';
+      x.beginPath(); x.arc(ex, ey - 0.2 * K, 1.30 * K, 0, 7); x.fill();
+      x.strokeStyle = 'rgba(112,86,62,0.50)'; x.lineWidth = 1.3;
+      x.beginPath(); x.ellipse(ex, ey + 1.1 * K, 3.0 * K, 1.1 * K, 0, 0, Math.PI); x.stroke();
+      // brow: a soft smudge, not an ink arc
+      soft(ex + s2 * 0.6 * K, ey - 5.6 * K, 5.6 * K, 'rgba(112,84,54,A)', '0.38');
+    }
+
+    // nose: shadow down one side and the faintest nostrils
+    soft(cx - 1.6 * K, ey + 8 * K, 4.6 * K, 'rgba(150,112,82,A)', '0.15');
+    x.fillStyle = 'rgba(126,94,66,0.28)';
+    for (const s2 of [-1, 1]) { x.beginPath(); x.arc(cx + s2 * 1.9 * K, ey + 10.6 * K, 0.75 * K, 0, 7); x.fill(); }
+
+    // mouth: muted, closed, the shadow under the lower lip doing the work
+    x.fillStyle = 'rgba(160,98,88,0.60)';
+    x.beginPath(); x.ellipse(cx, ey + 16.4 * K, 3.1 * K, 1.15 * K, 0, 0, Math.PI); x.fill();
+    x.beginPath(); x.ellipse(cx - 1.4 * K, ey + 15.4 * K, 1.5 * K, 0.95 * K, 0, Math.PI, 2 * Math.PI); x.fill();
+    x.beginPath(); x.ellipse(cx + 1.4 * K, ey + 15.4 * K, 1.5 * K, 0.95 * K, 0, Math.PI, 2 * Math.PI); x.fill();
+    x.strokeStyle = 'rgba(116,68,60,0.55)'; x.lineWidth = 1.1;
+    x.beginPath(); x.moveTo(cx - 3.0 * K, ey + 15.6 * K); x.quadraticCurveTo(cx, ey + 16.6 * K, cx + 3.0 * K, ey + 15.6 * K); x.stroke();
+    soft(cx, ey + 19.6 * K, 4.0 * K, 'rgba(150,112,82,A)', '0.14');
+
     _face = new THREE.CanvasTexture(c);
     _face.colorSpace = THREE.SRGBColorSpace;
+    _face.anisotropy = 4;
     return _face;
   }
 
@@ -295,24 +322,31 @@ export function makeCast(S) {
       }
     }
     // a neck, so the head no longer floats on the shoulders
-    add(g, mesh(new THREE.CylinderGeometry(0.05 * h, 0.062 * h, 0.12 * h, 8), sm, 0, 1.38 * h));
+    add(g, mesh(new THREE.CylinderGeometry(0.038 * h, 0.048 * h, 0.11 * h, 8), sm, 0, 1.40 * h));
 
-    const heads = twoHeaded ? [-0.12, 0.12] : [0];
+    // Proportion. The head was 0.13*h on a figure 1.65*h tall — about 6.3 heads,
+    // which is a toy's proportion and most of why these read as cartoons. The
+    // nymphs were already built to the Mannerist ~8.25 heads; the rest of the
+    // cast now matches them. The head is also given a jaw, so it is a head and
+    // not a ball with a face on it.
+    const heads = twoHeaded ? [-0.10, 0.10] : [0];
     for (const hx of heads) {
-      const head = add(g, mesh(new THREE.SphereGeometry(0.13 * h, 14, 12), FaceM(skin), hx * h, 1.52 * h));
-      head.scale.set(0.95, 1.06, 0.97);
+      const head = add(g, mesh(new THREE.SphereGeometry(0.102 * h, 16, 14), FaceM(skin), hx * h, 1.556 * h));
+      head.scale.set(0.94, 1.08, 0.96);
+      const jaw = add(g, mesh(new THREE.SphereGeometry(0.082 * h, 12, 9), FaceM(skin), hx * h, 1.508 * h, 0.012 * h));
+      jaw.scale.set(0.92, 0.86, 0.98);
       parts.head = head;
     }
-    if (crowned) add(g, mesh(new THREE.TorusGeometry(0.11 * h, 0.028 * h, 6, 14), M(0xffd24a, { metalness: 0.9, roughness: 0.2 }), 0, 1.63 * h)).rotation.x = Math.PI / 2.3;
+    if (crowned) add(g, mesh(new THREE.TorusGeometry(0.093 * h, 0.024 * h, 6, 16), M(0xffd24a, { metalness: 0.9, roughness: 0.2 }), 0, 1.632 * h)).rotation.x = Math.PI / 2.3;
     if (hat === 'brim') {   // the philosopher's flat-brimmed hat of the plates
       const hm = M(0x2e2620, { roughness: 0.85 });
-      add(g, mesh(new THREE.CylinderGeometry(0.2 * h, 0.2 * h, 0.02 * h, 14), hm, 0, 1.62 * h));
-      add(g, mesh(new THREE.CylinderGeometry(0.085 * h, 0.1 * h, 0.11 * h, 12), hm, 0, 1.68 * h));
+      add(g, mesh(new THREE.CylinderGeometry(0.17 * h, 0.17 * h, 0.02 * h, 14), hm, 0, 1.625 * h));
+      add(g, mesh(new THREE.CylinderGeometry(0.072 * h, 0.085 * h, 0.1 * h, 12), hm, 0, 1.68 * h));
     } else if (hat === 'cap') {
-      add(g, mesh(new THREE.SphereGeometry(0.115 * h, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), M(0x5a3a2a, { roughness: 0.8 }), 0, 1.58 * h));
+      add(g, mesh(new THREE.SphereGeometry(0.106 * h, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), M(0x5a3a2a, { roughness: 0.8 }), 0, 1.578 * h));
     }
     if (beard) {
-      const b = add(g, mesh(new THREE.ConeGeometry(0.06 * h, 0.16 * h, 8), M(0xcfc4b0, { roughness: 0.9 }), 0, 1.4 * h, 0.09 * h));
+      const b = add(g, mesh(new THREE.ConeGeometry(0.05 * h, 0.14 * h, 8), M(0xcfc4b0, { roughness: 0.9 }), 0, 1.43 * h, 0.075 * h));
       b.rotation.x = Math.PI;   // pointing down from the chin
     }
 
@@ -504,9 +538,37 @@ export function makeCast(S) {
     // behind. The cap must stop above the eyes — drawn any lower it reads as a
     // visor rather than a hairline.
     const hairMat = M(hair, { roughness: 0.85 });
-    const cap = add(g, mesh(new THREE.SphereGeometry(0.104 * h, 14, 10, 0, Math.PI * 2, 0, Math.PI * 0.5), hairMat, 0, 1.556 * h, -0.010 * h));
-    cap.scale.set(1.0, 1.05, 1.06);
-    add(g, mesh(new THREE.SphereGeometry(0.056 * h, 10, 8), hairMat, 0, 1.508 * h, -0.094 * h));
+    // A single hemisphere read as a bathing cap. Hair is a MASS: it has a part,
+    // it has volume above the crown, it sweeps back over the ear, and it is
+    // gathered behind. Built from a few overlapping shaped lobes so the
+    // silhouette breaks, the way it does in every quattrocento portrait.
+    // All the hair lobes live in one group, so the head-tilt below turns the
+    // whole mass together instead of sliding one lobe off the others.
+    const hairG = new THREE.Group();
+    g.add(hairG);
+    const crown = add(hairG, mesh(new THREE.SphereGeometry(0.107 * h, 16, 12, 0, Math.PI * 2, 0, Math.PI * 0.56), hairMat, 0, 1.548 * h, -0.012 * h));
+    crown.scale.set(1.02, 1.10, 1.07);
+    for (const sx of [-1, 1]) {
+      // The swept side mass has to sit BEHIND the ear and hug the skull —
+      // pushed out sideways it reads as a pair of earmuffs. Kept inside the
+      // head's own radius, flattened against it, and carried backwards.
+      const side = add(hairG, mesh(new THREE.SphereGeometry(0.055 * h, 12, 9), hairMat,
+        sx * 0.052 * h, 1.545 * h, -0.045 * h));
+      side.scale.set(0.62, 1.06, 1.05);
+      side.rotation.set(0.16, 0, sx * 0.1);
+      // a lock falling behind the ear to the nape, not beside the cheek
+      const lock = add(hairG, mesh(new THREE.CapsuleGeometry(0.017 * h, 0.10 * h, 4, 7), hairMat,
+        sx * 0.058 * h, 1.470 * h, -0.058 * h));
+      lock.rotation.set(0.22, 0, sx * 0.10);
+    }
+    // the parting: a shallow groove of shadow along the crown
+    const part = add(hairG, mesh(new THREE.BoxGeometry(0.012 * h, 0.02 * h, 0.16 * h),
+      M(0x2a1a0c, { roughness: 0.95 }), 0, 1.648 * h, -0.012 * h));
+    part.rotation.x = 0.12;
+    // the chignon gathered behind, and the nape below it
+    const bun = add(hairG, mesh(new THREE.SphereGeometry(0.058 * h, 12, 9), hairMat, 0, 1.512 * h, -0.101 * h));
+    bun.scale.set(1.05, 1.0, 0.9);
+    add(hairG, mesh(new THREE.SphereGeometry(0.036 * h, 9, 7), hairMat, 0, 1.438 * h, -0.078 * h)).scale.set(1, 0.8, 0.9);
     const fillet = add(g, mesh(new THREE.TorusGeometry(0.101 * h, 0.0075 * h, 6, 20),
       M(0xd8c9a8, { roughness: 0.55 }), 0, 1.594 * h, -0.004 * h));
     fillet.rotation.x = Math.PI / 2 - 0.2;
@@ -555,7 +617,7 @@ export function makeCast(S) {
     const seed = Array.from(name).reduce((a, c) => a + c.charCodeAt(0), name.length);
     const tilt = ((seed % 7) - 3) * 0.026;
     parts.head.rotation.z = tilt;
-    cap.rotation.z = tilt; fillet.rotation.z = tilt;
+    hairG.rotation.z = tilt; fillet.rotation.z = tilt;
     parts.armL.rotation.z -= tilt * 0.5;
     parts.armR.rotation.z -= tilt * 0.5;
 
