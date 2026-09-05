@@ -301,7 +301,7 @@ footer a:hover { color: var(--dim); }
   <div class="grid grid-3">
 
     <a class="card" href="src/index.html">
-      <div class="badge" style="color:var(--r);border-color:var(--r);">Three.js · GSAP · Tone.js</div>
+      <div class="badge" style="color:var(--r);border-color:var(--r);">Three.js · GSAP</div>
       <h3>Atalanta Animata</h3>
       <p>A wall of all 51 woodcut plates, lit and dimensional. Click any plate to enter its scene: showcase emblems (IV, V, X, XXXIII, L) are hand-built animations before their source woodcut; the rest are lit carved reliefs that lift their figures into a 2.5-D diorama. Hover tooltip, click-to-enter, scroll-zoom, orbit.</p>
       <p style="margin-top:.4rem;font-size:.72rem;color:#4a3828;">Press <kbd style="font-family:monospace;font-size:.68rem;padding:0 .25rem;border:1px solid #3a2a18">G</kbd> to return from any scene.</p>
@@ -394,9 +394,9 @@ footer a:hover { color: var(--dim); }
   <div class="grid">
 
     <div class="card" style="cursor:default;">
-      <div class="badge" style="color:var(--a);border-color:var(--a);">Tone.js 14.7.77</div>
-      <h3>Alchemical Audio</h3>
-      <p>Generative ambient soundscape per stage. NIGREDO: 3-stack sawtooth drone (42/43.2/40.8 Hz) + brown noise crackle. ALBEDO: 4 sine overtones with reverb decay=6 + tremolo. CITRINITAS: MetalSynth bell sequence + hum. RUBEDO: PolySynth triads + chorus. Unlocks on first click.</p>
+      <div class="badge" style="color:var(--a);border-color:var(--a);">Silent by design</div>
+      <h3>No Audio</h3>
+      <p>The site plays nothing — no music, no ambient bed, anywhere: not in the guided tours, not in Poliphilo&rsquo;s Dream, not in the Atalanta worlds. An earlier build carried a generative soundscape per alchemical stage; it was removed deliberately. No AudioContext is ever created, so the page cannot make a sound.</p>
     </div>
 
     <div class="card" style="cursor:default;">
@@ -488,7 +488,7 @@ footer a:hover { color: var(--dim); }
     </div>
     <div class="tech-row">
       <div class="label">Audio</div>
-      <div class="val">Tone.js 14.7.77 via esm.sh — lazy-imported on first user gesture. OmniOscillator, NoiseSynth, MetalSynth, PolySynth, Reverb, Chorus, Tremolo, AmplitudeEnvelope, Loop, Transport.</div>
+      <div class="val">None. The site is silent by design — no Web Audio, no Tone.js, no media elements, no AudioContext constructed at any point.</div>
     </div>
     <div class="tech-row">
       <div class="label">Geometry</div>
@@ -617,8 +617,8 @@ footer a:hover { color: var(--dim); }
   <p>
     A digital humanities experiment: two Renaissance emblem books rendered as
     interactive 3D environments, cross-referenced in a live graph, and encoded
-    as browser games. Built with Three.js, GSAP, and Tone.js — no bundler,
-    no build step, no model assets.
+    as browser games. Built with Three.js and GSAP — no bundler, no build step,
+    and silent throughout.
   </p>
   <p>
     Source code and data pipeline on <a href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>.

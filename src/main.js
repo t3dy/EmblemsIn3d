@@ -9,7 +9,7 @@ import { DreamMode } from './systems/DreamMode.js?v=5';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
-import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=7';
+import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=8';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -1646,19 +1646,11 @@ function animate() {
 // Debug handle so the view can be driven from the console during development
 window._hp = { renderer, composer, state, clock };
 
-// ─── Audio unlock (browser requires a user gesture before AudioContext) ───────
-
-const _unlockAudio = async () => {
-  if (AlchemicalAudio.isUnlocked) return;
-  await AlchemicalAudio.unlock();
-  const stage = state.currentEmblem?.alchemical_stage
-    || (state.world === 'HP' ? 'ALBEDO' : null);
-  if (stage) AlchemicalAudio.setStage(stage);
-  document.removeEventListener('click',   _unlockAudio);
-  document.removeEventListener('keydown', _unlockAudio);
-};
-document.addEventListener('click',   _unlockAudio);
-document.addEventListener('keydown', _unlockAudio);
+// ─── Audio ────────────────────────────────────────────────────────────────────
+// The site is silent by design (Ted, 2026-09-04): no music or ambient audio
+// anywhere — tours, dream, Atalanta, any page. So there is no gesture listener
+// here to unlock an AudioContext; AlchemicalAudio is a no-op stub. See
+// DECISIONS.md before adding any sound.
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
