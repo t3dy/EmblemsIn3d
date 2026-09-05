@@ -1772,19 +1772,173 @@ export class HPWorldScene {
 
   // ── The Planetary Palace (f.88) — west court ──────────────────────────────
 
+  // ── Classical members ────────────────────────────────────────────────────
+  //
+  // Shared architectural parts, so every building in the garden is made of the
+  // same vocabulary instead of each one improvising boxes. The HP is, before it
+  // is anything else, a book about architecture — Lefaivre reads the whole dream
+  // as an architectural body — so a "palace" that is a slab with plain cylinders
+  // on it is not a reading of the book, it is a placeholder.
+  //
+  // Orders after the book's own constant subject (hp.db lexicon, "Column
+  // Orders"). Each column gets what a column actually has: a base of torus and
+  // scotia over a plinth, a fluted shaft with entasis, and a capital proper to
+  // its order. Each entablature gets architrave, frieze and a dentilled cornice.
+
+  // A column of the given order, standing at (x, z) on the floor level `y0`.
+  _column(x, z, h, { order = 'ionic', r = null, parent = null, mat = null, flutes = 16 } = {}) {
+    const M = mat || this._stoneMat;
+    const rad = r || h * 0.055;
+    const g = parent || this.scene;
+    const at = (geo, yy, o = {}) => this._m(geo, M, x, yy, z, { parent: g, ...o });
+
+    // plinth, torus, scotia, torus — the attic base
+    at(new THREE.BoxGeometry(rad * 3.1, rad * 0.5, rad * 3.1), rad * 0.25);
+    at(new THREE.TorusGeometry(rad * 1.22, rad * 0.2, 6, 16), rad * 0.66, { rx: Math.PI / 2 });
+    at(new THREE.CylinderGeometry(rad * 1.1, rad * 1.25, rad * 0.3, 14), rad * 0.92);
+    at(new THREE.TorusGeometry(rad * 1.1, rad * 0.14, 6, 16), rad * 1.16, { rx: Math.PI / 2 });
+
+    // the shaft: entasis, and flutes cut as shallow ribs around it
+    const y0 = rad * 1.3, sh = h - y0 - rad * 1.5;
+    const shaft = at(new THREE.CylinderGeometry(rad * 0.86, rad, sh, 18), y0 + sh / 2, { outline: true });
+    if (flutes && this.style.key !== 'woodcut') {
+      for (let i = 0; i < flutes; i++) {
+        const a = (i / flutes) * Math.PI * 2;
+        const fr = rad * 0.93;
+        this._m(new THREE.CylinderGeometry(rad * 0.085, rad * 0.1, sh * 0.985, 5),
+          this._darkStoneMat, x + Math.cos(a) * fr, y0 + sh / 2, z + Math.sin(a) * fr,
+          { parent: g, cast: false, receive: false });
+      }
+    }
+    // necking
+    at(new THREE.TorusGeometry(rad * 0.88, rad * 0.09, 6, 16), y0 + sh + rad * 0.05, { rx: Math.PI / 2 });
+
+    // capital
+    const cy = y0 + sh + rad * 0.1;
+    if (order === 'doric') {
+      at(new THREE.CylinderGeometry(rad * 1.25, rad * 0.9, rad * 0.45, 16), cy + rad * 0.22);
+      at(new THREE.BoxGeometry(rad * 2.7, rad * 0.28, rad * 2.7), cy + rad * 0.58);
+    } else if (order === 'corinthian') {
+      at(new THREE.CylinderGeometry(rad * 1.25, rad * 0.88, rad * 1.15, 14), cy + rad * 0.58);
+      for (let k = 0; k < 8; k++) {                       // two tiers of acanthus
+        const a = (k / 8) * Math.PI * 2;
+        for (const [tier, rr, hh] of [[0, 1.02, 0.34], [1, 1.2, 0.78]]) {
+          const lf = this._m(new THREE.ConeGeometry(rad * 0.3, rad * 0.62, 5), M,
+            x + Math.cos(a + tier * 0.4) * rad * rr, cy + rad * hh, z + Math.sin(a + tier * 0.4) * rad * rr,
+            { parent: g, cast: false });
+          lf.rotation.set(Math.sin(a) * 0.55, -a, -Math.cos(a) * 0.55);
+        }
+      }
+      at(new THREE.BoxGeometry(rad * 2.9, rad * 0.3, rad * 2.9), cy + rad * 1.3);
+    } else {                                              // ionic: a pair of volutes
+      at(new THREE.CylinderGeometry(rad * 1.1, rad * 0.9, rad * 0.3, 16), cy + rad * 0.15);
+      for (const sx of [-1, 1]) {
+        const v = this._m(new THREE.TorusGeometry(rad * 0.42, rad * 0.17, 7, 16), M,
+          x + sx * rad * 0.92, cy + rad * 0.5, z, { parent: g, ry: Math.PI / 2 });
+        v.scale.set(1, 1, 0.62);
+      }
+      at(new THREE.BoxGeometry(rad * 2.5, rad * 0.24, rad * 1.9), cy + rad * 0.82);
+    }
+    this._circleCol(x, z, rad * 1.6);
+    return h;
+  }
+
+  // Architrave (three fasciae), frieze, and a cornice carrying dentils.
+  _entablature(cx, cy, cz, w, d, { parent = null, ry = 0, dentils = true, mat = null } = {}) {
+    const M = mat || this._stoneMat;
+    const g = parent || this.scene;
+    const at = (geo, mm, yy, o = {}) => this._m(geo, mm, cx, yy, cz, { parent: g, ry, cast: false, ...o });
+    // architrave, stepped forward in three bands
+    at(new THREE.BoxGeometry(w, 0.16, d), M, cy + 0.08);
+    at(new THREE.BoxGeometry(w + 0.06, 0.14, d + 0.06), M, cy + 0.23);
+    at(new THREE.BoxGeometry(w + 0.13, 0.13, d + 0.13), M, cy + 0.44);
+    // frieze
+    at(new THREE.BoxGeometry(w + 0.1, 0.34, d + 0.1), this._darkStoneMat, cy + 0.67);
+    // dentils
+    if (dentils) {
+      const n = Math.max(6, Math.round(w * 2.2));
+      for (let i = 0; i < n; i++) {
+        const t = -w / 2 + (i + 0.5) * (w / n);
+        const px = cx + Math.cos(ry) * t, pz = cz - Math.sin(ry) * t;
+        this._m(new THREE.BoxGeometry(w / n * 0.5, 0.14, d + 0.2), M, px, cy + 0.92, pz,
+          { parent: g, ry, cast: false });
+      }
+    }
+    // cornice, and the corona that throws the shadow line
+    at(new THREE.BoxGeometry(w + 0.34, 0.16, d + 0.34), M, cy + 1.07);
+    at(new THREE.BoxGeometry(w + 0.44, 0.1, d + 0.44), M, cy + 1.2);
+    return cy + 1.25;
+  }
+
+  // A flight of steps (a crepidoma) on the +z face of a platform.
+  _steps(cx, cz, w, n = 3, rise = 0.16, tread = 0.42, { parent = null, mat = null } = {}) {
+    const M = mat || this._stoneMat;
+    const g = parent || this.scene;
+    for (let i = 0; i < n; i++) {
+      this._m(new THREE.BoxGeometry(w - i * 0.2, rise, tread), M,
+        cx, rise / 2 + i * rise, cz + (n - i) * tread * 0.72,
+        { parent: g, cast: false });
+    }
+  }
+
+  // A doorway cut in a wall: jambs, lintel, and a moulded surround.
+  _doorway(cx, cy, cz, w, h, { parent = null, ry = 0, mat = null } = {}) {
+    const M = mat || this._stoneMat;
+    const g = parent || this.scene;
+    for (const sx of [-1, 1]) {
+      const t = sx * (w / 2 + 0.16);
+      this._m(new THREE.BoxGeometry(0.3, h, 0.5), this._darkStoneMat,
+        cx + Math.cos(ry) * t, cy + h / 2, cz - Math.sin(ry) * t, { parent: g, ry, outline: true });
+    }
+    this._m(new THREE.BoxGeometry(w + 0.92, 0.34, 0.55), this._darkStoneMat, cx, cy + h + 0.17, cz, { parent: g, ry });
+    this._m(new THREE.BoxGeometry(w + 1.3, 0.16, 0.66), M, cx, cy + h + 0.4, cz, { parent: g, ry, cast: false });
+    // the dark of the opening
+    this._m(new THREE.PlaneGeometry(w, h), this._darkStoneMat, cx, cy + h / 2, cz + 0.28,
+      { parent: g, ry, cast: false, receive: false });
+  }
+
   _buildPalace() {
     const S = this.style;
-    this._m(new THREE.BoxGeometry(15, 0.24, 11), this._darkStoneMat, -20.5, 0.12, 0, { cast: false });
+    const CX = -20.5;
 
+    // A stepped platform, not a slab: stylobate over two courses, with a flight
+    // up the east front where the dreamer arrives.
+    this._m(new THREE.BoxGeometry(16.2, 0.22, 12.2), this._darkStoneMat, CX, 0.11, 0, { cast: false });
+    this._m(new THREE.BoxGeometry(15.4, 0.2, 11.4), this._stoneMat, CX, 0.31, 0, { cast: false });
+    this._m(new THREE.BoxGeometry(14.8, 0.16, 10.8), this._stoneMat, CX, 0.49, 0, { cast: false, outline: true });
+    this._steps(CX + 7.6, 5.6, 4.4, 3);
+
+    // Two colonnades of Ionic columns, properly based, fluted and capitalled,
+    // carrying a full entablature.
+    const COL_H = 4.0;
     for (const side of [-1, 1]) {
       for (let i = 0; i < 6; i++) {
-        const x = -26 + i * 2.2, z = side * 4.2;
-        this._m(new THREE.BoxGeometry(0.8, 0.24, 0.8), this._stoneMat, x, 0.36, z);
-        this._m(new THREE.CylinderGeometry(0.26, 0.32, 3.6, 14), this._stoneMat, x, 2.28, z, { outline: true });
-        this._m(new THREE.BoxGeometry(0.78, 0.3, 0.78), this._stoneMat, x, 4.23, z);
-        this._circleCol(x, z, 0.55);
+        const x = CX - 5.5 + i * 2.2, z = side * 4.2;
+        const gcol = new THREE.Group();
+        gcol.position.y = 0.57;
+        this.scene.add(gcol);
+        this._column(x, z, COL_H, { order: 'ionic', r: 0.26, parent: gcol });
       }
-      this._m(new THREE.BoxGeometry(12.6, 0.5, 0.95), this._darkStoneMat, -20.5, 4.63, side * 4.2);
+      this._entablature(CX, 0.57 + COL_H, side * 4.2, 12.6, 0.95);
+    }
+
+    // The rear wall of the hall, with its great door and flanking pilasters —
+    // a palace needs somewhere to be the inside of.
+    const WZ = -5.2, WH = 5.4;
+    this._m(new THREE.BoxGeometry(13.4, WH, 0.6), this._stoneMat, CX, 0.57 + WH / 2, WZ, { outline: true });
+    this._wallCol(CX - 6.7, CX + 6.7, WZ - 0.3, WZ + 0.3);
+    for (let i = 0; i < 6; i++) {
+      const x = CX - 5.5 + i * 2.2;
+      this._m(new THREE.BoxGeometry(0.44, WH - 0.5, 0.22), this._darkStoneMat, x, 0.57 + (WH - 0.5) / 2, WZ + 0.36, { cast: false });
+      this._m(new THREE.BoxGeometry(0.6, 0.18, 0.3), this._stoneMat, x, 0.57 + WH - 0.42, WZ + 0.4, { cast: false });
+    }
+    this._doorway(CX, 0.57, WZ + 0.32, 2.0, 3.2);
+    this._entablature(CX, 0.57 + WH - 0.2, WZ, 13.8, 0.75);
+    // a low roof over the hall, and antefixes along the eaves
+    this._m(new THREE.BoxGeometry(13.9, 0.24, 9.6), this._darkStoneMat, CX, 0.57 + WH + 1.1, WZ + 4.6, { cast: false });
+    for (let i = 0; i < 9; i++) {
+      const x = CX - 6.4 + i * 1.6;
+      this._m(new THREE.ConeGeometry(0.18, 0.34, 6), this._stoneMat, x, 0.57 + WH + 1.4, WZ + 0.05, { cast: false });
     }
 
     METALS.forEach((m, i) => {
