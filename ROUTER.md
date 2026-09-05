@@ -124,6 +124,16 @@ src/systems/
   DreamMode.js          the narrative game loop
   EnvMap.js             the one shared PMREM environment
   Particles.js  Meadow.js  AlchemicalAudio.js (a deliberate no-op stub — the site is silent)
+
+Worth knowing inside `HPWorldScene.js`, because they are reused and easy to miss:
+  _column/_entablature/_steps/_doorway   the shared classical members
+  _frieze(kind, {signs})                 carved bands; `hieroglyph` spells a named sequence
+                                         from `HPWorldScene.SIGNS` (15 signs, sourced)
+  _drape(), _drapeTexture()              cloths hung on a building (Lefaivre, ARCHITECTURE §0)
+  _spoilTexture(), _orderBoardTexture()  things DRAWN rather than modelled — the register
+                                         that works best here
+  _plaque(), _plaqueTexture()            all lettering; measures its type to the stone
+  _m(), _circleCol(), _wallCol()         mesh helper and the two collider kinds
 src/shaders/HPStyles.js the four aesthetic registers
 src/data/               tours.json (the Novel tour), gallery.json, hp_*.json, lexicon
 game/                   Poliphilo's Commonplace Book — the visual novel

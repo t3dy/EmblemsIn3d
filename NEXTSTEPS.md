@@ -21,193 +21,140 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
-### 0f. Two modelling failures of the same kind, one session (2026-09-05)
-The `massed` animal build and the supine colossus were both written, both A/B'd in the
-world, and both reverted. **The failure was identical**: correct parts assembled into
-an object with no controlling outline. The lesson is in `AssetVariants.js` and now in
-`ARCHITECTURE.md`, and it is worth stating once more as a rule for this project:
+*One list, highest value first. It had become seven dated sections stacked newest-first,
+which is a log, not a queue — the thing this file exists to prevent. Consolidated
+2026-09-05; nothing dropped, and the lessons that belong in code now live in
+`AssetVariants.js`, `ARCHITECTURE.md` and `RECIPES/`, not here.*
 
-> **At this register the silhouette IS the asset.** Detail that does not serve the
-> outline is not neutral, it is a downgrade. Judge any new figure as a black shape
-> against the sky before judging it lit.
+**Before building anything from this list, read `RECIPES/model-an-asset.md` step 0 and
+grep the scene.** Two items below were once "missing" and turned out to be built.
 
-Practically: this toolkit is very good at *architecture* — members, courses, friezes,
-plaques, things with straight edges and clear profiles — and poor at *large organic
-bodies*. The painted-panel figures work because they sidestep the problem entirely by
-being drawn. **Prefer the architectural reading of an object where the source allows
-one** (the colossus is a building in the book, not a statue), or prefer to draw it.
+---
 
+### 1. Finish dressing the buildings
+`_drape()` exists; four hangings frame the throne in Eleuterylida's court and nothing else
+in the world is dressed. Lefaivre's rule (`ARCHITECTURE.md` §0) is that cloth and precious
+material **point** — they mark where the eye should go — so place them, don't spread them.
 
-### 0e. Cloths draped on the buildings (2026-09-05, from Lefaivre ch. 8)
-Lefaivre's *Marvelous Body* gives a placement rule the world half-follows and one
-element it does not have at all. In the *mirabilia* register the building-as-body is
-displaced by **the clothes that cover it** — "cloths draped over parts of the building,
-but also… the precious and dazzling materials — gold, gems, marbles, artworks — that
-serve to **attract attention to particular areas** of the building."
+- Bare: the Temple of Venus, the theatre, the triumphal cars, the three doors.
+- **Only where a source documents cloth.** Nothing documents hangings at the doors or in
+  the theatre; Leda's team, by contrast, has "traces of blue silk twisted with gold and
+  silver in true-love knots, gold poitrels set with pearl" (`PROCESSIONS.md`), which is
+  documented and unbuilt.
+- **Already built, do not rebuild:** the curtain of Hymen at the Cythera fountain, two
+  parted panels with their tie-rings, the ΥΜΗΝ plaque and the Greek motto.
+- **Audit the gold** while there: move it off surfaces it merely gilds.
 
-- **Build the literal cloths.** `_drape()` exists and four now hang in the court of
-  Eleuterylida, framing the throne. Still bare: the Temple of Venus, the theatre, the
-  triumphal cars, the three doors.
-  **NB — the curtain of Hymen at the Cythera fountain is ALREADY BUILT** (two parted
-  panels drawn back against the sapphire and emerald columns, the tie-rings on their
-  rod, the ΥΜΗΝ plaque and the ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ motto). It was rebuilt from
-  scratch on 2026-09-05 by someone who did not grep first, and the duplicate was
-  reverted. See `RECIPES/model-an-asset.md` step 0.
-- **Audit the gold.** Precious material should mark *where to look* — a threshold, a
-  throne, the panel that carries the inscription — not spread evenly as richness. Where
-  the world gilds a surface for its own sake, move it somewhere that means something.
-  → `ARCHITECTURE.md` §0.
-
-
-### 0d. The colossal horse is built — and Lefaivre turns out to be readable (2026-09-05)
-Five catalogued woodcuts (#6–#10) and nothing in the world; the first monument of the
-piazza, before the elephant. Built with its pedestal, the two figured sides under
-**AMISSIO** and **TEMPVS**, the two garlanded ends carrying **D · AMBIG · D · D** and
-**EQVVS INFOELICITATIS**, **ΓΕΝΕΑ** across the forehead, and the cupids it has bucked off.
-
-- **`Liane_Lefaivre_…Re_Cognizing_th.md` is 15,878 lines of extractable prose.**
-  `ARCHITECTURE.md` and `RESEARCHPASSFORVR.md` both said it was an image-only scan that
-  needed OCR before the next architecture pass, and both were wrong; the horse was built
-  entirely from her pp. 256–257 and every detail checked out. **The single source those
-  documents said would change framings is available now.** Architecture is due a re-read
-  against it.
-- **The beasts now have a declared `animal` variant, and its `massed` rung is PENDING —
-  attempted and rejected.** The build was: a deep chest and sloping croup instead of one
-  barrel, withers over the shoulder, an arched two-segment tapered neck, legs jointed
-  through knee, cannon, pastern and hoof, and per-species proportions. Every individual
-  part was more anatomically correct than the primitive, **and the silhouette was worse**:
-  the head came down and forward, the neck read short, and the colossal horse stopped
-  reading as a horse at forty paces — which is the only distance that matters for
-  something on a plinth. A/B'd in the world and the primitive won, so the primitive was
-  kept and the massed code reverted rather than shipped.
-  **What the next attempt should do differently:** hold the primitive's *silhouette* fixed
-  and add mass only where it does not change the outline — shoulder and stifle inside the
-  existing barrel, a jaw under the existing skull, hooves in place of the existing feet —
-  and check the result as a *black shape against the sky* before checking it lit. The
-  lesson is the same one the painted figures taught: at this register the outline is the
-  asset, and detail that fights it is a downgrade.
-- The pedestal's figured sides use the generic `_reliefTexture` crowd. The **dance of the
-  seven couples** deserves its own drawing: fourteen figures, alternating, linked
-  same-sex, each masked laughing in front and weeping behind.
-
-
-### 0c. The hieroglyph vocabulary is thin (2026-09-05)
-Ted: *"poliphilo trying to interpret pseudo heiroglyphics has to be a leg of the tour."*
-Done — tour stop 4, *Reading the Hieroglyphs*, and a stele at the elephant carrying the
-signs above and Poliphilo's reading of them below (`DECISIONS.md`). What is still weak:
-
-- ~~The sign vocabulary was four shapes repeating.~~ **Done the same day:**
-  `HPWorldScene.SIGNS` is now fifteen drawn signs — eye, vulture, fish-hook, circle,
-  anchor, dolphin, bull's skull, ant, elephant, altar, ewer, rudder, grain, sun, palm —
-  and `_frieze(..., { signs: [...] })` spells a named sequence instead of drawing at
-  random, so two bands no longer come out as the same marks. The stele's upper line is
-  the six Priki actually names on these inscriptions; the lower is the vocabulary of the
-  sentence. **Which signs are attested and which are not is documented on `SIGNS` itself**
-  — no sign-by-sign reading of these bands exists in the corpus, and none is asserted.
-  Every other hieroglyph band in the world (the portal piers, the obelisks) inherits the
-  richer vocabulary automatically.
-- **The Polyandrion's five hieroglyphic medallions** (#88–#92) are catalogued and unbuilt.
-  Its two *documented* inscriptions now are: the dedicatory frieze (`D · M · S ·
-  CADAVERIBVS AMORE FVRENTIVM MISERABVNDIS POLYANDRION`) and the owl-and-lamp device of
-  #93 with Poliphilo's reading of it, `VITAE LETHIFER NVNTIVS`. The five medallions have
-  no reading anywhere in the corpus, so building them means building five devices nobody
-  can gloss — worth doing as *unread* signs, but say so.
-- ~~The bridge hieroglyphs do not exist.~~ **Wrong — they do.** `_buildBridge` already
-  carries the ring, the anchor and the dolphin twined about it, cut as real geometry on the
-  inner face of *both* parapets so a walker reads them in passing, with the
-  `ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ / SEMPER FESTINA TARDE` plaque on one side and the Aldine afterlife
-  on the other. Checked, 2026-09-05.
-
-
-### 0b. The chess ballet is built — what it opens (2026-09-05)
-Ted: *"we need to do the human chess match which the annotators to the buffalo copy of HP
-were concerned about in their marginalia."* Built as the station `chess` (see
-`DECISIONS.md`). It leaves three threads:
-
-- **The rest of the Buffalo hands.** `hp.db` has five (A–E) and this used one. Hand B is
-  the only annotator in Russell's whole census who identifies **Hebrew roots**, and also
-  traces Plinian sources for wines, laws and architecture; Hand D is an architect's hand
-  that labels features in Latin and once crosses out Hand A's comment to replace it. Those
-  are two more commentary layers the world could carry.
-- **The other marked folios.** `folio_descriptions` has full records for **b5r** (the
-  *ambiguous gods* read as hermaphrodite metals) and **c6v** (Bacchus and Ceres as Sol and
-  Luna) with the same depth as h1r. Both are stations' worth of content and neither is used.
-- **The moves are a script, not a game.** The book calls it a *ballo in figura del gioco di
-  scacchi* and the annotators recorded only who won, so a scripted ballet is the honest
-  reading — but making the board *playable* against the annotators' three outcomes is the
-  obvious next move, and `GAMIFYVRHP.md` already proposes it.
-
-### 0a. Loose ends from removing the Atalanta side (2026-09-05)
-The site is HP-only now (`DECISIONS.md`). Open questions it leaves:
-
-- **The `/v1/` and `/v2/` archives still contain the full Atalanta site**, linked from the
-  landing page as earlier releases. Kept deliberately — but if "embarrassingly crude" covers
-  those too, they can be pulled in one commit.
-- **`lab/emblem5.html`** (the emblem depth-methods lab) is still in the tree. Not linked
-  from anywhere and not part of the site, so left alone.
-- **The dormant Atalanta modules** — `AFWorldScene.js`, `EmblemScene.js`,
-  `ArchivesScene.js`, `src/data/af_*.js`, `images/emblems/` (51 plates, the largest image
-  set in the repo) — are unreferenced weight. Deleting them is a one-line `git rm`; held
-  back only in case the parallel session has uncommitted work in them.
-- **The repository is still called `EmblemsIn3d`** and the canonical URL is still
-  `emblems-in-3d.vercel.app`. Renaming either breaks every existing link, so only the
-  *displayed* name changed. Ted's call whether to rename.
-
-
-### 0. Follow-ups opened by the full-book tour pass (2026-09-05)
-The Novel tour now runs all 38 chapters (34 stops). Writing it exposed geometry the world
-does not yet have:
-
-- **Book II has no scenes at all.** Its thirteen stops are staged at dream stations by
-  design (see `DECISIONS.md`), and each says so — but the temple of Diana, Polia's
-  bed-chamber and the priestess's throne are named in the plates (#152–#168) and modelled
-  nowhere. A decision is needed on whether Book II ever gets its own geography.
-- **The five-senses bath-house** (ch. VI–VII) is not built; the stop is staged at the
-  mainland fountain.
-- **The water-labyrinth** of ch. IX — seven rings, a one-way current, a beast in each —
-  is the book's clearest allegory and does not exist. The stop is staged at the Planetary
-  Palace.
-- **The Temple of Venus rite** (ch. XVIII: the seven virgins, the altar, the rose-bush
-  springing to the cupola) has ten plates and no geometry.
-- Two stops carry `"wc": []` because no genuine plate is in `images/woodcuts/`: **the Great
-  Portal** (ch. IV) and **the Three Doors** (ch. XII–XIII). Source those two plates.
-
-
-### 1. Architecture — what the detail pass has still not reached "well detailed" everywhere
-Goal set 2026-09-05: *"make sure we have all the parts we need of each fountain built and
+### 2. The architecture the detail pass has not reached
+Ted's standing goal: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*
 
-- **Cythera had its first detail pass on 2026-09-05:** the **peristyle** that bounds the
-  prati on the inside (plate #121, named in `GARDENS.md` and built nowhere) is now a
-  24-column corinthian colonnade with a circular entablature, open at the four crossroads;
-  the **seven trophies of the disarmed gods** (#130–#136) line the road up from the landing,
-  **including QVIS EVADET / NEMO**, which the tour had cited at two stops while the world
-  had none of it; and the prati topiary is now the plates' **named figures** — the box man
-  carrying two towers and an arch (#117), the mushroom (#120), the three peacocks on their
-  altar-vase (#127), the ring-tree on its altar (#116/#125) — instead of generic spheres.
-  The tiger-skin and the tunic are cut to their own outlines on an alpha canvas rather than
-  hung as striped rectangles, and are drawn in ink in woodcut mode.
-- **Still untouched by the detail pass:** the Bridge, and the Cythera **theatre** proper
-  (the amphitheatre of plate #147 — the tiers exist as terraces but the theatre's own
-  architecture does not).
-  Apply the shared classical members (`_column`, `_entablature`, `_steps`, `_doorway`).
-- The **second** fountain of the FIVE_SENSES section (`woodcut_catalog` #22) is not built
-  as a distinct feature. (#23, the third, is now the mainland fountain with its Graces,
-  harpies and griffins.)
+- The **Bridge**, and the Cythera **theatre** proper — the amphitheatre of plate #147. The
+  tiers exist as terraces; the theatre's own architecture does not. Use the shared members.
+- The **second** FIVE_SENSES fountain (#22) is not built as a distinct feature. (#23, the
+  third, is the mainland fountain with its Graces, harpies and griffins.)
 - **Polia's torch extinguished in the altar-fountain** (#77) carries real narrative weight
   and does not exist.
 - The **Triumph of Cupid** on Cythera (#143–144) is a standard, not a procession.
+- The **Polyandrion's five hieroglyphic medallions** (#88–#92). No reading of them exists
+  anywhere in the corpus, so they can only be built as *unread* devices — worth doing, but
+  the tour must say plainly that they are unread. Its two documented inscriptions (the
+  `D · M · S ·` dedication and the owl-and-lamp `VITAE LETHIFER NVNTIVS`) are built.
 
-### 2. "Spare no effort to capture the details"
-Ted: *"since we have such rich lists of nouns related to the gardens and architectural and
-other structural features of the world of the HP we should be sparing no effort to capture
-the details."* The lexicon (`research/lexicon.html`) is now the index of those nouns — work
-back from it: any architectural or garden term in it that names a thing the world should
-contain is a candidate asset. Check the list against what is actually built.
+### 3. The Colossus — specified, attempted, reverted
+Full brief in `ARCHITECTURE.md`. The third of the piazza set that the sourcebook names
+("the horse, the Colose, and the Elephant"); the horse and elephant are built. **Build it
+as architecture, not as anatomy** — a vaulted hall in the rough outline of a body, entered
+by a doorway framed as a mouth, which is what "hybrid sculpture/building" means and what
+this toolkit can actually do. The supine-figure attempt read as a row of green domes.
+
+### 4. Lefaivre, and the sources still unread
+`md\Liane_Lefaivre_…Re_Cognizing_th.md` is 15,878 lines of readable prose, contrary to
+what this file and `ARCHITECTURE.md` used to say.
+
+- **Unread: her chapters 9 (*The Divine Body*, partly read) and 10 (*The Humanist Body*).**
+- Still image-only and unread: O'Neill's *Allegory of Love*, the Da Capo facsimile, the
+  Canone/Spruit emblematics volume.
+- **Sophia Rhizopoulou's three botanical papers are catalogued and not on disk** — the only
+  scholarship treating the HP as a botanical document, and `PLANTS.md` needs it. Findable
+  open-access. Cite her only as bibliography until someone fetches them.
+
+### 5. The marginalia not yet used
+`hp.db` holds 282 annotations and 15 hands; this session used Buffalo A, B, D and E and
+Chigi. Untouched:
+
+- **Siena O.III.38** — four hands, whose *line extensions* continue printed sentences as if
+  from knowledge of the text before it was printed. Fumagalli thought them Dominican, close
+  to the author. This project holds a 478-image facsimile of that copy.
+- **Como and Modena** — the Giovio brothers reading the HP as if it were Pliny.
+- **Sydney** — an annotator with no access to Book II, which Russell reads as evidence that
+  Book II was a late and separate composition.
+- **BL C.60.o.12** — Ben Jonson's hand, and the second alchemist.
+
+### 6. Book II has no geography
+Its thirteen stops are staged at the dream stations whose meaning they answer, and each
+says so — but the temple of Diana, Polia's bed-chamber and the priestess's throne are named
+in plates #152–#168 and modelled nowhere. **A decision is needed** on whether Book II ever
+gets ground of its own.
+
+### 7. Smaller, still open
+- The **five-senses bath-house** (ch. VI–VII) and the **water-labyrinth** of ch. IX — the
+  book's clearest single allegory — are not built; their stops are staged elsewhere.
+- The **Temple of Venus rite** (ch. XVIII) has ten plates and no geometry.
+- Two stops carry `"wc": []` because no genuine plate is in `images/woodcuts/`: **the Great
+  Portal** (ch. IV) and **the Three Doors** (ch. XII–XIII). Source those two plates.
+- `_carvedTexture('hieroglyph')` now draws fifteen named signs and `_frieze` can spell a
+  sequence; the **portal piers and the obelisks still take the default random line** and
+  could be given real ones.
+- **Work the lexicon back against the world.** `research/lexicon.html` indexes 101 of the
+  book's nouns; any architectural or garden term in it that names a thing the world should
+  contain is a candidate asset. Nobody has checked the list against what is built.
+- The **`/v1/` and `/v2/` archives still contain the full Atalanta site**, linked from the
+  landing page as earlier releases, and the **dormant Atalanta modules** (`AFWorldScene.js`,
+  `EmblemScene.js`, `ArchivesScene.js`, `af_*.js`, `images/emblems/`) are unreferenced
+  weight. Both are one commit away if Ted wants them gone.
+- The repository is still called **EmblemsIn3d** and the canonical URL is still
+  `emblems-in-3d.vercel.app`. Only the *displayed* name changed. Ted's call.
 
 ---
 
 ## Done
+
+*2026-09-05, the long session.*
+
+- **The site is the Hypnerotomachia alone** — the Atalanta worlds, tours, games, plates
+  atlas and archives graph removed; the app opens in the Dream Garden; the landing page and
+  README rewritten around the book.
+- **The tour covers the whole book** — 37 stops across all 38 chapters and both parts,
+  253 notes, 25 cross-references, and every `half: "ours"` chapter deep-linking to the
+  parallel text.
+- **The Human Chess Match** — station and stop, built from the Buffalo and Chigi marginalia,
+  keeping the book's inversion (queens in gold, kings in silver) because Hand E's whole
+  reading turns on it.
+- **Reading the Hieroglyphs** — a stop, a stele carrying the signs above and Poliphilo's
+  reading below, and a vocabulary of fifteen drawn signs that `_frieze` can spell in
+  sequence.
+- **The Winged Horse of Unhappiness** — the piazza's first monument, five catalogued plates
+  and nothing built; AMISSIO and TEMPVS, `D · AMBIG · D · D`, ΓΕΝΕΑ, the bucked cupids.
+- **The Polyandrion names itself** — the `D · M · S ·` dedication and the owl-and-lamp
+  device with Poliphilo's reading of it.
+- **Cythera's first detail pass** — the peristyle (#121), the seven trophies of the
+  disarmed gods (#130–#136) including QVIS EVADET / NEMO, and the plates' named topiary.
+- **The conspectus board** at the Great Portal — sixteen members of the order named in the
+  book's own words, after the Buffalo annotators' labelled pyramid.
+- **The court is dressed** — four hangings framing Eleuterylida's throne.
+- **Four Buffalo hands put to work** — A and B arguing over the *Equus Seianus* on the
+  horse; B's Greek etymology deducing that Polia is really **Lucretia**, and his Hebrew
+  roots (unique in Russell's census); D and E reading the same Bacchus-and-Ceres epigram
+  as ripening fruit and as Sol and Luna; E's Geberian gloss on `D · AMBIG · D · D` (b5r)
+  and his self-correction on *Mercuriale Moly*; and their labelled Great Pyramid, which
+  is the ancestor of this whole project.
+- **The system files** — `ROUTER.md`, eight `RECIPES/`, `15scholars.md`, a thinned
+  `CLAUDE.md`.
+- **Three reverts, kept as findings** — the massed animals, the supine colossus, and a
+  duplicate curtain of Hymen. The lessons are in `AssetVariants.js`, `ARCHITECTURE.md` and
+  `RECIPES/model-an-asset.md` step 0.
+
 
 - **The figure cutouts finished** *(2026-09-05)* — crops tightened so the grove's trunks no
   longer come along; **Mercury** cut from the Primavera so the world's male characters are
