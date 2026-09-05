@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emblem V — depth methods lab</title>
+<style>
+  :root { --ink:#2b2620; --paper:#e9e2cf; }
+  * { box-sizing: border-box; }
+  html,body { margin:0; height:100%; background:#cfc7b2; color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif; overflow:hidden; }
+  #c { position:fixed; inset:0; display:block; width:100%; height:100%; }
+  .hud { position:fixed; z-index:10; }
+  #bar { top:0; left:0; right:0; display:flex; gap:.4rem; align-items:center; flex-wrap:wrap;
+    padding:.5rem .7rem; background:linear-gradient(#000a,#0000); color:#f4efe2; font-size:14px; }
+  #bar b { font-variant:small-caps; letter-spacing:.03em; }
+  .btn { cursor:pointer; border:1px solid #fff6; background:#fff2; color:#f4efe2;
+    padding:.28rem .6rem; border-radius:4px; font:inherit; font-size:13px; }
+  .btn.active { background:#f4efe2; color:#221; border-color:#f4efe2; font-weight:600; }
+  .btn:hover { background:#fff5; }
+  #desc { position:fixed; left:0; right:0; bottom:0; z-index:10; text-align:center;
+    padding:.55rem 1rem; background:linear-gradient(#0000,#000b); color:#f4efe2; font-size:14px; line-height:1.4; }
+  #desc i { color:#e7d9a8; font-style:italic; }
+  #hint { position:fixed; right:.7rem; top:3.2rem; z-index:10; text-align:right;
+    color:#3a342a; font-size:12px; opacity:.8; line-height:1.6; }
+  #load { position:fixed; inset:0; z-index:30; display:flex; align-items:center; justify-content:center;
+    background:#cfc7b2; color:#4a4436; font-size:18px; font-variant:small-caps; letter-spacing:.05em; }
+  kbd { background:#0003; border:1px solid #0002; border-radius:3px; padding:0 .3em; font-family:inherit; }
+  #ref { position:fixed; left:.7rem; bottom:3.4rem; z-index:10; width:148px; margin:0;
+    border:2px solid #0004; box-shadow:0 3px 12px #0006; border-radius:2px; opacity:.92; background:#fff; }
+  #ref img { display:block; width:100%; }
+  #ref span { display:block; font-size:10px; text-align:center; color:#4a4436; padding:2px 0; background:#efe9d8; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="load">building the four dioramas…</div>
+
+<div id="bar" class="hud">
+  <b>Emblem&nbsp;V&nbsp;·&nbsp;the toad at the breast</b>
+  <span style="opacity:.55">— four ways to give it depth —</span>
+  <span style="flex:1"></span>
+  <button class="btn" data-m="0">1 · Cut-out theatre</button>
+  <button class="btn" data-m="1">2 · Thick cut-outs</button>
+  <button class="btn" data-m="2">3 · Carved relief</button>
+  <button class="btn" data-m="3">4 · Sculptural</button>
+</div>
+
+<div id="hint" class="hud">
+  click to look · <kbd>W A S D</kbd> walk · <kbd>Esc</kbd> release<br>
+  keys <kbd>1</kbd>–<kbd>4</kbd> switch method · <kbd>R</kbd> reset view
+</div>
+
+<figure id="ref" class="hud">
+  <img src="../images/emblems/emblem-05-crop.png" alt="the original woodcut">
+  <span>the original, 1618</span>
+</figure>
+
+<div id="desc" class="hud"></div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js" } }
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+const IMG = '../images/cutouts/emblem-05/';
+const PLATE = '../images/emblems/emblem-05-crop.png';
+
+const METHODS = [
+  { name:'Cut-out theatre',
+    desc:'The engraving’s own figures &amp; buildings as flat standees at staggered depths — a paper toy-theatre. Walk and the layers <i>part in parallax</i>. This <i>is</i> the print, given air between its parts.' },
+  { name:'Thick cut-outs in a built set',
+    desc:'The same cut-outs, but each given real thickness, standing in a townscape of massed buildings you can walk between. Solid, not paper.' },
+  { name:'Carved relief panel',
+    desc:'The whole plate as one bas-relief — the engraved lines pressed into stone, caught by a raking light. A carved monument you approach.' },
+  { name:'Sculptural rebuild',
+    desc:'Man, woman, toad and town modelled as true forms, posed to the engraving. The most volume — and the furthest from the printed line.' },
+];
+
+// ---------- renderer / scene ----------
+const canvas = document.getElementById('c');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias:true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0xd8d0bb);
+scene.fog = new THREE.Fog(0xd8d0bb, 28, 66);
+
+const camera = new THREE.PerspectiveCamera(62, 1, 0.05, 300);
+camera.rotation.order = 'YXZ';
+const START = { x:0, y:1.65, z:9.5, yaw:0, pitch:-0.02 };
+
+scene.add(new THREE.HemisphereLight(0xfbf6e9, 0x8a836f, 1.05));
+const key = new THREE.DirectionalLight(0xfff4e2, 1.1);
+key.position.set(-6, 13, 11); key.castShadow = true;
+key.shadow.mapSize.set(2048,2048); key.shadow.camera.near = 1; key.shadow.camera.far = 70;
+key.shadow.camera.left=-24; key.shadow.camera.right=24; key.shadow.camera.top=24; key.shadow.camera.bottom=-24;
+key.shadow.bias = -0.0006; scene.add(key);
+const fill = new THREE.DirectionalLight(0xeef0ff, 0.35); fill.position.set(8,6,-6); scene.add(fill);
+const rake = new THREE.DirectionalLight(0xffffff, 0.0); rake.position.set(-15, 3.5, 7); scene.add(rake);
+
+const floorMat = new THREE.MeshStandardMaterial({ color:0xcbc3ad, roughness:0.97 });
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(160,160), floorMat);
+floor.rotation.x = -Math.PI/2; floor.receiveShadow = true; scene.add(floor);
+const grid = new THREE.GridHelper(160, 80, 0x9c957f, 0xbdb6a0);
+grid.material.opacity = 0.20; grid.material.transparent = true; grid.position.y = 0.002; scene.add(grid);
+
+// ---------- textures ----------
+const TL = new THREE.TextureLoader();
+const maxAniso = renderer.capabilities.getMaxAnisotropy();
+function load(name){
+  return new Promise((res,rej)=> TL.load(name, t=>{
+    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = maxAniso;
+    t.minFilter = THREE.LinearMipmapLinearFilter;
+    res(t);
+  }, undefined, rej));
+}
+const FILES = {
+  pair:'woman.png', woman:'man_old_man.png', house:'building_house.png',
+  house2:'building_house_02.png', block:'castle.png', block2:'castle_02.png',
+  temple:'castle_temple.png', tower:'tower.png',
+};
+const T = {};
+const jobs = Object.entries(FILES).map(([k,f]) => load(IMG+f).then(t=>T[k]=t));
+jobs.push(load(PLATE).then(t=>{ t.generateMipmaps=false; t.minFilter=THREE.LinearFilter; T.plate=t; }));
+
+// ---------- builders ----------
+function aspect(tex){ const i = tex.image; return i ? i.width/i.height : 1; }
+const INK = 0x6f6a5c, STONE = 0xbfb7a2, DARKINK = 0x4a4638;
+
+// flat unlit printed standee (method 1)
+function standee(tex, h, {x=0,y=null,z=0}={}){
+  const w = h*aspect(tex);
+  const mat = new THREE.MeshBasicMaterial({ map:tex, transparent:true, alphaTest:0.35, side:THREE.DoubleSide });
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w,h), mat);
+  m.position.set(x, y==null ? h/2 : y, z);
+  m.renderOrder = -z; // stable front-to-back
+  return m;
+}
+
+// cut-out given thickness (method 2)
+function thickCard(tex, h, {x=0,z=0,depth=0.18}={}){
+  const w = h*aspect(tex);
+  const g = new THREE.Group();
+  const face = new THREE.MeshStandardMaterial({ map:tex, transparent:true, alphaTest:0.4, roughness:0.9 });
+  const front = new THREE.Mesh(new THREE.PlaneGeometry(w,h), face); front.position.z = depth/2; front.castShadow = true;
+  const back = front.clone(); back.rotation.y = Math.PI; back.position.z = -depth/2;
+  const core = new THREE.Mesh(new THREE.BoxGeometry(w*0.86, h*0.95, depth),
+    new THREE.MeshStandardMaterial({ color:0x8d8570, roughness:0.95 }));
+  core.castShadow = true;
+  g.add(core, front, back); g.position.set(x, h/2, z);
+  return g;
+}
+
+// a massed gabled house (method 2 set + method 4)
+function house(tex, {x=0,z=0,w=5,h=6,d=4,roof=2.2, rot=0}={}){
+  const g = new THREE.Group();
+  const stone = new THREE.MeshStandardMaterial({ color:STONE, roughness:0.94 });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(w,h,d), stone);
+  body.position.y = h/2; body.castShadow = body.receiveShadow = true; g.add(body);
+  // proper gable roof: a triangular prism extruded through the depth
+  const tri = new THREE.Shape();
+  tri.moveTo(-w/2, 0); tri.lineTo(w/2, 0); tri.lineTo(0, roof); tri.closePath();
+  const rgeo = new THREE.ExtrudeGeometry(tri, { depth:d, bevelEnabled:false });
+  rgeo.translate(0, 0, -d/2);
+  const roofM = new THREE.Mesh(rgeo, new THREE.MeshStandardMaterial({ color:0x6f6857, roughness:0.95 }));
+  roofM.position.y = h; roofM.castShadow = roofM.receiveShadow = true; g.add(roofM);
+  // engraving façade laid flush on the front; transparent parts reveal the mass behind
+  if (tex){
+    const facade = new THREE.Mesh(new THREE.PlaneGeometry(w*0.98, h*0.98),
+      new THREE.MeshStandardMaterial({ map:tex, transparent:true, alphaTest:0.3, roughness:0.9 }));
+    facade.position.set(0, h/2, d/2 + 0.03); g.add(facade);
+  }
+  g.position.set(x, 0, z); g.rotation.y = rot;
+  return g;
+}
+
+// ---- method 1: cut-out theatre ----
+function buildTheatre(){
+  const g = new THREE.Group();
+  // far spires
+  g.add(standee(T.temple, 6.0, { x:-5.5, z:-15 }));
+  g.add(standee(T.tower, 6.2, { x:-1.5, z:-16 }));
+  // left town block + right houses (mid)
+  g.add(standee(T.block, 8.5, { x:-7.5, z:-9 }));
+  g.add(standee(T.block2, 4.6, { x:2.5, z:-11 }));
+  g.add(standee(T.house, 7.5, { x:7.5, z:-7 }));
+  g.add(standee(T.house2, 8.5, { x:9.5, z:-9.5 }));
+  // the figure group, front and centre
+  g.add(standee(T.pair, 3.4, { x:0, z:0 }));
+  return g;
+}
+
+// ---- method 2: thick cut-outs in a built set ----
+function buildThick(){
+  const g = new THREE.Group();
+  // built townscape (real massing) textured with the building cut-outs
+  g.add(house(T.house,  { x:7.5, z:-7,  w:6, h:8, d:6, roof:3.0 }));
+  g.add(house(T.house2, { x:11,  z:-10, w:6, h:9, d:6, roof:3.2 }));
+  g.add(house(T.block,  { x:-8,  z:-9,  w:9, h:8, d:6, roof:2.6 }));
+  g.add(house(null,     { x:-3,  z:-14, w:4, h:11, d:4, roof:3.4 })); // a plain far tower mass
+  // spires as thick cards behind
+  g.add(thickCard(T.temple, 6.0, { x:-5, z:-15, depth:0.3 }));
+  g.add(thickCard(T.tower, 6.2, { x:-1.5, z:-16, depth:0.3 }));
+  // the two figures as thick slabs on the plaza
+  g.add(thickCard(T.pair, 3.4, { x:0, z:0, depth:0.28 }));
+  return g;
+}
+
+// ---- method 3: carved relief ----
+function buildRelief(){
+  const g = new THREE.Group();
+  const ar = aspect(T.plate);
+  const H = 6.4, W = H*ar;
+  const geo = new THREE.PlaneGeometry(W, H, 420, Math.round(420/ar));
+  const mat = new THREE.MeshStandardMaterial({
+    color:STONE, roughness:0.85, metalness:0.02,
+    map:T.plate, displacementMap:T.plate, displacementScale:-0.95, displacementBias:0.5,
+  });
+  const panel = new THREE.Mesh(geo, mat); panel.castShadow = panel.receiveShadow = true;
+  panel.position.set(0, H/2 + 0.3, -1.2);
+  // a stone frame + plinth so it reads as a monument
+  const frameMat = new THREE.MeshStandardMaterial({ color:0x8f8873, roughness:0.9 });
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(W+0.9, H+0.9, 0.6), frameMat);
+  frame.position.set(0, H/2 + 0.3, -1.7); frame.castShadow = frame.receiveShadow = true;
+  const plinth = new THREE.Mesh(new THREE.BoxGeometry(W+1.8, 0.8, 2.2), frameMat);
+  plinth.position.set(0, 0.4, -1.5); plinth.castShadow = plinth.receiveShadow = true;
+  g.add(frame, panel, plinth);
+  g.userData.rake = true; // turn on the raking light for this one
+  return g;
+}
+
+// ---- method 4: sculptural rebuild ----
+function figureWoman(){
+  const g = new THREE.Group();
+  const m = new THREE.MeshStandardMaterial({ color:0xcdc6b2, roughness:0.85 });
+  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.62, 1.15, 24), m);
+  skirt.position.y = 0.575; g.add(skirt);
+  const bodice = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.2, 0.55, 18), m);
+  bodice.position.y = 1.32; g.add(bodice);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.15, 20, 16), m); head.position.y = 1.78; g.add(head);
+  const bun = new THREE.Mesh(new THREE.SphereGeometry(0.09, 12, 10), m); bun.position.set(0, 1.86, -0.12); g.add(bun);
+  // an arm reaching to the breast
+  const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.05, 0.4, 4, 8), m);
+  arm.position.set(0.16, 1.42, 0.18); arm.rotation.set(0.7,0,-0.5); g.add(arm);
+  g.traverse(o=>{ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; }});
+  return g;
+}
+function figureMan(){
+  const g = new THREE.Group();
+  const m = new THREE.MeshStandardMaterial({ color:0xbcb49e, roughness:0.85 });
+  const legs = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.16, 0.95, 16), m); legs.position.y = 0.48; g.add(legs);
+  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.24, 0.7, 16), m); torso.position.y = 1.25; g.add(torso);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.16, 20, 16), m); head.position.y = 1.72; g.add(head);
+  // a cloak: an open cone shell behind the shoulders
+  const cloak = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.6, 1.5, 20, 1, true, 0.2, Math.PI*1.25),
+    new THREE.MeshStandardMaterial({ color:0xa89e86, roughness:0.9, side:THREE.DoubleSide }));
+  cloak.position.set(0, 1.05, -0.12); g.add(cloak);
+  const arm = new THREE.Mesh(new THREE.CapsuleGeometry(0.06, 0.5, 4, 8), m);
+  arm.position.set(-0.2, 1.28, 0.28); arm.rotation.set(0.9,0,0.6); g.add(arm);
+  g.traverse(o=>{ if(o.isMesh){ o.castShadow=true; o.receiveShadow=true; }});
+  return g;
+}
+function figureToad(){
+  const g = new THREE.Group();
+  const m = new THREE.MeshStandardMaterial({ color:0x8f8a76, roughness:0.8 });
+  const body = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 12), m); body.scale.set(1.3,0.8,1.1); g.add(body);
+  for (const sx of [-1,1]){
+    const leg = new THREE.Mesh(new THREE.CapsuleGeometry(0.03,0.1,3,6), m);
+    leg.position.set(sx*0.12,-0.05,0.06); leg.rotation.z = sx*0.7; g.add(leg);
+  }
+  const e1 = new THREE.Mesh(new THREE.SphereGeometry(0.03,8,6), new THREE.MeshStandardMaterial({color:0x33302a}));
+  const e2 = e1.clone(); e1.position.set(-0.05,0.08,0.1); e2.position.set(0.05,0.08,0.1); g.add(e1,e2);
+  g.traverse(o=>{ if(o.isMesh) o.castShadow=true; });
+  return g;
+}
+function buildSculpt(){
+  const g = new THREE.Group();
+  // townscape massing
+  g.add(house(null, { x:7.5, z:-8,  w:6, h:8,  d:6, roof:3.0 }));
+  g.add(house(null, { x:11,  z:-11, w:6, h:9,  d:6, roof:3.2 }));
+  g.add(house(null, { x:-8,  z:-9,  w:8, h:7,  d:6, roof:2.6 }));
+  // a cathedral tower cluster far off
+  const tw = new THREE.Mesh(new THREE.BoxGeometry(2.4, 14, 2.4), new THREE.MeshStandardMaterial({color:STONE, roughness:0.95}));
+  tw.position.set(-3, 7, -18); tw.castShadow = true; g.add(tw);
+  const spire = new THREE.Mesh(new THREE.ConeGeometry(1.7, 5, 4), new THREE.MeshStandardMaterial({color:0x8f8873, roughness:0.95}));
+  spire.position.set(-3, 16.5, -18); spire.rotation.y = Math.PI/4; spire.castShadow = true; g.add(spire);
+  // the figures
+  const woman = figureWoman(); woman.position.set(0.85, 0, 0); woman.rotation.y = -0.5; g.add(woman);
+  const man = figureMan(); man.position.set(-0.35, 0, 0.15); man.rotation.y = 0.5; g.add(man);
+  const toad = figureToad(); toad.position.set(0.5, 1.35, 0.25); g.add(toad);
+  return g;
+}
+
+// ---------- assemble ----------
+let groups = [], active = 0;
+function show(i){
+  active = i;
+  groups.forEach((grp,k)=> grp.visible = k===i);
+  rake.intensity = groups[i]?.userData.rake ? 1.15 : 0.0;
+  key.intensity  = groups[i]?.userData.rake ? 0.55 : 1.1;
+  document.querySelectorAll('.btn').forEach(b=> b.classList.toggle('active', +b.dataset.m===i));
+  document.getElementById('desc').innerHTML =
+    `<b style="font-variant:small-caps">${METHODS[i].name}</b> — ${METHODS[i].desc}`;
+}
+
+Promise.all(jobs).then(()=>{
+  groups = [ buildTheatre(), buildThick(), buildRelief(), buildSculpt() ];
+  groups.forEach(g=> scene.add(g));
+  show(0);
+  document.getElementById('load').style.display = 'none';
+}).catch(err=>{
+  document.getElementById('load').textContent = 'failed to load assets: ' + err.message;
+  console.error(err);
+});
+
+// ---------- first-person controls ----------
+const st = { yaw:START.yaw, pitch:START.pitch, keys:new Set(), locked:false, dragging:false, px:0, py:0 };
+function reset(){ camera.position.set(START.x,START.y,START.z); st.yaw=START.yaw; st.pitch=START.pitch; }
+reset();
+const SENS = 0.0022;
+canvas.addEventListener('click', ()=>{ if(!st.locked) canvas.requestPointerLock?.(); });
+document.addEventListener('pointerlockchange', ()=> st.locked = document.pointerLockElement===canvas);
+document.addEventListener('mousemove', e=>{
+  if(st.locked){ st.yaw -= e.movementX*SENS; st.pitch -= e.movementY*SENS; }
+  else if(st.dragging){ st.yaw -= (e.clientX-st.px)*SENS*1.4; st.pitch -= (e.clientY-st.py)*SENS*1.4; st.px=e.clientX; st.py=e.clientY; }
+  st.pitch = Math.max(-1.2, Math.min(1.2, st.pitch));
+});
+canvas.addEventListener('mousedown', e=>{ if(!st.locked){ st.dragging=true; st.px=e.clientX; st.py=e.clientY; }});
+window.addEventListener('mouseup', ()=> st.dragging=false);
+// touch look
+canvas.addEventListener('touchstart', e=>{ const t=e.touches[0]; st.px=t.clientX; st.py=t.clientY; }, {passive:true});
+canvas.addEventListener('touchmove', e=>{ const t=e.touches[0]; st.yaw-=(t.clientX-st.px)*SENS*1.6; st.pitch-=(t.clientY-st.py)*SENS*1.6; st.pitch=Math.max(-1.2,Math.min(1.2,st.pitch)); st.px=t.clientX; st.py=t.clientY; }, {passive:true});
+
+window.addEventListener('keydown', e=>{
+  const k = e.key.toLowerCase();
+  if('1234'.includes(k)){ show(+k-1); return; }
+  if(k==='r'){ reset(); return; }
+  st.keys.add(k);
+});
+window.addEventListener('keyup', e=> st.keys.delete(e.key.toLowerCase()));
+document.querySelectorAll('.btn').forEach(b=> b.addEventListener('click', ()=> show(+b.dataset.m)));
+
+// ---------- loop ----------
+const clock = new THREE.Clock();
+function resize(){
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w,h,false); camera.aspect = w/h; camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+function tick(){
+  const dt = Math.min(0.05, clock.getDelta());
+  camera.rotation.set(st.pitch, st.yaw, 0);
+  const speed = (st.keys.has('shift') ? 10 : 5) * dt;
+  const fwd = new THREE.Vector3(-Math.sin(st.yaw), 0, -Math.cos(st.yaw));
+  const rgt = new THREE.Vector3(Math.cos(st.yaw), 0, -Math.sin(st.yaw));
+  const mv = new THREE.Vector3();
+  if(st.keys.has('w')||st.keys.has('arrowup')) mv.add(fwd);
+  if(st.keys.has('s')||st.keys.has('arrowdown')) mv.sub(fwd);
+  if(st.keys.has('d')||st.keys.has('arrowright')) mv.add(rgt);
+  if(st.keys.has('a')||st.keys.has('arrowleft')) mv.sub(rgt);
+  if(mv.lengthSq()>0){ mv.normalize().multiplyScalar(speed); camera.position.add(mv); }
+  camera.position.x = Math.max(-45, Math.min(45, camera.position.x));
+  camera.position.z = Math.max(-24, Math.min(45, camera.position.z));
+  camera.position.y = START.y;
+  renderer.render(scene, camera);
+  requestAnimationFrame(tick);
+}
+tick();
+window.__scene = scene; window.__camera = camera; // for headless checks
+</script>
+</body>
+</html>
