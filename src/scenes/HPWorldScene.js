@@ -63,6 +63,12 @@ export const HP_STATIONS = [
     pos: [0, -104], look: [0, -150], radius: 13 },
   { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358,
     pos: [0, -133.5], look: [0, -150], radius: 11, pitch: 0.05 },
+  // Appended after the island so the digit keys 1-9 keep their journey order.
+  // The chess ballet is at signature g8r-h1r, facsimile pages 111-113 — the
+  // Queen's entertainment after the banquet, and the last thing that happens
+  // at her palace before Logistica and Thelemia lead the dreamer away.
+  { key: 'chess',            name: 'The Human Chess Match',  folio: 111,
+    pos: [-32.5, 6], look: [-40, 6], radius: 8 },
 ];
 
 const EYE = 1.7;
@@ -314,6 +320,7 @@ export class HPWorldScene {
     this._buildDoorsWall();
     this._buildElephant();
     this._buildPalace();
+    this._buildChessBallet();
     this._buildQuinta();
     this._buildFountain();
     this._buildTriumphs();
@@ -2126,6 +2133,326 @@ export class HPWorldScene {
   }
 
   // ── Quinta Essentia (f.164) — east court ──────────────────────────────────
+
+  // ══ The Human Chess Match ══════════════════════════════════════════════
+  //
+  // Signature g8r-h1r (facsimile pp. 111-113). After the banquet, Queen
+  // Eleuterylida's nymphs dance a game of chess: thirty-two maidens on a
+  // chequered pavement, sixteen in silver and sixteen in gold, moving to music
+  // in three rounds, and when one piece takes another the two kiss before the
+  // taken one leaves the board.
+  //
+  // THE 1499 GIVES IT NO WOODCUT. `page_concordance` has `has_woodcut = 0` for
+  // all three pages: the most theatrical scene in the book is the one the
+  // printer did not illustrate. So this is built from the text and from what
+  // its readers wrote in the margins beside it, and from nothing else.
+  //
+  // Those readers are the reason it is here. It is the single passage the
+  // annotators worked hardest on, in two copies at once:
+  //
+  //   · BUFFALO (Buffalo & Erie County Public Library, 1499 — the most densely
+  //     annotated copy in Russell's census, five interleaved hands). HAND E, an
+  //     alchemist of the pseudo-Geber school, read the match as three rounds of
+  //     distillation and recorded the result of each. He called the game a
+  //     "chorea elegantissima" that was "festivamente iocando" (g8r).
+  //     Round 1, silver: 'Argentum', with a crescent moon drawn beside it, and
+  //       'Rex ex argento factus victor remanet.'
+  //     Round 2, silver again: 'argentum rex ex argento factus victor secunda
+  //       vice remanet.'
+  //     Round 3, gold at last — and here his hand falters and corrects itself:
+  //       'Rex ex auro factus victoriam ultimam et ultimo victor triumphat',
+  //       revised to '[Re]gina', 'aura', '☉ uestita', 'victrix', then cancelled
+  //       and closed simply with 'Auru(m)'.
+  //     (Russell 2014, pp. 188-190; `hp.db.folio_descriptions` h1r.)
+  //
+  //   · THE VATICAN CHIGI COPY (Inc.Stam.Chig.II.610), annotated by Fabio
+  //     Chigi, later Pope Alexander VII, who read the book as theatre: 'comincia
+  //     a descrivere il ballo in figura del gioco di scacchi cosa bella' (g8r),
+  //     'Torna di nuovo al gioco ò ballo' (g8v), 'terzo ballo ò gioco' (h1r).
+  //     He is the reader who calls it a *ballo* first and a game second.
+  //
+  // THE INVERSION IS THE POINT. The book dresses the QUEEN of both sides in
+  // gold and the KING of both sides in silver. Hand E saw at once that this is
+  // the wrong way round for his own system — in the Geberian schema Sol is gold
+  // and masculine — and read the whole match as the correction of it: a king
+  // *made out of silver* wins twice, and only on the third round does gold come
+  // out on top. So the liveries below are not decoration; they are the thing
+  // the marginalia is about, and they must stay as the book has them.
+  _buildChessBallet() {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const CX = -40, CZ = 6;
+    const SQ = 1.15;                      // a square, and a dancer's ground
+    const B = 8 * SQ;                     // the board, 9.2 units across
+
+    const light = lit ? S.mat({ color: 0xe4dccb, roughness: 0.55 }) : S.mat({ tone: 0.02, rim: 0 });
+    const dark  = lit ? S.mat({ color: 0x2e2a26, roughness: 0.5 })  : S.mat({ tone: 0.28, rim: 0 });
+    const gold  = lit ? S.mat({ color: 0xc9a244, metalness: 0.88, roughness: 0.28 }) : S.mat({ tone: 0.02 });
+
+    // ── the pavement ────────────────────────────────────────────────────
+    // A stylobate of two courses, then the chequer, then a moulded kerb: the
+    // dancers stand on a floor, not on a painted rectangle of grass.
+    this._m(new THREE.BoxGeometry(B + 2.4, 0.22, B + 2.4), this._darkStoneMat, CX, 0.11, CZ, { cast: false });
+    this._m(new THREE.BoxGeometry(B + 1.5, 0.18, B + 1.5), this._stoneMat, CX, 0.31, CZ, { cast: false, outline: true });
+    for (let f = 0; f < 8; f++) {
+      for (let r = 0; r < 8; r++) {
+        this._m(new THREE.BoxGeometry(SQ, 0.06, SQ), (f + r) % 2 ? light : dark,
+          CX + (f - 3.5) * SQ, 0.43, CZ + (r - 3.5) * SQ, { cast: false });
+      }
+    }
+    // the kerb is a FRAME, not a slab — four rails, so nothing lids the floor
+    for (const [dx, dz, w, d] of [[0, -(B / 2 + 0.36), B + 0.72, 0.72],
+                                  [0,  (B / 2 + 0.36), B + 0.72, 0.72],
+                                  [-(B / 2 + 0.36), 0, 0.72, B + 0.72],
+                                  [ (B / 2 + 0.36), 0, 0.72, B + 0.72]]) {
+      this._m(new THREE.BoxGeometry(w, 0.24, d), this._stoneMat, CX + dx, 0.52, CZ + dz,
+        { cast: false, outline: true });
+    }
+    this._frieze(CX, 0.66, CZ + B / 2 + 0.36, B, 0.2, 'meander');
+    this._frieze(CX, 0.66, CZ - B / 2 - 0.36, B, 0.2, 'meander');
+
+    // ── the enclosure: four corner posts and the Queen's canopy ─────────
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]) {
+      this._column(CX + sx * (B / 2 + 1.1), CZ + sz * (B / 2 + 1.1), 2.6,
+        { order: 'ionic', r: 0.15 });
+      this._circleCol(CX + sx * (B / 2 + 1.1), CZ + sz * (B / 2 + 1.1), 0.38);
+    }
+    // The queen watches from the east side, toward her palace.
+    const QX = CX + B / 2 + 2.6;
+    this._m(new THREE.BoxGeometry(2.6, 0.34, 3.0), this._stoneMat, QX, 0.17, CZ, { cast: false, outline: true });
+    this._m(new THREE.BoxGeometry(1.1, 0.5, 1.0), this._stoneMat, QX + 0.1, 0.59, CZ, { outline: true });
+    this._m(new THREE.BoxGeometry(1.16, 0.1, 1.06), gold, QX + 0.1, 0.89, CZ, { cast: false });
+    for (const sz of [-1, 1]) {
+      this._column(QX - 0.9, CZ + sz * 1.3, 2.5, { order: 'corinthian', r: 0.12 });
+      this._column(QX + 1.1, CZ + sz * 1.3, 2.5, { order: 'corinthian', r: 0.12 });
+    }
+    this._entablature(QX + 0.1, 2.6, CZ, 2.6, 3.0);
+    this._circleCol(QX, CZ, 1.8);
+
+    // ── the pieces ─────────────────────────────────────────────────────
+    // Sixteen a side. The liveries follow the book, INCLUDING its inversion:
+    // both queens in gold, both kings in silver.
+    // The two liveries have to be told apart across a nine-metre board in a
+    // bright garden, so the silver is cooled and the gold deepened until they
+    // separate; at the first values both sides read as cream.
+    const SILVER = 0xdde6f4, GOLD = 0xc8901c;
+    const BACK = ['rook', 'knight', 'bishop', 'queen', 'king', 'bishop', 'knight', 'rook'];
+    this._chess = { pieces: [], move: 0, round: 0, t: 0, phase: 'pause', mover: null, taken: null };
+
+    const sq = (f, r) => [CX + (f - 3.5) * SQ, CZ + (r - 3.5) * SQ];
+
+    const addPiece = (side, kind, f, r) => {
+      // the inversion: a queen wears gold whichever side she plays for, a king
+      // silver — which is the thing Hand E's whole reading turns on
+      const robe = kind === 'queen' ? GOLD
+                 : kind === 'king'  ? SILVER
+                 : side === 'gold'  ? GOLD : SILVER;
+      const g = this.cast.nymph({
+        name: side + '-' + kind + '-' + f,
+        robe,
+        h: kind === 'king' || kind === 'queen' ? 1.02 : kind === 'pawn' ? 0.9 : 0.95,
+        crowned: kind === 'king' || kind === 'queen',
+      });
+      const [x, z] = sq(f, r);
+      // the two sides face each other across the board
+      this._npc('chess_' + side + '_' + kind + '_' + f + '_' + r, g, x, z,
+        side === 'silver' ? 0 : Math.PI, { sway: 0.02 });
+      const p = { g, side, kind, f, r, home: [f, r], alive: true, x, z, ox: x, oz: z, off: 0 };
+      this._chess.pieces.push(p);
+      return p;
+    };
+
+    for (let f = 0; f < 8; f++) {
+      addPiece('silver', BACK[f], f, 0);
+      addPiece('silver', 'pawn', f, 1);
+      addPiece('gold',   BACK[f], f, 7);
+      addPiece('gold',   'pawn', f, 6);
+    }
+
+    // ── the three rounds ────────────────────────────────────────────────
+    // Not a chess engine: the book calls this a *ballo in figura del gioco di
+    // scacchi* — a dance in the figure of the game — and the annotators
+    // recorded only who won each round, never a move. So the ballet is
+    // scripted, and the only facts it asserts are the ones the margins carry:
+    // three rounds, captures sealed with a kiss, silver, silver, gold.
+    this._chess.rounds = [
+      { winner: 'silver', moves: [
+        ['silver', 4, 1, 4, 3, false], ['gold', 4, 6, 4, 4, false],
+        ['silver', 6, 0, 5, 2, false], ['gold', 1, 7, 2, 5, false],
+        ['silver', 5, 0, 2, 3, false], ['gold', 3, 6, 3, 4, false],
+        ['silver', 4, 3, 3, 4, true],  ['gold', 2, 5, 3, 4, true],
+        ['silver', 5, 2, 3, 4, true],  ['gold', 3, 7, 3, 4, true],
+        ['silver', 2, 3, 5, 6, true],  ['gold', 4, 7, 4, 6, false],
+        ['silver', 5, 6, 4, 6, true],
+      ] },
+      { winner: 'silver', moves: [
+        ['silver', 3, 1, 3, 3, false], ['gold', 3, 6, 3, 4, false],
+        ['silver', 2, 0, 5, 3, false], ['gold', 6, 7, 5, 5, false],
+        ['silver', 3, 0, 5, 2, false], ['gold', 5, 6, 5, 5, true],
+        ['silver', 5, 3, 5, 5, true],  ['gold', 6, 6, 5, 5, true],
+        ['silver', 5, 2, 5, 5, true],  ['gold', 4, 7, 3, 6, false],
+        ['silver', 5, 5, 3, 6, true],
+      ] },
+      { winner: 'gold', moves: [
+        ['gold', 4, 6, 4, 4, false],   ['silver', 4, 1, 4, 3, false],
+        ['gold', 5, 7, 2, 4, false],   ['silver', 1, 0, 2, 2, false],
+        ['gold', 3, 7, 5, 5, false],   ['silver', 6, 1, 6, 2, false],
+        ['gold', 5, 5, 5, 1, true],    ['silver', 4, 0, 5, 1, true],
+        ['gold', 2, 4, 5, 1, true],    ['silver', 3, 0, 3, 3, false],
+        ['gold', 5, 1, 4, 0, true],
+      ] },
+    ];
+
+    // ── the three plaques the margins wrote ─────────────────────────────
+    // One per round, on the west balustrade, in the annotator's own Latin.
+    const ROUND_PLAQUES = [
+      { main: 'ARGENTVM ☾', sub: 'I · REX EX ARGENTO FACTVS VICTOR REMANET' },
+      { main: 'ARGENTVM ☾', sub: 'II · VICTOR SECVNDA VICE REMANET' },
+      { main: 'AVRVM ☉',    sub: 'III · VICTORIAM VLTIMAM TRIVMPHAT' },
+    ];
+    ROUND_PLAQUES.forEach((p, i) => {
+      this._plaque(p, 1.55, 0.38, CX - B / 2 - 1.3, 1.15, CZ + (i - 1) * 2.4,
+        -Math.PI / 2, true);
+    });
+    // On the north kerb, low and small enough to read over rather than through:
+    // a banner at eye height in front of a board is a wall.
+    this._plaque({ main: 'CHOREA ELEGANTISSIMA', sub: 'THE HUMAN CHESS MATCH · f.111 · XXXII MAIDENS, XVI SILVER, XVI GOLD' },
+      1.9, 0.3, CX, 0.86, CZ + B / 2 + 1.05, 0, true);
+
+    // ── the musicians ──────────────────────────────────────────────────
+    // The game is danced to music. The site makes no sound (DECISIONS.md), so
+    // they are here to be seen playing, not heard.
+    for (let i = 0; i < 3; i++) {
+      const mz = CZ - 2.4 + i * 2.4;
+      const m = this.cast.nymph({ name: 'musician_' + i, robe: [0xa88ac0, 0x8aa0c8, 0xc08a9a][i], h: 0.95 });
+      this._npc('chess_musician_' + i, m, CX - B / 2 - 2.6, mz, Math.PI / 2, { sway: 0.04 });
+    }
+  }
+
+  // The ballet, advanced one step at a time. Written as a state machine that
+  // can only move forward — every phase has a duration and a next phase, so a
+  // missing piece or a bad square ends the move rather than stalling the world.
+  // (The dream loop's own hang was fixed the same way; see DreamMode.js.)
+  _chessUpdate(dt) {
+    const C = this._chess;
+    if (!C) return;
+    // off-station the ballet does not need to be simulated
+    if (Math.abs(this.walker.player.pos.x + 40) > 34 || Math.abs(this.walker.player.pos.z - 6) > 34) return;
+
+    const SQ = 1.15, CX = -40, CZ = 6;
+    const sqx = (f) => CX + (f - 3.5) * SQ, sqz = (r) => CZ + (r - 3.5) * SQ;
+    const ease = (u) => u * u * (3 - 2 * u);
+    C.t += dt;
+
+    const nextMove = () => {
+      C.mover = C.taken = null;
+      C.move += 1;
+      C.t = 0;
+      const round = C.rounds[C.round];
+      if (!round || C.move >= round.moves.length) { C.phase = 'roundEnd'; return; }
+      C.phase = 'move';
+    };
+
+    if (C.phase === 'pause') {
+      if (C.t > 1.2) { C.t = 0; C.phase = 'move'; }
+      return;
+    }
+
+    if (C.phase === 'roundEnd') {
+      if (C.t < 4.0) return;
+      // the pieces walk back to their squares and the next round begins
+      for (const p of C.pieces) {
+        p.alive = true; p.off = 0;
+        p.f = p.home[0]; p.r = p.home[1];
+        p.x = p.ox = sqx(p.f); p.z = p.oz = sqz(p.r);
+        p.g.position.set(p.x, 0, p.z);
+        p.g.visible = true;
+      }
+      C.round = (C.round + 1) % C.rounds.length;
+      C.move = -1;
+      nextMove();
+      C.phase = 'pause';
+      C.t = 0;
+      return;
+    }
+
+    const round = C.rounds[C.round];
+    const spec = round && round.moves[C.move];
+    if (!spec) { C.phase = 'roundEnd'; C.t = 0; return; }
+    const [side, f0, r0, f1, r1, captures] = spec;
+
+    if (C.phase === 'move') {
+      if (!C.mover) {
+        C.mover = C.pieces.find(p => p.alive && p.side === side && p.f === f0 && p.r === r0);
+        C.taken = captures
+          ? C.pieces.find(p => p.alive && p.side !== side && p.f === f1 && p.r === r1)
+          : null;
+        // a script that has drifted from the board must not stall the dance
+        if (!C.mover) { nextMove(); return; }
+        C.mover.ox = C.mover.g.position.x; C.mover.oz = C.mover.g.position.z;
+      }
+      const u = Math.min(1, C.t / 1.5);
+      const e = ease(u);
+      const tx = sqx(f1), tz = sqz(r1);
+      // the taken piece stands its ground; the mover comes to meet it, and
+      // stops a little short so the two are face to face rather than inside
+      // one another
+      const short = C.taken ? 0.42 : 0;
+      const dx = tx - C.mover.ox, dz = tz - C.mover.oz;
+      const len = Math.hypot(dx, dz) || 1;
+      C.mover.g.position.set(
+        C.mover.ox + dx * e - (dx / len) * short * e,
+        Math.sin(u * Math.PI) * 0.05,             // the dancer's step
+        C.mover.oz + dz * e - (dz / len) * short * e,
+      );
+      if (u >= 1) {
+        C.mover.f = f1; C.mover.r = r1;
+        C.t = 0;
+        C.phase = C.taken ? 'kiss' : 'settle';
+      }
+      return;
+    }
+
+    if (C.phase === 'kiss') {
+      // "when one piece takes another, they kiss before being sent off the
+      // board" — Russell 2014, p. 189, on the Buffalo annotator's reading
+      const u = Math.min(1, C.t / 1.4);
+      const lean = Math.sin(u * Math.PI) * 0.20;
+      if (C.mover) C.mover.g.rotation.x = lean;
+      if (C.taken) C.taken.g.rotation.x = -lean;
+      if (u >= 1) {
+        if (C.mover) C.mover.g.rotation.x = 0;
+        if (C.taken) C.taken.g.rotation.x = 0;
+        C.t = 0;
+        C.phase = 'exit';
+      }
+      return;
+    }
+
+    if (C.phase === 'exit') {
+      const u = Math.min(1, C.t / 1.8);
+      const e = ease(u);
+      if (C.taken) {
+        // taken pieces leave by their own side's edge and stand there watching
+        const edge = C.taken.side === 'silver' ? CZ - 4 * SQ - 2.2 : CZ + 4 * SQ + 2.2;
+        const lane = CX + ((C.taken.off || 0) - 3.5) * 0.55;
+        C.taken.g.position.set(
+          C.taken.g.position.x + (lane - C.taken.g.position.x) * e,
+          0,
+          C.taken.g.position.z + (edge - C.taken.g.position.z) * e,
+        );
+        if (u >= 1) {
+          C.taken.alive = false;
+          C.taken.off = C.pieces.filter(p => !p.alive && p.side === C.taken.side).length;
+        }
+      }
+      if (u >= 1) { C.t = 0; C.phase = 'settle'; }
+      return;
+    }
+
+    // 'settle' — a beat between moves, as a dance has
+    if (C.t > 0.7) nextMove();
+  }
 
   _buildQuinta() {
     const S = this.style;
@@ -4048,6 +4375,7 @@ export class HPWorldScene {
       rect(-27.5, -12.5, 14, 26),        // court of Eleuterylida slab
       rect(13, 25, 14.5, 25.5),          // Polia's garden slab
       rect(-28.5, -12.5, -6, 6),         // Planetary Palace slab
+      rect(-46.5, -33.5, -0.5, 12.5),    // the chess pavement and its enclosure
       circle(21.5, 0, 6.2),              // Quinta Essentia round
       circle(25.5, -3.4, 1.5), circle(25.5, 3.4, 1.5),
       rect(-14.5, 14.5, 10.6, 13.4),     // Three Doors wall
@@ -4222,6 +4550,7 @@ export class HPWorldScene {
         n.armR.rotation.z = n.aR - Math.sin(this._t * 0.9 + n.phase + 0.9) * 0.05;
       }
     }
+    this._chessUpdate(dt);
     // The meadow leans with the travelling gusts
     for (const f of this._meadows) f.update(this._t);
     // Cythera draws only from the shore southward (the haze covers the seam)

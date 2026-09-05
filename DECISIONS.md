@@ -2,6 +2,50 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — The Human Chess Match, built from the margins (Ted)
+
+Ted: *"we need to do the human chess match which the annotators to the buffalo copy of HP
+were concerned about in their marginalia."* Built as the station **`chess`**, west of the
+Planetary Palace, and as **stop 9 of 35** in the Novel tour.
+
+**The evidence, and the order it was used in.** The scene is at signature g8r–h1r
+(facsimile pp. 111–113). `page_concordance` records **`has_woodcut = 0` on all three
+pages**: the 1499 does not illustrate it. So the source order that `RECIPES/model-an-asset.md`
+lays down — plate first, then scholar — has no plate to start from, and the station is built
+from the text and from `hp.db.annotations` / `folio_descriptions` / `annotator_hands`, which
+is exactly what Ted asked for.
+
+**Buffalo Hand E** (Buffalo & Erie County Public Library, 1499 — five interleaved hands, the
+most densely annotated copy in Russell's census; Hand E an alchemist of the pseudo-Geber
+school) read the match as three rounds of distillation and recorded each result:
+
+| Round | Winner | Hand E, in the margin |
+|---|---|---|
+| I | silver | `Argentum` + a drawn crescent moon; `Rex ex argento factus victor remanet` |
+| II | silver | `argentum rex ex argento factus victor secunda vice remanet` |
+| III | gold | `Rex ex auro factus victoriam ultimam… triumphat`, revised to `[Re]gina`, `aura`, `☉ uestita`, `victrix`, then cancelled and closed with `Auru(m)` |
+
+**Fabio Chigi** (Vatican Chig.II.610) read the same pages as theatre: *comincia a descrivere
+il ballo in figura del gioco di scacchi cosa bella* (g8r), *Torna di nuovo al gioco ò ballo*
+(g8v), *terzo ballo ò gioco* (h1r).
+
+**The binding decision: keep the book's inversion.** The HP dresses the **queen of both
+sides in gold** and the **king of both sides in silver**. That is the wrong way round for
+Hand E's own system — Sol is gold and masculine — and it is precisely what his whole reading
+turns on: a king *made out of silver* wins twice, and gold only takes the third round. So
+the liveries are not decoration and must not be "corrected" to conventional chess colours by
+a later pass. (Russell 2014, pp. 188–190; `hp.db.folio_descriptions` h1r.)
+
+**Second decision: the ballet is scripted, not simulated.** The book calls it a *ballo in
+figura del gioco di scacchi* — a dance in the figure of the game — and the annotators
+recorded only who won each round, never a move. A chess engine would therefore be inventing
+evidence. The three rounds are a fixed script; the only facts asserted are the ones the
+margins carry: three rounds, captures sealed with a kiss before the taken piece leaves the
+board, silver, silver, gold. `_chessUpdate` is a forward-only state machine for the same
+reason `DreamMode` is — a missing piece or a stale square ends the move rather than stalling.
+
+Also corrected here: `ARCHITECTURE.md` said the ballet "is illustrated." It is not.
+
 ## 2026-09-05 — The site is the Hypnerotomachia alone (Ted)
 
 Ted: *"I'd like to remove all the atalanta stuff from the website as it's embarrassingly

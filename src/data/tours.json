@@ -426,6 +426,48 @@
         ]
       },
       {
+        "station": "chess",
+        "title": "The Human Chess Match",
+        "chapter": "XI",
+        "half": "dallington",
+        "lede": "After the banquet the queen has her nymphs dance a game of chess. Thirty-two maidens take the squares of a chequered pavement — sixteen in silver, sixteen in gold — and move to music through **three rounds**; when one piece takes another the two kiss before the taken one leaves the board. The 1499 gives this scene no woodcut at all: the most theatrical passage in the book is the one the printer did not illustrate. What survives instead is what its readers wrote in the margins beside it, and they wrote more here than almost anywhere else.",
+        "wc": [],
+        "notes": [
+          {
+            "type": "context",
+            "text": "This is the scene the annotators cared about. In the **Buffalo copy** (Buffalo & Erie County Public Library, 1499 — the most densely annotated copy in James Russell's census, five interleaved hands) and in **Fabio Chigi's Vatican copy** the same three pages carry more marginalia than the great architectural set-pieces do. The dance beat the buildings."
+          },
+          {
+            "type": "alchemical",
+            "text": "Buffalo **Hand E**, an alchemist of the pseudo-Geber school, read the match as three rounds of distillation and recorded each result. Round one, silver: *Argentum*, with a crescent moon drawn beside it, and *Rex ex argento factus victor remanet* — 'the king made out of silver remains victor.' Round two, silver again. Round three, gold at last — and there his hand falters: he writes *Rex ex auro factus victoriam ultimam… triumphat*, then revises *Rex* to *Regina*, *auro* to *aura*, *factus* to *☉ uestita*, *victor* to *victrix* — then cancels the queen and closes simply with *Aurum*. (Russell, 2014, pp. 189–190.)"
+          },
+          {
+            "type": "allegory",
+            "text": "**The inversion is the point.** The book dresses the *queen* of both sides in gold and the *king* of both sides in silver. In Hand E's system that is the wrong way round — Sol is gold and masculine — so he read the whole match as the correction of it: a king made out of silver wins twice, and only at the third playing does gold come out on top. Refinement is iterative; the highest element wins last, after repeated distillations."
+          },
+          {
+            "type": "literary",
+            "text": "Chigi read it as theatre, not chemistry. He marks the opening *comincia a descrivere il ballo in figura del gioco di scacchi cosa bella* — 'here he begins to describe the dance in the figure of the game of chess, a beautiful thing' — then *Torna di nuovo al gioco ò ballo* and *terzo ballo ò gioco*. He is the reader who calls it a **dance** first and a game second, and the only annotator in the study who marks the book like a script."
+          },
+          {
+            "type": "gloss",
+            "text": "*Chorea elegantissima* — 'a most elegant dance,' Hand E's own phrase for it, with *festivamente iocando*, 'playing festively.' The three plaques on the west kerb of the board carry his Latin for each round, in his order."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "A game whose rules are fixed, played by living women who kiss when they capture: the two halves of the book in one image. Order and desire are not opposites here — the pattern is what makes the touching legible."
+          },
+          {
+            "type": "myth",
+            "text": "Thirty-two figures on sixty-four squares is the chess of the period, and the HP's is among the earliest descriptions of a *living* chess game in European literature — the ancestor of the human chess still played in the square at Marostica."
+          },
+          {
+            "type": "architecture",
+            "text": "The board in this world is nine metres across, laid on a stylobate of two courses with a moulded kerb and four Ionic corner posts, and the queen watches from a canopy on the east side facing her palace. The pavement is built as a *floor* rather than a painted rectangle because the book's own architecture is built that way throughout."
+          }
+        ]
+      },
+      {
         "station": "quinta_essentia",
         "title": "Logistica and Thelemia",
         "chapter": "XI",

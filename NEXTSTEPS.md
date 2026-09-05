@@ -21,6 +21,24 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
+### 0b. The chess ballet is built — what it opens (2026-09-05)
+Ted: *"we need to do the human chess match which the annotators to the buffalo copy of HP
+were concerned about in their marginalia."* Built as the station `chess` (see
+`DECISIONS.md`). It leaves three threads:
+
+- **The rest of the Buffalo hands.** `hp.db` has five (A–E) and this used one. Hand B is
+  the only annotator in Russell's whole census who identifies **Hebrew roots**, and also
+  traces Plinian sources for wines, laws and architecture; Hand D is an architect's hand
+  that labels features in Latin and once crosses out Hand A's comment to replace it. Those
+  are two more commentary layers the world could carry.
+- **The other marked folios.** `folio_descriptions` has full records for **b5r** (the
+  *ambiguous gods* read as hermaphrodite metals) and **c6v** (Bacchus and Ceres as Sol and
+  Luna) with the same depth as h1r. Both are stations' worth of content and neither is used.
+- **The moves are a script, not a game.** The book calls it a *ballo in figura del gioco di
+  scacchi* and the annotators recorded only who won, so a scripted ballet is the honest
+  reading — but making the board *playable* against the annotators' three outcomes is the
+  obvious next move, and `GAMIFYVRHP.md` already proposes it.
+
 ### 0a. Loose ends from removing the Atalanta side (2026-09-05)
 The site is HP-only now (`DECISIONS.md`). Open questions it leaves:
 

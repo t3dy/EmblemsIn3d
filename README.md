@@ -26,13 +26,15 @@ ever printed, and almost nobody finishes it.
 
 This project does three things with it.
 
-1. **Builds it.** Thirteen stations — the dark wood, the great portal, the queen's court,
+1. **Builds it.** Fourteen stations — the dark wood, the great portal, the queen's court,
    the three doors, the elephant and obelisk, the planetary palace, the Quinta Essentia,
    the fountain of Venus, the crossing to Cythera, Polia's garden, the triumphs, the
-   Polyandrion, and the gardens and theatre of Cythera — as one continuous ground you walk,
-   with the geometry sourced from the plates rather than imagined.
-2. **Reads it.** A 34-stop guided tour covering **all thirty-eight chapters and both
-   parts**, from the dark wood to Polia's epitaph, with 222 typed commentary notes under
+   Polyandrion, the gardens and theatre of Cythera, and the Queen's **human chess match** —
+   as one continuous ground you walk, with the geometry sourced from the plates rather than
+   imagined. Where there is no plate, as with the chess ballet, it is built from the text
+   and from what the book's early readers wrote in the margins beside it.
+2. **Reads it.** A 35-stop guided tour covering **all thirty-eight chapters and both
+   parts**, from the dark wood to Polia's epitaph, with 230 typed commentary notes under
    nine colour-coded lenses the reader switches on and off. Every interpretive claim traces
    to a named scholar or to the annotators' own evidence.
 3. **Finishes it.** Robert Dallington's *Strife of Loue in a Dreame* (London, 1592) is the
@@ -66,7 +68,7 @@ touching deploy configuration — publishing to one host does **not** publish to
 |---|---|
 | **Walk Freely** | The whole world at your own pace. W A S D / arrows to walk, Shift to run, drag to look, digits to jump between stations. As you approach a wonder its commentary rises to meet you, filtered by the same lenses the tour uses. Named figures — the wolf, the Queen, the five sense-nymphs, Polia — keep their places. |
 | **Poliphilo's Dream** | The plot in twelve scenes, narrated from the 1499 text, with a reaction-choice at each wonder — wonder, desire, melancholy or dread — that the scene answers in light. No commentary; this one is the game. The loop is hardened so it cannot hang: a travel watchdog, a direct arrival path, and a fallback for every missing beat. |
-| **The Novel** | The guided tour: 34 stops across all 38 chapters, the 1499 woodcut at each stop that has one, and a deep link into the parallel edition at every chapter. Chapters I–XVI point to Dallington's 1592 English; chapter XVII onward is this project's own translation. |
+| **The Novel** | The guided tour: 35 stops across all 38 chapters, the 1499 woodcut at each stop that has one, and a deep link into the parallel edition at every chapter. Chapters I–XVI point to Dallington's 1592 English; chapter XVII onward is this project's own translation. |
 
 ### The nine commentary lenses
 

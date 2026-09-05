@@ -136,8 +136,20 @@ Related marginalia worth mining, same table:
 - **h1r** — the chess ballet of 32 maidens, 16 silver and 16 gold, read as **three
   rounds of distillation**, silver winning the first.
 
-That last one is a whole station we do not have: the Queen's chess ballet is in the
-text, is illustrated, and has a documented alchemical reading attached to it.
+**BUILT 2026-09-05** as the station `chess`, west of the Planetary Palace.
+
+One correction to the line that stood here: the chess ballet **is not illustrated**.
+`page_concordance` records `has_woodcut = 0` for all three of its pages (g8r, g8v,
+h1r) — the most theatrical scene in the book is the one the printer left unpictured,
+which is exactly why the marginalia around it are so thick. The station is therefore
+built from the text and from its readers, and from nothing else.
+
+What it carries: a chequered pavement of sixty-four squares on a two-course
+stylobate, thirty-two figures (sixteen silver, sixteen gold, **both queens in gold
+and both kings in silver, as the book has them**), the Queen's canopy on the east
+side facing her palace, three musicians, and the three rounds danced in a loop —
+captures sealed with a kiss, the taken piece walking off to her own side's edge.
+Hand E's Latin for each round is cut on three plaques along the west kerb.
 
 ## What to build, ranked
 
