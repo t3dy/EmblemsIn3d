@@ -69,6 +69,10 @@ export const HP_STATIONS = [
   // at her palace before Logistica and Thelemia lead the dreamer away.
   { key: 'chess',            name: 'The Human Chess Match',  folio: 111,
     pos: [-32.5, 6], look: [-40, 6], radius: 8 },
+  // The first monument of the piazza, east of the axis between the Three Doors
+  // wall and the cross-path to the courts.
+  { key: 'horse',            name: 'The Winged Horse',       folio: 22,
+    pos: [10.5, 22.5], look: [10.5, 16.5], radius: 6 },
 ];
 
 const EYE = 1.7;
@@ -2023,6 +2027,33 @@ export class HPWorldScene {
       const m = this._m(new THREE.ConeGeometry(0.05, 0.3 + (i % 3) * 0.09, 5), bronze,
         0, 1.5 - i * 0.05, -0.58 + i * 0.07, { parent: rear, cast: false });
       m.rotation.x = -1.0 - i * 0.06;
+    }
+
+    // THE WINGS. The first build had none, and that was simply wrong: chapter
+    // III has "a winged horse" (our own translation's summary), and Lefaivre
+    // describes the plate as "a wild, unbridled, WINGED steed ... charging
+    // headlong at full gallop, ears drawn back, head twisted sideways, bucking
+    // the unlucky riders who try in vain to cling to its back and mane" —
+    // and calls that image an emblem for the whole work (pp. 79-80).
+    // Caught by re-reading her; see ARCHITECTURE.md.
+    for (const sx of [-1, 1]) {
+      const wing = new THREE.Group();
+      // set at the withers and swept UP and BACK, so the pinions break the
+      // skyline instead of lying along the flank where they read as fins.
+      wing.position.set(sx * 0.26, 1.24, -0.02);
+      wing.rotation.set(0.34, sx * 0.52, sx * 0.30);
+      rear.add(wing);
+      // seven pinions, longest at the leading edge, fanning back
+      for (let i = 0; i < 7; i++) {
+        const len = 2.35 - i * 0.24;
+        const f = this._m(new THREE.SphereGeometry(0.5, 10, 7, 0, Math.PI), bronze,
+          sx * 0.07 * i, -0.06 * i, 0.15 * i, { parent: wing, cast: false });
+        f.scale.set(0.42, len, 0.07);
+        f.rotation.set(0, 0, sx * (0.10 + i * 0.115));
+      }
+      // the shoulder of the wing, where it meets the withers
+      this._m(new THREE.SphereGeometry(0.2, 10, 8), bronze, 0, -0.1, 0,
+        { parent: wing, cast: false }).scale.set(0.8, 1.0, 0.9);
     }
 
     // GENEA, across the forehead

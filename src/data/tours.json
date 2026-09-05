@@ -177,6 +177,50 @@
         ]
       },
       {
+        "station": "horse",
+        "title": "The Winged Horse of Unhappiness",
+        "chapter": "III",
+        "half": "dallington",
+        "lede": "The first monument of the ruined piazza, before the elephant and before the great portal. A colossal bronze horse — **winged**, unbridled, rearing in such panic that he has bucked off the little cupids trying to ride him — stands on a pedestal that names him the *equus infoelicitatis*, the stallion of unhappiness. Across his forehead the Greek **ΓΕΝΕΑ**, origin, and by extension *the first time*. Everything the piazza is going to say to Poliphilo is said here first, and it is not encouraging.",
+        "quote": "Waste. Time.",
+        "quoteAttr": "*AMISSIO* and *TEMPVS*, the words cut under the two figured sides of the pedestal (f.22–25)",
+        "wc": [],
+        "notes": [
+          {
+            "type": "allegory",
+            "text": "**The two panels are a verdict on love, before the dream has properly begun.** One side: fourteen dancers, seven men and seven women, in a single ring, alternating — and never touching across the sexes. The men hold hands with men, the women with women, the men's arms passing under the women's. **Each dancer wears two masks**, laughing in front and weeping behind, so that as the ring advances an unhappy face is always turned toward a happy one. Beneath it: *AMISSIO*. The other side: young men plucking flowers in a field among nymphs who look agitated, as if being robbed of something. Beneath it: *TEMPVS*. Together — lost time. (Lefaivre, pp. 256–57.)"
+          },
+          {
+            "type": "literary",
+            "text": "Liane Lefaivre opens her chapter on the book's difficulty with this plate and says **the image might serve as an emblem for the whole work**: a reader looking down at “this frenetic, fantastic specimen of whirling linguistic furore, hurling great semantic dust clouds into the air as it kicks and reels and pitches along on its impetuous course.” The book bucks you off too."
+          },
+          {
+            "type": "alchemical",
+            "text": "One garlanded end of the pedestal — marjoram and ferns — carries four letters, **D · AMBIG · D · D**, *diis ambiguis dono dedit*, “dedicated to the ambiguous gods.” Those four letters draw the most explicit statement of his whole system out of the Buffalo alchemist: *diis ambiguis id est metallis hermafroditis* — the ambiguous gods are the **hermaphrodite metals**, gold masculine in its height and feminine in its depth, silver the reverse. Coincidence of opposites, read off an abbreviation. (Russell 2014, p. 190; `hp.db.folio_descriptions` b5r.)"
+          },
+          {
+            "type": "gloss",
+            "text": "*ΓΕΝΕΑ* — genea, origin or begetting, and so “the first time”. *Equus infoelicitatis* — the horse of unhappiness. *Amissio* — loss, waste, the thing let slip. Fabio Chigi, annotating in the Vatican, simply calls the monument “the TEMPUS AMISSIO horse.”"
+          },
+          {
+            "type": "myth",
+            "text": "A winged horse on a plinth is Pegasus, and Pegasus is the poet's mount — struck from the rock, bringing the Muses' spring out of it. Colonna puts him here unbridled and throwing his riders. Inspiration you cannot sit on."
+          },
+          {
+            "type": "context",
+            "text": "Five of the 1499's woodcuts go to this one monument (catalogue #6–#10, folios 22–25) — more than the great portal gets. The printer knew what it was for."
+          },
+          {
+            "type": "architecture",
+            "text": "The pedestal is the book's method in miniature, and Lefaivre's whole argument: not one invention and not one imitation, but **a recombination of studied parts** — a Roman funerary plinth, two Greek epigrams, a garland from one source and a ring-dance from another, assembled into something that never existed. Alberti made that method a general principle, out of Cicero on Zeuxis, who painted his beauty from five women because “complete beauties are never found in a single body.”"
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The ascent has not started and the book has already shown you its end: desire moving in a ring, masked, never touching, and the time it costs. Everything after this is Poliphilo declining to take the warning."
+          }
+        ]
+      },
+      {
         "station": "elephant",
         "chapter": "III",
         "half": "dallington",

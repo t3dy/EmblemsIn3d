@@ -6,6 +6,75 @@
 > Renaissance Egyptology" (same volume, 156–85); with the marginalia in `hp.db`
 > and our own translation in `translation/en/`.
 
+## 0. Lefaivre, read at last (2026-09-05)
+
+This document was written believing that Liane Lefaivre's *Leon Battista Alberti's
+Hypnerotomachia Poliphili: Re-Cognizing the Architectural Body in the Early Italian
+Renaissance* (MIT Press, 1997) was an image-only scan, and it said she was the one
+source likely to change a framing rather than a detail. **She is readable** —
+`md\Liane_Lefaivre_…Re_Cognizing_th.md`, 15,878 lines — and she does change one.
+
+### Her framing: the architecture is RECOMBINED, not invented and not copied
+
+Lefaivre's core argument is that the *Hypnerotomachia*'s buildings are made the way
+Alberti thought all creative work is made: by **recombining a thesaurus of studied
+parts**, not by inventing forms from nothing and not by imitating one model. She
+grounds it in the passage of *De pictura* where Alberti retells Cicero on Zeuxis, who
+was commissioned for the temple of Lucina at Croton and
+
+> "did not think all the qualities he was after to combine within a portrait of beauty
+> could be found in one person"
+
+— and so selected five women, because "complete beauties are never found in a single
+body, but are rare and dispersed in many bodies." Alberti's innovation, she says, was
+to make that "into a general principle applicable to all areas of creative thinking."
+He had trained as a lawyer, and treated accumulated knowledge "as a thesaurus from
+which to construct the present, unprecedented case… a knowledge base from which to
+assemble new constructs" (pp. 184–86).
+
+The literary half of the book works the same way: Pozzi and Ciapponi traced over 500
+of its passages to Pliny, 445 to Apuleius, 223 to Ovid, 186 to Boccaccio, 134 to
+Festus, 123 to Virgil, and on down. "The whole story of the Hypnerotomachia, one may
+claim, is a composite of citations."
+
+### What that licenses, and what it forbids
+
+**It licenses what this repo already does, and gives it a name.** The shared classical
+members in `HPWorldScene.js` — `_column(order)`, `_entablature()`, `_steps()`,
+`_doorway()`, `_frieze(kind)` — composed into buildings, are not a shortcut around
+modelling each structure individually. **They are the book's own compositional method.**
+Nygren says the same of the triumphs: Colonna is assembling a procession out of studied
+antique fragments. Build by recombining a member library, and you are building the way
+the book was written.
+
+**It forbids invention that is not recombination.** A part with no source is not a
+recombination of anything. The rule stands: if the plates and the scholars do not
+settle a detail, say so in the comment and keep the geometry modest.
+
+### The correction it caught immediately
+
+**The colossal horse is WINGED, and the first build had no wings.** Lefaivre describes
+the plate as "a wild, unbridled, **winged** steed … charging headlong at full gallop,
+ears drawn back, head twisted sideways, bucking the unlucky riders who try in vain to
+cling to its back and mane," and says "the image might serve as an emblem for the whole
+work" (pp. 79–80). Our own translation's summary of chapter III says "a winged horse"
+too. Fixed the same day. **This is what a re-read is for.**
+
+She also gives the pedestal in full — the fourteen dancers under AMISSIO, each masked
+laughing in front and weeping behind; the flower-gatherers under TEMPVS; the GENEA on
+the forehead; the *equus infoelicitatis* — and the whole monument was built from
+pp. 256–57.
+
+### Still to mine
+
+Her chapters 6–10 (*Reconfiguring the Architectural Body*, *The Dangerous Body*,
+*The Marvelous Body*, *The Divine Body*, *The Humanist Body*) are the interpretive
+frame this project's *architecture* commentary lens should be routed through, and
+only the last of them has been read closely. Chapter 3 (*The Code of Recombination*)
+is the one summarised above.
+
+---
+
 ## 1. The finding that changes how we treat every source image
 
 **The 1499 woodcuts do not agree with the 1499 text.** Bury reconstructs the great
