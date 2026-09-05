@@ -676,6 +676,25 @@ async function startTour(id) {
   await tourGoto(0);
 }
 
+// Show/hide that survives a stale cached stylesheet.
+// The CSS fix for this (`[hidden] { display: none !important }`) lives inside
+// src/index.html, which is NOT cache-busted — only main.js and the modules are.
+// So a returning visitor can get new JS with old CSS, and an overlay whose rule
+// says `display: flex` would sit over the whole app again. Writing the inline
+// style too means the element obeys us regardless of which CSS is in the cache.
+function setHidden(el, hidden, shown = 'flex') {
+  if (!el) return;
+  el.hidden = hidden;
+  el.style.display = hidden ? 'none' : shown;
+}
+
+// Belt and braces: whatever the cached CSS says, nothing that ships hidden may
+// be covering the page at startup.
+for (const id of ['tour-flavor-chooser', 'tc-wonder-menu']) {
+  const el = document.getElementById(id);
+  if (el && el.hasAttribute('hidden')) el.style.display = 'none';
+}
+
 // Pre-tour: choose how much commentary to read (toggleable again mid-tour).
 function showFlavorChooser() {
   const el = document.getElementById('tour-flavor-chooser');
@@ -698,7 +717,7 @@ function showFlavorChooser() {
       </div>
       <button class="fc-begin" onclick="window.fcBegin()">Begin the tour &rarr;</button>
     </div>`;
-  el.hidden = false;
+  setHidden(el, false);
 }
 window.fcSet = (all) => {
   document.querySelectorAll('#tour-flavor-chooser input[data-flavor]').forEach(cb => { cb.checked = all; });
@@ -710,7 +729,7 @@ window.fcBegin = () => {
   _flavorsOn = on;
   try { localStorage.setItem('hp_flavors', JSON.stringify([...on])); } catch (_) {}
   const el = document.getElementById('tour-flavor-chooser');
-  if (el) el.hidden = true;
+  if (el) setHidden(el, true);
   tourGoto(0);
 };
 
@@ -789,17 +808,43 @@ function tourFlavorSet(tour) {
   return Object.keys(NOTE_TYPES).filter(t => present.has(t));
 }
 
-// The toggle bar: one chip per flavour present in this tour. Off flavours read dimmed.
+// The commentary control. This has to read as a control, not decoration: a
+// named panel, an explicit instruction, a live count, All/None, and a tick or
+// empty box on every chip so on/off never depends on noticing a colour.
 function renderFlavorBar(tour) {
   const order = tourFlavorSet(tour);
   if (order.length < 2) return '';
+  const onCount = order.filter(flavorOn).length;
   const chips = order.map(t => {
     const nt = NOTE_TYPES[t], on = flavorOn(t);
-    return `<button class="tp-flavor${on ? ' on' : ''}" onclick="window.toggleFlavor('${t}')"
-      style="${on ? `color:${nt.color};border-color:${nt.color}` : ''}">${nt.label}</button>`;
+    return `<button class="tp-flavor${on ? ' on' : ''}"
+      onclick="window.toggleFlavor('${t}')"
+      aria-pressed="${on}"
+      title="${on ? 'Hide' : 'Show'} &quot;${nt.label}&quot; notes"
+      style="${on ? `color:${nt.color};border-color:${nt.color}` : ''}"
+      ><span class="tp-flavor-box" style="${on ? `background:${nt.color};border-color:${nt.color}` : ''}"
+        >${on ? '&#10003;' : ''}</span>${nt.label}</button>`;
   }).join('');
-  return `<div class="tp-flavor-bar" title="Toggle commentary lenses">${chips}</div>`;
+  return `<div class="tp-lenses">
+    <div class="tp-lenses-head">
+      <span class="tp-lenses-title">Commentary lenses</span>
+      <span class="tp-lenses-count">${onCount} of ${order.length} on</span>
+    </div>
+    <div class="tp-lenses-help">Tap any lens to show or hide that kind of note.</div>
+    <div class="tp-flavor-bar">${chips}</div>
+    <div class="tp-lenses-quick">
+      <button onclick="window.setAllFlavors(true)">Show all</button>
+      <button onclick="window.setAllFlavors(false)">Just the story</button>
+    </div>
+  </div>`;
 }
+
+// All on / all off from inside the tour, mirroring the pre-tour chooser.
+window.setAllFlavors = (all) => {
+  _flavorsOn = all ? new Set(Object.keys(NOTE_TYPES)) : new Set();
+  try { localStorage.setItem('hp_flavors', JSON.stringify([..._flavorsOn])); } catch (_) {}
+  renderTourPanel();
+};
 
 function renderNotes(notes) {
   if (!Array.isArray(notes) || !notes.length) return '';
@@ -934,7 +979,7 @@ window.tourNext  = tourNext;
 window.tourPrev  = tourPrev;
 window.exitTour  = () => {
   closeTourWoodcut();
-  const fc = document.getElementById('tour-flavor-chooser'); if (fc) fc.hidden = true;
+  const fc = document.getElementById('tour-flavor-chooser'); setHidden(fc, true);
   clearTour(); showToursMenu();
 };
 
@@ -1020,7 +1065,7 @@ function currentWalker() {
 
 function closeWonderMenu() {
   const m = document.getElementById('tc-wonder-menu');
-  if (m) m.hidden = true;
+  if (m) setHidden(m, true);
 }
 
 // Show the thumb-stick only in a walkable world, on a touch device, when no
@@ -1091,8 +1136,8 @@ window.tcGoto = (key) => {
       m.innerHTML = HP_STATIONS
         .map(s => `<button onclick="window.tcGoto('${s.key}')">${s.name}</button>`).join('')
         + `<button onclick="window.tcGoto('cythera_isle')">&#9973; Sail to Cythera</button>`;
-      m.hidden = false;
-    } else m.hidden = true;
+      setHidden(m, false);
+    } else setHidden(m, true);
   });
 })();
 
@@ -1171,6 +1216,14 @@ window.hpExplore = () => {
 window.hpDream = () => {
   showHPMode(false);
   startDream();
+};
+
+// The guided tour, entered straight from the Dream Garden's front door rather
+// than only from the Tours menu — "Poliphilo's Dream" reads like the tour, so
+// offering only that here sent readers into the game looking for commentary.
+window.hpTour = (id = 'novel') => {
+  showHPMode(false);
+  startTour(id);
 };
 
 // The four moods the player can answer each wonder in (the game's reaction-choices).

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "comment": "HTML must always revalidate. The app's CSS is inline in src/index.html and the cache-version chain (?v=N) only busts main.js and the modules — so a cached HTML gives a visitor new JS with old CSS. That is how a fixed full-screen overlay bug kept reappearing for returning visitors. Keep this.",
+      "source": "/(.*).html",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    },
+    {
+      "comment": "Same for the JSON the app loads; those are versioned by `const V` in main.js loadData(), but a stale copy is never worth serving.",
+      "source": "/src/data/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }
+      ]
+    }
+  ]
+}

@@ -396,14 +396,48 @@
     #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
     #tour-panel .tp-note-text { font-size: 0.78rem; color: #c8bca4; line-height: 1.6; }
     #tour-panel .tp-note-text em { color: #e0d4b8; font-style: italic; }
-    #tour-panel .tp-flavor-bar { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.15rem 0 0.1rem; }
-    #tour-panel .tp-flavor {
-      font-family: inherit; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 0.22rem 0.5rem; border: 1px solid #3a2a1a; background: none; color: #6b5d4d;
-      cursor: pointer; border-radius: 2px; transition: opacity 0.15s;
+    /* ── Commentary lenses: a named control, not decoration ─────────
+       Readers were missing this entirely, so it reads as a panel with a
+       title, an instruction, a live count and a tick-box per lens — on/off
+       never depends on noticing a colour or a strikethrough. */
+    #tour-panel .tp-lenses {
+      border: 1px solid #3a2a14; border-left: 2px solid #c8a040;
+      background: rgba(200,160,64,0.045);
+      padding: 0.6rem 0.7rem 0.55rem; margin: 0.5rem 0 0.2rem;
     }
-    #tour-panel .tp-flavor.on { background: rgba(255,255,255,0.03); }
-    #tour-panel .tp-flavor:not(.on) { opacity: 0.45; text-decoration: line-through; }
+    #tour-panel .tp-lenses-head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem;
+    }
+    #tour-panel .tp-lenses-title {
+      font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #d8a24a;
+    }
+    #tour-panel .tp-lenses-count { font-size: 0.58rem; letter-spacing: 0.08em; color: #8a7a5a; }
+    #tour-panel .tp-lenses-help {
+      font-size: 0.68rem; color: #9a8a70; line-height: 1.5; margin: 0.25rem 0 0.45rem;
+    }
+    #tour-panel .tp-flavor-bar { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    #tour-panel .tp-flavor {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-family: inherit; font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.26rem 0.5rem; border: 1px solid #3a2a1a; background: none; color: #6b5d4d;
+      cursor: pointer; border-radius: 2px;
+      transition: opacity 0.15s, border-color 0.15s, background 0.15s;
+    }
+    #tour-panel .tp-flavor-box {
+      width: 0.68rem; height: 0.68rem; flex: 0 0 auto; border: 1px solid #5a4a32;
+      border-radius: 2px; display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.5rem; line-height: 1; color: #100c06;
+    }
+    #tour-panel .tp-flavor.on { background: rgba(255,255,255,0.04); }
+    #tour-panel .tp-flavor:not(.on) { opacity: 0.6; }
+    #tour-panel .tp-flavor:hover { opacity: 1; border-color: #c8a040; }
+    #tour-panel .tp-lenses-quick { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
+    #tour-panel .tp-lenses-quick button {
+      font-family: inherit; font-size: 0.58rem; letter-spacing: 0.06em;
+      padding: 0.24rem 0.55rem; background: none; border: 1px solid #4a3a1e;
+      color: #a89878; cursor: pointer; border-radius: 2px;
+    }
+    #tour-panel .tp-lenses-quick button:hover { border-color: #c8a040; color: #f0e8d8; }
     /* Pre-tour commentary chooser */
     #tour-flavor-chooser {
       position: fixed; inset: 0; z-index: 44; display: flex; align-items: center; justify-content: center;
@@ -531,7 +565,7 @@
     #hp-mode .hpm-sub { font-size: 0.82rem; color: #9a8a74; margin-top: 0.6rem; line-height: 1.7; }
     #hp-mode .hpm-cards { display: flex; gap: 1.2rem; margin-top: 1.8rem; justify-content: center; flex-wrap: wrap; }
     #hp-mode .hpm-card {
-      width: 280px; text-align: left; cursor: pointer; color: inherit; font-family: inherit;
+      width: 268px; max-width: 100%; text-align: left; cursor: pointer; color: inherit; font-family: inherit;
       background: rgba(255,255,255,0.02); border: 1px solid #3a2a14;
       padding: 1.4rem 1.4rem 1.2rem; transition: border-color 0.2s, transform 0.2s;
     }
@@ -728,9 +762,14 @@
           <p>Explore at your own pace. W A S D / arrows to walk, Shift to run, drag to look, 1&ndash;9 to visit the wonders, 0 to sail to Cythera. Named figures &mdash; the wolf, the Queen, the five sense-nymphs, Polia &mdash; keep their places.</p>
         </button>
         <button class="hpm-card" onclick="window.hpDream()">
-          <span class="hpm-kicker">Story mode &middot; click to continue</span>
+          <span class="hpm-kicker">Story mode &middot; you choose how he answers</span>
           <h3>Poliphilo&rsquo;s Dream</h3>
-          <p>Follow the plot of the book in twelve scenes. Polia and the nymphs guide you through the garden while the narration follows the 1499 text, its inscriptions, and its famous acrostic.</p>
+          <p>Play the plot in twelve scenes. Polia and the nymphs guide you, the narration follows the 1499 text &mdash; and at each wonder you choose how Poliphilo meets it, in wonder, desire, melancholy or dread. No commentary; this one is the game.</p>
+        </button>
+        <button class="hpm-card" onclick="window.hpTour('novel')">
+          <span class="hpm-kicker">Guided tour &middot; with the scholarship</span>
+          <h3>The Novel</h3>
+          <p>The book read station by station in fourteen stops, with the 1499 woodcut at each and colour-coded commentary you switch on and off &mdash; Renaissance context, architectural theory, allegory, the alchemical reading and more. Choose your flavours before you set out.</p>
         </button>
       </div>
     </div>
@@ -768,6 +807,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=101"></script>
+  <script type="module" src="./main.js?v=104"></script>
 </body>
 </html>
