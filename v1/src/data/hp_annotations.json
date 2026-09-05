@@ -1,0 +1,468 @@
+{
+  "1": [
+    {
+      "id": 107,
+      "hand_id": null,
+      "folio": 1,
+      "text": "aedificio antiquario inseme cum molti altri arbusculi murali",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 109,
+      "hand_id": null,
+      "folio": 1,
+      "text": "Un laboratorio filologico",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 119,
+      "hand_id": null,
+      "folio": 1,
+      "text": "nero",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 131,
+      "hand_id": 2,
+      "folio": 1,
+      "text": null,
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 134,
+      "hand_id": 2,
+      "folio": 1,
+      "text": "AURORAE DESCRIPTIO",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 135,
+      "hand_id": 2,
+      "folio": 1,
+      "text": "Tempus ergo matutinum erat, sine diluculo, uel crepusculum",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 136,
+      "hand_id": 2,
+      "folio": 1,
+      "text": "Therefore \nit was the early morning, before dawn, or later in the evening, after sunset",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "2": [
+    {
+      "id": 112,
+      "hand_id": null,
+      "folio": 2,
+      "text": "cock",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "3": [
+    {
+      "id": 100,
+      "hand_id": null,
+      "folio": 3,
+      "text": "glaceosa",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 113,
+      "hand_id": 1,
+      "folio": 3,
+      "text": null,
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 126,
+      "hand_id": 2,
+      "folio": 3,
+      "text": null,
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 140,
+      "hand_id": null,
+      "folio": 3,
+      "text": null,
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "4": [
+    {
+      "id": 91,
+      "hand_id": 1,
+      "folio": 4,
+      "text": null,
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 103,
+      "hand_id": null,
+      "folio": 4,
+      "text": "obsidie",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 118,
+      "hand_id": 1,
+      "folio": 4,
+      "text": null,
+      "annotation_type": "UNDERLINE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 121,
+      "hand_id": 1,
+      "folio": 4,
+      "text": "Equus \nInfoelicitatis",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 124,
+      "hand_id": 1,
+      "folio": 4,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 137,
+      "hand_id": null,
+      "folio": 4,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 138,
+      "hand_id": null,
+      "folio": 4,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 139,
+      "hand_id": null,
+      "folio": 4,
+      "text": "rector",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "5": [
+    {
+      "id": 110,
+      "hand_id": null,
+      "folio": 5,
+      "text": "Dendrocysto",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 111,
+      "hand_id": null,
+      "folio": 5,
+      "text": "χισσός",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "6": [
+    {
+      "id": 92,
+      "hand_id": null,
+      "folio": 6,
+      "text": "much more agreeable region",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 93,
+      "hand_id": null,
+      "folio": 6,
+      "text": "much more agreeable region",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 94,
+      "hand_id": null,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 95,
+      "hand_id": null,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 97,
+      "hand_id": null,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 105,
+      "hand_id": null,
+      "folio": 6,
+      "text": "aedificio antiquario inseme cum molti altri arbusculi murali",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 114,
+      "hand_id": 1,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 115,
+      "hand_id": 1,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 116,
+      "hand_id": 1,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 127,
+      "hand_id": 2,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 128,
+      "hand_id": 2,
+      "folio": 6,
+      "text": null,
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "7": [
+    {
+      "id": 96,
+      "hand_id": null,
+      "folio": 7,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 98,
+      "hand_id": null,
+      "folio": 7,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 99,
+      "hand_id": null,
+      "folio": 7,
+      "text": "glaceosa",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 101,
+      "hand_id": null,
+      "folio": 7,
+      "text": "o uero glaceosa plagia, ma in alcuno \nloco dispersamente cum alcuni cespugli de herbatura",
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 102,
+      "hand_id": null,
+      "folio": 7,
+      "text": "herculean",
+      "annotation_type": "INDEX_ENTRY",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 104,
+      "hand_id": null,
+      "folio": 7,
+      "text": "aedificio antiquario inseme cum molti altri arbusculi murali",
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 106,
+      "hand_id": null,
+      "folio": 7,
+      "text": "aedificio antiquario inseme cum molti altri arbusculi murali",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 117,
+      "hand_id": null,
+      "folio": 7,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 120,
+      "hand_id": 1,
+      "folio": 7,
+      "text": null,
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 122,
+      "hand_id": 1,
+      "folio": 7,
+      "text": "the hors (sic) of \ninfelicity.",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 123,
+      "hand_id": 1,
+      "folio": 7,
+      "text": "the hors (sic) of \ninfelicity.",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 125,
+      "hand_id": 1,
+      "folio": 7,
+      "text": null,
+      "annotation_type": "MARGINAL_NOTE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ],
+  "8": [
+    {
+      "id": 108,
+      "hand_id": null,
+      "folio": 8,
+      "text": "Un laboratorio filologico di fine Quattrocento: la Naturalis historia",
+      "annotation_type": "CROSS_REFERENCE",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 129,
+      "hand_id": 2,
+      "folio": 8,
+      "text": "-ra",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 130,
+      "hand_id": 2,
+      "folio": 8,
+      "text": "-ra",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 132,
+      "hand_id": 2,
+      "folio": 8,
+      "text": "Mother",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    },
+    {
+      "id": 133,
+      "hand_id": 2,
+      "folio": 8,
+      "text": "vessel",
+      "annotation_type": "SYMBOL",
+      "confidence": "MEDIUM",
+      "source_method": "PDF_EXTRACTION"
+    }
+  ]
+}

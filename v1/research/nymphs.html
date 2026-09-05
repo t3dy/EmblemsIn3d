@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nymphs — A Sourcebook for the Dream Garden</title>
+<meta name="description" content="An academically-sourced reference gallery of nymphs in Western art, gathered to inform the figures of the Hypnerotomachia Poliphili 3D world."/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --gold:    #c8a878;
+  --gold-dk: #8b4513;
+  --dim:     #8a7358;
+  --faint:   #3a2a18;
+  --bg:      #0b0805;
+  --panel:   #120d08;
+  --fg:      #efe7d8;
+  --rule:    #241812;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: Georgia, 'Times New Roman', serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--gold); text-decoration: none; }
+a:hover { color: var(--fg); text-decoration: underline; text-underline-offset: 3px; }
+em { color: var(--fg); font-style: italic; }
+
+/* ── Header / hero ── */
+.masthead {
+  max-width: 1120px; margin: 0 auto; padding: 5.5rem 2rem 2.5rem;
+  text-align: center;
+}
+.kicker { font-size: 0.62rem; letter-spacing: 0.32em; text-transform: uppercase; color: #6a5236; }
+.masthead h1 {
+  font-weight: normal; letter-spacing: 0.06em; color: var(--gold);
+  font-size: clamp(2rem, 5.5vw, 3.4rem); line-height: 1.1; margin: 1rem 0 0.4rem;
+}
+.masthead h1 em { color: var(--fg); font-style: italic; }
+.masthead .lede {
+  max-width: 660px; margin: 1.4rem auto 0; color: var(--dim);
+  font-size: 1rem; line-height: 1.95;
+}
+.rule { width: 66px; height: 1px; background: var(--gold-dk); margin: 2rem auto; opacity: 0.6; }
+
+/* ── Method note ── */
+.method {
+  max-width: 760px; margin: 0 auto; padding: 0 2rem;
+  font-size: 0.82rem; color: #7a6448; line-height: 1.85; text-align: center;
+}
+.method a { color: var(--dim); }
+
+/* ── Table of contents ── */
+.toc {
+  max-width: 900px; margin: 2.5rem auto 0; padding: 0 2rem;
+  display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center;
+}
+.toc a {
+  font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--dim); border: 1px solid var(--rule); padding: 0.4rem 0.85rem;
+}
+.toc a:hover { border-color: var(--gold-dk); color: var(--gold); text-decoration: none; }
+
+/* ── Section ── */
+section { max-width: 1120px; margin: 0 auto; padding: 4.5rem 2rem 1rem; }
+.sec-head { border-bottom: 1px solid var(--rule); padding-bottom: 1.3rem; margin-bottom: 2.5rem; }
+.sec-num { font-size: 0.66rem; letter-spacing: 0.28em; text-transform: uppercase; color: #6a5236; }
+.sec-head h2 {
+  font-weight: normal; letter-spacing: 0.04em; color: var(--gold);
+  font-size: clamp(1.5rem, 3.5vw, 2.1rem); margin: 0.5rem 0 0.9rem;
+}
+.sec-head h2 em { color: var(--fg); }
+.sec-intro { max-width: 720px; color: var(--dim); font-size: 0.94rem; line-height: 1.9; }
+
+/* ── Artwork card ── */
+.gallery { display: flex; flex-direction: column; gap: 2.2rem; }
+.art {
+  display: grid; grid-template-columns: minmax(0, 42%) 1fr; gap: 1.8rem;
+  border: 1px solid var(--rule); background: linear-gradient(180deg, rgba(255,255,255,.015), transparent);
+  padding: 1.4rem;
+}
+.art-img {
+  display: block; align-self: start; position: relative;
+  background: #000; border: 1px solid #000; overflow: hidden;
+}
+.art-img img {
+  display: block; width: 100%; height: auto;
+  filter: saturate(1.02);
+}
+.art-img::after {
+  content: "↗ Commons"; position: absolute; right: 0; bottom: 0;
+  font-family: Georgia, serif; font-size: 0.6rem; letter-spacing: 0.1em;
+  color: #cdbfa6; background: rgba(0,0,0,.62); padding: 0.25rem 0.5rem;
+  opacity: 0; transition: opacity .2s;
+}
+.art-img:hover::after { opacity: 1; }
+.art-noimg {
+  display: flex; align-items: center; justify-content: center; min-height: 220px;
+  color: #5a4632; font-size: 0.78rem; text-align: center; padding: 1rem;
+  border: 1px dashed var(--rule);
+}
+
+.art figcaption { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+.art h3 { font-weight: normal; color: var(--fg); font-size: 1.18rem; letter-spacing: 0.01em; line-height: 1.3; }
+.art h3 .yr { color: var(--dim); font-style: italic; font-size: 0.95rem; }
+.art .artist { color: var(--gold); font-size: 0.86rem; letter-spacing: 0.02em; }
+.art .facts { color: #7a6448; font-size: 0.78rem; line-height: 1.6; }
+.art .prose { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.art .prose p { font-size: 0.88rem; color: #cbb99e; line-height: 1.8; }
+.art .lbl { color: var(--gold); font-variant: small-caps; letter-spacing: 0.05em; font-size: 0.82rem; }
+.art .relevance p { color: #b79b76; }
+.art .src {
+  margin-top: 0.6rem; padding-top: 0.7rem; border-top: 1px solid var(--rule);
+  font-size: 0.72rem; color: #6a5236; letter-spacing: 0.03em;
+}
+.art .src a { color: var(--dim); }
+.pd { color: #4f6a3a; font-variant: small-caps; letter-spacing: 0.06em; }
+
+@media (max-width: 720px) {
+  .art { grid-template-columns: 1fr; gap: 1.1rem; }
+}
+
+/* ── Footer ── */
+footer {
+  max-width: 900px; margin: 4rem auto 0; padding: 3rem 2rem 5rem;
+  border-top: 1px solid var(--rule); color: #6a5236; font-size: 0.78rem; line-height: 1.9;
+}
+footer h4 { color: var(--dim); font-weight: normal; letter-spacing: 0.1em; text-transform: uppercase; font-size: 0.66rem; margin-bottom: 0.8rem; }
+footer a { color: var(--dim); }
+.backlink { display:inline-block; margin-top: 1.4rem; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">A Sourcebook · Emblems in 3D</div>
+  <h1>Nymphs, and How to <em>Draw</em> Them</h1>
+  <p class="lede">
+    A working gallery of nymphs in Western art — assembled to give faces, drapery, and
+    gesture to the figures who people <em>the Dream Garden of Poliphilo</em>: the five
+    sense-nymphs at the bath, the naiads of the Fountain of Venus, Polia with her torch,
+    and her guides Logistica and Thelemia. Each entry is sourced and set in context, so a
+    choice of model is also a choice of meaning.
+  </p>
+  <div class="rule"></div>
+  <p class="method">
+    Every image below is in the <strong>public domain</strong> and served from
+    <a href="https://commons.wikimedia.org/">Wikimedia Commons</a>; each caption cites the holding
+    institution and the Commons file. This page is a private reference for asset development, not a
+    publication — think of it as a mood-board with footnotes.
+  </p>
+  <nav class="toc">
+    <a href="#source">I · The 1499 Source</a>
+    <a href="#springs">II · Springs &amp; Fountains</a>
+    <a href="#bath">III · The Bathing Company</a>
+    <a href="#diana">IV · Diana &amp; Her Train</a>
+    <a href="#beloved">V · The Beloved &amp; the Idea</a>
+  </nav>
+</header>
+
+<!-- ═══════════════════════ I · THE SOURCE ═══════════════════════ -->
+<section id="source">
+  <div class="sec-head">
+    <div class="sec-num">Section I</div>
+    <h2>The Source — <em>the woodcuts of 1499</em></h2>
+    <p class="sec-intro">
+      Before borrowing a nymph from any painter, look at the ones the book already owns. The anonymous
+      Venetian who cut the illustrations for the Aldine <em>Hypnerotomachia Poliphili</em> (Venice, 1499)
+      gave Poliphilo's nymphs their first faces — outlines, not flesh; a clarity of contour that the whole
+      3-D "woodcut" render-style tries to keep. These are the ground truth: whatever later art we borrow, it
+      is being poured back into <em>this</em> line.
+    </p>
+  </div>
+  <div class="gallery">
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Hypnerotomachia_Poliphili_pag076.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hypnerotomachia%20Poliphili%20pag076.jpg" alt="1499 woodcut: Poliphilo among a company of gowned nymphs in a flowering garden"/>
+      </a>
+      <figcaption>
+        <h3>Poliphilo among the Nymphs <span class="yr">· 1499</span></h3>
+        <div class="artist">Anonymous Venetian designer · printed by Aldus Manutius, Venice</div>
+        <div class="facts">Woodcut, from the first Aldine edition of the <em>Hypnerotomachia Poliphili</em> · copies incl. Walters Art Museum 91.400</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> The dreamer, still in his travelling clothes, falls in with a file of gowned
+          nymphs in a flowering grove — one of the recurring nymph-processions that pass him from wonder to wonder on the way
+          to Polia.</p>
+          <p><span class="lbl">Context.</span> Nobody has ever securely named the artist of the book's 172 woodcuts (candidates
+          run from Benedetto Bordon to a young Raphael, unconvincingly). What matters is the style: pure contour, almost no
+          hatching, drapery in long parallel falls, faces reduced to a dozen strokes. It is the most imitated book design of
+          the Renaissance — William Morris kept it at his elbow.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> This is the costume sheet: high-belted gowns, sleeves
+          gathered at the shoulder, hair bound with fillets. The 3-D nymphs should deviate from later painters back <em>toward</em>
+          this — fewer folds, clearer silhouette.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Hypnerotomachia_Poliphili">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Hypnerotomachia_Poliphili_pag076.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Hypnerotomachia_Poliphili_pag073.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Hypnerotomachia%20Poliphili%20pag073.jpg" alt="1499 woodcut: a nymph reclining beneath a classical pediment while putti draw back a curtain"/>
+      </a>
+      <figcaption>
+        <h3>The Reclining Nymph Revealed <span class="yr">· 1499</span></h3>
+        <div class="artist">Anonymous Venetian designer · printed by Aldus Manutius, Venice</div>
+        <div class="facts">Woodcut, from the first Aldine edition of the <em>Hypnerotomachia Poliphili</em></div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> A nude nymph reclines on a couch beneath a temple-front while winged putti draw
+          the curtain back — one of the dream's frank erotic tableaux, the sleeping-nymph type staged as revelation.</p>
+          <p><span class="lbl">Context.</span> Here the book and the Cranach tradition (Section II) meet: the recumbent
+          source-nymph, displayed and inscribed. In the <em>Hypnerotomachia</em> the type is architectural — she belongs to a
+          monument, framed by columns, as much epigraphy as flesh. Print historians treat these cuts as a key vector carrying
+          the antique nymph into Northern art.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> License to build nymphs <em>into</em> the monuments:
+          a reclining figure in a pediment or over a door costs one low-poly body and returns a whole genre of meaning.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Hypnerotomachia_Poliphili">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Hypnerotomachia_Poliphili_pag073.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ II · SPRINGS & FOUNTAINS ═══════════════════════ -->
+<section id="springs">
+  <div class="sec-head">
+    <div class="sec-num">Section II</div>
+    <h2>Springs &amp; Fountains — <em>the naiads</em></h2>
+    <p class="sec-intro">
+      Water runs through the whole Dream Garden: the spring where Poliphilo kneels in the wood, the nymphs'
+      bath, and the great Fountain of Venus with its jets and basins. The nearest cousins in art are the
+      reclining <em>nymph of the spring</em> — a Renaissance invention that fuses classical naiad with the
+      "do not disturb my sleep" epigram — and the carved fountain-nymph, whose wet drapery and poured urn are
+      exactly the vocabulary the fountain court needs.
+    </p>
+  </div>
+  <div class="gallery">
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Lucas_Cranach_d.%C3%84._-_Ruhende_Quellnymphe_(Washington,_D.C.).jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Lucas%20Cranach%20d.%C3%84.%20-%20Ruhende%20Quellnymphe%20(Washington%2C%20D.C.).jpg?width=1000" alt="Lucas Cranach the Elder, The Nymph of the Spring — a nude nymph reclining beside a spring in a landscape"/>
+      </a>
+      <figcaption>
+        <h3>The Nymph of the Spring <span class="yr">· after 1537</span></h3>
+        <div class="artist">Lucas Cranach the Elder (1472–1553) · German, Northern Renaissance</div>
+        <div class="facts">Oil on panel, 48.4 × 72.8 cm · National Gallery of Art, Washington, D.C. (acc. 1957.12.1)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> A source-nymph — the resident spirit of a spring — sleeps beside her water,
+          bow and quiver hung in the tree. The type comes with a pseudo-classical epigram, <em>Fontis nympha sacri, somnum
+          ne rumpe, quiesco</em> ("Nymph of the sacred spring, do not break my sleep: I rest") — a humanist invention that
+          circulated as if it were an ancient inscription, and which Cranach's workshop repeated in some two dozen versions.</p>
+          <p><span class="lbl">Context.</span> Cranach, court painter to the Electors of Saxony and friend of Luther, made the
+          reclining nymph the North's first female nude at ease in a landscape — cooler and more linear than the Venetian
+          Venuses it answers. The gauze veil, the wry sidelong eye (is she asleep at all?), and the watching partridges give
+          the picture its famous erotic irony.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> This is the exact scholarly cousin of Poliphilo's
+          world: the sleeping-nymph-with-epigram is the same humanist antiquarianism the <em>Hypnerotomachia</em> runs on. A
+          reclining figure of this type belongs beside the spring in the dark wood — a nymph who is also an inscription.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/The_Nymph_of_the_Spring">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Lucas_Cranach_d.%C3%84._-_Ruhende_Quellnymphe_(Washington,_D.C.).jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:La_Nymphe_de_Fontainebleau_-_Benvenuto_Cellini_-_Mus%C3%A9e_du_Louvre_Sculptures_MR_1706_;_N_15050.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/La%20Nymphe%20de%20Fontainebleau%20-%20Benvenuto%20Cellini%20-%20Mus%C3%A9e%20du%20Louvre%20Sculptures%20MR%201706%20%3B%20N%2015050.jpg?width=1000" alt="Benvenuto Cellini, Nymph of Fontainebleau — bronze relief of a reclining nymph with a stag and hunting animals"/>
+      </a>
+      <figcaption>
+        <h3>Nymph of Fontainebleau <span class="yr">· c. 1542–43</span></h3>
+        <div class="artist">Benvenuto Cellini (1500–1571) · Italian Mannerist, working for François I</div>
+        <div class="facts">Bronze relief, 205 × 409 cm · Musée du Louvre, Paris (MR 1706)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> The spirit of the spring of Fontainebleau — the <em>eau belle</em> itself — as a
+          colossal recumbent nymph, one arm around the neck of the royal stag, ringed by hounds and boars. She personifies a
+          place: the water that names the palace.</p>
+          <p><span class="lbl">Context.</span> Cellini, goldsmith-turned-sculptor and author of the most swaggering autobiography
+          of the Renaissance, cast the relief for the Porte Dorée at Fontainebleau; it ended instead over the entrance at Diane
+          de Poitiers' Château d'Anet, where the nymph was reread as Diana. Her impossibly long, smooth limbs set the canon for
+          the whole School of Fontainebleau.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> A nymph as architecture — carved into a lunette over
+          a gate. This is the direct model for treating the Great Portal and fountain courts' reliefs: the elongated Mannerist
+          body reads beautifully at low poly counts, all silhouette and sweep.</p>
+        </div>
+        <div class="src">Sources: <a href="https://collections.louvre.fr/en/ark:/53355/cl010091932">Louvre collection record</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:La_Nymphe_de_Fontainebleau_-_Benvenuto_Cellini_-_Mus%C3%A9e_du_Louvre_Sculptures_MR_1706_;_N_15050.jpg">Commons file</a>
+          · <span class="pd">sculpture PD; photo CC0</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Jean_Goujon,_Nymphe,_vue_de_face,_qui_porte_une_vase_sur_son_%C3%A9paule_gauche._1549._Pierre._Paris,_Fontaine_des_Innocents._Photo,_Jamie_Mulherron.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Jean%20Goujon%2C%20Nymphe%2C%20vue%20de%20face%2C%20qui%20porte%20une%20vase%20sur%20son%20%C3%A9paule%20gauche.%201549.%20Pierre.%20Paris%2C%20Fontaine%20des%20Innocents.%20Photo%2C%20Jamie%20Mulherron.jpg?width=700" alt="Jean Goujon, nymph relief from the Fontaine des Innocents — a standing nymph in wet drapery carrying a vase"/>
+      </a>
+      <figcaption>
+        <h3>Nymph with a Vase, Fontaine des Innocents <span class="yr">· 1549</span></h3>
+        <div class="artist">Jean Goujon (c. 1510 – c. 1565/72) · French Renaissance</div>
+        <div class="facts">Stone bas-relief · Fontaine des Innocents, Paris (companion reliefs in the Louvre since 1824)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> One of six tall naiads Goujon carved for Paris's grandest Renaissance fountain,
+          each slotted between pilasters, each carrying or tipping an urn — source-nymphs frozen mid-pour, their drapery
+          running like the water they personify.</p>
+          <p><span class="lbl">Context.</span> Goujon — probably a Protestant, who vanishes from the record around the massacres —
+          was France's great translator of Fontainebleau elegance into stone. The "wet drapery" here is a deliberate archaeology:
+          he is quoting Greek relief style he knew only through Roman copies and prints, a Renaissance dream of antiquity rather
+          than the thing itself.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The single most usable drapery-language on this page:
+          clinging cloth whose folds are really flow-lines. For low-poly nymphs, carve the folds as geometry exactly the way
+          Goujon does — few, long, directional.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Fontaine_des_Innocents">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Jean_Goujon,_Nymphe,_vue_de_face,_qui_porte_une_vase_sur_son_%C3%A9paule_gauche._1549._Pierre._Paris,_Fontaine_des_Innocents._Photo,_Jamie_Mulherron.jpg">Commons file</a>
+          · sculpture PD; <strong>photo © Jamie Mulherron, CC BY-SA 4.0</strong> (attribution required)</div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:John_William_Waterhouse_-_A_Naiad_or_Hylas_with_a_Nymph,_1893.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/John%20William%20Waterhouse%20-%20A%20Naiad%20or%20Hylas%20with%20a%20Nymph%2C%201893.jpg?width=1000" alt="John William Waterhouse, A Naiad — a water nymph emerging from a stream toward a sleeping youth"/>
+      </a>
+      <figcaption>
+        <h3>A Naiad <span class="yr">· 1893</span></h3>
+        <div class="artist">John William Waterhouse (1849–1917) · British, late Pre-Raphaelite</div>
+        <div class="facts">Oil on canvas, 66 × 127 cm · Private collection (exh. New Gallery, London, 1893)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> A freshwater nymph, water-lily leaves in her hair, rises silently from her stream to
+          study a sleeping shepherd boy — the Hylas story held one beat before it begins, all curiosity and no capture yet.</p>
+          <p><span class="lbl">Context.</span> Waterhouse spent the 1890s painting the moment when a mortal and a water-spirit
+          first notice one another. His naiads are Victorian academic bodies, but the mood — hushed, green, watchful — is closer
+          to folklore than to Ovid, and it made him the century's definitive painter of the <em>almost</em>-encounter.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> This is Poliphilo's own situation reversed — the
+          dreamer asleep by water, watched by the spirit of the place. The pose vocabulary (half-emerged, arms on the bank,
+          head tilted) is ideal for a nymph at the spring in the dark wood.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/John_William_Waterhouse">Wikipedia (artist)</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:John_William_Waterhouse_-_A_Naiad_or_Hylas_with_a_Nymph,_1893.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ III · THE BATHING COMPANY ═══════════════════════ -->
+<section id="bath">
+  <div class="sec-head">
+    <div class="sec-num">Section III</div>
+    <h2>The Bathing Company — <em>the five senses</em></h2>
+    <p class="sec-intro">
+      Five nymphs find Poliphilo trembling at a fountain's lip and laugh his fear away; they bear the names of
+      the senses in Greek — <em>Aphea</em> (Touch), <em>Osfressia</em> (Smell), <em>Orassia</em> (Sight),
+      <em>Achoe</em> (Hearing), <em>Geussia</em> (Taste) — and lead him, teasing, to their Queen. What the
+      great nymph-<em>companies</em> of art teach here is grouping: how five or more bodies arc, overlap,
+      and pass a gesture from one to the next around water.
+    </p>
+  </div>
+  <div class="gallery">
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:John_William_Waterhouse_-_Hylas_and_the_Nymphs_(1896).jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/John%20William%20Waterhouse%20-%20Hylas%20and%20the%20Nymphs%20(1896).jpg?width=1000" alt="John William Waterhouse, Hylas and the Nymphs — seven water nymphs in a lily pool draw a young man toward the water"/>
+      </a>
+      <figcaption>
+        <h3>Hylas and the Nymphs <span class="yr">· 1896</span></h3>
+        <div class="artist">John William Waterhouse (1849–1917) · British, late Pre-Raphaelite</div>
+        <div class="facts">Oil on canvas, 132.1 × 197.5 cm · Manchester Art Gallery (acc. 1896.15)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Hylas, beautiful companion of Heracles, kneels to fill his pitcher and is met by
+          seven naiads rising among the lilies. From Apollonius and Theocritus: the nymphs desire him, take him, and he is
+          never seen again — the pool closes over the myth's most famous disappearance.</p>
+          <p><span class="lbl">Context.</span> Waterhouse's masterpiece of the theme, and a case study in staging a nymph
+          <em>company</em>: seven near-identical faces at different depths, the composition passing one intention from body to
+          body until the nearest hand closes on the boy's wrist. The painting made headlines again in 2018 when Manchester
+          briefly took it off the wall to provoke debate about the gaze — a reminder that nymph pictures were never innocent.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The single best reference for the five sense-nymphs at
+          the bath: how a group of similar figures reads as one organism, faces at staggered heights, all attention converging on
+          the intruding mortal. Poliphilo at the fountain's lip <em>is</em> Hylas — except the book plays it for laughter, not doom.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Hylas_and_the_Nymphs">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:John_William_Waterhouse_-_Hylas_and_the_Nymphs_(1896).jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:William-Adolphe_Bouguereau_(1825-1905)_-_Nymphs_and_Satyr_(1873)_HQ.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/William-Adolphe%20Bouguereau%20(1825-1905)%20-%20Nymphs%20and%20Satyr%20(1873)%20HQ.jpg?width=800" alt="William-Adolphe Bouguereau, Nymphs and Satyr — four nymphs pull a reluctant satyr toward the water"/>
+      </a>
+      <figcaption>
+        <h3>Nymphs and Satyr <span class="yr">· 1873</span></h3>
+        <div class="artist">William-Adolphe Bouguereau (1825–1905) · French Academic</div>
+        <div class="facts">Oil on canvas, 260 × 180 cm · Clark Art Institute, Williamstown, Mass.</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Four nymphs, caught bathing by a satyr, turn the tables: they haul him toward the
+          water he fears (satyrs cannot swim), one beckoning distant sisters to come and help. The predator-prey logic of the
+          Diana pictures is reversed as comedy.</p>
+          <p><span class="lbl">Context.</span> The sensation of the 1873 Salon, painted at the height of Bouguereau's academic
+          polish — a machine of interlocking diagonals in which every pulling arm continues another nymph's push. It hung for
+          decades in the bar of a New York hotel, the most famous "naughty picture" in America, before Sterling Clark bought it
+          out of storage.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The teasing energy of the sense-nymphs — who splash
+          Poliphilo, laugh at his blush, and drag him along by the hand — is exactly this. Study the grip-chain: hand on wrist on
+          horn. It is choreography you can pose low-poly figures into and the story still reads.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Nymphs_and_Satyr">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:William-Adolphe_Bouguereau_(1825-1905)_-_Nymphs_and_Satyr_(1873)_HQ.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Herbert_James_Draper,_Ulysses_and_the_Sirens,_1909.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Herbert%20James%20Draper%2C%20Ulysses%20and%20the%20Sirens%2C%201909.jpg?width=1000" alt="Herbert James Draper, Ulysses and the Sirens — sirens as sea-nymphs climbing aboard Odysseus's ship"/>
+      </a>
+      <figcaption>
+        <h3>Ulysses and the Sirens <span class="yr">· 1909</span></h3>
+        <div class="artist">Herbert James Draper (1863/64–1920) · British, late Victorian classicism</div>
+        <div class="facts">Oil on canvas, c. 177 × 213.5 cm · Ferens Art Gallery, Hull (KINCM:2005.4878)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Odysseus lashed to the mast, and the Sirens — reimagined not as Homer's bird-women
+          but as sea-nymphs, mermaid tails dissolving into legs as they haul themselves over the gunwale. The bathing-company
+          motif turned predatory: the water's women boarding the world of men.</p>
+          <p><span class="lbl">Context.</span> Draper was the Edwardian specialist in water-spirits, and this canvas — bought by
+          Hull's Ferens Gallery straight from the 1910 Royal Academy — is his machine-piece: three nymphs in three stages of
+          emergence, wet flesh against tarred rope. (It stands in here for his <em>Water Nixie</em>, which has no verified
+          public-domain reproduction.)</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The book's own voyage — Cupid's boat to Cythera —
+          is rowed by six nymphs, and sirens sing en route <em>meaning no harm for once</em>. Draper shows the same cast with
+          the menace left in: useful contrast for keeping the Dream's boat-nymphs sweet without going saccharine. The
+          over-the-gunwale poses are directly reusable.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Ulysses_and_the_Sirens_(Draper)">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Herbert_James_Draper,_Ulysses_and_the_Sirens,_1909.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ IV · DIANA & HER TRAIN ═══════════════════════ -->
+<section id="diana">
+  <div class="sec-head">
+    <div class="sec-num">Section IV</div>
+    <h2>Diana &amp; Her Train — <em>the vow before love</em></h2>
+    <p class="sec-intro">
+      In the book's second half Polia tells her own story: a plague-vow that bound her to chaste Diana, and
+      the cold years before she relented and took the fainting Poliphilo in her arms. The huntress and her
+      nymphs — bathing, surprised, punishing — are the register for Polia-before-love: the nymph who is
+      beautiful and <em>unavailable</em>, and for the moral heat of being seen.
+    </p>
+  </div>
+  <div class="gallery">
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Titian_-_Diana_and_Actaeon_-_Google_Art_Project.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Titian%20-%20Diana%20and%20Actaeon%20-%20Google%20Art%20Project.jpg?width=1000" alt="Titian, Diana and Actaeon — the hunter stumbles on Diana bathing with her nymphs"/>
+      </a>
+      <figcaption>
+        <h3>Diana and Actaeon <span class="yr">· 1556–59</span></h3>
+        <div class="artist">Titian (c. 1488/90 – 1576) · Venetian Renaissance</div>
+        <div class="facts">Oil on canvas, 184.5 × 202.2 cm · National Gallery, London / National Galleries of Scotland (NG 2839)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Actaeon, hunting, pushes aside a curtain and finds Diana at her bath among her
+          nymphs. In Ovid the goddess flings water in his face — <em>now tell, if you can, that you saw me naked</em> — and he
+          becomes a stag, torn apart by his own hounds. Titian paints the half-second before any of that: the seen and the seer,
+          equally exposed.</p>
+          <p><span class="lbl">Context.</span> One of the six <em>poesie</em> — "painted poems" from Ovid — that Titian sent to
+          Philip II of Spain, and by common consent among the supreme achievements of Venetian painting. Every nymph reacts
+          differently: one hides, one stares, one keeps drying the goddess's foot. The 2009–12 campaign to keep the pair in
+          Britain was the most expensive save in UK museum history.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The scene-grammar of intrusion — a mortal blundering
+          into a sacred bathing company — is the sense-nymphs' episode exactly. Note the staging: architecture on one side, water
+          on the other, the intruder at the threshold. That is a camera blocking diagram for the bath court.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Diana_and_Actaeon_(Titian)">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Titian_-_Diana_and_Actaeon_-_Google_Art_Project.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Tizian_015_(2).jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Tizian%20015%20(2).jpg?width=1000" alt="Titian, Diana and Callisto — Diana discovers the pregnancy of her nymph Callisto"/>
+      </a>
+      <figcaption>
+        <h3>Diana and Callisto <span class="yr">· 1556–59</span></h3>
+        <div class="artist">Titian (c. 1488/90 – 1576) · Venetian Renaissance</div>
+        <div class="facts">Oil on canvas, c. 187 × 204.5 cm · National Gallery, London / National Galleries of Scotland (NG6616)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> The companion poesia: Diana's nymphs strip the reluctant Callisto at the goddess's
+          command and expose her pregnancy — Jupiter's doing, but it is Callisto who is banished. The bathing company becomes a
+          tribunal; the same bodies that played in the water now enforce the vow.</p>
+          <p><span class="lbl">Context.</span> Titian painted the two Dianas as a pair, mirrored around their pools, and late in
+          life reworked the Callisto composition again (Vienna version). The picture's cruelty is the point: chastity as an
+          institution with police powers, the nymph-band as both sisterhood and surveillance.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> Polia's backstory in one image. Her plague-vow bound
+          her to exactly this order — and her coldness to Poliphilo is Callisto's fear from the inside. If the world ever stages
+          Polia's telling (folio 143's garden), this is its emotional palette: white bodies, storm sky, one figure apart.</p>
+        </div>
+        <div class="src">Sources: <a href="https://www.nationalgallery.org.uk/paintings/titian-diana-and-callisto">National Gallery record</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Tizian_015_(2).jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Peter_Paul_Rubens_-_Diana_and_her_Nymphs_Surprised_by_the_Fauns_(Prado).jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Peter%20Paul%20Rubens%20-%20Diana%20and%20her%20Nymphs%20Surprised%20by%20the%20Fauns%20(Prado).jpg?width=1100" alt="Rubens, Diana and Her Nymphs Surprised by the Fauns — a violent scramble as fauns ambush the resting huntresses"/>
+      </a>
+      <figcaption>
+        <h3>Diana and Her Nymphs Surprised by the Fauns <span class="yr">· c. 1638–40</span></h3>
+        <div class="artist">Peter Paul Rubens (1577–1640) · Flemish Baroque</div>
+        <div class="facts">Oil on canvas, 129.5 × 314 cm · Museo del Prado, Madrid (P001665)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Diana's huntresses, dozing after the chase amid game and hounds, are rushed by a
+          pack of fauns; the composition is one long horizontal scramble of grab, twist, and flight, the goddess herself raising
+          her spear at the centre.</p>
+          <p><span class="lbl">Context.</span> Late Rubens at full tilt — painted in his last years for Philip IV, with the animals
+          likely by Frans Snyders' hand. Where Titian holds the moment before, Rubens paints the collision itself: nymphs as
+          bodies in motion, drapery used as vectors of force rather than clothing.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The frieze format (1:2.4) is effectively a relief —
+          this is what a carved nymph-hunt panel wants to be. For animation reference: each nymph is a single readable action
+          verb (recoil, wrench, bolt), which is precisely how low-poly figures must be posed to read at distance.</p>
+        </div>
+        <div class="src">Sources: <a href="https://www.museodelprado.es/en/the-collection/art-work/diana-and-her-nymphs-surprised-by-satyrs/030098df-2bf5-4e2b-a457-e214560af51c">Prado record</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Peter_Paul_Rubens_-_Diana_and_her_Nymphs_Surprised_by_the_Fauns_(Prado).jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Diana,_School_of_Fontainbleau,_Louvre.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Diana%2C%20School%20of%20Fontainbleau%2C%20Louvre.jpg?width=700" alt="School of Fontainebleau, Diana the Huntress — the goddess striding with bow and hound, an idealized portrait of Diane de Poitiers"/>
+      </a>
+      <figcaption>
+        <h3>Diana the Huntress <span class="yr">· c. 1550</span></h3>
+        <div class="artist">Anonymous, School of Fontainebleau (sometimes attr. Luca Penni) · French Mannerist</div>
+        <div class="facts">Oil on canvas, 191 × 132 cm · Musée du Louvre, Paris (INV 445)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> The virgin huntress mid-stride, bow in hand, hound at heel, crescent in her hair —
+          and simultaneously a courtly in-joke: an idealized portrait of Diane de Poitiers, mistress of Henri II, who ran half of
+          France under the goddess's name.</p>
+          <p><span class="lbl">Context.</span> The School of Fontainebleau — Italian Mannerists imported by François I and their
+          French heirs — minted this figure type: small head, endless limbs, cool porcelain flesh, drapery as ribbon. It is the
+          same courtly-antiquarian dialect the <em>Hypnerotomachia</em> speaks, one royal generation on.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The best single-figure silhouette in the collection:
+          a striding nymph readable from fifty metres. The proportions (8½ heads, high waist) are practically a low-poly rig
+          spec — and the crescent diadem is a one-triangle accessory that names her instantly.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Diana_the_Huntress">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Diana,_School_of_Fontainbleau,_Louvre.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════ V · THE BELOVED & THE IDEA ═══════════════════════ -->
+<section id="beloved">
+  <div class="sec-head">
+    <div class="sec-num">Section V</div>
+    <h2>The Beloved &amp; the Idea — <em>Polia, Logistica, Thelemia</em></h2>
+    <p class="sec-intro">
+      Some nymphs in the Dream Garden are also arguments. Polia is the long-sought beloved (white worked with
+      gold, a lit torch in her hand); Logistica is Reason and Thelemia is Desire, the two guides who quarrel at
+      the Three Doors. For a maiden who is <em>also</em> an idea, the model is the Botticelli nymph — Flora,
+      Chloris, the welcoming Hora — where a woman and an allegory are made to occupy one body without strain.
+    </p>
+  </div>
+  <div class="gallery">
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Botticelli-primavera.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Botticelli-primavera.jpg?width=1100" alt="Botticelli, Primavera — at right the wind Zephyrus seizes the nymph Chloris, who transforms into Flora scattering blossoms"/>
+      </a>
+      <figcaption>
+        <h3>Primavera <span class="yr">· c. 1480</span></h3>
+        <div class="artist">Sandro Botticelli (c. 1445–1510) · Florentine Early Renaissance</div>
+        <div class="facts">Tempera on panel, 202 × 314 cm · Galleria degli Uffizi, Florence (Inv. 1890 no. 8360)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Read it right to left: the blue wind Zephyrus seizes the nymph Chloris; flowers
+          spill from her mouth; and she <em>becomes</em> the next figure, Flora, goddess of blossom, striding forward in a
+          flowered gown. One nymph, two bodies — abduction transfigured into spring.</p>
+          <p><span class="lbl">Context.</span> Painted for the Medici circle steeped in Ficino's Neoplatonism, on Ovid's
+          <em>Fasti</em>: "I was Chloris, who am now called Flora." It is the Renaissance's most complete statement that a
+          nymph can be a process, not just a person — desire refined stage by stage into culture. The <em>Hypnerotomachia</em>,
+          printed twenty years later, breathes the same Florentine-Venetian humanist air.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> Polia's arc in one panel — the pursued maiden who
+          becomes, through the ordeal, the flowering figure. The Chloris→Flora pair also solves a production problem: the same
+          base mesh, re-dressed and re-posed, can play a nymph at two narrative stages.</p>
+        </div>
+        <div class="src">Sources: <a href="https://en.wikipedia.org/wiki/Primavera_(Botticelli)">Wikipedia</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Botticelli-primavera.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Sandro%20Botticelli%20-%20La%20nascita%20di%20Venere%20-%20Google%20Art%20Project%20-%20edited.jpg?width=1100" alt="Botticelli, The Birth of Venus — at right a Hora, nymph of the Seasons, rushes to clothe the arriving goddess"/>
+      </a>
+      <figcaption>
+        <h3>The Birth of Venus <span class="yr">· c. 1485</span></h3>
+        <div class="artist">Sandro Botticelli (c. 1445–1510) · Florentine Early Renaissance</div>
+        <div class="facts">Tempera on canvas, 172.5 × 278.9 cm · Galleria degli Uffizi, Florence (Inv. 1890 no. 878)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> Venus lands on the shore of her island on a shell, blown in by entwined wind-gods —
+          and on the right a Hora, nymph of the Seasons in a cornflower-printed gown, runs to meet her with a mantle worked in
+          daisies. The nymph is the welcome: the gesture of receiving divinity onto land.</p>
+          <p><span class="lbl">Context.</span> The first monumental female nude on canvas of the Florentine Renaissance, its
+          Venus quoting the antique <em>Venus pudica</em>. For the greeting Hora, Botticelli invents the running-while-offering
+          pose — weight forward, cloth billowing back — that every stage-designer of arrivals has borrowed since.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The world already sails for Cythera — Venus's own
+          island — at the shore station. The Hora is the model for whoever meets the boat: one nymph, one offered mantle, wind in
+          the cloth. Her printed gown also licenses pattern on low-poly drapery, which reads as richness at zero geometry cost.</p>
+        </div>
+        <div class="src">Sources: <a href="https://www.uffizi.it/en/artworks/birth-of-venus">Uffizi record</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+    <figure class="art">
+      <a class="art-img" href="https://commons.wikimedia.org/wiki/File:Piero_di_Cosimo_013.jpg">
+        <img loading="lazy" src="https://commons.wikimedia.org/wiki/Special:FilePath/Piero%20di%20Cosimo%20013.jpg?width=1100" alt="Piero di Cosimo, A Satyr Mourning over a Nymph — a satyr kneels over the dead nymph while a dog watches"/>
+      </a>
+      <figcaption>
+        <h3>A Satyr Mourning over a Nymph <span class="yr">· c. 1495</span></h3>
+        <div class="artist">Piero di Cosimo (1462–1522) · Florentine Renaissance</div>
+        <div class="facts">Oil on poplar panel, 65.4 × 184.2 cm · The National Gallery, London (NG698)</div>
+        <div class="prose">
+          <p><span class="lbl">Subject.</span> On a bare shore a young nymph lies dying of a throat wound; a satyr kneels over her
+          with unbearable gentleness, and a great dog sits in mourning. Usually read as Procris, killed in error by her husband's
+          unerring spear — though the panel names no one, which is part of its spell.</p>
+          <p><span class="lbl">Context.</span> Piero, Vasari's great eccentric, painted this as a <em>spalliera</em> (a panel set
+          into furniture or wainscot) — hence the frieze format. It is the tenderest image in Renaissance art of the myth-world
+          grieving for one of its own: the wild things, satyr and dog, are the mourners; the humans are nowhere.</p>
+          <p class="relevance"><span class="lbl">For the Dream Garden.</span> The book ends on an epitaph — <em>FELIX POLIA, QUAE
+          SEPULTA VIVIS</em>: outside the dream, Polia is dead, and the whole garden is her monument. This panel is that fact as
+          an image. If the Awakening station ever gains a memorial relief, here is its composition: horizontal, hushed, attended
+          by animals.</p>
+        </div>
+        <div class="src">Sources: <a href="https://www.nationalgallery.org.uk/paintings/piero-di-cosimo-a-satyr-mourning-over-a-nymph">National Gallery record</a> ·
+          <a href="https://commons.wikimedia.org/wiki/File:Piero_di_Cosimo_013.jpg">Commons file</a>
+          · <span class="pd">public domain</span></div>
+      </figcaption>
+    </figure>
+
+  </div>
+</section>
+
+<footer>
+  <h4>Method &amp; Rights</h4>
+  <p>
+    Images are hot-linked from Wikimedia Commons via <code>Special:FilePath</code>. All paintings and woodcuts
+    shown are in the <span class="pd">public domain</span> (faithful photographic reproductions of two-dimensional
+    works whose authors died more than a century ago carry no new copyright — see
+    <a href="https://commons.wikimedia.org/wiki/Commons:Reuse_of_PD-Art_photographs">Commons: PD-Art</a>).
+    <strong>Two exceptions concern photographs of sculpture</strong>, where the photographer holds rights in the image
+    even though the carving is ancient: the Cellini relief photo is released CC0 (no restrictions), while the Goujon
+    nymph photo is <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> © Jamie Mulherron —
+    it may be reused only with attribution and share-alike, as credited on its card. Facts of attribution, date, and
+    collection were verified against museum records and Commons file pages; the interpretive notes are the author's own.
+    One substitution: Draper's <em>Water Nixie</em> has no verified public-domain reproduction, so his
+    <em>Ulysses and the Sirens</em> represents him instead.
+  </p>
+  <a class="backlink" href="../index.html">← Back to Emblems in 3D</a>
+</footer>
+
+</body>
+</html>

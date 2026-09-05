@@ -77,22 +77,6 @@ a { color: inherit; }
 .cta-s { border-color: var(--faint); color: var(--dim); }
 .cta-s:hover { border-color: #5a3a18; color: var(--gold); }
 
-.version-bar {
-  margin-top: 1.6rem; max-width: 620px; display: flex; flex-wrap: wrap;
-  align-items: center; justify-content: center; gap: 0.5rem 0.8rem;
-  border-top: 1px solid var(--faint); padding-top: 1.2rem;
-}
-.version-bar .ver-badge {
-  font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--gold); border: 1px solid var(--gold-dk); padding: 0.18rem 0.55rem;
-}
-.version-bar .ver-note { font-size: 0.72rem; color: #6a5a48; line-height: 1.6; flex: 1 1 260px; text-align: left; }
-.version-bar .ver-link {
-  font-size: 0.72rem; letter-spacing: 0.04em; color: var(--dim); text-decoration: none;
-  border-bottom: 1px solid var(--faint); padding-bottom: 1px; white-space: nowrap;
-}
-.version-bar .ver-link:hover { color: var(--gold); border-bottom-color: #5a3a18; }
-
 /* ── Generic section wrapper ── */
 .wrap {
   max-width: 980px; margin: 0 auto;
@@ -189,6 +173,11 @@ footer a:hover { color: var(--dim); }
 </head>
 <body>
 
+<div style="position:sticky;top:0;z-index:100;background:rgba(10,7,3,0.94);border-bottom:1px solid #3a2a18;padding:0.5rem 1rem;text-align:center;font-family:Georgia,serif;font-size:0.72rem;letter-spacing:0.04em;color:#8a7358;">
+  You are viewing <strong style="color:#c8a878;">Version&nbsp;1</strong> &mdash; an earlier, archived release.
+  <a href="../index.html" style="color:#c8a878;text-decoration:none;border-bottom:1px solid #5a3a18;margin-left:0.5rem;">Go to the current version &rarr;</a>
+</div>
+
 <!-- ══ HERO ══════════════════════════════════════════════════════════════ -->
 <div class="hero">
   <div class="hero-glyph">✦ · ✦ · ✦</div>
@@ -224,14 +213,6 @@ footer a:hover { color: var(--dim); }
     <a class="cta cta-s" href="src/index.html#theatrum">Theatrum Chemicum</a>
     <a class="cta cta-s" href="games/index.html">Emblem Games</a>
     <a class="cta cta-s" href="https://github.com/t3dy/EmblemsIn3d">GitHub</a>
-  </div>
-
-  <div class="version-bar">
-    <span class="ver-badge">Version&nbsp;2</span>
-    <span class="ver-note">You are on the current release — the guided tour with its scholarly
-    commentary lenses, the Gallery, Poliphilo&rsquo;s Dream as a game, mobile controls, and
-    the marble Venus.</span>
-    <a class="ver-link" href="v1/index.html">View Version&nbsp;1, the earlier release &rarr;</a>
   </div>
 </div>
 
@@ -362,9 +343,9 @@ footer a:hover { color: var(--dim); }
     </a>
 
     <a class="card" href="research/translation.html">
-      <div class="badge" style="color:#7fa8c0;border-color:#7fa8c0;">Digital edition · complete</div>
+      <div class="badge" style="color:#7fa8c0;border-color:#7fa8c0;">Working edition · in progress</div>
       <h3>Finishing the <em>Hypnerotomachia</em></h3>
-      <p>Robert Dallington's Elizabethan English stops partway through chapter XVII — facsimile page 193 of 467 — and every complete translation since is under copyright. This is a new English rendering of the whole remainder — all 90,646 words, chapters XVII–XXXVIII, Book II and the colophon — made from the 1499 Aldine and set beside the Italian, page by page, so any sentence can be checked. Released CC0. Opens with a section-by-section synopsis of the entire book.</p>
+      <p>Robert Dallington's Elizabethan English stops partway through chapter XVII — facsimile page 193 of 467 — and every complete translation since is under copyright. This is a new English rendering of the remainder, made from the 1499 Aldine and set beside the Italian it came from, page by page, so any sentence can be checked. Released CC0. 90,646 words of source; the bar on the page says how far it has got.</p>
       <div class="arr">Read the parallel text →</div>
     </a>
 
@@ -373,13 +354,6 @@ footer a:hover { color: var(--dim); }
       <h3>Nymphs, and How to Draw Them</h3>
       <p>A sourced gallery of nymphs in Western art, assembled to give faces, drapery and gesture to the figures who people the Dream Garden — the five sense-nymphs, the naiads of the fountain, Polia with her torch. The 1499 woodcuts for costume, Cellini's Fontainebleau bronze for proportion, Goujon's Innocents naiads for drapery, each with its museum citation. Every choice of model is also a choice of meaning.</p>
       <div class="arr">Open the sourcebook →</div>
-    </a>
-
-    <a class="card" href="src/index.html#gallery">
-      <div class="badge" style="color:#c8a040;border-color:#c8a040;">Gallery · 25 exemplars</div>
-      <h3>The Sources Behind the World</h3>
-      <p>A gallery of Renaissance and early-modern art exemplars for everything we build — Botticelli's and Titian's Venus, Cellini's and Cranach's nymphs, Bramante's Tempietto and the Pantheon for the round temple, Mantegna's triumphs, Watteau's <em>Embarkation for Cythera</em>, Dürer's engraved line — shown beside the 1499 woodcuts of the <em>Hypnerotomachia</em> itself. Each plate self-hosted, public-domain, with its provenance. Opens as a tab in the 3-D app.</p>
-      <div class="arr">Open the gallery →</div>
     </a>
 
   </div>
@@ -522,8 +496,8 @@ footer a:hover { color: var(--dim); }
   <div class="decisions">
 
     <div class="decision">
-      <div class="dec-head">Primitive geometry first — with a few imported statues</div>
-      <div class="dec-body">Nearly every figure and object is built from CapsuleGeometry, SphereGeometry, TorusGeometry, etc. — no imports. Building the toad from a squashed sphere with emissive amber eyes is an interpretive act, not a texture lookup. The one deliberate exception is the antique statuary the book keeps invoking: the Fountain of Venus now holds a real marble Venus — a CC0 scan of the Capitoline Venus, decimated to ~35k faces and loaded as a 0.6&nbsp;MB glTF — because the goddess the whole world walks toward deserves the actual antique, not a capsule. Primitive figures remain the default and the woodcut-mode look.</div>
+      <div class="dec-head">Primitive-only geometry — no 3D model imports</div>
+      <div class="dec-body">Every figure and object is built from CapsuleGeometry, SphereGeometry, TorusGeometry, etc. No .glb or .fbx imports. This forces close reading of the emblem imagery — building the toad from a squashed sphere with emissive amber eyes is an interpretive act, not a texture lookup. It also keeps the project runnable with no asset pipeline.</div>
     </div>
 
     <div class="decision">

@@ -1,0 +1,776 @@
+[
+  {
+    "id": 1,
+    "signature_1499": "a2v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 2,
+    "signature_1499": "a4v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 3,
+    "signature_1499": "a5v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 4,
+    "signature_1499": "a6r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 5,
+    "signature_1499": "b3v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 6,
+    "signature_1499": "b4r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 7,
+    "signature_1499": "b6r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 8,
+    "signature_1499": "b6v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 9,
+    "signature_1499": "b7r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 10,
+    "signature_1499": "d2v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 11,
+    "signature_1499": "f4r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 12,
+    "signature_1499": "f6v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 13,
+    "signature_1499": "g3v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 14,
+    "signature_1499": "h5v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 15,
+    "signature_1499": "h8r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 16,
+    "signature_1499": "i2v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 17,
+    "signature_1499": "k5r",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 18,
+    "signature_1499": "k7v",
+    "source_method": "CORPUS_EXTRACTION",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 61,
+    "signature_1499": "b2v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 62,
+    "signature_1499": "b6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 63,
+    "signature_1499": "b6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 64,
+    "signature_1499": "b7v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 65,
+    "signature_1499": "b8r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 66,
+    "signature_1499": "c3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 67,
+    "signature_1499": "c6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 68,
+    "signature_1499": "d6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 69,
+    "signature_1499": "d8r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 70,
+    "signature_1499": "e1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 71,
+    "signature_1499": "e3v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 72,
+    "signature_1499": "e5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 73,
+    "signature_1499": "f2v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 74,
+    "signature_1499": "f4v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 75,
+    "signature_1499": "f6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 76,
+    "signature_1499": "f7v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 77,
+    "signature_1499": "g1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 78,
+    "signature_1499": "g1v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 79,
+    "signature_1499": "g2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 80,
+    "signature_1499": "g7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 81,
+    "signature_1499": "h3v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 82,
+    "signature_1499": "h5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 83,
+    "signature_1499": "h6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 84,
+    "signature_1499": "h6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 85,
+    "signature_1499": "h7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 86,
+    "signature_1499": "h8v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 87,
+    "signature_1499": "i1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 88,
+    "signature_1499": "i5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 89,
+    "signature_1499": "k1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 90,
+    "signature_1499": "k1v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 91,
+    "signature_1499": "k2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 92,
+    "signature_1499": "k2v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 93,
+    "signature_1499": "k3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 94,
+    "signature_1499": "k3v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 95,
+    "signature_1499": "k4r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 96,
+    "signature_1499": "k4v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 97,
+    "signature_1499": "k5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 98,
+    "signature_1499": "k6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 99,
+    "signature_1499": "k6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 100,
+    "signature_1499": "k7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 101,
+    "signature_1499": "k8v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 102,
+    "signature_1499": "l1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 103,
+    "signature_1499": "l1v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 104,
+    "signature_1499": "l2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 105,
+    "signature_1499": "m5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 106,
+    "signature_1499": "n2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 107,
+    "signature_1499": "n3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 108,
+    "signature_1499": "n3v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 109,
+    "signature_1499": "n5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 110,
+    "signature_1499": "n7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 111,
+    "signature_1499": "n8r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 112,
+    "signature_1499": "n8v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 113,
+    "signature_1499": "o1v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 114,
+    "signature_1499": "o2v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 115,
+    "signature_1499": "o3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 117,
+    "signature_1499": "o7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 118,
+    "signature_1499": "p5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 119,
+    "signature_1499": "p6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 120,
+    "signature_1499": "p6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 121,
+    "signature_1499": "p7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 122,
+    "signature_1499": "p7v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 123,
+    "signature_1499": "q1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 124,
+    "signature_1499": "q2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 126,
+    "signature_1499": "q4r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 128,
+    "signature_1499": "q5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 129,
+    "signature_1499": "q6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 130,
+    "signature_1499": "q6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 132,
+    "signature_1499": "q7v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 135,
+    "signature_1499": "r3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 136,
+    "signature_1499": "s2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 137,
+    "signature_1499": "s5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 139,
+    "signature_1499": "t4r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 140,
+    "signature_1499": "t5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 141,
+    "signature_1499": "t5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 142,
+    "signature_1499": "t7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 143,
+    "signature_1499": "x2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 144,
+    "signature_1499": "x4r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 145,
+    "signature_1499": "x5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 146,
+    "signature_1499": "x7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 147,
+    "signature_1499": "x8r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 148,
+    "signature_1499": "y6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 150,
+    "signature_1499": "z1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 151,
+    "signature_1499": "z2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 152,
+    "signature_1499": "z3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 153,
+    "signature_1499": "A3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 154,
+    "signature_1499": "B3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 156,
+    "signature_1499": "C6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 157,
+    "signature_1499": "C7v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 158,
+    "signature_1499": "C8r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 159,
+    "signature_1499": "D1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 160,
+    "signature_1499": "E2r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 161,
+    "signature_1499": "E2v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 162,
+    "signature_1499": "E3r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 163,
+    "signature_1499": "E4v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 164,
+    "signature_1499": "E6r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 165,
+    "signature_1499": "E7r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 166,
+    "signature_1499": "F1r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 167,
+    "signature_1499": "F5r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 168,
+    "signature_1499": "F6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 169,
+    "signature_1499": "G4r",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 170,
+    "signature_1499": "n6v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 175,
+    "signature_1499": "r1v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 180,
+    "signature_1499": "y5v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 181,
+    "signature_1499": "y7v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 183,
+    "signature_1499": "G4v",
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 184,
+    "signature_1499": null,
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 185,
+    "signature_1499": null,
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 186,
+    "signature_1499": null,
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 187,
+    "signature_1499": null,
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 188,
+    "signature_1499": null,
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  },
+  {
+    "id": 189,
+    "signature_1499": null,
+    "source_method": "LLM_ASSISTED",
+    "confidence": "HIGH"
+  }
+]
