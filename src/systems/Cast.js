@@ -897,13 +897,72 @@ export function makeCast(S) {
   // ── Props ─────────────────────────────────────────────────────────────────
 
   const props = {
-    tree: (kind = 'broad', s = 1) => {
+    // Trees for the wood. A cone on a stick reads as a blob, so these get a
+    // leaning tapered trunk, real boughs, and a canopy of several overlapping
+    // jittered masses in two tones - lit crown over shadowed underside - the
+    // way foliage is massed in Quattrocento painting. Seeded, so the wood is
+    // the same every load.
+    tree: (kind = 'broad', s = 1, seed = null) => {
       const g = new THREE.Group();
-      add(g, mesh(new THREE.CylinderGeometry(0.08 * s, 0.12 * s, 0.9 * s, 7), M(0x4a3416, { roughness: 0.9 }), 0, 0.45 * s));
+      const sd = seed == null ? 1 + Math.abs(s * 977.3) % 91 : seed;
+      const rnd = (k) => { const v = Math.sin(sd * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+      const bark = M(0x4a3416, { roughness: 0.95 });
+      g.rotation.z = (rnd(2) - 0.5) * 0.1;
+
+      // root flare
+      add(g, mesh(new THREE.CylinderGeometry(0.11 * s, 0.2 * s, 0.16 * s, 8), bark, 0, 0.08 * s));
+
+      // a bough from a to b
+      const limb = (ax, ay, az, bx, by, bz, r0, r1) => {
+        const dx = bx - ax, dy = by - ay, dz = bz - az;
+        const len = Math.hypot(dx, dy, dz) || 0.001;
+        const m = new THREE.Mesh(new THREE.CylinderGeometry(r1, r0, len, 6), bark);
+        m.position.set((ax + bx) / 2, (ay + by) / 2, (az + bz) / 2);
+        m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0),
+          new THREE.Vector3(dx, dy, dz).normalize());
+        m.castShadow = true; m.receiveShadow = true;
+        g.add(m);
+      };
+
+      // a canopy mass of overlapping jittered blobs, lit on top
+      const mass = (cx, cy, cz, r, n, dark, light, squash, k0) => {
+        for (let i = 0; i < n; i++) {
+          const a = rnd(k0 + i * 3) * Math.PI * 2;
+          const rr = rnd(k0 + i * 3 + 1);
+          const hh = rnd(k0 + i * 3 + 2);
+          const br = r * (0.54 + rr * 0.4);
+          const by = cy + (hh - 0.45) * r * 0.5;
+          const b = mesh(new THREE.SphereGeometry(br, 9, 7),
+            M(by > cy + r * 0.05 ? light : dark, { roughness: 0.92 }),
+            cx + Math.cos(a) * r * 0.44 * rr, by, cz + Math.sin(a) * r * 0.44 * rr);
+          b.scale.set(1, squash, 1);
+          b.rotation.set(rnd(k0 + i + 60) * 0.6, a, rnd(k0 + i + 70) * 0.4);
+          add(g, b);
+        }
+      };
+
       if (kind === 'cypress') {
-        add(g, mesh(new THREE.ConeGeometry(0.4 * s, 2.2 * s, 8), M(0x264418, { roughness: 0.9 }), 0, 1.9 * s));
+        // columnar, wavering silhouette instead of one clean cone
+        add(g, mesh(new THREE.CylinderGeometry(0.05 * s, 0.11 * s, 1.5 * s, 7), bark, 0, 0.75 * s));
+        for (let i = 0; i < 4; i++) {
+          const t = i / 4;
+          const b = mesh(new THREE.SphereGeometry((0.38 - t * 0.2) * s, 9, 8),
+            M(i > 1 ? 0x2f4d1c : 0x1d3a12, { roughness: 0.92 }),
+            (rnd(10 + i) - 0.5) * 0.07 * s, (0.8 + t * 1.42) * s, (rnd(20 + i) - 0.5) * 0.07 * s);
+          b.scale.set(1, 2.2 - t * 0.55, 1);
+          add(g, b);
+        }
       } else {
-        add(g, mesh(new THREE.SphereGeometry(0.62 * s, 10, 8), M(kind === 'golden' ? 0x3a4a1a : 0x2a4418, { roughness: 0.9 }), 0, 1.35 * s));
+        const H = 1.15 * s;
+        add(g, mesh(new THREE.CylinderGeometry(0.075 * s, 0.14 * s, H, 8), bark, 0, H / 2));
+        const n = 3 + Math.floor(rnd(4) * 2);
+        for (let i = 0; i < n; i++) {
+          const a = (i / n) * Math.PI * 2 + rnd(5) * 3;
+          limb(0, H * 0.62, 0, Math.cos(a) * 0.5 * s, H * 1.32, Math.sin(a) * 0.5 * s, 0.055 * s, 0.025 * s);
+        }
+        mass(0, H * 1.5, 0, 0.78 * s, 7,
+          kind === 'golden' ? 0x36461a : 0x1e3a14,
+          kind === 'golden' ? 0x53682a : 0x375b1f, 0.88, 100);
         if (kind === 'golden') for (let i = 0; i < 6; i++) {
           const a = (i / 6) * Math.PI * 2;
           add(g, mesh(new THREE.SphereGeometry(0.07 * s, 8, 6), M(0xffd24a, { emissive: 0x806000, emissiveIntensity: 0.7, metalness: 0.8, roughness: 0.25 }), Math.cos(a) * 0.5 * s, 1.35 * s + Math.sin(a * 2) * 0.25 * s, Math.sin(a) * 0.5 * s));

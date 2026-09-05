@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=15';
+import { makeCast } from '../systems/Cast.js?v=17';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -719,7 +719,7 @@ export class HPWorldScene {
       if (Math.abs(x) < 2.7) continue;                  // the path survives
       const s = 0.9 + rnd(i, 3) * 0.8;
       const kind = rnd(i, 4) < 0.6 ? 'cypress' : 'broad';
-      const t = this.cast.props.tree(kind, s * 1.3);
+      const t = this.cast.props.tree(kind, s * 1.3, i + 1);
       t.position.set(x, 0, z);
       t.rotation.y = rnd(i, 5) * Math.PI;
       this.scene.add(t);
@@ -2182,12 +2182,168 @@ export class HPWorldScene {
 
   // ── Garden fabric ─────────────────────────────────────────────────────────
 
+  // The trees were a cylinder and a single cone, which is what made the garden
+  // read as blobby: one smooth shape has no branch structure and no foliage
+  // mass, so it cannot catch light the way a painted tree does.
+  //
+  // These are built the way a Quattrocento painter draws them: a tapered,
+  // slightly leaning trunk with a root flare, real branches, and a canopy
+  // assembled from several overlapping jittered ellipsoids in two tones, so the
+  // mass has a lit crown and a shadowed underside. Species follow the plants the
+  // book names in its gardens - cypress, umbrella pine, laurel, myrtle, orange.
+  // Everything is seeded by position, so the garden is identical on every load.
+  _treeRand(seed, k) {
+    const v = Math.sin(seed * 127.1 + k * 311.7) * 43758.5453;
+    return v - Math.floor(v);
+  }
+
+  // Two foliage tones per species: the body of the mass, and a lighter crown
+  // catching the sun. In woodcut mode both collapse to the flat ink.
+  _foliageMats(hex, light) {
+    const S = this.style;
+    this._foliageCache = this._foliageCache || {};
+    const key = hex + '_' + light;
+    if (this._foliageCache[key]) return this._foliageCache[key];
+    let pair;
+    if (S.key === 'woodcut') {
+      pair = [this._leafMat, this._leafMat];
+    } else {
+      pair = [S.mat({ color: hex, roughness: 0.92 }), S.mat({ color: light, roughness: 0.88 })];
+      this._dress(pair[0], this._surfaceTexture({
+        base: '#1d3a14', dark: '#0c1c08', light: '#4a7030', blobs: 40, speckle: 3000, repeat: 3,
+      }), 0.35);
+    }
+    this._foliageCache[key] = pair;
+    return pair;
+  }
+
+  // One canopy mass: overlapping squashed spheres jittered around a centre.
+  _canopyMass(parent, cx, cy, cz, r, count, mats, seed, squash) {
+    for (let i = 0; i < count; i++) {
+      const a  = this._treeRand(seed, i * 3 + 1) * Math.PI * 2;
+      const rr = this._treeRand(seed, i * 3 + 2);
+      const hh = this._treeRand(seed, i * 3 + 3);
+      const br = r * (0.52 + rr * 0.42);
+      const bx = cx + Math.cos(a) * r * 0.46 * rr;
+      const bz = cz + Math.sin(a) * r * 0.46 * rr;
+      const by = cy + (hh - 0.45) * r * 0.5;
+      const mat = (by > cy + r * 0.06) ? mats[1] : mats[0];
+      const b = this._m(new THREE.SphereGeometry(br, 9, 7), mat, bx, by, bz,
+        { parent, cast: i < 3, receive: false, outline: i === 0 });
+      b.scale.set(1, squash, 1);
+      b.rotation.set(this._treeRand(seed, i + 40) * 0.6, a, this._treeRand(seed, i + 50) * 0.4);
+    }
+  }
+
+  // A tapered limb from a to b.
+  _limb(parent, mat, ax, ay, az, bx, by, bz, r0, r1) {
+    const dx = bx - ax, dy = by - ay, dz = bz - az;
+    const len = Math.hypot(dx, dy, dz) || 0.001;
+    const m = new THREE.Mesh(new THREE.CylinderGeometry(r1, r0, len, 6), mat);
+    m.position.set((ax + bx) / 2, (ay + by) / 2, (az + bz) / 2);
+    m.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0),
+      new THREE.Vector3(dx, dy, dz).normalize());
+    m.castShadow = true; m.receiveShadow = true;
+    parent.add(m);
+    return m;
+  }
+
+  _tree(x, z, s = 1, species = null) {
+    const seed = Math.abs(x * 73.1 + z * 19.7) + 1;
+    const KINDS = ['cypress', 'pine', 'laurel', 'myrtle', 'orange'];
+    species = species || KINDS[Math.floor(this._treeRand(seed, 7) * KINDS.length) % KINDS.length];
+
+    const g = new THREE.Group();
+    g.position.set(x, 0, z);
+    g.rotation.y = this._treeRand(seed, 11) * Math.PI * 2;
+    g.rotation.z = (this._treeRand(seed, 13) - 0.5) * 0.09;   // no tree is plumb
+    this.scene.add(g);
+
+    // Root flare, so the trunk grows out of the ground instead of sitting on it
+    this._m(new THREE.CylinderGeometry(0.15 * s, 0.28 * s, 0.18 * s, 8),
+      this._trunkMat, 0, 0.09 * s, 0, { parent: g });
+
+    if (species === 'cypress') {
+      // Tall, dark, columnar - the signature tree of an Italian garden. Four
+      // stacked offset masses so the silhouette wavers instead of being a cone.
+      const H = 4.2 * s;
+      this._m(new THREE.CylinderGeometry(0.07 * s, 0.15 * s, H * 0.5, 7),
+        this._trunkMat, 0, H * 0.25, 0, { parent: g });
+      const mats = this._foliageMats(0x17300f, 0x2c4a18);
+      for (let i = 0; i < 4; i++) {
+        const t = i / 4;
+        const b = this._m(new THREE.SphereGeometry((0.5 - t * 0.27) * s, 9, 8),
+          i > 1 ? mats[1] : mats[0],
+          (this._treeRand(seed, 20 + i) - 0.5) * 0.1 * s,
+          H * (0.26 + t * 0.5),
+          (this._treeRand(seed, 30 + i) - 0.5) * 0.1 * s,
+          { parent: g, cast: i < 2, receive: false, outline: i === 0 });
+        b.scale.set(1, 2.1 - t * 0.5, 1);
+      }
+      this._circleCol(x, z, 0.42 * s);
+
+    } else if (species === 'pine') {
+      // The Roman umbrella pine: long bare trunk, high branches, flat crown.
+      const H = 3.4 * s;
+      this._m(new THREE.CylinderGeometry(0.11 * s, 0.2 * s, H, 8),
+        this._trunkMat, 0, H / 2, 0, { parent: g });
+      for (let i = 0; i < 4; i++) {
+        const a = (i / 4) * Math.PI * 2 + this._treeRand(seed, 3) * 2;
+        this._limb(g, this._trunkMat, 0, H * 0.82, 0,
+          Math.cos(a) * 0.75 * s, H * 1.02, Math.sin(a) * 0.75 * s, 0.07 * s, 0.03 * s);
+      }
+      this._canopyMass(g, 0, H * 1.12, 0, 1.15 * s, 7,
+        this._foliageMats(0x1c3612, 0x36581f), seed, 0.5);
+      this._circleCol(x, z, 0.4 * s);
+
+    } else if (species === 'orange') {
+      // A fruit tree from the book's own orchards - rounded, low, bearing fruit.
+      const H = 1.7 * s;
+      this._m(new THREE.CylinderGeometry(0.1 * s, 0.17 * s, H, 8),
+        this._trunkMat, 0, H / 2, 0, { parent: g });
+      for (let i = 0; i < 3; i++) {
+        const a = (i / 3) * Math.PI * 2 + this._treeRand(seed, 5) * 3;
+        this._limb(g, this._trunkMat, 0, H * 0.7, 0,
+          Math.cos(a) * 0.5 * s, H * 1.15, Math.sin(a) * 0.5 * s, 0.06 * s, 0.03 * s);
+      }
+      this._canopyMass(g, 0, H * 1.25, 0, 1.0 * s, 6,
+        this._foliageMats(0x1f3d16, 0x3d6524), seed, 0.86);
+      if (this.style.key !== 'woodcut') {
+        const fruitMat = this.style.mat({ color: 0xd8801c, roughness: 0.55 });
+        for (let i = 0; i < 7; i++) {
+          const a = this._treeRand(seed, 60 + i) * Math.PI * 2;
+          const rr = 0.55 + this._treeRand(seed, 70 + i) * 0.42;
+          this._m(new THREE.SphereGeometry(0.055 * s, 7, 6), fruitMat,
+            Math.cos(a) * rr * s,
+            H * (1.05 + this._treeRand(seed, 80 + i) * 0.4),
+            Math.sin(a) * rr * s, { parent: g, cast: false, receive: false });
+        }
+      }
+      this._circleCol(x, z, 0.4 * s);
+
+    } else {
+      // Laurel / myrtle - the evergreens the nymphs are crowned with: a short
+      // trunk splitting into boughs under a dense round mass.
+      const dark  = species === 'myrtle' ? 0x16300f : 0x1b3a13;
+      const light = species === 'myrtle' ? 0x2d5119 : 0x35601d;
+      const H = 1.5 * s;
+      this._m(new THREE.CylinderGeometry(0.11 * s, 0.18 * s, H, 8),
+        this._trunkMat, 0, H / 2, 0, { parent: g });
+      const n = 3 + Math.floor(this._treeRand(seed, 17) * 2);
+      for (let i = 0; i < n; i++) {
+        const a = (i / n) * Math.PI * 2 + this._treeRand(seed, 19) * 3;
+        this._limb(g, this._trunkMat, 0, H * 0.62, 0,
+          Math.cos(a) * 0.62 * s, H * 1.3, Math.sin(a) * 0.62 * s, 0.07 * s, 0.03 * s);
+      }
+      this._canopyMass(g, 0, H * 1.5, 0, 1.16 * s, 7,
+        this._foliageMats(dark, light), seed, 0.9);
+      this._circleCol(x, z, 0.44 * s);
+    }
+    return g;
+  }
+
   _buildTrees() {
-    const put = (x, z, s = 1) => {
-      this._m(new THREE.CylinderGeometry(0.12 * s, 0.16 * s, 0.8 * s, 6), this._trunkMat, x, 0.4 * s, z);
-      this._m(new THREE.ConeGeometry(0.55 * s, 3.2 * s, 8), this._leafMat, x, 0.8 * s + 1.6 * s, z, { outline: true });
-      this._circleCol(x, z, 0.5 * s);
-    };
+    const put = (x, z, s = 1, species = null) => this._tree(x, z, s, species);
 
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
