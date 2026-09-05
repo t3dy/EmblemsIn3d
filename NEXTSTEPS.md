@@ -61,7 +61,19 @@ does not yet have:
 Goal set 2026-09-05: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*
 
-- **Still untouched by the detail pass:** the Bridge, the Cythera theatre and isle.
+- **Cythera had its first detail pass on 2026-09-05:** the **peristyle** that bounds the
+  prati on the inside (plate #121, named in `GARDENS.md` and built nowhere) is now a
+  24-column corinthian colonnade with a circular entablature, open at the four crossroads;
+  the **seven trophies of the disarmed gods** (#130–#136) line the road up from the landing,
+  **including QVIS EVADET / NEMO**, which the tour had cited at two stops while the world
+  had none of it; and the prati topiary is now the plates' **named figures** — the box man
+  carrying two towers and an arch (#117), the mushroom (#120), the three peacocks on their
+  altar-vase (#127), the ring-tree on its altar (#116/#125) — instead of generic spheres.
+  The tiger-skin and the tunic are cut to their own outlines on an alpha canvas rather than
+  hung as striped rectangles, and are drawn in ink in woodcut mode.
+- **Still untouched by the detail pass:** the Bridge, and the Cythera **theatre** proper
+  (the amphitheatre of plate #147 — the tiers exist as terraces but the theatre's own
+  architecture does not).
   Apply the shared classical members (`_column`, `_entablature`, `_steps`, `_doorway`).
 - The **second** fountain of the FIVE_SENSES section (`woodcut_catalog` #22) is not built
   as a distinct feature. (#23, the third, is now the mainland fountain with its Graces,

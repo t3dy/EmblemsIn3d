@@ -3221,10 +3221,12 @@ export class HPWorldScene {
       const am = k * STEP + STEP / 2;
       const [cx, cz] = pos(am, 27.5);
       if (k % 2 === 0) {
-        // topiary: the clipped work the book says is trimmed every day
-        this._m(new THREE.CylinderGeometry(0.09, 0.13, 0.95, 8), this._trunkMat, cx, 0.55, cz);
-        this._m(new THREE.SphereGeometry(0.6, 12, 10), this._leafMat, cx, 1.35, cz, { outline: true });
-        this._m(new THREE.SphereGeometry(0.32, 10, 8), this._leafMat, cx, 2.1, cz, { outline: true });
+        // The clipped work the book says is trimmed every day — and the plates
+        // name each piece rather than leaving it generic: the box man carrying
+        // two towers and an arch (#117), the mushroom (#120), the three
+        // peacocks on their altar-vase (#127), the ring-tree on its altar
+        // (#116/#125). Six lawns, so each figure appears once or twice.
+        this._topiary(['man', 'mushroom', 'peacocks', 'ring', 'mushroom', 'man'][k / 2], cx, cz, 0.95);
       } else {
         const pool = this.cast.props.pool(1.0);
         pool.position.set(cx, 0.07, cz);
@@ -3283,6 +3285,14 @@ export class HPWorldScene {
       g.rotation.y = -a;
       this.scene.add(g);
     }
+
+    // The peristyle that bounds the prati on the inside (#121, folio 298)
+    this._cytheraPeristyle(CX, CZ);
+
+    // The trophies of the disarmed gods, lining the road up from the landing
+    // (#130-#136) — including QUIS EVADET? / NEMO, which the tour has cited
+    // since the commentary was written and the world did not have.
+    this._cytheraTrophies(CX, CZ);
 
     // ── Inner claustro: three terraces rising to the theatre ──────────────
     // Arcs with gaps at the cardinals; conifers in geometric array on the
@@ -3387,6 +3397,377 @@ export class HPWorldScene {
     this._floats.push({ g: skiff, wheels: [], phase: 2.4 });
     this._plaque({ main: 'CYTHERA', sub: 'THE ISLAND OF VENUS · PRESS 9 TO RETURN' },
       1.25, 0.32, -2.5, 1.1, -108, 0.35, true);
+  }
+
+  // ── The peristyle of the pleasure-ground ────────────────────────────────
+  //
+  // woodcut_catalog #121 (folio 298) is "Peristyle in pleasure-ground of island
+  // of Venus", and GARDENS.md §"middle claustro" has the prati "bounded outside
+  // by a road under a vaulted pergola, inside by a peristyle and the river."
+  // The peristyle was named in both and built in neither: the middle ring just
+  // ended at the water. It is a colonnade, so it uses the shared members.
+  _cytheraPeristyle(CX, CZ) {
+    const R = 23.4;                       // just outside the river's outer bank
+    const N = 24;                         // a column every 15°
+    const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
+    for (let i = 0; i < N; i++) {
+      const a = (i / N) * Math.PI * 2;
+      // the four crossroads stay open — the chariots pass through them
+      if (Math.min(...[0, 1, 2, 3].map(q =>
+        Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.16) continue;
+      const [x, z] = pos(a, R);
+      this._column(x, z, 3.1, { order: 'corinthian', r: 0.19 });
+      this._circleCol(x, z, 0.42);
+    }
+    // the circular architrave, in bays, skipping the four openings
+    for (let i = 0; i < N; i++) {
+      const a0 = (i / N) * Math.PI * 2, a1 = ((i + 1) / N) * Math.PI * 2;
+      const am = (a0 + a1) / 2;
+      if (Math.min(...[0, 1, 2, 3].map(q =>
+        Math.abs(((am - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.24) continue;
+      const [mx, mz] = pos(am, R);
+      const span = 2 * R * Math.sin(Math.PI / N);
+      this._entablature(mx, 3.2, mz, span + 0.26, 0.62, { ry: -am });
+    }
+  }
+
+  // A spoil cut to its own outline — a pelt or a tunic — painted on a
+  // transparent canvas and hung on an alpha-tested plane. Drawn rather than
+  // built for the reason RENAISSANCEART.md gives for the painted figures:
+  // painting sidesteps the silhouette problem that makes assembled boxes read
+  // as boxes. A tiger-skin is a shape before it is a texture.
+  _spoilTexture(kind, ink = false) {
+    const W = 256, H = 320;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    // Two registers, one drawing. Lit: the tawny pelt and the crimson tunic.
+    // Woodcut: paper ground and one ink, because a coloured spoil in flat-ink
+    // mode is the only coloured thing on the page and destroys the register.
+    const PELT   = ink ? '#efeade' : '#c08a3c';
+    const STRIPE = ink ? '#2b2620' : '#2a1a0c';
+    const FACE   = ink ? '#ffffff' : '#f0e2c8';
+    const CLOTH  = ink ? '#efeade' : '#a8324a';
+    const CLAVI  = ink ? '#2b2620' : '#7a1f33';
+    const FOLD   = ink ? 'rgba(43,38,32,0.55)' : 'rgba(0,0,0,0.22)';
+    const SHEEN  = ink ? 'rgba(255,255,255,0)' : 'rgba(255,255,255,0.16)';
+
+    if (kind === 'pelt') {
+      // the flayed skin: body, head, four splayed legs, tail
+      x.fillStyle = PELT;
+      if (ink) { x.strokeStyle = STRIPE; x.lineWidth = 3; }
+      x.beginPath();
+      x.moveTo(128, 22);                                   // the muzzle
+      x.bezierCurveTo(168, 30, 176, 66, 158, 84);          // right cheek
+      x.bezierCurveTo(214, 92, 236, 120, 214, 140);        // right foreleg
+      x.bezierCurveTo(190, 156, 176, 150, 166, 142);
+      x.bezierCurveTo(178, 196, 178, 232, 168, 254);       // right flank
+      x.bezierCurveTo(214, 268, 226, 296, 202, 306);       // right hind leg
+      x.bezierCurveTo(180, 314, 164, 300, 156, 282);
+      x.bezierCurveTo(150, 300, 142, 306, 132, 306);       // the tail root
+      x.lineTo(124, 306);
+      x.bezierCurveTo(114, 306, 106, 300, 100, 282);
+      x.bezierCurveTo(92, 300, 76, 314, 54, 306);          // left hind leg
+      x.bezierCurveTo(30, 296, 42, 268, 88, 254);
+      x.bezierCurveTo(78, 232, 78, 196, 90, 142);          // left flank
+      x.bezierCurveTo(80, 150, 66, 156, 42, 140);          // left foreleg
+      x.bezierCurveTo(20, 120, 42, 92, 98, 84);
+      x.bezierCurveTo(80, 66, 88, 30, 128, 22);
+      x.closePath();
+      x.fill();
+      if (ink) x.stroke();
+
+      // the stripes follow the body, so they must be clipped to it
+      x.save(); x.clip();
+      x.fillStyle = STRIPE;
+      for (let i = 0; i < 15; i++) {
+        const y = 70 + i * 16 + Math.sin(i) * 4;
+        const w = 34 + Math.sin(i * 1.7) * 22;
+        x.save();
+        x.translate(128, y);
+        x.rotate((i % 2 ? 1 : -1) * 0.22);
+        x.beginPath();
+        x.ellipse(0, 0, w, 5 + (i % 3), 0, 0, Math.PI * 2);
+        x.fill();
+        x.restore();
+      }
+      for (const sx of [-1, 1]) {                          // the leg stripes
+        for (let i = 0; i < 4; i++) {
+          x.save();
+          x.translate(128 + sx * (70 + i * 8), 116 + i * 7);
+          x.rotate(sx * 0.5);
+          x.fillRect(-16, -3, 32, 6);
+          x.restore();
+        }
+      }
+      x.restore();
+
+      // the face: the mask is what makes it read as an animal and not a rug
+      x.fillStyle = FACE;
+      x.beginPath(); x.ellipse(128, 52, 26, 20, 0, 0, Math.PI * 2); x.fill();
+      x.fillStyle = STRIPE;
+      x.beginPath(); x.ellipse(113, 46, 6, 4, 0.2, 0, Math.PI * 2); x.fill();
+      x.beginPath(); x.ellipse(143, 46, 6, 4, -0.2, 0, Math.PI * 2); x.fill();
+      x.beginPath(); x.ellipse(128, 62, 7, 5, 0, 0, Math.PI * 2); x.fill();
+      x.strokeStyle = STRIPE; x.lineWidth = 2.4;
+      x.beginPath(); x.moveTo(128, 66); x.lineTo(128, 74); x.stroke();
+    } else {
+      // the tunic: shoulders, sleeves, a skirted hem
+      x.fillStyle = CLOTH;
+      if (ink) { x.strokeStyle = CLAVI; x.lineWidth = 3; }
+      x.beginPath();
+      x.moveTo(96, 40);
+      x.lineTo(160, 40);                                   // the neck
+      x.lineTo(196, 62); x.lineTo(230, 108);               // right sleeve
+      x.lineTo(206, 126); x.lineTo(180, 96);
+      x.lineTo(190, 250);                                  // right side, flaring
+      x.quadraticCurveTo(128, 266, 66, 250);               // the hem
+      x.lineTo(76, 96);
+      x.lineTo(50, 126); x.lineTo(26, 108);                // left sleeve
+      x.lineTo(60, 62);
+      x.closePath();
+      x.fill();
+      if (ink) x.stroke();
+      // the clavi — the two woven bands down a Roman tunic
+      x.fillStyle = CLAVI;
+      x.fillRect(100, 60, 12, 190);
+      x.fillRect(144, 60, 12, 190);
+      // folds
+      x.strokeStyle = FOLD; x.lineWidth = 3;
+      for (const px of [88, 128, 168]) {
+        x.beginPath(); x.moveTo(px, 70); x.quadraticCurveTo(px + 6, 160, px, 248); x.stroke();
+      }
+      x.fillStyle = SHEEN;
+      x.beginPath(); x.moveTo(118, 44); x.quadraticCurveTo(128, 150, 122, 254);
+      x.lineTo(136, 254); x.quadraticCurveTo(142, 150, 138, 44); x.closePath(); x.fill();
+    }
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    return t;
+  }
+
+  // ── The trophies of the disarmed gods ───────────────────────────────────
+  //
+  // Seven plates in a row on the approach to the theatre (woodcut_catalog
+  // #130-#136, folios 317-321): Roman arms with a winged genius head; a tunic
+  // with a winged genius head and laurel; a tiger-skin and a bull's head; a
+  // winged disk lettered QUIS EVADET?; a winged tablet answering NEMO; gold
+  // wings with floating ribbons; and a laurel wreath with Cupid.
+  //
+  // The tour has cited *Quis evadet? — Nemo* at two stops since the commentary
+  // was written, and the world had none of it. A trophy in the antique sense is
+  // captured arms hung on a post, so that is what these are: a stripped trunk,
+  // a crossbar, and the spoils of a god hung on it — lining the north road the
+  // procession comes up from the landing.
+  _cytheraTrophies(CX, CZ) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const gold = woodcut ? S.mat({ tone: 0.02 })
+                         : S.mat({ color: 0xc9a244, metalness: 0.85, roughness: 0.28 });
+    const pale = woodcut ? S.mat({ tone: 0.06 })
+                         : S.mat({ color: 0xd8cdb4, roughness: 0.8 });
+    const cloth = woodcut ? S.mat({ tone: 0.10, side: THREE.DoubleSide })
+                          : S.mat({ color: 0xa8324a, roughness: 0.9, side: THREE.DoubleSide });
+    // the cut spoils: alpha-tested so the shape is the silhouette, not the plane
+    const spoilMat = (kind) => new THREE.MeshStandardMaterial({
+      map: this._spoilTexture(kind, woodcut),
+      transparent: true, alphaTest: 0.42, side: THREE.DoubleSide,
+      roughness: 0.92,
+    });
+
+    // the winged genius head that recurs on four of the seven plates
+    const genius = (g, y) => {
+      this._m(new THREE.SphereGeometry(0.16, 12, 9), pale, 0, y, 0, { parent: g });
+      for (const sx of [-1, 1]) {
+        const w = this._m(new THREE.SphereGeometry(0.22, 10, 7, 0, Math.PI), gold,
+          sx * 0.15, y + 0.05, -0.02, { parent: g, cast: false });
+        w.scale.set(0.9, 0.7, 0.13);
+        w.rotation.set(0.1, sx * 0.5, sx * 0.7);
+      }
+    };
+
+    // a lettered tablet — the plates' own words, carved, not invented
+    const tablet = (g, y, word) => {
+      const t = this._m(new THREE.BoxGeometry(0.92, 0.4, 0.06), pale, 0, y, 0.05, { parent: g });
+      void t;
+      const face = this._m(new THREE.PlaneGeometry(0.86, 0.34),
+        new THREE.MeshStandardMaterial({
+          map: this._plaqueTexture({ main: word }, true),
+          roughness: 0.85, side: THREE.DoubleSide,
+        }), 0, y, 0.09, { parent: g, cast: false });
+      void face;
+      for (const sx of [-1, 1]) {                              // the gold wings
+        const w = this._m(new THREE.SphereGeometry(0.3, 10, 7, 0, Math.PI), gold,
+          sx * 0.58, y, 0.02, { parent: g, cast: false });
+        w.scale.set(1.0, 0.42, 0.1);
+        w.rotation.set(0, sx * 0.35, sx * 0.28);
+      }
+    };
+
+    const TROPHIES = [
+      { r: 44.0, side: -1, kind: 'arms',    label: 'ARMA',        sub: 'ROMAN ARMS · WINGED GENIUS' },
+      { r: 40.0, side:  1, kind: 'tunic',   label: 'TVNICA',      sub: 'THE TUNIC, WITH LAUREL' },
+      { r: 36.0, side: -1, kind: 'hide',    label: 'EXVVIAE',     sub: "TIGER-SKIN AND BULL'S HEAD" },
+      { r: 31.0, side: -1, kind: 'quis',    label: 'QVIS EVADET', sub: 'WHO ESCAPES?' },
+      { r: 31.0, side:  1, kind: 'nemo',    label: 'NEMO',        sub: 'NO ONE' },
+      { r: 27.0, side:  1, kind: 'ribbons', label: 'SPOLIA',      sub: 'GOLD WINGS AND RIBBONS' },
+      { r: 27.0, side: -1, kind: 'wreath',  label: 'CVPIDO',      sub: 'THE LAUREL WREATH, GAINED BY SPEAR' },
+    ];
+
+    for (const t of TROPHIES) {
+      // the north road: pos(π/2, r) — the way up from the landing
+      const x = CX + t.side * 2.9, z = CZ + t.r;
+      const g = new THREE.Group();
+      g.position.set(x, 0.08, z);
+      g.rotation.y = t.side > 0 ? -0.32 : 0.32;      // turned to face the road
+      this.scene.add(g);
+
+      // the post and its crossbar — a tropaeum is arms on a stripped trunk
+      this._m(new THREE.CylinderGeometry(0.09, 0.13, 2.5, 8), this._trunkMat, 0, 1.25, 0, { parent: g });
+      this._m(new THREE.CylinderGeometry(0.055, 0.055, 1.5, 6), this._trunkMat, 0, 1.95, 0,
+        { parent: g, rz: Math.PI / 2 });
+      this._m(new THREE.CylinderGeometry(0.42, 0.5, 0.22, 10), this._stoneMat, 0, 0.11, 0, { parent: g });
+
+      if (t.kind === 'arms') {
+        // a cuirass, a round shield, two spears crossed behind
+        const cui = this._m(new THREE.CylinderGeometry(0.3, 0.26, 0.6, 12, 1, true), gold, 0, 1.65, 0, { parent: g });
+        cui.scale.z = 0.62;
+        this._m(new THREE.CircleGeometry(0.36, 20), gold, -0.5, 1.6, 0.06, { parent: g, cast: false });
+        for (const sx of [-1, 1]) {
+          this._m(new THREE.CylinderGeometry(0.028, 0.028, 2.3, 5), pale, sx * 0.34, 1.35, -0.12,
+            { parent: g, rz: sx * 0.24 });
+        }
+        this._m(new THREE.ConeGeometry(0.18, 0.34, 10), gold, 0, 2.16, 0, { parent: g });  // the helm's crest
+        genius(g, 2.5);
+      } else if (t.kind === 'tunic') {
+        const tn = this._m(new THREE.PlaneGeometry(1.28, 1.6), spoilMat('tunic'), 0, 1.68, 0.05,
+          { parent: g, cast: false });
+        tn.rotation.z = 0.03;
+        this._m(new THREE.TorusGeometry(0.3, 0.05, 6, 18), this._leafMat, 0, 2.3, 0.02,
+          { parent: g, cast: false });               // the laurel
+        genius(g, 2.58);
+      } else if (t.kind === 'hide') {
+        // the flayed tiger, hung by its forelegs from the crossbar
+        const sk = this._m(new THREE.PlaneGeometry(1.28, 1.6), spoilMat('pelt'), 0, 1.28, 0.05,
+          { parent: g, cast: false });
+        sk.rotation.z = -0.04;
+        // the bull's head above, horns out
+        const head = this._m(new THREE.SphereGeometry(0.22, 12, 9), pale, 0, 2.18, 0, { parent: g });
+        head.scale.set(0.85, 1.0, 1.15);
+        for (const sx of [-1, 1]) {
+          this._m(new THREE.TorusGeometry(0.15, 0.03, 5, 10, Math.PI * 0.85), pale,
+            sx * 0.2, 2.3, 0, { parent: g, ry: sx * 0.6, rz: sx * 1.3, cast: false });
+        }
+      } else if (t.kind === 'quis' || t.kind === 'nemo') {
+        // the disk and the tablet that carry the book's most-quoted motto
+        if (t.kind === 'quis') {
+          const d = this._m(new THREE.CylinderGeometry(0.44, 0.44, 0.08, 24), pale, 0, 1.62, 0,
+            { parent: g, rx: Math.PI / 2 });
+          void d;
+          this._m(new THREE.TorusGeometry(0.44, 0.04, 6, 24), gold, 0, 1.62, 0.05,
+            { parent: g, cast: false });
+        }
+        tablet(g, t.kind === 'quis' ? 2.24 : 1.85, t.kind === 'quis' ? 'QVIS EVADET' : 'NEMO');
+      } else if (t.kind === 'ribbons') {
+        for (const sx of [-1, 1]) {
+          const w = this._m(new THREE.SphereGeometry(0.4, 10, 8, 0, Math.PI), gold,
+            sx * 0.26, 1.85, 0, { parent: g, cast: false });
+          w.scale.set(0.9, 1.0, 0.12);
+          w.rotation.set(-0.25, sx * 0.55, sx * 0.8);
+          // the floating ribbon
+          const rb = this._m(new THREE.PlaneGeometry(0.1, 0.9), cloth, sx * 0.5, 1.35, 0.02,
+            { parent: g, cast: false });
+          rb.rotation.set(0, 0, sx * 0.22);
+        }
+        this._m(new THREE.SphereGeometry(0.17, 10, 8), gold, 0, 1.9, 0, { parent: g });
+      } else {
+        // the laurel wreath, with Cupid inside it
+        this._m(new THREE.TorusGeometry(0.46, 0.07, 8, 26), this._leafMat, 0, 1.78, 0,
+          { parent: g, cast: false });
+        const cupid = this.cast.props.putto ? this.cast.props.putto(0.5) : null;
+        if (cupid) { cupid.position.set(0, 1.42, 0.08); g.add(cupid); }
+        else this._m(new THREE.SphereGeometry(0.16, 10, 8), pale, 0, 1.78, 0.06, { parent: g });
+      }
+
+      this._plaque({ main: t.label, sub: t.sub }, 1.15, 0.3, x, 0.5, z + 0.55, Math.PI, true);
+      this._circleCol(x, z, 0.72);
+    }
+  }
+
+  // ── The named topiary ───────────────────────────────────────────────────
+  //
+  // The island's clipped work is not generic shrubbery: the plates name each
+  // piece. #117 is a box-tree clipped as a man supporting towers with an arch;
+  // #120 a mushroom; #127 three peacocks on an altar-vase; #116 and #125 the
+  // ring-shaped and altar-mounted trees. Segre's "Untangling the Knot" is the
+  // source for why the clipped work is architecture rather than ornament, and
+  // GARDENS.md §6 for the book's insistence that "the topiary is clipped every
+  // day" — the one artifice it will admit.
+  _topiary(kind, x, z, scale = 1) {
+    const g = new THREE.Group();
+    g.position.set(x, 0.07, z);
+    g.scale.setScalar(scale);
+    this.scene.add(g);
+    const leaf = this._leafMat, trunk = this._trunkMat, stone = this._stoneMat;
+
+    if (kind === 'man') {
+      // #117 — the box man who carries two towers and the arch between them
+      this._m(new THREE.CylinderGeometry(0.16, 0.22, 1.0, 8), trunk, 0, 0.5, 0, { parent: g });
+      const body = this._m(new THREE.CylinderGeometry(0.34, 0.26, 0.9, 10), leaf, 0, 1.45, 0,
+        { parent: g, outline: true });
+      void body;
+      this._m(new THREE.SphereGeometry(0.22, 12, 9), leaf, 0, 2.06, 0, { parent: g, outline: true });
+      for (const sx of [-1, 1]) {                    // the arms, raised to the towers
+        const arm = this._m(new THREE.CylinderGeometry(0.09, 0.09, 0.7, 7), leaf,
+          sx * 0.36, 1.85, 0, { parent: g, rz: sx * 0.85, cast: false });
+        void arm;
+        // a clipped tower on each hand
+        for (let t = 0; t < 3; t++) {
+          this._m(new THREE.CylinderGeometry(0.19 - t * 0.045, 0.23 - t * 0.045, 0.32, 8), leaf,
+            sx * 0.66, 2.24 + t * 0.32, 0, { parent: g, outline: t === 0 });
+        }
+      }
+      // the arch trained between the two towers
+      this._m(new THREE.TorusGeometry(0.66, 0.075, 6, 16, Math.PI), leaf, 0, 3.2, 0,
+        { parent: g, cast: false });
+    } else if (kind === 'mushroom') {
+      // #120 — the box-tree clipped as a mushroom
+      this._m(new THREE.CylinderGeometry(0.17, 0.24, 1.05, 8), trunk, 0, 0.52, 0, { parent: g });
+      const cap = this._m(new THREE.SphereGeometry(0.82, 16, 10, 0, Math.PI * 2, 0, Math.PI / 2),
+        leaf, 0, 1.05, 0, { parent: g, outline: true });
+      cap.scale.y = 0.55;
+      this._m(new THREE.CylinderGeometry(0.82, 0.82, 0.07, 16), leaf, 0, 1.03, 0, { parent: g, cast: false });
+    } else if (kind === 'peacocks') {
+      // #127 — three peacocks clipped on an altar-vase
+      this._m(new THREE.CylinderGeometry(0.42, 0.52, 0.34, 10), stone, 0, 0.17, 0, { parent: g });
+      this._m(new THREE.CylinderGeometry(0.24, 0.34, 0.62, 12), stone, 0, 0.65, 0, { parent: g });
+      this._m(new THREE.CylinderGeometry(0.44, 0.28, 0.3, 14), stone, 0, 1.11, 0, { parent: g });
+      for (let i = 0; i < 3; i++) {
+        const a = (i / 3) * Math.PI * 2;
+        const px = Math.cos(a) * 0.3, pz = Math.sin(a) * 0.3;
+        const body = this._m(new THREE.SphereGeometry(0.2, 10, 8), leaf, px, 1.46, pz,
+          { parent: g, outline: true });
+        body.scale.set(0.75, 1.0, 1.1);
+        this._m(new THREE.CylinderGeometry(0.05, 0.07, 0.24, 6), leaf,
+          px + Math.cos(a) * 0.1, 1.72, pz + Math.sin(a) * 0.1, { parent: g, cast: false });
+        this._m(new THREE.SphereGeometry(0.085, 8, 6), leaf,
+          px + Math.cos(a) * 0.14, 1.88, pz + Math.sin(a) * 0.14, { parent: g, cast: false });
+        // the fan of the tail, clipped flat
+        const tail = this._m(new THREE.CircleGeometry(0.36, 14, 0, Math.PI), leaf,
+          px - Math.cos(a) * 0.24, 1.6, pz - Math.sin(a) * 0.24, { parent: g, cast: false });
+        tail.rotation.y = -a + Math.PI / 2;
+      }
+    } else {
+      // #116 / #125 — the ring-shaped tree, on its altar with the bull's skull
+      this._m(new THREE.BoxGeometry(0.86, 0.5, 0.86), stone, 0, 0.25, 0, { parent: g });
+      this._m(new THREE.CylinderGeometry(0.14, 0.18, 0.9, 8), trunk, 0, 0.95, 0, { parent: g });
+      this._m(new THREE.TorusGeometry(0.54, 0.19, 10, 22), leaf, 0, 1.72, 0, { parent: g, outline: true });
+      this._m(new THREE.SphereGeometry(0.15, 8, 6), this._stoneMat, 0, 0.3, 0.45, { parent: g, cast: false });
+    }
+    this._circleCol(x, z, 0.6 * scale);
+    return g;
   }
 
   // Book-matched sliced marble for the fountain's balustrade — the zig-zag
