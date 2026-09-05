@@ -2,6 +2,31 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-04 (evening) — Audio: the original ambient score is canonical (Ted)
+
+- **The chiptune is out; the ambient score is back.** Ted: what plays should be the
+  music the project had at the beginning, not the "weird music" experiment. The
+  original design — slow detuned drones (NIGREDO), a shimmering A + fifth (ALBEDO),
+  struck bells over a hum (CITRINITAS), a warm breathing triad over a pedal (RUBEDO)
+  — is the canonical score. **Do not replace it with a step-sequenced chiptune.**
+- **What was actually broken was the mix, not the music.** In NIGREDO (the default
+  stage) each drone reached the output three times, two of those paths bypassing the
+  -28 dB master, so raw 42 Hz sawtooths hit the speakers at full scale. That was the
+  noise — not the composition. Rebuilt on raw Web Audio with one path per voice.
+- **No Tone.js / esm.sh dependency.** The score is synthesised directly.
+- **Verify audio by measuring it, never by reading the diff.** Tap the real output
+  with an AnalyserNode and assert on the tones, peak and clipping. (Live check:
+  ALBEDO reads 223/328/445/656 Hz, peak 0.083, no clipping.)
+
+## 2026-09-04 (evening) — `hidden` must always win in the app's CSS
+
+- A full-screen overlay (`#tour-flavor-chooser`) carried the `hidden` attribute but
+  its own rule set `display: flex`, which outranks the UA's `[hidden]{display:none}`.
+  The empty overlay therefore sat over every page at 90% opacity with
+  `pointer-events: all` — the site loaded dark and frozen. There is now a global
+  `[hidden] { display: none !important; }` guard in `src/index.html`. **Keep it**, and
+  prefer the `hidden` attribute over ad-hoc display toggling.
+
 ## 2026-09-04 — Creative brief for the whole work (Ted)
 
 - **Fidelity first, interpretation in the commentary.** Model the world as close to the

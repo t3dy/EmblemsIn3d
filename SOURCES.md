@@ -116,3 +116,28 @@ something the sources don't settle, say so in a comment and keep it modest.
 3. **Cite, don't invent.** When a note makes an interpretive claim, it should trace to a
    named scholar in this corpus or to the annotators' evidence — never a fabricated reading.
 4. The corpus is a separate git repo; treat it read-only from HPin3D.
+
+## Woodcut filenames are unreliable — trust the captions (2026-09-04)
+
+The files in `images/woodcuts/` are **misnamed**: they were saved out of order, so the
+filename does not describe the image. Verified by eye against the plates:
+
+| file | what it actually shows |
+|---|---|
+| `portal.jpg` | the elephant bearing the obelisk |
+| `queen.jpg` | Poliphilo fleeing the dragon in the vaults |
+| `dragon.jpg` | a company of the nymphs |
+| `elephant.jpg` | a nymph in a garden, by a fountain |
+| `island_plan.jpg` | a topiary on a stepped base |
+| `fountain_venus.jpg` | the heptagonal measured plan of the precinct |
+| `theatre.jpg` | the standard of the triumph of Cupid |
+| `three_doors.jpg` | **not** the three doors — a cart drawing a tiered vessel |
+| `temple_venus.jpg` | **not** a temple — a hanging lamp on chains |
+
+The **captions in `src/data/tours.json` are correct** and were checked against the images;
+the station→woodcut pairings in the novel tour are right. So: when adding or moving a
+woodcut, **open the image and go by the caption, never by the filename.**
+
+**Known gap:** stop 5 (The Three Doors) is the only node of the fourteen with no woodcut,
+because no genuine three-doors plate is in the folder. Left blank deliberately rather than
+showing a wrong image — if the plate is sourced later, add it there.

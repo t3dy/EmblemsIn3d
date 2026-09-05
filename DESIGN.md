@@ -93,8 +93,12 @@ ARTHURCRAWL's worldview rulesets. The commentary explains what each realization 
   is spoken, the book's own response is revealed beneath it, the pick is tallied, and the
   waking gives a self-portrait (dominant mood + how often you answered as the book does).
   The *tour* stays purely descriptive; the *game* is where you author a temperament.
-  Still to add: mood → light/sound answer in the scene (`world.setDreamMood` hook is in
-  place, no-op for now).
+  The mood → **light** answer shipped too (`HPWorldScene.setDreamMood`): the lit garden's
+  background, fog, sun, fill and bloom ease to a per-mood palette over ~1.4 s and back to
+  neutral at the waking. Still to add: the **sound** half of that answer.
+  Also added (2026-09-04 evening): choosing the book's own reaction is now acknowledged
+  in the moment — the chosen line reads "Poliphilo · Dread · as the book has it" — instead
+  of only surfacing in the tally at the waking.
 
 
 - **Alchemical commentary flavour is populated** (2026-09-04) from James Russell's Durham PhD
