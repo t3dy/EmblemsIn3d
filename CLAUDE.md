@@ -8,8 +8,14 @@ https://emblems-in-3d.vercel.app.*
 
 There is a full HP research corpus on this machine. **Before describing or modelling any
 scene — gardens, processions, nymphs, architecture, hieroglyphs, tombs, the pagan gods, the
-alchemical readings — consult it.** The map is **[SOURCES.md](SOURCES.md)** (read it once
-per project you touch this in). In short:
+alchemical readings — consult it.** This is not only for the tour's words: **it governs the
+3-D geometry too.** Before you build or revise a model, figure, garden, gate or ornament in
+`src/scenes/` or `src/systems/Cast.js`, read what the book and the scholarship say about it
+so the shape matches the commentary. `SOURCES.md` has a **"Modelling the 3-D assets" table**
+mapping each object to the scholar and DB tables to read first (Bury for the pyramid/Mausoleum,
+Curran for the hieroglyph gates and obelisks, Stewering for Polia and the nymphs, Hunt & Segre
+for the gardens and parterres, Nygren for the statuary, Lefaivre for the architecture). The
+map is **[SOURCES.md](SOURCES.md)** (read it once per project you touch this in). In short:
 
 - **Working corpus:** `C:\Dev\hypnerotomachia polyphili\` — per-scholar markdown
   (`scholars\<slug>\`), full-text markdown of every PDF (`md\`), RAG chunks (`chunks\`), a

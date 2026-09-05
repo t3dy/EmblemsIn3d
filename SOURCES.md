@@ -77,6 +77,33 @@ Each name has a folder under `scholars\<slug>\` with `profile.md` and the articl
 - **Liane Lefaivre**, **James O'Neill**, **D. R. Edward Wright** — the Colonna/Alberti authorship question.
 - **Eric L. Pumroy**, **William B. Keller**, **Lynne Farrington** — the 1499 printing, provenance, the annotated copies.
 
+## Modelling the 3-D assets — which source for which object
+
+**This applies to the geometry, not only the words.** Before you build or revise a model,
+figure, garden, gate or ornament in `src/scenes/` or `src/systems/Cast.js`, read what the
+book and the scholarship actually say about it, so the shape matches the commentary the tour
+gives it. Ground truth in order: (1) `hp.db.folio_descriptions` and `woodcut_catalog` /
+`woodcuts` / `image_readings` for the folio in question — this is the book's own description,
+folio by folio; (2) the named scholar below; (3) the project's own briefs `GARDENS.md`,
+`PROCESSIONS.md`, `CHARACTERS.md`, `VISION.md`, `RESEARCH_ROADMAP.md`, and the figure
+sourcebook `research/nymphs.html`.
+
+| Asset in the world | Read first |
+|---|---|
+| The dark wood, the plain, the oneiric mood | Gollnick & Priki (dream/initiation frame); `folio_descriptions` |
+| The great pyramid / stepped mountain | **Bury** (reconstructed from Pliny's Mausoleum of Halicarnassus) |
+| The elephant, the obelisks, the hieroglyph gates & the boat standard | **Curran** (Egyptian revival, Cyriacus, the Roman obelisks) + **Priki** (hieroglyphs as narrative); `woodcut_catalog` |
+| The great portal, the three doors, the palace, all architecture | **Lefaivre** (architecture-as-body, Alberti), Wright/Jarzombek (Alberti's *De pictura*) |
+| The nymphs, Polia, the female figures | **Stewering** (Polia & the landscape; text↔woodcut figures) + `research/nymphs.html` + `CHARACTERS.md` |
+| The gardens, Cythera, the parterres, the processional walk | **Hunt** (the *experience* of gardens), **Segre** (knot-gardens/parterres), Fabiani Giannetto; `GARDENS.md`, `PROCESSIONS.md` |
+| The triumphs, the statuary, the marble gods (incl. the imported Venus) | **Nygren** (Mantegna/Antico, antiquarian beholdership) |
+| The Polyandrion, the tombs, the epitaphs | **Bury** (tomb architecture), **Griggs** (antiquarian epigraphy); `folio_descriptions` |
+| The Temple / Fountain of Venus, the union | **Stewering** (landscape mirrors the lovers, culminating here); alchemical layer → **Russell** + `alchemical_symbols` |
+
+The rule is the same as for the words: **the geometry should be traceable to the book (the
+folio descriptions and woodcuts) and to a named scholar — not invented.** When you model
+something the sources don't settle, say so in a comment and keep it modest.
+
 ## How to use this in the work
 
 1. **Before writing a station description, a commentary note, or modelling a scene**, check
