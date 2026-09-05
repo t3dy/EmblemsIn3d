@@ -1249,6 +1249,122 @@ export class HPWorldScene {
     return this._m(new THREE.PlaneGeometry(w, h), mat, x, y, z, { ry, cast: false, receive: true });
   }
 
+  // ── The conspectus of the order ─────────────────────────────────────────
+  //
+  // The Buffalo annotators' method, applied. They took the full-page woodcut of
+  // the Great Pyramid, recognised it as a *conspectus* — a showpiece into which
+  // the illustrator had crammed as many architectural components as one image
+  // would hold — and labelled every component with the Vitruvian feature it
+  // derives from, so that a reader could see a part and go straight to it in the
+  // text. Russell compares the result to "a visual menu in a computer program"
+  // (2014, pp. 180-81). See ARCHITECTURE.md.
+  //
+  // Note what they labelled: a PICTURE, not the building. So this is a drawn
+  // elevation on a stele beside the portal, not fifteen little plaques stuck on
+  // the members themselves — which would read as a hardware catalogue and would
+  // wreck the very silhouette the portal is for.
+  //
+  // EVERY TERM IS THE BOOK'S OWN, attested in this project's translation of
+  // chapters XVII-XXXVIII (`translation/en/`): areobate, stylobate, scabelli,
+  // plinth, torus, alveus, fascia, hypotrachelion, astragal, volute, abacus,
+  // architrave, epistyle, frieze, cornice, cyma, ovolo, gulet. Nothing here is
+  // supplied from a modern glossary.
+  _orderBoardTexture() {
+    if (this._orderBoard) return this._orderBoard;
+    const W = 620, H = 1040;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const INK = '#e8dfc6', DIM = '#a8946e', RULE = '#6a5a3c', GROUND = '#141009';
+
+    x.fillStyle = GROUND; x.fillRect(0, 0, W, H);
+    x.strokeStyle = RULE; x.lineWidth = 3; x.strokeRect(9, 9, W - 18, H - 18);
+
+    x.fillStyle = INK;
+    x.textAlign = 'center';
+    x.font = '28px Georgia';
+    x.fillText('CONSPECTVS ORDINIS', W / 2, 54);
+    x.font = 'italic 15px Georgia';
+    x.fillStyle = DIM;
+    x.fillText('the members of the order, in the words the book uses for them', W / 2, 78);
+
+    // the elevation, drawn down the left third
+    const CXd = 176;
+    const draw = (fn) => { x.strokeStyle = INK; x.fillStyle = INK; x.lineWidth = 2.4; fn(); };
+    const box = (y, h, halfW, fill) => draw(() => {
+      x.beginPath(); x.rect(CXd - halfW, y, halfW * 2, h);
+      if (fill) { x.globalAlpha = 0.16; x.fill(); x.globalAlpha = 1; }
+      x.stroke();
+    });
+
+    // members, top to bottom, with the y they occupy and the name they carry
+    const rows = [
+      ['CYMA',                    112, 20, 96,  'the wave-moulding that crowns it'],
+      ['CORONIX · CORNICE',       132, 30, 104, 'the projecting head of the entablature'],
+      ['OVOLO',                   162, 16, 92,  'the quarter-round under the cornice'],
+      ['ZOPHORVS · FRIEZE',       178, 44, 86,  'the band that carries the carving'],
+      ['EPISTYLIVM · ARCHITRAVE', 222, 34, 92,  'the beam that rests on the capitals'],
+      ['ABACVS',                  262, 18, 74,  'the flat tile on top of the capital'],
+      ['VOLVTA',                  280, 42, 66,  'the scroll of the Ionic capital'],
+      ['ASTRAGALVS',              322, 12, 46,  'the little bead below the capital'],
+      ['HYPOTRACHELION',          334, 26, 42,  'the neck of the shaft'],
+      ['SCAPVS · THE SHAFT',      360, 336, 40, 'fluted, and tapering as it rises'],
+      ['APOPHYGE',                696, 20, 46,  'where the shaft flares to its base'],
+      ['TORVS',                   716, 26, 60,  'the cushion-moulding of the base'],
+      ['ALVEVS',                  742, 22, 54,  'the hollow between the tori'],
+      ['FASCIA',                  764, 20, 62,  'the flat band'],
+      ['PLINTHVS',                784, 42, 78,  'the square block the base stands on'],
+      ['GVLA · GVLET',            826, 22, 88,  'the throat-moulding of the footing'],
+      ['SCABELLVM',               848, 34, 96,  'the pedestal'],
+      ['AREOBATA · STYLOBATA',    882, 48, 112, 'the continuous footing under the whole order'],
+    ];
+
+    // Labels first, then decide what fits. The base mouldings sit close
+    // together and the first build ran their glosses into the next name; a
+    // gloss is only drawn where the gap to the following label leaves room.
+    const centres = rows.map(([, y, h]) => y + h / 2);
+    rows.forEach((r, i) => {
+      const [name, y, h, halfW, gloss] = r;
+      box(y, h, halfW, i % 2 === 0);
+      const my = centres[i];
+      draw(() => {
+        x.beginPath();
+        x.moveTo(CXd + halfW + 4, my);
+        x.lineTo(300, my);
+        x.lineTo(318, my);
+        x.stroke();
+        x.beginPath(); x.arc(CXd + halfW + 4, my, 3, 0, 7); x.fill();
+      });
+      const gap = i + 1 < centres.length ? centres[i + 1] - my : 999;
+      x.textAlign = 'left';
+      x.fillStyle = INK; x.font = (gap < 26 ? '14px' : '17px') + ' Georgia';
+      x.fillText(name, 326, my + 1);
+      if (gap >= 30) {
+        x.fillStyle = DIM; x.font = 'italic 13px Georgia';
+        x.fillText(gloss, 326, my + 17);
+      }
+    });
+
+    // the flutes on the shaft
+    draw(() => {
+      x.lineWidth = 1.4;
+      for (let i = -3; i <= 3; i++) {
+        x.beginPath(); x.moveTo(CXd + i * 11, 362); x.lineTo(CXd + i * 11, 694); x.stroke();
+      }
+    });
+
+    x.textAlign = 'center';
+    x.fillStyle = DIM; x.font = 'italic 13px Georgia';
+    x.fillText('after the annotators of the Buffalo copy, who labelled the Great Pyramid the same way', W / 2, H - 34);
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 8;
+    this._disp.push(t);
+    this._orderBoard = t;
+    return t;
+  }
+
   // A carved band laid just proud of a wall face. `signs` spells a specific
   // hieroglyph sequence instead of taking the band's default line.
   _frieze(x, y, z, w, h, kind, { reps = null, ry = 0, rx = 0, signs = null } = {}) {
@@ -1290,6 +1406,23 @@ export class HPWorldScene {
     // hieroglyph is on the BRIDGE into Eleuterylida's realm — see
     // ARCHITECTURE.md §4 and _buildBridge below.)
     this._plaque({ main: 'SOLI DICATVM', sub: 'DEDICATED TO THE SVN · LAT · GRAECE · ARABICE' }, 4.6, 1.1, 0, 6.4, Z + 1.25, 0, true);
+
+    // ── The conspectus board ──────────────────────────────────────────────
+    // Chapter IV is the book's architectural manifesto — the gate measured to
+    // the inch, the Vitruvian rule applied and argued. So the board that names
+    // the members stands beside it, facing the dreamer as he comes down from
+    // the wood.
+    const bx = -11.6, bz = Z + 1.0;
+    this._m(new THREE.BoxGeometry(2.5, 0.3, 1.1), this._darkStoneMat, bx, 0.15, bz, { cast: false });
+    this._m(new THREE.BoxGeometry(2.2, 0.24, 0.9), this._stoneMat, bx, 0.42, bz, { cast: false, outline: true });
+    this._m(new THREE.BoxGeometry(2.0, 3.5, 0.34), this._stoneMat, bx, 2.29, bz, { outline: true });
+    this._m(new THREE.BoxGeometry(2.24, 0.22, 0.5), this._stoneMat, bx, 4.15, bz, { cast: false, outline: true });
+    const boardMat = new THREE.MeshStandardMaterial({
+      map: this._orderBoardTexture(), roughness: 0.9, side: THREE.DoubleSide,
+    });
+    this._disp.push(boardMat);
+    this._m(new THREE.PlaneGeometry(1.78, 3.0), boardMat, bx, 2.32, bz + 0.18, { cast: false });
+    this._wallCol(bx - 1.05, bx + 1.05, bz - 0.6, bz + 0.6);
 
     // The stepped pyramid. The book gives it 1,410 courses rising off a plinth
     // six furlongs square; at garden scale we read that as many shallow courses
