@@ -190,6 +190,7 @@ export class DreamMode {
     this._removeGuide();
     window.removeEventListener('keydown', this._onKey);
     this.world.walker.locked = false;
+    this.world.setDreamMood?.(null);   // let the garden return to its neutral day
     this.phase = 'idle';
     this.world.dream = null;
     this.ui.setActive(false, finished);

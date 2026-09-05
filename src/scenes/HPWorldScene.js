@@ -471,12 +471,64 @@ export class HPWorldScene {
   // (ambient + hemisphere ≈ the key), which flattens everything. Bias toward
   // the raking sun so surfaces gain a lit side and a shadowed side.
   _tuneLitLighting() {
+    let sun = null, amb = null, hemi = null;
     this.scene.traverse(o => {
-      if (o.isAmbientLight) { o.intensity = 0.85; o.color.set(0x4a4632); }
-      else if (o.isHemisphereLight) o.intensity = 1.15;
-      else if (o.isDirectionalLight && o.castShadow) o.intensity = 2.6;
+      if (o.isAmbientLight) { o.intensity = 0.85; o.color.set(0x4a4632); amb = o; }
+      else if (o.isHemisphereLight) { o.intensity = 1.15; hemi = o; }
+      else if (o.isDirectionalLight && o.castShadow) { o.intensity = 2.6; sun = o; }
     });
     if (this.scene.environment) this.scene.environmentIntensity = 0.42;
+    // Capture the neutral palette so the dream-mood tint can lerp from it and
+    // back. (Lit garden only; the woodcut keeps its paper.)
+    const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
+    this._moodLights = { sun, amb, hemi, bloom };
+    this._moodBase = {
+      bg: this.scene.background.clone(),
+      fog: this.scene.fog.color.clone(),
+      sunColor: sun ? sun.color.clone() : null, sunI: sun ? sun.intensity : 0,
+      ambI: amb ? amb.intensity : 0, hemiI: hemi ? hemi.intensity : 0,
+      bloom: bloom ? bloom.strength : 0,
+    };
+    this._mood = null;   // { bg, fog, sunColor, sunMul, ambMul, hemiMul, bloomMul, t }
+  }
+
+  // The game's reaction-choices tint "the now" — the scene answers the mood the
+  // player meets a wonder in (DESIGN.md). Lit garden only; null returns to base.
+  setDreamMood(mood) {
+    if (!this._moodBase) return;                    // woodcut / not lit
+    const P = {
+      wonder:     { bg: 0xbcd2ea, fog: 0xf2ddac, sun: 0xfff0d0, sunMul: 1.12, ambMul: 1.1,  hemiMul: 1.1,  bloomMul: 1.15 },
+      eros:       { bg: 0xd8b2c2, fog: 0xecc4b4, sun: 0xffd8d0, sunMul: 1.02, ambMul: 1.05, hemiMul: 1.0,  bloomMul: 1.3 },
+      melancholy: { bg: 0x6a80a8, fog: 0x8f96ac, sun: 0xbcc6e0, sunMul: 0.72, ambMul: 0.9,  hemiMul: 0.85, bloomMul: 0.8 },
+      dread:      { bg: 0x484a5a, fog: 0x53535e, sun: 0x9aa2c0, sunMul: 0.5,  ambMul: 0.75, hemiMul: 0.7,  bloomMul: 1.35 },
+    };
+    const b = this._moodBase;
+    if (!mood || !P[mood]) {
+      this._mood = { bg: b.bg.clone(), fog: b.fog.clone(), sunColor: b.sunColor?.clone(),
+                     sunI: b.sunI, ambI: b.ambI, hemiI: b.hemiI, bloom: b.bloom, t: 0 };
+      return;
+    }
+    const m = P[mood];
+    this._mood = {
+      bg: new THREE.Color(m.bg), fog: new THREE.Color(m.fog),
+      sunColor: new THREE.Color(m.sun),
+      sunI: b.sunI * m.sunMul, ambI: b.ambI * m.ambMul, hemiI: b.hemiI * m.hemiMul,
+      bloom: b.bloom * m.bloomMul, t: 0,
+    };
+  }
+
+  _updateMood(dt) {
+    const m = this._mood, L = this._moodLights;
+    if (!m || !L) return;
+    m.t = Math.min(1, m.t + dt / 1.4);              // ~1.4 s ease
+    const k = m.t * m.t * (3 - 2 * m.t);
+    this.scene.background.lerp(m.bg, k * 0.14 + 0.02);
+    this.scene.fog.color.lerp(m.fog, k * 0.14 + 0.02);
+    const ease = (cur, tgt) => cur + (tgt - cur) * (k * 0.14 + 0.02);
+    if (L.sun)  { L.sun.intensity = ease(L.sun.intensity, m.sunI); if (m.sunColor) L.sun.color.lerp(m.sunColor, k * 0.14 + 0.02); }
+    if (L.amb)  L.amb.intensity = ease(L.amb.intensity, m.ambI);
+    if (L.hemi) L.hemi.intensity = ease(L.hemi.intensity, m.hemiI);
+    if (L.bloom) L.bloom.strength = ease(L.bloom.strength, m.bloom);
   }
 
   // A deterministic procedural surface baked to a canvas: a stone/foliage base
@@ -2309,6 +2361,7 @@ export class HPWorldScene {
   update(dt) {
     this._t += dt;
     if (this.dream) this.dream.update(dt);
+    if (this._mood) this._updateMood(dt);
     this.walker.update(dt);
     this.walker.applyTo(this.camera);
 
