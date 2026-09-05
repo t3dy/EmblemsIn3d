@@ -26,13 +26,16 @@ Ted: *"poliphilo trying to interpret pseudo heiroglyphics has to be a leg of the
 Done — tour stop 4, *Reading the Hieroglyphs*, and a stele at the elephant carrying the
 signs above and Poliphilo's reading of them below (`DECISIONS.md`). What is still weak:
 
-- **`_carvedTexture('hieroglyph')` draws only about four sign shapes** and repeats them, so
-  a band reads as a pattern rather than as writing. The book's own signs are catalogued —
-  the eye, the vulture, the two fish-hooks, the two circles, the ox-skull with farm tools,
-  the anchor, the dolphin, the ant-and-elephant — and a proper sign set would make every
-  hieroglyph band in the world (the portal piers, the obelisks, the Polyandrion medallions,
-  this stele) legible as distinct inscriptions. Sources: Priki, *The Narrative Function of
-  Hieroglyphs*; Curran, *HP and Renaissance Egyptology*; `woodcut_catalog` #87–#93.
+- ~~The sign vocabulary was four shapes repeating.~~ **Done the same day:**
+  `HPWorldScene.SIGNS` is now fifteen drawn signs — eye, vulture, fish-hook, circle,
+  anchor, dolphin, bull's skull, ant, elephant, altar, ewer, rudder, grain, sun, palm —
+  and `_frieze(..., { signs: [...] })` spells a named sequence instead of drawing at
+  random, so two bands no longer come out as the same marks. The stele's upper line is
+  the six Priki actually names on these inscriptions; the lower is the vocabulary of the
+  sentence. **Which signs are attested and which are not is documented on `SIGNS` itself**
+  — no sign-by-sign reading of these bands exists in the corpus, and none is asserted.
+  Every other hieroglyph band in the world (the portal piers, the obelisks) inherits the
+  richer vocabulary automatically.
 - **The Polyandrion's five hieroglyphic medallions** (#88–#92) are catalogued and unbuilt.
 - **The bridge hieroglyphs** are the ones Poliphilo remembers too late, fleeing the dragon
   (*SEMPER FESTINA TARDE*). The plaque exists; the signs he actually saw do not.

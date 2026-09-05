@@ -934,9 +934,32 @@ export class HPWorldScene {
     return this.style.key !== 'woodcut' && !isVariant('ornament', 'primitive', this.style.key);
   }
 
-  _carvedTexture(kind, reps = 8) {
+  // ── The hieroglyph vocabulary ──────────────────────────────────────────
+  //
+  // Which signs are ATTESTED, and where. Efthymia Priki names the signs on the
+  // obelisk and on the statue base that Poliphilo reads: **the eye**, **the
+  // vulture**, **two fish-hooks**, **two circles** (read as eternity), and a
+  // cartouche. The **anchor and dolphin** are woodcut_catalog #18, the
+  // PATIENTIA device that closes the dragon chapter and that Aldus took for his
+  // press. The **bull's skull** is #24, the frieze ornament in the Queen's
+  // palace. The **ant and the elephant** are the concord hieroglyph on the
+  // obelisk of Caesar at the Polyandrion (#87).
+  //
+  // The rest — altar, ewer, rudder, grain, sun, palm — are the vocabulary of
+  // the sentence Poliphilo says he read there (*sacrifica*, *liberaliter*,
+  // *gubernando*, *ex labore*), drawn as signs. **They are not a transcription
+  // of any inscription**, because no sign-by-sign reading of these bands exists
+  // in the corpus, and inventing one would be exactly the thing this project
+  // does not do. A band is a plausible vocabulary in the book's own register,
+  // and the tour says so.
+  static get SIGNS() {
+    return ['eye', 'vulture', 'hook', 'circle', 'anchor', 'dolphin', 'skull',
+            'ant', 'elephant', 'altar', 'ewer', 'rudder', 'grain', 'sun', 'palm'];
+  }
+
+  _carvedTexture(kind, reps = 8, signs = null) {
     this._carved = this._carved || {};
-    const key = kind + reps;
+    const key = kind + reps + (signs ? '|' + signs.join(',') : '');
     if (this._carved[key]) return this._carved[key];
     const W = 512, H = 128;
     const c = document.createElement('canvas');
@@ -978,37 +1001,154 @@ export class HPWorldScene {
         }
       });
     } else {                                                   // hieroglyph band
+      // A sequence if one is given, otherwise a stable pseudo-random line
+      // seeded off the band's length, so two bands of different widths do not
+      // come out as the same six marks.
+      const V = HPWorldScene.SIGNS;
+      const rnd = (i2, k) => { const v = Math.sin(i2 * 71.3 + k * 137.9 + reps * 13.7) * 43758.5453; return v - Math.floor(v); };
+      const line = signs && signs.length
+        ? Array.from({ length: reps }, (_, i2) => signs[i2 % signs.length])
+        : Array.from({ length: reps }, (_, i2) => V[Math.floor(rnd(i2, 1) * V.length)]);
+
       carve(() => {
-        const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 137.9) * 43758.5453; return v - Math.floor(v); };
-        for (let i = 0; i < reps; i++) {
-          const o = i * cell + cell / 2, cy = H * 0.5, r = Math.min(cell, H) * 0.24;
-          const sign = Math.floor(rnd(i, 1) * 6);
-          x.lineWidth = 5;
-          if (sign === 0) {                                    // the sun disc
+        for (let i2 = 0; i2 < reps; i2++) {
+          const o = i2 * cell + cell / 2, cy = H * 0.5, r = Math.min(cell, H) * 0.24;
+          x.lineWidth = 5; x.lineJoin = 'round'; x.lineCap = 'round';
+          const sign = line[i2];
+
+          if (sign === 'sun') {                       // SOLI DICATVM, over the portal
             x.beginPath(); x.arc(o, cy, r, 0, 6.3); x.stroke();
             x.beginPath(); x.arc(o, cy, r * 0.28, 0, 6.3); x.fill();
-          } else if (sign === 1) {                             // the eye
-            x.beginPath(); x.ellipse(o, cy, r * 1.2, r * 0.6, 0, 0, 6.3); x.stroke();
-            x.beginPath(); x.arc(o, cy, r * 0.3, 0, 6.3); x.fill();
-          } else if (sign === 2) {                             // the vessel
+
+          } else if (sign === 'eye') {                // Priki: attested, obelisk and base
+            x.beginPath(); x.ellipse(o, cy, r * 1.25, r * 0.62, 0, 0, 6.3); x.stroke();
+            x.beginPath(); x.arc(o, cy, r * 0.32, 0, 6.3); x.fill();
+            x.beginPath(); x.moveTo(o + r * 0.9, cy + r * 0.4);   // the cosmetic tail
+            x.lineTo(o + r * 1.5, cy + r * 0.75); x.stroke();
+
+          } else if (sign === 'vulture') {            // Priki: attested, with the eye
+            x.beginPath();                             // body, hunched
+            x.ellipse(o + r * 0.1, cy + r * 0.15, r * 0.85, r * 0.55, -0.15, 0, 6.3); x.fill();
+            x.beginPath();                             // the long bare neck and hooked head
+            x.moveTo(o - r * 0.5, cy - r * 0.1);
+            x.quadraticCurveTo(o - r * 1.0, cy - r * 0.9, o - r * 0.45, cy - r * 1.05);
+            x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.45, cy - r * 1.05);
+            x.lineTo(o - r * 0.05, cy - r * 0.85); x.lineTo(o - r * 0.4, cy - r * 0.7);
+            x.closePath(); x.fill();
+            x.beginPath(); x.moveTo(o + r * 0.5, cy + r * 0.6);   // the legs
+            x.lineTo(o + r * 0.5, cy + r * 1.05); x.stroke();
+
+          } else if (sign === 'hook') {               // Priki: the two fish-hooks
+            x.beginPath(); x.moveTo(o, cy - r * 1.1); x.lineTo(o, cy + r * 0.25); x.stroke();
+            x.beginPath(); x.arc(o - r * 0.42, cy + r * 0.25, r * 0.42, 0, Math.PI); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.84, cy + r * 0.25);  // the barb
+            x.lineTo(o - r * 0.6, cy - r * 0.2); x.stroke();
+
+          } else if (sign === 'circle') {             // Priki: the two circles, eternity
+            x.beginPath(); x.arc(o, cy, r * 0.95, 0, 6.3); x.stroke();
+            x.beginPath(); x.arc(o, cy, r * 0.5, 0, 6.3); x.stroke();
+
+          } else if (sign === 'anchor') {             // catalog #18, with the dolphin
+            x.beginPath(); x.moveTo(o, cy - r * 1.1); x.lineTo(o, cy + r * 0.8); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.5, cy - r * 0.75);
+            x.lineTo(o + r * 0.5, cy - r * 0.75); x.stroke();      // the stock
+            x.beginPath(); x.arc(o, cy + r * 0.55, r * 0.8, 0.25, Math.PI - 0.25); x.stroke();
+            x.beginPath(); x.arc(o, cy - r * 1.15, r * 0.22, 0, 6.3); x.stroke();
+
+          } else if (sign === 'dolphin') {            // catalog #18: festina lente
             x.beginPath();
-            x.moveTo(o - r * 0.7, cy - r); x.lineTo(o + r * 0.7, cy - r);
-            x.lineTo(o + r * 0.45, cy + r); x.lineTo(o - r * 0.45, cy + r);
+            x.moveTo(o - r * 1.2, cy + r * 0.15);
+            x.quadraticCurveTo(o - r * 0.2, cy - r * 1.0, o + r * 1.0, cy - r * 0.1);
+            x.quadraticCurveTo(o + r * 0.2, cy + r * 0.75, o - r * 1.2, cy + r * 0.15);
+            x.fill();
+            x.beginPath(); x.moveTo(o + r * 1.0, cy - r * 0.1);    // the tail fluke
+            x.lineTo(o + r * 1.5, cy - r * 0.6); x.lineTo(o + r * 1.45, cy + r * 0.3);
+            x.closePath(); x.fill();
+            x.beginPath(); x.moveTo(o - r * 0.2, cy - r * 0.62);   // the dorsal
+            x.lineTo(o + r * 0.1, cy - r * 1.15); x.lineTo(o + r * 0.35, cy - r * 0.55);
+            x.closePath(); x.fill();
+
+          } else if (sign === 'skull') {              // catalog #24, the bull's skull
+            x.beginPath(); x.ellipse(o, cy + r * 0.15, r * 0.55, r * 0.8, 0, 0, 6.3); x.stroke();
+            for (const sx of [-1, 1]) {
+              x.beginPath();
+              x.arc(o + sx * r * 0.55, cy - r * 0.45, r * 0.62, sx > 0 ? -1.9 : Math.PI + 1.9,
+                    sx > 0 ? 0.5 : Math.PI - 0.5, sx < 0);
+              x.stroke();
+            }
+            x.beginPath(); x.arc(o - r * 0.22, cy, r * 0.13, 0, 6.3); x.fill();
+            x.beginPath(); x.arc(o + r * 0.22, cy, r * 0.13, 0, 6.3); x.fill();
+
+          } else if (sign === 'ant') {                // #87, the concord device
+            x.beginPath(); x.ellipse(o - r * 0.62, cy, r * 0.3, r * 0.24, 0, 0, 6.3); x.fill();
+            x.beginPath(); x.ellipse(o, cy, r * 0.24, r * 0.2, 0, 0, 6.3); x.fill();
+            x.beginPath(); x.ellipse(o + r * 0.66, cy, r * 0.4, r * 0.3, 0, 0, 6.3); x.fill();
+            x.lineWidth = 3;
+            for (const k of [-0.5, 0, 0.5]) {
+              x.beginPath(); x.moveTo(o + k * r, cy); x.lineTo(o + k * r - r * 0.28, cy + r * 0.72); x.stroke();
+              x.beginPath(); x.moveTo(o + k * r, cy); x.lineTo(o + k * r - r * 0.28, cy - r * 0.72); x.stroke();
+            }
+            x.lineWidth = 5;
+
+          } else if (sign === 'elephant') {           // #87, the other half of it
+            x.beginPath(); x.ellipse(o + r * 0.1, cy - r * 0.1, r * 0.95, r * 0.62, 0, 0, 6.3); x.fill();
+            x.beginPath(); x.arc(o - r * 0.75, cy - r * 0.3, r * 0.42, 0, 6.3); x.fill();
+            x.beginPath();                            // the trunk
+            x.moveTo(o - r * 1.05, cy - r * 0.05);
+            x.quadraticCurveTo(o - r * 1.5, cy + r * 0.6, o - r * 1.0, cy + r * 1.0);
+            x.stroke();
+            for (const k of [-0.45, 0.1, 0.6]) {      // the legs
+              x.beginPath(); x.moveTo(o + k * r, cy + r * 0.4);
+              x.lineTo(o + k * r, cy + r * 1.05); x.stroke();
+            }
+
+          } else if (sign === 'altar') {              // sacrifica: the fire on the altar
+            x.beginPath();
+            x.moveTo(o - r * 0.85, cy + r * 1.0); x.lineTo(o - r * 0.6, cy + r * 0.1);
+            x.lineTo(o + r * 0.6, cy + r * 0.1); x.lineTo(o + r * 0.85, cy + r * 1.0);
             x.closePath(); x.stroke();
-          } else if (sign === 3) {                             // the anchor
-            x.beginPath(); x.moveTo(o, cy - r); x.lineTo(o, cy + r * 0.7); x.stroke();
-            x.beginPath(); x.arc(o, cy + r * 0.5, r * 0.7, 0.2, Math.PI - 0.2); x.stroke();
-          } else if (sign === 4) {                             // the ear of corn
-            x.beginPath(); x.moveTo(o, cy + r); x.lineTo(o, cy - r); x.stroke();
+            x.beginPath();                            // the flame
+            x.moveTo(o, cy - r * 1.15);
+            x.quadraticCurveTo(o + r * 0.55, cy - r * 0.4, o, cy + r * 0.05);
+            x.quadraticCurveTo(o - r * 0.55, cy - r * 0.4, o, cy - r * 1.15);
+            x.fill();
+
+          } else if (sign === 'ewer') {               // liberaliter: the pouring vessel
+            x.beginPath();
+            x.moveTo(o - r * 0.62, cy - r * 0.85); x.lineTo(o + r * 0.62, cy - r * 0.85);
+            x.lineTo(o + r * 0.45, cy + r * 0.95); x.lineTo(o - r * 0.45, cy + r * 0.95);
+            x.closePath(); x.stroke();
+            x.beginPath(); x.arc(o + r * 0.75, cy - r * 0.1, r * 0.42, -1.2, 1.2); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.62, cy - r * 0.85);   // the lip
+            x.lineTo(o - r * 1.0, cy - r * 1.05); x.stroke();
+
+          } else if (sign === 'rudder') {             // gubernando: the steering-oar
+            x.beginPath(); x.moveTo(o + r * 0.35, cy - r * 1.15);
+            x.lineTo(o - r * 0.2, cy + r * 0.35); x.stroke();
+            x.beginPath();
+            x.moveTo(o - r * 0.2, cy + r * 0.35);
+            x.quadraticCurveTo(o - r * 0.95, cy + r * 0.7, o - r * 0.55, cy + r * 1.15);
+            x.quadraticCurveTo(o + r * 0.2, cy + r * 0.95, o - r * 0.2, cy + r * 0.35);
+            x.fill();
+
+          } else if (sign === 'palm') {               // the victor's branch
+            x.beginPath(); x.moveTo(o, cy + r * 1.1); x.lineTo(o, cy - r * 1.1); x.stroke();
+            x.lineWidth = 3;
+            for (let k = 0; k < 4; k++) {
+              const yy = cy - r * 0.9 + k * r * 0.52;
+              x.beginPath(); x.moveTo(o, yy); x.quadraticCurveTo(o + r * 0.5, yy - r * 0.1, o + r * 0.85, yy + r * 0.35); x.stroke();
+              x.beginPath(); x.moveTo(o, yy); x.quadraticCurveTo(o - r * 0.5, yy - r * 0.1, o - r * 0.85, yy + r * 0.35); x.stroke();
+            }
+            x.lineWidth = 5;
+
+          } else {                                    // grain — ex labore
+            x.beginPath(); x.moveTo(o, cy + r * 1.1); x.lineTo(o, cy - r * 1.1); x.stroke();
             for (let k = 0; k < 3; k++) {
               const yy = cy - r + k * r * 0.6;
               x.beginPath(); x.moveTo(o, yy); x.lineTo(o + r * 0.6, yy - r * 0.25); x.stroke();
               x.beginPath(); x.moveTo(o, yy); x.lineTo(o - r * 0.6, yy - r * 0.25); x.stroke();
             }
-          } else {                                             // the ant, for the elephant-and-ant
-            x.beginPath(); x.arc(o - r * 0.5, cy, r * 0.3, 0, 6.3); x.fill();
-            x.beginPath(); x.arc(o + r * 0.1, cy, r * 0.38, 0, 6.3); x.fill();
-            x.beginPath(); x.arc(o + r * 0.8, cy, r * 0.26, 0, 6.3); x.fill();
           }
         }
       });
@@ -1022,11 +1162,12 @@ export class HPWorldScene {
     return t;
   }
 
-  // A carved band laid just proud of a wall face.
-  _frieze(x, y, z, w, h, kind, { reps = null, ry = 0, rx = 0 } = {}) {
+  // A carved band laid just proud of a wall face. `signs` spells a specific
+  // hieroglyph sequence instead of taking the band's default line.
+  _frieze(x, y, z, w, h, kind, { reps = null, ry = 0, rx = 0, signs = null } = {}) {
     if (!this._ornamentCarved()) return null;
-    const n = reps || Math.max(3, Math.round(w * 1.6));
-    const tex = this._carvedTexture(kind, n);
+    const n = reps || (signs ? signs.length : Math.max(3, Math.round(w * 1.6)));
+    const tex = this._carvedTexture(kind, n, signs);
     const mat = this.style.mat({ color: 0xffffff, roughness: 0.86, metalness: 0.02 });
     mat.map = tex;
     mat.bumpMap = tex;
@@ -1920,9 +2061,16 @@ export class HPWorldScene {
     this._m(new THREE.BoxGeometry(2.0, 0.26, 0.9), this._darkStoneMat, stX, 0.13, stZ, { cast: false });
     this._m(new THREE.BoxGeometry(1.76, 2.3, 0.5), this._stoneMat, stX, 1.41, stZ, { outline: true });
     this._m(new THREE.BoxGeometry(1.94, 0.18, 0.66), this._stoneMat, stX, 2.65, stZ, { cast: false, outline: true });
-    // the band of signs, cut in the stone
-    this._frieze(stX, 2.16, stZ + 0.26, 1.6, 0.42, 'hieroglyph', { reps: 4 });
-    this._frieze(stX, 1.72, stZ + 0.26, 1.6, 0.42, 'hieroglyph', { reps: 4 });
+    // The band of signs. The upper line is the six Priki actually names on
+    // these inscriptions — eye, vulture, two fish-hooks, two circles; the lower
+    // is the vocabulary of the sentence he says he read from them: grain and
+    // skull for *ex labore*, altar for *sacrifica*, ewer for *liberaliter*,
+    // rudder for *gubernando*, palm for what it promises. Not a transcription —
+    // see the note on HPWorldScene.SIGNS.
+    this._frieze(stX, 2.16, stZ + 0.26, 1.6, 0.42, 'hieroglyph',
+      { signs: ['eye', 'vulture', 'hook', 'hook', 'circle', 'circle'] });
+    this._frieze(stX, 1.72, stZ + 0.26, 1.6, 0.42, 'hieroglyph',
+      { signs: ['grain', 'skull', 'altar', 'ewer', 'rudder', 'palm'] });
     // and, beneath them, what he made of them
     this._plaque({ main: 'CVSI IO LE INTERPRETAI', sub: '— AND THUS I INTERPRETED THEM' },
       1.5, 0.3, stX, 1.30, stZ + 0.27, 0, true);
