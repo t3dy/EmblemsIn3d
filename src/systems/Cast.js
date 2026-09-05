@@ -287,7 +287,8 @@ export function makeCast(S) {
     // gilded ones are doing something the flat painting cannot, and keep their
     // built bodies.
     if (lit && figVariant() === 'card' && robe != null && !winged && !twoHeaded) {
-      return paintedFigure({ h, robe, hair: 0x3a2612, mirrored: !!(Math.round(h * 100) % 2) });
+      const seed = Math.round(h * 977) + (robe & 0xff);
+      return paintedFigure({ h, robe, cutout: CUTOUTS[seed % CUTOUTS.length] });
     }
     const g = new THREE.Group();
     const sm = M(skin, { roughness: 0.6 });
@@ -618,14 +619,33 @@ export function makeCast(S) {
 
   // The card itself. Marked `billboard` so the scene turns it to face the
   // camera — a painted figure has one correct view, and that is the point.
-  function paintedFigure({ h = 0.95, robe = 0xb8a0c8, hair = 0x4a3018, mirrored = false } = {}) {
+  // The figures cut from the gallery's own public-domain paintings. Botticelli's
+  // Graces and Flora are standing draped women in a garden — exactly the brief —
+  // and a real painted figure beats any approximation of one I can generate.
+  // Provenance for each is in src/data/figure_cutouts.json.
+  const CUTOUTS = ['grace_1', 'grace_2', 'grace_3', 'flora', 'chloris', 'venus_bot'];
+  const _cutTex = new Map();
+  let _texLoader = null;
+  function cutoutTexture(id) {
+    if (_cutTex.has(id)) return _cutTex.get(id);
+    _texLoader = _texLoader || new THREE.TextureLoader();
+    const t = _texLoader.load('../images/cutouts/figures/' + id + '.png');
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 8;
+    _cutTex.set(id, t);
+    return t;
+  }
+
+  function paintedFigure({ h = 0.95, robe = 0xb8a0c8, hair = 0x4a3018, mirrored = false,
+                           cutout = null } = {}) {
     const g = new THREE.Group();
-    const tex = paintedFigureTexture({ robe, hair, skin: SKIN, mirrored });
+    const tex = cutout ? cutoutTexture(cutout)
+                       : paintedFigureTexture({ robe, hair, skin: SKIN, mirrored });
     const mat = new THREE.MeshBasicMaterial({
       map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
       toneMapped: true,
     });
-    const HH = h * 1.72, WW = HH * 0.5;
+    const HH = h * 1.78, WW = HH * 0.5;   // the cutouts are 448x896
     const card = new THREE.Mesh(new THREE.PlaneGeometry(WW, HH), mat);
     card.position.y = HH / 2;
     card.castShadow = false; card.receiveShadow = false;
@@ -768,7 +788,7 @@ export function makeCast(S) {
     // painting repeated.
     if (lit && figVariant() === 'card') {
       const seed = Array.from(name).reduce((t, ch) => t + ch.charCodeAt(0), name.length);
-      return paintedFigure({ h, robe, hair, mirrored: !!(seed % 2) });
+      return paintedFigure({ h, robe, hair, cutout: CUTOUTS[seed % CUTOUTS.length] });
     }
     const g = new THREE.Group();
     const parts = g.userData;
