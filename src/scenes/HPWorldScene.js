@@ -25,6 +25,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
 import { makeCast } from '../systems/Cast.js?v=17';
+import { isVariant } from '../systems/AssetVariants.js?v=1';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -1202,19 +1203,99 @@ export class HPWorldScene {
         0, 0.05 + i * 0.1, 1.1 + (7 - i) * 0.16, { parent: g, cast: false });
     }
 
-    const body = this._m(new THREE.SphereGeometry(0.85, 20, 14), eleMat, 0, 2.0, 0, { parent: g, outline: true });
-    body.scale.set(1.0, 0.85, 1.5);
-    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
-      this._m(new THREE.CylinderGeometry(0.16, 0.19, 1.1, 10), eleMat, sx * 0.42, 1.25, sz * 0.6, { parent: g });
+    // ── The beast itself ──────────────────────────────────────────────────
+    // Two variants (DECISIONS.md 2026-09-05). `primitive` is the founding look
+    // and what woodcut mode wants: a squashed sphere, four cylinders, a sphere
+    // head. `massed` models the anatomy the sources actually show — the 1499
+    // woodcut (woodcut_catalog #24, "the stone elephant bearing the obelisk")
+    // and Bernini's Elephant and Obelisk of 1667, the direct descendant of this
+    // design, which is already in our gallery (src/data/gallery.json,
+    // Architecture). Curran reads the monument as the book's central Egyptian
+    // revival piece, so the silhouette has to be legible as an elephant.
+    const tuskMat = S.key === 'woodcut'
+      ? S.mat({ tone: -0.05 }) : S.mat({ color: 0xf0ead8, roughness: 0.45 });
+
+    if (isVariant('elephant', 'primitive', S.key)) {
+      const body = this._m(new THREE.SphereGeometry(0.85, 20, 14), eleMat, 0, 2.0, 0, { parent: g, outline: true });
+      body.scale.set(1.0, 0.85, 1.5);
+      for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+        this._m(new THREE.CylinderGeometry(0.16, 0.19, 1.1, 10), eleMat, sx * 0.42, 1.25, sz * 0.6, { parent: g });
+      }
+      this._m(new THREE.SphereGeometry(0.5, 16, 12), eleMat, 0, 2.25, -1.35, { parent: g, outline: true });
+      for (const s of [-1, 1]) {
+        this._m(new THREE.CircleGeometry(0.34, 14), S.mat({ color: 0x6a6058, tone: 0.12, side: THREE.DoubleSide }), s * 0.45, 2.35, -1.25, { ry: s * Math.PI / 2.6, cast: false, parent: g });
+        this._m(new THREE.ConeGeometry(0.05, 0.5, 8), tuskMat, s * 0.2, 1.85, -1.72, { rx: -Math.PI / 2.4, parent: g });
+      }
+    } else {
+      // Barrel body, but built as three overlapping masses: an elephant has a
+      // distinct shoulder and a distinct rump, not one smooth ellipsoid.
+      const barrel = this._m(new THREE.SphereGeometry(0.84, 20, 15), eleMat, 0, 1.98, 0, { parent: g, outline: true });
+      barrel.scale.set(1.0, 0.9, 1.46);
+      const shoulder = this._m(new THREE.SphereGeometry(0.62, 16, 12), eleMat, 0, 2.14, -0.66, { parent: g });
+      shoulder.scale.set(1.02, 0.92, 0.9);
+      const rump = this._m(new THREE.SphereGeometry(0.6, 16, 12), eleMat, 0, 2.06, 0.72, { parent: g });
+      rump.scale.set(1.0, 0.95, 0.86);
+
+      // Columnar legs, thicker at the shoulder, with the broad flat foot pads
+      // that make an elephant read as an elephant.
+      for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+        const x = sx * 0.44, z = sz * 0.62;
+        this._m(new THREE.CylinderGeometry(0.155, 0.225, 1.12, 12), eleMat, x, 1.24, z, { parent: g });
+        this._m(new THREE.CylinderGeometry(0.235, 0.2, 0.14, 12), eleMat, x, 0.75, z, { parent: g });
+        this._m(new THREE.SphereGeometry(0.23, 12, 8), eleMat, x, 0.72, z, { parent: g, cast: false });
+      }
+
+      // Head: a domed skull with the high forehead of the woodcut, set forward
+      // of the shoulder, plus the heavy brow the trunk springs from.
+      const head = this._m(new THREE.SphereGeometry(0.5, 18, 14), eleMat, 0, 2.26, -1.32, { parent: g, outline: true });
+      head.scale.set(1.0, 1.06, 0.92);
+      const dome = this._m(new THREE.SphereGeometry(0.34, 14, 11), eleMat, 0, 2.6, -1.3, { parent: g });
+      dome.scale.set(1.0, 0.78, 0.9);
+      this._m(new THREE.SphereGeometry(0.28, 12, 10), eleMat, 0, 2.02, -1.62, { parent: g, cast: false });
+
+      for (const s of [-1, 1]) {
+        // Ears: large, angled, and slightly dished — not flat discs.
+        const ear = this._m(new THREE.SphereGeometry(0.38, 14, 10, 0, Math.PI), eleMat,
+          s * 0.44, 2.32, -1.16, { parent: g, cast: false });
+        ear.scale.set(0.9, 1.12, 0.14);
+        ear.rotation.set(0.1, s * 0.5, s * -0.16);
+
+        // Tusks "of puer white stone" — curved, in two tapering segments, the
+        // way both the woodcut and Bernini draw them.
+        const t1 = this._m(new THREE.CylinderGeometry(0.035, 0.055, 0.34, 8), tuskMat,
+          s * 0.21, 1.93, -1.66, { parent: g });
+        t1.rotation.set(-0.68, 0, s * 0.1);
+        const t2 = this._m(new THREE.ConeGeometry(0.034, 0.3, 8), tuskMat,
+          s * 0.235, 1.73, -1.9, { parent: g });
+        t2.rotation.set(-1.16, 0, s * 0.14);
+
+        // A small eye, so the head has a face at all
+        this._m(new THREE.SphereGeometry(0.045, 8, 6),
+          S.key === 'woodcut' ? S.mat({ tone: -0.2 }) : S.mat({ color: 0x0a0a0c, roughness: 0.3 }),
+          s * 0.3, 2.3, -1.66, { parent: g, cast: false });
+      }
+
+      // Tail
+      const tail = this._m(new THREE.CylinderGeometry(0.03, 0.055, 0.7, 7), eleMat, 0, 1.86, 1.28, { parent: g });
+      tail.rotation.x = -0.22;
+
+      // The caparison: the cloth over the beast's back under the saddle, which
+      // is how Bernini seats his obelisk. Sits just proud of the barrel.
+      if (S.key !== 'woodcut') {
+        const cloth = this._m(new THREE.SphereGeometry(0.9, 20, 14, 0, Math.PI * 2, 0, Math.PI / 2.35),
+          S.mat({ color: 0x6d2b2b, roughness: 0.82 }), 0, 1.99, 0, { parent: g, cast: false });
+        cloth.scale.set(1.02, 0.86, 1.42);
+        for (let i = 0; i < 9; i++) {                       // hem tassels
+          const a = -0.62 + (i / 8) * 1.24;
+          for (const sz of [-1, 1]) {
+            this._m(new THREE.ConeGeometry(0.035, 0.13, 6),
+              S.mat({ color: 0xb08a3a, metalness: 0.7, roughness: 0.4 }),
+              Math.sin(a) * 0.9, 1.66, sz * 1.2, { parent: g, cast: false });
+          }
+        }
+      }
     }
-    this._m(new THREE.SphereGeometry(0.5, 16, 12), eleMat, 0, 2.25, -1.35, { parent: g, outline: true });
-    for (const s of [-1, 1]) {
-      this._m(new THREE.CircleGeometry(0.34, 14), S.mat({ color: 0x6a6058, tone: 0.12, side: THREE.DoubleSide }), s * 0.45, 2.35, -1.25, { ry: s * Math.PI / 2.6, cast: false, parent: g });
-      // Tusks "of puer white stone" — not the beast's black
-      this._m(new THREE.ConeGeometry(0.05, 0.5, 8),
-        S.key === 'woodcut' ? S.mat({ tone: -0.05 }) : S.mat({ color: 0xf0ead8, roughness: 0.45 }),
-        s * 0.2, 1.85, -1.72, { rx: -Math.PI / 2.4, parent: g });
-    }
+
     // The goldsmith's frontlet over the face, lettered in Greek and Arabic, and
     // the Latin motto on the breast-strap. (_plaque adds to the scene, not to
     // `g`, so these carry world coordinates: the group is turned through π, so
@@ -2249,6 +2330,15 @@ export class HPWorldScene {
   }
 
   _tree(x, z, s = 1, species = null) {
+    // The primitive variant is the founding manifesto look, kept selectable
+    // (DECISIONS.md, 2026-09-05) and preferred by woodcut mode, which wants a
+    // readable silhouette rather than a modelled mass.
+    if (isVariant('tree', 'primitive', this.style.key)) {
+      this._m(new THREE.CylinderGeometry(0.12 * s, 0.16 * s, 0.8 * s, 6), this._trunkMat, x, 0.4 * s, z);
+      this._m(new THREE.ConeGeometry(0.55 * s, 3.2 * s, 8), this._leafMat, x, 0.8 * s + 1.6 * s, z, { outline: true });
+      this._circleCol(x, z, 0.5 * s);
+      return null;
+    }
     const seed = Math.abs(x * 73.1 + z * 19.7) + 1;
     const KINDS = ['cypress', 'pine', 'laurel', 'myrtle', 'orange'];
     species = species || KINDS[Math.floor(this._treeRand(seed, 7) * KINDS.length) % KINDS.length];

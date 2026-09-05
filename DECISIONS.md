@@ -2,6 +2,30 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — Every asset gets swappable variants; imported scans allowed (Ted)
+
+- **Imported scans are approved to try** for the graphical assets, extending the earlier
+  reversal that allowed model imports (the marble Venus was the first).
+- **But no asset gets one implementation.** Ted: *"you should have various options as
+  alternatives that we can bring in and out for each of the graphical assets and gradually
+  improve and evolve everything."* So each asset — elephant, tree, nymph, Venus, portal —
+  carries a **registry of named variants** that can be switched at runtime, not a single
+  hard-coded build. Typical ladder per asset:
+  `primitive` (the founding manifesto look, and the woodcut-mode fallback) →
+  `massed` / refined procedural → `scan` (an imported CC0 model).
+- **Never delete the older variant when a better one lands.** It stays selectable. This is
+  how the work evolves without losing the earlier register, and it keeps woodcut mode
+  honest (it wants the primitive silhouette, not a photoreal scan).
+- The choice is per-asset, persisted, and independent of the render style and of the
+  interpretive lens in `DESIGN.md` — that lens is about *meaning*, this registry is about
+  *fidelity*. Don't conflate them.
+- **Model the shape from the sources, whichever variant.** `SOURCES.md` has the
+  "Modelling the 3-D assets" table (elephant/obelisks → Curran + `woodcut_catalog`; nymphs
+  and Polia → Stewering + `research/nymphs.html`; statuary → Nygren; architecture →
+  Lefaivre), and `src/data/gallery.json` holds the Renaissance exemplars already gathered
+  for exactly this — including **Bernini's Elephant and Obelisk**, the direct descendant of
+  the HP woodcut. Consult these BEFORE modelling, as with the words.
+
 ## 2026-09-04 (evening, final) — The site is SILENT. No audio anywhere. (Ted)
 
 - **No music, no ambient bed, no sound of any kind** — not during the guided tours,

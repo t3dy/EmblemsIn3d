@@ -11,6 +11,7 @@
 // head) so scenes and vignettes can animate gestures without traversing.
 
 import * as THREE from 'three';
+import { isVariant } from './AssetVariants.js?v=1';
 
 export function makeCast(S) {
   const mats = new Map();
@@ -904,6 +905,16 @@ export function makeCast(S) {
     // the same every load.
     tree: (kind = 'broad', s = 1, seed = null) => {
       const g = new THREE.Group();
+      // The founding primitive look, kept selectable (DECISIONS.md 2026-09-05).
+      if (isVariant('tree', 'primitive')) {
+        add(g, mesh(new THREE.CylinderGeometry(0.08 * s, 0.12 * s, 0.9 * s, 7), M(0x4a3416, { roughness: 0.9 }), 0, 0.45 * s));
+        if (kind === 'cypress') {
+          add(g, mesh(new THREE.ConeGeometry(0.4 * s, 2.2 * s, 8), M(0x264418, { roughness: 0.9 }), 0, 1.9 * s));
+        } else {
+          add(g, mesh(new THREE.SphereGeometry(0.62 * s, 10, 8), M(kind === 'golden' ? 0x3a4a1a : 0x2a4418, { roughness: 0.9 }), 0, 1.35 * s));
+        }
+        return g;
+      }
       const sd = seed == null ? 1 + Math.abs(s * 977.3) % 91 : seed;
       const rnd = (k) => { const v = Math.sin(sd * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
       const bark = M(0x4a3416, { roughness: 0.95 });
