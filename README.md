@@ -19,6 +19,11 @@ project's earlier states remain readable and citable.
 Both hosts serve the same `main` branch. See [`DEPLOY_STATE.md`](DEPLOY_STATE.md) before
 touching deploy configuration — publishing to one host does **not** publish to the other.
 
+> **Contributing, or working on this with an AI agent? Start at
+> [`ROUTER.md`](ROUTER.md).** It is the entry point to ~45 documents: five hard rules, a
+> task→documents table, the code map, and a procedure in [`RECIPES/`](RECIPES/) for every
+> task this project repeats.
+
 A browser-based digital humanities project that brings two Renaissance texts into Three.js: Michael Maier's alchemical emblem book *Atalanta Fugiens* (Frankfurt, 1617) and Francesco Colonna's dream narrative *Hypnerotomachia Poliphili* (Venice, 1499). Almost everything is built from raw Three.js geometry rather than imported assets — the five hand-built showcase scenes are geometry primitives animated with GSAP looping timelines that encode the cyclic logic of alchemical transformation, while the other 46 emblems are rendered as **lit carved 3-D reliefs of their original woodcuts** (the plate image drives a displacement map and a runtime Sobel normal map under a raking key light) and can lift their extracted figures into a **2.5-D parallax diorama**. Everything is driven by a SQLite export pipeline.
 
 Guided **Tours** then connect these models to the research — the scholarship, the alchemical signs, the four-stage *opus*, and the documented links between the two books.
@@ -39,7 +44,9 @@ Guided **Tours** then connect these models to the research — the scholarship, 
 
 The toolbar sits above every overlay (so no tab can trap you) and carries a **Home** link, a **Graphics** menu, and the worlds. The 3-D app has **six worlds**: **Hypnerotomachia** (the Dream Garden of Poliphilo — the book's whole journey as one walkable world with a *Poliphilo's Dream* story mode, renderable as a lit garden *or* as a 3-D woodcut) · **Atalanta Animata** (the gallery wall of 51 lit plates → click to enter a scene) · **Theatrum** (all 51 emblems enacted as animated vignettes around one explorable rotunda) · **Plates** (a 2-D atlas → lightbox) · **Tours** · **Archives** (the HP-folio ↔ AF-emblem graph).
 
-Four guided **Tours** fly the camera through the actual emblem scenes while a side rail surfaces the research: **The Scholarship** (each emblem's modern reading), **Chemical Symbolism** (the planetary-metal signs, glyphs, and marginalia-hand notes), **The Great Work** (Nigredo → Rubedo), and **The Two Books** (the 9 documented Hypnerotomachia ↔ Atalanta cross-references). The **Oracle** and **Fugue Scroll** also reveal each emblem's scholarship on demand.
+**The Novel** is the guided tour of the *Hypnerotomachia* itself: **34 stops covering all thirty-eight chapters and both books**, from the dark wood to the unveiling of Venus on Cythera, then through Book II in which Polia takes the telling away from Poliphilo, and out to her epitaph. Each stop teleports the camera to that place in the 3-D world and carries a sourced lede, a quotation, and typed commentary notes under nine colour-coded lenses the reader can toggle on and off. Chapters I–XVI link to Robert Dallington's 1592 English; from chapter XVII — where Dallington stops mid-sentence — every word is this project's own new translation, and each stop deep-links to its chapter in the parallel Italian/English edition.
+
+Four further guided **Tours** fly the camera through the emblem scenes while a side rail surfaces the research: **The Scholarship** (each emblem's modern reading), **Chemical Symbolism** (the planetary-metal signs, glyphs, and marginalia-hand notes), **The Great Work** (Nigredo → Rubedo), and **The Two Books** (the 9 documented Hypnerotomachia ↔ Atalanta cross-references). The **Oracle** and **Fugue Scroll** also reveal each emblem's scholarship on demand.
 
 ---
 
