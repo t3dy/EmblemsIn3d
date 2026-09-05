@@ -85,6 +85,18 @@ ARTHURCRAWL's worldview rulesets. The commentary explains what each realization 
 
 ## Done
 
+- **The reaction-choice mechanic is built** (2026-09-04) in the first-person game —
+  "Poliphilo's Dream" (`#dream`, `DreamMode.js` + `src/data/hp_reactions.js`). At each of
+  the twelve wonders the player chooses HOW Poliphilo meets it: the book's own response
+  (marked canonical) or a variant in one of four moods — Wonder, Desire, Melancholy, Dread —
+  written inside Colonna's register. Expressive, non-branching (same shore); the chosen line
+  is spoken, the book's own response is revealed beneath it, the pick is tallied, and the
+  waking gives a self-portrait (dominant mood + how often you answered as the book does).
+  The *tour* stays purely descriptive; the *game* is where you author a temperament.
+  Still to add: mood → light/sound answer in the scene (`world.setDreamMood` hook is in
+  place, no-op for now).
+
+
 - **Alchemical commentary flavour is populated** (2026-09-04) from James Russell's Durham PhD
   (2014) and `hp.db.alchemical_symbols` / `symbol_occurrences` — six attributed notes on the
   wood, elephant, court, fountain, Cythera island, and theatre nodes, each citing Russell's

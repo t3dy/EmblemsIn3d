@@ -485,6 +485,19 @@
     #dream-panel .dp-nav button:hover { border-color: #c8a040; color: #f5f0e8; }
     #dream-panel .dp-nav #dream-next { border-color: #8b5a13; color: #e8c96a; }
     #dream-panel .dp-walking { font-size: 0.74rem; color: #8a7a5a; font-style: italic; }
+    #dream-panel #dream-choices { display: none; flex-direction: column; gap: 0.4rem; margin-top: 0.85rem; }
+    #dream-panel #dream-choices.on { display: flex; }
+    #dream-panel .dp-choice {
+      text-align: left; background: rgba(255,255,255,0.02); border: 1px solid #3a2a1a;
+      border-left: 3px solid var(--mood, #8b5a13); color: #e6dcc4; font-family: inherit;
+      font-size: 0.82rem; line-height: 1.5; padding: 0.55rem 0.75rem; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    #dream-panel .dp-choice:hover { background: rgba(200,160,64,0.1); border-color: var(--mood, #c8a040); }
+    #dream-panel .dp-choice .dp-mood { display: block; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mood, #9a8558); margin-bottom: 0.22rem; }
+    #dream-panel .dp-prompt { color: #e8c96a; font-style: italic; }
+    #dream-panel .dp-chosen-tag { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.35rem; display: block; }
+    #dream-panel #dream-portrait .dp-pt-mood { color: #e8c96a; font-size: 1.0rem; letter-spacing: 0.02em; }
 
     /* HP mode chooser (Explore / Dream) */
     #hp-mode {
@@ -676,6 +689,7 @@
     <div class="dp-kicker"><span id="dream-title"></span><span id="dream-stop"></span></div>
     <div id="dream-text"></div>
     <div id="dream-quote-wrap"><div id="dream-voice"></div><div id="dream-quote"></div><div id="dream-source"></div><a id="dream-parallel" target="_blank" rel="noopener">see the Italian ↗</a></div>
+    <div id="dream-choices"></div>
     <div class="dp-nav">
       <button id="dream-exit" onclick="window.dreamExit()" title="Leave the dream (Esc)">&#10005; Wake</button>
       <button id="dream-skip" onclick="window.dreamSkip()" title="Skip to the next scene">Skip scene &#8631;</button>
@@ -733,6 +747,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=94"></script>
+  <script type="module" src="./main.js?v=95"></script>
 </body>
 </html>

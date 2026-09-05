@@ -10,13 +10,18 @@
 import * as THREE from 'three';
 
 export class DreamMode {
-  constructor(world, ui, stops) {
+  constructor(world, ui, stops, reactions = {}) {
     this.world = world;   // HPWorldScene
-    this.ui = ui;         // { setActive(on, finished), showTravel(info), showBeat(info) }
+    this.ui = ui;         // { setActive, showTravel, showBeat, showChoices, showChosen, showPortrait }
     this.stops = stops;
+    this.reactions = reactions;      // { stopId: { prompt, options:[{mood,text,canonical?}] } }
+    this.temperament = {};           // mood -> count, and _canon count of faithful picks
     this.i = -1;
     this.beat = -1;
-    this.phase = 'idle';  // idle | travel | beats
+    this.phase = 'idle';  // idle | travel | beats | choice | reacted | portrait
+    this._awaitingChoice = false;
+    this._reactedHere = false;
+    this._pendingReaction = null;
     this._curve = null;
     this._s = 0;
     this._len = 0;
@@ -37,8 +42,9 @@ export class DreamMode {
 
   _nextStop() {
     this._removeGuide();
+    this._reactedHere = false;
     this.i++;
-    if (this.i >= this.stops.length) { this.end(true); return; }
+    if (this.i >= this.stops.length) { this._finish(); return; }
     const st = this.stops[this.i];
     const p = this.world.walker.player;
     const pts = [[p.pos.x, p.pos.z], ...st.path]
@@ -111,22 +117,71 @@ export class DreamMode {
 
   advance() {
     if (this.phase === 'idle') return;
+    if (this._awaitingChoice) return;                 // must click a reaction option
+    if (this.phase === 'portrait') { this.end(true); return; }
+    if (this.phase === 'reacted') { this._nextStop(); return; }
     if (this.phase === 'travel') { this._s = this._len; return; }  // skip the walk
     const st = this.stops[this.i];
     this.beat++;
-    if (this.beat >= st.beats.length) { this._nextStop(); return; }
+    if (this.beat >= st.beats.length) {
+      // the game's turn: a reaction-choice before we leave the wonder
+      const r = this.reactions && this.reactions[st.id];
+      if (r && !this._reactedHere) { this._showReaction(st, r); return; }
+      this._nextStop(); return;
+    }
     const b = st.beats[this.beat];
     this.ui.showBeat({
       index: this.i, total: this.stops.length, title: st.title,
       beat: this.beat, beats: st.beats.length,
       text: b.text, quote: b.quote || null, source: b.source || null,
       voice: b.voice || (b.quote ? '1592' : null), page: b.page || null, draft: !!b.draft,
-      isFinal: this.i === this.stops.length - 1 && this.beat === st.beats.length - 1,
+      isFinal: false,
     });
   }
 
+  _showReaction(st, r) {
+    this._awaitingChoice = true;
+    this._pendingReaction = r;
+    this.phase = 'choice';
+    this.ui.showChoices({
+      index: this.i, total: this.stops.length, title: st.title,
+      prompt: r.prompt, options: r.options,
+    });
+  }
+
+  // Called by the UI when the player clicks an option.
+  choose(idx) {
+    if (!this._awaitingChoice) return;
+    const r = this._pendingReaction;
+    const opt = r.options[idx];
+    if (!opt) return;
+    this._awaitingChoice = false;
+    this._reactedHere = true;
+    this.temperament[opt.mood] = (this.temperament[opt.mood] || 0) + 1;
+    if (opt.canonical) this.temperament._canon = (this.temperament._canon || 0) + 1;
+    this.temperament._total = (this.temperament._total || 0) + 1;
+    this.world.setDreamMood?.(opt.mood);            // let the world answer in light, if it can
+    const st = this.stops[this.i];
+    const canon = opt.canonical ? null : r.options.find(o => o.canonical);
+    this.phase = 'reacted';
+    this.ui.showChosen({
+      index: this.i, total: this.stops.length, title: st.title,
+      mood: opt.mood, text: opt.text,
+      canonText: canon ? canon.text : null,
+      canonMood: canon ? canon.mood : null,
+    });
+  }
+
+  _finish() {
+    this.phase = 'portrait';
+    if (this.ui.showPortrait) this.ui.showPortrait(this.temperament);
+    else this.end(true);
+  }
+
   skipStop() {
-    if (this.phase === 'idle') return;
+    if (this.phase === 'idle' || this.phase === 'portrait') return;
+    this._awaitingChoice = false;
+    this._pendingReaction = null;
     this._nextStop();
   }
 

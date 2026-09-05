@@ -5,8 +5,9 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
 import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=46';
 import { AFWorldScene } from './scenes/AFWorldScene.js?v=20';
-import { DreamMode } from './systems/DreamMode.js?v=2';
+import { DreamMode } from './systems/DreamMode.js?v=3';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
+import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
 
@@ -1169,6 +1170,14 @@ window.hpDream = () => {
   startDream();
 };
 
+// The four moods the player can answer each wonder in (the game's reaction-choices).
+const MOODS = {
+  wonder:     { label: 'Wonder',     color: '#d8a24a', adj: 'wondering' },
+  eros:       { label: 'Desire',     color: '#c87f92', adj: 'desiring' },
+  melancholy: { label: 'Melancholy', color: '#7fa8c0', adj: 'grieving' },
+  dread:      { label: 'Dread',      color: '#8f6ab0', adj: 'haunted' },
+};
+
 const dreamUI = {
   setActive(on, finished) {
     document.body.classList.toggle('dreaming', on);
@@ -1189,7 +1198,10 @@ const dreamUI = {
     document.getElementById('dream-title').textContent = title;
     document.getElementById('dream-text').innerHTML = '<span class="dp-walking">— following the path —</span>';
     document.getElementById('dream-quote-wrap').style.display = 'none';
-    document.getElementById('dream-next').textContent = 'Hurry ▸';
+    const box = document.getElementById('dream-choices');
+    if (box) { box.classList.remove('on'); box.innerHTML = ''; }   // reset any reaction UI
+    const nx = document.getElementById('dream-next');
+    nx.style.display = ''; nx.textContent = 'Hurry ▸';
   },
   showBeat({ index, total, title, text, quote, source, voice, page, draft, isFinal }) {
     document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
@@ -1224,6 +1236,77 @@ const dreamUI = {
     }
     document.getElementById('dream-next').textContent = isFinal ? 'Wake ▸' : 'Continue ▸';
   },
+
+  // The game's turn: how does Poliphilo meet this wonder?
+  showChoices({ index, total, title, prompt, options }) {
+    document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
+    document.getElementById('dream-title').textContent = title;
+    document.getElementById('dream-text').innerHTML =
+      `<span class="dp-prompt">${prompt}</span>`;
+    document.getElementById('dream-quote-wrap').style.display = 'none';
+    const box = document.getElementById('dream-choices');
+    box.innerHTML = options.map((o, i) => {
+      const m = MOODS[o.mood] || { label: o.mood, color: '#8b5a13' };
+      return `<button class="dp-choice" style="--mood:${m.color}" onclick="window.dreamChoose(${i})">
+        <span class="dp-mood">${m.label}</span>${o.text}</button>`;
+    }).join('');
+    box.classList.add('on');
+    document.getElementById('dream-next').style.display = 'none';   // must choose
+  },
+
+  // The chosen line, spoken — with a quiet reveal of the book's own response.
+  showChosen({ index, total, title, mood, text, canonText, canonMood }) {
+    document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
+    document.getElementById('dream-title').textContent = title;
+    const m = MOODS[mood] || { label: mood, color: '#c8a040' };
+    document.getElementById('dream-text').innerHTML =
+      `<span class="dp-chosen-tag" style="color:${m.color}">Poliphilo · ${m.label}</span>“${text}”`;
+    const box = document.getElementById('dream-choices');
+    box.classList.remove('on'); box.innerHTML = '';
+    const qw = document.getElementById('dream-quote-wrap');
+    if (canonText) {
+      qw.style.display = 'block';
+      qw.dataset.voice = '1499';
+      document.getElementById('dream-voice').textContent = 'as the book has it';
+      document.getElementById('dream-quote').textContent = '“' + canonText + '”';
+      document.getElementById('dream-source').textContent = '';
+      document.getElementById('dream-parallel').style.display = 'none';
+    } else {
+      qw.style.display = 'none';
+    }
+    const nx = document.getElementById('dream-next');
+    nx.style.display = ''; nx.textContent = 'Continue ▸';
+  },
+
+  // The waking self-portrait: what temperament did the player author?
+  showPortrait(t) {
+    const counts = Object.keys(MOODS).map(k => [k, t[k] || 0]);
+    counts.sort((a, b) => b[1] - a[1]);
+    const top = counts[0], tie = counts[1] && counts[1][1] === top[1];
+    const total = t._total || counts.reduce((s, [, n]) => s + n, 0) || 1;
+    const canon = t._canon || 0;
+    const portrait = tie
+      ? 'You dreamed in many keys — wonder, desire, grief and dread by turns, as Poliphilo himself does.'
+      : ({
+          wonder:     'You dreamed as an antiquary — the eye before the heart, wonder your first answer to every marvel.',
+          eros:       'You dreamed as a lover — desire the thread you followed through every wonder to the goddess.',
+          melancholy: 'You dreamed as a mourner — under every beauty you already felt its passing.',
+          dread:      'You dreamed as one haunted — the uncanny at the edge of every marvel, the dream never quite safe.',
+        })[top[0]] || 'You dreamed your own way through the wonders.';
+    const faithful = canon === total
+      ? 'and you answered exactly as the book itself does, every time.'
+      : canon === 0
+        ? 'and never once as the book itself answers — this Poliphilo was entirely your own.'
+        : `and ${canon} of ${total} times you answered as the book itself does.`;
+    document.getElementById('dream-title').textContent = 'The Waking';
+    document.getElementById('dream-stop').textContent = 'Your Poliphilo';
+    document.getElementById('dream-text').innerHTML =
+      `<span class="dp-pt-mood">${portrait}</span><br><br><span style="color:#a89878">${faithful}</span>`;
+    document.getElementById('dream-quote-wrap').style.display = 'none';
+    const box = document.getElementById('dream-choices'); box.classList.remove('on'); box.innerHTML = '';
+    const nx = document.getElementById('dream-next');
+    nx.style.display = ''; nx.textContent = 'Wake ▸';
+  },
 };
 
 function startDream() {
@@ -1233,13 +1316,14 @@ function startDream() {
   scene.walker.player.pos.set(0, 0, 49.5);
   scene.walker.player.yaw = 0;
   scene.walker.player.pitch = -0.02;
-  scene.dream = new DreamMode(scene, dreamUI, DREAM_STOPS);
+  scene.dream = new DreamMode(scene, dreamUI, DREAM_STOPS, DREAM_REACTIONS);
   scene.dream.start();
 }
 
-window.dreamNext = () => state.activeScene?.dream?.advance();
-window.dreamSkip = () => state.activeScene?.dream?.skipStop();
-window.dreamExit = () => state.activeScene?.dream?.end(false);
+window.dreamNext   = () => state.activeScene?.dream?.advance();
+window.dreamSkip   = () => state.activeScene?.dream?.skipStop();
+window.dreamExit   = () => state.activeScene?.dream?.end(false);
+window.dreamChoose = (i) => state.activeScene?.dream?.choose(i);
 
 // Swap between the lit garden and the 3-D woodcut without losing your place
 window.toggleHPStyle = () => {
