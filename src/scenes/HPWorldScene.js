@@ -318,6 +318,7 @@ export class HPWorldScene {
     // portal (woodcut_catalog #19; see _buildNymphFountain).
     this._buildNymphFountain(19, 27.5, 0);
     this._buildDoorsWall();
+    this._buildColossalHorse();
     this._buildElephant();
     this._buildPalace();
     this._buildChessBallet();
@@ -1908,6 +1909,144 @@ export class HPWorldScene {
   // pure white, a Latin motto on the breast-strap and a Greek/Arabic frontlet
   // over the face. Seven steps climb the porphyry base, and a little door under
   // the saddle opens into the body. (Dallington 1592; docs/HP_SOURCEBOOK.md §2.)
+  // ══ The Colossal Horse ═════════════════════════════════════════════════
+  //
+  // Five of the book's woodcuts (catalog #6-#10, folios 22-25) and none of it
+  // was built. It is the FIRST monument Poliphilo meets in the ruined piazza,
+  // before the elephant, and everything the piazza is going to say to him is
+  // said here first.
+  //
+  // Liane Lefaivre reads it in full (*Alberti's Hypnerotomachia Poliphili*,
+  // pp. 256-257), and the detail is all hers:
+  //
+  //   · Across the horse's forehead, the Greek letters **GENEA** — "origin",
+  //     and by extension "the first time".
+  //   · The pedestal calls him the **equus infoelicitatis**, the stallion of
+  //     unhappiness. He is rearing in such panic that he has bucked off all the
+  //     little cupids trying to ride him into the triumphal arch.
+  //   · One side: **fourteen figures dancing**, seven men and seven women, in
+  //     one circle, alternating — but with no contact between the sexes. The
+  //     men hold hands with men, the women with women, and the men's arms pass
+  //     under the women's. Each dancer wears TWO masks, laughing in front and
+  //     weeping behind, so that as they advance an unhappy face is always
+  //     turned toward a happy one. Beneath it: **AMISSIO**, waste.
+  //   · The other side: young men plucking flowers in a field, among nymphs who
+  //     look agitated, as if being robbed of something. Beneath it: **TEMPVS**.
+  //
+  //   Together, tempus amissio — lost time. Chigi names the monument that way
+  //   in his Vatican copy ("the TEMPUS AMISSIO horse", b4v).
+  //
+  // And on one end of the pedestal, in a garland of marjoram and ferns
+  // (catalog #7), the epigram **D · AMBIG · D · D** — *diis ambiguis dono
+  // dedit*, "dedicated to the ambiguous gods". That four-letter abbreviation is
+  // what triggers **Buffalo Hand E's most explicit statement of his whole
+  // system**: *diis ambiguis id est metallis hermafroditis* — the ambiguous
+  // gods are the hermaphrodite metals, gold masculine in its height and
+  // feminine in its depth, silver the reverse. (`hp.db.folio_descriptions`
+  // b5r; Russell 2014, p. 190.)
+  _buildColossalHorse() {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const HX = 10.5, HZ = 16.5;
+
+    const bronze = woodcut
+      ? S.mat({ color: 0x14120e, tone: 0.28, roughness: 0.5 })
+      : S.mat({ color: 0x4a5a42, roughness: 0.42, metalness: 0.72 });
+
+    // ── the pedestal ────────────────────────────────────────────────────
+    this._m(new THREE.BoxGeometry(4.2, 0.28, 2.6), this._darkStoneMat, HX, 0.14, HZ, { cast: false });
+    this._m(new THREE.BoxGeometry(3.8, 1.15, 2.3), this._stoneMat, HX, 0.85, HZ, { outline: true });
+    this._m(new THREE.BoxGeometry(4.05, 0.2, 2.5), this._stoneMat, HX, 1.52, HZ, { cast: false, outline: true });
+    this._wallCol(HX - 2.1, HX + 2.1, HZ - 1.3, HZ + 1.3);
+
+    // ── the two figured sides, and their one-word verdicts ──────────────
+    const panel = (word, z, ry) => {
+      // no word baked into the relief: at this panel size the carved capitals
+      // ran off the stone, and the plaque beneath already names it
+      const tex = this._reliefTexture(word === 'AMISSIO' ? 'The dance of the seven couples'
+                                                         : 'Youths plucking flowers among the nymphs', null);
+      const mat = this.style.mat({ color: 0xffffff, roughness: 0.88 });
+      mat.map = tex; mat.bumpMap = tex; mat.bumpScale = 0.05;
+      this._disp.push(mat);
+      this._m(new THREE.PlaneGeometry(3.1, 0.78), mat, HX, 0.94, z, { ry, cast: false });
+    };
+    panel('AMISSIO', HZ + 1.16, 0);
+    panel('TEMPVS', HZ - 1.16, Math.PI);
+    this._plaque({ main: 'AMISSIO', sub: 'FOURTEEN DANCERS, SEVEN AND SEVEN · EACH MASKED LAUGHING BEFORE AND WEEPING BEHIND' },
+      2.9, 0.3, HX, 0.36, HZ + 1.17, 0, true);
+    this._plaque({ main: 'TEMPVS', sub: 'YOUTHS PLUCKING FLOWERS AMONG NYMPHS WHO LOOK ROBBED' },
+      2.9, 0.3, HX, 0.36, HZ - 1.17, Math.PI, true);
+
+    // ── the two ends: the garlands and their epigrams ───────────────────
+    for (const sx of [-1, 1]) {
+      const ex = HX + sx * 1.92;
+      // the garland — marjoram and ferns on one end, orpine on the other
+      const leaf = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x4a6a34, roughness: 0.9 });
+      for (let i = 0; i <= 10; i++) {
+        const u = i / 10;
+        const dz = (u - 0.5) * 1.7;
+        const dy = 1.18 - Math.sin(u * Math.PI) * 0.42;
+        this._m(new THREE.SphereGeometry(0.075 + (i % 3) * 0.018, 7, 5), leaf,
+          ex + sx * 0.02, dy, HZ + dz, { cast: false });
+      }
+      for (const dz of [-0.85, 0.85]) {                    // the tie at each end
+        this._m(new THREE.TorusGeometry(0.07, 0.02, 5, 10), leaf, ex + sx * 0.02, 1.18, HZ + dz,
+          { ry: Math.PI / 2, cast: false });
+      }
+    }
+    this._plaque({ main: 'D · AMBIG · D · D', sub: 'DIIS AMBIGVIS DONO DEDIT · DEDICATED TO THE AMBIGVOVS GODS' },
+      1.85, 0.42, HX + 1.98, 0.72, HZ, Math.PI / 2, true);
+    this._plaque({ main: 'EQVVS INFOELICITATIS', sub: 'THE STALLION OF VNHAPPINESS' },
+      1.85, 0.42, HX - 1.98, 0.72, HZ, -Math.PI / 2, true);
+
+    // ── the horse, rearing ──────────────────────────────────────────────
+    // TWO nested groups, and the reason matters: the yaw turns the beast
+    // broadside to the walk, and the rear-up pitch has to happen INSIDE that
+    // turn, about the horse's own left-right axis. Applied in the yawed frame
+    // it is a roll, not a rear, and the first build had him on his back with
+    // his legs in the air.
+    const g = new THREE.Group();
+    g.position.set(HX, 1.62, HZ);
+    g.rotation.y = -Math.PI / 2;                 // broadside to the walk
+    this.scene.add(g);
+    const rear = new THREE.Group();
+    rear.rotation.x = 0.58;                      // up on the haunches
+    // rearing about the group origin drops the hind quarters through the
+    // plinth, so lift the whole beast until the back hooves sit on the stone
+    rear.position.y = 0.34;
+    g.add(rear);
+    const horse = this.cast.animals.horse(1.85);
+    horse.traverse(o => { if (o.isMesh && o.material?.color) o.material = bronze; });
+    rear.add(horse);
+    // the mane, thrown forward by the panic — inside `rear`, so it rears too
+    for (let i = 0; i < 7; i++) {
+      const m = this._m(new THREE.ConeGeometry(0.05, 0.3 + (i % 3) * 0.09, 5), bronze,
+        0, 1.5 - i * 0.05, -0.58 + i * 0.07, { parent: rear, cast: false });
+      m.rotation.x = -1.0 - i * 0.06;
+    }
+
+    // GENEA, across the forehead
+    this._plaque({ main: 'ΓΕΝΕΑ', sub: 'ORIGIN · THE FIRST TIME' },
+      0.72, 0.22, HX + 0.02, 3.95, HZ - 0.78, 0, true);
+
+    // ── the cupids he has bucked off ────────────────────────────────────
+    // "he is rearing in such panic that he has bucked all the little cupids
+    // who are trying to ride him into the entrance of the triumphal arch."
+    const spill = [[-2.7, 1.5, 1.1], [-2.2, -1.6, -0.7], [2.6, 1.9, 2.4]];
+    for (let i = 0; i < spill.length; i++) {
+      const [dx, dz, rot] = spill[i];
+      const putto = this.cast.props.putto ? this.cast.props.putto(0.72) : null;
+      if (!putto) break;
+      putto.position.set(HX + dx, 0.02, HZ + dz);
+      putto.rotation.set(-1.15, rot, 0.35);      // sprawled, not standing
+      this.scene.add(putto);
+      this._circleCol(HX + dx, HZ + dz, 0.4);
+    }
+
+    this._plaque({ main: 'TEMPVS · AMISSIO', sub: 'THE COLOSSAL HORSE · f.22 · THE FIRST OF THE PIAZZA MONUMENTS' },
+      2.3, 0.32, HX, 1.72, HZ + 1.30, 0, true);
+  }
+
   _buildElephant() {
     const S = this.style;
     const eleMat = S.key === 'woodcut'
@@ -4631,6 +4770,7 @@ export class HPWorldScene {
       rect(13, 25, 14.5, 25.5),          // Polia's garden slab
       rect(-28.5, -12.5, -6, 6),         // Planetary Palace slab
       rect(-46.5, -33.5, -0.5, 12.5),    // the chess pavement and its enclosure
+      rect(7.9, 13.1, 14.6, 18.4),       // the colossal horse and its pedestal
       circle(21.5, 0, 6.2),              // Quinta Essentia round
       circle(25.5, -3.4, 1.5), circle(25.5, 3.4, 1.5),
       rect(-14.5, 14.5, 10.6, 13.4),     // Three Doors wall

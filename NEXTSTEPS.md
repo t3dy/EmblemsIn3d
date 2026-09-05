@@ -21,6 +21,26 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
+### 0d. The colossal horse is built — and Lefaivre turns out to be readable (2026-09-05)
+Five catalogued woodcuts (#6–#10) and nothing in the world; the first monument of the
+piazza, before the elephant. Built with its pedestal, the two figured sides under
+**AMISSIO** and **TEMPVS**, the two garlanded ends carrying **D · AMBIG · D · D** and
+**EQVVS INFOELICITATIS**, **ΓΕΝΕΑ** across the forehead, and the cupids it has bucked off.
+
+- **`Liane_Lefaivre_…Re_Cognizing_th.md` is 15,878 lines of extractable prose.**
+  `ARCHITECTURE.md` and `RESEARCHPASSFORVR.md` both said it was an image-only scan that
+  needed OCR before the next architecture pass, and both were wrong; the horse was built
+  entirely from her pp. 256–257 and every detail checked out. **The single source those
+  documents said would change framings is available now.** Architecture is due a re-read
+  against it.
+- **`cast.animals.horse` is crude** and is shared with the triumph teams. A colossal bronze
+  wants a `massed` variant the way the elephant got one — the animals never went through
+  the AssetVariants pass at all.
+- The pedestal's figured sides use the generic `_reliefTexture` crowd. The **dance of the
+  seven couples** deserves its own drawing: fourteen figures, alternating, linked
+  same-sex, each masked laughing in front and weeping behind.
+
+
 ### 0c. The hieroglyph vocabulary is thin (2026-09-05)
 Ted: *"poliphilo trying to interpret pseudo heiroglyphics has to be a leg of the tour."*
 Done — tour stop 4, *Reading the Hieroglyphs*, and a stele at the elephant carrying the

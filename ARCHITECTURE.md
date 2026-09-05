@@ -171,8 +171,13 @@ Hand E's Latin for each round is cut on three plaques along the west kerb.
 ## Not consulted
 
 **Liane Lefaivre, *Leon Battista Alberti's Hypnerotomachia Poliphili: Re-Cognizing
-the Architectural Body in the Early Italian Renaissance* (MIT Press, 324 pp.)** is
-the most important architectural study in the archive and is an image-only scan
-with no extractable text. Nothing above rests on it. **It should be OCR'd before
-the next architecture pass** — it is the one source likely to change the framing
+the Architectural Body in the Early Italian Renaissance* (MIT Press, 324 pp.)** —
+**CORRECTION, 2026-09-05: her text IS extractable.**
+`md\Liane_Lefaivre_Leon_Battista_Alberti_s_Hypnerotomachia_Poliphili_Re_Cognizing_th.md`
+is 15,878 lines of readable prose. The colossal horse was built from her pp. 256–257
+(the GENEA on the forehead, the *equus infoelicitatis*, the fourteen two-masked
+dancers under AMISSIO, the flower-gatherers under TEMPVS) and every detail checked
+out. The note below is what stood here before and is now wrong; it is kept so the
+next reader knows the gap is closed. ~~image-only scan with no extractable text;
+should be OCR'd before the next architecture pass~~ — it is the one source likely to change the framing
 rather than the details.
