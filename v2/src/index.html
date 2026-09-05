@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HPin3D — Hypnerotomachia & Atalanta Animata</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0804; overflow: hidden; font-family: 'Georgia', serif; color: #f5f0e8; }
+
+    /* PixiJS woodcut canvas — sits BEHIND Three.js.
+       Explicit 100vw/100vh: a <canvas> is a replaced element, so position:fixed
+       + inset:0 alone leaves it at its intrinsic 300x150 and the renderer sizes
+       the whole scene into that tiny box. */
+    #woodcut-canvas {
+      position: fixed; inset: 0; z-index: 0;
+      width: 100vw; height: 100vh; display: block;
+      pointer-events: none;
+    }
+
+    /* Three.js canvas */
+    #three-canvas {
+      position: fixed; inset: 0; z-index: 1;
+      width: 100vw; height: 100vh; display: block;
+    }
+
+    /* UI overlay */
+    #ui {
+      position: fixed; inset: 0; z-index: 10;
+      pointer-events: none;
+    }
+
+    /* Annotation card */
+    #annotation-panel {
+      position: absolute; bottom: 2rem; left: 50%;
+      transform: translateX(-50%);
+      max-width: 560px; width: 90%;
+      background: rgba(10,8,4,0.92);
+      border: 1px solid #8b4513;
+      padding: 1.2rem 1.5rem;
+      font-size: 0.9rem; line-height: 1.6;
+      display: none;
+      pointer-events: all;
+    }
+    #annotation-panel .source { color: #a0784a; font-size: 0.75rem; margin-top: 0.5rem; }
+    #annotation-panel .close-btn {
+      position: absolute; top: 0.5rem; right: 0.75rem;
+      background: none; border: none; color: #8b4513;
+      font-size: 1.1rem; cursor: pointer;
+    }
+
+    /* Emblem info HUD (top-left) */
+    #emblem-hud {
+      position: absolute; top: 1.5rem; left: 1.5rem;
+      display: none;
+    }
+    #emblem-hud .stage-badge {
+      font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: #8b4513; background: rgba(10,8,4,0.8);
+      border: 1px solid #8b4513; padding: 0.2rem 0.5rem; display: inline-block;
+      margin-bottom: 0.4rem;
+    }
+    #emblem-hud h2 { font-size: 1.1rem; font-weight: normal; margin-bottom: 0.25rem; }
+    #emblem-hud .motto { font-size: 0.8rem; color: #c8a878; font-style: italic; }
+
+    /* World selector (top-right) */
+    #world-nav {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      display: flex; gap: 0.75rem;
+      pointer-events: all;
+    }
+    #world-nav button {
+      background: rgba(10,8,4,0.8); border: 1px solid #4a2a10;
+      color: #c8a878; font-family: 'Georgia', serif; font-size: 0.8rem;
+      padding: 0.4rem 0.9rem; cursor: pointer; letter-spacing: 0.05em;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #world-nav button:hover, #world-nav button.active {
+      border-color: #8b4513; color: #f5f0e8;
+    }
+
+    /* Back button + emblem nav */
+    #back-btn {
+      display: none; margin-top: 0.6rem;
+      background: none; border: 1px solid #4a2a10; color: #a0784a;
+      font-family: 'Georgia', serif; font-size: 0.72rem; padding: 0.25rem 0.65rem;
+      cursor: pointer; letter-spacing: 0.06em; pointer-events: all;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #back-btn:hover { border-color: #8b4513; color: #f5f0e8; }
+
+    #emblem-nav {
+      display: none; gap: 0.5rem; margin-top: 0.5rem;
+      pointer-events: all;
+    }
+    #emblem-nav button {
+      background: rgba(10,8,4,0.8); border: 1px solid #4a2a10;
+      color: #a0784a; font-size: 1.0rem; padding: 0.15rem 0.6rem;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+    }
+    #emblem-nav button:hover:not(:disabled) { border-color: #8b4513; color: #f5f0e8; }
+    #emblem-nav button:disabled { opacity: 0.25; cursor: default; }
+    #emblem-nav .key-hint { font-size: 0.62rem; color: #6b5d4d; align-self: center; }
+
+    /* Gallery hover tooltip */
+    #gallery-tooltip {
+      position: fixed; z-index: 20;
+      background: rgba(10,8,4,0.92); border: 1px solid #8b4513;
+      color: #c8a878; font-size: 0.72rem; padding: 0.3rem 0.65rem;
+      pointer-events: none; opacity: 0; transition: opacity 0.15s;
+      transform: translate(-50%, -100%);
+    }
+
+    /* Center message (HP/Archives placeholder) */
+    #center-message {
+      display: none; position: fixed; inset: 0; z-index: 5;
+      flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.8rem; pointer-events: none;
+    }
+    #center-message h2 { font-size: 1.2rem; font-weight: normal; color: #c8a878; letter-spacing: 0.1em; }
+    #center-message p  { font-size: 0.85rem; color: #6b5d4d; text-align: center; line-height: 1.7; }
+
+    /* Generic emblem text card — shown for all 46 non-showcase emblems */
+    #text-card {
+      display: none; position: fixed; z-index: 8;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      width: min(520px, 88vw);
+      flex-direction: column; align-items: center; gap: 0.65rem;
+      text-align: center; pointer-events: none;
+      background: rgba(8, 6, 3, 0.72);
+      border: 1px solid rgba(139, 69, 19, 0.25);
+      padding: 2.2rem 2rem 1.8rem;
+      backdrop-filter: blur(2px);
+      animation: fadeInCard 0.8s ease forwards;
+    }
+    @keyframes fadeInCard { from { opacity:0; transform: translate(-50%,-50%) translateY(12px); } to { opacity:1; transform: translate(-50%,-50%) translateY(0); } }
+    #text-card .tc-badge {
+      font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.15rem 0.5rem; border: 1px solid; display: inline-block;
+    }
+    #text-card .tc-numeral {
+      font-size: 3.4rem; font-weight: 100; letter-spacing: 0.04em; line-height: 1;
+    }
+    #text-card .tc-title { font-size: 1.25rem; font-weight: normal; color: #f0e8d8; }
+    #text-card .tc-rule  { width: 48px; height: 1px; background: rgba(139,69,19,0.35); }
+    #text-card .tc-motto {
+      font-style: italic; font-size: 0.88rem; color: #c8a878; line-height: 1.55;
+    }
+    #text-card .tc-epigram {
+      font-size: 0.75rem; color: #6b5d4d; line-height: 1.75; max-width: 420px;
+    }
+    #text-card .tc-hint {
+      font-size: 0.62rem; color: #4a3828; letter-spacing: 0.1em; margin-top: 0.4rem;
+    }
+
+    /* ── Plates atlas overlay ─────────────────────────────────────── */
+    #plates-overlay {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(6,4,2,0.97);
+      overflow-y: auto; pointer-events: all;
+      padding: 4.6rem 1.5rem 3rem;
+    }
+    #plates-overlay .plates-head { text-align: center; margin-bottom: 1.6rem; }
+    #plates-overlay .plates-head h2 {
+      font-size: 1.3rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878;
+    }
+    #plates-overlay .plates-head p {
+      font-size: 0.74rem; color: #6b5d4d; letter-spacing: 0.05em; margin-top: 0.45rem;
+    }
+    #plates-grid {
+      display: grid; gap: 1rem;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      max-width: 1180px; margin: 0 auto;
+    }
+    .plate-card {
+      position: relative; cursor: pointer; overflow: hidden;
+      border: 1px solid #2a1a0a; background: #100b06;
+      padding: 0; font-family: inherit; color: inherit; text-align: left;
+      transition: border-color 0.18s, transform 0.18s;
+      display: flex; flex-direction: column;
+    }
+    .plate-card:hover { border-color: #c8a040; transform: translateY(-3px); }
+    .plate-card.showcase { border-color: #6a4a18; }
+    .plate-card img {
+      width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; background: #1a1209;
+    }
+    .plate-card .pc-meta {
+      padding: 0.4rem 0.55rem; display: flex; align-items: baseline; gap: 0.45rem;
+    }
+    .plate-card .pc-num   { font-size: 0.72rem; color: #c8a040; flex-shrink: 0; }
+    .plate-card .pc-title {
+      font-size: 0.66rem; color: #9a8a74; line-height: 1.3;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .plate-card .pc-star {
+      position: absolute; top: 0.35rem; right: 0.45rem; font-size: 0.72rem; color: #e0b850;
+    }
+
+    /* Lightbox */
+    #plate-lightbox {
+      display: none; position: fixed; inset: 0; z-index: 45;
+      background: rgba(3,2,1,0.94); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; padding: 2rem; pointer-events: all;
+    }
+    #plate-lightbox .lb-inner {
+      display: flex; gap: 2rem; max-width: 1000px; width: 100%; max-height: 88vh;
+    }
+    #plate-lightbox .lb-img-wrap { flex: 0 0 auto; max-width: 52%; display: flex; align-items: center; }
+    #plate-lightbox .lb-img-wrap img {
+      max-width: 100%; max-height: 84vh; object-fit: contain; border: 1px solid #4a2a10;
+    }
+    #plate-lightbox .lb-text {
+      flex: 1 1 auto; overflow-y: auto; padding-right: 0.5rem;
+      display: flex; flex-direction: column; gap: 0.7rem;
+    }
+    #plate-lightbox .lb-badge {
+      font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 0.18rem 0.55rem; border: 1px solid; width: fit-content;
+    }
+    #plate-lightbox .lb-num   { font-size: 2.6rem; font-weight: 100; line-height: 1; }
+    #plate-lightbox .lb-title { font-size: 1.3rem; color: #f0e8d8; }
+    #plate-lightbox .lb-motto-la { font-style: italic; color: #c8a878; font-size: 0.92rem; line-height: 1.5; }
+    #plate-lightbox .lb-motto-en { color: #9a8a74; font-size: 0.86rem; line-height: 1.5; }
+    #plate-lightbox .lb-epigram  { color: #7a6858; font-size: 0.8rem; line-height: 1.7; white-space: pre-line; }
+    #plate-lightbox .lb-actions  { display: flex; gap: 0.6rem; margin-top: 0.5rem; flex-wrap: wrap; }
+    #plate-lightbox .lb-actions button {
+      background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
+      font-family: inherit; font-size: 0.78rem; padding: 0.4rem 0.9rem; cursor: pointer;
+      letter-spacing: 0.04em; transition: border-color 0.18s, color 0.18s;
+    }
+    #plate-lightbox .lb-actions button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #plate-lightbox .lb-close {
+      position: absolute; top: 1rem; right: 1.3rem;
+      background: none; border: none; color: #8b6a3a; font-size: 1.7rem; cursor: pointer;
+    }
+    #plate-lightbox .lb-close:hover { color: #f5f0e8; }
+    @media (max-width: 720px) {
+      #plate-lightbox { padding: 1rem; }
+      #plate-lightbox .lb-inner { flex-direction: column; overflow-y: auto; }
+      #plate-lightbox .lb-img-wrap { max-width: 100%; justify-content: center; }
+      #plate-lightbox .lb-img-wrap img { max-height: 46vh; }
+    }
+
+    /* ── Gallery ──────────────────────────────────────────────────── */
+    #gallery-overlay {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(6,4,2,0.97); overflow-y: auto; pointer-events: all;
+      padding: 4.6rem 1.5rem 3rem;
+    }
+    #gallery-body { max-width: 1180px; margin: 0 auto; }
+    .gal-cat {
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #c8a040; border-bottom: 1px solid #2a1a0a;
+      padding-bottom: 0.5rem; margin: 2.2rem 0 1rem;
+    }
+    .gal-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); }
+    .gal-card {
+      cursor: pointer; border: 1px solid #2a1a0a; background: #100b06; overflow: hidden;
+      display: flex; flex-direction: column; text-align: left; padding: 0;
+      font-family: inherit; color: inherit;
+      transition: border-color 0.18s, transform 0.18s;
+    }
+    .gal-card:hover { border-color: #c8a040; transform: translateY(-3px); }
+    .gal-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #1a1209; display: block; }
+    .gal-cap { padding: 0.5rem 0.6rem 0.65rem; }
+    .gal-cap .t { font-size: 0.78rem; color: #e0d8c8; line-height: 1.3; }
+    .gal-cap .a { font-size: 0.66rem; color: #7a6858; margin-top: 0.2rem; }
+    #gallery-lightbox {
+      display: none; position: fixed; inset: 0; z-index: 46;
+      background: rgba(3,2,1,0.94); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; padding: 2rem; pointer-events: all;
+    }
+    #gallery-lightbox .lb-inner { display: flex; gap: 2rem; max-width: 1050px; width: 100%; max-height: 88vh; }
+    #gallery-lightbox .lb-img-wrap { flex: 1 1 auto; display: flex; align-items: center; justify-content: center; min-width: 0; }
+    #gallery-lightbox .lb-img-wrap img { max-width: 100%; max-height: 84vh; object-fit: contain; border: 1px solid #4a2a10; }
+    #gallery-lightbox .lb-text { flex: 0 0 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.55rem; }
+    #gallery-lightbox .lb-close { position: absolute; top: 1rem; right: 1.3rem; background: none; border: none; color: #8b6a3a; font-size: 1.7rem; cursor: pointer; }
+    #gallery-lightbox .lb-close:hover { color: #f5f0e8; }
+    #gallery-lightbox .glb-cat { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: #c8a040; border: 1px solid #6a4a18; padding: 0.18rem 0.55rem; width: fit-content; }
+    #gallery-lightbox .glb-title { font-size: 1.35rem; color: #f0e8d8; line-height: 1.25; }
+    #gallery-lightbox .glb-artist { font-size: 0.92rem; color: #c8a878; }
+    #gallery-lightbox .glb-date { font-size: 0.75rem; color: #7a6858; letter-spacing: 0.05em; }
+    #gallery-lightbox .glb-cap { font-size: 0.86rem; color: #b7a184; line-height: 1.7; margin-top: 0.3rem; }
+    #gallery-lightbox .glb-src { font-size: 0.7rem; margin-top: auto; padding-top: 0.6rem; }
+    #gallery-lightbox .glb-src a { color: #8b6a3a; }
+    #gallery-lightbox .glb-src a:hover { color: #c8a040; }
+    @media (max-width: 720px) {
+      #gallery-lightbox .lb-inner { flex-direction: column; overflow-y: auto; }
+      #gallery-lightbox .lb-text { flex: 1 1 auto; }
+    }
+
+    /* ── Tour woodcut viewer ──────────────────────────────────────── */
+    #woodcut-lightbox {
+      display: none; position: fixed; inset: 0; z-index: 47;
+      background: rgba(3,2,1,0.95); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; padding: 2.5rem; pointer-events: all;
+    }
+    #woodcut-lightbox .twc-inner { display: flex; flex-direction: column; align-items: center; gap: 0.8rem; max-height: 90vh; }
+    #woodcut-lightbox img { max-width: min(80vw, 780px); max-height: 80vh; object-fit: contain; background: #e8e0d0; border: 1px solid #4a2a10; }
+    #woodcut-lightbox .twc-meta { display: flex; gap: 1rem; align-items: baseline; color: #c8a878; font-size: 0.82rem; letter-spacing: 0.03em; }
+    #woodcut-lightbox .twc-meta #twc-count { color: #7a6858; font-size: 0.7rem; }
+    #woodcut-lightbox .lb-close { position: absolute; top: 1rem; right: 1.3rem; background: none; border: none; color: #8b6a3a; font-size: 1.7rem; cursor: pointer; }
+    #woodcut-lightbox .lb-close:hover { color: #f5f0e8; }
+    .twc-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(10,8,4,0.7); border: 1px solid #4a2a10; color: #c8a878; font-size: 1.8rem; width: 2.4rem; height: 3.4rem; cursor: pointer; transition: border-color 0.18s, color 0.18s; }
+    .twc-arrow:hover { border-color: #c8a040; color: #f5f0e8; }
+    .twc-prev { left: 1.5rem; } .twc-next { right: 1.5rem; }
+    #tour-panel .tp-woodcut-btn {
+      background: rgba(200,160,64,0.08); border: 1px solid #6a4a18; color: #c8a878;
+      font-family: inherit; font-size: 0.75rem; letter-spacing: 0.03em;
+      padding: 0.4rem 0.7rem; cursor: pointer; width: fit-content;
+      transition: border-color 0.18s, color 0.18s, background 0.18s;
+    }
+    #tour-panel .tp-woodcut-btn:hover { border-color: #c8a040; color: #f5f0e8; background: rgba(200,160,64,0.16); }
+
+    /* ── Guided tours ─────────────────────────────────────────────── */
+    #tours-menu {
+      display: none; position: fixed; inset: 0; z-index: 40;
+      background: rgba(6,4,2,0.97); overflow-y: auto;
+      flex-direction: column; align-items: center;
+      padding: 4.6rem 1.5rem 3rem; pointer-events: all;
+    }
+    #tours-menu .tours-head { text-align: center; max-width: 680px; margin-bottom: 2rem; }
+    #tours-menu .tours-head h2 { font-size: 1.4rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878; }
+    #tours-menu .tours-head p { font-size: 0.82rem; color: #7a6858; line-height: 1.7; margin-top: 0.7rem; }
+    #tours-menu-grid {
+      display: grid; gap: 1.2rem; width: 100%; max-width: 980px;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    }
+    .tour-card {
+      text-align: left; cursor: pointer; color: inherit; font-family: inherit;
+      background: rgba(255,255,255,0.015); border: 1px solid #2a1a0a;
+      border-top: 2px solid var(--accent, #8b4513);
+      padding: 1.6rem 1.5rem; display: flex; flex-direction: column; gap: 0.55rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .tour-card:hover { background: rgba(255,255,255,0.04); transform: translateY(-3px); }
+    .tour-card .tc-kicker { font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; }
+    .tour-card h3 { font-size: 1.2rem; font-weight: normal; color: #f0e8d8; }
+    .tour-card > p { font-size: 0.8rem; color: #c8a878; font-style: italic; line-height: 1.5; }
+    .tour-card .tc-intro { font-size: 0.73rem; color: #7a6858; font-style: normal; line-height: 1.65; }
+    .tour-card .tc-go { font-size: 0.74rem; margin-top: 0.4rem; letter-spacing: 0.04em; }
+
+    /* Tour narration rail (right side, leaves the model visible) */
+    #tour-panel {
+      display: none; position: fixed; top: 0; right: 0; bottom: 0; z-index: 32;
+      width: min(390px, 92vw); flex-direction: column;
+      background: linear-gradient(to right, rgba(6,4,2,0.84), rgba(8,6,3,0.97));
+      border-left: 1px solid rgba(139,69,19,0.4);
+      backdrop-filter: blur(3px); pointer-events: all;
+    }
+    #tour-panel .tp-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 1.4rem; border-bottom: 1px solid rgba(139,69,19,0.2);
+    }
+    #tour-panel .tp-tour  { font-size: 0.78rem; letter-spacing: 0.1em; }
+    #tour-panel .tp-count { font-size: 0.66rem; color: #6b5d4d; letter-spacing: 0.08em; }
+    #tour-panel .tp-body  { flex: 1 1 auto; overflow-y: auto; padding: 1.3rem 1.4rem; display: flex; flex-direction: column; gap: 0.65rem; }
+    #tour-panel .tp-badge { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; padding: 0.15rem 0.5rem; border: 1px solid; width: fit-content; }
+    #tour-panel .tp-numeral { font-size: 2.4rem; font-weight: 100; line-height: 1; }
+    #tour-panel .tp-title { font-size: 1.15rem; color: #f0e8d8; line-height: 1.3; }
+    #tour-panel .tp-symbol { display: flex; align-items: center; gap: 0.8rem; margin: 0.2rem 0; }
+    #tour-panel .tp-glyph { font-size: 2.6rem; line-height: 1; }
+    #tour-panel .tp-sym-name { font-size: 1.0rem; color: #e8ddc8; }
+    #tour-panel .tp-sym-row { font-size: 0.72rem; color: #8a7a5a; letter-spacing: 0.03em; margin-top: 0.15rem; }
+    #tour-panel .tp-sym-notes { font-size: 0.76rem; color: #9a8a74; line-height: 1.6; font-style: italic; }
+    #tour-panel .tp-lede { font-size: 0.84rem; color: #d8c8a8; line-height: 1.65; }
+    #tour-panel .tp-rule { height: 1px; background: rgba(139,69,19,0.25); margin: 0.35rem 0 0.1rem; }
+    #tour-panel .tp-scholar-label { font-size: 0.56rem; letter-spacing: 0.16em; text-transform: uppercase; color: #6b5d4d; }
+    #tour-panel .tp-discourse { font-size: 0.78rem; color: #8a7a64; line-height: 1.7; }
+    #tour-panel .tp-editionlink { font-size: 0.76rem; letter-spacing: 0.03em; text-decoration: none; border-bottom: 1px solid rgba(200,160,64,0.35); width: fit-content; padding-bottom: 1px; }
+    #tour-panel .tp-editionlink:hover { color: #f5f0e8 !important; border-bottom-color: #f5f0e8; }
+    #tour-panel .tp-quote { border-left: 2px solid #c8a040; padding: 0.3rem 0 0.3rem 0.9rem; margin: 0.15rem 0 0.1rem; font-style: italic; color: #e8dcc0; font-size: 0.86rem; line-height: 1.6; }
+    #tour-panel .tp-quote cite { display: block; margin-top: 0.5rem; font-style: normal; font-size: 0.64rem; letter-spacing: 0.05em; color: #8a7a5a; }
+    #tour-panel .tp-notes { display: flex; flex-direction: column; gap: 0.5rem; }
+    #tour-panel .tp-note { border-left: 3px solid; padding: 0.4rem 0 0.4rem 0.8rem; background: rgba(255,255,255,0.018); }
+    #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
+    #tour-panel .tp-note-text { font-size: 0.78rem; color: #c8bca4; line-height: 1.6; }
+    #tour-panel .tp-note-text em { color: #e0d4b8; font-style: italic; }
+    #tour-panel .tp-flavor-bar { display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0.15rem 0 0.1rem; }
+    #tour-panel .tp-flavor {
+      font-family: inherit; font-size: 0.55rem; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.22rem 0.5rem; border: 1px solid #3a2a1a; background: none; color: #6b5d4d;
+      cursor: pointer; border-radius: 2px; transition: opacity 0.15s;
+    }
+    #tour-panel .tp-flavor.on { background: rgba(255,255,255,0.03); }
+    #tour-panel .tp-flavor:not(.on) { opacity: 0.45; text-decoration: line-through; }
+    /* Pre-tour commentary chooser */
+    #tour-flavor-chooser {
+      position: fixed; inset: 0; z-index: 44; display: flex; align-items: center; justify-content: center;
+      background: rgba(4,3,1,0.9); backdrop-filter: blur(4px); padding: 1.5rem; pointer-events: all;
+    }
+    #tour-flavor-chooser .fc-card {
+      max-width: 520px; width: 100%; max-height: 90vh; overflow-y: auto;
+      background: linear-gradient(180deg, rgba(14,10,6,0.98), rgba(8,6,3,0.98));
+      border: 1px solid #6a4a18; border-top: 2px solid #d8a24a; padding: 2rem 2rem 1.6rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    #tour-flavor-chooser .fc-kicker { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: #8a6a38; }
+    #tour-flavor-chooser h2 { font-size: 1.4rem; font-weight: normal; color: #d8a24a; letter-spacing: 0.02em; }
+    #tour-flavor-chooser .fc-intro { font-size: 0.84rem; color: #a89878; line-height: 1.65; }
+    #tour-flavor-chooser .fc-rows { display: flex; flex-direction: column; gap: 0.1rem; margin: 0.3rem 0; }
+    #tour-flavor-chooser .fc-row { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.4rem; cursor: pointer; border-radius: 3px; }
+    #tour-flavor-chooser .fc-row:hover { background: rgba(255,255,255,0.03); }
+    #tour-flavor-chooser .fc-row input { width: 1.05rem; height: 1.05rem; accent-color: #c8a040; cursor: pointer; }
+    #tour-flavor-chooser .fc-swatch { width: 0.8rem; height: 0.8rem; border-radius: 2px; flex: 0 0 auto; }
+    #tour-flavor-chooser .fc-label { font-size: 0.9rem; color: #e8dcc4; }
+    #tour-flavor-chooser .fc-quick { display: flex; gap: 0.6rem; margin-top: 0.2rem; }
+    #tour-flavor-chooser .fc-quick button {
+      background: none; border: 1px solid #3a2a1a; color: #a89878; font-family: inherit;
+      font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.4rem 0.8rem; cursor: pointer;
+    }
+    #tour-flavor-chooser .fc-quick button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #tour-flavor-chooser .fc-begin {
+      margin-top: 0.7rem; align-self: flex-start; background: rgba(200,160,64,0.12);
+      border: 1px solid #c8a040; color: #f5f0e8; font-family: inherit; font-size: 0.9rem;
+      letter-spacing: 0.04em; padding: 0.6rem 1.4rem; cursor: pointer;
+    }
+    #tour-flavor-chooser .fc-begin:hover { background: rgba(200,160,64,0.24); }
+    #tour-panel .tp-nav { display: flex; gap: 0.5rem; padding: 1rem 1.4rem; border-top: 1px solid rgba(139,69,19,0.2); }
+    #tour-panel .tp-nav button {
+      flex: 1 1 auto; background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
+      font-family: inherit; font-size: 0.74rem; padding: 0.45rem 0.5rem; cursor: pointer;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    #tour-panel .tp-nav button:hover:not(:disabled) { border-color: #c8a040; color: #f5f0e8; }
+    #tour-panel .tp-nav button:disabled { opacity: 0.3; cursor: default; }
+    #tour-panel .tp-nav .tp-exit { flex: 0 0 auto; }
+    @media (max-width: 640px) {
+      #tour-panel {
+        top: auto; width: 100vw; max-height: 56vh;
+        border-left: none; border-top: 1px solid rgba(139,69,19,0.4);
+      }
+    }
+
+    /* ── Poliphilo's Dream (story mode) ───────────────────────────── */
+    #dream-bar-top, #dream-bar-bottom {
+      position: fixed; left: 0; right: 0; height: 64px; z-index: 25;
+      background: #050402; pointer-events: none;
+      transition: transform 0.7s ease;
+    }
+    #dream-bar-top    { top: 0;    transform: translateY(-100%); }
+    #dream-bar-bottom { bottom: 0; transform: translateY(100%); }
+    body.dreaming #dream-bar-top    { transform: translateY(0); }
+    body.dreaming #dream-bar-bottom { transform: translateY(0); }
+
+    #dream-panel {
+      display: none; position: fixed; z-index: 30;
+      left: 50%; bottom: 5.2rem; transform: translateX(-50%);
+      width: min(640px, 92vw);
+      background: rgba(8,6,3,0.93); border: 1px solid rgba(200,160,64,0.35);
+      padding: 1.2rem 1.5rem 1rem; pointer-events: all;
+      backdrop-filter: blur(3px);
+    }
+    body.dreaming #dream-panel { display: block; }
+    #dream-panel .dp-kicker {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 0.55rem;
+    }
+    #dream-panel #dream-stop  { font-size: 0.62rem; letter-spacing: 0.16em; color: #8a7a5a; text-transform: uppercase; }
+    #dream-panel #dream-title { font-size: 1.02rem; color: #e8c96a; letter-spacing: 0.04em; }
+    #dream-panel #dream-text  { font-size: 0.88rem; color: #e6dcc4; line-height: 1.7; min-height: 3.2em; }
+    /* Three voices quote in this panel — Dallington 1592, the 1499 book itself,
+       and our own translation — and each gets its own rule colour and a tag, so
+       a reader knows which one is speaking before reading it. */
+    #dream-panel #dream-quote-wrap { display: none; margin-top: 0.7rem; padding-left: 0.9rem; border-left: 2px solid rgba(200,160,64,0.5); }
+    #dream-panel #dream-voice  { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; color: #9a8558; margin-bottom: 0.35rem; }
+    #dream-panel #dream-quote  { font-style: italic; font-size: 0.86rem; color: #d8b96a; line-height: 1.6; white-space: pre-line; }
+    #dream-panel #dream-source { font-size: 0.66rem; color: #8a7a5a; margin-top: 0.3rem; letter-spacing: 0.05em; }
+    #dream-panel #dream-parallel { display: none; font-size: 0.62rem; letter-spacing: 0.06em; color: #7fa8c0; margin-top: 0.35rem; pointer-events: all; text-decoration: none; }
+    #dream-panel #dream-parallel:hover { color: #b8d8e8; }
+    /* 1499 — epigraphy: paler, warmer */
+    #dream-panel #dream-quote-wrap[data-voice="1499"] { border-left-color: rgba(220,196,140,0.55); }
+    #dream-panel #dream-quote-wrap[data-voice="1499"] #dream-voice { color: #b8a476; }
+    #dream-panel #dream-quote-wrap[data-voice="1499"] #dream-quote { color: #e2cf9c; font-style: normal; letter-spacing: 0.04em; }
+    /* ours — deliberately cool against the warm world, reading as a modern hand */
+    #dream-panel #dream-quote-wrap[data-voice="ours"] { border-left-color: rgba(120,168,192,0.6); }
+    #dream-panel #dream-quote-wrap[data-voice="ours"] #dream-voice { color: #7fa8c0; }
+    #dream-panel #dream-quote-wrap[data-voice="ours"] #dream-quote { color: #cfe0e8; }
+    #dream-panel .dp-nav { display: flex; gap: 0.5rem; margin-top: 0.9rem; justify-content: flex-end; }
+    #dream-panel .dp-nav button {
+      background: rgba(10,8,4,0.8); border: 1px solid #4a2a10; color: #c8a878;
+      font-family: inherit; font-size: 0.76rem; padding: 0.4rem 0.9rem; cursor: pointer;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    #dream-panel .dp-nav button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #dream-panel .dp-nav #dream-next { border-color: #8b5a13; color: #e8c96a; }
+    #dream-panel .dp-walking { font-size: 0.74rem; color: #8a7a5a; font-style: italic; }
+    #dream-panel #dream-choices { display: none; flex-direction: column; gap: 0.4rem; margin-top: 0.85rem; }
+    #dream-panel #dream-choices.on { display: flex; }
+    #dream-panel .dp-choice {
+      text-align: left; background: rgba(255,255,255,0.02); border: 1px solid #3a2a1a;
+      border-left: 3px solid var(--mood, #8b5a13); color: #e6dcc4; font-family: inherit;
+      font-size: 0.82rem; line-height: 1.5; padding: 0.55rem 0.75rem; cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    #dream-panel .dp-choice:hover { background: rgba(200,160,64,0.1); border-color: var(--mood, #c8a040); }
+    #dream-panel .dp-choice .dp-mood { display: block; font-size: 0.55rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--mood, #9a8558); margin-bottom: 0.22rem; }
+    #dream-panel .dp-prompt { color: #e8c96a; font-style: italic; }
+    #dream-panel .dp-chosen-tag { font-size: 0.58rem; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.35rem; display: block; }
+    #dream-panel #dream-portrait .dp-pt-mood { color: #e8c96a; font-size: 1.0rem; letter-spacing: 0.02em; }
+
+    /* HP mode chooser (Explore / Dream) */
+    #hp-mode {
+      display: none; position: fixed; inset: 0; z-index: 42;
+      background: rgba(4,3,1,0.82); backdrop-filter: blur(3px);
+      align-items: center; justify-content: center; pointer-events: all;
+    }
+    #hp-mode .hpm-inner { text-align: center; max-width: 760px; padding: 1rem; }
+    #hp-mode h2 { font-size: 1.5rem; font-weight: normal; letter-spacing: 0.14em; color: #e8c96a; }
+    #hp-mode .hpm-sub { font-size: 0.82rem; color: #9a8a74; margin-top: 0.6rem; line-height: 1.7; }
+    #hp-mode .hpm-cards { display: flex; gap: 1.2rem; margin-top: 1.8rem; justify-content: center; flex-wrap: wrap; }
+    #hp-mode .hpm-card {
+      width: 280px; text-align: left; cursor: pointer; color: inherit; font-family: inherit;
+      background: rgba(255,255,255,0.02); border: 1px solid #3a2a14;
+      padding: 1.4rem 1.4rem 1.2rem; transition: border-color 0.2s, transform 0.2s;
+    }
+    #hp-mode .hpm-card:hover { border-color: #c8a040; transform: translateY(-3px); }
+    #hp-mode .hpm-card h3 { font-size: 1.05rem; font-weight: normal; color: #f0e8d8; margin-bottom: 0.5rem; }
+    #hp-mode .hpm-card p  { font-size: 0.75rem; color: #8a7a64; line-height: 1.65; }
+    #hp-mode .hpm-card .hpm-kicker { font-size: 0.6rem; letter-spacing: 0.16em; color: #c8a040; text-transform: uppercase; display: block; margin-bottom: 0.5rem; }
+
+    /* Loading screen */
+    #loading {
+      position: fixed; inset: 0; z-index: 100;
+      background: #0a0804;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 1rem;
+    }
+    #loading h1 { font-size: 1.4rem; font-weight: normal; letter-spacing: 0.15em; color: #c8a878; }
+    #loading-bar-wrap { width: 260px; height: 2px; background: #2a1a08; }
+    #loading-bar { height: 100%; width: 0%; background: #8b4513; transition: width 0.3s; }
+    #loading-sub { font-size: 0.75rem; color: #6b5d4d; letter-spacing: 0.08em; }
+
+    /* ── Touch controls (walkable worlds) ─────────────────────────── */
+    #touch-controls { position: fixed; inset: 0; z-index: 12; pointer-events: none; }
+    #touch-controls > * { pointer-events: auto; }
+    #move-stick {
+      position: absolute; left: 1.4rem; bottom: 1.8rem;
+      width: 8.6rem; height: 8.6rem; border-radius: 50%;
+      background: rgba(20,14,8,0.32); border: 1px solid rgba(200,160,64,0.45);
+      touch-action: none; user-select: none; -webkit-user-select: none;
+    }
+    #move-stick .tc-knob {
+      position: absolute; left: 50%; top: 50%; width: 3.5rem; height: 3.5rem;
+      margin: -1.75rem 0 0 -1.75rem; border-radius: 50%;
+      background: rgba(200,168,120,0.5); border: 1px solid rgba(245,240,232,0.55);
+      will-change: transform;
+    }
+    #move-stick .tc-hint {
+      position: absolute; left: 0; right: 0; bottom: 0.7rem; text-align: center;
+      font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(245,240,232,0.4);
+    }
+    #tc-buttons { position: absolute; right: 1.4rem; bottom: 1.9rem; display: flex; flex-direction: column; gap: 0.7rem; align-items: flex-end; }
+    .tc-btn {
+      background: rgba(20,14,8,0.72); border: 1px solid rgba(200,160,64,0.5); color: #f5f0e8;
+      font-family: 'Georgia', serif; font-size: 0.95rem; letter-spacing: 0.03em;
+      padding: 0.75rem 1.2rem; border-radius: 2rem; cursor: pointer; touch-action: manipulation;
+    }
+    .tc-btn.on { background: rgba(200,160,64,0.3); border-color: #c8a040; }
+    #tc-wonder-menu {
+      position: absolute; right: 1.4rem; bottom: 7.4rem; min-width: 13rem; max-height: 56vh;
+      overflow-y: auto; background: rgba(10,8,4,0.96); border: 1px solid #8b4513; padding: 0.35rem;
+      display: flex; flex-direction: column; gap: 0.15rem; -webkit-overflow-scrolling: touch;
+    }
+    #tc-wonder-menu button {
+      text-align: left; background: none; border: none; color: #c8a878;
+      font-family: 'Georgia', serif; font-size: 0.9rem; padding: 0.65rem 0.8rem; cursor: pointer;
+    }
+    #tc-wonder-menu button:active { background: rgba(200,160,64,0.22); color: #f5f0e8; }
+
+    /* ── Responsive (phones/tablets) ──────────────────────────────── */
+    @media (max-width: 720px) {
+      #world-nav { flex-wrap: wrap; justify-content: flex-end; gap: 0.35rem; max-width: 72vw; }
+      #world-nav button { font-size: 0.7rem; padding: 0.32rem 0.6rem; }
+      #emblem-hud { top: 1rem; left: 1rem; max-width: 60vw; }
+      #annotation-panel { bottom: 1rem; max-width: 94%; font-size: 0.82rem; padding: 0.9rem 1.1rem; }
+    }
+    @media (max-width: 720px) and (pointer: coarse) {
+      /* keep the movement stick clear of the tour sheet: only free-explore shows it */
+      #move-stick { bottom: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+<a data-site-home href="../../index.html" title="Leave the archive" style="position:fixed;top:1rem;left:1rem;z-index:9999;font-family:Georgia,serif;font-size:0.78rem;letter-spacing:0.05em;text-decoration:none;color:#d8a24a;background:rgba(10,8,4,0.9);border:1px solid #6a4a18;padding:0.38rem 0.8rem;">&#8962; Back to the current site</a>
+  <canvas id="woodcut-canvas"></canvas>
+  <canvas id="three-canvas"></canvas>
+
+  <div id="ui">
+    <div id="emblem-hud">
+      <div class="stage-badge" id="hud-stage">NIGREDO</div>
+      <h2 id="hud-title"></h2>
+      <div class="motto" id="hud-motto"></div>
+      <div id="emblem-nav">
+        <button id="nav-prev" onclick="window.showcasePrev()" title="Previous emblem (←)">&#8592;</button>
+        <button id="nav-next" onclick="window.showcaseNext()" title="Next emblem (→)">&#8594;</button>
+        <span class="key-hint">&#8592;&#8594; keys &nbsp;|&nbsp; G = gallery</span>
+      </div>
+      <button id="back-btn" onclick="window.backToGallery()">&#8592; Gallery</button>
+    </div>
+
+    <div id="world-nav">
+      <button id="btn-hp-style" style="display:none" onclick="window.toggleHPStyle()">Woodcut view</button>
+      <button id="btn-hp" onclick="window.switchWorld('HP')">Hypnerotomachia</button>
+      <button id="btn-af" class="active" onclick="window.switchWorld('AF')">Atalanta Animata</button>
+      <button id="btn-theatrum" onclick="window.switchWorld('THEATRUM')">Theatrum</button>
+      <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
+      <button id="btn-gallery" onclick="window.switchWorld('GALLERY')">Gallery</button>
+      <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
+      <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
+    </div>
+
+    <div id="annotation-panel">
+      <button class="close-btn" onclick="document.getElementById('annotation-panel').style.display='none'">×</button>
+      <div id="annotation-text"></div>
+      <div id="annotation-source" class="source"></div>
+    </div>
+  </div>
+
+  <div id="gallery-tooltip"></div>
+  <div id="center-message"><h2></h2><p></p></div>
+  <div id="text-card"></div>
+
+  <!-- Plates atlas: every emblem image as a clickable card -->
+  <div id="plates-overlay">
+    <div class="plates-head">
+      <h2>The Plates &mdash; Atalanta Fugiens</h2>
+      <p>Frontispiece &amp; fifty emblems · click any plate to enlarge it, read its motto and epigram, or enter its 3-D world · ✦ marks a fully-built scene</p>
+    </div>
+    <div id="plates-grid"></div>
+  </div>
+  <div id="plate-lightbox">
+    <button class="lb-close" onclick="window.closePlate()" title="Close (Esc)">&times;</button>
+    <div class="lb-inner">
+      <div class="lb-img-wrap"><img id="lb-img" src="" alt=""/></div>
+      <div class="lb-text" id="lb-text"></div>
+    </div>
+  </div>
+
+  <!-- Gallery: Renaissance exemplars + the 1499 woodcuts -->
+  <div id="gallery-overlay">
+    <div class="plates-head">
+      <h2>Gallery &mdash; the sources behind the world</h2>
+      <p>Renaissance and early-modern exemplars for everything we build, beside the 1499 woodcuts of the <em>Hypnerotomachia</em> itself. Click any plate to enlarge it and read its provenance.</p>
+    </div>
+    <div id="gallery-body"></div>
+  </div>
+  <div id="gallery-lightbox">
+    <button class="lb-close" onclick="window.closeGalleryImg()" title="Close (Esc)">&times;</button>
+    <div class="lb-inner">
+      <div class="lb-img-wrap"><img id="glb-img" src="" alt=""/></div>
+      <div class="lb-text" id="glb-text"></div>
+    </div>
+  </div>
+
+  <!-- Guided tours: menu + narration rail -->
+  <div id="tours-menu">
+    <div class="tours-head">
+      <h2>Guided Tours</h2>
+      <p>Three journeys that connect the 3-D emblems to the research — the scholarship, the chemical signs, and the alchemical process. Each tour flies you through the models and surfaces what the sources say at every stop.</p>
+    </div>
+    <div id="tours-menu-grid"></div>
+  </div>
+  <div id="tour-panel"></div>
+  <div id="tour-flavor-chooser" hidden></div>
+  <div id="woodcut-lightbox">
+    <button class="lb-close" onclick="window.closeTourWoodcut()" title="Close (Esc)">&times;</button>
+    <button id="twc-prev" class="twc-arrow twc-prev" onclick="window.tourWoodcutStep(-1)" title="Previous (←)">&#8249;</button>
+    <div class="twc-inner">
+      <img id="twc-img" src="" alt="">
+      <div class="twc-meta"><span id="twc-cap"></span><span id="twc-count"></span></div>
+    </div>
+    <button id="twc-next" class="twc-arrow twc-next" onclick="window.tourWoodcutStep(1)" title="Next (→)">&#8250;</button>
+  </div>
+
+  <!-- Touch controls for the walkable worlds (shown on touch devices) -->
+  <div id="touch-controls" hidden>
+    <div id="move-stick"><div class="tc-knob"></div><span class="tc-hint">move</span></div>
+    <div id="tc-buttons">
+      <button id="tc-wonders" class="tc-btn">Wonders &#9662;</button>
+      <button id="tc-run" class="tc-btn">Run</button>
+    </div>
+    <div id="tc-wonder-menu" hidden></div>
+  </div>
+
+  <!-- Poliphilo's Dream: letterbox + narration panel + mode chooser -->
+  <div id="dream-bar-top"></div>
+  <div id="dream-bar-bottom"></div>
+  <div id="dream-panel">
+    <div class="dp-kicker"><span id="dream-title"></span><span id="dream-stop"></span></div>
+    <div id="dream-text"></div>
+    <div id="dream-quote-wrap"><div id="dream-voice"></div><div id="dream-quote"></div><div id="dream-source"></div><a id="dream-parallel" target="_blank" rel="noopener">see the Italian ↗</a></div>
+    <div id="dream-choices"></div>
+    <div class="dp-nav">
+      <button id="dream-exit" onclick="window.dreamExit()" title="Leave the dream (Esc)">&#10005; Wake</button>
+      <button id="dream-skip" onclick="window.dreamSkip()" title="Skip to the next scene">Skip scene &#8631;</button>
+      <button id="dream-next" onclick="window.dreamNext()" title="Continue (Space)">Continue &#9656;</button>
+    </div>
+  </div>
+  <div id="hp-mode">
+    <div class="hpm-inner">
+      <h2>The Dream Garden of Poliphilo</h2>
+      <p class="hpm-sub">The scenes of the <em>Hypnerotomachia Poliphili</em> (Venice, 1499) as one continuous world &mdash; the dark wood, the great portal, the court of Queen Eleuterylida, the three doors, the triumphs, the fountain of Venus, and the shore to Cythera.</p>
+      <div class="hpm-cards">
+        <button class="hpm-card" onclick="window.hpExplore()">
+          <span class="hpm-kicker">Walking simulator</span>
+          <h3>Walk Freely</h3>
+          <p>Explore at your own pace. W A S D / arrows to walk, Shift to run, drag to look, 1&ndash;9 to visit the wonders, 0 to sail to Cythera. Named figures &mdash; the wolf, the Queen, the five sense-nymphs, Polia &mdash; keep their places.</p>
+        </button>
+        <button class="hpm-card" onclick="window.hpDream()">
+          <span class="hpm-kicker">Story mode &middot; click to continue</span>
+          <h3>Poliphilo&rsquo;s Dream</h3>
+          <p>Follow the plot of the book in twelve scenes. Polia and the nymphs guide you through the garden while the narration follows the 1499 text, its inscriptions, and its famous acrostic.</p>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fade-to-black overlay for world transitions -->
+  <div id="fade-overlay" style="
+    position:fixed;inset:0;z-index:50;background:#060402;
+    opacity:0;pointer-events:none;transition:opacity 0.3s ease;
+  "></div>
+
+  <!-- Key hint toast (bottom-centre, auto-fades) -->
+  <div id="key-hint" style="
+    position:fixed;bottom:1.4rem;left:50%;transform:translateX(-50%);
+    z-index:20;pointer-events:none;
+    font-family:Georgia,serif;font-size:0.72rem;letter-spacing:0.1em;
+    color:#8a7a5a;background:rgba(6,4,2,0.85);
+    border:1px solid #3a2a18;padding:0.3rem 0.9rem;
+    opacity:0;transition:opacity 0.5s ease;
+  "></div>
+
+  <div id="loading">
+    <h1>HPin3D</h1>
+    <div id="loading-bar-wrap"><div id="loading-bar"></div></div>
+    <div id="loading-sub" id="loading-sub">Preparing the alchemical world…</div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.168.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.168.0/examples/jsm/",
+      "gsap": "https://esm.sh/gsap@3.12.5",
+      "gsap/PixiPlugin": "https://esm.sh/gsap@3.12.5/PixiPlugin"
+    }
+  }
+  </script>
+  <script type="module" src="./main.js?v=97"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+[
+  {
+    "id": "hp_frontispiece",
+    "category": "The 1499 woodcuts",
+    "title": "A woodcut initial",
+    "artist": "Hypnerotomachia Poliphili (anon. woodcut)",
+    "date": "Venice, 1499",
+    "caption": "One of the book's ornamented capitals; the great chapter-initials together spell the author's acrostic — POLIAM FRATER FRANCISCVS COLVMNA PERAMAVIT.",
+    "file": "gallery/hp_frontispiece.jpg",
+    "source": ""
+  },
+  {
+    "id": "hp_elephant",
+    "category": "The 1499 woodcuts",
+    "title": "A garden fountain",
+    "artist": "Hypnerotomachia Poliphili",
+    "date": "Venice, 1499",
+    "caption": "A nymph beside a fountain in the antique garden — one of the dream's recurring scenes.",
+    "file": "gallery/hp_elephant.jpg",
+    "source": ""
+  },
+  {
+    "id": "hp_portal",
+    "category": "The 1499 woodcuts",
+    "title": "The elephant and obelisk",
+    "artist": "Hypnerotomachia Poliphili",
+    "date": "Venice, 1499",
+    "caption": "The stone elephant with a spiral stair through its belly, bearing an obelisk — the woodcut Bernini later built in stone in the Piazza della Minerva.",
+    "file": "gallery/hp_portal.jpg",
+    "source": ""
+  },
+  {
+    "id": "hp_nymph_fountain",
+    "category": "The 1499 woodcuts",
+    "title": "The sleeping nymph fountain",
+    "artist": "Hypnerotomachia Poliphili",
+    "date": "Venice, 1499",
+    "caption": "The famous fountain-nymph woodcut — a model for the garden's naiads.",
+    "file": "gallery/hp_nymph_fountain.jpg",
+    "source": ""
+  },
+  {
+    "id": "hp_triumph",
+    "category": "The 1499 woodcuts",
+    "title": "A triumph of Jupiter",
+    "artist": "Hypnerotomachia Poliphili",
+    "date": "Venice, 1499",
+    "caption": "One of the four triumphal chariots of Jove's loves.",
+    "file": "gallery/hp_triumph.jpg",
+    "source": ""
+  },
+  {
+    "id": "hp_priapus",
+    "category": "The 1499 woodcuts",
+    "title": "The rite of Priapus",
+    "artist": "Hypnerotomachia Poliphili",
+    "date": "Venice, 1499",
+    "caption": "The sacrifice woodcut near where Dallington's English breaks off.",
+    "file": "gallery/hp_priapus.jpg",
+    "source": ""
+  },
+  {
+    "id": "botticelli_venus",
+    "category": "Venus & the nude",
+    "title": "The Birth of Venus",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1485",
+    "caption": "Venus rising from the sea-foam off Cythera — the model for the fountain goddess.",
+    "file": "gallery/botticelli_venus.jpg",
+    "source": ""
+  },
+  {
+    "id": "botticelli_primavera",
+    "category": "Venus & the nude",
+    "title": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "caption": "Venus, the Graces and Flora in a flowering grove — a Cythera before Cythera.",
+    "file": "gallery/botticelli_primavera.jpg",
+    "source": ""
+  },
+  {
+    "id": "titian_venus",
+    "category": "Venus & the nude",
+    "title": "Venus of Urbino",
+    "artist": "Titian (Tiziano Vecellio)",
+    "date": "1534",
+    "caption": "The reclining Venus — the sensuous body the lit garden reaches toward.",
+    "file": "gallery/titian_venus.jpg",
+    "source": ""
+  },
+  {
+    "id": "cranach_venus",
+    "category": "Venus & the nude",
+    "title": "Venus",
+    "artist": "Lucas Cranach the Elder",
+    "date": "1532",
+    "caption": "The Northern Venus — an early-modern nude in the Cranach line.",
+    "file": "gallery/cranach_venus.jpg",
+    "source": ""
+  },
+  {
+    "id": "cranach_nymph",
+    "category": "Nymphs",
+    "title": "Reclining spring-nymph",
+    "artist": "Lucas Cranach the Elder",
+    "date": "c. 1518",
+    "caption": "The sleeping fountain-nymph — proportion and repose for the garden naiads.",
+    "file": "gallery/cranach_nymph.jpg",
+    "source": ""
+  },
+  {
+    "id": "cellini_nymph",
+    "category": "Nymphs",
+    "title": "Nymph of Fontainebleau",
+    "artist": "Benvenuto Cellini",
+    "date": "1542–43",
+    "caption": "Cellini's Mannerist bronze — the elongated body that reads at low poly.",
+    "file": "gallery/cellini_nymph.jpg",
+    "source": ""
+  },
+  {
+    "id": "waterhouse_nymphs",
+    "category": "Nymphs",
+    "title": "Hylas and the Nymphs",
+    "artist": "John William Waterhouse",
+    "date": "1896",
+    "caption": "A later reception of the water-nymph — drapery, gesture, and the pool.",
+    "file": "gallery/waterhouse_nymphs.jpg",
+    "source": ""
+  },
+  {
+    "id": "vitruvian_man",
+    "category": "Architecture",
+    "title": "Vitruvian Man",
+    "artist": "Leonardo da Vinci",
+    "date": "c. 1490",
+    "caption": "Human proportion as cosmic ratio — the theory behind the HP's portals.",
+    "file": "gallery/vitruvian_man.jpg",
+    "source": ""
+  },
+  {
+    "id": "tempietto",
+    "category": "Architecture",
+    "title": "Tempietto of San Pietro in Montorio",
+    "artist": "Donato Bramante",
+    "date": "1502",
+    "caption": "The perfect centrally-planned temple the round Temple of Venus anticipates.",
+    "file": "gallery/tempietto.jpg",
+    "source": ""
+  },
+  {
+    "id": "bernini_elephant",
+    "category": "Architecture",
+    "title": "Elephant and Obelisk",
+    "artist": "Gian Lorenzo Bernini",
+    "date": "1667",
+    "caption": "Bernini's Piazza della Minerva monument — descended directly from the HP woodcut.",
+    "file": "gallery/bernini_elephant.jpg",
+    "source": ""
+  },
+  {
+    "id": "alberti_smn",
+    "category": "Architecture",
+    "title": "Santa Maria Novella façade",
+    "artist": "Leon Battista Alberti",
+    "date": "1470",
+    "caption": "Alberti gave the Quattrocento its architectural mathematics (De re aedificatoria).",
+    "file": "gallery/alberti_smn.jpg",
+    "source": ""
+  },
+  {
+    "id": "colosseum",
+    "category": "Architecture",
+    "title": "The Colosseum",
+    "artist": "Flavian Amphitheatre",
+    "date": "Rome, 80 AD",
+    "caption": "The Roman amphitheatre — the form Cythera's theatre of Venus reimagines as planted tiers.",
+    "file": "gallery/colosseum.jpg",
+    "source": ""
+  },
+  {
+    "id": "pantheon",
+    "category": "Architecture",
+    "title": "The Pantheon, dome interior",
+    "artist": "Roman architecture",
+    "date": "Rome, c. 125 AD",
+    "caption": "The great coffered rotunda — ancestor of every centrally-planned Temple of Venus.",
+    "file": "gallery/pantheon.jpg",
+    "source": ""
+  },
+  {
+    "id": "mantegna_triumph",
+    "category": "Triumphs",
+    "title": "The Triumphs of Caesar",
+    "artist": "Andrea Mantegna",
+    "date": "1484–92",
+    "caption": "The antique triumph revived — Colonna's four chariots share its DNA.",
+    "file": "gallery/mantegna_triumph.jpg",
+    "source": ""
+  },
+  {
+    "id": "watteau_cythera",
+    "category": "Gardens & Cythera",
+    "title": "The Embarkation for Cythera",
+    "artist": "Antoine Watteau",
+    "date": "1717",
+    "caption": "The voyage to Venus's island, two centuries after Poliphilo made the same crossing.",
+    "file": "gallery/watteau_cythera.jpg",
+    "source": ""
+  },
+  {
+    "id": "durer_melencolia",
+    "category": "Emblems & prints",
+    "title": "Melencolia I",
+    "artist": "Albrecht Dürer",
+    "date": "1514",
+    "caption": "The early-modern engraving as dense emblem — image as puzzle, like the HP's hieroglyphs.",
+    "file": "gallery/durer_melencolia.jpg",
+    "source": ""
+  },
+  {
+    "id": "durer_triumph",
+    "category": "Emblems & prints",
+    "title": "Knight, Death and the Devil",
+    "artist": "Albrecht Dürer",
+    "date": "1513",
+    "caption": "Dürer's line at its most sculptural — a touchstone for the woodcut render mode.",
+    "file": "gallery/durer_triumph.jpg",
+    "source": ""
+  },
+  {
+    "id": "roman_de_la_rose",
+    "category": "Medieval",
+    "title": "Le Roman de la Rose",
+    "artist": "Illuminated manuscript",
+    "date": "14th c.",
+    "caption": "The dream-vision garden of love the HP inherits and antiquarianises.",
+    "file": "gallery/roman_de_la_rose.jpg",
+    "source": ""
+  },
+  {
+    "id": "della_robbia",
+    "category": "Medieval",
+    "title": "Madonna and Child with Cherubim",
+    "artist": "Andrea della Robbia",
+    "date": "c. 1485",
+    "caption": "Glazed terracotta relief — the Quattrocento's sculptural sweetness.",
+    "file": "gallery/della_robbia.jpg",
+    "source": ""
+  }
+]

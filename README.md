@@ -1,10 +1,25 @@
 # Emblems in 3D
 
-**[Live Site](https://t3dy.github.io/EmblemsIn3d)** — enter the 3D worlds or play the games directly.
+**Live:** **[emblems-in-3d.vercel.app](https://emblems-in-3d.vercel.app)** (canonical)
+· [t3dy.github.io/EmblemsIn3d](https://t3dy.github.io/EmblemsIn3d) (GitHub Pages mirror)
 
 **[GitHub Repository](https://github.com/t3dy/EmblemsIn3d)**
 
-A browser-based digital humanities project that brings two Renaissance texts into Three.js: Michael Maier's alchemical emblem book *Atalanta Fugiens* (Frankfurt, 1617) and Francesco Colonna's dream narrative *Hypnerotomachia Poliphili* (Venice, 1499). No 3D models are imported — the five hand-built showcase scenes are raw Three.js geometry primitives animated with GSAP looping timelines that encode the cyclic logic of alchemical transformation, while the other 46 emblems are rendered as **lit carved 3-D reliefs of their original woodcuts** (the plate image drives a displacement map and a runtime Sobel normal map under a raking key light) and can lift their extracted figures into a **2.5-D parallax diorama**. Everything is driven by a SQLite export pipeline.
+### Versions
+
+Earlier releases are archived in full and stay reachable from the landing page, so the
+project's earlier states remain readable and citable.
+
+| | Release | Where | What it is |
+|---|---|---|---|
+| **v3** | current | [`/`](https://emblems-in-3d.vercel.app) | The Graphics menu (choose how each asset is drawn), commentary that meets you as you walk, the guided tour on the garden's front door, rebuilt navigation, a dream loop that cannot hang, and a silent site. |
+| **v2** | archived | [`/v2/`](https://emblems-in-3d.vercel.app/v2/) | The guided tour with its commentary lenses, the Gallery, Poliphilo's Dream as a game, mobile controls, and the first imported model (the marble Venus). |
+| **v1** | archived | [`/v1/`](https://emblems-in-3d.vercel.app/v1/) | The original release: the emblem worlds, the games, and the first walkable Dream Garden. |
+
+Both hosts serve the same `main` branch. See [`DEPLOY_STATE.md`](DEPLOY_STATE.md) before
+touching deploy configuration — publishing to one host does **not** publish to the other.
+
+A browser-based digital humanities project that brings two Renaissance texts into Three.js: Michael Maier's alchemical emblem book *Atalanta Fugiens* (Frankfurt, 1617) and Francesco Colonna's dream narrative *Hypnerotomachia Poliphili* (Venice, 1499). Almost everything is built from raw Three.js geometry rather than imported assets — the five hand-built showcase scenes are geometry primitives animated with GSAP looping timelines that encode the cyclic logic of alchemical transformation, while the other 46 emblems are rendered as **lit carved 3-D reliefs of their original woodcuts** (the plate image drives a displacement map and a runtime Sobel normal map under a raking key light) and can lift their extracted figures into a **2.5-D parallax diorama**. Everything is driven by a SQLite export pipeline.
 
 Guided **Tours** then connect these models to the research — the scholarship, the alchemical signs, the four-stage *opus*, and the documented links between the two books.
 
@@ -22,7 +37,7 @@ Guided **Tours** then connect these models to the research — the scholarship, 
 | [`games/stage-sorter.html`](https://t3dy.github.io/EmblemsIn3d/games/stage-sorter.html) | Stage Sorter — drag emblems into their correct alchemical stage |
 | [`games/memory.html`](https://t3dy.github.io/EmblemsIn3d/games/memory.html) | Memory — match Roman numerals to English emblem titles |
 
-The 3-D app has **six worlds** (top-right nav): **Hypnerotomachia** (the Dream Garden of Poliphilo — the book's whole journey as one walkable world with a *Poliphilo's Dream* story mode, renderable as a lit garden *or* as a 3-D woodcut) · **Atalanta Animata** (the gallery wall of 51 lit plates → click to enter a scene) · **Theatrum** (all 51 emblems enacted as animated vignettes around one explorable rotunda) · **Plates** (a 2-D atlas → lightbox) · **Tours** · **Archives** (the HP-folio ↔ AF-emblem graph).
+The toolbar sits above every overlay (so no tab can trap you) and carries a **Home** link, a **Graphics** menu, and the worlds. The 3-D app has **six worlds**: **Hypnerotomachia** (the Dream Garden of Poliphilo — the book's whole journey as one walkable world with a *Poliphilo's Dream* story mode, renderable as a lit garden *or* as a 3-D woodcut) · **Atalanta Animata** (the gallery wall of 51 lit plates → click to enter a scene) · **Theatrum** (all 51 emblems enacted as animated vignettes around one explorable rotunda) · **Plates** (a 2-D atlas → lightbox) · **Tours** · **Archives** (the HP-folio ↔ AF-emblem graph).
 
 Four guided **Tours** fly the camera through the actual emblem scenes while a side rail surfaces the research: **The Scholarship** (each emblem's modern reading), **Chemical Symbolism** (the planetary-metal signs, glyphs, and marginalia-hand notes), **The Great Work** (Nigredo → Rubedo), and **The Two Books** (the 9 documented Hypnerotomachia ↔ Atalanta cross-references). The **Oracle** and **Fugue Scroll** also reveal each emblem's scholarship on demand.
 
@@ -156,6 +171,33 @@ On first visit to an emblem scene: `← →  emblems  ·  A  context  ·  G  gal
 
 ---
 
+## Reading the Scholarship
+
+Commentary is typed and colour-coded — *Renaissance context*, *architectural theory*,
+*neoplatonic aesthetics*, *mythological allusion*, *allegory & symbolism*, *literary art*,
+*a difficult word*, *from the book*, and the *alchemical reading* — and every flavour is
+independently switchable.
+
+- **All three modes ask first.** The guided tour, the free walk and Poliphilo's Dream each
+  open with *"How much do you want to read?"*, and the choice is remembered.
+- **In the tour**, a titled **Commentary lenses** panel carries a live count, a tick-box per
+  lens, and *Show all* / *Just the story*.
+- **In the free walk**, there are no stops to click, so the commentary comes to you:
+  approaching a wonder raises that station's notes and leaving it lowers them again. It is
+  the tour's own writing, so there is one body of commentary rather than two.
+
+Every interpretive claim traces to a named scholar in the project's research corpus or to
+the annotators' evidence in `hp.db` — see `SOURCES.md`, which also maps each 3-D asset to
+the scholarship that should govern its shape (Curran for the elephant, obelisks and
+hieroglyphs; Stewering for Polia and the nymphs; Lefaivre for the architecture; Bury for the
+pyramid and tombs; Nygren for the statuary; Hunt and Segre for the gardens).
+
+The complete CC0 translation is also published as a single file,
+[`HPTranslation.txt`](HPTranslation.txt) — 273 pages, ~173,000 words, chapters XVII–XXXVIII
+with Book II, the Epitaph and the errata leaf, page-marked against the 1499 facsimile.
+
+---
+
 ## Tech Stack
 
 ### Rendering
@@ -286,9 +328,44 @@ Example cross-references:
 
 ## Creative Decisions
 
-**1. Primitive-only geometry**
+**1. Built geometry first — but no longer *only* built geometry**
 
-Every figure is built from `CapsuleGeometry`, `SphereGeometry`, etc. No 3D asset imports. This removes the asset pipeline entirely, forces close reading of each emblem's actual imagery (what does Maier's woodcut show? a toad? a capsule-bodied hermaphrodite?), enables fast iteration, and maintains a consistent visual language across all 51 scenes. The constraint becomes the style.
+The project began primitive-only: every figure from `CapsuleGeometry`, `SphereGeometry` and
+the like, no asset imports at all. That constraint removed the asset pipeline, forced close
+reading of each emblem's actual imagery (what does Maier's woodcut show? a toad? a
+capsule-bodied hermaphrodite?), and gave 51 scenes one visual language. The constraint
+became the style.
+
+That founding rule has since been **deliberately relaxed** (`DECISIONS.md`). Imported models
+are allowed where a good public-domain scan exists — the Fountain of Venus holds a CC0 scan
+of the Capitoline Venus — and, more importantly, **no asset is limited to one
+implementation**. Each carries a registry of named variants the visitor switches between in
+the **Graphics** menu:
+
+| Asset | Variants |
+|---|---|
+| Trees & foliage | Primitive · Massed |
+| The elephant & obelisk | Primitive · Modelled |
+| Nymphs & figures | Primitive · Modelled · Painterly |
+| Statues & the marble Venus | Built · Imported scan |
+| Water features | Primitive · Painterly |
+| Wall decoration & ornament | Primitive · Carved |
+
+The earlier version is never deleted when a better one lands, so the work can evolve without
+losing an earlier register — and the woodcut render mode still prefers the primitive
+silhouette, because flat ink wants a readable outline, not a modelled mass.
+
+**1b. The register is painterly, not photoreal**
+
+The lit garden aims to be *a Botticelli panel you can walk into*: painted albedo, drapery
+folds drawn into the cloth rather than lit into it, a limited period palette, outlines kept.
+An imported scan therefore gets a stylisation pass before it is allowed in — a photoreal
+marble fights a tempera garden.
+
+**1c. The site is silent by design**
+
+There is no music or ambient audio anywhere, and silence is structural rather than a volume
+setting: no `AudioContext` is ever constructed. See `DECISIONS.md` before adding sound.
 
 **2. Alchemical stage as unified design system**
 
