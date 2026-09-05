@@ -1728,18 +1728,24 @@ export function makeCast(S) {
       const dark  = M(0x4a4234, { roughness: 0.95 });
       const R = 0.62 * s;
 
-      // the sunk bowl: floor, and a wall standing up to the waterline
-      add(g, mesh(new THREE.CylinderGeometry(R, R * 0.86, 0.3 * s, 24), dark, 0, -0.15 * s));
+      // Both of these must be OPEN-ENDED. A solid CylinderGeometry caps itself,
+      // and here that put a dark disc exactly coplanar with the water and a
+      // stone disc above it — the pool lidded twice over, the same fault that
+      // hid the Fountain of Venus behind its own kerb. A basin is a ring of
+      // wall and a floor, never a closed drum.
+      add(g, mesh(new THREE.CylinderGeometry(R, R * 0.86, 0.3 * s, 24, 1, true), dark, 0, -0.15 * s));
       const floor = mesh(new THREE.CircleGeometry(R * 0.9, 24), dark, 0, -0.28 * s, 0);
       floor.rotation.x = -Math.PI / 2; g.add(floor);
 
-      // coping: a chamfered kerb with a moulded ring on top
-      add(g, mesh(new THREE.CylinderGeometry(R + 0.1 * s, R + 0.14 * s, 0.16 * s, 24), stone, 0, 0.02 * s));
+      // coping: a chamfered kerb, its top an annulus so the water shows through
+      add(g, mesh(new THREE.CylinderGeometry(R + 0.1 * s, R + 0.14 * s, 0.16 * s, 24, 1, true), stone, 0, 0.02 * s));
+      const cap = mesh(new THREE.RingGeometry(R * 0.99, (R + 0.1) * s, 24), stone, 0, 0.1 * s, 0);
+      cap.rotation.x = -Math.PI / 2; add(g, cap);
       const ring = add(g, mesh(new THREE.TorusGeometry(R + 0.1 * s, 0.05 * s, 8, 26), stone, 0, 0.1 * s));
       ring.rotation.x = Math.PI / 2;
 
       // the water, set down inside the coping
-      const w = mesh(new THREE.CircleGeometry(R * 0.95, 26), S.waterMat(), 0, 0.0, 0);
+      const w = mesh(new THREE.CircleGeometry(R * 0.97, 26), S.waterMat(), 0, 0.045 * s, 0);
       w.rotation.x = -Math.PI / 2;
       g.add(w);
       g.userData.water = w;

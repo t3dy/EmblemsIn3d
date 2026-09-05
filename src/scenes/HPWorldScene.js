@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=29';
+import { makeCast } from '../systems/Cast.js?v=30';
 import { isVariant } from '../systems/AssetVariants.js?v=7';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
@@ -122,11 +122,25 @@ const SENSE_NYMPHS = [
 // "very leisurely" behind six leopards in vine-withes.
 // (Dallington 1592; docs/HP_SOURCEBOOK.md §5.)
 const TRIUMPH_LIVERY = [0x2a5aa0, 0x2a5aa0, 0xc02840, 0xc02840, 0x1e8a54, 0x1e8a54];
+// The four cars, corrected against the plates themselves (hp.db.woodcut_catalog
+// #47-48, #52-53, #57/#59, #64-65). Two were wrong:
+//
+//   · Danaë's car is drawn by UNICORNS, not horses (#57, "Third Triumph of
+//     Danae: unicorns").
+//   · The fourth is not a "Triumph of Semele" at all. It is the FESTIVAL OF
+//     BACCHUS (#64-65), drawn by panthers, with Silenus riding his ass behind.
+//     Semele is Bacchus's mother and appears in that car's RELIEFS (#58,
+//     "Jupiter and Semele") — she does not get a triumph of her own. The car
+//     was named for a panel on its side.
+//
+// PROCESSIONS.md calls the fourth "the mystical car" with six leopards, "spotted
+// beasts of yealow shining colour"; panther and leopard are the same beast in
+// period usage, so the team stands and only the title was wrong.
 const TRIUMPHS = [
-  { key: 'europa', title: 'Triumph of Europa', motif: 'bull',  team: 'centaur',  pos: [10.6, -9.4],  color: 0xc8a040 },
-  { key: 'leda',   title: 'Triumph of Leda',   motif: 'swan',  team: 'elephant', pos: [-10.6, -9.4], color: 0xb0c0d8 },
-  { key: 'danae',  title: 'Triumph of Danaë',  motif: 'gold',  team: 'horse',    pos: [-10.6, -30.6], color: 0xe0c060 },
-  { key: 'semele', title: 'Triumph of Semele', motif: 'fire',  team: 'leopard',  pos: [10.6, -30.6], color: 0xd86a3a },
+  { key: 'europa',  title: 'Triumph of Europa',    motif: 'bull',  team: 'centaur',  pos: [10.6, -9.4],   color: 0xc8a040 },
+  { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-10.6, -9.4],  color: 0xb0c0d8 },
+  { key: 'danae',   title: 'Triumph of Danaë',     motif: 'gold',  team: 'unicorn',  pos: [-10.6, -30.6], color: 0xe0c060 },
+  { key: 'bacchus', title: 'Festival of Bacchus',  motif: 'fire',  team: 'leopard',  pos: [10.6, -30.6],  color: 0xd86a3a },
 ];
 
 export class HPWorldScene {
@@ -2413,8 +2427,29 @@ export class HPWorldScene {
         beast.position.set(sx, 0, z);
         g.add(beast);
         const rider = this.cast.nymph({ robe: TRIUMPH_LIVERY[i], h: 0.62 });
-        rider.position.set(sx, t.team === 'elephant' ? 1.15 : 0.82, z + 0.1);
+        const ry = t.team === 'elephant' ? 1.15 : 0.82;
+        rider.position.set(sx, ry, z + 0.1);
         g.add(rider);
+        // The livery is a rank and the rank carries an instrument (Dallington,
+        // via PROCESSIONS.md §2): the two nearest the car in peacock blue bear
+        // golden topaz CENSERS streaming fragrant smoke; the middle two in
+        // crimson, gold TRUMPETS with silk banners fastened in three places;
+        // the two foremost in emerald green, antique CORNETS. The liveries were
+        // ranked correctly and the instruments were never built.
+        const inst = this._riderInstrument(row, sx, ry, z, g);
+        if (inst && row === 0) {
+          // the censers actually smoke
+          const stream = new ParticleStream({
+            count: 18,
+            source: new THREE.Vector3(x + sx, ry + 0.42, z + 0.28),
+            target: new THREE.Vector3(x + sx * 1.2, ry + 1.5, z + 0.1),
+            color: 0xd8c8a8, size: 0.035, speed: 0.22, arc: 0.35,
+          });
+          stream.opacity = 0.34; stream.active = true;
+          this.style.tuneStream(stream);
+          this.scene.add(stream.points);
+          this._streams.push(stream);
+        }
       }
       // Motif on the platform
       let motif;
@@ -2432,7 +2467,20 @@ export class HPWorldScene {
       else { motif = this.cast.props.fire(1.2); motif.position.y = 0.75; const f = this.cast.figure({ h: 0.7, robe: 0xc86a50 }); f.position.set(0, 0.9, 0.5); g.add(f); }
       g.add(motif);
 
-      const lbl = this.cast.label(t.title, { sub: 'TRIUMPHUS' });
+      // "Festival of Bacchus with Silenus on ass" — the plate names him
+      // (woodcut_catalog #65), and he rides behind the car, not on it.
+      if (t.key === 'bacchus') {
+        const ass = this.cast.animals.horse(0.82);
+        ass.position.set(1.4, 0, 1.9);
+        ass.rotation.y = -0.25;
+        g.add(ass);
+        const silenus = this.cast.figure({ h: 0.72, robe: 0x7a5a3a, pose: 'offer', beard: true });
+        silenus.position.set(1.4, 0.72, 1.95);
+        silenus.rotation.y = -0.25;
+        g.add(silenus);
+      }
+
+      const lbl = this.cast.label(t.title, { sub: t.key === 'bacchus' ? 'FESTVM' : 'TRIUMPHUS' });
       lbl.position.set(0, 3.4, 0);
       g.add(lbl);
 
@@ -2450,6 +2498,55 @@ export class HPWorldScene {
       this._floats.push({ g, wheels: [], phase: Math.random() * 6,
         orbit: { cx, cz: czz, r: orbitR, theta, om: 0.032 }, col });
     }
+  }
+
+  // The three instruments of the riders' ranks. Small props, but they are what
+  // turns six identical nymphs into a ranked musical procession — and the book
+  // is emphatic that the triumph is *heard* before it is seen.
+  _riderInstrument(row, sx, ry, z, parent) {
+    const S = this.style;
+    const gold = S.key === 'woodcut'
+      ? S.mat({ tone: 0.02 })
+      : S.mat({ color: 0xd8b24a, metalness: 0.9, roughness: 0.26 });
+    const hx = sx + (sx > 0 ? 0.16 : -0.16), hy = ry + 0.34, hz = z + 0.26;
+
+    if (row === 0) {
+      // a censer on three chains, swinging from the hand
+      const bowl = this._m(new THREE.SphereGeometry(0.075, 10, 8, 0, Math.PI * 2, 0, Math.PI / 1.7),
+        gold, hx, hy - 0.2, hz, { parent });
+      bowl.rotation.x = Math.PI;
+      this._m(new THREE.TorusGeometry(0.072, 0.012, 6, 14), gold, hx, hy - 0.14, hz,
+        { parent, rx: Math.PI / 2 });
+      for (let k = 0; k < 3; k++) {
+        const a = (k / 3) * Math.PI * 2;
+        this._m(new THREE.CylinderGeometry(0.005, 0.005, 0.2, 4), gold,
+          hx + Math.cos(a) * 0.06, hy - 0.05, hz + Math.sin(a) * 0.06, { parent, cast: false });
+      }
+      return true;
+    }
+    if (row === 1) {
+      // a long gold trumpet, with the silk banner fastened along it in three places
+      const tr = this._m(new THREE.CylinderGeometry(0.018, 0.045, 0.72, 8), gold, hx, hy, hz + 0.3, { parent });
+      tr.rotation.x = Math.PI / 2.1;
+      const banner = S.key === 'woodcut'
+        ? S.mat({ tone: 0.12, side: THREE.DoubleSide })
+        : S.mat({ color: 0xa8324a, roughness: 0.9, side: THREE.DoubleSide });
+      const bn = this._m(new THREE.PlaneGeometry(0.2, 0.24), banner, hx + 0.11, hy - 0.1, hz + 0.34,
+        { parent, cast: false });
+      bn.rotation.set(0.2, 0.35, 0.1);
+      for (let k = 0; k < 3; k++) {                       // fastened in three places
+        this._m(new THREE.TorusGeometry(0.026, 0.006, 5, 10), gold,
+          hx, hy + 0.02 - k * 0.02, hz + 0.16 + k * 0.16, { parent, rx: Math.PI / 2.1, cast: false });
+      }
+      return true;
+    }
+    // an antique cornet — short, curved, held up
+    const co = this._m(new THREE.TorusGeometry(0.13, 0.022, 6, 14, Math.PI * 0.8), gold,
+      hx, hy + 0.06, hz + 0.1, { parent });
+    co.rotation.set(Math.PI / 2.4, 0.3, 0.4);
+    this._m(new THREE.ConeGeometry(0.05, 0.09, 8), gold, hx + 0.1, hy + 0.18, hz + 0.14,
+      { parent, rx: -0.8 });
+    return true;
   }
 
   // A draught beast for a triumphal car. Centaurs and leopards aren't in the
@@ -2470,6 +2567,15 @@ export class HPWorldScene {
       g.traverse(o => { if (o.isMesh && o.material?.color) o.material = S.mat({ color: 0xd8a838, roughness: 0.75 }); });
       return g;
     }
+    if (kind === 'unicorn') {
+      // Danaë's team. The cast has a real unicorn; without this branch the
+      // fall-through below would quietly render the correction as a plain horse.
+      const g = this.cast.animals.unicorn(0.95);
+      g.traverse(o => {
+        if (o.isMesh && o.material?.color) o.material = S.mat({ color: 0xf0ece0, roughness: 0.62 });
+      });
+      return g;
+    }
     if (kind === 'centaur') {
       const g = this.cast.animals.horse(0.95);
       const torso = this.cast.figure({ h: 0.62, robe: null, pose: 'reach' });
@@ -2479,6 +2585,7 @@ export class HPWorldScene {
       g.add(torso);
       return g;
     }
+    console.warn('[triumph] no beast built for team "' + kind + '" — falling back to a horse');
     return this.cast.animals.horse(0.95);
   }
 

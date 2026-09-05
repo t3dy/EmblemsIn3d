@@ -67,6 +67,35 @@ bulls; the ride over the sea; Cupid shooting into the air among wounded nations;
 Mars before Jupiter showing the wound in his impenetrable breastplate and holding
 the word **NEMO** — *no one* is exempt. The car states its own thesis on its sides.
 
+## 2b. Two corrections from the plates (2026-09-05)
+
+Checked the built procession against `hp.db.woodcut_catalog` rather than against
+memory, and two of the four cars were wrong:
+
+- **Danaë's car is drawn by UNICORNS, not horses.** Plate #57/#59: *"Third Triumph
+  of Danae: unicorns"*. The world had horses. Fixed — and the beast-builder's
+  silent fall-through to a horse, which would have hidden the correction, now
+  logs a warning instead.
+- **There is no "Triumph of Semele".** The fourth car is the **Festival of
+  Bacchus** (#64–65), drawn by panthers, *"with Silenus on ass"*. Semele is
+  Bacchus's mother and appears in that car's **reliefs** (#58, *Jupiter and
+  Semele*) — she has no triumph of her own. The car had been named after a panel
+  on its own side. Fixed, and Silenus now rides behind it.
+  (Panther and leopard are the same beast in period usage, so the team stands;
+  only the title was wrong.)
+
+Also built in this pass, from the ranked list below: **the riders' instruments**.
+The liveries were correctly ranked but carried nothing. Now the two nearest the
+car in peacock blue swing golden **censers** that actually stream incense; the
+middle two in crimson carry gold **trumpets** with the silk banner fastened in
+three places; the two foremost in emerald green carry antique **cornets**.
+
+**Still unbuilt from the plates:** the **Triumph of Vertumnus and Pomona** (#66)
+is a fifth procession with satyrs and nymphs that does not exist in the world at
+all; the **reliefs** on the car sides (ranked #3 below, NEMO among them) are
+still not modelled; and the **Triumph of Cupid** on Cythera (#143–144) exists as
+a standard rather than as a procession.
+
 ## 3. Processions are what the architecture is *for*
 
 Segre's reconstruction of Cythera supplies the detail that reframes this. The
