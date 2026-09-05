@@ -1894,6 +1894,45 @@ export class HPWorldScene {
       0.6, 0.19, 0, 2.46, 1.76, 0, true);
     this._plaque({ main: 'CEREBRVM EST IN CAPITE', sub: 'THE BRAIN IS IN THE HEAD' },
       0.68, 0.2, 0, 1.72, 1.42, 0, true);
+
+    // ── The hieroglyph stele, and Poliphilo reading it ────────────────────
+    //
+    // Round the base of the statue in the piazza (signature c1r) runs a band of
+    // what Priki calls "Renaissance hieroglyphs" — invented signs, not Egyptian
+    // ones, made in imitation of an Egypt nobody could yet read. Poliphilo
+    // stands in front of them, thinks, and writes out a sentence:
+    //
+    //   Ex labore Deo naturae sacrifica liberaliter, paulatim reduces animum
+    //   Deo subiectum. Firmam custodiam vitae tuae misericorditer gubernando
+    //   tenebit, incolumemque servabit.
+    //
+    // He introduces it with the formula he uses every time he does this, and he
+    // does it all through the book: "Le quale vetustissime et sacre scripture
+    // pensiculante, cusi io le interpretai" — musing on these most ancient and
+    // sacred writings, I interpreted them thus.
+    //
+    // That act is what this stele is for. The signs are above and his reading
+    // is below, which is how the book stages it, and the gap between the two is
+    // the whole humanist game: the decipherment is confident, fluent, and has
+    // no way of being checked. (Priki, *The Narrative Function of Hieroglyphs*;
+    // Curran, *HP and Renaissance Egyptology*.)
+    const stX = -3.1, stZ = 1.5;
+    this._m(new THREE.BoxGeometry(2.0, 0.26, 0.9), this._darkStoneMat, stX, 0.13, stZ, { cast: false });
+    this._m(new THREE.BoxGeometry(1.76, 2.3, 0.5), this._stoneMat, stX, 1.41, stZ, { outline: true });
+    this._m(new THREE.BoxGeometry(1.94, 0.18, 0.66), this._stoneMat, stX, 2.65, stZ, { cast: false, outline: true });
+    // the band of signs, cut in the stone
+    this._frieze(stX, 2.16, stZ + 0.26, 1.6, 0.42, 'hieroglyph', { reps: 4 });
+    this._frieze(stX, 1.72, stZ + 0.26, 1.6, 0.42, 'hieroglyph', { reps: 4 });
+    // and, beneath them, what he made of them
+    this._plaque({ main: 'CVSI IO LE INTERPRETAI', sub: '— AND THUS I INTERPRETED THEM' },
+      1.5, 0.3, stX, 1.30, stZ + 0.27, 0, true);
+    this._plaque({ main: 'EX LABORE DEO NATVRAE SACRIFICA LIBERALITER',
+                   sub: 'OUT OF YOUR LABOUR, SACRIFICE FREELY TO THE GOD OF NATURE' },
+      1.6, 0.3, stX, 0.94, stZ + 0.27, 0, true);
+    this._plaque({ main: 'PAVLATIM REDVCES ANIMVM DEO SVBIECTVM',
+                   sub: 'LITTLE BY LITTLE YOU WILL BRING YOUR SOUL BACK, SUBJECT TO GOD' },
+      1.6, 0.3, stX, 0.58, stZ + 0.27, 0, true);
+    this._circleCol(stX, stZ, 1.05);
     const trunkCurve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(0, 2.05, -1.72),
       new THREE.Vector3(0, 1.62, -1.98),

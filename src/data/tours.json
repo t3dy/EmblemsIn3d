@@ -217,6 +217,54 @@
         ]
       },
       {
+        "station": "elephant",
+        "title": "Reading the Hieroglyphs",
+        "chapter": "III",
+        "half": "dallington",
+        "lede": "Round the base of the statue runs a band of signs — an eye, a vulture, two fish-hooks, two circles, an ox-skull with farm tools. Poliphilo stops in front of them, thinks, and writes out a sentence in Latin. He does this again and again through the book, and always with the same formula: *musing on these most ancient and sacred writings, I interpreted them thus*. **The act of interpretation is the thing the book is really about** — more than any single building it describes — and it is worth noticing that nobody in 1499 could read a hieroglyph, that these signs are invented, and that Poliphilo's confidence is total.",
+        "quote": "Out of your labour, to the God of Nature sacrifice freely; little by little you will bring your soul back, subject to God. A steady guard on your life, by tender-heartedly steering, he will keep — and unscathed will he preserve you.",
+        "quoteAttr": "*Ex labore Deo naturae sacrifica liberaliter…* — the hieroglyphs at the statue base as Poliphilo reads them (f. c1r; trans. Priki)",
+        "wc": [],
+        "notes": [
+          {
+            "type": "context",
+            "text": "**Nobody could read hieroglyphs in 1499.** Champollion is three centuries away. What the Renaissance had was Horapollo's *Hieroglyphica*, a late-antique text that treats the signs as symbolic pictures rather than as writing, and the actual Egyptian obelisks standing in Rome. Brian Curran's study of the HP's Egyptology shows how much more serious that engagement was than it is usually given credit for — and how completely invented its results were."
+          },
+          {
+            "type": "gloss",
+            "text": "Two different things are both called *hieroglyphi* here. Some of the signs imitate real Egyptian ones; others are what scholarship calls **Renaissance hieroglyphs** — symbolic signs newly made in imitation of an Egypt nobody could read, to hide meaning in a picture. Poliphilo does not distinguish between them, and neither does the book."
+          },
+          {
+            "type": "literary",
+            "text": "*Le quale vetustissime et sacre scripture pensiculante, cusi io le interpretai.* The formula recurs every time he decodes something, and Efthymia Priki reads the repetition as the structural spine of the narrative: the dreamer's education *is* this process, performed over and over, and the reader is being invited to do it too. Leonardo Crasso's dedicatory letter says as much — the book asks for *multiplicem doctrinam*, manifold learning."
+          },
+          {
+            "type": "allegory",
+            "text": "The decipherment comes out as sound moral advice: labour, sacrifice, submit the soul, and be protected. That is not what the signs say — nothing says anything, they are invented — it is what Poliphilo brings to them. The book is quietly honest about this. **Interpretation here produces the interpreter, not the text.**"
+          },
+          {
+            "type": "neoplatonic",
+            "text": "For the Renaissance the appeal of the hieroglyph was precisely that it was not alphabetic: a sign that gave its whole meaning at once, without being spelled out, was thought to be how divine truth is actually apprehended. Reading them is therefore a spiritual exercise, not a philological one — which is why the dreamer's initiation runs through them."
+          },
+          {
+            "type": "myth",
+            "text": "The two signs that recur, here and on the obelisk above, are the **eye** and the **vulture** — both associated with the divine, and both from Horapollo. Two circles, read as eternity, belong with the three-sided obelisk in Eleuterylida's garden."
+          },
+          {
+            "type": "architecture",
+            "text": "The elephant's own inscriptions are the companion piece and are on it in this world: **ΠΟΝΟΣ ΚΑΙ ΕΥΦΥΙΑ** on the frontlet (labour and native wit) and **CEREBRVM EST IN CAPITE** on the breast-strap (the brain is in the head). Poliphilo cannot fully construe the Greek either; Logistica has to translate it for him, chapters later, in the queen's garden."
+          },
+          {
+            "type": "alchemical",
+            "text": "Sacrifice, submission, and a promise of preservation — the annotators who read this book chemically found their vocabulary ready-made in passages like this one, and Buffalo Hand E declares his whole Geberian framework at the elephant, under the motto *Ponos et Euphyia* (f. b7r). The hieroglyph is a sign whose meaning is agreed to be hidden; so is an alembic. (Russell, 2014; `hp.db.folio_descriptions` b7r.)"
+          },
+          {
+            "type": "context",
+            "text": "**And the interpretation pays off later — once.** Fleeing the dragon in the dark under the portal, with no idea where he is, Poliphilo suddenly remembers the hieroglyphs on the left side of the bridge and understands that he was warned: *SEMPER FESTINA TARDE*, always hasten slowly. It is the one time in the book a decipherment turns out to have been useful, and it arrives too late to help."
+          }
+        ]
+      },
+      {
         "station": "portal",
         "chapter": "IV",
         "half": "dallington",
