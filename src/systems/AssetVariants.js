@@ -47,10 +47,37 @@ export const ASSETS = {
     label: 'Nymphs & figures',
     def: 'primitive',
     variants: [
-      { id: 'primitive', label: 'Primitive', note: 'Capsule and cone bodies — the current look.' },
+      { id: 'primitive', label: 'Primitive', note: 'Capsule and cone bodies — the founding look.' },
+      { id: 'painted',   label: 'Painted cutouts', note: 'Figures cut from Renaissance paintings and stood up in the garden — literally the period art. Flat from oblique angles.', pending: true },
+      { id: 'modelled',  label: 'Modelled', note: 'Hand-built anatomy: real shoulder and hip structure, draped gown geometry, layered hair.', pending: true },
+      { id: 'scan',      label: 'Sculpture scan', note: 'Imported CC0 museum scans, like the marble Venus. The book often describes its figures as statuary.', pending: true },
+    ],
+  },
+  water: {
+    label: 'Water features',
+    def: 'primitive',
+    variants: [
+      { id: 'primitive', label: 'Primitive', note: 'Flat coloured discs and boxes.' },
+      { id: 'painted',   label: 'Painterly', note: 'Rippled surface, caustic glint and a painted basin, in the tempera register.', pending: true },
+    ],
+  },
+  ornament: {
+    label: 'Wall decoration & ornament',
+    def: 'primitive',
+    variants: [
+      { id: 'primitive', label: 'Primitive', note: 'Plain masonry with lettering plaques.' },
+      { id: 'painted',   label: 'Carved & painted', note: 'Friezes, hieroglyph panels, mosaic and capitals drawn from Curran and the woodcuts.', pending: true },
     ],
   },
 };
+
+// A variant may be declared before it is built. The menu shows these greyed, so
+// the ladder for each asset is visible without pretending the work is done.
+export function isPending(asset, id) {
+  const spec = ASSETS[asset];
+  const v = spec && spec.variants.find(x => x.id === id);
+  return !!(v && v.pending);
+}
 
 function load() {
   try {

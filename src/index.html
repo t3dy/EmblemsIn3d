@@ -492,6 +492,43 @@
       #walk-notes { width: calc(100vw - 2.4rem); max-height: 42vh; bottom: 9.5rem; }
     }
 
+    /* ── Graphics menu ───────────────────────────────────────────────
+       One dropdown per asset in the AssetVariants registry. Reachable from
+       free walk, the tour and the dream (DECISIONS.md 2026-09-05). */
+    #gfx-menu {
+      position: fixed; inset: 0; z-index: 46; align-items: center; justify-content: center;
+      background: rgba(4,3,1,0.9); backdrop-filter: blur(4px); padding: 1.5rem; pointer-events: all;
+    }
+    #gfx-menu .gx-card {
+      max-width: 560px; width: 100%; max-height: 90vh; overflow-y: auto;
+      background: linear-gradient(180deg, rgba(14,10,6,0.98), rgba(8,6,3,0.98));
+      border: 1px solid #6a4a18; border-top: 2px solid #d8a24a; padding: 1.6rem 1.8rem 1.4rem;
+      display: flex; flex-direction: column; gap: 0.7rem;
+    }
+    #gfx-menu .gx-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    #gfx-menu .gx-kicker { font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase; color: #8a6a38; }
+    #gfx-menu h2 { font-size: 1.3rem; font-weight: normal; color: #d8a24a; letter-spacing: 0.02em; }
+    #gfx-menu .gx-close { background: none; border: none; color: #7a6858; font-size: 1rem; cursor: pointer; }
+    #gfx-menu .gx-close:hover { color: #f0e8d8; }
+    #gfx-menu .gx-intro { font-size: 0.78rem; color: #a89878; line-height: 1.65; }
+    #gfx-menu .gx-rows { display: flex; flex-direction: column; gap: 0.9rem; margin-top: 0.3rem; }
+    #gfx-menu .gx-row { display: flex; flex-direction: column; gap: 0.3rem; }
+    #gfx-menu .gx-label { font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #c8a040; }
+    #gfx-menu .gx-select {
+      font-family: inherit; font-size: 0.86rem; color: #f0e8d8;
+      background: rgba(10,8,4,0.9); border: 1px solid #4a3a1e; padding: 0.4rem 0.5rem; cursor: pointer;
+    }
+    #gfx-menu .gx-select:hover { border-color: #c8a040; }
+    #gfx-menu .gx-select option:disabled { color: #6b5d4d; }
+    #gfx-menu .gx-note { font-size: 0.72rem; color: #8a7a5a; line-height: 1.55; }
+    #gfx-menu .gx-foot { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 0.6rem; }
+    #gfx-menu .gx-foot button {
+      font-family: inherit; font-size: 0.72rem; letter-spacing: 0.05em;
+      background: none; border: 1px solid #4a3a1e; color: #a89878; padding: 0.4rem 0.9rem; cursor: pointer;
+    }
+    #gfx-menu .gx-foot button:hover { border-color: #c8a040; color: #f5f0e8; }
+    #gfx-menu .gx-done { background: rgba(200,160,64,0.14); color: #f0e8d8; }
+
     /* Pre-tour commentary chooser */
     #tour-flavor-chooser {
       position: fixed; inset: 0; z-index: 44; display: flex; align-items: center; justify-content: center;
@@ -714,7 +751,8 @@
       <button id="btn-theatrum" onclick="window.switchWorld('THEATRUM')">Theatrum</button>
       <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
       <button id="btn-gallery" onclick="window.switchWorld('GALLERY')">Gallery</button>
-      <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
+      <button onclick="window.openGraphics()" title="Choose how each asset is drawn">Graphics</button>
+    <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
       <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
     </div>
 
@@ -773,6 +811,8 @@
   <div id="tour-flavor-chooser" hidden></div>
   <!-- Free-walk commentary: rises as the dreamer nears a wonder -->
   <div id="walk-notes" hidden></div>
+  <!-- Graphics menu: one dropdown per asset, reachable from every mode -->
+  <div id="gfx-menu" hidden></div>
   <div id="woodcut-lightbox">
     <button class="lb-close" onclick="window.closeTourWoodcut()" title="Close (Esc)">&times;</button>
     <button id="twc-prev" class="twc-arrow twc-prev" onclick="window.tourWoodcutStep(-1)" title="Previous (←)">&#8249;</button>
@@ -863,6 +903,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=110"></script>
+  <script type="module" src="./main.js?v=112"></script>
 </body>
 </html>

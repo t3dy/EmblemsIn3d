@@ -3,13 +3,14 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=51';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=52';
 import { AFWorldScene } from './scenes/AFWorldScene.js?v=20';
 import { DreamMode } from './systems/DreamMode.js?v=5';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=8';
+import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=2';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -1059,6 +1060,81 @@ window.walkLenses = () => showFlavorChooser({
   kicker: 'Walking the Dream Garden freely', begin: 'Back to the garden',
   onDone: () => renderWalkNotes(),
 });
+
+
+// ── Graphics menu ─────────────────────────────────────────────────────────
+// Ted asked for "drop down menus in a graphics menu that's accessible from all
+// the modes free walk/tour/game". Each asset in the AssetVariants registry gets
+// one <select>; changing any of them rebuilds the world so the swap is visible
+// immediately. Variants that are declared but not yet built show as "(not yet
+// built)" and are disabled, so the intended ladder for each asset is legible
+// without pretending the work is done. See DECISIONS.md, 2026-09-05.
+function renderGraphicsMenu() {
+  const el = document.getElementById('gfx-menu');
+  if (!el) return;
+  const rows = Object.entries(ASSETS).map(([key, spec]) => {
+    const cur = variantOf(key, state.hpStyle);
+    const opts = spec.variants.map(v => {
+      const pend = !!v.pending;
+      return `<option value="${v.id}" ${v.id === cur ? 'selected' : ''} ${pend ? 'disabled' : ''}
+        >${v.label}${pend ? ' — not yet built' : ''}</option>`;
+    }).join('');
+    const note = (spec.variants.find(v => v.id === cur) || {}).note || '';
+    return `<div class="gx-row">
+      <label class="gx-label" for="gx-${key}">${spec.label}</label>
+      <select class="gx-select" id="gx-${key}" onchange="window.gfxPick('${key}', this.value)">${opts}</select>
+      <p class="gx-note">${note}</p>
+    </div>`;
+  }).join('');
+  el.innerHTML = `
+    <div class="gx-card">
+      <div class="gx-head">
+        <div>
+          <div class="gx-kicker">Graphics</div>
+          <h2>How should the world be drawn?</h2>
+        </div>
+        <button class="gx-close" onclick="window.closeGraphics()" title="Close">&#10005;</button>
+      </div>
+      <p class="gx-intro">Every asset can be built more than one way. Choose a version for each —
+        your choice is remembered, and the older versions are never thrown away, so the world can
+        keep improving without losing an earlier look. Woodcut view always uses the primitive
+        silhouette unless you choose otherwise.</p>
+      <div class="gx-rows">${rows}</div>
+      <div class="gx-foot">
+        <button onclick="window.gfxReset()">Reset to defaults</button>
+        <button class="gx-done" onclick="window.closeGraphics()">Done</button>
+      </div>
+    </div>`;
+  setHidden(el, false, 'flex');
+}
+
+window.openGraphics = () => renderGraphicsMenu();
+window.closeGraphics = () => setHidden(document.getElementById('gfx-menu'), true);
+
+window.gfxPick = (asset, id) => {
+  if (!setVariant(asset, id)) return;
+  renderGraphicsMenu();
+  rebuildHPWorld();
+};
+
+window.gfxReset = () => {
+  resetVariants();
+  renderGraphicsMenu();
+  rebuildHPWorld();
+};
+
+// Rebuild the Dream Garden in place, keeping the walker where it stands, so a
+// graphics change is visible immediately without losing the reader's position.
+async function rebuildHPWorld() {
+  const scene = state.activeScene;
+  if (!(scene instanceof HPWorldScene)) return;
+  // Keep the reader exactly where they stand — spawn is { pos:[x,y,z], yaw, pitch }
+  const pl = scene.walker && scene.walker.player;
+  const spawn = pl ? { pos: [pl.pos.x, 0, pl.pos.z], yaw: pl.yaw, pitch: pl.pitch } : null;
+  const wasTour = !!state.tour;
+  await launchHPWorld({ chooser: false, spawn });
+  if (wasTour) renderTourPanel();
+}
 
 window.startTour = startTour;
 window.tourNext  = tourNext;

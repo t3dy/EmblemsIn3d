@@ -2,6 +2,40 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — Art direction: a Botticelli panel you can walk into (Ted)
+
+Answers to a direct art-direction question. These are the goals for the art; read them
+before building or revising any visual asset.
+
+1. **Register: painterly / tempera — not photoreal.** The lit Dream Garden should read as
+   *a Botticelli panel you can walk into*. Method: painted and procedural albedo, a
+   toon-ish ramp in the lighting, a limited period palette, and the outlines retained.
+   The accepted risk is that it reads "illustrated" rather than "real" — that is the
+   intent. It also unifies hundreds of assets cheaply, which photoreal would not.
+   → **Do not chase photorealism.** A scan that fights the painted register is worse than
+   a well-painted procedural form.
+
+2. **Figures: build several approaches and let the player choose.** Ted: *"try various
+   approaches and let me choose between with drop down menus in a graphics menu that's
+   accessible from all the modes free walk/tour/game."* So the AssetVariants registry gets
+   a **user-facing Graphics menu**, reachable from every mode, with a dropdown per asset.
+   Figures specifically should offer painted cutout cards, imported sculpture scans, and
+   hand-modelled humanoids as alternatives — not one chosen answer.
+
+3. **Web research on technique is approved**, written up with citations in
+   `RENAISSANCEART.md`, including an explicit *what we adopt / what we reject* section.
+   Do not write technique guidance from assumption.
+
+4. **Asset priority order:** (1) nymphs & figures, (2) water features, (3) wall decoration
+   & ornament, (4) plants, animals & vehicles. Each gets its own sourced .md as it is
+   built — `NYMPHS.md`, `WATER.md`, `ORNAMENT.md`, `PLANTS.md`, `ANIMALS.md`,
+   `VEHICLES.md`, plus `MYTHOLOGY.md` and `IMPORTEXEMPLARS.md` (what was imported, from
+   where, under what licence, and how).
+
+5. **Ted wants to understand how importing works.** Any import route must be written down
+   in `IMPORTEXEMPLARS.md` in plain terms — source, licence, file, size, how it is loaded
+   — not left implicit in code.
+
 ## 2026-09-05 — Every asset gets swappable variants; imported scans allowed (Ted)
 
 - **Imported scans are approved to try** for the graphical assets, extending the earlier
