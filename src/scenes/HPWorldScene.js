@@ -24,8 +24,8 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=26';
-import { isVariant } from '../systems/AssetVariants.js?v=6';
+import { makeCast } from '../systems/Cast.js?v=28';
+import { isVariant } from '../systems/AssetVariants.js?v=7';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -184,6 +184,7 @@ export class HPWorldScene {
     this._vanes = [];              // weathervanes that turn with the wind
     this._trashGeo = new Set();    // originals swallowed by the draw-call compiler
     this._npcs = [];               // { g, phase, sway }
+    this._billboards = [];         // painted figure cards, turned to face the camera
     this.npcs = {};                // key → group (for the dream's cameos)
     this._stTimer = 0;
     this._nearStation = undefined;
@@ -362,6 +363,7 @@ export class HPWorldScene {
     if (this._hiero) { mark(this._hiero.ant); mark(this._hiero.ele); }
 
     // groups that move whole: compile inside, then fence off
+    for (const b of this._billboards) mark(b);
     for (const n of this._npcs) {
       const local = new Set(dyn);
       if (n.armL) n.armL.traverse(x => local.add(x));   // arms keep breathing
@@ -438,6 +440,7 @@ export class HPWorldScene {
 
   // Place a named NPC: registers for idle sway and the npcs registry
   _npc(key, group, x, z, faceYaw = 0, { label = null, sub = '', labelY = 2.0, sway = 0.05 } = {}) {
+    if (group.userData && group.userData.billboard) this._billboards.push(group);
     group.position.set(x, 0, z);
     group.rotation.y = faceYaw;
     this.scene.add(group);
@@ -3229,6 +3232,17 @@ export class HPWorldScene {
   }
 
   update(dt) {
+    // A painted figure has one correct view. Turn each card about its own axis
+    // to face the camera — never tilt it, or it lifts off the ground.
+    if (this._billboards.length) {
+      const cx = this.camera.position.x, cz = this.camera.position.z;
+      for (const b of this._billboards) {
+        b.rotation.y = Math.atan2(cx - b.position.x, cz - b.position.z);
+        // the ground shadow stays put while the card turns above it
+        const sh = b.userData.shadow;
+        if (sh) sh.rotation.z = -b.rotation.y;
+      }
+    }
     this._t += dt;
     if (this.dream) this.dream.update(dt);
     if (this._mood) this._updateMood(dt);

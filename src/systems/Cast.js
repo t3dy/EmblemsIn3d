@@ -11,7 +11,7 @@
 // head) so scenes and vignettes can animate gestures without traversing.
 
 import * as THREE from 'three';
-import { isVariant, variantOf } from './AssetVariants.js?v=6';
+import { isVariant, variantOf } from './AssetVariants.js?v=7';
 
 export function makeCast(S) {
   const mats = new Map();
@@ -283,6 +283,12 @@ export function makeCast(S) {
 
   function figure({ h = 1, skin = SKIN, robe = null, pose = 'stand', crowned = false,
                     winged = false, twoHeaded = false, hat = null, beard = false } = {}) {
+    // Only robed figures become painted cards; the winged, two-headed and
+    // gilded ones are doing something the flat painting cannot, and keep their
+    // built bodies.
+    if (lit && figVariant() === 'card' && robe != null && !winged && !twoHeaded) {
+      return paintedFigure({ h, robe, hair: 0x3a2612, mirrored: !!(Math.round(h * 100) % 2) });
+    }
     const g = new THREE.Group();
     const sm = M(skin, { roughness: 0.6 });
     const parts = g.userData;
@@ -391,6 +397,251 @@ export function makeCast(S) {
       }
     }
     if (pose === 'recline') { g.rotation.z = Math.PI / 2; g.position.y = 0.22 * h; }
+    return g;
+  }
+
+  // ── Painted figures ───────────────────────────────────────────────────────
+  //
+  // Four rounds of tuning the primitive-built figures — proportion, face paint,
+  // hair mass, drapery folds — each improved them and none stopped them reading
+  // as shop mannequins. The causes are structural: hands are spheres with no
+  // fingers, arms are capsules, the gown is a turned cone. No amount of surface
+  // work fixes an assembly of primitives pretending to be a body.
+  //
+  // So this is the other approach Ted was offered and chose ("try various
+  // approaches and let me choose"): the figure PAINTED, on a card, the way a
+  // panel painter would put a figure in a garden. Painting sidesteps fingers and
+  // anatomy entirely — a painted hand is a few strokes, not a mesh — and it is
+  // literally the register Ted set: a Botticelli panel you can walk into.
+  //
+  // Drawn at 8 heads (the Mannerist canon the nymphs already use), lit from the
+  // upper left to agree with the garden's sun, with the drapery folds drawn as
+  // tempera drapery is drawn: a dark core and a lit ridge, few and long.
+  const _figCards = new Map();
+  function paintedFigureTexture({ robe = 0xb8a0c8, hair = 0x4a3018, skin = 0xe6cdae,
+                                  gowned = true, mirrored = false } = {}) {
+    const key = [robe, hair, skin, gowned, mirrored].join('_');
+    if (_figCards.has(key)) return _figCards.get(key);
+    const W = 384, H = 768;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+
+    const rgb = (hex) => [(hex >> 16) & 255, (hex >> 8) & 255, hex & 255];
+    const css = (hex, a = 1) => { const [r, g, b] = rgb(hex); return `rgba(${r},${g},${b},${a})`; };
+    const lighten = (hex, t) => { const [r, g, b] = rgb(hex);
+      return `rgb(${Math.round(r + (255 - r) * t)},${Math.round(g + (255 - g) * t)},${Math.round(b + (255 - b) * t)})`; };
+    const darken = (hex, t) => { const [r, g, b] = rgb(hex);
+      return `rgb(${Math.round(r * (1 - t))},${Math.round(g * (1 - t))},${Math.round(b * (1 - t))})`; };
+
+    const CX = W / 2;
+    const HEAD_R = H / 8 / 2 * 0.92;        // eight heads to the figure
+    const headY  = HEAD_R * 1.15;
+    const chinY  = headY + HEAD_R * 0.98;
+    const shY    = chinY + HEAD_R * 0.62;
+    const waistY = shY + HEAD_R * 2.5;
+    const hemY   = H - HEAD_R * 0.30;
+
+    // ── the gown: silhouette first, then the folds painted into it ──
+    // A 3.7x flare from shoulder to hem read as a bell. Renaissance gowns fall
+    // much straighter: the skirt widens, it does not cone out.
+    const shW = HEAD_R * 1.52, waistW = HEAD_R * 1.18, hemW = HEAD_R * 2.05;
+    x.beginPath();
+    x.moveTo(CX - shW, shY);
+    x.quadraticCurveTo(CX - waistW * 1.04, shY + (waistY - shY) * 0.55, CX - waistW, waistY);
+    x.quadraticCurveTo(CX - hemW * 0.80, waistY + (hemY - waistY) * 0.62, CX - hemW, hemY);
+    x.quadraticCurveTo(CX, hemY + HEAD_R * 0.34, CX + hemW, hemY);
+    x.quadraticCurveTo(CX + hemW * 0.80, waistY + (hemY - waistY) * 0.62, CX + waistW, waistY);
+    x.quadraticCurveTo(CX + waistW * 1.04, shY + (waistY - shY) * 0.55, CX + shW, shY);
+    x.closePath();
+    const gownGrad = x.createLinearGradient(CX - hemW, 0, CX + hemW, 0);
+    gownGrad.addColorStop(0.00, darken(robe, 0.46));
+    gownGrad.addColorStop(0.30, lighten(robe, 0.12));
+    gownGrad.addColorStop(0.52, lighten(robe, 0.02));
+    gownGrad.addColorStop(1.00, darken(robe, 0.40));
+    x.fillStyle = gownGrad; x.fill();
+    x.save(); x.clip();
+
+    // folds: few, long, directional — a dark core with a lit ridge beside it
+    const folds = [-0.72, -0.42, -0.16, 0.10, 0.38, 0.66];
+    for (let i = 0; i < folds.length; i++) {
+      const f = folds[i];
+      const topX = CX + f * waistW * 0.95;
+      const botX = CX + f * hemW * 0.98;
+      const wTop = HEAD_R * 0.20, wBot = HEAD_R * 0.42;
+      x.beginPath();
+      x.moveTo(topX - wTop, shY);
+      x.quadraticCurveTo(topX - wTop, waistY, botX - wBot, hemY + 20);
+      x.lineTo(botX + wBot * 0.34, hemY + 20);
+      x.quadraticCurveTo(topX + wTop * 0.34, waistY, topX + wTop * 0.34, shY);
+      x.closePath();
+      const fg = x.createLinearGradient(topX - wTop, 0, topX + wTop, 0);
+      fg.addColorStop(0.00, darken(robe, 0.54));
+      fg.addColorStop(0.55, darken(robe, 0.10));
+      fg.addColorStop(0.85, lighten(robe, 0.30));
+      fg.addColorStop(1.00, lighten(robe, 0.06));
+      x.fillStyle = fg; x.globalAlpha = 0.85; x.fill();
+    }
+    x.globalAlpha = 1;
+    // the shadow the body throws down the inside of the gown
+    const core = x.createLinearGradient(0, shY, 0, hemY);
+    core.addColorStop(0, css(0x000000, 0.16)); core.addColorStop(0.5, css(0x000000, 0.0));
+    x.fillStyle = core; x.fillRect(CX - hemW, shY, hemW * 2, hemY - shY);
+    x.restore();
+
+    // gold hem and girdle
+    x.strokeStyle = css(0xd8b048, 0.9); x.lineWidth = HEAD_R * 0.10;
+    x.beginPath(); x.moveTo(CX - hemW * 0.99, hemY - 2);
+    x.quadraticCurveTo(CX, hemY + HEAD_R * 0.30, CX + hemW * 0.99, hemY - 2); x.stroke();
+    x.lineWidth = HEAD_R * 0.13;
+    x.beginPath(); x.moveTo(CX - waistW * 1.0, waistY); x.quadraticCurveTo(CX, waistY + HEAD_R * 0.16, CX + waistW * 1.0, waistY); x.stroke();
+
+    // ── arms ──
+    const armPaint = (sx) => {
+      const sxW = sx * shW * 0.92;
+      const elbowX = CX + sxW * 1.20, elbowY = shY + HEAD_R * 1.30;
+      const handX  = CX + sxW * 0.94, handY  = shY + HEAD_R * 2.52;
+      x.lineCap = 'round';
+      // sleeve
+      x.strokeStyle = darken(robe, 0.22); x.lineWidth = HEAD_R * 0.62;
+      x.beginPath(); x.moveTo(CX + sxW * 0.72, shY + HEAD_R * 0.10);
+      x.quadraticCurveTo(elbowX, elbowY - HEAD_R * 0.30, elbowX, elbowY); x.stroke();
+      // forearm
+      x.strokeStyle = css(skin, 1); x.lineWidth = HEAD_R * 0.40;
+      x.beginPath(); x.moveTo(elbowX, elbowY); x.quadraticCurveTo(elbowX + sx * HEAD_R * 0.10, handY - HEAD_R * 0.6, handX, handY); x.stroke();
+      // the shading down the far side of the arm
+      x.strokeStyle = css(0x8a6a4a, 0.42); x.lineWidth = HEAD_R * 0.14;
+      x.beginPath(); x.moveTo(elbowX + sx * HEAD_R * 0.10, elbowY);
+      x.quadraticCurveTo(elbowX + sx * HEAD_R * 0.16, handY - HEAD_R * 0.6, handX + sx * HEAD_R * 0.07, handY); x.stroke();
+      // hand: a palm and the suggestion of fingers, which is all a painting gives
+      x.fillStyle = css(skin, 1);
+      x.beginPath(); x.ellipse(handX, handY + HEAD_R * 0.14, HEAD_R * 0.21, HEAD_R * 0.30, sx * 0.2, 0, 7); x.fill();
+      x.strokeStyle = css(0x9a7a58, 0.45); x.lineWidth = HEAD_R * 0.035;
+      for (let k = -1; k <= 1; k++) {
+        x.beginPath();
+        x.moveTo(handX + k * HEAD_R * 0.07, handY + HEAD_R * 0.16);
+        x.lineTo(handX + k * HEAD_R * 0.085, handY + HEAD_R * 0.36);
+        x.stroke();
+      }
+    };
+    armPaint(-1); armPaint(1);
+
+    // ── neck, throat shadow ──
+    x.fillStyle = css(skin, 1);
+    x.beginPath(); x.roundRect(CX - HEAD_R * 0.30, chinY - HEAD_R * 0.16, HEAD_R * 0.60, HEAD_R * 0.86, HEAD_R * 0.2); x.fill();
+    x.fillStyle = css(0x8a6a4a, 0.26);
+    x.beginPath(); x.ellipse(CX, chinY + HEAD_R * 0.16, HEAD_R * 0.30, HEAD_R * 0.18, 0, 0, Math.PI); x.fill();
+    // the neckline of the gown over it
+    x.fillStyle = darken(robe, 0.06);
+    x.beginPath(); x.moveTo(CX - shW, shY + 2);
+    x.quadraticCurveTo(CX, shY - HEAD_R * 0.44, CX + shW, shY + 2);
+    x.lineTo(CX + shW, shY + HEAD_R * 0.5); x.lineTo(CX - shW, shY + HEAD_R * 0.5); x.closePath(); x.fill();
+    x.strokeStyle = css(0xd8b048, 0.85); x.lineWidth = HEAD_R * 0.08;
+    x.beginPath(); x.moveTo(CX - shW * 0.98, shY + 2); x.quadraticCurveTo(CX, shY - HEAD_R * 0.42, CX + shW * 0.98, shY + 2); x.stroke();
+
+    // ── head ──
+    x.fillStyle = css(skin, 1);
+    x.beginPath(); x.ellipse(CX, headY, HEAD_R * 0.74, HEAD_R * 0.96, 0, 0, 7); x.fill();
+    // jaw taper
+    x.beginPath(); x.moveTo(CX - HEAD_R * 0.62, headY + HEAD_R * 0.18);
+    x.quadraticCurveTo(CX, headY + HEAD_R * 1.20, CX + HEAD_R * 0.62, headY + HEAD_R * 0.18);
+    x.closePath(); x.fill();
+    // modelling: light upper-left, shadow lower-right
+    const mg = x.createLinearGradient(CX - HEAD_R * 0.7, headY - HEAD_R, CX + HEAD_R * 0.7, headY + HEAD_R);
+    mg.addColorStop(0, css(0xffffff, 0.16)); mg.addColorStop(0.55, css(0xffffff, 0));
+    mg.addColorStop(1, css(0x6a4a30, 0.24));
+    x.save();
+    x.beginPath(); x.ellipse(CX, headY + HEAD_R * 0.1, HEAD_R * 0.76, HEAD_R * 1.06, 0, 0, 7); x.clip();
+    x.fillStyle = mg; x.fillRect(CX - HEAD_R, headY - HEAD_R, HEAD_R * 2, HEAD_R * 2.3);
+    x.restore();
+
+    // features: small, low-contrast, set well down the head
+    const eY = headY + HEAD_R * 0.10, eD = HEAD_R * 0.26;
+    for (const sx of [-1, 1]) {
+      const ex = CX + sx * eD;
+      x.strokeStyle = css(0x5a4028, 0.62); x.lineWidth = HEAD_R * 0.045;
+      x.beginPath(); x.ellipse(ex, eY, HEAD_R * 0.115, HEAD_R * 0.062, 0, Math.PI, 2 * Math.PI); x.stroke();
+      x.fillStyle = css(0x4a3420, 0.72);
+      x.beginPath(); x.arc(ex, eY, HEAD_R * 0.042, 0, 7); x.fill();
+      x.strokeStyle = css(0x7a5a3a, 0.34); x.lineWidth = HEAD_R * 0.032;
+      x.beginPath(); x.ellipse(ex + sx * 0.01, eY - HEAD_R * 0.16, HEAD_R * 0.14, HEAD_R * 0.07, 0, Math.PI * 1.1, Math.PI * 1.9); x.stroke();
+    }
+    x.strokeStyle = css(0x8a6544, 0.30); x.lineWidth = HEAD_R * 0.036;
+    x.beginPath(); x.moveTo(CX - HEAD_R * 0.02, eY + HEAD_R * 0.05);
+    x.quadraticCurveTo(CX - HEAD_R * 0.06, eY + HEAD_R * 0.26, CX + HEAD_R * 0.03, eY + HEAD_R * 0.30); x.stroke();
+    x.fillStyle = css(0x9a5a52, 0.50);
+    x.beginPath(); x.ellipse(CX, eY + HEAD_R * 0.46, HEAD_R * 0.10, HEAD_R * 0.045, 0, 0, 7); x.fill();
+
+    // ── hair: a mass with a part, volume above the crown, gathered behind ──
+    x.fillStyle = css(hair, 1);
+    x.beginPath();
+    x.moveTo(CX - HEAD_R * 0.78, headY + HEAD_R * 0.22);
+    x.quadraticCurveTo(CX - HEAD_R * 0.92, headY - HEAD_R * 0.95, CX, headY - HEAD_R * 1.02);
+    x.quadraticCurveTo(CX + HEAD_R * 0.92, headY - HEAD_R * 0.95, CX + HEAD_R * 0.78, headY + HEAD_R * 0.22);
+    x.quadraticCurveTo(CX + HEAD_R * 0.66, headY - HEAD_R * 0.30, CX, headY - HEAD_R * 0.44);
+    x.quadraticCurveTo(CX - HEAD_R * 0.66, headY - HEAD_R * 0.30, CX - HEAD_R * 0.78, headY + HEAD_R * 0.22);
+    x.closePath(); x.fill();
+    // the lit side of the hair, and the parting
+    x.strokeStyle = lighten(hair, 0.30); x.lineWidth = HEAD_R * 0.05;
+    for (let i = -2; i <= 2; i++) {
+      x.beginPath();
+      x.moveTo(CX + i * HEAD_R * 0.16, headY - HEAD_R * 0.92);
+      x.quadraticCurveTo(CX + i * HEAD_R * 0.34, headY - HEAD_R * 0.34, CX + i * HEAD_R * 0.30, headY + HEAD_R * 0.16);
+      x.stroke();
+    }
+    // locks to the nape
+    x.fillStyle = darken(hair, 0.18);
+    for (const sx of [-1, 1]) {
+      x.beginPath();
+      x.ellipse(CX + sx * HEAD_R * 0.66, headY + HEAD_R * 0.52, HEAD_R * 0.16, HEAD_R * 0.36, sx * 0.22, 0, 7);
+      x.fill();
+    }
+    // the fillet
+    x.strokeStyle = css(0xe0d2ae, 0.9); x.lineWidth = HEAD_R * 0.055;
+    x.beginPath(); x.ellipse(CX, headY - HEAD_R * 0.36, HEAD_R * 0.76, HEAD_R * 0.30, 0, Math.PI * 1.05, Math.PI * 1.95); x.stroke();
+
+    if (mirrored) {                          // a second, flipped painting for variety
+      const c2 = document.createElement('canvas');
+      c2.width = W; c2.height = H;
+      const x2 = c2.getContext('2d');
+      x2.translate(W, 0); x2.scale(-1, 1); x2.drawImage(c, 0, 0);
+      const t2 = new THREE.CanvasTexture(c2);
+      t2.colorSpace = THREE.SRGBColorSpace; t2.anisotropy = 8;
+      _figCards.set(key, t2); return t2;
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 8;
+    _figCards.set(key, t);
+    return t;
+  }
+
+  // The card itself. Marked `billboard` so the scene turns it to face the
+  // camera — a painted figure has one correct view, and that is the point.
+  function paintedFigure({ h = 0.95, robe = 0xb8a0c8, hair = 0x4a3018, mirrored = false } = {}) {
+    const g = new THREE.Group();
+    const tex = paintedFigureTexture({ robe, hair, skin: SKIN, mirrored });
+    const mat = new THREE.MeshBasicMaterial({
+      map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
+      toneMapped: true,
+    });
+    const HH = h * 1.72, WW = HH * 0.5;
+    const card = new THREE.Mesh(new THREE.PlaneGeometry(WW, HH), mat);
+    card.position.y = HH / 2;
+    card.castShadow = false; card.receiveShadow = false;
+    g.add(card);
+    // A flat card casts no shadow, so without this it reads as a sticker hanging
+    // in front of the garden. A soft ellipse on the ground plants it.
+    const shadow = new THREE.Mesh(
+      new THREE.CircleGeometry(WW * 0.34, 18),
+      new THREE.MeshBasicMaterial({ color: 0x1a1408, transparent: true, opacity: 0.26, depthWrite: false }));
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = 0.015;
+    shadow.renderOrder = -1;
+    g.add(shadow);
+    g.userData.shadow = shadow;
+    g.userData.billboard = true;
+    g.userData.card = card;
     return g;
   }
 
@@ -512,6 +763,13 @@ export function makeCast(S) {
   // Aphea carries nothing — she is the one who offers her hand.
   function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand',
                    attribute = null, hair = 0x4a3018, crowned = false, winged = false } = {}) {
+    // The painted rung hands back a card instead of an assembly (see
+    // paintedFigure). Seeded off the name so a row of nymphs is not the same
+    // painting repeated.
+    if (lit && figVariant() === 'card') {
+      const seed = Array.from(name).reduce((t, ch) => t + ch.charCodeAt(0), name.length);
+      return paintedFigure({ h, robe, hair, mirrored: !!(seed % 2) });
+    }
     const g = new THREE.Group();
     const parts = g.userData;
     const skinMat = M(SKIN, { roughness: 0.6 });
@@ -1534,5 +1792,5 @@ export function makeCast(S) {
     },
   };
 
-  return { figure, nymph, label, attributes, animal: (kind, s, opts) => (animals[kind] || animals.bird)(s, opts), prop: (kind, s, opts) => (props[kind] || props.tree)(kind in props ? s : 'broad', opts), animals, props };
+  return { figure, nymph, paintedFigure, label, attributes, animal: (kind, s, opts) => (animals[kind] || animals.bird)(s, opts), prop: (kind, s, opts) => (props[kind] || props.tree)(kind in props ? s : 'broad', opts), animals, props };
 }

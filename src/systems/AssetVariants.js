@@ -45,11 +45,12 @@ export const ASSETS = {
   },
   figure: {
     label: 'Nymphs & figures',
-    def: 'painted',
+    def: 'card',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'A cone for the robe and capsules for the limbs — the founding manifesto look.' },
       { id: 'modelled',  label: 'Modelled', note: 'A turned gown falling in long folds, tapered legs with hips and feet, and a torso wider at the shoulder than the waist — so the figure has a silhouette, not a barrel.' },
       { id: 'painted',   label: 'Painterly (tempera)', note: 'The modelled build, but the drapery folds are painted into the cloth rather than lit into it, and the surface takes no specular — the Botticelli-panel register.' },
+      { id: 'card',      label: 'Painted panel', note: 'The figure PAINTED rather than assembled — drawn at eight heads on a card that turns to face you. Painting sidesteps fingers and anatomy, which is what kept the built figures reading as mannequins however well they were tuned.' },
 
     ],
   },
