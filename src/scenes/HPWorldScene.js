@@ -657,6 +657,11 @@ export class HPWorldScene {
     if (S.key === 'woodcut' || isVariant('water', 'primitive', S.key)) return m;
     m.color.set(0xffffff);            // the map carries the blue
     m.map = this._waterTexture();
+    // Water is not a matte surface: it holds light even in shade. Without
+    // this, any basin under a dome or an arcade reads as wet asphalt.
+    m.emissive = new THREE.Color(0x2a4460);
+    m.emissiveIntensity = 0.55;
+    m.roughness = 0.22;
     return m;
   }
 
@@ -2133,15 +2138,36 @@ export class HPWorldScene {
 
     // The floor of the theatre, and the kerb: seven-sided without, round within
     this._m(new THREE.CylinderGeometry(5.4, 5.4, 0.12, 7), black, FX, 0.06, FZ, { cast: false });
-    this._m(new THREE.CylinderGeometry(R + 0.55, R + 0.6, KERB, 7), black, FX, KERB / 2, FZ, { cast: false, outline: true });
+    // THE KERB IS A RING, NOT A DISC. Built as a solid CylinderGeometry it caps
+    // itself at the top — a black lid at y = KERB sealing the whole basin, with
+    // the water hidden underneath it. That lid, not the water, was the dark
+    // surface in the middle of the fountain. Now: an open-ended outer wall, an
+    // open-ended inner wall, and a flat annulus between them for the top.
+    this._m(new THREE.CylinderGeometry(R + 0.55, R + 0.6, KERB, 7, 1, true), black,
+      FX, KERB / 2, FZ, { cast: false, outline: true });
+    this._m(new THREE.RingGeometry(R + 0.12, R + 0.55, 7), black,
+      FX, KERB, FZ, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CylinderGeometry(R + 0.12, R + 0.12, KERB * 0.5, 36, 1, true), black, FX, KERB * 0.72, FZ, { cast: false });
     this._m(new THREE.TorusGeometry(R + 0.14, 0.045, 8, 40), gold, FX, KERB + 0.02, FZ, { rx: Math.PI / 2 });
     // The basin is sunk below the pavement, because the goddess stands in it
     // "up to her ample and divine flanks" — not on a pedestal above the water.
     const WATER_Y = KERB - 0.06, BASIN_Y = -0.55;
-    this._m(new THREE.CircleGeometry(R + 0.06, 36), black, FX, BASIN_Y, FZ, { rx: -Math.PI / 2, cast: false });
-    this._m(new THREE.CylinderGeometry(R + 0.06, R + 0.06, WATER_Y - BASIN_Y, 36, 1, true), black, FX, (WATER_Y + BASIN_Y) / 2, FZ, { cast: false });
-    this._waters.push({ m: this._m(new THREE.CircleGeometry(R + 0.06, 40), waterMat, FX, WATER_Y, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.09 });
+    // The book gives the KERB "the blackest stone" — it does not say the basin
+    // is lined with it. Lined black, the water read as asphalt: clear water over
+    // black stone is dark water, which is physically right and completely wrong
+    // for a fountain the text calls clear and most limpid, that gives the body
+    // back whole. Lined pale, the same clear water reads as water.
+    const basinStone = woodcut
+      ? S.mat({ tone: 0.06 })
+      : S.mat({ color: 0xbfc4c2, roughness: 0.5, metalness: 0.05 });
+    this._m(new THREE.CircleGeometry(R + 0.06, 36), basinStone, FX, BASIN_Y, FZ, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.CylinderGeometry(R + 0.06, R + 0.06, WATER_Y - BASIN_Y, 36, 1, true), basinStone, FX, (WATER_Y + BASIN_Y) / 2, FZ, { cast: false });
+    // The cupola stands directly over this basin, so a shadow-receiving water
+    // plane renders as dark stone — the exact opposite of the water the book
+    // insists on, which gives her body back with refraction itself suspended.
+    // It keeps its own light.
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(R + 0.06, 40), waterMat, FX, WATER_Y, FZ,
+      { rx: -Math.PI / 2, cast: false, receive: false }), rate: 0.09 });
     this._caustics(FX, WATER_Y, FZ, R, 0.07);
     this._circleCol(FX, FZ, R + 0.85);
 
@@ -2264,23 +2290,46 @@ export class HPWorldScene {
     this._plaque({ main: 'ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ', sub: 'AS A SPARK, SO ENCHANTMENT' },
       1.3, 0.28, FX, KERB * 0.62, FZ + R + 0.62, 0, true);
 
-    const specs = [
-      { from: [FX, 2.0, FZ], to: [FX + 0.5, WATER_Y, FZ + 0.45], count: 60, size: 0.03, speed: 0.9, arc: 0.1 },
-      { from: [FX, 1.9, FZ], to: [FX - 1.1, WATER_Y, FZ - 0.6], count: 90, size: 0.04, speed: 0.75, arc: 0.2 },
-      { from: [FX - 0.3, 1.8, FZ + 0.2], to: [FX - 1.5, WATER_Y, FZ + 1.1], count: 70, size: 0.035, speed: 0.7, arc: 0.25 },
-      { from: [FX + 0.3, 1.8, FZ - 0.2], to: [FX + 1.6, WATER_Y, FZ - 1.0], count: 40, size: 0.025, speed: 1.2, arc: 0.3 },
-    ];
-    for (const sp of specs) {
+    // ── The water ────────────────────────────────────────────────────────
+    //
+    // There were four jets arcing down from about y=2 — from nothing, out of
+    // the air above the basin. The book has no jets here at all. What chapter
+    // XXIII describes (translation/en/page_362.md) is the opposite: a brimming
+    // SALT fountain — Venus is sea-born, so `salso fonte` — so clear that it
+    // gives her body back "neither thickened nor doubled nor broken nor
+    // foreshortened", refraction itself suspended; her hair lying on the surface
+    // "not sinking, but scattered in a gyre"; and, the one thing that actually
+    // moves, "round about, at the lowest level, there rose a foaming" that gave
+    // off a fragrance of musk.
+    //
+    // So the water wells UP from the floor of the basin around its whole rim,
+    // and breaks as foam at the surface. Nothing falls from anywhere.
+    const FOAM_N = 18;
+    for (let i = 0; i < FOAM_N; i++) {
+      const a = (i / FOAM_N) * Math.PI * 2;
+      const rr = R * 0.90;
+      const fx = FX + Math.cos(a) * rr, fz = FZ + Math.sin(a) * rr;
       const stream = new ParticleStream({
-        count: sp.count,
-        source: new THREE.Vector3(...sp.from),
-        target: new THREE.Vector3(...sp.to),
-        color: 0xd0e8ff, size: sp.size, speed: sp.speed, arc: sp.arc,
+        count: 26,
+        source: new THREE.Vector3(fx, BASIN_Y + 0.05, fz),
+        target: new THREE.Vector3(fx + Math.cos(a) * 0.06, WATER_Y + 0.10, fz + Math.sin(a) * 0.06),
+        color: 0xeaf4ff, size: 0.028, speed: 0.30, arc: 0.04,
       });
-      stream.opacity = 0.6; stream.active = true;
+      stream.opacity = 0.5; stream.active = true;
       S.tuneStream(stream);
       this.scene.add(stream.points);
       this._streams.push(stream);
+    }
+    // the foaming itself, read as a bright annulus riding the water at the rim
+    if (!woodcut) {
+      const foamMat = new THREE.MeshBasicMaterial({
+        color: 0xf2f8ff, transparent: true, opacity: 0.30,
+        blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide,
+      });
+      this._disp.push(foamMat);
+      const foam = this._m(new THREE.RingGeometry(R * 0.70, R + 0.05, 44), foamMat,
+        FX, WATER_Y + 0.02, FZ, { rx: -Math.PI / 2, cast: false, receive: false });
+      this._waters.push({ m: foam, rate: -0.06 });      // turning against the water
     }
 
     const wl = S.pointLight(0x80c0ff, 1.6, 8);
