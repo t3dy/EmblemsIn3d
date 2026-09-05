@@ -31,6 +31,20 @@ note must trace to a named scholar in that corpus (or to the annotators' evidenc
 `hp.db`), never an invented reading. The **alchemical** commentary flavour specifically is
 Russell's reception evidence + `hp.db.alchemical_symbols` — attribute it, don't make it up.
 
+## Read the work queue first
+
+**[NEXTSTEPS.md](NEXTSTEPS.md) is the standing list of everything Ted has asked for that
+is not yet finished. Read it at the start of every session and work it down.** Items stay
+there until they are actually built, verified in the browser, and deployed to both hosts.
+
+When Ted asks for something, **add it to NEXTSTEPS.md immediately, in his words, before
+starting the work** — not after. The failure this guards against is real and happened on
+2026-09-05: several explicit requests (the documentation set, the lexicon gallery) were
+acknowledged and never delivered, because each new message pulled attention to the newest
+thing and the older asks were quietly filed as "next". Newest-first is not a priority
+order. **Finishing what was already asked for comes before responding to what was just
+said**, and when reporting, state what is still open rather than letting Ted find it.
+
 ## The design vision & decisions
 
 - **[DESIGN.md](DESIGN.md)** — "The Dream in Lenses": one faithful world read through

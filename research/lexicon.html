@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>The Lexicon — Emblems in 3D</title>
+<meta name="description" content="A working glossary of the Hypnerotomachia Poliphili: the architecture, the gardens, the aesthetic vocabulary, and the faculties of the soul the dream sets in motion."/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold:#c8a878; --gold-dk:#8b4513; --dim:#6a5848; --faint:#3a2a18;
+  --bg:#070503; --fg:#f0ebe0; --card:rgba(255,255,255,.014);
+}
+body { background:var(--bg); color:var(--fg); font-family:Georgia,serif; min-height:100vh; }
+a { color:inherit; }
+
+.wrap { max-width:1080px; margin:0 auto; padding:5.5rem 2rem 4rem; }
+
+header.head { text-align:center; display:flex; flex-direction:column; gap:1rem; margin-bottom:2.4rem; }
+.kicker { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:#4a3a28; }
+h1 { font-size:clamp(1.6rem,4vw,2.6rem); font-weight:normal; letter-spacing:.14em; color:var(--gold); }
+.lede { font-size:.86rem; color:var(--dim); line-height:1.95; max-width:640px; margin:0 auto; }
+.caveat {
+  font-size:.72rem; color:#7a6858; line-height:1.7; max-width:640px; margin:.4rem auto 0;
+  border-left:2px solid var(--faint); padding-left:.9rem; text-align:left;
+}
+
+/* controls */
+.controls { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; justify-content:center; margin-bottom:1.6rem; }
+#q {
+  font-family:inherit; font-size:.85rem; color:var(--fg);
+  background:rgba(10,8,4,.9); border:1px solid var(--faint);
+  padding:.5rem .85rem; min-width:min(320px,80vw);
+}
+#q:focus { outline:none; border-color:var(--gold-dk); }
+.themes { display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center; }
+.theme {
+  font-family:inherit; font-size:.68rem; letter-spacing:.06em;
+  background:none; border:1px solid var(--faint); color:var(--dim);
+  padding:.34rem .7rem; cursor:pointer;
+}
+.theme:hover { border-color:var(--gold-dk); color:var(--gold); }
+.theme.on { border-color:var(--gold); color:var(--fg); background:rgba(200,168,120,.09); }
+.count { font-size:.7rem; color:#5a4a38; letter-spacing:.06em; text-align:center; margin-bottom:1.6rem; }
+
+/* sections + cards */
+.sec { margin-bottom:2.6rem; }
+.sec > h2 {
+  font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
+  border-bottom:1px solid var(--faint); padding-bottom:.5rem; margin-bottom:1rem; font-weight:normal;
+}
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem; }
+.term {
+  border:1px solid #1e130a; background:var(--card); padding:1.1rem 1.15rem;
+  display:flex; flex-direction:column; gap:.5rem;
+}
+.term:hover { border-color:#5a3a18; }
+.term h3 { font-size:1rem; font-weight:normal; color:#e8dcc4; letter-spacing:.02em; }
+.term .short { font-size:.78rem; color:#9a8a74; line-height:1.7; }
+.term .more { display:none; flex-direction:column; gap:.6rem; }
+.term.open .more { display:flex; }
+.term .blk { font-size:.74rem; color:#8a7a64; line-height:1.75; }
+.term .blk b {
+  display:block; font-size:.56rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--gold-dk); margin-bottom:.25rem; font-weight:normal;
+}
+.term .toggle {
+  align-self:flex-start; font-family:inherit; font-size:.64rem; letter-spacing:.08em;
+  background:none; border:none; color:var(--dim); cursor:pointer; padding:.1rem 0;
+  border-bottom:1px solid var(--faint);
+}
+.term .toggle:hover { color:var(--gold); border-bottom-color:var(--gold-dk); }
+.tags { display:flex; flex-wrap:wrap; gap:.3rem; }
+.tag {
+  font-size:.55rem; letter-spacing:.1em; text-transform:uppercase;
+  border:1px solid var(--faint); color:#5f5040; padding:.12rem .4rem;
+}
+.tag.draft { border-color:#5a4218; color:#8a6a38; }
+.empty { text-align:center; color:var(--dim); font-size:.82rem; padding:3rem 0; }
+footer { border-top:1px solid #1a100a; padding:1.6rem 2rem; text-align:center; font-size:.62rem; color:#3a2a18; letter-spacing:.08em; }
+footer a { color:#4a3a28; text-decoration:none; }
+footer a:hover { color:var(--dim); }
+</style>
+</head>
+<body>
+<a data-site-home href="../index.html" title="Back to Emblems in 3D" style="position:fixed;top:1rem;left:1rem;z-index:9999;font-family:Georgia,serif;font-size:0.78rem;letter-spacing:0.05em;text-decoration:none;color:#d8a24a;background:rgba(10,8,4,0.9);border:1px solid #6a4a18;padding:0.38rem 0.8rem;">&#8962; Emblems in 3D</a>
+
+<div class="wrap">
+  <header class="head">
+    <div class="kicker">Hypnerotomachia Poliphili · Venice, 1499</div>
+    <h1>The Lexicon</h1>
+    <p class="lede">The vocabulary the dream is built from — the orders and members of its
+    architecture, the parts of its gardens, the aesthetic terms its describers reach for, and
+    the faculties of the soul its sights act upon.</p>
+    <p class="caveat"><strong>Working glossary.</strong> These entries are compiled from the
+    project&rsquo;s research database and are marked <em>draft</em>: they have not yet been
+    reviewed against the primary text term by term. Treat them as a reading aid and a route
+    into the scholarship, not as settled definitions.</p>
+  </header>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search the lexicon…" autocomplete="off"/>
+    <div class="themes" id="themes"></div>
+  </div>
+  <div class="count" id="count"></div>
+  <div id="out"></div>
+</div>
+
+<footer>
+  <a href="../index.html">Emblems in 3D</a> ·
+  <a href="translation.html">The parallel translation</a> ·
+  <a href="../src/index.html#hp">Walk the Dream Garden</a>
+</footer>
+
+<script>
+// Ted's topic areas, mapped over the database's own categories. A term keeps its
+// source category (shown on the card); the theme is the reader's way in.
+const THEMES = {
+  'Architecture':            ['Architecture & Built Form', 'Architecture & Gardens'],
+  'Gardens & landscape':     ['Gardens & Landscape'],
+  'Aesthetics':              ['Aesthetic Concepts'],
+  'The soul & the senses':   ['Characters & Figures'],
+  'Alchemy':                 ['Alchemical Interpretation'],
+  'Story & motif':           ['Textual & Visual Motifs', 'Narrative & Literary Form',
+                              'Places & Settings', 'Processions & Ritual'],
+  'Materials':               ['Material Culture'],
+  'The book itself':         ['Book History & Bibliography', 'Visual & Typographic',
+                              'Annotation Studies', 'Scholarly Debates'],
+};
+// The database's catch-all "CONCEPT" bucket, placed term by term.
+const CONCEPT_THEME = {
+  'concinnitas': 'Aesthetics', 'symmetry-norm': 'Aesthetics', 'recombinant-design': 'Aesthetics',
+  'hortus-conclusus': 'Gardens & landscape', 'imago-mundi': 'Architecture',
+  'phantasia-logistike': 'The soul & the senses', 'macaronic-prose': 'Story & motif',
+};
+const themeOf = (t) => {
+  if (t.category === 'CONCEPT') return CONCEPT_THEME[t.slug] || 'Story & motif';
+  for (const [name, cats] of Object.entries(THEMES)) if (cats.includes(t.category)) return name;
+  return 'Story & motif';
+};
+
+let TERMS = [], active = null, query = '';
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+fetch('../src/data/hp_lexicon.json')
+  .then(r => r.json())
+  .then(d => { TERMS = d.map(t => ({ ...t, theme: themeOf(t) })); buildThemes(); render(); })
+  .catch(() => { document.getElementById('out').innerHTML =
+    '<p class="empty">The lexicon could not be loaded.</p>'; });
+
+function buildThemes() {
+  const counts = {};
+  for (const t of TERMS) counts[t.theme] = (counts[t.theme] || 0) + 1;
+  const order = Object.keys(THEMES).filter(k => counts[k]);
+  document.getElementById('themes').innerHTML =
+    `<button class="theme on" data-t="">All ${TERMS.length}</button>` +
+    order.map(k => `<button class="theme" data-t="${esc(k)}">${esc(k)} ${counts[k]}</button>`).join('');
+  document.getElementById('themes').onclick = (e) => {
+    const b = e.target.closest('.theme'); if (!b) return;
+    active = b.dataset.t || null;
+    [...document.querySelectorAll('.theme')].forEach(x => x.classList.toggle('on', x === b));
+    render();
+  };
+}
+
+document.getElementById('q').addEventListener('input', (e) => { query = e.target.value.toLowerCase().trim(); render(); });
+
+function render() {
+  const hit = TERMS.filter(t => {
+    if (active && t.theme !== active) return false;
+    if (!query) return true;
+    return [t.label, t.definition_short, t.definition_long, t.significance_to_hp, t.category]
+      .some(v => v && v.toLowerCase().includes(query));
+  });
+  document.getElementById('count').textContent =
+    hit.length === TERMS.length ? `${TERMS.length} terms` : `${hit.length} of ${TERMS.length} terms`;
+
+  if (!hit.length) { document.getElementById('out').innerHTML = '<p class="empty">Nothing matches that.</p>'; return; }
+
+  const byCat = {};
+  for (const t of hit) (byCat[t.category] = byCat[t.category] || []).push(t);
+
+  document.getElementById('out').innerHTML = Object.keys(byCat).sort().map(cat => `
+    <section class="sec">
+      <h2>${esc(cat === 'CONCEPT' ? 'Concepts' : cat)}</h2>
+      <div class="grid">
+        ${byCat[cat].map(card).join('')}
+      </div>
+    </section>`).join('');
+
+  document.getElementById('out').onclick = (e) => {
+    const b = e.target.closest('.toggle'); if (!b) return;
+    const card = b.closest('.term');
+    card.classList.toggle('open');
+    b.textContent = card.classList.contains('open') ? 'Less −' : 'More +';
+  };
+}
+
+function card(t) {
+  const blk = (label, v) => v ? `<div class="blk"><b>${label}</b>${esc(v)}</div>` : '';
+  const more = blk('In full', t.definition_long)
+             + blk('In the Hypnerotomachia', t.significance_to_hp)
+             + blk('In the scholarship', t.significance_to_scholarship)
+             + blk('Sources', t.source_documents || t.source_basis);
+  return `<article class="term">
+    <h3>${esc(t.label)}</h3>
+    ${t.definition_short ? `<p class="short">${esc(t.definition_short)}</p>` : ''}
+    ${more ? `<div class="more">${more}</div><button class="toggle">More +</button>` : ''}
+    <div class="tags">
+      <span class="tag">${esc(t.theme)}</span>
+      ${t.review_status === 'DRAFT' ? '<span class="tag draft">Draft</span>' : ''}
+    </div>
+  </article>`;
+}
+</script>
+</body>
+</html>
