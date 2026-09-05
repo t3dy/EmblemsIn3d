@@ -1167,6 +1167,88 @@ export class HPWorldScene {
     return t;
   }
 
+  // ── Cloths hung on the building ─────────────────────────────────────────
+  //
+  // Lefaivre, *The Marvelous Body* (ch. 8): in the mirabilia register the
+  // building-as-body is not stated, it is "displaced by the architectural
+  // CLOTHES that cover it" — and those clothes "take the literal form of cloths
+  // draped over parts of the building" as well as the precious materials that
+  // "serve to attract attention to particular areas of the building."
+  //
+  // The world had the precious materials and none of the cloth. A hanging is
+  // the cheapest thing in the book's whole vocabulary and it changes a room's
+  // register more than another moulding does, because it is the one element
+  // that reads as *dressed* rather than as built.
+  //
+  // Drawn, not modelled: an alpha canvas with the folds and the swag painted
+  // in, hung on a plane — the same method as the trophy tunic, and for the same
+  // reason (see _spoilTexture).
+  _drapeTexture(color, swag) {
+    this._drapes = this._drapes || {};
+    const key = color + '|' + swag;
+    if (this._drapes[key]) return this._drapes[key];
+    const W = 256, H = 320;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const hex = '#' + color.toString(16).padStart(6, '0');
+    const dark = 'rgba(0,0,0,0.30)';
+    const lite = 'rgba(255,255,255,0.16)';
+
+    // the silhouette: hung from the top, sagging between two points, with a
+    // ragged weighted hem
+    x.fillStyle = hex;
+    x.beginPath();
+    x.moveTo(4, 6);
+    x.lineTo(W - 4, 6);
+    x.lineTo(W - 4, H - 70);
+    for (let i = 6; i >= 0; i--) {                       // the scalloped hem
+      const px = 4 + (W - 8) * (i / 6);
+      const dip = (i % 2 ? 46 : 16) + (swag ? 26 : 0);
+      x.quadraticCurveTo(px + (W - 8) / 12, H - 70 + dip, px, H - 70 + (i % 2 ? 8 : 30));
+    }
+    x.closePath();
+    x.fill();
+
+    // the folds, and a highlight down the crown of each
+    for (let i = 0; i < 7; i++) {
+      const px = 18 + i * ((W - 36) / 6);
+      x.strokeStyle = dark; x.lineWidth = 9;
+      x.beginPath();
+      x.moveTo(px, 10);
+      x.quadraticCurveTo(px + (i % 2 ? 12 : -12), H * 0.55, px + (i % 2 ? 5 : -5), H - 78);
+      x.stroke();
+      x.strokeStyle = lite; x.lineWidth = 4;
+      x.beginPath();
+      x.moveTo(px + 7, 10);
+      x.quadraticCurveTo(px + 7 + (i % 2 ? 12 : -12), H * 0.55, px + 7 + (i % 2 ? 5 : -5), H - 78);
+      x.stroke();
+    }
+    // the rod-pocket band along the top
+    x.fillStyle = 'rgba(0,0,0,0.22)';
+    x.fillRect(4, 6, W - 8, 16);
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    this._drapes[key] = t;
+    return t;
+  }
+
+  // Hang one. `swag` gives it the deeper festooned hem of a hanging that is
+  // gathered rather than dropped straight.
+  _drape(x, y, z, w, h, color, { ry = 0, swag = false } = {}) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const mat = new THREE.MeshStandardMaterial({
+      map: this._drapeTexture(woodcut ? 0xe8e4da : color, swag),
+      transparent: true, alphaTest: 0.4, side: THREE.DoubleSide,
+      roughness: 0.95,
+    });
+    this._disp.push(mat);
+    return this._m(new THREE.PlaneGeometry(w, h), mat, x, y, z, { ry, cast: false, receive: true });
+  }
+
   // A carved band laid just proud of a wall face. `signs` spells a specific
   // hieroglyph sequence instead of taking the band's default line.
   _frieze(x, y, z, w, h, kind, { reps = null, ry = 0, rx = 0, signs = null } = {}) {
@@ -1384,6 +1466,14 @@ export class HPWorldScene {
 
     // ── the throne ──
     // a stepped dais, a seat with arms and a high back, and a baldachin over it
+    // Cloths on the screen wall behind the throne (Lefaivre ch. 8). Hung in
+    // the queen's own colours, and set to frame the throne rather than to
+    // cover the wall evenly — the point of the clothing is that it POINTS.
+    for (const [dz, col, sw] of [[-3.4, 0xa8324a, false], [-1.15, 0x7a4a9a, true],
+                                 [1.15, 0x7a4a9a, true], [3.4, 0xa8324a, false]]) {
+      this._drape(WX + 0.42, py + 2.5, CZ + dz, 1.9, 3.2, col, { ry: Math.PI / 2, swag: sw });
+    }
+
     const TX = CX - 5.0;
     for (let i = 0; i < 3; i++) {
       this._m(new THREE.CylinderGeometry(2.1 - i * 0.32, 2.25 - i * 0.32, 0.17, 20), this._stoneMat,

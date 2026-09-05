@@ -65,13 +65,62 @@ laughing in front and weeping behind; the flower-gatherers under TEMPVS; the GEN
 the forehead; the *equus infoelicitatis* — and the whole monument was built from
 pp. 256–57.
 
+### The frame: why loving a building was a new thing to do
+
+Her chapters 6–8 are the argument the *architecture* commentary lens should route
+through, and they are not decoration on the technical material — they are the reason
+the technical material is in a love story at all.
+
+**Chapter 7, *The Dangerous Body*.** For roughly ten centuries it was **forbidden to
+love architecture**. Petrus Cantor: the world is transient, so there is no point
+building anything, and imitating the buildings of ancient Rome is specifically
+condemned. Hildebert of Lavardin attacks Rome as the emblem of fleeting earthly
+attachment. Alexander Neckam takes aim at height itself — "the towers rise up
+threatening the stars" — and cries "O curiosity! o vanity! o vain curiosity! o curious
+vanity!" Bernard calls sumptuous building not merely vain but insane. Savonarola, as
+late as 1483, is still attacking prelates who "feed upon vanity" and fill churches with
+gold. Architecture is filed under *vanitas*, *curiositas*, and the mercenary.
+
+**Chapter 6, *Reconfiguring the Architectural Body*.** The Hypnerotomachia is the exact
+inversion of that world: *amor mundi* translated into a militant **libido aedificandi**,
+the desire to build. Lefaivre's terms are Lévi-Strauss's — "cold" thinking, constricted
+and change-averse, giving way to "hot" thinking, committed to change and to *ingegno* —
+and she argues **the human body was the main lever** in the change. The battle was for
+beauty: "the aestheticizing, hedonizing, and… eroticizing of thinking."
+
+**So Poliphilo's arousal in front of a building is not a quirk of the book, it is the
+book's thesis.** When he is drawn to the arch by "the noble commotion arising from the
+pleasing love that he feels for the solid body of the building," a thousand years of
+prohibition is being answered. An `architecture` note that treats the erotic register as
+an oddity to be excused has the argument backwards.
+
+### The operative rule this gives us: precious material is CLOTHING, and it points
+
+**Chapter 8, *The Marvelous Body*.** In the *mirabilia* register the building-as-body is
+not stated outright — it is, in Lefaivre's Freudian borrowing, **"displaced" by the
+architectural clothes that cover it**:
+
+> "The clothes of the building take the literal form of cloths draped over parts of the
+> building, but also are the accoutrements, the precious and dazzling materials — gold,
+> gems, marbles, artworks — that serve to **attract attention to particular areas** of
+> the building."
+
+That is a placement rule, not a palette. Gold, gems and coloured marble in this world
+should not be spread evenly as richness; **they mark where the eye is meant to go** —
+a threshold, a throne, a door that matters, the one panel carrying the inscription.
+Where the world already does this (the gold banding running to the throne in the court,
+the gem columns at the fountain) it is right for the reason Lefaivre gives; where it
+merely gilds a surface it is decoration, and should be moved to somewhere that means
+something.
+
+And the literal half of it — **cloths draped over the building** — the world does not
+have at all. See `NEXTSTEPS.md`.
+
 ### Still to mine
 
-Her chapters 6–10 (*Reconfiguring the Architectural Body*, *The Dangerous Body*,
-*The Marvelous Body*, *The Divine Body*, *The Humanist Body*) are the interpretive
-frame this project's *architecture* commentary lens should be routed through, and
-only the last of them has been read closely. Chapter 3 (*The Code of Recombination*)
-is the one summarised above.
+Chapter 9, *The Divine Body*, and chapter 10, *The Humanist Body* (from which the
+colossal horse and the elephant descriptions above are drawn). Chapter 3, *The Code of
+Recombination*, is summarised in §0.
 
 ---
 

@@ -21,6 +21,24 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
+### 0e. Cloths draped on the buildings (2026-09-05, from Lefaivre ch. 8)
+Lefaivre's *Marvelous Body* gives a placement rule the world half-follows and one
+element it does not have at all. In the *mirabilia* register the building-as-body is
+displaced by **the clothes that cover it** — "cloths draped over parts of the building,
+but also… the precious and dazzling materials — gold, gems, marbles, artworks — that
+serve to **attract attention to particular areas** of the building."
+
+- **Build the literal cloths.** Hangings draped over thresholds, thrown across
+  entablatures, hung between columns: the court of Eleuterylida, the Temple of Venus,
+  the theatre, the triumphal cars. Cheap geometry (an alpha-tested plane with a painted
+  fold texture, as the trophy tunic already is) and it changes the register of a
+  building more than another moulding would.
+- **Audit the gold.** Precious material should mark *where to look* — a threshold, a
+  throne, the panel that carries the inscription — not spread evenly as richness. Where
+  the world gilds a surface for its own sake, move it somewhere that means something.
+  → `ARCHITECTURE.md` §0.
+
+
 ### 0d. The colossal horse is built — and Lefaivre turns out to be readable (2026-09-05)
 Five catalogued woodcuts (#6–#10) and nothing in the world; the first monument of the
 piazza, before the elephant. Built with its pedestal, the two figured sides under
