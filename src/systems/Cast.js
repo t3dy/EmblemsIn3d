@@ -281,14 +281,13 @@ export function makeCast(S) {
     return wing;
   }
 
-  function figure({ h = 1, skin = SKIN, robe = null, pose = 'stand', crowned = false,
+  function figure({ name = '', h = 1, skin = SKIN, robe = null, pose = 'stand', crowned = false,
                     winged = false, twoHeaded = false, hat = null, beard = false } = {}) {
     // Only robed figures become painted cards; the winged, two-headed and
     // gilded ones are doing something the flat painting cannot, and keep their
     // built bodies.
     if (lit && figVariant() === 'card' && robe != null && !winged && !twoHeaded) {
-      const seed = Math.round(h * 977) + (robe & 0xff);
-      return paintedFigure({ h, robe, cutout: CUTOUTS[seed % CUTOUTS.length] });
+      return paintedFigure({ h, robe, cutout: pickCutout(name, true) });
     }
     const g = new THREE.Group();
     const sm = M(skin, { roughness: 0.6 });
@@ -623,7 +622,25 @@ export function makeCast(S) {
   // Graces and Flora are standing draped women in a garden — exactly the brief —
   // and a real painted figure beats any approximation of one I can generate.
   // Provenance for each is in src/data/figure_cutouts.json.
-  const CUTOUTS = ['grace_1', 'grace_2', 'grace_3', 'flora', 'chloris', 'venus_bot'];
+  // Cut from Botticelli's Primavera. Sex matters: the world has male characters,
+  // and Poliphilo must not be handed one of the Graces. Named characters get a
+  // CHOSEN figure rather than whichever the name-hash lands on — Polia takes
+  // Flora, whose whole iconography is the beloved crowned with flowers; the
+  // Queen takes Venus, who in the painting already presides over the others.
+  const CUTOUTS_F = ['grace_1', 'grace_2', 'grace_3', 'flora', 'chloris', 'venus_bot'];
+  const CUTOUTS_M = ['mercury'];
+  const CUTOUT_NAMED = {
+    'Polia': 'flora',
+    'Eleuterylida': 'venus_bot',
+    'Poliphilo': 'mercury',
+    'Pomona': 'chloris',
+  };
+  const pickCutout = (name, male) => {
+    if (name && CUTOUT_NAMED[name]) return CUTOUT_NAMED[name];
+    const pool = male ? CUTOUTS_M : CUTOUTS_F;
+    const seed = Array.from(name || '').reduce((t, ch) => t + ch.charCodeAt(0), (name || '').length + 3);
+    return pool[seed % pool.length];
+  };
   const _cutTex = new Map();
   let _texLoader = null;
   function cutoutTexture(id) {
@@ -645,7 +662,11 @@ export function makeCast(S) {
       map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
       toneMapped: true,
     });
-    const HH = h * 1.78, WW = HH * 0.5;   // the cutouts are 448x896
+    // The cutouts are all scaled by ONE factor at cut time, so the texture
+    // already carries each figure's true height relative to the others (a short
+    // figure simply sits lower on its card). Scaling the card by the caller's
+    // `h` would throw that away, so the card is a fixed world size.
+    const HH = (cutout ? 2.02 : h * 1.78), WW = HH * 0.5;   // cards are 448x896
     const card = new THREE.Mesh(new THREE.PlaneGeometry(WW, HH), mat);
     card.position.y = HH / 2;
     card.castShadow = false; card.receiveShadow = false;
@@ -787,8 +808,7 @@ export function makeCast(S) {
     // paintedFigure). Seeded off the name so a row of nymphs is not the same
     // painting repeated.
     if (lit && figVariant() === 'card') {
-      const seed = Array.from(name).reduce((t, ch) => t + ch.charCodeAt(0), name.length);
-      return paintedFigure({ h, robe, hair, cutout: CUTOUTS[seed % CUTOUTS.length] });
+      return paintedFigure({ h, robe, hair, cutout: pickCutout(name, false) });
     }
     const g = new THREE.Group();
     const parts = g.userData;

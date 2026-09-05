@@ -19,13 +19,20 @@ OUT = 'images/cutouts/figures'
 os.makedirs(OUT, exist_ok=True)
 
 # (id, source file, crop box, luminance cut, label)
+# Crops tightened inward from the first pass, which brought slivers of the pale
+# grove trunks along at the edges. `sex` matters: the world has male characters,
+# and Poliphilo must not be handed one of Botticelli's Graces.
 FIGURES = [
-    ('grace_1',   'botticelli_primavera.jpg', (196, 250, 336, 800), 58, 'The first Grace'),
-    ('grace_2',   'botticelli_primavera.jpg', (300, 268, 438, 800), 58, 'The second Grace'),
-    ('grace_3',   'botticelli_primavera.jpg', (420, 250, 578, 800), 58, 'The third Grace'),
-    ('flora',     'botticelli_primavera.jpg', (770, 240, 958, 830), 52, 'Flora'),
-    ('chloris',   'botticelli_primavera.jpg', (900, 268, 1080, 812), 60, 'Chloris'),
-    ('venus_bot', 'botticelli_primavera.jpg', (596, 160, 782, 700), 46, 'Venus'),
+    ('grace_1',   'botticelli_primavera.jpg', (204, 252, 330, 798), 60, 'The first Grace',  'f'),
+    ('grace_2',   'botticelli_primavera.jpg', (308, 270, 432, 798), 60, 'The second Grace', 'f'),
+    ('grace_3',   'botticelli_primavera.jpg', (428, 252, 570, 798), 60, 'The third Grace',  'f'),
+    ('flora',     'botticelli_primavera.jpg', (778, 242, 952, 828), 54, 'Flora',            'f'),
+    ('chloris',   'botticelli_primavera.jpg', (908, 270, 1072, 810), 62, 'Chloris',         'f'),
+    ('venus_bot', 'botticelli_primavera.jpg', (604, 162, 776, 698), 48, 'Venus',            'f'),
+    # Mercury, far left, in his red cloak with the raised arm — the one standing
+    # male figure in the painting, and the reason Poliphilo now has a body of his
+    # own instead of borrowing a Grace's.
+    ('mercury',   'botticelli_primavera.jpg', (28, 246, 214, 800), 52, 'Mercury',           'm'),
 ]
 
 def largest_region(mask, thresh=128):
@@ -59,8 +66,13 @@ def largest_region(mask, thresh=128):
             o[x, y] = 255
     return out
 
+# Two passes. Each figure used to be resized to FILL its card, which threw their
+# relative heights away: a tightly-cropped figure came out as tall as a loosely
+# cropped one. Pass 1 trims every figure and records its real height; pass 2
+# scales them all by ONE factor, so a shorter figure stays shorter in the world.
+_trimmed = []
 manifest = []
-for fid, src, box, cut, label in FIGURES:
+for fid, src, box, cut, label, sex in FIGURES:
     im = Image.open(os.path.join(SRC, src)).convert('RGB').crop(box)
     # luminance -> mask
     # Luminance alone also keeps the grove's pale trunks, which are neutral grey.
@@ -83,12 +95,19 @@ for fid, src, box, cut, label in FIGURES:
     if bb:
         rgba = rgba.crop(bb)
     # normalise to a 2:1 tall card, figure centred and standing on the bottom
+    _trimmed.append((fid, src, box, cut, label, sex, rgba))
+
+TW, TH = 448, 896
+_maxH = max(r[6].size[1] for r in _trimmed)
+_maxW = max(r[6].size[0] for r in _trimmed)
+GLOBAL = min(TW / _maxW, TH / _maxH) * 0.98      # one factor for every figure
+
+for fid, src, box, cut, label, sex, rgba in _trimmed:
     W, H = rgba.size
-    tw, th = 448, 896
-    sc = min(tw / W, th / H)
-    rgba = rgba.resize((max(1, int(W*sc)), max(1, int(H*sc))), Image.LANCZOS)
-    card = Image.new('RGBA', (tw, th), (0, 0, 0, 0))
-    card.paste(rgba, ((tw - rgba.size[0]) // 2, th - rgba.size[1]), rgba)
+    src_h = H
+    rgba = rgba.resize((max(1, int(W*GLOBAL)), max(1, int(H*GLOBAL))), Image.LANCZOS)
+    card = Image.new('RGBA', (TW, TH), (0, 0, 0, 0))
+    card.paste(rgba, ((TW - rgba.size[0]) // 2, TH - rgba.size[1]), rgba)
     path = os.path.join(OUT, fid + '.png')
     card.save(path, optimize=True)
     manifest.append({
@@ -98,11 +117,11 @@ for fid, src, box, cut, label in FIGURES:
         'artist': 'Sandro Botticelli', 'date': 'c. 1480',
         'holding': 'Galleria degli Uffizi, Florence',
         'licence': 'Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.',
-        'crop': list(box), 'luminance_cut': cut,
+        'crop': list(box), 'luminance_cut': cut, 'sex': sex, 'source_px_h': src_h,
         'method': 'Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.',
-        'px': list(card.size),
+        'px': list(card.size), 'relative_height': round(src_h / _maxH, 3),
     })
-    print(f'{fid:10s} {os.path.getsize(path)/1024:7.1f} kB  from {src} {box}')
+    print(f'{fid:10s} {os.path.getsize(path)/1024:7.1f} kB  rel-h {src_h/_maxH:.2f}  {sex}')
 
 io.open('src/data/figure_cutouts.json', 'w', encoding='utf-8').write(
     json.dumps(manifest, ensure_ascii=False, indent=1))

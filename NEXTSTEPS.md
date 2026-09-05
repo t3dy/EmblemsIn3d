@@ -21,36 +21,20 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
-### 1. Figures — finish the cutout pass
-The card pipeline and the real cutouts shipped (2026-09-05): six figures cut from
-Botticelli's *Primavera* now stand in the garden, provenance in
-`src/data/figure_cutouts.json`, cut by `scripts/cut_figures.py`. See `NYMPHS.md` for the
-four attempts it took. What remains:
-
-- A few **grey fragments of tree trunk** survive the mask at some card edges — tighten the
-  crop boxes or raise the warmth threshold per figure.
-- **Relative scale** was normalised per figure, not against each other, so heights disagree.
-- **Six figures for the whole cast** means visible repeats. **Cranach's nymph and Cellini's
-  Fontainebleau nymph are already in the gallery and uncut** — cutting them would widen the
-  range beyond one painter's studio, and both are named in `research/nymphs.html` as the
-  project's own references for proportion and drapery.
-- Poliphilo, Polia and the Queen still take whichever cutout the name-hash lands on; the
-  named characters should get chosen figures rather than assigned ones.
-
-### 2. Architecture still not "well detailed" everywhere
+### 1. Architecture — what the detail pass has still not reached "well detailed" everywhere
 Goal set 2026-09-05: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*
 
-- **Folio 80's fountain.** The station labelled *Fountain of Venus* is the plate
-  `woodcut_catalog` calls **"Third fountain with Graces, harpies, griffins"**. None of the
-  Graces, harpies or griffins are modelled. Either model them or re-label the station.
-- **Untouched by the detail pass:** the Quinta, the Bridge, the Three Doors wall, the
-  Triumphs, the Cythera theatre and isle. Apply the shared classical members
-  (`_column`, `_entablature`, `_steps`, `_doorway` in `HPWorldScene.js`).
-- The second and third fountains of the FIVE_SENSES section (`woodcut_catalog` #22, #23)
-  are not built as distinct features.
+- **Still untouched by the detail pass:** the Bridge, the Cythera theatre and isle.
+  Apply the shared classical members (`_column`, `_entablature`, `_steps`, `_doorway`).
+- The **second** fountain of the FIVE_SENSES section (`woodcut_catalog` #22) is not built
+  as a distinct feature. (#23, the third, is now the mainland fountain with its Graces,
+  harpies and griffins.)
+- **Polia's torch extinguished in the altar-fountain** (#77) carries real narrative weight
+  and does not exist.
+- The **Triumph of Cupid** on Cythera (#143–144) is a standard, not a procession.
 
-### 3. "Spare no effort to capture the details"
+### 2. "Spare no effort to capture the details"
 Ted: *"since we have such rich lists of nouns related to the gardens and architectural and
 other structural features of the world of the HP we should be sparing no effort to capture
 the details."* The lexicon (`research/lexicon.html`) is now the index of those nouns — work
@@ -60,6 +44,26 @@ contain is a candidate asset. Check the list against what is actually built.
 ---
 
 ## Done
+
+- **The figure cutouts finished** *(2026-09-05)* — crops tightened so the grove's trunks no
+  longer come along; **Mercury** cut from the Primavera so the world's male characters are
+  not handed one of the Graces; all seven scaled by ONE factor at cut time so their relative
+  heights are true (Flora 1.00, Chloris 0.86); named characters given chosen figures rather
+  than a name-hash — Polia takes Flora, Poliphilo Mercury, the Queen Venus. Fixed a real
+  ordering bug found while verifying: the NPC idle-sway wrote `rotation.y` from each
+  figure's fixed yaw *after* the billboard pass, so every card was frozen edge-on. The
+  billboard pass now runs last.
+- **The fifth procession** — Vertumnus and Pomona (#66), with the Four Seasons on its
+  panels. *(2026-09-05)*
+- **Folio 80's Graces, harpies and griffins** on the mainland fountain. *(2026-09-05)*
+- **The Three Doors wall and the Quinta** given their classical orders. *(2026-09-05)*
+- **Text no longer clips** — labels measure themselves, plaques fit their type to the
+  stone. The Great Portal's dedication had been truncated at both ends. *(2026-09-05)*
+- **The Fountain of Venus** — the invented jets removed for the book's own upwelling foam,
+  and the basin un-lidded (the kerb was a solid cylinder capping the whole pool). *(2026-09-05)*
+- **The triumphal cars** — emerald wheels, cornucopias, harpy feet, rose axle-ends, and the
+  four reliefs per car with NEMO among them. Danaë's unicorns and the Festival of Bacchus
+  corrected from the plates. *(2026-09-05)*
 
 - **The documentation set** — all nine files written (2026-09-05):
   `RENAISSANCEART.md` (with the web research Ted approved, cited, and an explicit

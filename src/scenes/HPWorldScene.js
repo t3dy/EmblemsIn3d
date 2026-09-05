@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=31';
+import { makeCast } from '../systems/Cast.js?v=32';
 import { isVariant } from '../systems/AssetVariants.js?v=7';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
@@ -1663,7 +1663,9 @@ export class HPWorldScene {
     // Polia and Poliphilo, and her torch
     const polia = this.cast.nymph({ name: 'Polia', h: 1.0, robe: 0xe8ddc0, pose: 'offer' });
     this._npc('polia', polia, CX + 0.9, CZ, Math.PI / 2, { label: 'Polia', sub: 'THE LONG-SOUGHT', labelY: 2.1, sway: 0.03 });
-    const poliphilo = this.cast.figure({ h: 1.0, robe: 0x3a3a5a, pose: 'reach' });
+    // named, so the card variant hands him Mercury — the one standing male
+    // figure in the Primavera — rather than one of the Graces
+    const poliphilo = this.cast.figure({ name: 'Poliphilo', h: 1.0, robe: 0x3a3a5a, pose: 'reach' });
     this._npc('poliphilo', poliphilo, CX - 0.9, CZ, -Math.PI / 2, { label: 'Poliphilo', sub: 'THE DREAMER', labelY: 2.1, sway: 0.03 });
 
     // The torch between them
@@ -3788,17 +3790,6 @@ export class HPWorldScene {
   }
 
   update(dt) {
-    // A painted figure has one correct view. Turn each card about its own axis
-    // to face the camera — never tilt it, or it lifts off the ground.
-    if (this._billboards.length) {
-      const cx = this.camera.position.x, cz = this.camera.position.z;
-      for (const b of this._billboards) {
-        b.rotation.y = Math.atan2(cx - b.position.x, cz - b.position.z);
-        // the ground shadow stays put while the card turns above it
-        const sh = b.userData.shadow;
-        if (sh) sh.rotation.z = -b.rotation.y;
-      }
-    }
     this._t += dt;
     if (this.dream) this.dream.update(dt);
     if (this._mood) this._updateMood(dt);
@@ -3843,6 +3834,7 @@ export class HPWorldScene {
     }
     // NPC idle sway + arm breathing (the poses live instead of freezing)
     for (const n of this._npcs) {
+      if (n.g.userData && n.g.userData.billboard) continue;   // cards face the camera, not a fixed yaw
       n.g.rotation.y = n.baseY + Math.sin(this._t * 0.8 + n.phase) * n.sway;
       if (n.armL) {
         n.armL.rotation.z = n.aL + Math.sin(this._t * 0.9 + n.phase) * 0.05;
@@ -3865,6 +3857,19 @@ export class HPWorldScene {
       this._hiero.ele.scale.setScalar(1.8 - k * 1.4);
     }
     // Water: the fountain discs turn, the sea breathes
+    // A painted figure has one correct view: turn each card about its own axis
+    // to face the camera, never tilting it or it lifts off the ground. This runs
+    // LAST — the NPC idle-sway above writes rotation.y from each figure's fixed
+    // baseY, and when this ran first the sway simply overwrote it, leaving the
+    // cards frozen at their authored yaw and edge-on to the reader.
+    if (this._billboards.length) {
+      const cx = this.camera.position.x, cz = this.camera.position.z;
+      for (const b of this._billboards) {
+        b.rotation.y = Math.atan2(cx - b.position.x, cz - b.position.z);
+        const sh = b.userData.shadow;
+        if (sh) sh.rotation.z = -b.rotation.y;   // the shadow stays put on the ground
+      }
+    }
     for (const w of this._waters) w.m.rotation.z += dt * w.rate;
     if (this._sea) this._sea.mat.opacity = this._sea.base + Math.sin(this._t * 0.5) * 0.05;
     // Pollen drifts down through the afternoon light and recycles

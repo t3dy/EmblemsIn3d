@@ -10,17 +10,20 @@
   "holding": "Galleria degli Uffizi, Florence",
   "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
   "crop": [
-   196,
-   250,
-   336,
-   800
+   204,
+   252,
+   330,
+   798
   ],
-  "luminance_cut": 58,
+  "luminance_cut": 60,
+  "sex": "f",
+  "source_px_h": 546,
   "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
   "px": [
    448,
    896
-  ]
+  ],
+  "relative_height": 0.932
  },
  {
   "id": "grace_2",
@@ -33,17 +36,20 @@
   "holding": "Galleria degli Uffizi, Florence",
   "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
   "crop": [
-   300,
-   268,
-   438,
-   800
+   308,
+   270,
+   432,
+   798
   ],
-  "luminance_cut": 58,
+  "luminance_cut": 60,
+  "sex": "f",
+  "source_px_h": 527,
   "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
   "px": [
    448,
    896
-  ]
+  ],
+  "relative_height": 0.899
  },
  {
   "id": "grace_3",
@@ -56,17 +62,20 @@
   "holding": "Galleria degli Uffizi, Florence",
   "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
   "crop": [
-   420,
-   250,
-   578,
-   800
+   428,
+   252,
+   570,
+   798
   ],
-  "luminance_cut": 58,
+  "luminance_cut": 60,
+  "sex": "f",
+  "source_px_h": 546,
   "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
   "px": [
    448,
    896
-  ]
+  ],
+  "relative_height": 0.932
  },
  {
   "id": "flora",
@@ -79,17 +88,20 @@
   "holding": "Galleria degli Uffizi, Florence",
   "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
   "crop": [
-   770,
-   240,
-   958,
-   830
+   778,
+   242,
+   952,
+   828
   ],
-  "luminance_cut": 52,
+  "luminance_cut": 54,
+  "sex": "f",
+  "source_px_h": 586,
   "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
   "px": [
    448,
    896
-  ]
+  ],
+  "relative_height": 1.0
  },
  {
   "id": "chloris",
@@ -102,17 +114,20 @@
   "holding": "Galleria degli Uffizi, Florence",
   "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
   "crop": [
-   900,
-   268,
-   1080,
-   812
+   908,
+   270,
+   1072,
+   810
   ],
-  "luminance_cut": 60,
+  "luminance_cut": 62,
+  "sex": "f",
+  "source_px_h": 504,
   "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
   "px": [
    448,
    896
-  ]
+  ],
+  "relative_height": 0.86
  },
  {
   "id": "venus_bot",
@@ -125,16 +140,45 @@
   "holding": "Galleria degli Uffizi, Florence",
   "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
   "crop": [
-   596,
-   160,
-   782,
-   700
+   604,
+   162,
+   776,
+   698
   ],
-  "luminance_cut": 46,
+  "luminance_cut": 48,
+  "sex": "f",
+  "source_px_h": 518,
   "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
   "px": [
    448,
    896
-  ]
+  ],
+  "relative_height": 0.884
+ },
+ {
+  "id": "mercury",
+  "label": "Mercury",
+  "file": "cutouts/figures/mercury.png",
+  "source_file": "gallery/botticelli_primavera.jpg",
+  "artwork": "Primavera",
+  "artist": "Sandro Botticelli",
+  "date": "c. 1480",
+  "holding": "Galleria degli Uffizi, Florence",
+  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+  "crop": [
+   28,
+   246,
+   214,
+   800
+  ],
+  "luminance_cut": 52,
+  "sex": "m",
+  "source_px_h": 509,
+  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+  "px": [
+   448,
+   896
+  ],
+  "relative_height": 0.869
  }
 ]
