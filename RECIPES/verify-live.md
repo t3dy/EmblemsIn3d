@@ -63,6 +63,33 @@ Both must show the number you just bumped to. GitHub Pages lags a push by 30–9
 Then **open the live URL in the browser and do the thing the user asked about.** A matching
 version number proves the file shipped; it does not prove the feature works.
 
+## Verifying something that ANIMATES
+
+**A hidden browser pane freezes `requestAnimationFrame` completely.** The render loop
+stops, so `_t` and every animation clock stand still and the world looks stalled when
+nothing is wrong. `document.hidden` tells you; a screenshot forces one frame, which is why
+a scene can appear to advance a little between screenshots and never between reads.
+
+So do not verify an animation by watching it. **Drive it and inspect the result:**
+
+```js
+// 400 simulated seconds of the chess ballet at a fixed step
+const s = window._hp.state.activeScene, C = s._chess;
+const rounds = [], phases = new Set();
+let last = C.round;
+for (let i = 0; i < 24000; i++) {
+  s._chessUpdate(1 / 60);
+  phases.add(C.phase);
+  if (C.round !== last) { rounds.push(last); last = C.round; }
+}
+({ rounds, phases: [...phases],
+   nan: C.pieces.some(p => !Number.isFinite(p.g.position.x)) })
+```
+
+What that proves and watching does not: every phase is reachable, the loop cycles rather
+than stopping in one, and no transform has gone NaN. Any state machine in this project —
+`DreamMode`, the ballet, the triumph floats — should be checked this way.
+
 ## Evidence to hand back
 
 - a screenshot for anything visual

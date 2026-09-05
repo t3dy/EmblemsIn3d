@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=32';
+import { makeCast } from '../systems/Cast.js?v=33';
 import { isVariant } from '../systems/AssetVariants.js?v=7';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -2252,6 +2252,9 @@ export class HPWorldScene {
         robe,
         h: kind === 'king' || kind === 'queen' ? 1.02 : kind === 'pawn' ? 0.9 : 0.95,
         crowned: kind === 'king' || kind === 'queen',
+        // NOT a painting cut-out, in any variant: a Botticelli figure carries
+        // her own colours, and the livery IS the content here (see Cast.nymph).
+        cutout: null,
       });
       const [x, z] = sq(f, r);
       // the two sides face each other across the board

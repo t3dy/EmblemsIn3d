@@ -802,13 +802,22 @@ export function makeCast(S) {
   // carries (docs/HP_SOURCEBOOK.md §3): Osfressia the perfume casket, Orassia
   // the shining glass, Achoe the sounding harp, Geussia the casting bottle.
   // Aphea carries nothing — she is the one who offers her hand.
+  // `cutout: null` opts a figure OUT of the painting cut-outs while staying in the
+  // painted-panel register: paintedFigureTexture then paints her gown in `robe`.
+  // The chess ballet needs this. Its whole documented meaning is the colour of
+  // the gowns — the queens in gold and the kings in silver, which is what the
+  // Buffalo annotator's alchemical reading turns on — and a Botticelli cut-out
+  // carries the painting's own colours, not ours, so every piece came out the
+  // same and the two sides became indistinguishable.
   function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand',
-                   attribute = null, hair = 0x4a3018, crowned = false, winged = false } = {}) {
+                   attribute = null, hair = 0x4a3018, crowned = false, winged = false,
+                   cutout = undefined } = {}) {
     // The painted rung hands back a card instead of an assembly (see
     // paintedFigure). Seeded off the name so a row of nymphs is not the same
     // painting repeated.
     if (lit && figVariant() === 'card') {
-      return paintedFigure({ h, robe, hair, cutout: pickCutout(name, false) });
+      return paintedFigure({ h, robe, hair,
+        cutout: cutout === null ? null : pickCutout(name, false) });
     }
     const g = new THREE.Group();
     const parts = g.userData;
