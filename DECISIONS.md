@@ -2,21 +2,21 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
-## 2026-09-04 (evening) — Audio: the original ambient score is canonical (Ted)
+## 2026-09-04 (evening, final) — The site is SILENT. No audio anywhere. (Ted)
 
-- **The chiptune is out; the ambient score is back.** Ted: what plays should be the
-  music the project had at the beginning, not the "weird music" experiment. The
-  original design — slow detuned drones (NIGREDO), a shimmering A + fifth (ALBEDO),
-  struck bells over a hum (CITRINITAS), a warm breathing triad over a pedal (RUBEDO)
-  — is the canonical score. **Do not replace it with a step-sequenced chiptune.**
-- **What was actually broken was the mix, not the music.** In NIGREDO (the default
-  stage) each drone reached the output three times, two of those paths bypassing the
-  -28 dB master, so raw 42 Hz sawtooths hit the speakers at full scale. That was the
-  noise — not the composition. Rebuilt on raw Web Audio with one path per voice.
-- **No Tone.js / esm.sh dependency.** The score is synthesised directly.
-- **Verify audio by measuring it, never by reading the diff.** Tap the real output
-  with an AnalyserNode and assert on the tones, peak and clipping. (Live check:
-  ALBEDO reads 223/328/445/656 Hz, peak 0.083, no clipping.)
+- **No music, no ambient bed, no sound of any kind** — not during the guided tours,
+  not in Poliphilo's Dream, not in the Atalanta worlds, not on any page. This
+  **supersedes** the earlier call the same evening to restore the ambient score.
+- Silence is **structural, not a volume setting**: `AlchemicalAudio` is a no-op stub
+  that constructs no `AudioContext` at all, and the first-gesture unlock listeners are
+  gone from `main.js`. The stub is kept (not deleted) so the existing `setStage` call
+  sites stay valid and nobody reintroduces sound while "fixing a missing import".
+- **Do not add audio to this project without Ted asking for it.** Two successive
+  attempts at a soundtrack (the Tone.js ambient bed, then a chiptune) both ended up as
+  noise in his speakers. The prior ambient implementation is in git at `ab5f82b` if it
+  is ever wanted; restoring it is a deliberate act.
+- Verify silence by **proxying `AudioContext`, `AudioScheduledSourceNode.start` and
+  `HTMLMediaElement.play`** and exercising the site — not by reading the diff.
 
 ## 2026-09-04 (evening) — `hidden` must always win in the app's CSS
 
