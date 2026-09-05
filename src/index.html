@@ -69,10 +69,20 @@
 
     /* World selector (top-right) */
     #world-nav {
-      position: absolute; top: 1.5rem; right: 1.5rem;
-      display: flex; gap: 0.75rem;
+      position: fixed; top: 1.5rem; right: 1.5rem; z-index: 41;
+      display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;
+      justify-content: flex-end; max-width: calc(100vw - 3rem);
       pointer-events: all;
     }
+    /* Home is a link, not a world button — it leaves the app for the site's
+       front page, so it reads differently and sits first. */
+    #world-nav .wn-home {
+      text-decoration: none; font-size: 0.8rem; letter-spacing: 0.05em;
+      color: #d8a24a; background: rgba(10,8,4,0.85);
+      border: 1px solid #6a4a18; padding: 0.4rem 0.8rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    #world-nav .wn-home:hover { border-color: #c8a040; color: #f5f0e8; }
     #world-nav button {
       background: rgba(10,8,4,0.8); border: 1px solid #4a2a10;
       color: #c8a878; font-family: 'Georgia', serif; font-size: 0.8rem;
@@ -162,7 +172,7 @@
       display: none; position: fixed; inset: 0; z-index: 40;
       background: rgba(6,4,2,0.97);
       overflow-y: auto; pointer-events: all;
-      padding: 4.6rem 1.5rem 3rem;
+      padding: 7.2rem 1.5rem 3rem;
     }
     #plates-overlay .plates-head { text-align: center; margin-bottom: 1.6rem; }
     #plates-overlay .plates-head h2 {
@@ -249,7 +259,7 @@
     #gallery-overlay {
       display: none; position: fixed; inset: 0; z-index: 40;
       background: rgba(6,4,2,0.97); overflow-y: auto; pointer-events: all;
-      padding: 4.6rem 1.5rem 3rem;
+      padding: 7.2rem 1.5rem 3rem;
     }
     #gallery-body { max-width: 1180px; margin: 0 auto; }
     .gal-cat {
@@ -321,7 +331,7 @@
       display: none; position: fixed; inset: 0; z-index: 40;
       background: rgba(6,4,2,0.97); overflow-y: auto;
       flex-direction: column; align-items: center;
-      padding: 4.6rem 1.5rem 3rem; pointer-events: all;
+      padding: 7.2rem 1.5rem 3rem; pointer-events: all;
     }
     #tours-menu .tours-head { text-align: center; max-width: 680px; margin-bottom: 2rem; }
     #tours-menu .tours-head h2 { font-size: 1.4rem; font-weight: normal; letter-spacing: 0.16em; color: #c8a878; }
@@ -731,6 +741,24 @@
   <canvas id="woodcut-canvas"></canvas>
   <canvas id="three-canvas"></canvas>
 
+  <!-- The toolbar lives OUTSIDE #ui. #ui is z-index 10 and creates a stacking
+       context, so while the toolbar was inside it, the Plates / Gallery / Tours
+       overlays (z-index 40) buried it and there was no way back out of them.
+       Out here at z-index 41 it stays above those browsing overlays, and still
+       below the true modals (chooser 44, lightboxes 45/47, graphics 46). -->
+  <div id="world-nav">
+    <a class="wn-home" href="../index.html" title="Back to the home page">&#8962; Home</a>
+    <button id="btn-hp-style" style="display:none" onclick="window.toggleHPStyle()">Woodcut view</button>
+    <button id="btn-hp" onclick="window.switchWorld('HP')">Hypnerotomachia</button>
+    <button id="btn-af" class="active" onclick="window.switchWorld('AF')">Atalanta Animata</button>
+    <button id="btn-theatrum" onclick="window.switchWorld('THEATRUM')">Theatrum</button>
+    <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
+    <button id="btn-gallery" onclick="window.switchWorld('GALLERY')">Gallery</button>
+    <button onclick="window.openGraphics()" title="Choose how each asset is drawn">Graphics</button>
+    <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
+    <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
+  </div>
+
   <div id="ui">
     <div id="emblem-hud">
       <div class="stage-badge" id="hud-stage">NIGREDO</div>
@@ -744,17 +772,6 @@
       <button id="back-btn" onclick="window.backToGallery()">&#8592; Gallery</button>
     </div>
 
-    <div id="world-nav">
-      <button id="btn-hp-style" style="display:none" onclick="window.toggleHPStyle()">Woodcut view</button>
-      <button id="btn-hp" onclick="window.switchWorld('HP')">Hypnerotomachia</button>
-      <button id="btn-af" class="active" onclick="window.switchWorld('AF')">Atalanta Animata</button>
-      <button id="btn-theatrum" onclick="window.switchWorld('THEATRUM')">Theatrum</button>
-      <button id="btn-plates" onclick="window.switchWorld('PLATES')">Plates</button>
-      <button id="btn-gallery" onclick="window.switchWorld('GALLERY')">Gallery</button>
-      <button onclick="window.openGraphics()" title="Choose how each asset is drawn">Graphics</button>
-    <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
-      <button id="btn-arch" onclick="window.switchWorld('ARCHIVES')">Archives</button>
-    </div>
 
     <div id="annotation-panel">
       <button class="close-btn" onclick="document.getElementById('annotation-panel').style.display='none'">×</button>
@@ -903,6 +920,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=112"></script>
+  <script type="module" src="./main.js?v=113"></script>
 </body>
 </html>
