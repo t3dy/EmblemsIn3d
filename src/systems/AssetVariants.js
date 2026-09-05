@@ -50,7 +50,15 @@ export const ASSETS = {
       { id: 'primitive', label: 'Primitive', note: 'A cone for the robe and capsules for the limbs — the founding manifesto look.' },
       { id: 'modelled',  label: 'Modelled', note: 'A turned gown falling in long folds, tapered legs with hips and feet, and a torso wider at the shoulder than the waist — so the figure has a silhouette, not a barrel.' },
       { id: 'painted',   label: 'Painterly (tempera)', note: 'The modelled build, but the drapery folds are painted into the cloth rather than lit into it, and the surface takes no specular — the Botticelli-panel register.' },
-      { id: 'scan',      label: 'Sculpture scan', note: 'Imported CC0 museum scans, as the marble Venus already is. Needs a stylisation pass to sit in the painted world — see IMPORTEXEMPLARS.md.', pending: true },
+
+    ],
+  },
+  statue: {
+    label: 'Statues & the marble Venus',
+    def: 'scan',
+    variants: [
+      { id: 'primitive', label: 'Built', note: 'The statue built from primitives, like everything else — the founding manifesto look.' },
+      { id: 'scan',      label: 'Imported scan', note: 'A CC0 scan of the Capitoline Venus (~35k faces, 0.6 MB glTF), self-hosted. Given a stylisation pass so it sits in the painted world instead of fighting it — see IMPORTEXEMPLARS.md.' },
     ],
   },
   water: {

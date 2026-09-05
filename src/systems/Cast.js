@@ -11,7 +11,7 @@
 // head) so scenes and vignettes can animate gestures without traversing.
 
 import * as THREE from 'three';
-import { isVariant, variantOf } from './AssetVariants.js?v=4';
+import { isVariant, variantOf } from './AssetVariants.js?v=5';
 
 export function makeCast(S) {
   const mats = new Map();
@@ -377,7 +377,19 @@ export function makeCast(S) {
 
   // The gown: one turned profile from hem to shoulder, then displaced into a
   // few long vertical folds that fade out as they rise to the waist.
+  // Cached by height. The gown is a LatheGeometry whose vertices are then
+  // displaced into folds, which is far too much work to redo for every figure
+  // in the garden — building it fresh each time made switching to the
+  // `modelled` figures take several seconds.
+  const _gowns = new Map();
   function gownGeometry(h) {
+    const key = Math.round(h * 1000);
+    if (_gowns.has(key)) return _gowns.get(key);
+    const geo = _gownGeometryBuild(h);
+    _gowns.set(key, geo);
+    return geo;
+  }
+  function _gownGeometryBuild(h) {
     const profile = [
       [0.000, 0.000], [0.250, 0.000],   // hem, closed at the centre
       [0.238, 0.055], [0.212, 0.200],

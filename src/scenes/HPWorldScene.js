@@ -24,8 +24,8 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=19';
-import { isVariant } from '../systems/AssetVariants.js?v=4';
+import { makeCast } from '../systems/Cast.js?v=20';
+import { isVariant } from '../systems/AssetVariants.js?v=5';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -282,8 +282,17 @@ export class HPWorldScene {
     this.walker.applyTo(this.camera);
   }
 
+  // The one imported model in the world, and now a real choice rather than an
+  // unconditional load: `statue = primitive` keeps the built Venus, `scan` swaps
+  // in the CC0 Capitoline scan. Because the register is painterly (DECISIONS.md,
+  // 2026-09-05), the scan does NOT come in raw — a photoreal marble fights a
+  // tempera garden. It gets the same treatment the painted assets get: a warm
+  // limestone palette rather than cold white, roughness pushed right up so it
+  // takes no specular, and a faint warm emissive so it sits in the panel's light
+  // instead of looking lit from somewhere else.
   async _loadVenusStatue() {
     if (!this._venusSlots?.length) return;
+    if (isVariant('statue', 'primitive', this.style.key)) return;   // keep the built one
     let gltf;
     try {
       const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
@@ -301,7 +310,12 @@ export class HPWorldScene {
     const woodcut = this.style.key === 'woodcut';
     const marble = woodcut
       ? this.style.mat({ tone: 0.03, side: THREE.DoubleSide })
-      : this.style.mat({ color: 0xe9e3d7, roughness: 0.62, metalness: 0.0 });
+      : this.style.mat({ color: 0xe8ddc6, roughness: 0.95, metalness: 0.0 });
+    if (!woodcut) {
+      // the stylisation pass: no specular, and a breath of warmth in the stone
+      marble.emissive = new THREE.Color(0x2a2216);
+      marble.emissiveIntensity = 0.35;
+    }
     const H = 2.5;   // her height in world units (the model is normalised to 1)
 
     for (const slot of this._venusSlots) {
