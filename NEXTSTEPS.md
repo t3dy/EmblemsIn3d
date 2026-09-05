@@ -33,9 +33,21 @@ piazza, before the elephant. Built with its pedestal, the two figured sides unde
   entirely from her pp. 256–257 and every detail checked out. **The single source those
   documents said would change framings is available now.** Architecture is due a re-read
   against it.
-- **`cast.animals.horse` is crude** and is shared with the triumph teams. A colossal bronze
-  wants a `massed` variant the way the elephant got one — the animals never went through
-  the AssetVariants pass at all.
+- **The beasts now have a declared `animal` variant, and its `massed` rung is PENDING —
+  attempted and rejected.** The build was: a deep chest and sloping croup instead of one
+  barrel, withers over the shoulder, an arched two-segment tapered neck, legs jointed
+  through knee, cannon, pastern and hoof, and per-species proportions. Every individual
+  part was more anatomically correct than the primitive, **and the silhouette was worse**:
+  the head came down and forward, the neck read short, and the colossal horse stopped
+  reading as a horse at forty paces — which is the only distance that matters for
+  something on a plinth. A/B'd in the world and the primitive won, so the primitive was
+  kept and the massed code reverted rather than shipped.
+  **What the next attempt should do differently:** hold the primitive's *silhouette* fixed
+  and add mass only where it does not change the outline — shoulder and stifle inside the
+  existing barrel, a jaw under the existing skull, hooves in place of the existing feet —
+  and check the result as a *black shape against the sky* before checking it lit. The
+  lesson is the same one the painted figures taught: at this register the outline is the
+  asset, and detail that fights it is a downgrade.
 - The pedestal's figured sides use the generic `_reliefTexture` crowd. The **dance of the
   seven couples** deserves its own drawing: fourteen figures, alternating, linked
   same-sex, each masked laughing in front and weeping behind.

@@ -70,6 +70,28 @@ export const ASSETS = {
       { id: 'painted',   label: 'Painterly', note: 'Ripple rings painted into the surface, with a counter-turning caustic sheet drifting over the basins so the water glints instead of shining evenly.' },
     ],
   },
+  // The beasts are the last asset class with only one build, and they are the
+  // last big source of the "blobby" look: ONE `quadruped` in Cast.js makes the
+  // wolf, the lion, the horse and the colossal bronze, the unicorn and leopard
+  // of the triumphs, the deer, the dog and the elephants.
+  //
+  // A massed build was attempted on 2026-09-05 and REJECTED after an A/B in the
+  // world: deeper chest, sloping croup, withers, an arched two-segment neck,
+  // legs jointed through cannon and pastern, per-species proportions. Every
+  // part was more correct and the SILHOUETTE was worse — the head came down
+  // and forward and the beast stopped reading as a horse at forty paces, which
+  // is the only distance that matters for a colossus on a plinth. The primitive
+  // build won and was kept. See NEXTSTEPS.md for what the next attempt should
+  // do differently.
+  animal: {
+    label: 'Beasts',
+    def: 'primitive',
+    variants: [
+      { id: 'primitive', label: 'Primitive', note: 'One capsule for the barrel, a sphere at each end, four tapered legs — the founding manifesto look, and what the woodcut page wants.' },
+      { id: 'massed',    label: 'Massed',    pending: true,
+        note: 'Real animal build — a deep chest and sloping croup, withers, an arched neck, legs jointed through cannon and pastern, proportioned per species. Attempted and rejected: every part was more correct and the silhouette was worse. Not yet built.' },
+    ],
+  },
   ornament: {
     label: 'Wall decoration & ornament',
     def: 'carved',

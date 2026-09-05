@@ -11,7 +11,7 @@
 // head) so scenes and vignettes can animate gestures without traversing.
 
 import * as THREE from 'three';
-import { isVariant, variantOf } from './AssetVariants.js?v=7';
+import { isVariant, variantOf } from './AssetVariants.js?v=8';
 
 export function makeCast(S) {
   const mats = new Map();
