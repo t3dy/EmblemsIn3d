@@ -166,7 +166,7 @@ export class DreamMode {
     this.phase = 'reacted';
     this.ui.showChosen({
       index: this.i, total: this.stops.length, title: st.title,
-      mood: opt.mood, text: opt.text,
+      mood: opt.mood, text: opt.text, wasCanonical: !!opt.canonical,
       canonText: canon ? canon.text : null,
       canonMood: canon ? canon.mood : null,
     });

@@ -545,6 +545,7 @@
       },
       {
         "station": "cythera_theatre",
+        "title": "The Tomb of Adonis",
         "chapter": "XXIV",
         "half": "ours",
         "lede": "Out of the theatre, Poliphilo and Polia come to a sacred spring and the tomb of Adonis, where Venus's yearly rite of mourning for her slain love is kept. On this note of grief inside the garden of pleasure, the first book closes.",
@@ -579,6 +580,7 @@
       },
       {
         "station": "wood",
+        "title": "The Waking",
         "chapter": "XXXVIII",
         "half": "ours",
         "lede": "At the very height of the embrace Polia dissolves into fragrant smoke, and Poliphilo wakes to the nightingale and the risen sun — the dream, and Polia, gone. The tour ends where it began, in the wood at dawn.",

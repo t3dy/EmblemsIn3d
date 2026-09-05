@@ -5,7 +5,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
 import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=47';
 import { AFWorldScene } from './scenes/AFWorldScene.js?v=20';
-import { DreamMode } from './systems/DreamMode.js?v=4';
+import { DreamMode } from './systems/DreamMode.js?v=5';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
@@ -104,7 +104,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading emblem data…');
-  const V = '17'; // bump when data files are re-exported
+  const V = '18'; // bump when data files are re-exported
   const [er, sr, ar, wr, tr, dr] = await Promise.all([
     fetch(`./data/emblems.json?v=${V}`),
     fetch(`./data/hp_symbols.json?v=${V}`),
@@ -651,6 +651,7 @@ function clearTour() {
   state.tour = null;
   const p = document.getElementById('tour-panel');
   if (p) p.style.display = 'none';
+  document.body.classList.remove('tour-open');   // let the world-nav slide back right
 }
 
 // Resolve a tour's stops — generated from world_links for the cross-book tour,
@@ -848,7 +849,7 @@ function renderTourPanel() {
       </div>
       <div class="tp-body">
         <span class="tp-badge" style="color:${badgeCol};border-color:${badgeCol}">Chapter ${stop.chapter} · ${source}</span>
-        <div class="tp-title" style="color:${accent};font-size:1.15rem;margin-top:.5rem">${st.name || ''}</div>
+        <div class="tp-title" style="color:${accent};font-size:1.15rem;margin-top:.5rem">${stop.title || st.name || ''}</div>
         ${st.folio ? `<div class="tp-scholar-label">Facsimile folio ${st.folio}</div>` : ''}
         <p class="tp-lede">${fmtProse(stop.lede)}</p>
         ${renderFlavorBar(tour)}
@@ -864,6 +865,7 @@ function renderTourPanel() {
         <button onclick="window.tourNext()" ${i === n - 1 ? 'disabled' : ''}>Next &rarr;</button>
       </div>`;
     panel.style.display = 'flex';
+    document.body.classList.add('tour-open');
     panel.querySelector('.tp-body').scrollTop = 0;
     setActiveWorldBtn('btn-tours');
     return;
@@ -922,6 +924,7 @@ function renderTourPanel() {
       <button onclick="window.tourNext()" ${i === n - 1 ? 'disabled' : ''}>Next &rarr;</button>
     </div>`;
   panel.style.display = 'flex';
+  document.body.classList.add('tour-open');
   panel.querySelector('.tp-body').scrollTop = 0;
   setActiveWorldBtn('btn-tours');
 }
@@ -1255,12 +1258,16 @@ const dreamUI = {
   },
 
   // The chosen line, spoken — with a quiet reveal of the book's own response.
-  showChosen({ index, total, title, mood, text, canonText, canonMood }) {
+  showChosen({ index, total, title, mood, text, canonText, canonMood, wasCanonical }) {
     document.getElementById('dream-stop').textContent = `Scene ${index + 1} / ${total}`;
     document.getElementById('dream-title').textContent = title;
     const m = MOODS[mood] || { label: mood, color: '#c8a040' };
+    // Picking the book's own answer otherwise passes silently — the tally only
+    // surfaces at the waking. Say so here, or the faithful reading is invisible.
+    const canonTag = wasCanonical
+      ? ` <span class="dp-canon-tag">· as the book has it</span>` : '';
     document.getElementById('dream-text').innerHTML =
-      `<span class="dp-chosen-tag" style="color:${m.color}">Poliphilo · ${m.label}</span>“${text}”`;
+      `<span class="dp-chosen-tag" style="color:${m.color}">Poliphilo · ${m.label}${canonTag}</span>“${text}”`;
     const box = document.getElementById('dream-choices');
     box.classList.remove('on'); box.innerHTML = '';
     const qw = document.getElementById('dream-quote-wrap');
