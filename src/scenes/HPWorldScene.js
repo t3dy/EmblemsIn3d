@@ -1096,17 +1096,76 @@ export class HPWorldScene {
   // ── The Court of Queen Eleuterylida (free will) ───────────────────────────
 
   _buildCourt() {
+    const S = this.style;
     const CX = -19, CZ = 20;
-    this._m(new THREE.BoxGeometry(14, 0.22, 11), this._darkStoneMat, CX - 1, 0.11, CZ, { cast: false });
+    const woodcut = S.key === 'woodcut';
+    const gold = woodcut ? S.mat({ tone: 0.02 })
+                         : S.mat({ color: 0xc9a244, metalness: 0.9, roughness: 0.26 });
 
-    // Throne on a dais, the Queen enthroned
-    this._m(new THREE.CylinderGeometry(1.6, 1.9, 0.35, 18), this._stoneMat, CX - 4.5, 0.18, CZ, { cast: false });
-    this._m(new THREE.BoxGeometry(1.0, 0.55, 0.9), this._stoneMat, CX - 4.7, 0.62, CZ);
-    this._m(new THREE.BoxGeometry(1.0, 1.7, 0.22), this._stoneMat, CX - 5.2, 1.2, CZ, { outline: true });
-    this._circleCol(CX - 4.7, CZ, 1.4);
+    // The court is Eleuterylida's palace, "of gold and gems" — it was an open
+    // slab. It now has a floor of banded courses, a peristyle of Corinthian
+    // columns round three sides, and a screen wall behind the throne, so the
+    // Queen holds court inside a building rather than on a paving stone.
+    this._m(new THREE.BoxGeometry(15.4, 0.22, 12.4), this._darkStoneMat, CX - 1, 0.11, CZ, { cast: false });
+    this._m(new THREE.BoxGeometry(14.6, 0.14, 11.6), this._stoneMat, CX - 1, 0.29, CZ, { cast: false, outline: true });
+    for (let i = 0; i < 5; i++) {                               // banded paving
+      this._m(new THREE.BoxGeometry(14.2, 0.02, 0.22), gold, CX - 1, 0.37, CZ - 4.4 + i * 2.2, { cast: false, receive: false });
+    }
+
+    // peristyle: columns down the two long sides and across the open east end
+    const PH = 3.6, py = 0.36;
+    const post = (x, z) => {
+      const gc = new THREE.Group(); gc.position.y = py; this.scene.add(gc);
+      this._column(x, z, PH, { order: 'corinthian', r: 0.2, parent: gc });
+    };
+    for (let i = 0; i < 6; i++) {
+      const x = CX - 6.4 + i * 2.3;
+      post(x, CZ - 5.2); post(x, CZ + 5.2);
+    }
+    for (const z of [CZ - 2.9, CZ, CZ + 2.9]) post(CX + 6.5, z);
+    for (const z of [CZ - 5.2, CZ + 5.2]) this._entablature(CX - 1, py + PH, z, 13.6, 0.8);
+    this._entablature(CX + 6.5, py + PH, CZ, 11.2, 0.8, { ry: Math.PI / 2 });
+
+    // the screen wall behind the throne, with pilasters and a doorway
+    const WX = CX - 7.4, WH = 4.6;
+    this._m(new THREE.BoxGeometry(0.55, WH, 11.4), this._stoneMat, WX, py + WH / 2, CZ, { outline: true });
+    this._wallCol(WX - 0.28, WX + 0.28, CZ - 5.7, CZ + 5.7);
+    for (let i = 0; i < 5; i++) {
+      const z = CZ - 4.4 + i * 2.2;
+      this._m(new THREE.BoxGeometry(0.2, WH - 0.5, 0.42), this._darkStoneMat, WX + 0.34, py + (WH - 0.5) / 2, z, { cast: false });
+    }
+    this._doorway(WX + 0.3, py, CZ, 1.8, 2.9, { ry: Math.PI / 2 });
+    this._entablature(WX, py + WH - 0.2, CZ, 11.6, 0.7, { ry: Math.PI / 2 });
+
+    // ── the throne ──
+    // a stepped dais, a seat with arms and a high back, and a baldachin over it
+    const TX = CX - 5.0;
+    for (let i = 0; i < 3; i++) {
+      this._m(new THREE.CylinderGeometry(2.1 - i * 0.32, 2.25 - i * 0.32, 0.17, 20), this._stoneMat,
+        TX, py + 0.085 + i * 0.17, CZ, { cast: false });
+    }
+    const seatY = py + 0.51;
+    this._m(new THREE.BoxGeometry(1.15, 0.5, 1.05), this._stoneMat, TX - 0.15, seatY + 0.25, CZ, { outline: true });
+    this._m(new THREE.BoxGeometry(1.2, 0.12, 1.1), gold, TX - 0.15, seatY + 0.55, CZ, { cast: false });
+    this._m(new THREE.BoxGeometry(0.24, 2.0, 1.05), this._stoneMat, TX - 0.62, seatY + 1.1, CZ, { outline: true });
+    for (const sz of [-1, 1]) {                                  // arms, and their finials
+      this._m(new THREE.BoxGeometry(0.9, 0.16, 0.16), gold, TX - 0.2, seatY + 0.78, CZ + sz * 0.5, { cast: false });
+      this._m(new THREE.SphereGeometry(0.12, 10, 8), gold, TX + 0.28, seatY + 0.86, CZ + sz * 0.5);
+      this._m(new THREE.CylinderGeometry(0.07, 0.09, 0.5, 8), this._stoneMat, TX + 0.28, seatY + 0.55, CZ + sz * 0.5);
+    }
+    // the baldachin: four slender posts and a canopy over the throne
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      this._m(new THREE.CylinderGeometry(0.07, 0.09, 3.1, 10), gold,
+        TX + sx * 1.15, py + 1.55, CZ + sz * 1.15);
+    }
+    this._m(new THREE.BoxGeometry(2.9, 0.16, 2.9), this._darkStoneMat, TX, py + 3.18, CZ, { cast: false });
+    const cano = this._m(new THREE.ConeGeometry(2.15, 0.9, 4), gold, TX, py + 3.7, CZ, { cast: false });
+    cano.rotation.y = Math.PI / 4;
+    this._m(new THREE.SphereGeometry(0.14, 12, 9), gold, TX, py + 4.24, CZ);
+    this._circleCol(TX, CZ, 1.9);
     const queen = this.cast.nymph({ name: 'Eleuterylida', h: 1.0, robe: 0xc8a030, pose: 'offer', crowned: true });
     this._npc('queen', queen, CX - 4.35, CZ, Math.PI / 2, { label: 'Eleuterylida', sub: 'QUEEN · FREE WILL', labelY: 2.1, sway: 0.02 });
-    queen.position.y = 0.62;   // seated on the throne
+    queen.position.y = 0.36 + 0.51 + 0.55;   // seated on the throne's cushion
 
     // The five nymphs of the senses, arced before the throne, each carrying the
     // attribute the book gives her (harp, glass, casket, casting bottle).
@@ -1118,6 +1177,7 @@ export class HPWorldScene {
         pose: n.pose || 'stand', attribute: n.attribute,
       });
       this._npc('nymph_' + n.name.toLowerCase(), g, x, z, Math.PI / 2 + a, { label: n.name, sub: n.sense.toUpperCase(), labelY: 2.0 });
+      g.position.y = 0.36;                       // on the court floor, not the earth
       this._circleCol(x, z, 0.4);
     });
 
