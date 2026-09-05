@@ -3290,6 +3290,7 @@ export class HPWorldScene {
       this._m(new THREE.TorusGeometry(0.5, 0.045, 6, 10, Math.PI * 1.2), goldE, bx, 0.86, bz, { cast: false }).rotation.y = -a;
       this._circleCol(bx, bz, 0.7);
     }
+
   }
 
   // ── The Four Triumphs of Jupiter — floats ringing the grove ──────────────

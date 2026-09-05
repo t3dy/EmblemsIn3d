@@ -28,11 +28,14 @@ displaced by **the clothes that cover it** — "cloths draped over parts of the 
 but also… the precious and dazzling materials — gold, gems, marbles, artworks — that
 serve to **attract attention to particular areas** of the building."
 
-- **Build the literal cloths.** Hangings draped over thresholds, thrown across
-  entablatures, hung between columns: the court of Eleuterylida, the Temple of Venus,
-  the theatre, the triumphal cars. Cheap geometry (an alpha-tested plane with a painted
-  fold texture, as the trophy tunic already is) and it changes the register of a
-  building more than another moulding would.
+- **Build the literal cloths.** `_drape()` exists and four now hang in the court of
+  Eleuterylida, framing the throne. Still bare: the Temple of Venus, the theatre, the
+  triumphal cars, the three doors.
+  **NB — the curtain of Hymen at the Cythera fountain is ALREADY BUILT** (two parted
+  panels drawn back against the sapphire and emerald columns, the tie-rings on their
+  rod, the ΥΜΗΝ plaque and the ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ motto). It was rebuilt from
+  scratch on 2026-09-05 by someone who did not grep first, and the duplicate was
+  reverted. See `RECIPES/model-an-asset.md` step 0.
 - **Audit the gold.** Precious material should mark *where to look* — a threshold, a
   throne, the panel that carries the inscription — not spread evenly as richness. Where
   the world gilds a surface for its own sake, move it somewhere that means something.

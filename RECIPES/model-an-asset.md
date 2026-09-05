@@ -28,6 +28,19 @@ ORDER BY page_seq;
 
 ## Steps
 
+0. **Check it is not already built.** Twice in one session a thing was declared
+   missing, researched, designed and built — and was already there: the bridge
+   hieroglyphs (the ring, the anchor and the dolphin, cut on both parapets), and the
+   curtain of Hymen at the Cythera fountain (two parted panels, the tie-rings on their
+   rod, the ΥΜΗΝ plaque and the Greek motto). Both times the claim came from an old
+   note rather than from the file. **Grep the scene and the plaques first:**
+   ```bash
+   grep -n "ΥΜΗΝ\|curtain\|hieroglyph" src/scenes/HPWorldScene.js
+   grep -rn "<the motto or the object>" src/scenes/ src/systems/
+   ```
+   `NEXTSTEPS.md` is a queue, not an inventory. The scene file is the inventory.
+
+
 1. **Name the object's folio and plate number** before you write any geometry. If you
    cannot, you are about to invent something.
 2. **Read the folio description and the scholar.** Write down, in the code comment you are
