@@ -21,38 +21,23 @@ it goes in here immediately, in his words, before the work starts.
 
 ## Open
 
-### 1. Figures still read as mannequins — build the painted variant
-Ted, repeatedly: *"still looks blobby and cartoonish."* Four rounds of tuning the
-primitive-built figures (proportion, face paint, hair mass, drapery folds) each improved
-them and none of them solved it. The remaining causes are structural: hands are spheres
-with no fingers, arms are capsules, the gown is a turned cone.
+### 1. Figures — finish the cutout pass
+The card pipeline and the real cutouts shipped (2026-09-05): six figures cut from
+Botticelli's *Primavera* now stand in the garden, provenance in
+`src/data/figure_cutouts.json`, cut by `scripts/cut_figures.py`. See `NYMPHS.md` for the
+four attempts it took. What remains:
 
-- **Build the `painted` figure rung properly** — figures as painted cards rather than
-  assembled primitives. This is the approach that was listed for Ted, then dropped from the
-  registry without being built. It sidesteps fingers and anatomy entirely and is literally
-  the period art.
-- Keep `primitive` and `modelled` selectable; the registry never deletes a rung.
-- Register it in `AssetVariants.js` and make sure the **default** is the good one. (Three
-  assets shipped defaulting to `primitive` with the better work switched off — check every
-  `def:` after adding a rung.)
+- A few **grey fragments of tree trunk** survive the mask at some card edges — tighten the
+  crop boxes or raise the warmth threshold per figure.
+- **Relative scale** was normalised per figure, not against each other, so heights disagree.
+- **Six figures for the whole cast** means visible repeats. **Cranach's nymph and Cellini's
+  Fontainebleau nymph are already in the gallery and uncut** — cutting them would widen the
+  range beyond one painter's studio, and both are named in `research/nymphs.html` as the
+  project's own references for proportion and drapery.
+- Poliphilo, Polia and the Queen still take whichever cutout the name-hash lands on; the
+  named characters should get chosen figures rather than assigned ones.
 
-### 2. The documentation set Ted asked for
-Ted: *"Let's have some output .md files like IMPORTEXEMPLARS.md RENAISSANCEART.md
-MYTHOLOGY.md PLANTS.md ANIMALS.md NYMPHS.md and various other outputs explaining your
-graphical approaches."* None exist.
-
-- `RENAISSANCEART.md` — **with web research**, which Ted approved: real methods for
-  translating medieval/Renaissance painting into real-time 3-D (painterly/NPR shading,
-  tempera and gilding surfaces, how museums and games handle period art), cited, with an
-  explicit *what we adopt / what we reject* section. Not written from assumption.
-- `IMPORTEXEMPLARS.md` — Ted: *"Make sure I understand how you are importing things."*
-  Plain-language: what was imported, from where, under what licence, file and size, how it
-  is loaded, and the stylisation pass a scan needs before it can sit in a painted world.
-- `NYMPHS.md`, `MYTHOLOGY.md`, `PLANTS.md`, `ANIMALS.md`, and `WATER.md` / `ORNAMENT.md` /
-  `VEHICLES.md` — each sourced from the corpus per the `SOURCES.md` asset-to-scholar map,
-  saying what the book and the scholarship require of that asset class and what we built.
-
-### 3. Architecture still not "well detailed" everywhere
+### 2. Architecture still not "well detailed" everywhere
 Goal set 2026-09-05: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*
 
@@ -65,7 +50,7 @@ displaying, and the same goes for all the other architectural features."*
 - The second and third fountains of the FIVE_SENSES section (`woodcut_catalog` #22, #23)
   are not built as distinct features.
 
-### 4. "Spare no effort to capture the details"
+### 3. "Spare no effort to capture the details"
 Ted: *"since we have such rich lists of nouns related to the gardens and architectural and
 other structural features of the world of the HP we should be sparing no effort to capture
 the details."* The lexicon (`research/lexicon.html`) is now the index of those nouns — work
@@ -75,6 +60,13 @@ contain is a candidate asset. Check the list against what is actually built.
 ---
 
 ## Done
+
+- **The documentation set** — all nine files written (2026-09-05):
+  `RENAISSANCEART.md` (with the web research Ted approved, cited, and an explicit
+  *what we adopt / what we reject*), `IMPORTEXEMPLARS.md` (how importing works, in plain
+  terms), `NYMPHS.md`, `MYTHOLOGY.md`, `PLANTS.md`, `ANIMALS.md`, `WATER.md`,
+  `ORNAMENT.md`, `VEHICLES.md`. Each says what the sources require of that asset class,
+  what was built, where the code is, and — deliberately — what is still missing.
 
 - The Lexicon gallery — `research/lexicon.html`, 101 terms from `hp.db.dictionary_terms`,
   grouped into Ted's topic areas (architecture, gardens, aesthetics, the soul & the senses),
