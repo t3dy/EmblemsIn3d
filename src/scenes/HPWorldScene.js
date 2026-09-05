@@ -25,7 +25,7 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
 import { makeCast } from '../systems/Cast.js?v=19';
-import { isVariant } from '../systems/AssetVariants.js?v=3';
+import { isVariant } from '../systems/AssetVariants.js?v=4';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from './EmblemScene.js?v=9';
 import { createMeadowField } from '../systems/Meadow.js?v=1';
@@ -625,6 +625,68 @@ export class HPWorldScene {
 
   // Concentric-ripple water albedo, so the slow spin of the fountain discs
   // is visible as moving water rather than a featureless plate.
+  // Water has two variants (Graphics menu). `primitive` is the founding look —
+  // a flat coloured disc, still. `painterly` is the tempera register Ted asked
+  // for: the ripple rings are painted into the albedo, a second caustic sheet
+  // drifts over the top the way light does on a shallow basin, and both turn
+  // slowly. Woodcut mode keeps its flat ink either way.
+  _waterMat() {
+    const S = this.style;
+    const m = S.waterMat();
+    if (S.key === 'woodcut' || isVariant('water', 'primitive', S.key)) return m;
+    m.color.set(0xffffff);            // the map carries the blue
+    m.map = this._waterTexture();
+    return m;
+  }
+
+  _waterIsPainterly() {
+    return this.style.key !== 'woodcut' && !isVariant('water', 'primitive', this.style.key);
+  }
+
+  // A caustic sheet: pale interlocking loops on black, added over the water so
+  // the surface has a moving glint rather than a uniform sheen.
+  _causticTexture() {
+    if (this._caustic) return this._caustic;
+    const N = 256;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 57.3 + k * 191.7) * 43758.5453; return v - Math.floor(v); };
+    x.fillStyle = '#000000'; x.fillRect(0, 0, N, N);
+    x.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 34; i++) {
+      const cx = rnd(i, 1) * N, cy = rnd(i, 2) * N;
+      const r  = 10 + rnd(i, 3) * 34;
+      x.lineWidth = 1.5 + rnd(i, 4) * 2.6;
+      x.strokeStyle = `rgba(190,225,255,${(0.10 + rnd(i, 5) * 0.16).toFixed(3)})`;
+      for (const [ox, oy] of [[0, 0], [N, 0], [-N, 0], [0, N], [0, -N]]) {
+        x.beginPath();
+        x.ellipse(cx + ox, cy + oy, r, r * (0.5 + rnd(i, 6) * 0.6), rnd(i, 7) * 3.14, 0, 6.3);
+        x.stroke();
+      }
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(2, 2);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    this._caustic = t;
+    return t;
+  }
+
+  // Lay a caustic sheet just above a body of water, and register it to drift.
+  _caustics(x, y, z, radius, rate = 0.05) {
+    if (!this._waterIsPainterly()) return;
+    const mat = new THREE.MeshBasicMaterial({
+      map: this._causticTexture(), transparent: true, opacity: 0.5,
+      blending: THREE.AdditiveBlending, depthWrite: false,
+    });
+    this._disp.push(mat);
+    const m = this._m(new THREE.CircleGeometry(radius, 28), mat, x, y + 0.012, z,
+      { rx: -Math.PI / 2, cast: false, receive: false });
+    this._waters.push({ m, rate: -rate });      // counter-turning, so it shimmers
+  }
+
   _waterTexture() {
     const N = 256;
     const c = document.createElement('canvas');
@@ -740,6 +802,122 @@ export class HPWorldScene {
 
   // ── The Great Portal (the colossal pyramid-gate) ──────────────────────────
 
+  // ── Carved ornament ──────────────────────────────────────────────────────
+  // Two variants (Graphics menu). `primitive` leaves the masonry plain with its
+  // lettering plaques. `carved` bands the architecture with relief the book and
+  // its scholarship actually put there: a Greek meander and an egg-and-dart
+  // along the friezes (Lefaivre on the architectural body; the orders are the
+  // book's constant subject), and Egyptianising hieroglyph panels on the piers,
+  // which Curran reads as the heart of the HP's Egyptian revival — the signs
+  // are carried as a band of figures to be read, not as decoration.
+  //
+  // Painted into the albedo AND used as a bump map, so the relief reads in the
+  // tempera register without needing real geometry for every moulding.
+  _ornamentCarved() {
+    return this.style.key !== 'woodcut' && !isVariant('ornament', 'primitive', this.style.key);
+  }
+
+  _carvedTexture(kind, reps = 8) {
+    this._carved = this._carved || {};
+    const key = kind + reps;
+    if (this._carved[key]) return this._carved[key];
+    const W = 512, H = 128;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#b8ad98'; x.fillRect(0, 0, W, H);          // the stone ground
+    const cell = W / reps;
+    const ink = '#6d6252', lit = '#e6dcc6';
+
+    const carve = (draw) => {                                  // relief = dark then light offset
+      x.save(); x.translate(0, 1.6); x.strokeStyle = ink; x.fillStyle = ink; draw(); x.restore();
+      x.save(); x.translate(0, -1.2); x.strokeStyle = lit; x.fillStyle = lit; draw(); x.restore();
+    };
+
+    if (kind === 'meander') {
+      x.lineWidth = 7; x.lineCap = 'square';
+      carve(() => {
+        for (let i = 0; i < reps; i++) {
+          const o = i * cell, m = cell * 0.16;
+          x.beginPath();
+          x.moveTo(o + m, H * 0.78);
+          x.lineTo(o + m, H * 0.26); x.lineTo(o + cell - m, H * 0.26);
+          x.lineTo(o + cell - m, H * 0.6); x.lineTo(o + cell * 0.5, H * 0.6);
+          x.lineTo(o + cell * 0.5, H * 0.44);
+          x.stroke();
+        }
+      });
+    } else if (kind === 'eggdart') {
+      carve(() => {
+        for (let i = 0; i < reps; i++) {
+          const o = i * cell + cell / 2;
+          x.beginPath(); x.ellipse(o, H * 0.5, cell * 0.24, H * 0.3, 0, 0, 6.3); x.fill();
+          x.beginPath();                                       // the dart between eggs
+          x.moveTo(o + cell * 0.5, H * 0.16);
+          x.lineTo(o + cell * 0.56, H * 0.5);
+          x.lineTo(o + cell * 0.5, H * 0.84);
+          x.lineTo(o + cell * 0.44, H * 0.5);
+          x.closePath(); x.fill();
+        }
+      });
+    } else {                                                   // hieroglyph band
+      carve(() => {
+        const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 137.9) * 43758.5453; return v - Math.floor(v); };
+        for (let i = 0; i < reps; i++) {
+          const o = i * cell + cell / 2, cy = H * 0.5, r = Math.min(cell, H) * 0.24;
+          const sign = Math.floor(rnd(i, 1) * 6);
+          x.lineWidth = 5;
+          if (sign === 0) {                                    // the sun disc
+            x.beginPath(); x.arc(o, cy, r, 0, 6.3); x.stroke();
+            x.beginPath(); x.arc(o, cy, r * 0.28, 0, 6.3); x.fill();
+          } else if (sign === 1) {                             // the eye
+            x.beginPath(); x.ellipse(o, cy, r * 1.2, r * 0.6, 0, 0, 6.3); x.stroke();
+            x.beginPath(); x.arc(o, cy, r * 0.3, 0, 6.3); x.fill();
+          } else if (sign === 2) {                             // the vessel
+            x.beginPath();
+            x.moveTo(o - r * 0.7, cy - r); x.lineTo(o + r * 0.7, cy - r);
+            x.lineTo(o + r * 0.45, cy + r); x.lineTo(o - r * 0.45, cy + r);
+            x.closePath(); x.stroke();
+          } else if (sign === 3) {                             // the anchor
+            x.beginPath(); x.moveTo(o, cy - r); x.lineTo(o, cy + r * 0.7); x.stroke();
+            x.beginPath(); x.arc(o, cy + r * 0.5, r * 0.7, 0.2, Math.PI - 0.2); x.stroke();
+          } else if (sign === 4) {                             // the ear of corn
+            x.beginPath(); x.moveTo(o, cy + r); x.lineTo(o, cy - r); x.stroke();
+            for (let k = 0; k < 3; k++) {
+              const yy = cy - r + k * r * 0.6;
+              x.beginPath(); x.moveTo(o, yy); x.lineTo(o + r * 0.6, yy - r * 0.25); x.stroke();
+              x.beginPath(); x.moveTo(o, yy); x.lineTo(o - r * 0.6, yy - r * 0.25); x.stroke();
+            }
+          } else {                                             // the ant, for the elephant-and-ant
+            x.beginPath(); x.arc(o - r * 0.5, cy, r * 0.3, 0, 6.3); x.fill();
+            x.beginPath(); x.arc(o + r * 0.1, cy, r * 0.38, 0, 6.3); x.fill();
+            x.beginPath(); x.arc(o + r * 0.8, cy, r * 0.26, 0, 6.3); x.fill();
+          }
+        }
+      });
+    }
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    this._disp.push(t);
+    this._carved[key] = t;
+    return t;
+  }
+
+  // A carved band laid just proud of a wall face.
+  _frieze(x, y, z, w, h, kind, { reps = null, ry = 0, rx = 0 } = {}) {
+    if (!this._ornamentCarved()) return null;
+    const n = reps || Math.max(3, Math.round(w * 1.6));
+    const tex = this._carvedTexture(kind, n);
+    const mat = this.style.mat({ color: 0xffffff, roughness: 0.86, metalness: 0.02 });
+    mat.map = tex;
+    mat.bumpMap = tex;
+    mat.bumpScale = 0.05;
+    this._disp.push(mat);
+    return this._m(new THREE.PlaneGeometry(w, h), mat, x, y, z, { rx, ry, cast: false, receive: true });
+  }
+
   _buildGreatPortal() {
     const S = this.style;
     const Z = 26;
@@ -752,6 +930,15 @@ export class HPWorldScene {
     }
     // Lintel + frieze
     this._m(new THREE.BoxGeometry(18, 1.4, 2.4), this._stoneMat, 0, 7.1, Z);
+    // The lintel carries the Greek meander, with an egg-and-dart astragal
+    // beneath it, when the carved-ornament variant is chosen.
+    this._frieze(0, 7.35, Z + 1.22, 17.6, 0.72, 'meander');
+    this._frieze(0, 6.72, Z + 1.22, 17.6, 0.34, 'eggdart');
+    // Curran's hieroglyph bands, read down the flanking piers
+    for (const sgn of [-1, 1]) {
+      this._frieze(sgn * 5.4, 3.9, Z + 1.14, 3.0, 0.66, 'hieroglyph', { reps: 5 });
+      this._frieze(sgn * 5.4, 2.0, Z + 1.14, 3.0, 0.66, 'hieroglyph', { reps: 5 });
+    }
     // The portal's own brass table, which the book says is lettered in Latin,
     // Greek and Arabic and dedicates the work to the Sun. (FESTINA LENTE used to
     // hang here and does not belong: Curran shows the anchor-and-dolphin
@@ -947,8 +1134,7 @@ export class HPWorldScene {
     const woodcut = S.key === 'woodcut';
 
     // a watercourse crossing the processional cross-path
-    const streamMat = S.waterMat();
-    if (!woodcut) { streamMat.color.set(0xffffff); streamMat.map = this._waterTexture(); }
+    const streamMat = this._waterMat();
     this._waters.push({
       m: this._m(new THREE.PlaneGeometry(3.0, 15), streamMat, BX, 0.06, BZ, { rx: -Math.PI / 2, cast: false }),
       rate: 0.04,
@@ -1012,12 +1198,12 @@ export class HPWorldScene {
       this._m(new THREE.CylinderGeometry(1.9 - i * 0.35, 2.0 - i * 0.35, 0.16, 8), this._darkStoneMat,
         BX, 0.66 - i * 0.2, BZ, { cast: false });
     }
-    const bathWater = S.waterMat();
-    if (!woodcut) { bathWater.color.set(0xffffff); bathWater.map = this._waterTexture(); }
+    const bathWater = this._waterMat();
     this._waters.push({
       m: this._m(new THREE.CircleGeometry(1.85, 8), bathWater, BX, 0.62, BZ, { rx: -Math.PI / 2, cast: false }),
       rate: 0.08,
     });
+    this._caustics(BX, 0.62, BZ, 1.8, 0.06);
 
     // paired pilasters at each corner, carrying the frieze
     for (let i = 0; i < 8; i++) {
@@ -1458,12 +1644,7 @@ export class HPWorldScene {
   // true fountain, on Cythera, gets it; the mainland grove is the dream-echo.
   _buildFountain(FX = 0, FZ = -20, { enclosure = false } = {}) {
     const S = this.style;
-    const waterMat = S.waterMat();
-    // Rippled water: without a map, the spinning discs would read as still.
-    if (S.key !== 'woodcut') {
-      waterMat.color.set(0xffffff);          // the map carries the blue
-      waterMat.map = this._waterTexture();
-    }
+    const waterMat = this._waterMat();
 
     // Built from chapter XXIII of the 1499, translated at translation/en/
     // page_358–360.md: a kerb of the blackest stone, "heptagonal on the outside
@@ -1516,6 +1697,7 @@ export class HPWorldScene {
     this._m(new THREE.CircleGeometry(R + 0.06, 36), black, FX, BASIN_Y, FZ, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CylinderGeometry(R + 0.06, R + 0.06, WATER_Y - BASIN_Y, 36, 1, true), black, FX, (WATER_Y + BASIN_Y) / 2, FZ, { cast: false });
     this._waters.push({ m: this._m(new THREE.CircleGeometry(R + 0.06, 40), waterMat, FX, WATER_Y, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.09 });
+    this._caustics(FX, WATER_Y, FZ, R, 0.07);
     this._circleCol(FX, FZ, R + 0.85);
 
     // The seven columns, the arcade between them, the altars and their planets

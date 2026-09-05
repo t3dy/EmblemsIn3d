@@ -57,8 +57,8 @@ export const ASSETS = {
     label: 'Water features',
     def: 'primitive',
     variants: [
-      { id: 'primitive', label: 'Primitive', note: 'Flat coloured discs and boxes.' },
-      { id: 'painted',   label: 'Painterly', note: 'Rippled surface, caustic glint and a painted basin, in the tempera register.', pending: true },
+      { id: 'primitive', label: 'Primitive', note: 'Flat coloured discs, still.' },
+      { id: 'painted',   label: 'Painterly', note: 'Ripple rings painted into the surface, with a counter-turning caustic sheet drifting over the basins so the water glints instead of shining evenly.' },
     ],
   },
   ornament: {
@@ -66,7 +66,7 @@ export const ASSETS = {
     def: 'primitive',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'Plain masonry with lettering plaques.' },
-      { id: 'painted',   label: 'Carved & painted', note: 'Friezes, hieroglyph panels, mosaic and capitals drawn from Curran and the woodcuts.', pending: true },
+      { id: 'carved',    label: 'Carved', note: 'A Greek meander and an egg-and-dart along the friezes, and Egyptianising hieroglyph bands down the piers — the sun disc, the eye, the vessel, the anchor, the ear of corn, the ant — read as signs, after Curran.' },
     ],
   },
 };

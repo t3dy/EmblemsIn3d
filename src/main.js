@@ -3,14 +3,14 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { EmblemScene, getEnvMap } from './scenes/EmblemScene.js?v=9';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=53';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=54';
 import { AFWorldScene } from './scenes/AFWorldScene.js?v=20';
 import { DreamMode } from './systems/DreamMode.js?v=5';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=8';
-import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=3';
+import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=4';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -1133,6 +1133,7 @@ async function rebuildHPWorld() {
   const spawn = pl ? { pos: [pl.pos.x, 0, pl.pos.z], yaw: pl.yaw, pitch: pl.pitch } : null;
   const wasTour = !!state.tour;
   await launchHPWorld({ chooser: false, spawn });
+  showHPMode(false);        // a graphics change must never dump you back to the entry screen
   if (wasTour) renderTourPanel();
 }
 
