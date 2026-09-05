@@ -672,7 +672,12 @@ async function startTour(id) {
   state.tour = { ...tour, stops: resolveTourStops(tour) };
   state.tourStop = 0;
   // let the reader choose their commentary before the tour begins
-  if (tourFlavorSet(state.tour).length > 1) { showFlavorChooser(); return; }
+  if (tourFlavorSet(state.tour).length > 1) {
+    showFlavorChooser({ title: state.tour.title,
+      kicker: `${state.tour.title} · a tour in ${state.tour.stops.length} stops`, begin: 'Begin the tour',
+      onDone: () => tourGoto(0) });
+    return;
+  }
   await tourGoto(0);
 }
 
@@ -696,10 +701,16 @@ for (const id of ['tour-flavor-chooser', 'tc-wonder-menu']) {
 }
 
 // Pre-tour: choose how much commentary to read (toggleable again mid-tour).
-function showFlavorChooser() {
+// `onDone` runs once the reader has picked their lenses — the tour starts at
+// stop 0, the free walk simply begins, the dream begins. Ted asked for the same
+// question in all three modes, not only the tour.
+function showFlavorChooser(opts = {}) {
+  const { title = state.tour && state.tour.title, kicker = null, begin = 'Begin',
+          onDone = () => tourGoto(0) } = opts;
+  _fcDone = onDone;
   const el = document.getElementById('tour-flavor-chooser');
-  if (!el) { tourGoto(0); return; }
-  const rows = tourFlavorSet(state.tour).map(t => {
+  if (!el) { onDone(); return; }
+  const rows = flavorSetAll().map(t => {
     const nt = NOTE_TYPES[t];
     return `<label class="fc-row"><input type="checkbox" data-flavor="${t}" ${flavorOn(t) ? 'checked' : ''}>
       <span class="fc-swatch" style="background:${nt.color}"></span>
@@ -707,15 +718,15 @@ function showFlavorChooser() {
   }).join('');
   el.innerHTML = `
     <div class="fc-card">
-      <div class="fc-kicker">${state.tour.title} · a tour in ${state.tour.stops.length} stops</div>
+      <div class="fc-kicker">${kicker || title || 'The Dream Garden'}</div>
       <h2>How much do you want to read?</h2>
-      <p class="fc-intro">Each wonder can carry several flavours of commentary. Turn on the ones you want — the story and the woodcuts are always there — and change your mind any time during the tour with the chips over the panel.</p>
+      <p class="fc-intro">Each wonder can carry several flavours of commentary. Turn on the ones you want — the story and the woodcuts are always there — and change your mind at any time from the <em>Commentary lenses</em> panel.</p>
       <div class="fc-rows">${rows}</div>
       <div class="fc-quick">
         <button onclick="window.fcSet(true)">Check all</button>
         <button onclick="window.fcSet(false)">Just the story</button>
       </div>
-      <button class="fc-begin" onclick="window.fcBegin()">Begin the tour &rarr;</button>
+      <button class="fc-begin" onclick="window.fcBegin()">${begin} &rarr;</button>
     </div>`;
   setHidden(el, false);
 }
@@ -730,8 +741,14 @@ window.fcBegin = () => {
   try { localStorage.setItem('hp_flavors', JSON.stringify([...on])); } catch (_) {}
   const el = document.getElementById('tour-flavor-chooser');
   if (el) setHidden(el, true);
-  tourGoto(0);
+  const done = _fcDone || (() => tourGoto(0));
+  _fcDone = null;
+  done();
 };
+
+// Every flavour we know about, for the chooser in modes that are not a tour.
+function flavorSetAll() { return Object.keys(NOTE_TYPES); }
+let _fcDone = null;
 
 async function tourGoto(i) {
   const tour = state.tour;
@@ -796,6 +813,7 @@ window.toggleFlavor = (type) => {
   if (_flavorsOn.has(type)) _flavorsOn.delete(type); else _flavorsOn.add(type);
   try { localStorage.setItem('hp_flavors', JSON.stringify([..._flavorsOn])); } catch (_) {}
   renderTourPanel();
+  renderWalkNotes();
 };
 
 // The flavours that actually appear in a tour (so empty categories never show).
@@ -844,6 +862,7 @@ window.setAllFlavors = (all) => {
   _flavorsOn = all ? new Set(Object.keys(NOTE_TYPES)) : new Set();
   try { localStorage.setItem('hp_flavors', JSON.stringify([..._flavorsOn])); } catch (_) {}
   renderTourPanel();
+  renderWalkNotes();
 };
 
 function renderNotes(notes) {
@@ -973,6 +992,73 @@ function renderTourPanel() {
   panel.querySelector('.tp-body').scrollTop = 0;
   setActiveWorldBtn('btn-tours');
 }
+
+// ── Commentary as you walk ────────────────────────────────────────────────
+// In free walk there are no stops to click through, so the notes have to come
+// to the reader: approaching a wonder raises its commentary, filtered by the
+// same lenses the tour uses, and leaving it lowers them again. The text is the
+// novel tour's own per-station writing, so there is one body of commentary.
+let _walkStation = null;
+
+function walkStopFor(stationKey) {
+  const tour = state.tours && state.tours.novel;
+  if (!tour || !Array.isArray(tour.stops)) return null;
+  return tour.stops.find(st => st.station === stationKey) || null;
+}
+
+function showWalkNotes(st) {
+  const el = document.getElementById('walk-notes');
+  if (!el || !st) return;
+  const stop = walkStopFor(st.key);
+  if (!stop) { hideWalkNotes(); return; }
+  _walkStation = st;
+  renderWalkNotes();
+}
+
+function renderWalkNotes() {
+  const el = document.getElementById('walk-notes');
+  const st = _walkStation;
+  if (!el || !st) return;
+  const stop = walkStopFor(st.key);
+  if (!stop) return;
+  const notes = (stop.notes || []).filter(n => flavorOn(n.type));
+  const quote = stop.quote && flavorOn('quotation') ? stop.quote : null;
+  const body = (notes.length || quote)
+    ? `${quote ? `<blockquote class="wn-quote">${fmtProse(quote)}</blockquote>` : ''}
+       ${notes.map(n => {
+         const t = NOTE_TYPES[n.type] || { label: n.type, color: '#8a7a5a' };
+         return `<div class="wn-note" style="border-color:${t.color}">
+           <div class="wn-label" style="color:${t.color}">${t.label}</div>
+           <p>${fmtProse(n.text)}</p></div>`;
+       }).join('')}`
+    : `<p class="wn-empty">All commentary lenses are off. Turn some on to read the scholarship here.</p>`;
+  el.innerHTML = `
+    <div class="wn-head">
+      <span class="wn-title">${stop.title || st.name}</span>
+      <button class="wn-close" onclick="window.hideWalkNotes()" title="Dismiss">&#10005;</button>
+    </div>
+    <div class="wn-body">
+      <p class="wn-lede">${fmtProse(stop.lede)}</p>
+      ${body}
+    </div>
+    <div class="wn-foot">
+      <button onclick="window.walkLenses()">Commentary lenses &hellip;</button>
+    </div>`;
+  setHidden(el, false, 'flex');
+  el.querySelector('.wn-body').scrollTop = 0;
+}
+
+function hideWalkNotes() {
+  _walkStation = null;
+  setHidden(document.getElementById('walk-notes'), true);
+}
+window.hideWalkNotes = hideWalkNotes;
+
+// Re-open the chooser mid-walk so lenses can be changed without leaving.
+window.walkLenses = () => showFlavorChooser({
+  kicker: 'Walking the Dream Garden freely', begin: 'Back to the garden',
+  onDone: () => renderWalkNotes(),
+});
 
 window.startTour = startTour;
 window.tourNext  = tourNext;
@@ -1174,10 +1260,12 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
       showHPHUD(st.name, st.folio, link?.af_emblems ?? []);
       state.currentAnnotations = st.emblem != null ? findLinkedAnnotations(st.emblem) : [];
       if (state.currentAnnotations.length) scheduleAnnotation();
+      showWalkNotes(st);                    // the commentary meets you at the wonder
     } else {
       showHPHUD('The Dream Garden of Poliphilo', null, []);
       state.currentAnnotations = [];
       document.getElementById('annotation-panel').style.display = 'none';
+      hideWalkNotes();
     }
     setHPStyleBtn(true);
   };
@@ -1209,13 +1297,23 @@ function showHPMode(on) {
 
 window.hpExplore = () => {
   showHPMode(false);
-  showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
-  refreshTouchControls();
+  // Ted: the free walk gets the same "how much do you want to read?" question,
+  // and then the commentary surfaces as you approach each feature.
+  showFlavorChooser({
+    kicker: 'Walking the Dream Garden freely', begin: 'Start walking',
+    onDone: () => {
+      showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
+      refreshTouchControls();
+    },
+  });
 };
 
 window.hpDream = () => {
   showHPMode(false);
-  startDream();
+  showFlavorChooser({
+    kicker: 'Poliphilo’s Dream · twelve scenes', begin: 'Begin the dream',
+    onDone: () => startDream(),
+  });
 };
 
 // The guided tour, entered straight from the Dream Garden's front door rather
