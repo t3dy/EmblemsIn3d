@@ -9,7 +9,7 @@ import { DreamMode } from './systems/DreamMode.js?v=4';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
 import { ArchivesScene } from './scenes/ArchivesScene.js?v=8';
-import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=5';
+import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=6';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 

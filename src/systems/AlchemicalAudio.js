@@ -1,208 +1,124 @@
-// AlchemicalAudio.js
-// Generative ambient soundscapes per alchemical stage using Tone.js.
-// Browser autoplay policy requires user gesture before AudioContext starts —
-// call AlchemicalAudio.unlock() on first user click.
+// AlchemicalAudio.js — a small, quiet NES-voice chiptune bed per alchemical stage.
+//
+// Rewritten from scratch: the old Tone.js version wired every oscillator to the
+// output three ways at once (osc.toDestination + env.toDestination + volume.
+// toDestination), so it ran uncontrolled — that was the noise. This uses the raw
+// Web Audio API, four classic NES-style voices (two pulses, a triangle bass, a
+// noise tick), a low master gain and a gentle low-pass, and a simple 16-step loop.
+// No external dependency, no runaway graph. Same public API as before.
 
-let _tone = null;
-let _active = null;
-let _unlocked = false;
+let _ctx = null, _master = null, _lp = null, _noise = null;
+let _timer = null, _step = 0, _stage = null, _muted = false, _unlocked = false;
+const STEP_MS = 165;                       // ~2.6 s loop; unhurried
 
-async function getTone() {
-  if (!_tone) {
-    const mod = await import('https://esm.sh/tone@14.7.77');
-    _tone = mod;
-  }
-  return _tone;
+function ensureCtx() {
+  if (_ctx) return;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  _ctx = new AC();
+  _master = _ctx.createGain(); _master.gain.value = 0.06;   // deliberately quiet
+  _lp = _ctx.createBiquadFilter(); _lp.type = 'lowpass'; _lp.frequency.value = 2400; _lp.Q.value = 0.5;
+  _lp.connect(_master); _master.connect(_ctx.destination);
+  const n = Math.floor(_ctx.sampleRate * 0.6);
+  _noise = _ctx.createBuffer(1, n, _ctx.sampleRate);
+  const d = _noise.getChannelData(0);
+  for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
 }
 
-// ─── Stage definitions ────────────────────────────────────────────────────────
+// One pitched voice: a square (pulse) or triangle with a clean AR envelope so it
+// never clicks and never sustains uncontrolled.
+function voice(type, hz, t, dur, peak) {
+  const o = _ctx.createOscillator(); o.type = type; o.frequency.value = hz;
+  const g = _ctx.createGain();
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.linearRampToValueAtTime(peak, t + 0.01);
+  g.gain.exponentialRampToValueAtTime(0.0006, t + dur);
+  o.connect(g); g.connect(_lp);
+  o.start(t); o.stop(t + dur + 0.05);
+}
 
-const STAGES = {
+// A soft filtered-noise tick (the NES noise channel), used sparingly.
+function perc(t, peak) {
+  const s = _ctx.createBufferSource(); s.buffer = _noise;
+  const bp = _ctx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 1700; bp.Q.value = 1.1;
+  const g = _ctx.createGain();
+  g.gain.setValueAtTime(peak, t);
+  g.gain.exponentialRampToValueAtTime(0.0005, t + 0.08);
+  s.connect(bp); bp.connect(g); g.connect(_master);
+  s.start(t); s.stop(t + 0.12);
+}
 
-  // Nigredo: low subharmonic drone + distant crackling fire
-  NIGREDO: async (T) => {
-    const nodes = [];
-
-    // Sub drone
-    const drone = new T.OmniOscillator({ type: 'sawtooth', frequency: 42 }).toDestination();
-    const droneEnv = new T.AmplitudeEnvelope({ attack: 3, decay: 0, sustain: 1, release: 4 }).toDestination();
-    drone.connect(droneEnv);
-
-    // Slight chorus detuning (three stacked oscillators)
-    const drone2 = new T.OmniOscillator({ type: 'sawtooth', frequency: 43.2 }).toDestination();
-    const drone3 = new T.OmniOscillator({ type: 'sawtooth', frequency: 40.8 }).toDestination();
-
-    const masterVol = new T.Volume(-28).toDestination();
-    drone.connect(masterVol);
-    drone2.connect(masterVol);
-    drone3.connect(masterVol);
-
-    drone.start(); drone2.start(); drone3.start();
-
-    // Crackle (noise bursts)
-    const crackle = new T.NoiseSynth({
-      noise: { type: 'brown' },
-      envelope: { attack: 0.001, decay: 0.08, sustain: 0, release: 0.05 },
-    }).toDestination();
-    crackle.volume.value = -38;
-
-    const crackleLoop = new T.Loop((time) => {
-      if (Math.random() < 0.4) crackle.triggerAttackRelease('32n', time);
-    }, '8n');
-    crackleLoop.start(0);
-
-    nodes.push(drone, drone2, drone3, masterVol, crackle, crackleLoop);
-    return nodes;
+// Per-stage 16-step patterns. Kept sparse and low; each stage its own mood.
+const PAT = {
+  // black / putrefaction — low, minor, sparse
+  NIGREDO(step, t) {
+    if (step % 8 === 0) voice('triangle', 55, t, 1.7, 0.55);        // A1 drone-bass
+    if (step === 0)  voice('square', 110.0, t, 0.8, 0.15);          // A2
+    if (step === 6)  voice('square', 130.8, t, 0.7, 0.13);          // C3 (minor 3rd)
+    if (step === 12) voice('square', 164.8, t, 0.6, 0.11);          // E3 (5th)
   },
-
-  // Albedo: pure sustained tones — A + E fifth (pentatonic shimmer)
-  ALBEDO: async (T) => {
-    const nodes = [];
-    const vol = new T.Volume(-22).toDestination();
-    const rev = new T.Reverb({ decay: 6, wet: 0.7 }).connect(vol);
-
-    const freqs = [220, 330, 440, 660];
-    freqs.forEach((f, i) => {
-      const osc = new T.OmniOscillator({ type: 'sine', frequency: f }).connect(rev);
-      osc.volume.value = -18 - i * 4;
-      osc.start();
-      nodes.push(osc);
-    });
-
-    // Slow tremolo
-    const trem = new T.Tremolo({ frequency: 0.18, depth: 0.35, wet: 0.6 }).connect(rev).start();
-    nodes.push(vol, rev, trem);
-    return nodes;
+  // white / washing — gentle rising C-major arpeggio
+  ALBEDO(step, t) {
+    const arp = [261.6, 329.6, 392.0, 523.2];
+    if (step % 2 === 0) voice('square', arp[(step / 2) % 4], t, 0.32, 0.12);
+    if (step % 8 === 0) voice('triangle', 130.8, t, 1.4, 0.45);     // C3 bass
   },
-
-  // Citrinitas: bell strikes — golden, periodic
-  CITRINITAS: async (T) => {
-    const nodes = [];
-    const rev = new T.Reverb({ decay: 4, wet: 0.5 }).toDestination();
-    const vol = new T.Volume(-20).connect(rev);
-
-    const bell = new T.MetalSynth({
-      frequency: 200,
-      envelope: { attack: 0.001, decay: 2.5, release: 0.5 },
-      harmonicity: 5.1,
-      modulationIndex: 32,
-      resonance: 4000,
-      octaves: 1.5,
-    }).connect(vol);
-    bell.volume.value = -10;
-
-    const bellPitches = [200, 267, 320, 400, 534];
-    let bellIdx = 0;
-    const bellLoop = new T.Loop((time) => {
-      bell.frequency.value = bellPitches[bellIdx % bellPitches.length];
-      bell.triggerAttackRelease('2n', time);
-      bellIdx++;
-    }, '3');
-    bellLoop.start(0);
-
-    // Underlying hum
-    const hum = new T.OmniOscillator({ type: 'sine', frequency: 100 }).connect(vol);
-    hum.volume.value = -30;
-    hum.start();
-
-    nodes.push(rev, vol, bell, bellLoop, hum);
-    return nodes;
+  // yellow / dawning — a brighter little D-major melody
+  CITRINITAS(step, t) {
+    const mel = [293.7, 370.0, 440.0, 587.3, 440.0, 370.0];
+    if (step % 2 === 0) voice('square', mel[(step / 2) % mel.length], t, 0.28, 0.12);
+    if (step % 4 === 0) voice('triangle', 146.8, t, 1.0, 0.4);      // D3 bass
+    if (step % 8 === 4) perc(t, 0.045);
   },
-
-  // Rubedo: triumphant harmonic cluster — warm, golden, rising
-  RUBEDO: async (T) => {
-    const nodes = [];
-    const vol = new T.Volume(-18).toDestination();
-    const chorus = new T.Chorus({ frequency: 0.8, delayTime: 2.5, depth: 0.6, wet: 0.5 }).connect(vol).start();
-    const rev = new T.Reverb({ decay: 5, wet: 0.4 }).connect(chorus);
-
-    const synth = new T.PolySynth(T.Synth, {
-      oscillator: { type: 'triangle' },
-      envelope: { attack: 1.5, decay: 0.5, sustain: 0.8, release: 3.0 },
-    }).connect(rev);
-    synth.volume.value = -14;
-
-    // Strum a major triad
-    const chords = [
-      ['C3', 'E3', 'G3', 'B3'],
-      ['F3', 'A3', 'C4'],
-      ['G3', 'B3', 'D4'],
-    ];
-    let chordIdx = 0;
-    const chordLoop = new T.Loop((time) => {
-      synth.triggerRelease(chords[chordIdx % chords.length]);
-      chordIdx = (chordIdx + 1) % chords.length;
-      synth.triggerAttack(chords[chordIdx], time + 0.05);
-    }, '6');
-    chordLoop.start(0);
-
-    // Low pedal tone
-    const pedal = new T.OmniOscillator({ type: 'sine', frequency: 65.4 }).connect(rev);
-    pedal.volume.value = -26;
-    pedal.start();
-
-    nodes.push(vol, chorus, rev, synth, chordLoop, pedal);
-    return nodes;
+  // red / completion — full C-major triad arpeggio with a steady bass and tick
+  RUBEDO(step, t) {
+    const arp = [261.6, 329.6, 392.0, 493.9, 523.2, 392.0];
+    voice('square', arp[step % arp.length], t, 0.26, 0.12);
+    if (step % 4 === 0) voice('triangle', 65.4, t, 0.9, 0.5);       // C2 bass
+    if (step % 4 === 2) voice('square', arp[(step + 2) % arp.length] / 2, t, 0.4, 0.07);
+    if (step % 8 === 0 || step % 8 === 4) perc(t, 0.05);
   },
 };
 
-// ─── Public API ───────────────────────────────────────────────────────────────
+function tick() {
+  if (!_ctx || _muted || !_stage) return;
+  const pat = PAT[_stage];
+  if (pat) pat(_step, _ctx.currentTime + 0.03);
+  _step = (_step + 1) % 16;
+}
+
+function ensureRunning() {
+  if (_unlocked && !_muted && !_timer) _timer = setInterval(tick, STEP_MS);
+}
 
 export const AlchemicalAudio = {
-  _nodes: [],
-  _stage: null,
-  _muted: false,
-
+  // Call on the first user gesture (browsers block audio before that).
   async unlock() {
     if (_unlocked) return;
-    const T = await getTone();
-    await T.start();
+    ensureCtx();
+    if (_ctx && _ctx.state === 'suspended') { try { await _ctx.resume(); } catch (_) {} }
     _unlocked = true;
-    console.log('[audio] AudioContext unlocked');
+    ensureRunning();
   },
 
+  // Switch the mood. No-op-safe before unlock; the loop picks it up once unlocked.
   async setStage(stage) {
-    if (this._stage === stage) return;
-    if (this._muted) { this._stage = stage; return; }
-
-    const T = await getTone();
-    if (!_unlocked) return; // Don't auto-start without gesture
-
-    await this._stopCurrent(T);
-    this._stage = stage;
-
-    const builder = STAGES[stage];
-    if (!builder) return;
-
-    try {
-      T.Transport.start();
-      this._nodes = await builder(T);
-    } catch (e) {
-      console.warn('[audio] Stage build error:', e.message);
-    }
-  },
-
-  async _stopCurrent(T) {
-    if (!T) T = await getTone();
-    this._nodes.forEach(n => {
-      try {
-        if (n.stop) n.stop();
-        if (n.dispose) n.dispose();
-      } catch (_) {}
-    });
-    this._nodes = [];
-    T.Transport.stop();
-    T.Transport.cancel();
+    if (stage === _stage) return;
+    _stage = stage;
+    _step = 0;
+    ensureRunning();
   },
 
   async mute() {
-    this._muted = true;
-    await this._stopCurrent();
+    _muted = true;
+    if (_timer) { clearInterval(_timer); _timer = null; }
+    if (_master) _master.gain.value = 0;
   },
 
   async unmute() {
-    this._muted = false;
-    if (this._stage) await this.setStage(this._stage);
+    _muted = false;
+    if (_master) _master.gain.value = 0.06;
+    ensureRunning();
   },
 
   get isUnlocked() { return _unlocked; },
