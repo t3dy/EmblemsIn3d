@@ -37,8 +37,16 @@ signs above and Poliphilo's reading of them below (`DECISIONS.md`). What is stil
   Every other hieroglyph band in the world (the portal piers, the obelisks) inherits the
   richer vocabulary automatically.
 - **The Polyandrion's five hieroglyphic medallions** (#88–#92) are catalogued and unbuilt.
-- **The bridge hieroglyphs** are the ones Poliphilo remembers too late, fleeing the dragon
-  (*SEMPER FESTINA TARDE*). The plaque exists; the signs he actually saw do not.
+  Its two *documented* inscriptions now are: the dedicatory frieze (`D · M · S ·
+  CADAVERIBVS AMORE FVRENTIVM MISERABVNDIS POLYANDRION`) and the owl-and-lamp device of
+  #93 with Poliphilo's reading of it, `VITAE LETHIFER NVNTIVS`. The five medallions have
+  no reading anywhere in the corpus, so building them means building five devices nobody
+  can gloss — worth doing as *unread* signs, but say so.
+- ~~The bridge hieroglyphs do not exist.~~ **Wrong — they do.** `_buildBridge` already
+  carries the ring, the anchor and the dolphin twined about it, cut as real geometry on the
+  inner face of *both* parapets so a walker reads them in passing, with the
+  `ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ / SEMPER FESTINA TARDE` plaque on one side and the Aldine afterlife
+  on the other. Checked, 2026-09-05.
 
 
 ### 0b. The chess ballet is built — what it opens (2026-09-05)

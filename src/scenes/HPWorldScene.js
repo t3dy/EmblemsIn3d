@@ -3536,6 +3536,71 @@ export class HPWorldScene {
       this._circleCol(PX + dx, PZ - 3.4, 0.5);
     }
     this._m(new THREE.BoxGeometry(2.9, 0.5, 0.8), this._stoneMat, PX - 2.15, 3.95, PZ - 3.4, { outline: true });
+
+    // ── The ruin names itself, and the device over its gate ────────────────
+    //
+    // Two inscriptions survive on the front, and between them they are the
+    // whole argument of the place. The dedicatory frieze gives it its name in
+    // correct Roman funerary formula; the emblem in the pediment gives it its
+    // meaning, in signs, and Poliphilo reads those signs the way he reads every
+    // other set in the book.
+    //
+    //   D · M · S ·  CADAVERIBVS AMORE FVRENTIVM MISERABVNDIS POLYANDRION
+    //   "To the Gods of the Dead: the Polyandrion, for the wretched corpses of
+    //    those raging with love."
+    //
+    //   An owl, and a funeral lamp — woodcut_catalog #93, "Architrave fragment
+    //   with bird and lamp" — which he decodes as VITAE LETHIFER NVNTIVS, "the
+    //   death-bringing messenger of life."
+    //
+    // Both are in this project's own translation of chapter XIX (folio 236,
+    // confidence: high, "the two inscriptions are secure and read from the
+    // woodcut"). Every surface of this ruin is a text; that is what the
+    // Polyandrion is for, and what Poliphilo comes here to do.
+    this._frieze(PX - 2.15, 3.95, PZ - 3.0, 2.7, 0.34, 'meander');
+    this._plaque({ main: 'D · M · S · POLYANDRION',
+                   sub: 'CADAVERIBVS AMORE FVRENTIVM MISERABVNDIS · FOR THE WRETCHED CORPSES OF THOSE RAGING WITH LOVE' },
+      2.9, 0.44, PX - 2.15, 3.35, PZ - 2.98, 0, true);
+
+    // A pediment for the device to sit in. It had none: the owl and the lamp
+    // were hanging in the air over the architrave, and an emblem needs a
+    // tympanum the way an inscription needs a frieze.
+    const tympMat = woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xb5a789, roughness: 0.9 });
+    this._m(new THREE.BoxGeometry(2.9, 0.9, 0.62), tympMat, PX - 2.15, 4.66, PZ - 3.4,
+      { outline: true });
+    const rake = this._m(new THREE.CylinderGeometry(1.62, 1.62, 0.7, 3), this._stoneMat,
+      PX - 2.15, 5.28, PZ - 3.4, { outline: true });
+    rake.rotation.x = Math.PI / 2;                      // a shallow raking cornice
+    rake.scale.y = 0.34;
+
+    // the pediment device: the owl on the left, the hanging lamp on the right
+    const devMat = woodcut ? S.mat({ tone: 0.24 }) : S.mat({ color: 0x51452f, roughness: 0.82 });
+    const ox = PX - 3.0, oy = 4.58, oz = PZ - 3.06;
+    const owl = this._m(new THREE.SphereGeometry(0.22, 12, 9), devMat, ox, oy, oz);
+    owl.scale.set(0.9, 1.1, 0.6);
+    for (const sx of [-1, 1]) {                       // the two great eyes, and the ear-tufts
+      this._m(new THREE.CylinderGeometry(0.075, 0.075, 0.05, 12), devMat,
+        ox + sx * 0.085, oy + 0.06, oz + 0.13, { rx: Math.PI / 2, cast: false });
+      this._m(new THREE.ConeGeometry(0.045, 0.12, 5), devMat, ox + sx * 0.13, oy + 0.26, oz,
+        { rz: -sx * 0.35, cast: false });
+    }
+    this._m(new THREE.ConeGeometry(0.035, 0.09, 5), devMat, ox, oy + 0.02, oz + 0.16,
+      { rx: Math.PI / 2, cast: false });               // the beak
+    this._m(new THREE.BoxGeometry(0.34, 0.05, 0.16), devMat, ox, oy - 0.26, oz, { cast: false });  // the perch
+
+    const lx = PX - 1.3;
+    this._m(new THREE.CylinderGeometry(0.012, 0.012, 0.34, 4), devMat, lx, oy + 0.26, oz, { cast: false });
+    const bowl = this._m(new THREE.SphereGeometry(0.17, 12, 9, 0, Math.PI * 2, 0, Math.PI / 1.8),
+      devMat, lx, oy + 0.06, oz);
+    bowl.rotation.x = Math.PI;
+    this._m(new THREE.ConeGeometry(0.055, 0.16, 7), devMat, lx - 0.2, oy + 0.03, oz,
+      { rz: 1.35, cast: false });                      // the spout, where the wick sits
+    this._m(new THREE.TorusGeometry(0.055, 0.014, 6, 12), devMat, lx + 0.2, oy + 0.05, oz,
+      { rx: Math.PI / 2, cast: false });               // the handle
+
+    this._plaque({ main: 'VITAE LETHIFER NVNTIVS',
+                   sub: 'THE OWL AND THE LAMP · THE DEATH-BRINGING MESSENGER OF LIFE' },
+      2.2, 0.34, PX - 2.15, 5.62, PZ - 3.06, 0, true);
     // the fallen pediment fragment, face down in the grass
     const ped = this._m(new THREE.CylinderGeometry(1.5, 1.5, 0.4, 3), this._stoneMat, PX + 3.6, 0.3, PZ - 1.2, { outline: true });
     ped.rotation.z = Math.PI / 2; ped.rotation.x = 0.3;
