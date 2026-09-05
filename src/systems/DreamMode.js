@@ -27,10 +27,37 @@ export class DreamMode {
     this._len = 0;
     this._guide = null;
     this._speed = 3.4;
+    this._travelT = 0;                 // watchdog: seconds spent in the current walk
+    this.MAX_TRAVEL = 14;              // no walk in the garden is longer than this
     this._onKey = (e) => {
       if (e.code === 'Space' || e.code === 'Enter' || e.code === 'ArrowRight') { e.preventDefault(); this.advance(); }
       else if (e.code === 'Escape') this.end(false);
     };
+  }
+
+  // The dream must never be able to strand the player. Every call into the UI
+  // goes through here: if a render throws, we log it and carry on rather than
+  // leaving the state machine parked in a phase with no way forward.
+  _safe(name, ...args) {
+    const fn = this.ui && this.ui[name];
+    if (typeof fn !== 'function') return false;
+    try { fn.call(this.ui, ...args); return true; }
+    catch (err) { console.error('[dream] ui.' + name + ' failed', err); return false; }
+  }
+
+  // A stop is only playable if it has beats we can walk through. Anything
+  // malformed is skipped rather than throwing halfway through advance().
+  _beatsOf(st) {
+    return (st && Array.isArray(st.beats)) ? st.beats : [];
+  }
+
+  // A reaction is only offered if it actually has options to click. Otherwise
+  // the choice phase would set _awaitingChoice with nothing to satisfy it, and
+  // Space/Enter/-> would all be dead.
+  _reactionFor(st) {
+    const r = st && this.reactions && this.reactions[st.id];
+    if (!r || !Array.isArray(r.options) || r.options.length === 0) return null;
+    return r;
   }
 
   start() {
@@ -52,11 +79,14 @@ export class DreamMode {
     this._curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.1);
     this._len = this._curve.getLength();
     this._s = 0;
+    this._travelT = 0;
     this.phase = 'travel';
     this.beat = -1;
-    this.ui.showTravel({ index: this.i, total: this.stops.length, title: st.title });
-    if (st.guide) this._spawnGuide(st.guide);
-    if (this._len < 0.5) this._arrive();   // stop begins where we stand
+    this._safe('showTravel', { index: this.i, total: this.stops.length, title: st.title });
+    if (st.guide) { try { this._spawnGuide(st.guide); } catch (e) { console.error('[dream] guide', e); } }
+    // A degenerate path (zero length, or NaN from duplicated points) would leave
+    // update() waiting on a comparison that can never become true.
+    if (!Number.isFinite(this._len) || this._len < 0.5) this._arrive();
   }
 
   _spawnGuide(g) {
@@ -74,6 +104,9 @@ export class DreamMode {
 
   update(dt) {
     if (this.phase !== 'travel') return;
+    // Watchdog: however the curve misbehaves, the walk ends and the scene plays.
+    this._travelT += dt;
+    if (this._travelT > this.MAX_TRAVEL || !Number.isFinite(this._len)) { this._arrive(); return; }
     this._s = Math.min(this._len, this._s + this._speed * dt);
     const u = this._len ? this._s / this._len : 1;
     const pos = this._curve.getPointAt(u);
@@ -98,9 +131,10 @@ export class DreamMode {
   }
 
   _arrive() {
+    if (this.phase !== 'travel') return;         // never arrive twice
     const st = this.stops[this.i];
     const p = this.world.walker.player;
-    if (st.look) {
+    if (st && st.look) {
       const yaw = this.world.walker.yawToward([p.pos.x, p.pos.z], st.look);
       this.world.walker.teleportTo(p.pos.x, p.pos.z, yaw, st.pitch ?? -0.03, 0.8);
     }
@@ -115,46 +149,74 @@ export class DreamMode {
     this.advance();
   }
 
+  // The single rule of the loop: from any phase but `idle`, calling advance()
+  // must always move the dream forward. Nothing here may return without either
+  // changing phase, showing a beat, or ending — otherwise the player is stranded.
   advance() {
     if (this.phase === 'idle') return;
-    if (this._awaitingChoice) return;                 // must click a reaction option
     if (this.phase === 'portrait') { this.end(true); return; }
+    if (this._awaitingChoice) return;                 // the options are on screen
     if (this.phase === 'reacted') { this._nextStop(); return; }
-    if (this.phase === 'travel') { this._s = this._len; return; }  // skip the walk
+    if (this.phase === 'travel') {                    // skip the walk
+      // Arrive HERE rather than setting _s and waiting for update() to notice.
+      // update() is driven by requestAnimationFrame, which a browser pauses in a
+      // background tab — so relying on it meant Continue could do nothing at all
+      // until the tab was looked at again. Progression must not depend on the
+      // render loop.
+      if (Number.isFinite(this._len)) this._s = this._len;
+      this._arrive();
+      return;
+    }
     const st = this.stops[this.i];
+    if (!st) { this._finish(); return; }
+    const beats = this._beatsOf(st);
     this.beat++;
-    if (this.beat >= st.beats.length) {
+    if (this.beat >= beats.length) {
       // the game's turn: a reaction-choice before we leave the wonder
-      const r = this.reactions && this.reactions[st.id];
+      const r = this._reactionFor(st);
       if (r && !this._reactedHere) { this._showReaction(st, r); return; }
       this._nextStop(); return;
     }
-    const b = st.beats[this.beat];
-    this.ui.showBeat({
+    const b = beats[this.beat] || {};
+    const shown = this._safe('showBeat', {
       index: this.i, total: this.stops.length, title: st.title,
-      beat: this.beat, beats: st.beats.length,
-      text: b.text, quote: b.quote || null, source: b.source || null,
+      beat: this.beat, beats: beats.length,
+      text: b.text || '', quote: b.quote || null, source: b.source || null,
       voice: b.voice || (b.quote ? '1592' : null), page: b.page || null, draft: !!b.draft,
       isFinal: false,
     });
+    // If the beat could not be shown, do not sit on it — move on.
+    if (!shown) this.advance();
   }
 
   _showReaction(st, r) {
-    this._awaitingChoice = true;
     this._pendingReaction = r;
     this.phase = 'choice';
-    this.ui.showChoices({
+    this._awaitingChoice = true;
+    const shown = this._safe('showChoices', {
       index: this.i, total: this.stops.length, title: st.title,
-      prompt: r.prompt, options: r.options,
+      prompt: r.prompt || '', options: r.options,
     });
+    if (!shown) {                       // no options on screen — do not wait for one
+      this._awaitingChoice = false;
+      this._pendingReaction = null;
+      this._reactedHere = true;
+      this._nextStop();
+    }
   }
 
   // Called by the UI when the player clicks an option.
   choose(idx) {
     if (!this._awaitingChoice) return;
     const r = this._pendingReaction;
-    const opt = r.options[idx];
-    if (!opt) return;
+    const opt = r && r.options && r.options[idx];
+    if (!opt) {                          // a stale or bad click: release the lock
+      this._awaitingChoice = false;      // rather than wait on a choice that cannot come
+      this._pendingReaction = null;
+      this._reactedHere = true;
+      this._nextStop();
+      return;
+    }
     this._awaitingChoice = false;
     this._reactedHere = true;
     this.temperament[opt.mood] = (this.temperament[opt.mood] || 0) + 1;
@@ -164,7 +226,7 @@ export class DreamMode {
     const st = this.stops[this.i];
     const canon = opt.canonical ? null : r.options.find(o => o.canonical);
     this.phase = 'reacted';
-    this.ui.showChosen({
+    this._safe('showChosen', {
       index: this.i, total: this.stops.length, title: st.title,
       mood: opt.mood, text: opt.text, wasCanonical: !!opt.canonical,
       canonText: canon ? canon.text : null,
@@ -174,12 +236,14 @@ export class DreamMode {
 
   _finish() {
     this.phase = 'portrait';
-    if (this.ui.showPortrait) this.ui.showPortrait(this.temperament);
-    else this.end(true);
+    if (!this._safe('showPortrait', this.temperament)) this.end(true);
   }
 
+  // Always available, from any phase including a pending choice — the player's
+  // guaranteed way onward if anything about a scene misbehaves.
   skipStop() {
-    if (this.phase === 'idle' || this.phase === 'portrait') return;
+    if (this.phase === 'idle') return;
+    if (this.phase === 'portrait') { this.end(true); return; }
     this._awaitingChoice = false;
     this._pendingReaction = null;
     this._nextStop();
