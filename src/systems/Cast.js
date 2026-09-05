@@ -11,7 +11,7 @@
 // head) so scenes and vignettes can animate gestures without traversing.
 
 import * as THREE from 'three';
-import { isVariant } from './AssetVariants.js?v=2';
+import { isVariant, variantOf } from './AssetVariants.js?v=3';
 
 export function makeCast(S) {
   const mats = new Map();
@@ -56,9 +56,67 @@ export function makeCast(S) {
     return _weave;
   }
 
+  // ── The painterly (tempera) register ─────────────────────────────────────
+  // Ted's art direction: "a Botticelli panel you can walk into" — flatter light,
+  // painted drapery, a limited palette, outlines kept (DECISIONS.md 2026-09-05).
+  // The `painted` figure variant swaps the PBR surface for painted cloth: the
+  // folds are DRAWN into the albedo the way tempera drapery is, rather than
+  // being lit into existence, and the material stops taking a specular
+  // highlight. Same silhouette as `modelled`, a very different surface.
+  function figVariant() { return variantOf('figure', S.key) || 'primitive'; }
+
+  const _paintedRobes = new Map();
+  function paintedRobeTexture(color) {
+    if (_paintedRobes.has(color)) return _paintedRobes.get(color);
+    const W = 256, H = 256;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const r = (color >> 16) & 255, g = (color >> 8) & 255, b = color & 255;
+    const mix = (t) => `rgb(${Math.round(r + (255 - r) * t)},${Math.round(g + (255 - g) * t)},${Math.round(b + (255 - b) * t)})`;
+    const shade = (t) => `rgb(${Math.round(r * (1 - t))},${Math.round(g * (1 - t))},${Math.round(b * (1 - t))})`;
+    x.fillStyle = `rgb(${r},${g},${b})`; x.fillRect(0, 0, W, H);
+    // Long directional folds — few, and running the height of the cloth, which
+    // is how Quattrocento drapery is drawn (research/nymphs.html on Goujon).
+    for (let i = 0; i < 9; i++) {
+      const v = Math.sin(i * 91.7 + color * 0.0007) * 43758.5453;
+      const f = v - Math.floor(v);
+      const cx = f * W;
+      const w = 8 + f * 26;
+      const gd = x.createLinearGradient(cx - w, 0, cx + w, 0);
+      gd.addColorStop(0, shade(0.34));
+      gd.addColorStop(0.45, mix(0.16));
+      gd.addColorStop(1, shade(0.28));
+      x.fillStyle = gd;
+      x.globalAlpha = 0.55;
+      x.fillRect(cx - w, 0, w * 2, H);
+    }
+    x.globalAlpha = 1;
+    // A warm ground glaze at the hem, as tempera darkens toward the floor
+    const hem = x.createLinearGradient(0, H * 0.62, 0, H);
+    hem.addColorStop(0, 'rgba(0,0,0,0)');
+    hem.addColorStop(1, 'rgba(30,16,6,0.42)');
+    x.fillStyle = hem; x.fillRect(0, H * 0.62, W, H * 0.38);
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    _paintedRobes.set(color, t);
+    return t;
+  }
+
+  // Flat, painted cloth: no metalness, high roughness, the folds in the map.
+  const _paintedMats = new Map();
+  function PaintedM(color) {
+    if (_paintedMats.has(color)) return _paintedMats.get(color);
+    const m = S.mat({ color: 0xffffff, roughness: 1.0, metalness: 0.0 });
+    m.map = paintedRobeTexture(color);
+    _paintedMats.set(color, m);
+    return m;
+  }
+
   // A robe material: the shared colour cache, plus the weave (lit only) and a
   // silk-adjacent roughness. Cached separately from plain colours.
   function RobeM(color) {
+    if (lit && figVariant() === 'painted') return PaintedM(color);
     const m = M(color, { roughness: 0.62, metalness: 0.03 });
     if (lit && !m.bumpMap) { m.bumpMap = weave(); m.bumpScale = 0.012; }
     return m;
@@ -202,12 +260,40 @@ export function makeCast(S) {
     const sm = M(skin, { roughness: 0.6 });
     const parts = g.userData;
 
+    // `primitive` is the founding look: a cone for the robe, capsules for legs.
+    // `modelled` and `painted` share a better build — the same turned gown the
+    // nymphs use, tapered legs, and a torso that is wider at the shoulder than
+    // at the waist, so the figure has a silhouette instead of a barrel.
+    const prim = figVariant() === 'primitive';
     if (robe != null) {
-      add(g, mesh(new THREE.ConeGeometry(0.26 * h, 0.85 * h, 12), RobeM(robe), 0, 0.425 * h));
-    } else {
+      if (prim) {
+        add(g, mesh(new THREE.ConeGeometry(0.26 * h, 0.85 * h, 12), RobeM(robe), 0, 0.425 * h));
+      } else {
+        const gown = add(g, mesh(gownGeometry(h), RobeM(robe), 0, 0));
+        gown.scale.set(1.04, 0.92, 1.04);
+      }
+    } else if (prim) {
       for (const s of [-1, 1]) add(g, mesh(new THREE.CapsuleGeometry(0.065 * h, 0.55 * h, 4, 8), sm, s * 0.1 * h, 0.38 * h));
+    } else {
+      for (const s of [-1, 1]) {
+        add(g, mesh(new THREE.CylinderGeometry(0.055 * h, 0.075 * h, 0.62 * h, 9), sm, s * 0.095 * h, 0.4 * h));
+        add(g, mesh(new THREE.SphereGeometry(0.062 * h, 9, 7), sm, s * 0.095 * h, 0.72 * h));   // hip
+        const ft = add(g, mesh(new THREE.SphereGeometry(0.052 * h, 8, 6), sm, s * 0.095 * h, 0.05 * h, 0.02 * h));
+        ft.scale.set(0.8, 0.5, 1.5);
+      }
     }
-    add(g, mesh(new THREE.CapsuleGeometry(0.16 * h, 0.5 * h, 6, 10), robe != null ? RobeM(robe) : sm, 0, 1.05 * h));
+    if (prim) {
+      add(g, mesh(new THREE.CapsuleGeometry(0.16 * h, 0.5 * h, 6, 10), robe != null ? RobeM(robe) : sm, 0, 1.05 * h));
+    } else {
+      const torsoMat = robe != null ? RobeM(robe) : sm;
+      const chest = add(g, mesh(new THREE.CylinderGeometry(0.175 * h, 0.125 * h, 0.44 * h, 12), torsoMat, 0, 1.09 * h));
+      chest.scale.set(1, 1, 0.78);
+      add(g, mesh(new THREE.SphereGeometry(0.15 * h, 12, 9), torsoMat, 0, 0.9 * h)).scale.set(1, 0.72, 0.78);
+      for (const s of [-1, 1]) {                                  // shoulders
+        add(g, mesh(new THREE.SphereGeometry(0.072 * h, 10, 8), torsoMat, s * 0.155 * h, 1.28 * h))
+          .scale.set(1, 0.85, 0.85);
+      }
+    }
     // a neck, so the head no longer floats on the shoulders
     add(g, mesh(new THREE.CylinderGeometry(0.05 * h, 0.062 * h, 0.12 * h, 8), sm, 0, 1.38 * h));
 

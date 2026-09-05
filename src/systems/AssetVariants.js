@@ -47,10 +47,10 @@ export const ASSETS = {
     label: 'Nymphs & figures',
     def: 'primitive',
     variants: [
-      { id: 'primitive', label: 'Primitive', note: 'Capsule and cone bodies — the founding look.' },
-      { id: 'painted',   label: 'Painted cutouts', note: 'Figures cut from Renaissance paintings and stood up in the garden — literally the period art. Flat from oblique angles.', pending: true },
-      { id: 'modelled',  label: 'Modelled', note: 'Hand-built anatomy: real shoulder and hip structure, draped gown geometry, layered hair.', pending: true },
-      { id: 'scan',      label: 'Sculpture scan', note: 'Imported CC0 museum scans, like the marble Venus. The book often describes its figures as statuary.', pending: true },
+      { id: 'primitive', label: 'Primitive', note: 'A cone for the robe and capsules for the limbs — the founding manifesto look.' },
+      { id: 'modelled',  label: 'Modelled', note: 'A turned gown falling in long folds, tapered legs with hips and feet, and a torso wider at the shoulder than the waist — so the figure has a silhouette, not a barrel.' },
+      { id: 'painted',   label: 'Painterly (tempera)', note: 'The modelled build, but the drapery folds are painted into the cloth rather than lit into it, and the surface takes no specular — the Botticelli-panel register.' },
+      { id: 'scan',      label: 'Sculpture scan', note: 'Imported CC0 museum scans, as the marble Venus already is. Needs a stylisation pass to sit in the painted world — see IMPORTEXEMPLARS.md.', pending: true },
     ],
   },
   water: {
