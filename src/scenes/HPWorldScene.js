@@ -257,6 +257,8 @@ export class HPWorldScene {
     this._motes = null;            // drifting pollen in the lit garden
     this._meadows = [];            // instanced grass / flower fields (lit only)
     this._vanes = [];              // weathervanes that turn with the wind
+    this._windVanes = [];          // the Temple of Venus's eight winds (absolute)
+    this._windBells = [];          // and the four bells under its moon
     this._trashGeo = new Set();    // originals swallowed by the draw-call compiler
     this._npcs = [];               // { g, phase, sway }
     this._billboards = [];         // painted figure cards, turned to face the camera
@@ -435,6 +437,8 @@ export class HPWorldScene {
     for (const o of this._orbs) mark(o.orb);
     for (const v of this._venuses) mark(v);
     for (const v of this._vanes) mark(v.g);
+    for (const v of this._windVanes) mark(v.g);
+    for (const b of this._windBells) mark(b.g);
     if (this._quinta) { mark(this._quinta.dod); mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
     if (this._boat) { mark(this._boat); mark(this._boat.userData.cupid); }
@@ -4248,13 +4252,19 @@ export class HPWorldScene {
     // "A scaled cupola resided" — the courses are drawn as diminishing rings,
     // which is what a scaled dome is: overlapping courses of stone.
     const DOME_Y = PLAT_Y + WALL_H + 0.95;
+    // The courses are open-ended shells, so they must be DOUBLE-sided or the
+    // dome is invisible from underneath and you stand in the temple looking at
+    // open sky through your own roof. (Found by looking up, not by reading.)
+    const domeA = marble.clone(), domeB = shadow.clone();
+    domeA.side = THREE.DoubleSide; domeB.side = THREE.DoubleSide;
+    this._disp.push(domeA, domeB);
     const SC = 9;
     for (let i = 0; i < SC; i++) {
       const t = i / SC, t2 = (i + 1) / SC;
       const r0 = R * Math.cos(t * Math.PI / 2) * 1.02;
       const r1 = R * Math.cos(t2 * Math.PI / 2) * 1.02;
       this._m(new THREE.CylinderGeometry(r1, r0, R * 0.46 / SC * 2.2, 32, 1, true),
-        i % 2 ? marble : shadow,
+        i % 2 ? domeA : domeB,
         TX, DOME_Y + Math.sin(t * Math.PI / 2) * R * 0.52, TZ, { cast: false });
     }
     const APEX = DOME_Y + R * 0.52;
@@ -4448,8 +4458,12 @@ export class HPWorldScene {
         w.rotation.z = sx * 0.30;
       }
       lantern.add(vane);
-      this._vanes = this._vanes || [];
-      this._vanes.push({ g: vane, k });
+      // NOT `_vanes`. That registry is Fortuna's, and its entries carry
+      // {rate, phase} and are integrated with `+=`; these are absolute and
+      // carry {k}. Sharing it made each animator write NaN through the other's
+      // meshes — caught by counting the registry and finding ten vanes where
+      // eight were built.
+      this._windVanes.push({ g: vane, k });
       // the little pilaster above, and its ewer-vase with the mouth inverted
       this._m(new THREE.BoxGeometry(0.20, 0.40, 0.20), marble, lx * 0.72, 3.30, lz * 0.72,
         { parent: lantern, cast: false, ry: a });
@@ -4462,7 +4476,7 @@ export class HPWorldScene {
       const t = i / 5, t2 = (i + 1) / 5;
       this._m(new THREE.CylinderGeometry(LR * 1.1 * Math.cos(t2 * Math.PI / 2),
                                          LR * 1.1 * Math.cos(t * Math.PI / 2), 0.24, 20, 1, true),
-        i % 2 ? marble : shadow, 0, 2.95 + t * 1.0, 0, { parent: lantern, cast: false });
+        i % 2 ? domeA : domeB, 0, 2.95 + t * 1.0, 0, { parent: lantern, cast: false });
     }
     // the stalk, the hollow triangle, the moon and the eagle
     this._m(new THREE.CylinderGeometry(0.035, 0.045, 2.5, 8), bronze, 0, 5.1, 0,
@@ -4499,8 +4513,7 @@ export class HPWorldScene {
       this._m(new THREE.SphereGeometry(0.035, 7, 6), M(0xb8bcc4, { metalness: 0.7, roughness: 0.4, tone: 0.1 }),
         0, -0.18, 0, { parent: bell, cast: false });
       lantern.add(bell);
-      this._bells = this._bells || [];
-      this._bells.push({ g: bell, k });
+      this._windBells.push({ g: bell, k });
     }
     lantern.position.set(TX, LB, TZ);
     this.scene.add(lantern);
@@ -5861,15 +5874,13 @@ export class HPWorldScene {
     // bells swing on their chains against the great triangle. The wind is one
     // slow direction with a gust on top of it, so the vanes agree with each
     // other the way real vanes do.
-    if (this._vanes) {
+    if (this._windVanes.length) {
       const wind = Math.sin(this._t * 0.11) * 1.7 + Math.sin(this._t * 0.53) * 0.34;
-      for (const v of this._vanes) v.g.rotation.y = wind + v.k * 0.04;
-      if (this._bells) {
-        const gust = Math.sin(this._t * 1.9) * 0.16 + Math.sin(this._t * 2.7) * 0.06;
-        for (const b of this._bells) {
-          b.g.rotation.z = gust * Math.cos(b.k * 1.57);
-          b.g.rotation.x = gust * Math.sin(b.k * 1.57);
-        }
+      for (const v of this._windVanes) v.g.rotation.y = wind + v.k * 0.04;
+      const gust = Math.sin(this._t * 1.9) * 0.16 + Math.sin(this._t * 2.7) * 0.06;
+      for (const b of this._windBells) {
+        b.g.rotation.z = gust * Math.cos(b.k * 1.57);
+        b.g.rotation.x = gust * Math.sin(b.k * 1.57);
       }
     }
     // The meadow leans with the travelling gusts
