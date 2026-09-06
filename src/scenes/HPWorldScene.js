@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=37';
+import { makeCast } from '../systems/Cast.js?v=38';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -3480,9 +3480,15 @@ export class HPWorldScene {
           continue;
         }
         const beast = this._triumphBeast(t.team);
+        this._harness(t.team, beast);          // the furniture the 1592 gives it
         beast.position.set(sx, 0, z);
         g.add(beast);
-        const rider = this.cast.nymph({ robe: TRIUMPH_LIVERY[i], h: 0.62 });
+        // "Their hayres yellowe, and falling ouer their fayre neckes, with
+        // Pancarpiall garlands of all manner of flowers, vpon their heades."
+        // Every rider on every car, and it applies to all four teams: the
+        // later cars are described as "in such pompe and manner as before".
+        const rider = this.cast.nymph({ robe: TRIUMPH_LIVERY[i], h: 0.62,
+                                        hair: 0xc8a24a, garland: 'pancarpial' });
         const ry = t.team === 'elephant' ? 1.15 : 0.82;
         rider.position.set(sx, ry, z + 0.1);
         g.add(rider);
@@ -3890,11 +3896,169 @@ export class HPWorldScene {
   // A draught beast for a triumphal car. Centaurs and leopards aren't in the
   // Cast's bestiary, so both are composed from what is: a horse with a rider's
   // torso grown out of the withers, and a spotted tawny cat.
+  // ── The teams' furniture ─────────────────────────────
+  //
+  // Dallington 1592 dresses every one of the four teams, and none of it was
+  // built. This is the "only where a source documents cloth" rule in
+  // ARCHITECTURE.md §0 working the other way: here the source documents it
+  // four times over, so it goes in.
+  //
+  //   ELEPHANTS (Leda) — "Their furniture & traces of pure blewe silke,
+  //     twisted with threds of golde and siluer: the fastnings in the
+  //     furniture, all made vp with square or true loue knots, lyke square
+  //     eares of corne of the Mountaine Garganus. Their Poyterelles of golde,
+  //     set with Pearle and stone different in collours."
+  //   CENTAURS (Europa) — "with a furniture of gold vpon them, and a long
+  //     their strong sides, like horses, excellently framed and illaqueated in
+  //     manner of a flagon chayne, whereby they drewe the Tryumph" — and "The
+  //     Centaures were crowned with yuie, that is called Dendrocyssos."
+  //   UNICORNES (Danaë) — "The poyterelles and furniture about their stronge
+  //     breasts, was of golde, set with precious stone, and fringed with
+  //     siluer and hayre colloured silke, tyed into knots, in manner of a net
+  //     worke, and tasseled at euery prependent point."
+  //   LEOPARDS (Bacchus) — "coupled togither with withes of twined vines, full
+  //     of tender greene leaues, and stalkes full of greene clusters."
+  //
+  // Built in the beast's own local frame so it travels with the animal, and
+  // kept to the front third of the body: a trace is a working thing that
+  // leaves the breast and goes back to the car, not a blanket.
+  _harness(kind, beast) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const gold   = lit ? S.mat({ color: 0xd8b048, metalness: 0.85, roughness: 0.28 }) : S.mat({ tone: 0.06 });
+    const silver = lit ? S.mat({ color: 0xd8dee8, metalness: 0.8, roughness: 0.3 })   : S.mat({ tone: 0.10 });
+    const silk   = lit ? S.mat({ color: 0x2a4a9a, roughness: 0.55 })                  : S.mat({ tone: 0.22 });
+    const vine   = lit ? S.mat({ color: 0x6a8a3a, roughness: 0.85 })                  : S.mat({ tone: 0.18 });
+    const leaf   = lit ? S.mat({ color: 0x4f7a2e, roughness: 0.9 })                   : S.mat({ tone: 0.16 });
+    const grape  = lit ? S.mat({ color: 0x3f6a34, roughness: 0.7 })                   : S.mat({ tone: 0.24 });
+    const PEARL  = [0xf2ece0, 0xc84a4a, 0x3a7ac8, 0x3a8a5a, 0xd8b048];
+
+    // where the breast is on this cast's quadrupeds, and how far back the
+    // trace runs before it leaves the animal
+    const BZ = -0.62, BY = 0.56, HALF = 0.30;
+
+    // the poitrel: the band round the breast
+    const poitrel = (mat, jewels) => {
+      const t = this._m(new THREE.TorusGeometry(HALF, 0.030, 6, 18), mat, 0, BY, BZ + 0.06,
+        { parent: beast, cast: false });
+      t.rotation.y = Math.PI / 2;
+      t.scale.set(1, 0.86, 1);
+      if (!jewels) return;
+      for (let i = 0; i < 10; i++) {
+        const a = (i / 10) * Math.PI * 2;
+        this._m(new THREE.SphereGeometry(0.026, 7, 6),
+          lit ? S.mat({ color: PEARL[i % PEARL.length], roughness: 0.35, metalness: 0.2 }) : silver,
+          Math.cos(a) * HALF * 1.02, BY + Math.sin(a) * HALF * 0.88, BZ + 0.06,
+          { parent: beast, cast: false });
+      }
+    };
+
+    // a trace running back along one flank, from the breast toward the car
+    const trace = (mat, len = 1.5) => {
+      for (const sx of [-1, 1]) {
+        const t = this._m(new THREE.CylinderGeometry(0.022, 0.022, len, 6), mat,
+          sx * HALF * 0.96, BY - 0.04, BZ + 0.10 + len / 2, { parent: beast, cast: false });
+        t.rotation.x = Math.PI / 2;
+      }
+    };
+
+    if (kind === 'elephant') {
+      // blue silk, and the gold and silver threads twisted through it
+      trace(silk, 1.7);
+      for (const sx of [-1, 1]) {
+        for (const [mat, off] of [[gold, 0.026], [silver, -0.026]]) {
+          const t = this._m(new THREE.CylinderGeometry(0.009, 0.009, 1.7, 4), mat,
+            sx * HALF * 0.96 + off, BY - 0.04 + off, BZ + 0.95, { parent: beast, cast: false });
+          t.rotation.x = Math.PI / 2;
+        }
+        // "the fastnings ... all made vp with square or true loue knots": a
+        // square knot at each fastening, three to a side
+        for (let k = 0; k < 3; k++) {
+          const kn = this._m(new THREE.BoxGeometry(0.075, 0.075, 0.055), gold,
+            sx * HALF * 0.96, BY - 0.04, BZ + 0.34 + k * 0.62, { parent: beast, cast: false });
+          kn.rotation.z = Math.PI / 4;
+        }
+      }
+      poitrel(gold, true);
+    } else if (kind === 'centaur') {
+      // "illaqueated in manner of a flagon chayne" — a chain of linked rings
+      // down each strong side, and nothing else: the centaurs wear gold, not
+      // cloth
+      for (const sx of [-1, 1]) {
+        for (let k = 0; k < 9; k++) {
+          const ring = this._m(new THREE.TorusGeometry(0.048, 0.014, 5, 10), gold,
+            sx * HALF * 0.98, BY - 0.02 - (k % 2) * 0.012, BZ + 0.16 + k * 0.19,
+            { parent: beast, cast: false });
+          ring.rotation.y = Math.PI / 2;
+          ring.rotation.x = (k % 2) * Math.PI / 2;
+        }
+      }
+      poitrel(gold, false);
+      // "crowned with yuie, that is called Dendrocyssos". The man's head sits
+      // at y≈1.68 on this build — the torso is a 0.62-high figure standing at
+      // 0.72 on the withers — and the wreath was first put at 1.34, which is
+      // his chest. Measured, not guessed.
+      for (let i = 0; i < 9; i++) {
+        const a = (i / 9) * Math.PI * 2;
+        this._m(new THREE.SphereGeometry(0.026, 6, 5), leaf,
+          Math.cos(a) * 0.075, 1.685, -0.50 + Math.sin(a) * 0.075,
+          { parent: beast, cast: false }).scale.set(1.5, 0.5, 1);
+      }
+    } else if (kind === 'unicorn') {
+      // gold set with stone, and the net of knots with a tassel hanging at
+      // "euery prependent point"
+      poitrel(gold, true);
+      for (let i = 0; i < 7; i++) {
+        const a = Math.PI * (0.12 + (0.76 * i) / 6);
+        const px = Math.cos(a) * HALF * 1.0, py = BY + Math.sin(a) * HALF * 0.86;
+        // the net: a knot, and the silver-and-silk tassel under it
+        this._m(new THREE.BoxGeometry(0.030, 0.030, 0.030), silver, px, py - 0.10, BZ + 0.08,
+          { parent: beast, cast: false }).rotation.z = Math.PI / 4;
+        const tas = this._m(new THREE.ConeGeometry(0.022, 0.10, 6),
+          lit ? S.mat({ color: 0xc8b088, roughness: 0.8 }) : silver,
+          px, py - 0.19, BZ + 0.08, { parent: beast, cast: false });
+        tas.rotation.x = Math.PI;
+      }
+      trace(gold, 1.4);
+    } else if (kind === 'leopard') {
+      // the withe itself, twined; then the tender leaves and the clusters
+      trace(vine, 1.5);
+      for (const sx of [-1, 1]) {
+        const tw = this._m(new THREE.CylinderGeometry(0.013, 0.013, 1.5, 5), vine,
+          sx * HALF * 0.96 + 0.028, BY + 0.02, BZ + 0.85, { parent: beast, cast: false });
+        tw.rotation.x = Math.PI / 2; tw.rotation.z = 0.12;
+        for (let k = 0; k < 5; k++) {
+          const zz = BZ + 0.26 + k * 0.30;
+          const lf = this._m(new THREE.SphereGeometry(0.052, 6, 5), leaf,
+            sx * (HALF * 0.96 + 0.05), BY + 0.06, zz, { parent: beast, cast: false });
+          lf.scale.set(1.2, 0.28, 1.0);
+          lf.rotation.z = (k % 2 ? 1 : -1) * 0.4;
+          if (k % 2 === 0) {
+            // "stalkes full of greene clusters" — the grapes are green, still
+            for (let b = 0; b < 5; b++) {
+              this._m(new THREE.SphereGeometry(0.021, 6, 5), grape,
+                sx * (HALF * 0.96 + 0.05) + (b % 2) * 0.024,
+                BY - 0.05 - Math.floor(b / 2) * 0.034, zz + 0.02,
+                { parent: beast, cast: false });
+            }
+          }
+        }
+      }
+      poitrel(vine, false);
+    }
+  }
+
   _triumphBeast(kind) {
     const S = this.style;
     if (kind === 'elephant') {
       const g = this.cast.animals.horse(1.0);
       g.scale.set(1.25, 1.15, 1.3);
+      // "This tryumphant Charyot, was drawen by sixe WHITE Elephants" — the
+      // trunk was white and the animal under it was still the cast's brown
+      // horse, so Leda's team read as six ponies. The one adjective the book
+      // gives the beast is the one it did not have.
+      const hide = S.key === 'woodcut' ? null : S.mat({ color: 0xe8e4d8, roughness: 0.82 });
+      if (hide) g.traverse(o => { if (o.isMesh && o.material && o.material.color) o.material = hide; });
       const trunk = this._m(new THREE.CapsuleGeometry(0.05, 0.34, 4, 6),
         S.mat({ color: 0xe8e4d8, roughness: 0.8 }), 0, 0.62, -0.78, { parent: g });
       trunk.rotation.x = 0.5;

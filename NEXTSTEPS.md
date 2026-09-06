@@ -36,11 +36,13 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 in the world is dressed. Lefaivre's rule (`ARCHITECTURE.md` §0) is that cloth and precious
 material **point** — they mark where the eye should go — so place them, don't spread them.
 
-- Bare: the Temple of Venus, the theatre, the triumphal cars, the three doors.
+- Bare: the Temple of Venus, the theatre, the three doors.
 - **Only where a source documents cloth.** Nothing documents hangings at the doors or in
-  the theatre; Leda's team, by contrast, has "traces of blue silk twisted with gold and
-  silver in true-love knots, gold poitrels set with pearl" (`PROCESSIONS.md`), which is
-  documented and unbuilt.
+  the theatre.
+- **Done 2026-09-05: the four teams' furniture** — Leda's blue-silk traces and pearled
+  poitrels, Europa's gold flagon-chain and ivy crowns, Danaë's netted and tasselled
+  poitrels, Bacchus's twined vine-withes; plus the white elephants and the riders'
+  pancarpial garlands. See `PROCESSIONS.md` §2c.
 - **Already built, do not rebuild:** the curtain of Hymen at the Cythera fountain, two
   parted panels with their tie-rings, the ΥΜΗΝ plaque and the Greek motto.
 - **Audit the gold** while there: move it off surfaces it merely gilds.

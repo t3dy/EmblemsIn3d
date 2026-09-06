@@ -417,10 +417,24 @@ export function makeCast(S) {
   // Drawn at 8 heads (the Mannerist canon the nymphs already use), lit from the
   // upper left to agree with the garden's sun, with the drapery folds drawn as
   // tempera drapery is drawn: a dark core and a lit ridge, few and long.
+  // Two garlands, both named in the 1499 and both worn on the brow.
+  //   violet     — the chess dancers: "nel capo innexe cum corolla di olente
+  //                viole", heads bound with a garland of sweet-smelling
+  //                violets (f. g8v).
+  //   pancarpial — the triumph riders: "Pancarpiall garlands of all manner of
+  //                flowers, vpon their heades" (Dallington, ch. XVII).
+  //                *Pancarpus*, all-fruits: the point of the word is that it
+  //                is EVERY flower, so the palette is deliberately motley.
+  const GARLANDS = {
+    violet:     ['#553a94', '#7a5bb8', '#3f7a3a'],
+    pancarpial: ['#c83a4a', '#e0b028', '#f0ecd8', '#7a5bb8', '#3f7a3a', '#e07a30'],
+  };
+
   const _figCards = new Map();
   function paintedFigureTexture({ robe = 0xb8a0c8, hair = 0x4a3018, skin = 0xe6cdae,
-                                  gowned = true, mirrored = false, rank = null } = {}) {
-    const key = [robe, hair, skin, gowned, mirrored, rank].join('_');
+                                  gowned = true, mirrored = false, rank = null,
+                                  garland = null } = {}) {
+    const key = [robe, hair, skin, gowned, mirrored, rank, garland].join('_');
     if (_figCards.has(key)) return _figCards.get(key);
     const W = 384, H = 768;
     const c = document.createElement('canvas');
@@ -447,7 +461,7 @@ export function makeCast(S) {
     // dropped, which buys ~80px of headroom. EVERY one of the thirty-two takes
     // the same transform, ranked or not, or the eight uniform pawns would stand
     // taller than their own king.
-    if (rank) { x.translate(CX, H * 0.112); x.scale(0.893, 0.893); x.translate(-CX, 0); }
+    if (rank || garland) { x.translate(CX, H * 0.112); x.scale(0.893, 0.893); x.translate(-CX, 0); }
 
     // ── the gown: silhouette first, then the folds painted into it ──
     // A 3.7x flare from shoulder to hem read as a bell. Renaissance gowns fall
@@ -651,10 +665,24 @@ export function makeCast(S) {
     // "cum le sue copiose trece sopra le delicate spalle effuse" — tresses
     // loose over their shoulders — and "nel capo innexe cum corolla di olente
     // viole", their heads bound with a garland of sweet-smelling violets.
+    // the garland, on every head that wears one — the chess dancers' violets
+    // and the triumph riders' pancarpial flowers are the same wreath in a
+    // different palette
+    const wreath = GARLANDS[garland || (rank ? 'violet' : null)];
+    if (wreath) {
+      const brow0 = headY - HEAD_R * 0.34;
+      for (let i = 0; i <= 14; i++) {
+        const a = Math.PI * (1.03 + (0.94 * i) / 14);
+        const gx = CX + Math.cos(a) * HEAD_R * 0.80;
+        const gy = brow0 + Math.sin(a) * HEAD_R * 0.34 + HEAD_R * 0.02;
+        x.fillStyle = wreath[(i * 3 + (i % 5)) % wreath.length];
+        x.beginPath(); x.arc(gx, gy, HEAD_R * 0.062, 0, 7); x.fill();
+      }
+    }
+
     if (rank) {
       const trimL = lighten(robe, 0.58), trimD = darken(robe, 0.34);
       const capY = headY - HEAD_R * 0.92;          // the top of the hair mass
-      const brow = headY - HEAD_R * 0.34;
 
       // The loose tresses. A LOCK either side, swept outward over the point
       // of the shoulder — drawn as a broad panel it covered the neckline and
@@ -679,15 +707,6 @@ export function makeCast(S) {
         x.quadraticCurveTo(CX + sx * HEAD_R * 0.82, shY + HEAD_R * 0.30,
                            x1 - sx * HEAD_R * 0.04, y1 - HEAD_R * 0.20);
         x.stroke();
-      }
-
-      // the garland of violets, on every head
-      for (let i = 0; i <= 14; i++) {
-        const a = Math.PI * (1.03 + (0.94 * i) / 14);
-        const gx = CX + Math.cos(a) * HEAD_R * 0.80;
-        const gy = brow + Math.sin(a) * HEAD_R * 0.34 + HEAD_R * 0.02;
-        x.fillStyle = i % 3 === 0 ? '#3f7a3a' : (i % 2 ? '#7a5bb8' : '#553a94');
-        x.beginPath(); x.arc(gx, gy, HEAD_R * 0.062, 0, 7); x.fill();
       }
 
       if (rank === 'king' || rank === 'queen') {
@@ -840,10 +859,10 @@ export function makeCast(S) {
   }
 
   function paintedFigure({ h = 0.95, robe = 0xb8a0c8, hair = 0x4a3018, mirrored = false,
-                           cutout = null, rank = null } = {}) {
+                           cutout = null, rank = null, garland = null } = {}) {
     const g = new THREE.Group();
     const tex = cutout ? cutoutTexture(cutout)
-                       : paintedFigureTexture({ robe, hair, skin: SKIN, mirrored, rank });
+                       : paintedFigureTexture({ robe, hair, skin: SKIN, mirrored, rank, garland });
     const mat = new THREE.MeshBasicMaterial({
       map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
       toneMapped: true,
@@ -997,13 +1016,15 @@ export function makeCast(S) {
   // same and the two sides became indistinguishable.
   function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand',
                    attribute = null, hair = 0x4a3018, crowned = false, winged = false,
-                   cutout = undefined, rank = null } = {}) {
+                   cutout = undefined, rank = null, garland = null } = {}) {
     // The painted rung hands back a card instead of an assembly (see
     // paintedFigure). Seeded off the name so a row of nymphs is not the same
     // painting repeated.
     if (lit && figVariant() === 'card') {
-      return paintedFigure({ h, robe, hair, rank,
-        cutout: cutout === null ? null : pickCutout(name, false) });
+      return paintedFigure({ h, robe, hair, rank, garland,
+        // A garlanded rider must be PAINTED, not cut from the Primavera: a
+        // Botticelli figure brings her own head and would lose the wreath.
+        cutout: (cutout === null || garland) ? null : pickCutout(name, false) });
     }
     const g = new THREE.Group();
     const parts = g.userData;
@@ -1077,22 +1098,23 @@ export function makeCast(S) {
     // The same six costumes the painted card carries, for the assembled rungs.
     // Their warrant is set out in full above paintedFigureTexture's `rank`
     // block: the book names every one of them on f. g8r.
+    const wreathHex = { violet: [0x553a94, 0x7a5bb8, 0x3f7a3a],
+                        pancarpial: [0xc83a4a, 0xe0b028, 0xf0ecd8, 0x7a5bb8, 0x3f7a3a, 0xe07a30] }[
+      garland || (rank ? 'violet' : null)];
+    if (wreathHex) {
+      for (let i = 0; i < 11; i++) {
+        const a = Math.PI * (0.08 + (0.84 * i) / 10);
+        const bud = add(g, mesh(new THREE.SphereGeometry(0.017 * h, 6, 5),
+          M(wreathHex[(i * 3 + (i % 5)) % wreathHex.length], { roughness: 0.82 }),
+          Math.cos(a) * 0.104 * h, 1.606 * h, Math.sin(a) * 0.104 * h - 0.008 * h));
+        bud.scale.set(1, 0.8, 1);
+      }
+    }
+
     if (rank) {
       const trimM = M(0xffd24a, { metalness: 0.85, roughness: 0.25 });
       const liveryM = M(robe, { metalness: 0.7, roughness: 0.3 });
       const CAP = 1.660 * h;                       // just clear of the hair mass
-
-      // "corolla di olente viole" — the garland of violets every one of the
-      // thirty-two wears, ranked or uniform.
-      const violetM = M(0x6a4aa8, { roughness: 0.8 });
-      const leafM = M(0x3f7a3a, { roughness: 0.9 });
-      for (let i = 0; i < 11; i++) {
-        const a = Math.PI * (0.08 + (0.84 * i) / 10);
-        const bud = add(g, mesh(new THREE.SphereGeometry(0.017 * h, 6, 5),
-          i % 3 === 0 ? leafM : violetM,
-          Math.cos(a) * 0.104 * h, 1.606 * h, Math.sin(a) * 0.104 * h - 0.008 * h));
-        bud.scale.set(1, 0.8, 1);
-      }
 
       if (rank === 'king' || rank === 'queen') {
         const pts = rank === 'king' ? 5 : 3;

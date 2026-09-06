@@ -90,11 +90,35 @@ car in peacock blue swing golden **censers** that actually stream incense; the
 middle two in crimson carry gold **trumpets** with the silk banner fastened in
 three places; the two foremost in emerald green carry antique **cornets**.
 
-**Still unbuilt from the plates:** the **Triumph of Vertumnus and Pomona** (#66)
-is a fifth procession with satyrs and nymphs that does not exist in the world at
-all; the **reliefs** on the car sides (ranked #3 below, NEMO among them) are
-still not modelled; and the **Triumph of Cupid** on Cythera (#143–144) exists as
-a standard rather than as a procession.
+## 2c. The teams are dressed (2026-09-05)
+
+Every one of the four teams has its furniture described in the 1592, and none of
+it was built. All four now are, in `HPWorldScene._harness()`:
+
+| Team | The text | Built |
+|---|---|---|
+| **elephants** (Leda) | "traces of pure blewe silke, twisted with threds of golde and siluer: the fastnings … all made vp with square or true loue knots … Their Poyterelles of golde, set with Pearle and stone different in collours" | blue silk trace, gold and silver threads twisted through it, three square knots a side, gold poitrel set with stones of five colours |
+| **centaurs** (Europa) | "a furniture of gold vpon them, and a long their strong sides … illaqueated in manner of a flagon chayne" — and "crowned with yuie, that is called Dendrocyssos" | nine linked gold rings down each flank, a plain gold poitrel, an ivy wreath on the man's head |
+| **unicornes** (Danaë) | "poyterelles … of golde, set with precious stone, and fringed with siluer and hayre colloured silke, tyed into knots, in manner of a net worke, and tasseled at euery prependent point" | gold poitrel with stones, seven silver knots, a tassel hanging from each |
+| **leopards** (Bacchus) | "coupled togither with withes of twined vines, full of tender greene leaues, and stalkes full of greene clusters" | a twined withe, five leaves a side, and clusters that are still green |
+
+Two further corrections in the same pass:
+
+- **The elephants were brown.** The book's one adjective for the beast is
+  *white* — "drawen by sixe **white** Elephants" — and only the trunk was. The
+  hide is now white; the team had been reading as six ponies.
+- **The riders were bare-headed.** "Their hayres yellowe, and falling ouer their
+  fayre neckes, with **Pancarpiall garlands of all manner of flowers**, vpon
+  their heades." Yellow hair and the wreath, on every rider of every car —
+  *pancarpus*, all-fruits, so the palette is deliberately motley. The garland is
+  now a shared option in `Cast.nymph({ garland })`, which the chess dancers'
+  violets use too.
+
+**Still unbuilt from the plates:** the **reliefs** on the car sides (ranked #3
+below, NEMO among them) are still not modelled; and the **Triumph of Cupid** on
+Cythera (#143–144) exists as a standard rather than as a procession. (The
+**Triumph of Vertumnus and Pomona**, #66, was built in an earlier pass and walks
+with its satyrs and nymphs.)
 
 ## 3. Processions are what the architecture is *for*
 
