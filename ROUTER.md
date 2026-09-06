@@ -134,6 +134,14 @@ Worth knowing inside `HPWorldScene.js`, because they are reused and easy to miss
   _drape(), _drapeTexture()              cloths hung on a building (Lefaivre, ARCHITECTURE §0)
   _harness(kind, beast)                  a draught team's furniture, in the beast's own frame
                                          (elephant / centaur / unicorn / leopard, PROCESSIONS §2c)
+  _buildVenusTemple / _buildWaterLabyrinth / _buildColossus / _buildPriapusRite /
+  _buildAmphitheatre / _buildCupidTriumph / _polyandrionMedallions / _buildBookTwo
+                                         the 2026-09-05 "build everything" pass; each carries
+                                         its page citations in its header comment
+  _geloi (in _buildBath)                 the ΓΕΛΟΙΑΣΤΟΣ trick step — proximity-driven, see update()
+  SIGNS (23) + _carvedTexture            the hieroglyph vocabulary; the elephant's base and the
+                                         bridge's right table are TRANSCRIBED (Dallington), the
+                                         portal piers are a seeded line on purpose
   _spoilTexture(), _orderBoardTexture()  things DRAWN rather than modelled — the register
                                          that works best here
   _plaque(), _plaqueTexture()            all lettering; measures its type to the stone

@@ -68,7 +68,7 @@ touching deploy configuration — publishing to one host does **not** publish to
 |---|---|
 | **Walk Freely** | The whole world at your own pace. W A S D / arrows to walk, Shift to run, drag to look, digits to jump between stations. As you approach a wonder its commentary rises to meet you, filtered by the same lenses the tour uses. Named figures — the wolf, the Queen, the five sense-nymphs, Polia — keep their places. |
 | **Poliphilo's Dream** | The plot in twelve scenes, narrated from the 1499 text, with a reaction-choice at each wonder — wonder, desire, melancholy or dread — that the scene answers in light. No commentary; this one is the game. The loop is hardened so it cannot hang: a travel watchdog, a direct arrival path, and a fallback for every missing beat. |
-| **The Novel** | The guided tour: 37 stops across all 38 chapters, the 1499 woodcut at each stop that has one, and a deep link into the parallel edition at every chapter. Chapters I–XVI point to Dallington's 1592 English; chapter XVII onward is this project's own translation. |
+| **The Novel** | The guided tour: 38 stops across all 38 chapters, the 1499 woodcut at each stop that has one, and a deep link into the parallel edition at every chapter. Chapters I–XVI point to Dallington's 1592 English; chapter XVII onward is this project's own translation. |
 
 ### The nine commentary lenses
 

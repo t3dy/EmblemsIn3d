@@ -2653,6 +2653,17 @@ export class HPWorldScene {
       greenStone.roughness = 0.55;
     }
     this._m(new THREE.CylinderGeometry(0.09, 0.30, 2.5, 4), greenStone, 0, 4.28, 0, { parent: g, outline: true });
+    // Priki's six ATTESTED signs — the eye, the vulture, two fish-hooks, two
+    // circles — are the ones she names "on the obelisk and on the statue base".
+    // The base now carries Dallington's full transcription, so the six go
+    // where she also puts them: on the obelisk's faces. A four-sided cylinder
+    // has its faces on the diagonals, hence the pi/4 turns; the shaft tapers,
+    // so the bands sit on the apothem at their own height. World coordinates,
+    // like the plaques (the group is turned through pi).
+    for (const [ry, signs] of [[Math.PI / 4, ['eye', 'vulture', 'hook']], [-Math.PI / 4, ['hook', 'circle', 'circle']]]) {
+      const yy = 3.55, rr = 0.30 - 0.21 * ((yy - 3.03) / 2.5), ap = rr * Math.SQRT1_2 + 0.012;
+      this._frieze(Math.sin(ry) * ap, yy, Math.cos(ry) * ap, rr * 1.32, 0.30, 'hieroglyph', { signs, reps: 3, ry });
+    }
     this._m(new THREE.SphereGeometry(0.12, 12, 10),
       S.key === 'woodcut' ? S.glowMat() : S.mat({ color: 0xe8d070, metalness: 0.95, roughness: 0.15, emissive: 0x6a5010, emissiveIntensity: 0.5 }),
       0, 5.62, 0, { parent: g });
