@@ -153,10 +153,10 @@ gets ground of its own.
   | **Amphitheatre** (#147) | item 2. The theatre of Venus exists as terraces with the heptagonal fountain at their centre; the theatre's own architecture does not. |
   | **Colossus** | item 3. |
   | **Mosaic / *asaroton*** | **done 2026-09-05** — drawn as an annulus of strewn tesserae under the temple's aisle, which is what an "unswept floor" is. |
-- The **`/v1/` and `/v2/` archives still contain the full Atalanta site**, linked from the
-  landing page as earlier releases, and the **dormant Atalanta modules** (`AFWorldScene.js`,
-  `EmblemScene.js`, `ArchivesScene.js`, `af_*.js`, `images/emblems/`) are unreferenced
-  weight. Both are one commit away if Ted wants them gone.
+- **Done 2026-09-06: the Atalanta material is archived.** `/v1/`, `/v2/`, `lab/`, the three
+  dormant scenes, `af_*.js`, `emblems.json`, `images/emblems/` and the emblem cut-outs are
+  off `main` (≈93 MB) and on the branch `atalanta-archive`, tag `atalanta-archive-2026-09-06`.
+  The landing page no longer links the old releases.
 - The repository is still called **EmblemsIn3d** and the canonical URL is still
   `emblems-in-3d.vercel.app`. Only the *displayed* name changed. Ted's call.
 

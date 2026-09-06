@@ -28,12 +28,11 @@ first token of every session.
    prose: `hp.db.woodcut_catalog` and `folio_descriptions` outrank your mental image.
    → `RECIPES/model-an-asset.md`
 4. **The site is the Hypnerotomachia only** (2026-09-05). The Atalanta Fugiens
-   worlds, tours and games were removed from the website; nothing under
-   `src/` loads them any more. Their source files are still on disk —
-   `src/scenes/AFWorldScene.js`, `src/scenes/EmblemScene.js`,
-   `src/scenes/ArchivesScene.js`, `src/data/af_*.js`, `lab/`,
-   `images/emblems/`, `images/cutouts/emblem-*` — **dormant, not wired in.**
-   Do not re-import them, and do not build new Atalanta features.
+   worlds, tours and games were removed from the website, and on 2026-09-06
+   their source files, the `lab/`, the emblem images and the `/v1/` `/v2/`
+   site archives were **removed from `main` altogether**. They live on the
+   branch `atalanta-archive` (tag `atalanta-archive-2026-09-06`). Do not
+   re-import them, and do not build new Atalanta features.
    **Never `git add -A src/`** — stage explicit paths.
 5. **Write directional decisions down immediately** — `DECISIONS.md` for calls,
    `NEXTSTEPS.md` for the standing queue. A decision that lives only in chat gets
