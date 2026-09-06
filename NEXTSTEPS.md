@@ -36,7 +36,9 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 fountains that look like real water, gardens and trees that look like real plants, from the
 names in the novel and the scholarship."* First pass done the same day (plants rebuilt on the
 text's species, water, `_roof()` on three buildings). **Still to sweep:** every remaining slab
-without a soffit (audit station by station); the fountains' jets and basins one by one;
+without a soffit (audit station by station); ~~the fountains' jets and basins one by one~~ (`_jet()` — a tube along a parabola with sparkle
+and a splash; the folio-80 fountain built from Dallington pp. 124–127 with all its named jets
+in place of the copied Cythera fountain; the sleeping nymph's fall is a jet);
 `Cast.props.tree()` in the woodcut register. **Segre's knot gardens and parterres are built**
 (same day, `_buildParterres`, pp. 316–318).
 

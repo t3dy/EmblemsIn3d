@@ -343,7 +343,7 @@ export class HPWorldScene {
     this._buildPalace();
     this._buildChessBallet();
     this._buildQuinta();
-    this._buildFountain();
+    this._buildGracesFountain(0, -20);   // folio 80's own fountain; ch. XXIII's stays on Cythera
     this._buildTriumphs();
     this._buildVenusTemple();
     this._buildPolyandrion();
@@ -851,6 +851,41 @@ export class HPWorldScene {
     m.emissiveIntensity = 0.35;
     m.depthWrite = false;
     return m;
+  }
+
+  // A jet of water from A to B: a solid arc you can see — a thin tube along a
+  // parabola in the water material — with a stream of sparkle along it and a
+  // splash where it lands. Particles alone read as glitter; a tube alone reads
+  // as glass; together they read as a jet. `apex` is how high the arc rises
+  // above the higher of its two ends.
+  _jet(ax, ay, az, bx, by, bz, { r = 0.022, apex = 0.5, color = 0xd8eeff, sparkle = 22 } = {}) {
+    const S = this.style;
+    const top = Math.max(ay, by) + apex;
+    const curve = new THREE.QuadraticBezierCurve3(
+      new THREE.Vector3(ax, ay, az), new THREE.Vector3((ax + bx) / 2, top * 2 - (ay + by) / 2, (az + bz) / 2), new THREE.Vector3(bx, by, bz));
+    if (S.key !== 'woodcut') {
+      this._jetMat = this._jetMat || (() => {
+        const m = new THREE.MeshStandardMaterial({ color, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.62,
+          emissive: 0x9ac4e8, emissiveIntensity: 0.25, depthWrite: false, envMapIntensity: 1.8 });
+        this._disp.push(m); return m;
+      })();
+      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 20, r, 6, false), this._jetMat);
+      tube.castShadow = false; tube.receiveShadow = false; tube.renderOrder = 2;
+      this.scene.add(tube);
+      // the splash where it lands
+      const splashMat = this._splashMat = this._splashMat || (() => {
+        const m = new THREE.MeshBasicMaterial({ color: 0xf2f8ff, transparent: true, opacity: 0.35, blending: THREE.AdditiveBlending, depthWrite: false });
+        this._disp.push(m); return m;
+      })();
+      this._m(new THREE.CircleGeometry(r * 7, 12), splashMat, bx, by + 0.012, bz, { rx: -Math.PI / 2, cast: false, receive: false });
+    }
+    const stream = new ParticleStream({
+      count: sparkle, source: new THREE.Vector3(ax, ay, az), target: new THREE.Vector3(bx, by, bz),
+      color: 0xeaf4ff, size: 0.03, speed: 0.55, arc: apex,
+    });
+    stream.opacity = 0.55; stream.active = true; S.tuneStream(stream);
+    this.scene.add(stream.points); this._streams.push(stream);
+    return stream;
   }
 
   // One ripple normal map, shared by every water in the world and animated
@@ -2250,10 +2285,7 @@ export class HPWorldScene {
     this._caustics(X - 0.1, 0.04, Z + 1.35, 0.85, 0.05);
     // the spout, and the fall of water from couch to basin
     this._m(new THREE.CylinderGeometry(0.055, 0.07, 0.22, 10), dark, -0.1, 0.5, 0.62, { parent: g });
-    const fall = this._m(new THREE.PlaneGeometry(0.1, 0.46),
-      woodcut ? S.mat({ tone: -0.1 }) : S.mat({ color: 0xbcd8e8, roughness: 0.2, transparent: true, opacity: 0.55 }),
-      -0.1, 0.28, 0.7, { parent: g, cast: false, receive: false });
-    fall.rotation.x = 0.22;
+    this._jet(X - 0.1, 0.5, Z + 0.62, X - 0.1, 0.06, Z + 1.2, { apex: 0.05, r: 0.03, sparkle: 16 });
 
     // the inscription the Renaissance copies carried with her
     this._plaque({ main: 'ΠΑΝΤΩΝ ΤΟΚΑΔΙ', sub: 'TO THE MOTHER OF ALL THINGS' },
@@ -3985,6 +4017,158 @@ export class HPWorldScene {
     return g;
   }
 
+  // ── The third fountain, folio 80 (#23) ────────────────────
+  //
+  // Ted, 2026-09-06: "fountains that look like real water". The mainland
+  // station is folio 80, and until now it stood a COPY of Cythera's gem-columned
+  // fountain of ch. XXIII with the plate's company round it. The fountain the
+  // plate actually shows is this one, Dallington pp. 124–127, and it is the
+  // book's most hydraulic object:
+  //
+  //   "a goodly Fountaine of cleare water … falling into a hollowed vessel,
+  //   whiche was of most pure Amethist, whose Diameter conteined three paces"
+  //   — on "a steale or final Pillar of Iasper of diuers colours … cut in the
+  //   middest and closed vp with the cleare Calcidonie", "fastened in the
+  //   center of a Plynth, made of greene Ophite which was rounde", ringed with
+  //   "compassing Porphyr". "Rounde about the steale … foure Harpies of Golde
+  //   did stand" with their wings spread, holding up the vessel. In the
+  //   vessel's navel "a substance like a Challice", and on it "the three
+  //   graces naked of fine Gold, of a common stature, one ioyning to an
+  //   other. From the teates of their breastes the ascending water did spin
+  //   out lyke siluer twist." Each holds up a cornucopia; the three meet above
+  //   their heads, and "betwixt the fruite and the leaues, there came vp sixe
+  //   small Pypes, out of the whiche the water did spring vp". On the vessel's
+  //   brim "sixe little scaly Dragons, of pure shining Golde", so placed that
+  //   the Graces' water "did fall directly vppon the euacuated and open crowne
+  //   of the head of the Dragons", who "did cast vp and vomit the same water"
+  //   beyond the ophite into "a receptorie of Porphyr" — a channel a foot and a
+  //   half wide, two deep. And on the vessel's belly, between the dragons,
+  //   "Lyons heads … casting foorth by a little pype" the water of the six
+  //   fistulets, "which water did so forciblie spring vpward, that in the
+  //   turning downe it fell among the Dragons … it made a pleasant tinckling
+  //   noyse." The whole "compassing Orange trees".
+  //
+  // Every jet named there is a jet here: six from the Graces to the dragons'
+  // crowns, six from the dragons out to the channel, six from the pipes in the
+  // cornucopias up and back into the vessel, six from the lion-heads.
+  _buildGracesFountain(FX = 0, FZ = -20) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const M = (color, extra = {}) => woodcut ? S.mat({ tone: extra.tone ?? 0.08 }) : S.mat({ color, ...extra, tone: undefined });
+    const ophite   = M(0x2f4a34, { roughness: 0.4, tone: 0.3 });
+    const porphyr  = M(0x7a2a2c, { roughness: 0.5, tone: 0.24 });
+    const jasper   = M(0x9a4a3a, { roughness: 0.45, tone: 0.2 });
+    const chalced  = M(0x7aa0b0, { roughness: 0.2, metalness: 0.2, transparent: !woodcut, opacity: 0.85, tone: 0.06 });
+    const amethyst = M(0x7a4aa8, { roughness: 0.15, metalness: 0.3, transparent: !woodcut, opacity: 0.78, tone: 0.12 });
+    const gold     = M(0xd9b25a, { metalness: 0.95, roughness: 0.22, tone: 0.02 });
+    const water    = this._waterMat();
+
+    const R_CH = 2.6, WY = 0.62;             // the porphyry channel, and its water
+    // the round ophite plinth, "somewhat lifted vp", ringed with porphyry, and
+    // the channel between them, a foot and a half wide and two deep
+    this._m(new THREE.CylinderGeometry(R_CH + 0.55, R_CH + 0.65, 0.7, 40), porphyr, FX, 0.35, FZ, { cast: false, outline: true });
+    this._m(new THREE.CylinderGeometry(R_CH - 0.55, R_CH - 0.55, 0.9, 40), ophite, FX, 0.45, FZ, { cast: false, outline: true });
+    this._m(new THREE.RingGeometry(R_CH - 0.55, R_CH + 0.55, 40), porphyr, FX, 0.2, FZ, { rx: -Math.PI / 2, cast: false });
+    this._waters.push({ m: this._m(new THREE.RingGeometry(R_CH - 0.55, R_CH + 0.55, 40), water, FX, WY, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.03 });
+    this._caustics(FX, WY - 0.3, FZ, R_CH + 0.5, 0.04);
+    this._circleCol(FX, FZ, R_CH + 0.8);
+
+    // the stem: jasper "cut in the middest and closed vp with the cleare
+    // Calcidonie", and the four gold harpies about it holding up the vessel
+    this._m(new THREE.CylinderGeometry(0.34, 0.42, 0.55, 14), jasper, FX, 1.17, FZ, { outline: true });
+    this._m(new THREE.CylinderGeometry(0.3, 0.34, 0.5, 14), chalced, FX, 1.7, FZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.42, 0.3, 0.45, 14), jasper, FX, 2.17, FZ, { outline: true });
+    for (let i = 0; i < 4; i++) {
+      const a = i * Math.PI / 2 + Math.PI / 4;
+      const h = new THREE.Group(); h.position.set(FX + Math.cos(a) * 0.62, 0.9, FZ + Math.sin(a) * 0.62); h.rotation.y = -a + Math.PI / 2; this.scene.add(h);
+      const body = this._m(new THREE.SphereGeometry(0.2, 12, 9), gold, 0, 0.3, 0, { parent: h }); body.scale.set(0.8, 1.3, 0.9);
+      this._m(new THREE.SphereGeometry(0.1, 12, 9), gold, 0, 0.72, 0.05, { parent: h });
+      for (const sx of [-1, 1]) {
+        const w = this._m(new THREE.SphereGeometry(0.34, 10, 7, 0, Math.PI), gold, sx * 0.22, 0.9, -0.05, { parent: h, cast: false });
+        w.scale.set(0.8, 1.2, 0.14); w.rotation.set(0.3, sx * 0.4, sx * 0.9);
+        this._m(new THREE.ConeGeometry(0.03, 0.12, 5), gold, sx * 0.08, 0.02, 0.06, { parent: h, rx: 2.7, cast: false });
+      }
+      const tail = this._m(new THREE.TorusGeometry(0.22, 0.04, 6, 12, Math.PI * 1.2), gold, 0, 0.3, -0.3, { parent: h, cast: false }); tail.rotation.y = Math.PI / 2;
+    }
+
+    // the amethyst vessel, three paces across, with the chalice rising in its
+    // navel, and the six lion-heads on its belly
+    const VY = 2.55, VR = 1.5;
+    const bowl = this._m(new THREE.SphereGeometry(VR, 28, 14, 0, Math.PI * 2, Math.PI * 0.42, Math.PI * 0.58), amethyst, FX, VY + VR * 0.25, FZ, { outline: true });
+    bowl.material.side = THREE.DoubleSide;
+    this._m(new THREE.TorusGeometry(VR * 0.98, 0.07, 8, 40), gold, FX, VY, FZ, { rx: Math.PI / 2, cast: false });
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(VR * 0.92, 32), water, FX, VY - 0.08, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.05 });
+    this._m(new THREE.CylinderGeometry(0.34, 0.5, 0.7, 16), amethyst, FX, VY + 0.2, FZ, { cast: false });     // the chalice
+    this._m(new THREE.CylinderGeometry(0.42, 0.34, 0.1, 16), gold, FX, VY + 0.58, FZ, { cast: false });         // its foot for the Graces
+    for (let i = 0; i < 6; i++) {
+      const a = i * Math.PI / 3 + Math.PI / 6;
+      const lx = FX + Math.cos(a) * VR * 0.9, lz = FZ + Math.sin(a) * VR * 0.9;
+      const head = this._m(new THREE.SphereGeometry(0.13, 10, 8), gold, lx, VY - 0.45, lz, { cast: false }); head.scale.set(1, 0.9, 1.2);
+      this._m(new THREE.TorusGeometry(0.13, 0.03, 6, 12), gold, lx, VY - 0.45, lz, { cast: false, ry: -a + Math.PI / 2 });    // the mane
+      // "casting foorth by a little pype" — a lion-head jet out into the channel
+      this._jet(lx + Math.cos(a) * 0.12, VY - 0.48, lz + Math.sin(a) * 0.12, FX + Math.cos(a) * (R_CH + 0.1), WY + 0.02, FZ + Math.sin(a) * (R_CH + 0.1), { apex: 0.25, r: 0.02 });
+    }
+
+    // the three Graces, "naked of fine Gold, of a common stature, one ioyning
+    // to an other" — back to back on the chalice, the cornucopias raised and
+    // meeting over their heads
+    const GY = VY + 0.63;
+    for (let i = 0; i < 3; i++) {
+      const a = i * Math.PI * 2 / 3 + Math.PI / 2;
+      const gx = FX + Math.cos(a) * 0.22, gz = FZ + Math.sin(a) * 0.22;
+      const fig = this.cast.figure({ h: 0.8, robe: null, pose: 'reach' });
+      fig.traverse(o => { if (o.isMesh && o.material && o.material.color) o.material = gold; });
+      fig.position.set(gx, GY, gz); fig.rotation.y = -a + Math.PI / 2;
+      this.scene.add(fig);
+      // the cornucopia in the right hand, curling up to the meeting-point
+      const horn = this._m(new THREE.ConeGeometry(0.09, 0.9, 8, 1, true), gold, gx + Math.cos(a) * 0.3, GY + 1.25, gz + Math.sin(a) * 0.3, { cast: false });
+      horn.material.side = THREE.DoubleSide; horn.rotation.set(-Math.sin(a) * 0.35, 0, Math.cos(a) * 0.35);
+      // "From the teates of their breastes the ascending water did spin out
+      // lyke siluer twist" — two jets a Grace, to the dragons' open crowns
+      for (const sx of [-1, 1]) {
+        const ba = a + sx * 0.32;
+        const da = a + sx * Math.PI / 6;                     // the dragon that catches it
+        this._jet(gx + Math.cos(ba) * 0.16, GY + 0.95, gz + Math.sin(ba) * 0.16,
+                  FX + Math.cos(da) * VR * 1.02, VY + 0.42, FZ + Math.sin(da) * VR * 1.02, { apex: 0.5, r: 0.014 });
+      }
+    }
+    // the fruit where the three horns meet, and "sixe small Pypes" springing up
+    this._m(new THREE.SphereGeometry(0.28, 12, 9), gold, FX, GY + 1.75, FZ, { cast: false });
+    for (let k = 0; k < 8; k++) this._m(new THREE.SphereGeometry(0.06, 7, 6), M([0xc03a2a, 0xd88a20, 0x7a9a2a][k % 3], { roughness: 0.55, tone: 0.2 }),
+      FX + Math.cos(k * 0.8) * 0.26, GY + 1.75 + Math.sin(k * 1.3) * 0.18, FZ + Math.sin(k * 0.8) * 0.26, { cast: false });
+    for (let i = 0; i < 6; i++) {
+      const a = i * Math.PI / 3;
+      this._jet(FX + Math.cos(a) * 0.1, GY + 1.95, FZ + Math.sin(a) * 0.1, FX + Math.cos(a) * VR * 0.6, VY - 0.06, FZ + Math.sin(a) * VR * 0.6, { apex: 0.7, r: 0.012, sparkle: 14 });
+    }
+
+    // the six gold dragons on the brim, crowns open, vomiting the water out
+    // beyond the ophite into the porphyry channel
+    for (let i = 0; i < 6; i++) {
+      const a = i * Math.PI / 3 + Math.PI / 2 + Math.PI / 6 * 0;
+      const da = i * Math.PI / 3 + Math.PI / 2 - Math.PI / 6 + (i % 2 ? Math.PI / 3 : 0);
+      const dx = FX + Math.cos(da) * VR * 1.02, dz = FZ + Math.sin(da) * VR * 1.02;
+      const d = new THREE.Group(); d.position.set(dx, VY + 0.05, dz); d.rotation.y = -da + Math.PI / 2; this.scene.add(d);
+      this._m(new THREE.SphereGeometry(0.11, 10, 8), gold, 0, 0.18, 0, { parent: d, cast: false }).scale.set(0.8, 0.8, 1.3);
+      this._m(new THREE.CylinderGeometry(0.08, 0.05, 0.16, 8, 1, true), gold, 0, 0.36, 0, { parent: d, cast: false }).material.side = THREE.DoubleSide;  // the open crown
+      for (const sx of [-1, 1]) {
+        const w = this._m(new THREE.SphereGeometry(0.2, 8, 6, 0, Math.PI), gold, sx * 0.15, 0.26, -0.05, { parent: d, cast: false });
+        w.scale.set(0.7, 1, 0.1); w.rotation.set(0.2, sx * 0.4, sx * 0.9);
+      }
+      this._m(new THREE.ConeGeometry(0.05, 0.16, 6), gold, 0, 0.18, 0.2, { parent: d, rx: Math.PI / 2, cast: false });   // the jaws
+      this._jet(dx + Math.cos(da) * 0.2, VY + 0.2, dz + Math.sin(da) * 0.2, FX + Math.cos(da) * (R_CH - 0.1), WY + 0.02, FZ + Math.sin(da) * (R_CH - 0.1), { apex: 0.35, r: 0.02 });
+      void a;
+    }
+
+    // "the greene assayling of the compassing Orange trees"
+    for (let i = 0; i < 6; i++) {
+      const a = i * Math.PI / 3 + Math.PI / 6;
+      if (Math.abs(Math.sin(a)) > 0.95) continue;             // keep the axis open, north and south
+      this._tree(FX + Math.cos(a) * 5.2, FZ + Math.sin(a) * 5.2, 0.9, 'orange');
+    }
+    this._buildFolio80Company(FX, FZ, R_CH + 0.2, 0.7, { graces: false });
+    this._plaque({ main: 'LYKE SILVER TWIST', sub: 'THE THIRD FOVNTAIN · AMETHYST ON IASPER · THE GRACES, THE DRAGONS, THE LIONS · FOLIO 80' },
+      2.4, 0.4, FX, 0.95, FZ + R_CH + 1.05, 0, true);
+  }
+
   // ── Folio 80: the Graces, the harpies and the griffins ───────────────────
   //
   // The station called "Fountain of Venus" is folio 80, and the plate at that
@@ -3996,7 +4180,7 @@ export class HPWorldScene {
   // Cythera one (enclosed) keeps the pure chapter-XXIII programme of seven
   // stones and the crystal cupola; the mainland grove is the folio-80 fountain
   // and gets its own company.
-  _buildFolio80Company(FX, FZ, R, KERB) {
+  _buildFolio80Company(FX, FZ, R, KERB, { graces = true } = {}) {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
     const stone = woodcut ? S.mat({ tone: 0.05 })
@@ -4008,7 +4192,7 @@ export class HPWorldScene {
     // linked, one turned away. When the painted-figure variant is on these are
     // literally Botticelli's Graces, cut from the Primavera that is already in
     // the project's gallery, which is the same three women this plate means.
-    const GR = ['Aglaia', 'Euphrosyne', 'Thalia'];
+    const GR = graces ? ['Aglaia', 'Euphrosyne', 'Thalia'] : [];
     GR.forEach((name, i) => {
       const a = Math.PI * 0.5 + (i - 1) * 0.30;
       const gx = FX + Math.cos(a) * (R + 2.5), gz = FZ + Math.sin(a) * (R + 2.5);
