@@ -4281,7 +4281,25 @@ export class HPWorldScene {
     this._m(new THREE.BoxGeometry(0.55, 3.5, 1.15), jasper, TX - 1.35, PLAT_Y + 1.75, dz, { outline: true });
     this._m(new THREE.BoxGeometry(0.55, 3.5, 1.15), jasper, TX + 1.35, PLAT_Y + 1.75, dz, { outline: true });
     this._m(new THREE.BoxGeometry(3.6, 0.55, 1.2), jasper, TX, PLAT_Y + 3.78, dz, { cast: false, outline: true });
-    // the lodestone blocks in the jambs that draw the leaves open
+    // The two tablets OF MAGNET flanking the ingress, which are both the
+    // machine that opens the door and the creed of the whole place: the stone
+    // that draws iron, carrying the two mottoes that say desire is natural law.
+    // Right, in antiquarian Latin: TRAHIT SVA QVEMQVE VOLVPTAS, "each is drawn
+    // by his own pleasure" (Virgil, Ecl. II.65). Left, in ancient Greek
+    // majuscules: ΠΑΝ ΔΕΙ ΠΟΙΕΙΝ ΚΑΤΑ ΤΗΝ ΑΥΤΟΥ ΦΥΣΙΝ, "each ought to do
+    // according to his own nature." (Our translation, page_214.) The blocks
+    // were built and left blank on the first pass — the temple's own thesis,
+    // omitted from its door.
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(1.30, 0.62, 0.24), lode, TX + sx * 2.34, PLAT_Y + 2.95, dz + 0.50,
+        { cast: false, outline: true });
+    }
+    this._plaque({ main: 'TRAHIT SVA QVEMQVE VOLVPTAS', sub: 'EACH IS DRAWN BY HIS OWN PLEASVRE · VIRGIL' },
+      1.22, 0.36, TX + 2.34, PLAT_Y + 2.95, dz + 0.63, 0, true);
+    this._plaque({ main: 'ΠΑΝ ΔΕΙ ΠΟΙΕΙΝ ΚΑΤΑ ΤΗΝ ΑΥΤΟΥ ΦΥΣΙΝ',
+                   sub: 'EACH OVGHT TO DO ACCORDING TO HIS OWN NATVRE' },
+      1.22, 0.36, TX - 2.34, PLAT_Y + 2.95, dz + 0.63, 0, true);
+    // and the smaller blocks in the jambs themselves, which draw the leaves
     for (const sx of [-1, 1]) {
       this._m(new THREE.BoxGeometry(0.26, 0.5, 0.4), lode, TX + sx * 1.35, PLAT_Y + 2.4, dz + 0.42,
         { cast: false });
@@ -4308,7 +4326,7 @@ export class HPWorldScene {
     // centred on the jamb it hung straight across the opening.
     this._plaque({ main: 'FORCVLO · LIMENTINO · CARDEAE',
                    sub: 'THE GOD OF THE LEAF · OF THE THRESHOLD · OF THE HINGE' },
-      1.36, 0.30, TX + 2.34, PLAT_Y + 2.2, dz + 0.50, 0, true);
+      1.36, 0.28, TX + 2.34, PLAT_Y + 1.55, dz + 0.50, 0, true);
 
     // ── the floor: banded, and ten roundels stepping in to the well ───────
     // The pavement is NOT white. The book bands it in porphyry and ophite and
