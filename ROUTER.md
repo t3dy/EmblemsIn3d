@@ -118,7 +118,9 @@ src/scenes/
   HPWorldScene.js       the Hypnerotomachia world — every station, every model
   AFWorldScene.js  EmblemScene.js  ArchivesScene.js  HPScene.js   ← DORMANT, not imported
 src/systems/
-  Cast.js               figures, animals, props, labels
+  Cast.js               figures, animals, props, labels — `nymph({ rank, garland })` carries
+                        the chess liveries (king/queen/rook/bishop/knight/pawn), the vested
+                        heads of the rite of Venus (mitre/tutulus), and the two wreaths
   AssetVariants.js      the swappable-variant registry (one entry per asset class)
   Walker.js             free-walk movement and collision
   DreamMode.js          the narrative game loop
@@ -130,6 +132,8 @@ Worth knowing inside `HPWorldScene.js`, because they are reused and easy to miss
   _frieze(kind, {signs})                 carved bands; `hieroglyph` spells a named sequence
                                          from `HPWorldScene.SIGNS` (15 signs, sourced)
   _drape(), _drapeTexture()              cloths hung on a building (Lefaivre, ARCHITECTURE §0)
+  _harness(kind, beast)                  a draught team's furniture, in the beast's own frame
+                                         (elephant / centaur / unicorn / leopard, PROCESSIONS §2c)
   _spoilTexture(), _orderBoardTexture()  things DRAWN rather than modelled — the register
                                          that works best here
   _plaque(), _plaqueTexture()            all lettering; measures its type to the stone
@@ -141,6 +145,17 @@ research/               translation.html, lexicon.html, nymphs.html — the DH p
 translation/            source/ (Italian), en/ (our English), manifest.json, NOTES.md
 scripts/                export_for_3d.py, build_translation_page.py, cut_figures.py
 ```
+
+**Three constraints that have each cost a rebuild:**
+
+- **The walker has no floor height.** It walks at y = 0 with a fixed 1.7 eye, so a podium is
+  scenery, not ground: anything you can stand on must stay under about half a metre or the
+  dreamer ends up chest-deep in it. See DECISIONS.md, the Temple of Venus.
+- **An open-ended `CylinderGeometry` is invisible from inside** unless its material is
+  `DoubleSide` — which is how the first Temple of Venus got a dome you could see sky through.
+- **`_vanes` is Fortuna's registry**, integrated with `+=` from `{rate, phase}`. Anything else
+  that turns needs its own array (`_windVanes`, `_windBells`), or the two animators write NaN
+  through each other's meshes.
 
 **Two facts about this layout that cause bugs:**
 
