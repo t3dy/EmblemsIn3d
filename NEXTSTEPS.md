@@ -90,7 +90,11 @@ this toolkit can actually do. The supine-figure attempt read as a row of green d
 `md\Liane_Lefaivre_…Re_Cognizing_th.md` is 15,878 lines of readable prose, contrary to
 what this file and `ARCHITECTURE.md` used to say.
 
-- **Unread: her chapters 9 (*The Divine Body*, partly read) and 10 (*The Humanist Body*).**
+- **Read 2026-09-06: chapters 9 (*The Divine Body*) and 10 (*The Humanist Body*)** — six notes
+  into the tour (Portal, Horse, Elephant, Temple of Venus, Polyandrion, Cythera). Her one-word
+  key is *voluptas*; her flattest claim is that Poliphilo loves architecture more than Polia.
+  Chapter bodies are md ll. ~8280–10640; ll. 10640+ are the endnotes, which is what a first
+  read by page-number offset lands in.
 - Still image-only and unread: O'Neill's *Allegory of Love*, the Da Capo facsimile, the
   Canone/Spruit emblematics volume.
 - **Sophia Rhizopoulou's three botanical papers are catalogued and not on disk** — the only

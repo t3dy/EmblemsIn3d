@@ -76,6 +76,14 @@ claim it will not support.
   *architecture* commentary flavour.
 - **The limit:** the Alberti attribution is a **minority position**. Present it as
   Lefaivre's thesis, never as the consensus. For authorship see Part Two.
+- **Chapters 9–10, read 2026-09-06.** *The Divine Body* is the foil: Suger's Saint-Denis as a
+  body of light, loved anagogically. *The Humanist Body* is the payload: Poliphilo's word for
+  architecture is *voluptas*; the door has "corpulence", entasis is "true corpulence" (m7),
+  marble and a nymph's skin are both "flawless"; ΓΕΝΕΑ on the horse is "first time"; the ruins
+  make him "a rapacious animal" (q6v); the torch-rite is read as the act it describes; and he
+  wanders off from Cupid's landing to look at buildings — "Poliphilo loves architecture more
+  than he loves Polia." Quote her for *what he feels about buildings*; do not let the Alberti
+  frame ride in on the back of it.
 
 ### 2. John Bury — the pyramid and the tomb
 
