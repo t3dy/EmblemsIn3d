@@ -5800,24 +5800,20 @@ export class HPWorldScene {
         this._m(new THREE.CylinderGeometry(t.r1, t.r1, t.h, 20, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
         if (ti === 0) this._m(new THREE.CylinderGeometry(t.r0, t.r0, t.h, 20, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
       }
-      // the flower-bed ring at the tier's inner lip
-      const bedMat = lit ? S.mat({ color: t.bed, roughness: 0.7, emissive: t.bed, emissiveIntensity: 0.12 }) : S.mat({ tone: 0.16 });
-      this._m(new THREE.TorusGeometry(t.r0 + 0.4, 0.17, 8, 40), bedMat, CX, t.h + 0.1, CZ, { rx: Math.PI / 2, cast: false });
+      // the flower-bed ring at the tier's inner lip: a BED, flat and flowered,
+      // not a tube — the torus read as a coloured pipe once real box-work
+      // stood beside it
+      const bedMat = lit
+        ? new THREE.MeshStandardMaterial({ map: this._flowerBedTexture(t.bed), roughness: 0.9 })
+        : S.mat({ tone: 0.16 });
+      if (lit) this._disp.push(bedMat);
+      this._m(new THREE.RingGeometry(t.r0 + 0.15, t.r0 + 0.75, 40), bedMat, CX, t.h + 0.02, CZ, { rx: -Math.PI / 2, cast: false });
+      this._m(new THREE.CylinderGeometry(t.r0 + 0.78, t.r0 + 0.78, 0.12, 40, 1, true), this._hedgeMat, CX, t.h + 0.06, CZ, { cast: false })
+        .material.side = THREE.DoubleSide;
     });
-    // conifers in array on the first terrace; spice wood on the third
-    for (let i = 0; i < 16; i++) {
-      const a = (i / 16) * Math.PI * 2;
-      if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(a - q * Math.PI / 2))) < 0.28) continue;
-      const [x, z] = pos(a, 9.5);
-      const t = this._tree(x, z, 0.42, 'pine'); if (t) t.position.y = 0.42;   // on the first terrace
-    }
-    for (let i = 0; i < 10; i++) {
-      const a = (i / 10) * Math.PI * 2 + 0.31;
-      if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.3) continue;
-      const [x, z] = pos(a, 15.5);
-      // the spice wood of the third terrace: citron, juniper, almond, terebinth (p. 324)
-      const t = this._tree(x, z, 0.5, ['citron', 'juniper', 'laurel', 'olive'][i % 4]); if (t) t.position.y = 1.26;
-    }
+    // The rings in Segre's order, outermost first: the conifer parterre, the
+    // knot cloister, the spice wood — the first build had them inverted.
+    this._buildParterres(CX, CZ);
     // terrace guards: the walk enters only by the four crossroads
     for (let i = 0; i < 22; i++) {
       const a = (i / 22) * Math.PI * 2;
@@ -5881,6 +5877,154 @@ export class HPWorldScene {
     this._floats.push({ g: skiff, wheels: [], phase: 2.4 });
     this._plaque({ main: 'CYTHERA', sub: 'THE ISLAND OF VENUS · PRESS 9 TO RETURN' },
       1.25, 0.32, -2.5, 1.1, -108, 0.35, true);
+  }
+
+  // ── Cythera's box-work ───────────────────────────────────
+  //
+  // Our translation, pp. 316–318 (ch. XXI), which is the most exact garden
+  // writing in the book, and Segre's ring order (GARDENS.md §5: conifers in
+  // geometric array, then two rings of knot gardens, then the spice wood).
+  //
+  //   THE RAMPART (p. 316): at the top of the first flight "a hedge of box …
+  //   three feet's thickness, and six high", and along it "a tower of the said
+  //   greenery, raised nine feet, and five wide, with an open door gaping three
+  //   feet"; between the towers, in clipped box, "a triumph, with horses
+  //   drawing a chariot … a naval Enyo … a fleet-battle on land … a hunt, and
+  //   antique fables of love".
+  //   THE FIRST CLOISTER (pp. 316–317): beds like "charaine carpets laid out
+  //   and spread flat", "between two rhombs, a circle; and a rhomboid between
+  //   two circles, alternating continuously in a ring"; "in the navel of the
+  //   round ones, planted, rose up a tall cypress. In the middle of the rhombs,
+  //   a most straight and tufted pine"; savin (juniper) in the friezes between.
+  //   THE SECOND CLOISTER (p. 318): "towers, or watch-turrets, most excellently
+  //   heaped up of orange-trees", the between-tower hedge "of juniper … of
+  //   mastic … of arbutus, of privet, of rosemary-tree, of dog-thorn, of olive,
+  //   of laurel"; box "led into symmetrical crescent-horns" with "a juniper,
+  //   step by step declining in tiers" between them and "a stalk, mounting a
+  //   foot and a half, where a box-sphere rounded itself"; and the knotwork
+  //   squares of the kitchen-garden, which the terrace top carries as a tile.
+  _buildParterres(CX, CZ) {
+    const S = this.style, lit = S.key !== 'woodcut';
+    const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
+    const box = this._hedgeMat;
+    const gravel = lit ? S.mat({ color: 0xa8904a, roughness: 0.95 }) : S.mat({ tone: 0.06, rim: 0 });
+    const onRoad = (a, w = 0.2) => Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI))) < w;
+
+    // ── the rampart, outside the outer terrace: box six high, towers of nine
+    const RR = 17.6, HH = 1.2, TH = 1.8;
+    for (let q = 0; q < 4; q++) {
+      const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2;
+      this._m(new THREE.CylinderGeometry(RR + 0.3, RR + 0.3, HH, 40, 1, true, Math.PI / 2 - a1, a1 - a0), box, CX, HH / 2 + 1.26, CZ, { cast: false })
+        .material.side = THREE.DoubleSide;
+      this._m(new THREE.RingGeometry(RR, RR + 0.6, 40, 1, a0, a1 - a0), box, CX, HH + 1.26, CZ, { rx: -Math.PI / 2, cast: false });
+      // five towers a quarter, a door in each, and the clipped triumphs between
+      for (let t = 0; t < 5; t++) {
+        const a = a0 + (t + 0.5) / 5 * (a1 - a0);
+        const [x, z] = pos(a, RR + 0.3);
+        const tw = this._m(new THREE.BoxGeometry(1.0, TH, 1.0), box, x, TH / 2 + 1.26, z, { outline: true });
+        tw.rotation.y = -a;
+        this._m(new THREE.BoxGeometry(0.5, 1.1, 1.1), this._darkStoneMat, x, 0.55 + 1.26, z, { cast: false }).rotation.y = -a;   // the door, dark
+        if (t < 4) {
+          // between towers: the box reliefs — a chariot and its team, a ship, a
+          // hunt — read as clipped silhouettes standing proud of the hedge
+          const am = a0 + (t + 1) / 5 * (a1 - a0);
+          const [rx, rz] = pos(am, RR + 0.62);
+          const relief = new THREE.Group(); relief.position.set(rx, HH + 1.26, rz); relief.rotation.y = -am + Math.PI / 2; this.scene.add(relief);
+          const kind = (q * 4 + t) % 4;
+          if (kind === 0) {          // the triumph: two horses and a car
+            for (const dx of [-0.9, -0.5]) this._m(new THREE.BoxGeometry(0.34, 0.24, 0.16), box, dx, 0.2, 0, { parent: relief, cast: false });
+            this._m(new THREE.BoxGeometry(0.44, 0.3, 0.2), box, 0.2, 0.2, 0, { parent: relief, cast: false });
+            this._m(new THREE.CylinderGeometry(0.14, 0.14, 0.06, 10), box, 0.2, 0.1, 0.12, { parent: relief, cast: false, rx: Math.PI / 2 });
+            this._m(new THREE.CapsuleGeometry(0.06, 0.2, 3, 6), box, 0.6, 0.35, 0, { parent: relief, cast: false });
+          } else if (kind === 1) {   // the naval Enyo: a hull and a sail
+            this._m(new THREE.BoxGeometry(1.1, 0.16, 0.2), box, 0, 0.1, 0, { parent: relief, cast: false });
+            this._m(new THREE.CylinderGeometry(0.03, 0.03, 0.7, 5), box, 0, 0.45, 0, { parent: relief, cast: false });
+            this._m(new THREE.BoxGeometry(0.5, 0.4, 0.06), box, 0.2, 0.5, 0, { parent: relief, cast: false });
+          } else if (kind === 2) {   // the hunt: a stag and a hound
+            this._m(new THREE.BoxGeometry(0.4, 0.22, 0.16), box, -0.4, 0.22, 0, { parent: relief, cast: false });
+            for (const dx of [-0.52, -0.3]) this._m(new THREE.CylinderGeometry(0.02, 0.02, 0.3, 4), box, dx, 0.5, 0, { parent: relief, cast: false, rz: (dx < -0.4 ? 0.4 : -0.4) });
+            this._m(new THREE.BoxGeometry(0.3, 0.14, 0.12), box, 0.4, 0.12, 0, { parent: relief, cast: false });
+          } else {                   // the fables of love: two figures
+            for (const dx of [-0.25, 0.25]) this._m(new THREE.CapsuleGeometry(0.08, 0.3, 3, 6), box, dx, 0.35, 0, { parent: relief, cast: false });
+          }
+        }
+      }
+    }
+
+    // ── the first cloister, on the outer terrace: circle, rhomb, circle …
+    const T3 = { r0: 14, r1: 17, h: 1.26 }, mid = (T3.r0 + T3.r1) / 2;
+    for (let q = 0; q < 4; q++) {
+      const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2, n = 7;
+      for (let i = 0; i < n; i++) {
+        const a = a0 + (i + 0.5) / n * (a1 - a0);
+        const [x, z] = pos(a, mid);
+        const y = T3.h + 0.02;
+        if (i % 2 === 0) {
+          // a circle of box, a cypress in its navel
+          this._m(new THREE.TorusGeometry(1.0, 0.12, 6, 24), box, x, y + 0.1, z, { rx: Math.PI / 2, cast: false });
+          this._m(new THREE.CircleGeometry(0.9, 20), gravel, x, y + 0.005, z, { rx: -Math.PI / 2, cast: false });
+          const t = this._tree(x, z, 0.5, 'cypress'); if (t) t.position.y = y;
+        } else {
+          // a rhomb of box, a pine in its middle
+          const rh = new THREE.Group(); rh.position.set(x, y + 0.1, z); rh.rotation.y = -a; this.scene.add(rh);
+          for (let e = 0; e < 4; e++) {
+            const ea = e * Math.PI / 2 + Math.PI / 4;
+            const seg = this._m(new THREE.BoxGeometry(1.5, 0.2, 0.2), box, Math.cos(ea) * 0.55, 0, Math.sin(ea) * 0.55, { parent: rh, cast: false });
+            seg.rotation.y = -ea + Math.PI / 2;
+          }
+          const gp = this._m(new THREE.PlaneGeometry(1.5, 1.5), gravel, 0, -0.095, 0, { parent: rh, cast: false, rx: -Math.PI / 2 });
+          gp.rotation.z = Math.PI / 4;
+          const t = this._tree(x, z, 0.45, 'pine'); if (t) t.position.y = y;
+        }
+      }
+      // the savin (juniper) in the friezes at the road's edges
+      for (const ae of [a0 + 0.04, a1 - 0.04]) {
+        const [x, z] = pos(ae, mid);
+        const t = this._tree(x, z, 0.4, 'juniper'); if (t) t.position.y = T3.h;
+      }
+    }
+
+    // ── the second cloister, on the middle terrace: orange towers, the
+    //    hedges of eight kinds, crescent-horns with a tiered juniper, box
+    //    spheres on stalks; the knot squares are the terrace's own tile
+    const T2 = { r0: 11, r1: 14, h: 0.84 }, m2 = T2.r1 - 0.5;
+    for (let q = 0; q < 4; q++) {
+      const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2, n = 4;
+      for (let i = 0; i <= n; i++) {
+        const a = a0 + i / n * (a1 - a0);
+        const [x, z] = pos(a, m2);
+        // an orange tower: a box-clipped turret with orange foliage on it
+        this._m(new THREE.CylinderGeometry(0.42, 0.46, 1.3, 10), box, x, T2.h + 0.65, z, { outline: true });
+        this._canopyCards(this.scene, 'orange', x, T2.h + 1.45, z, 0.5, 0.42, 0.5, 14, Math.round(a * 100));
+        if (i < n) {
+          // between: the crescent-horns of box, the tiered juniper, the sphere
+          const am = a0 + (i + 0.5) / n * (a1 - a0);
+          const [hx, hz] = pos(am, m2);
+          for (const sgn of [-1, 1]) {
+            const horn = this._m(new THREE.TorusGeometry(0.42, 0.1, 6, 14, Math.PI * 0.9), box, hx + Math.cos(am + Math.PI / 2) * sgn * 0.45, T2.h + 0.3, hz + Math.sin(am + Math.PI / 2) * sgn * 0.45, { cast: false });
+            horn.rotation.set(0, -am, sgn > 0 ? Math.PI * 0.05 : Math.PI * 1.05);
+          }
+          for (let k = 0; k < 4; k++) this._m(new THREE.ConeGeometry(0.26 - k * 0.05, 0.26, 8), this._leafMat, hx, T2.h + 0.15 + k * 0.22, hz, { cast: false });
+          this._m(new THREE.CylinderGeometry(0.03, 0.03, 0.45, 5), this._trunkMat, hx + Math.cos(am) * 0.9, T2.h + 0.22, hz + Math.sin(am) * 0.9, { cast: false });
+          this._m(new THREE.SphereGeometry(0.2, 10, 8), box, hx + Math.cos(am) * 0.9, T2.h + 0.58, hz + Math.sin(am) * 0.9, { cast: false, outline: true });
+          // and the hedge between, in its own kind, in the order the text gives
+          const HK = ['juniper', 'laurel', 'arbutus', 'olive', 'laurel', 'juniper', 'olive', 'laurel'];
+          const [ex, ez] = pos(am, T2.r1 - 1.6);
+          const t = this._tree(ex, ez, 0.32, HK[(q * n + i) % HK.length]); if (t) t.position.y = T2.h;
+        }
+      }
+    }
+
+    // ── the spice wood, innermost (Segre's fourth ring): citron, juniper,
+    //    terebinth, almond — the terebinth as olive, the almond as laurel
+    for (let i = 0; i < 16; i++) {
+      const a = (i / 16) * Math.PI * 2 + 0.2;
+      if (onRoad(a, 0.28)) continue;
+      const [x, z] = pos(a, 9.5);
+      const t = this._tree(x, z, 0.42, ['citron', 'juniper', 'olive', 'laurel'][i % 4]); if (t) t.position.y = 0.42;
+    }
+    this._plaque({ main: 'TAPETI CHARAINI', sub: 'THE BEDS LIKE CARPETS FROM CAIRO · A CIRCLE BETWEEN TWO RHOMBS · CH. XXI' },
+      2.2, 0.36, CX + 2.6, 1.3 + 0.5, CZ + 18.6, 0, true);
   }
 
   // ── The peristyle of the pleasure-ground ────────────────────────────────
@@ -6284,25 +6428,61 @@ export class HPWorldScene {
   // The knot-garden pattern for the terrace beds: interlaced diagonal bands
   // in box-green and gravel-gold — the "tapeti charaini," carpets from Cairo,
   // the book compares its beds to (GARDENS.md §5).
+  // A bed of the pot-herbs "in all manners of colouring" (p. 316): a dark
+  // leafy ground with flower-heads scattered in the bed's own colour and its
+  // neighbours'. One tile, repeated round the ring.
+  _flowerBedTexture(hex) {
+    this._bedTex = this._bedTex || {};
+    if (this._bedTex[hex]) return this._bedTex[hex];
+    const N = 128, c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.fillStyle = '#2c4a1c'; x.fillRect(0, 0, N, N);
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7 + hex % 977) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < 140; i++) { x.fillStyle = ['#3a6224', '#274418', '#4a7a2c'][i % 3]; x.beginPath(); x.arc(rnd(i, 1) * N, rnd(i, 2) * N, 3 + rnd(i, 3) * 4, 0, 6.3); x.fill(); }
+    const main = '#' + hex.toString(16).padStart(6, '0');
+    const pal = [main, main, main, '#f2ecd8', '#e8c040', '#c84a6a', '#7a5bb8'];
+    for (let i = 0; i < 90; i++) {
+      x.fillStyle = pal[i % pal.length];
+      const px = rnd(i, 4) * N, py = rnd(i, 5) * N;
+      for (let p = 0; p < 5; p++) { x.beginPath(); x.arc(px + Math.cos(p * 1.257) * 2.6, py + Math.sin(p * 1.257) * 2.6, 2.1, 0, 6.3); x.fill(); }
+      x.fillStyle = '#f0e6a0'; x.beginPath(); x.arc(px, py, 1.3, 0, 6.3); x.fill();
+    }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(24, 2); this._disp.push(t);
+    this._bedTex[hex] = t;
+    return t;
+  }
+
   _knotTexture() {
     const N = 256;
     const c = document.createElement('canvas');
     c.width = c.height = N;
     const x = c.getContext('2d');
-    x.fillStyle = '#31491d'; x.fillRect(0, 0, N, N);
-    x.lineWidth = 11;
-    for (let i = -4; i <= 4; i++) {
-      x.strokeStyle = '#a8904a';
-      x.beginPath(); x.moveTo(i * 64, 0); x.lineTo(i * 64 + N, N); x.stroke();
-      x.strokeStyle = '#4e7a2c';
-      x.beginPath(); x.moveTo(i * 64, 0); x.lineTo(i * 64 - N, N); x.stroke();
+    // p. 318: "a knotwork of the square lineament, fashioned by little
+    // bundles … three palms wide. The first band in the middle passed off
+    // into a circle, and from the two angles the bands met again at the
+    // rounding, one above the other. Which ring knotted within itself another
+    // band" — so: a square frame of box, a circle knotted through its middle,
+    // diagonals from the corners meeting at the ring, a second ring inside,
+    // and the beds between filled with the pot-herbs' colours, "some full of
+    // colour, others of dark colouring … some leek-green, others of a pale
+    // verdure … somewhat reddish" (p. 316).
+    const beds = ['#8a9a4a', '#5a7a3a', '#a86a4a', '#c8b06a', '#4e6a2c', '#9a8a5a'];
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) {
+      x.fillStyle = beds[(i * 3 + j) % beds.length]; x.fillRect(i * 64, j * 64, 64, 64);
     }
-    // the over-under of the weave: punch the base colour at alternate crossings
-    x.fillStyle = '#31491d';
-    for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) {
-      if ((i + j) % 2) x.fillRect(i * 32 + 12, j * 32 + 12, 9, 9);
+    const band = (fn) => { x.strokeStyle = '#243615'; x.lineWidth = 15; fn(); x.strokeStyle = '#4e7a2c'; x.lineWidth = 9; fn(); };
+    band(() => { x.strokeRect(14, 14, N - 28, N - 28); });
+    band(() => { x.beginPath(); x.arc(N / 2, N / 2, 78, 0, 6.3); x.stroke(); });
+    band(() => { x.beginPath(); x.arc(N / 2, N / 2, 44, 0, 6.3); x.stroke(); });
+    band(() => { x.beginPath(); x.moveTo(14, 14); x.lineTo(N / 2 - 55, N / 2 - 55); x.moveTo(N - 14, 14); x.lineTo(N / 2 + 55, N / 2 - 55);
+                 x.moveTo(14, N - 14); x.lineTo(N / 2 - 55, N / 2 + 55); x.moveTo(N - 14, N - 14); x.lineTo(N / 2 + 55, N / 2 + 55); x.stroke(); });
+    // the over-under: the ring passes over the diagonals, the diagonals over the frame
+    x.fillStyle = '#4e7a2c';
+    for (const [px, py] of [[N / 2 - 55, N / 2 - 55], [N / 2 + 55, N / 2 - 55], [N / 2 - 55, N / 2 + 55], [N / 2 + 55, N / 2 + 55]]) {
+      x.beginPath(); x.arc(px, py, 6, 0, 6.3); x.fill();
     }
-    x.strokeStyle = '#243615'; x.lineWidth = 6; x.strokeRect(3, 3, N - 6, N - 6);
+    x.strokeStyle = '#a8904a'; x.lineWidth = 4; x.strokeRect(2, 2, N - 4, N - 4);   // the gravel path between squares
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;
     t.wrapS = t.wrapT = THREE.RepeatWrapping;

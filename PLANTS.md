@@ -62,9 +62,13 @@ The woodcut register keeps the massed silhouette (ink wants a shape, not leaves)
 
 ## 4. Known gaps
 
-- **Segre's parterres and knot gardens are not built.** The lexicon has *Circular Garden* and
-  *Water Garden* as terms; the world has planting but not the geometric knot-work the
-  scholarship makes central. This is the biggest unbuilt garden item.
+- **Segre's parterres and knot gardens — built 2026-09-06** (`_buildParterres`), from our
+  pp. 316–318 in Segre's ring order: the box rampart with its towers and clipped triumphs;
+  the first cloister of circles (a cypress in each) alternating with rhombs (a pine in each)
+  and savin at the road-edges; the second cloister of orange towers, hedges of eight kinds,
+  box crescent-horns with a tiered juniper and a box-sphere on a stalk, and the knotwork
+  square as the terrace tile; the spice wood innermost. The flower beds are flat and
+  flowered, not tubes.
 - Topiary exists but is not worked from the specific clipped forms the 1499 plates show
   (the peacocks-on-an-altar-vase figure is catalogued and unbuilt).
 - No seasonal or diurnal variation in planting colour.
