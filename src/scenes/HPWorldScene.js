@@ -976,16 +976,29 @@ export class HPWorldScene {
   // palace. The **ant and the elephant** are the concord hieroglyph on the
   // obelisk of Caesar at the Polyandrion (#87).
   //
-  // The rest — altar, ewer, rudder, grain, sun, palm — are the vocabulary of
-  // the sentence Poliphilo says he read there (*sacrifica*, *liberaliter*,
-  // *gubernando*, *ex labore*), drawn as signs. **They are not a transcription
-  // of any inscription**, because no sign-by-sign reading of these bands exists
-  // in the corpus, and inventing one would be exactly the thing this project
-  // does not do. A band is a plausible vocabulary in the book's own register,
-  // and the tour says so.
+  // The rest — altar, ewer, rudder, grain, sun, palm — were first drawn as the
+  // vocabulary of the sentence Poliphilo says he read, not as a transcription.
+  // THEN THE TRANSCRIPTION WAS FOUND: Dallington 1592, pp. 53–54 (corpus
+  // ll. 2149–2170) itemises the elephant's base sign by sign — "First, the
+  // horned scalpe of an oxe, with two tooles of husbandry fastned to the
+  // hornes. An altar standing vpon goates feete, with a burning fire aloft, on
+  // the foreside whereof there was also an eie, and a vulture. After that a
+  // bason and an ewre. A spindle ful of twind, an old vessel fashioned with
+  // the mouth stopped and tied fast. A sole and an eye in the bale thereof and
+  // two branches trauersed one of Oliue, an other of Palme tree. An Anchor and
+  // a Goose. An olde lampe, and a hand holding of it. An ore of ancient forme
+  // with a fruitefull Oliue branch fastned to the handle. Two grapling yrons
+  // or hookes. A Dolphin and an Arke close shut." — and then the Latin he
+  // makes of it. And p. 93 gives the bridge's right-hand table: "An auncient
+  // Helmet crested with a Doggeshead. The bony scalpe of an oxe with two
+  // green braunches … And an ould lampe" → PATIENTIA EST ORNAMENTVM CVSTODIA
+  // ET PROTECTIO VITAE. The signs added for those two readings are helmet,
+  // lamp, goose, basin, spindle, vessel, sole and ark; the oar is the rudder,
+  // the grapples are the hooks, the branches are the palm.
   static get SIGNS() {
     return ['eye', 'vulture', 'hook', 'circle', 'anchor', 'dolphin', 'skull',
-            'ant', 'elephant', 'altar', 'ewer', 'rudder', 'grain', 'sun', 'palm'];
+            'ant', 'elephant', 'altar', 'ewer', 'rudder', 'grain', 'sun', 'palm',
+            'helmet', 'lamp', 'goose', 'basin', 'spindle', 'vessel', 'sole', 'ark'];
   }
 
   _carvedTexture(kind, reps = 8, signs = null) {
@@ -1047,7 +1060,47 @@ export class HPWorldScene {
           x.lineWidth = 5; x.lineJoin = 'round'; x.lineCap = 'round';
           const sign = line[i2];
 
-          if (sign === 'sun') {                       // SOLI DICATVM, over the portal
+          if (sign === 'helmet') {                    // crested with a dog's head (bridge)
+            x.beginPath(); x.arc(o, cy + r * 0.2, r, Math.PI, 2 * Math.PI); x.stroke();
+            x.beginPath(); x.moveTo(o - r, cy + r * 0.2); x.lineTo(o + r, cy + r * 0.2); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.3, cy - r * 0.8); x.lineTo(o, cy - r * 1.5); x.lineTo(o + r * 0.55, cy - r * 1.35);
+            x.lineTo(o + r * 0.35, cy - r * 1.0); x.stroke();                                      // the dog's head as crest
+            x.beginPath(); x.arc(o + r * 0.42, cy - r * 1.3, r * 0.1, 0, 6.3); x.fill();
+          } else if (sign === 'lamp') {               // "an olde lampe, and a hand holding of it"
+            x.beginPath(); x.ellipse(o, cy + r * 0.2, r * 1.1, r * 0.45, 0, 0, 6.3); x.stroke();
+            x.beginPath(); x.moveTo(o + r * 1.1, cy + r * 0.1); x.lineTo(o + r * 1.5, cy - r * 0.1); x.stroke();  // the spout
+            x.beginPath(); x.moveTo(o + r * 1.5, cy - r * 0.15); x.lineTo(o + r * 1.62, cy - r * 0.7);        // the flame
+            x.lineTo(o + r * 1.75, cy - r * 0.15); x.closePath(); x.fill();
+            x.beginPath(); x.moveTo(o - r * 1.1, cy + r * 0.2); x.lineTo(o - r * 1.45, cy + r * 0.05); x.stroke(); // the handle
+          } else if (sign === 'goose') {              // with the anchor
+            x.beginPath(); x.ellipse(o, cy + r * 0.3, r * 0.9, r * 0.5, 0, 0, 6.3); x.stroke();
+            x.beginPath(); x.moveTo(o + r * 0.6, cy); x.quadraticCurveTo(o + r * 1.0, cy - r * 1.2, o + r * 0.6, cy - r * 1.2); x.stroke();
+            x.beginPath(); x.arc(o + r * 0.55, cy - r * 1.2, r * 0.22, 0, 6.3); x.fill();
+            x.beginPath(); x.moveTo(o + r * 0.75, cy - r * 1.2); x.lineTo(o + r * 1.15, cy - r * 1.1); x.stroke();
+          } else if (sign === 'basin') {              // "a bason and an ewre"
+            x.beginPath(); x.moveTo(o - r * 1.2, cy - r * 0.3); x.quadraticCurveTo(o, cy + r * 1.2, o + r * 1.2, cy - r * 0.3); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 1.3, cy - r * 0.3); x.lineTo(o + r * 1.3, cy - r * 0.3); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.3, cy + r * 0.8); x.lineTo(o + r * 0.3, cy + r * 0.8); x.stroke();
+          } else if (sign === 'spindle') {            // "a spindle ful of twind"
+            x.beginPath(); x.moveTo(o, cy - r * 1.4); x.lineTo(o, cy + r * 1.4); x.stroke();
+            x.beginPath(); x.ellipse(o, cy, r * 0.55, r * 0.9, 0, 0, 6.3); x.fill();
+            x.beginPath(); x.arc(o, cy + r * 1.1, r * 0.2, 0, 6.3); x.fill();
+          } else if (sign === 'vessel') {             // "an old vessel … the mouth stopped and tied fast"
+            x.beginPath(); x.moveTo(o - r * 0.5, cy - r * 1.0); x.lineTo(o - r * 0.9, cy + r * 0.2);
+            x.quadraticCurveTo(o, cy + r * 1.5, o + r * 0.9, cy + r * 0.2); x.lineTo(o + r * 0.5, cy - r * 1.0); x.closePath(); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 0.7, cy - r * 0.85); x.lineTo(o + r * 0.7, cy - r * 0.85); x.stroke();   // the cord
+            x.beginPath(); x.moveTo(o - r * 0.7, cy - r * 0.65); x.lineTo(o + r * 0.7, cy - r * 0.65); x.stroke();
+          } else if (sign === 'sole') {               // "a sole and an eye in the bale thereof"
+            x.beginPath(); x.moveTo(o - r * 1.0, cy + r * 0.8); x.quadraticCurveTo(o - r * 1.2, cy - r * 0.6, o - r * 0.2, cy - r * 0.9);
+            x.quadraticCurveTo(o + r * 0.8, cy - r * 1.1, o + r * 0.9, cy - r * 0.2); x.quadraticCurveTo(o + r * 0.9, cy + r * 0.9, o - r * 1.0, cy + r * 0.8);
+            x.stroke();
+            x.beginPath(); x.ellipse(o, cy, r * 0.42, r * 0.22, 0, 0, 6.3); x.stroke();
+            x.beginPath(); x.arc(o, cy, r * 0.1, 0, 6.3); x.fill();
+          } else if (sign === 'ark') {                // "an Arke close shut"
+            x.beginPath(); x.rect(o - r * 1.0, cy - r * 0.4, r * 2.0, r * 1.1); x.stroke();
+            x.beginPath(); x.moveTo(o - r * 1.1, cy - r * 0.4); x.lineTo(o, cy - r * 1.1); x.lineTo(o + r * 1.1, cy - r * 0.4); x.closePath(); x.stroke();
+            x.beginPath(); x.arc(o, cy + r * 0.15, r * 0.14, 0, 6.3); x.fill();
+          } else if (sign === 'sun') {                       // SOLI DICATVM, over the portal
             x.beginPath(); x.arc(o, cy, r, 0, 6.3); x.stroke();
             x.beginPath(); x.arc(o, cy, r * 0.28, 0, 6.3); x.fill();
 
@@ -1421,7 +1474,11 @@ export class HPWorldScene {
     // beneath it, when the carved-ornament variant is chosen.
     this._frieze(0, 7.35, Z + 1.22, 17.6, 0.72, 'meander');
     this._frieze(0, 6.72, Z + 1.22, 17.6, 0.34, 'eggdart');
-    // Curran's hieroglyph bands, read down the flanking piers
+    // Curran's hieroglyph bands, read down the flanking piers. The book gives
+    // NO itemised sequence for the portal itself (the obelisk's are "most
+    // excellently cut" and left at that), so these stay a seeded line from the
+    // vocabulary — unlike the elephant's base and the bridge, which are now
+    // transcribed. Do not give these a sequence without a source.
     for (const sgn of [-1, 1]) {
       this._frieze(sgn * 5.4, 3.9, Z + 1.14, 3.0, 0.66, 'hieroglyph', { reps: 5 });
       this._frieze(sgn * 5.4, 2.0, Z + 1.14, 3.0, 0.66, 'hieroglyph', { reps: 5 });
@@ -1718,9 +1775,22 @@ export class HPWorldScene {
     for (const s of [-1, 1]) {
       this._m(new THREE.BoxGeometry(4.6, 0.62, 0.26), this._stoneMat, BX, 0.75, BZ + s * 1.7, { outline: true });
       this._wallCol(BX - 2.3, BX + 2.3, BZ + s * 1.7 - 0.13, BZ + s * 1.7 + 0.13);
-      // The three signs are carved on the INNER face of each parapet, so that a
+      // Dallington p. 93: ONE table on each side, and they differ. On the right
+      // hand as he goes, "an auncient Helmet crested with a Doggeshead. The
+      // bony scalpe of an oxe with two green braunches … And an ould lampe" —
+      // PATIENTIA EST ORNAMENTVM, CVSTODIA ET PROTECTIO VITAE; on the other,
+      // the circle, the anchor and the dolphin — festina lente. The first
+      // build put the anchor on both parapets; the right-hand table was missing.
+      if (s < 0) {
+        this._frieze(BX, 0.78, BZ + s * 1.54, 2.2, 0.5, 'hieroglyph',
+          { signs: ['helmet', 'skull', 'palm', 'lamp'], reps: 4 });   // faces the deck, like the plaque
+        this._plaque({ main: 'PATIENTIA EST ORNAMENTVM', sub: 'CVSTODIA ET PROTECTIO VITAE · THE RIGHT-HAND TABLE' },
+          1.62, 0.3, BX, 1.26, BZ - 1.5, 0, true);
+        continue;
+      }
+      // The three signs are carved on the INNER face of the parapet, so that a
       // walker crossing the bridge reads them as Poliphilo does — in passing,
-      // at arm's length. On the outer faces they would face the water.
+      // at arm's length. On the outer face they would face the water.
       const gz = BZ + s * 1.54;
       const glyph = woodcut ? S.mat({ tone: 0.24 }) : S.mat({ color: 0x5a4c34, roughness: 0.85 });
       const ring = this._m(new THREE.TorusGeometry(0.16, 0.032, 8, 20), glyph, BX - 1.45, 0.78, gz);
@@ -1739,14 +1809,8 @@ export class HPWorldScene {
         new THREE.Vector3(BX + 1.30, 0.68, gz),
       ]);
       this._m(new THREE.TubeGeometry(dolph, 20, 0.042, 6), glyph, 0, 0, 0);
-      // read from the deck, one parapet giving the motto and the other its afterlife
-      if (s > 0) {
-        this._plaque({ main: 'ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ', sub: 'SEMPER FESTINA TARDE · ALWAYS HASTEN SLOWLY' },
-          1.62, 0.3, BX, 1.26, BZ + 1.5, Math.PI, true);
-      } else {
-        this._plaque({ main: 'ALDVS TOOK THIS FOR HIS PRESS, 1502', sub: 'THE ALDINE DOLPHIN BEFORE IT WAS ALDINE' },
-          1.62, 0.3, BX, 1.26, BZ - 1.5, 0, true);
-      }
+      this._plaque({ main: 'ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ', sub: 'SEMPER FESTINA TARDE · ALDVS TOOK THIS FOR HIS PRESS, 1502' },
+        1.62, 0.3, BX, 1.26, BZ + 1.5, Math.PI, true);
     }
   }
 
@@ -2536,16 +2600,17 @@ export class HPWorldScene {
     this._m(new THREE.BoxGeometry(2.0, 0.26, 0.9), this._darkStoneMat, stX, 0.13, stZ, { cast: false });
     this._m(new THREE.BoxGeometry(1.76, 2.3, 0.5), this._stoneMat, stX, 1.41, stZ, { outline: true });
     this._m(new THREE.BoxGeometry(1.94, 0.18, 0.66), this._stoneMat, stX, 2.65, stZ, { cast: false, outline: true });
-    // The band of signs. The upper line is the six Priki actually names on
-    // these inscriptions — eye, vulture, two fish-hooks, two circles; the lower
-    // is the vocabulary of the sentence he says he read from them: grain and
-    // skull for *ex labore*, altar for *sacrifica*, ewer for *liberaliter*,
-    // rudder for *gubernando*, palm for what it promises. Not a transcription —
-    // see the note on HPWorldScene.SIGNS.
+    // The band of signs IS the transcription now — Dallington's itemised list
+    // of the elephant's base (pp. 53–54; see HPWorldScene.SIGNS), in his order,
+    // read across the two lines: the ox-skull with its tools, the altar on
+    // goat's feet with the eye and the vulture, basin and ewer, spindle,
+    // stopped vessel, the sole with its eye and the two branches, anchor and
+    // goose, the lamp in a hand, the oar with its olive, two grapples, and the
+    // dolphin with the ark shut. Twenty signs for twenty things.
     this._frieze(stX, 2.16, stZ + 0.26, 1.6, 0.42, 'hieroglyph',
-      { signs: ['eye', 'vulture', 'hook', 'hook', 'circle', 'circle'] });
+      { signs: ['skull', 'hook', 'altar', 'eye', 'vulture', 'basin', 'ewer', 'spindle', 'vessel', 'sole'], reps: 10 });
     this._frieze(stX, 1.72, stZ + 0.26, 1.6, 0.42, 'hieroglyph',
-      { signs: ['grain', 'skull', 'altar', 'ewer', 'rudder', 'palm'] });
+      { signs: ['eye', 'palm', 'palm', 'anchor', 'goose', 'lamp', 'rudder', 'hook', 'hook', 'dolphin', 'ark'], reps: 11 });
     // and, beneath them, what he made of them
     this._plaque({ main: 'CVSI IO LE INTERPRETAI', sub: '— AND THUS I INTERPRETED THEM' },
       1.5, 0.3, stX, 1.30, stZ + 0.27, 0, true);

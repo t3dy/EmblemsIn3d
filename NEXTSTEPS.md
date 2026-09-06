@@ -131,9 +131,11 @@ gets ground of its own.
   (woodcuts 5, 16 and 37), copied from the corpus's `site/images/woodcuts_1499/` at 800px. The
   old `three_doors.jpg` was never the three doors — it is the wheeled vessel of f. 105 and is
   still used, correctly captioned, at the palace stop.
-- `_carvedTexture('hieroglyph')` now draws fifteen named signs and `_frieze` can spell a
-  sequence; the **portal piers and the obelisks still take the default random line** and
-  could be given real ones.
+- **Done 2026-09-06:** Dallington itemises the elephant's base sign by sign (pp. 53–54) and
+  the bridge's right-hand table (p. 93); both are transcribed now, with eight signs added to
+  the vocabulary (helmet, lamp, goose, basin, spindle, vessel, sole, ark). The **portal piers
+  and obelisks keep a seeded line on purpose** — the book itemises nothing there, and the
+  comment in `_buildGreatPortal` says so.
 - **The lexicon has now been checked against the world** (2026-09-05). Of the 101 terms,
   **39 name a thing rather than an idea** — the Architecture, Gardens, Places, Material
   Culture, Processions and Characters categories. Thirty-four of the thirty-nine are built:

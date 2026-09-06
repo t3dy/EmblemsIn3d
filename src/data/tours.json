@@ -348,6 +348,10 @@
         ],
         "notes": [
           {
+            "type": "quotation",
+            "text": "**The stele is a transcription now.** Dallington's 1592 itemises the elephant's base sign by sign (pp. 53–54): *\"First, the horned scalpe of an oxe, with two tooles of husbandry fastned to the hornes. An altar standing vpon goates feete, with a burning fire aloft, on the foreside whereof there was also an eie, and a vulture. After that a bason and an ewre. A spindle ful of twind, an old vessel fashioned with the mouth stopped and tied fast. A sole and an eye in the bale thereof and two branches trauersed one of Oliue, an other of Palme tree. An Anchor and a Goose. An olde lampe, and a hand holding of it. An ore of ancient forme with a fruitefull Oliue branch fastned to the handle. Two grapling yrons or hookes. A Dolphin and an Arke close shut.\"* — twenty things, and the two bands on the stele now carry those twenty in his order, followed by the Latin he makes of them. The earlier bands were a vocabulary; these are the list. (Only the portal's own piers still take a seeded line: the book itemises nothing there.)"
+          },
+          {
             "type": "context",
             "text": "**Nobody could read hieroglyphs in 1499.** Champollion is three centuries away. What the Renaissance had was Horapollo's *Hieroglyphica*, a late-antique text that treats the signs as symbolic pictures rather than as writing, and the actual Egyptian obelisks standing in Rome. Brian Curran's study of the HP's Egyptology shows how much more serious that engagement was than it is usually given credit for — and how completely invented its results were."
           },
@@ -502,6 +506,10 @@
           {
             "type": "gloss",
             "text": "**The Sydney annotator's method, on this page.** Where Poliphilo calls himself *micropsycho* — a Greek compound Colonna coined — the annotator of the Sydney copy writes *micropsycho .l. pusilanimo*, the *.l.* abbreviating *licet*: 'that is, pusillanimous', the two Greek roots rendered straight into their Latin equivalents. Almost everything that hand does is of this kind — definitions, not commentary — which is why Russell reads it as an *educative* copy, a reader teaching himself the book's language word by word."
+          },
+          {
+            "type": "gloss",
+            "text": "**Both tables on the bridge, at last.** Dallington p. 93: one table on each side. On the right hand as Poliphilo goes, *\"an auncient Helmet crested with a Doggeshead. The bony scalpe of an oxe with two green braunches of trees bound fast to the hornes. And an ould lampe\"*, which he reads **PATIENTIA EST ORNAMENTVM, CVSTODIA ET PROTECTIO VITAE**; on the other, the circle, the anchor and the dolphin — *always hasten slowly*, which Aldus took for his press. The first build had the anchor on both parapets; the right-hand table is carved now."
           }
         ]
       },
