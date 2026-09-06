@@ -831,7 +831,7 @@
         ]
       },
       {
-        "station": "fountain",
+        "station": "venus_temple",
         "title": "The Temple of Venus",
         "chapter": "XVII",
         "half": "ours",
@@ -849,9 +849,30 @@
           }
         ],
         "see": [
+          "The Sacrifice and the Miracle of the Roses",
           "The Fountain of Venus"
         ],
         "notes": [
+          {
+            "type": "architecture",
+            "text": "**The temple is built now, and it is built from our own translation.** Fifteen plates (#71–#85) and, until this pass, no geometry anywhere in the world. It stands west of the grove with the sea and Cythera behind it. Seven porphyry steps rise to a landing of black stone **inlaid with a Cytherean conch** — Venus's scallop, cut into the floor you cross to reach her. The door is Doric, of jasper, its gilt open-work valves standing back against the jambs; the gold Greek on the lintel is transcribed **ΚΥΛΟΠΕΡΑ** and its reading is *uncertain*, flagged in `translation/NOTES.md` and left uncorrected here rather than silently improved. Blocks of **Indian lodestone** are set in the jambs: the valves open by themselves, drawn magnetically, ringing on serpentine rollers as they turn, and the priestess prays first to **Forculus of the leaf, Limentinus of the threshold and Cardea of the hinge**, who are named beside the door."
+          },
+          {
+            "type": "quotation",
+            "text": "The fabric is dry-jointed ashlar **\"without iron and timber\"** — mortarless stereotomy, the building held by cutting alone. The pavement is banded in porphyry and ophite with ten inlaid roundels stepping in toward the well. From the cupola hangs a sphere of **\"most-clean crystal\"** a cubit across, on four chains, with four little lamps hanging from four mouths in its rim: one of **balas-ruby**, one of **sapphire**, one of **emerald**, one of **topaz**."
+          },
+          {
+            "type": "architecture",
+            "text": "**The temple moves, rings and glows by itself** — three self-animating systems, and the first two run here. Eight hollow fluted columns carry the lantern; over each stands a *simulacrum of a wind*, winged, **turning on its spindle to face away from the blast** — and they turn together, the way real vanes do. Above them eight little pilasters with inverted ewer-vases, a stalk rising through a **great hollow bronze triangle**, and at the summit a bronze **crescent moon, horns to the sky, with an eagle sitting in its sinus**. Four chains hang under the moon carrying bells with steel balls sealed inside them, which the wind swings against the triangle — a self-ringing aeolian chime, which the book says surpasses the sounding-chains of the Temple of Jerusalem."
+          },
+          {
+            "type": "quotation",
+            "text": "**The rite of the cistern, which is why the station exists.** The priestess unseals the bolted well with a golden key, reads low in the **Etruscan tongue**, pours the sanctified brine, and kindles from Polia's torch the pure candle *that has never yet been lit*. Then she turns the torch flame-downward over the mouth and asks each of them what they want. Polia asks that they may come together to the amorous realm of the Divine Mother; Poliphilo asks that *she whom, doubtful, I esteem to be my most-desired Polia* stop holding him in torment. And the priestess gives him the words: **\"Just as the water shall extinguish this burnable torch, in the same manner, the fire of love re-kindle her stone-made and gelid heart.\"** He plunges it in. The virgins answer, three times, **\"So be it.\"** In this world the torch stands in the cistern where he left it, still steaming. (Our translation, ch. XVII, `translation/en/page_216.md`.)"
+          },
+          {
+            "type": "allegory",
+            "text": "Water quenches fire *so that* fire may be kindled — the paradox is the rite. Two chapters later Polia gives her own account of the same act, and it is not liturgical at all: his love, she says, **\"stole me from the chaste college\"** and made her put her torch out. The ceremony and the confession are the same image read from the two ends of it."
+          },
           {
             "type": "neoplatonic",
             "text": "'Venus Physizoa' — life-giving Venus, the generative power of the cosmos. In Ficino's two-Venus scheme, love ordered rightly leads the soul from the beauty of the body toward the divine; this temple is that doctrine built in stone."
@@ -883,7 +904,7 @@
         ]
       },
       {
-        "station": "fountain",
+        "station": "venus_temple",
         "title": "The Sacrifice and the Miracle of the Roses",
         "chapter": "XVIII",
         "half": "ours",

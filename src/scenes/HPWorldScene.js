@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=38';
+import { makeCast } from '../systems/Cast.js?v=39';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -52,6 +52,10 @@ export const HP_STATIONS = [
   { key: 'cythera',          name: 'The Shore to Cythera',   folio: 193,
     pos: [0, -33],    look: [0, -46],  radius: 8 },
   // Discoverable, not on the digit row:
+  // Chapters XVII–XVIII, fifteen plates. It stands west of the grove with the
+  // sea and Cythera behind it, which is the direction the pilgrims leave in.
+  { key: 'venus_temple',     name: 'The Temple of Venus',    folio: 205,
+    pos: [-30, -12], look: [-30, -21], radius: 9 },
   { key: 'polia',            name: "Polia's Garden",         folio: 143,
     pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
   { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158,
@@ -329,6 +333,7 @@ export class HPWorldScene {
     this._buildQuinta();
     this._buildFountain();
     this._buildTriumphs();
+    this._buildVenusTemple();
     this._buildPolyandrion();
     this._buildCythera();
     // The island is ~700 objects of its own. It lives in one group so that
@@ -4092,6 +4097,461 @@ export class HPWorldScene {
     return this.cast.animals.horse(0.95);
   }
 
+  // ── The Temple of Venus Physizoa ──────────────────────────
+  //
+  // Fifteen plates in `hp.db.woodcut_catalog` (#71–#85) and, until now, no
+  // geometry at all — the largest documented absence in the world. The whole
+  // thing is built from OUR translation of chapters XVII–XVIII
+  // (`translation/en/page_209.md` to `page_217.md`, CC0), which describes the
+  // building from its floor to its finial and then stages a complete liturgy
+  // inside it. Godwin is not consulted; he is in copyright and not in the
+  // corpus.
+  //
+  // What the text gives, and what is built here:
+  //
+  //   THE APPROACH — "seven porphyry steps to the propylaeum", a landing of
+  //   black stone "inlaid with Cytherean-conch intaglio" (p. 212). Venus's
+  //   scallop, cut into the floor you cross to reach her door.
+  //
+  //   THE DOOR — great and Doric, of jasper, its gilt open-work valves bolted,
+  //   with gold Greek on the lintel. The letters are transcribed ΚΥΛΟΠΕΡΑ and
+  //   the reading is UNCERTAIN — flagged in `translation/NOTES.md` and left as
+  //   they stand rather than silently corrected, so they stand uncorrected
+  //   here too. The valves open BY THEMSELVES: blocks of Indian lodestone set
+  //   in the jambs draw the steel-plated leaves, "with temperate slowness",
+  //   and they ring on serpentine rollers as they turn (p. 213). The priestess
+  //   prays first to Forculus of the leaf, Limentinus of the threshold and
+  //   Cardea of the hinge — the three Roman door-gods, named on the jamb.
+  //
+  //   THE FABRIC — dry-jointed ashlar of white marble, "without iron and
+  //   timber" (p. 209): mortarless stereotomy, so nothing here is pinned or
+  //   pegged. The wall is pierced in eight bays.
+  //
+  //   THE FLOOR — porphyry and ophite banding round the pilasters and the
+  //   well; ten inlaid roundels stepping inward toward the cistern in red
+  //   jasper, gold-flecked litharmenon, green jasper, agate and chalcedony
+  //   (p. 209).
+  //
+  //   THE LAMP — hung from the cupola: a sphere of "most-clean crystal" a
+  //   cubit across, on four chains, with four smaller lamps hanging from four
+  //   mouths in its rim — one of balas-ruby, one of sapphire, one of emerald,
+  //   one of topaz (p. 207–208).
+  //
+  //   THE LANTERN — eight hollow fluted columns carrying a scaled cupola; on
+  //   the projection over each column a simulacrum of one of the eight winds,
+  //   winged, turning on a spindle to face away from the blast; eight little
+  //   pilasters above, each with an inverted ewer-vase; a stalk rising from the
+  //   vase through a huge hollow bronze triangle; and at the summit a bronze
+  //   crescent moon, horns to the sky, with an eagle sitting in its sinus.
+  //   Four chains hang from under the moon carrying bells with steel balls
+  //   sealed inside, which the wind swings against the triangle (p. 210–211).
+  //   The temple rings, turns and glows by itself: three self-animating
+  //   systems, and the vanes and bells turn here.
+  //
+  //   THE RITE — the mysterial Cistern in the middle of the floor, unsealed
+  //   with a golden key; the priestess (the Antistita) in mitre and veil; Polia
+  //   in her tutulus and veil; the seven virgins with the dove-bound book and
+  //   the candle that has never yet been lit. The central act, and the reason
+  //   the station exists: Poliphilo plunges the burning torch head-down into
+  //   the cold water, saying "just as the water shall extinguish this burnable
+  //   torch, in the same manner, the fire of love re-kindle her stone-made and
+  //   gelid heart" — and the virgins answer "So be it" (p. 216). Polia's own
+  //   account of it, two chapters later, is that love "stole her from the
+  //   chaste college" and made her put her torch out.
+  _buildVenusTemple(TX = -30, TZ = -21) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const M = (color, extra = {}) => woodcut
+      ? S.mat({ tone: extra.tone ?? 0.08, rim: extra.rim })
+      : S.mat({ color, ...extra, tone: undefined, rim: undefined });
+
+    // The garden's key light is strong and the fill is flat, so a true white
+    // marble blows out: the first interior read as a white void with coloured
+    // saucers in it. Warmed and dropped until the ashlar takes a lit and an
+    // unlit side, which is what "white marble" has to mean in this renderer.
+    const marble  = M(0xd6cdb6, { roughness: 0.86 });
+    const shadow  = M(0xa89e86, { roughness: 0.9 });
+    const porphyr = M(0x7a2a2c, { roughness: 0.6, tone: 0.24 });
+    const ophite  = M(0x2f4a34, { roughness: 0.6, tone: 0.3 });
+    const black   = M(0x14121a, { roughness: 0.4, metalness: 0.12, tone: 0.34 });
+    const jasper  = M(0x8f3428, { roughness: 0.5, tone: 0.26 });
+    const gold    = M(0xd9b25a, { metalness: 0.95, roughness: 0.22, tone: 0.04 });
+    const bronze  = M(0x8a6a34, { metalness: 0.85, roughness: 0.38, tone: 0.12 });
+    const lode    = M(0x24242c, { metalness: 0.4, roughness: 0.7, tone: 0.36 });
+
+    const R = 6.2;            // the drum
+    const WALL_H = 5.2;
+    const PIER = 0.9;
+
+    // ── the seven porphyry steps, and the propylaeum ──────────────────────
+    // They rise from the meadow to the north; the sea and Cythera lie behind
+    // the temple, which is the direction the pilgrims leave in.
+    //
+    // A NOTE ON THE RISE. The walker has no floor height: it walks the world at
+    // y = 0 with a fixed eye, so a podium is scenery, not ground, and a tall one
+    // would leave the dreamer's feet a metre under his own temple floor. Every
+    // raised thing in this world is therefore shallow — the chess stylobate is
+    // 0.43 — so the seven steps are seven, as the book says, but each is 6cm:
+    // a crepidoma read from outside rather than a stair climbed. The alternative
+    // is a temple you stand inside up to your chest.
+    const RISE = 0.06;
+    const zFront = TZ + R;
+    for (let i = 0; i < 7; i++) {
+      const w = 7.4 - i * 0.22;
+      this._m(new THREE.BoxGeometry(w, RISE, 0.46), porphyr,
+        TX, RISE / 2 + i * RISE, zFront + 3.3 - i * 0.46, { cast: false });
+    }
+    const PLAT_Y = 7 * RISE;
+    this._m(new THREE.BoxGeometry(7.0, 0.22, 3.4), black, TX, PLAT_Y + 0.11, zFront + 1.1,
+      { cast: false, outline: true });
+    // "inlaid with Cytherean-conch intaglio": Venus's scallop, cut in the
+    // black landing you cross to reach her door. Ribs radiating from a hinge.
+    for (let i = 0; i <= 12; i++) {
+      const a = Math.PI * (0.5 + (i / 12 - 0.5) * 0.86);
+      const L = 1.5;
+      const rib = this._m(new THREE.BoxGeometry(0.05, 0.03, L), marble,
+        TX + Math.cos(a) * L * 0.5, PLAT_Y + 0.23, zFront + 1.95 - Math.sin(a) * L * 0.5,
+        { cast: false });
+      rib.rotation.y = a - Math.PI / 2;
+    }
+    this._m(new THREE.CylinderGeometry(0.34, 0.34, 0.04, 16), marble,
+      TX, PLAT_Y + 0.23, zFront + 1.95, { cast: false });
+
+    // ── the drum: eight bays, seven of them windows and one the door ──────
+    const bay = (k) => (k * Math.PI * 2) / 8;
+    for (let k = 0; k < 8; k++) {
+      const a = bay(k) + Math.PI / 8;      // the piers sit BETWEEN the bays
+      const px = TX + Math.sin(a) * R, pz = TZ + Math.cos(a) * R;
+      const p = this._m(new THREE.BoxGeometry(PIER, WALL_H, 1.0), marble,
+        px, PLAT_Y + WALL_H / 2, pz, { outline: true });
+      p.rotation.y = a;
+      this._circleCol(px, pz, 0.62);
+      // the spandrel over each bay, so the wall reads as pierced rather than
+      // as eight standing stones
+      const b = bay(k);
+      const bx = TX + Math.sin(b) * R, bz = TZ + Math.cos(b) * R;
+      const lint = this._m(new THREE.BoxGeometry(4.0, 0.9, 0.9), marble,
+        bx, PLAT_Y + WALL_H - 0.45, bz, { cast: false });
+      lint.rotation.y = b;
+      const sill = this._m(new THREE.BoxGeometry(4.0, 1.1, 0.9),
+        k === 0 ? marble : shadow, bx, PLAT_Y + 0.55, bz, { cast: false });
+      sill.rotation.y = b;
+      if (k === 0) sill.visible = false;                 // the bay with the door
+    }
+
+    // the entablature ring and the scaled cupola
+    for (let k = 0; k < 8; k++) {
+      const b = bay(k);
+      this._entablature(TX + Math.sin(b) * R, PLAT_Y + WALL_H, TZ + Math.cos(b) * R,
+        5.0, 1.1, { ry: b, dentils: false });
+    }
+    // "A scaled cupola resided" — the courses are drawn as diminishing rings,
+    // which is what a scaled dome is: overlapping courses of stone.
+    const DOME_Y = PLAT_Y + WALL_H + 0.95;
+    const SC = 9;
+    for (let i = 0; i < SC; i++) {
+      const t = i / SC, t2 = (i + 1) / SC;
+      const r0 = R * Math.cos(t * Math.PI / 2) * 1.02;
+      const r1 = R * Math.cos(t2 * Math.PI / 2) * 1.02;
+      this._m(new THREE.CylinderGeometry(r1, r0, R * 0.46 / SC * 2.2, 32, 1, true),
+        i % 2 ? marble : shadow,
+        TX, DOME_Y + Math.sin(t * Math.PI / 2) * R * 0.52, TZ, { cast: false });
+    }
+    const APEX = DOME_Y + R * 0.52;
+
+    // ── the door: jasper, Doric, its gilt valves standing open ────────────
+    // The door bay is 4.7 wide and the doorcase 3.6, so without these two
+    // returns the case stood in the middle of a hole and read as a red screen
+    // parked in front of the temple rather than as its door.
+    const dz = TZ + R;
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(1.5, WALL_H, 0.95), marble,
+        TX + sx * 2.34, PLAT_Y + WALL_H / 2, dz, { cast: false, outline: true });
+    }
+    this._m(new THREE.BoxGeometry(0.55, 3.5, 1.15), jasper, TX - 1.35, PLAT_Y + 1.75, dz, { outline: true });
+    this._m(new THREE.BoxGeometry(0.55, 3.5, 1.15), jasper, TX + 1.35, PLAT_Y + 1.75, dz, { outline: true });
+    this._m(new THREE.BoxGeometry(3.6, 0.55, 1.2), jasper, TX, PLAT_Y + 3.78, dz, { cast: false, outline: true });
+    // the lodestone blocks in the jambs that draw the leaves open
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.26, 0.5, 0.4), lode, TX + sx * 1.35, PLAT_Y + 2.4, dz + 0.42,
+        { cast: false });
+    }
+    // the valves, swung back against the jambs, gilt and open-worked
+    for (const sx of [-1, 1]) {
+      const leaf = this._m(new THREE.BoxGeometry(1.05, 3.3, 0.12), gold,
+        TX + sx * 1.62, PLAT_Y + 1.72, dz - 0.5, { cast: false });
+      leaf.rotation.y = sx * 1.15;
+      for (let r = 0; r < 4; r++) for (let c = 0; c < 2; c++) {
+        const cut = this._m(new THREE.BoxGeometry(0.3, 0.42, 0.16), black,
+          TX + sx * 1.62, PLAT_Y + 0.85 + r * 0.66, dz - 0.5, { cast: false });
+        cut.rotation.y = sx * 1.15;
+        cut.position.x += Math.cos(sx * 1.15) * (c - 0.5) * 0.42;
+        cut.position.z -= Math.sin(sx * 1.15) * (c - 0.5) * 0.42;
+      }
+      // the serpentine roller the leaf turns and sings on
+      this._m(new THREE.CylinderGeometry(0.11, 0.11, 0.3, 10), ophite,
+        TX + sx * 1.35, PLAT_Y + 0.15, dz - 0.3, { cast: false });
+    }
+    this._plaque({ main: 'ΚΥΛΟΠΕΡΑ', sub: 'THE LETTERS AS THEY STAND · READING VNCERTAIN' },
+      3.0, 0.42, TX, PLAT_Y + 3.80, dz + 0.62, 0, true);
+    // On the RETURN wall beside the door, not on the jamb: at 2.0 wide and
+    // centred on the jamb it hung straight across the opening.
+    this._plaque({ main: 'FORCVLO · LIMENTINO · CARDEAE',
+                   sub: 'THE GOD OF THE LEAF · OF THE THRESHOLD · OF THE HINGE' },
+      1.36, 0.30, TX + 2.34, PLAT_Y + 2.2, dz + 0.50, 0, true);
+
+    // ── the floor: banded, and ten roundels stepping in to the well ───────
+    // The pavement is NOT white. The book bands it in porphyry and ophite and
+    // sets coloured roundels in it — and a white floor under this key light
+    // turned the whole interior into an overexposed void with the rite lost in
+    // the middle of it. Warm stone field, the two documented bands over it.
+    const pave = M(0x9a8b6c, { roughness: 0.9, tone: 0.14 });
+    this._m(new THREE.CylinderGeometry(R - 0.4, R - 0.4, 0.12, 32), pave,
+      TX, PLAT_Y + 0.06, TZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(R - 0.5, R - 0.5, 0.03, 32), porphyr, TX, PLAT_Y + 0.13, TZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(R - 1.0, R - 1.0, 0.03, 32), ophite,  TX, PLAT_Y + 0.14, TZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(R - 1.4, R - 1.4, 0.03, 32), pave,    TX, PLAT_Y + 0.15, TZ, { cast: false });
+    // "ten foot-wide inlaid roundels radiating in", graded in colour as they
+    // approach the cistern
+    // Ten roundels, "radiating in" — INLAY, so they sit flush and read as
+    // stone, not as ten dinner plates left on the floor. First cut at 0.52
+    // radius in full-strength colour did exactly that.
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2;
+      const rr = (R - 2.1) - (i % 5) * 0.30;
+      const col = [0x8a3a30, 0xa8894a, 0x46664a, 0x9a8f77, 0xc4bda9][i % 5];
+      this._m(new THREE.CylinderGeometry(0.36, 0.36, 0.02, 18), M(col, { roughness: 0.55, tone: 0.2 }),
+        TX + Math.sin(a) * rr, PLAT_Y + 0.165, TZ + Math.cos(a) * rr, { cast: false });
+      this._m(new THREE.TorusGeometry(0.375, 0.014, 6, 20), shadow,
+        TX + Math.sin(a) * rr, PLAT_Y + 0.168, TZ + Math.cos(a) * rr,
+        { cast: false, rx: Math.PI / 2 });
+    }
+
+    // ── the mysterial Cistern ─────────────────────────────────────────────
+    const WY = PLAT_Y + 0.18;
+    this._m(new THREE.CylinderGeometry(1.30, 1.42, 0.30, 24), black, TX, WY + 0.15, TZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(1.08, 1.08, 0.62, 24, 1, true), marble, TX, WY + 0.61, TZ,
+      { cast: false, outline: true });
+    this._m(new THREE.TorusGeometry(1.10, 0.09, 8, 26), marble, TX, WY + 0.92, TZ,
+      { cast: false, rx: Math.PI / 2 });
+    this._circleCol(TX, TZ, 1.35);
+    // the water in the mouth of it
+    this._m(new THREE.CircleGeometry(1.02, 24), this._waterMat(), TX, WY + 0.66, TZ,
+      { rx: -Math.PI / 2, cast: false });
+    // the bolted bronze lid, unsealed and swung back on the kerb
+    const lid = this._m(new THREE.CylinderGeometry(1.05, 1.05, 0.07, 22), bronze,
+      TX - 1.72, WY + 0.62, TZ + 0.5, { cast: false });
+    lid.rotation.z = 0.42;
+    this._m(new THREE.TorusGeometry(0.16, 0.035, 6, 12), bronze, TX - 1.72, WY + 0.72, TZ + 0.5,
+      { cast: false, rx: Math.PI / 2 });
+    // the golden little key, laid on the kerb where she left it
+    this._m(new THREE.CylinderGeometry(0.025, 0.025, 0.34, 6), gold, TX + 0.62, WY + 0.99, TZ + 0.86,
+      { cast: false, rz: Math.PI / 2 });
+    this._m(new THREE.TorusGeometry(0.075, 0.022, 6, 12), gold, TX + 0.80, WY + 0.99, TZ + 0.86,
+      { cast: false, rx: Math.PI / 2 });
+
+    // THE TORCH, turned with the little flame downward into the middle of the
+    // orifice. This is the act the whole station is for.
+    const torch = new THREE.Group();
+    torch.position.set(TX, WY + 1.5, TZ);
+    torch.rotation.x = Math.PI - 0.30;
+    this._m(new THREE.CylinderGeometry(0.045, 0.055, 1.05, 8), M(0x6a4a28, { roughness: 0.9, tone: 0.2 }),
+      0, 0.52, 0, { parent: torch });
+    this._m(new THREE.TorusGeometry(0.075, 0.018, 6, 12), bronze, 0, 0.98, 0, { parent: torch, rx: Math.PI / 2 });
+    // the head, guttering: still alight, but only just, and pointing down
+    const flame = this._m(new THREE.ConeGeometry(0.085, 0.30, 9),
+      woodcut ? S.mat({ tone: 0.04 })
+              : S.mat({ color: 0xffbe4a, emissive: 0xd07018, emissiveIntensity: 1.1, roughness: 0.5 }),
+      0, 1.16, 0, { parent: torch, cast: false });
+    flame.rotation.x = Math.PI;
+    this.scene.add(torch);
+    // NOT a `_float`: that registry assigns `position.y` outright rather than
+    // adding to it, so a prop 2.7 units up would drop to the floor.
+
+    // the steam where the flame meets the cold water
+    const steam = new ParticleStream({
+      count: 22,
+      source: new THREE.Vector3(TX, WY + 0.72, TZ),
+      target: new THREE.Vector3(TX + 0.2, WY + 2.6, TZ + 0.1),
+      color: 0xe8e4d8, size: 0.05, speed: 0.3, arc: 0.5,
+    });
+    steam.opacity = 0.30; steam.active = true;
+    this.style.tuneStream(steam);
+    this.scene.add(steam.points);
+    this._streams.push(steam);
+
+    // ── the altar (#80), and the candle that had never been lit ───────────
+    const AX = TX, AZ = TZ - 3.5;
+    this._m(new THREE.BoxGeometry(2.0, 0.24, 1.3), black, AX, WY + 0.12, AZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.72, 0.86, 1.05, 20), marble, AX, WY + 0.76, AZ, { outline: true });
+    this._m(new THREE.CylinderGeometry(0.92, 0.78, 0.16, 20), marble, AX, WY + 1.36, AZ, { cast: false });
+    this._frieze(AX, WY + 1.05, AZ + 0.80, 1.5, 0.28, 'meander');
+    this._circleCol(AX, AZ, 1.0);
+    // the pure candle, kindled from the torch before it was quenched
+    this._m(new THREE.CylinderGeometry(0.045, 0.05, 0.62, 8), M(0xf2ecd8, { roughness: 0.7 }),
+      AX + 0.34, WY + 1.75, AZ, { cast: false });
+    this._m(new THREE.ConeGeometry(0.05, 0.15, 8),
+      woodcut ? S.mat({ tone: 0.04 })
+              : S.mat({ color: 0xffd88a, emissive: 0xe0a030, emissiveIntensity: 1.2, roughness: 0.5 }),
+      AX + 0.34, WY + 2.12, AZ, { cast: false });
+    // the ritual book, bound in cyan velvet worked into the shape of a dove
+    this._m(new THREE.BoxGeometry(0.42, 0.09, 0.30), M(0x2a7a9a, { roughness: 0.75 }),
+      AX - 0.34, WY + 1.49, AZ, { cast: false });
+    this._m(new THREE.SphereGeometry(0.075, 8, 7), M(0x2a7a9a, { roughness: 0.75 }),
+      AX - 0.50, WY + 1.55, AZ, { cast: false });
+
+    // ── the great lamp, hung from the cupola on four chains ───────────────
+    const LY = PLAT_Y + WALL_H - 0.9;
+    for (let k = 0; k < 4; k++) {
+      const a = (k / 4) * Math.PI * 2 + Math.PI / 4;
+      const ch = this._m(new THREE.CylinderGeometry(0.018, 0.018, 2.4, 5), bronze,
+        TX + Math.sin(a) * 0.34, LY + 1.5, TZ + Math.cos(a) * 0.34, { cast: false });
+      ch.rotation.x = Math.sin(a) * 0.09;
+      ch.rotation.z = -Math.cos(a) * 0.09;
+    }
+    this._m(new THREE.SphereGeometry(0.52, 18, 14),
+      woodcut ? S.mat({ tone: 0.03 })
+              : S.mat({ color: 0xdfeaf2, roughness: 0.08, metalness: 0.1,
+                        transparent: true, opacity: 0.42,
+                        emissive: 0xfff0c0, emissiveIntensity: 0.5 }),
+      TX, LY, TZ, { cast: false });
+    // "one of Balas-ruby; the other of Sapphire; the third of Emerald; the
+    // last of Topaz" — four little lamps in four mouths of the great one
+    const GEMS = [0xb3243c, 0x1e3f96, 0x0d7548, 0xdca62c];
+    GEMS.forEach((c, k) => {
+      const a = (k / 4) * Math.PI * 2;
+      this._m(new THREE.SphereGeometry(0.17, 12, 10),
+        woodcut ? S.mat({ tone: 0.16 })
+                : S.mat({ color: c, roughness: 0.14, metalness: 0.3,
+                          emissive: c, emissiveIntensity: 0.7 }),
+        TX + Math.sin(a) * 0.62, LY - 0.30, TZ + Math.cos(a) * 0.62, { cast: false });
+    });
+
+    // ── the lantern, and the finial that rings itself ─────────────────────
+    const LR = 1.75;
+    const lantern = new THREE.Group();
+    const LB = APEX - 0.15;      // the lantern's own floor, on the cupola
+    for (let k = 0; k < 8; k++) {
+      const a = (k / 8) * Math.PI * 2;
+      const lx = Math.sin(a) * LR, lz = Math.cos(a) * LR;
+      // the entablature block over each column, and the wind that stands on it
+      this._m(new THREE.BoxGeometry(0.62, 0.34, 0.62), marble, lx, 2.62, lz,
+        { parent: lantern, cast: false, ry: a });
+      const vane = new THREE.Group();
+      vane.position.set(lx, 2.92, lz);
+      this._m(new THREE.CylinderGeometry(0.022, 0.022, 0.34, 6), bronze, 0, 0.17, 0, { parent: vane, cast: false });
+      const body = this._m(new THREE.CapsuleGeometry(0.055, 0.20, 4, 7), bronze, 0, 0.44, 0, { parent: vane, cast: false });
+      void body;
+      for (const sx of [-1, 1]) {
+        const w = this._m(new THREE.BoxGeometry(0.30, 0.12, 0.03), bronze,
+          sx * 0.18, 0.50, 0, { parent: vane, cast: false });
+        w.rotation.z = sx * 0.30;
+      }
+      lantern.add(vane);
+      this._vanes = this._vanes || [];
+      this._vanes.push({ g: vane, k });
+      // the little pilaster above, and its ewer-vase with the mouth inverted
+      this._m(new THREE.BoxGeometry(0.20, 0.40, 0.20), marble, lx * 0.72, 3.30, lz * 0.72,
+        { parent: lantern, cast: false, ry: a });
+      const ewer = this._m(new THREE.SphereGeometry(0.16, 10, 8), bronze,
+        lx * 0.72, 3.62, lz * 0.72, { parent: lantern, cast: false });
+      ewer.scale.set(1, 1.25, 1);
+    }
+    // the scaled cupola of the lantern
+    for (let i = 0; i < 5; i++) {
+      const t = i / 5, t2 = (i + 1) / 5;
+      this._m(new THREE.CylinderGeometry(LR * 1.1 * Math.cos(t2 * Math.PI / 2),
+                                         LR * 1.1 * Math.cos(t * Math.PI / 2), 0.24, 20, 1, true),
+        i % 2 ? marble : shadow, 0, 2.95 + t * 1.0, 0, { parent: lantern, cast: false });
+    }
+    // the stalk, the hollow triangle, the moon and the eagle
+    this._m(new THREE.CylinderGeometry(0.035, 0.045, 2.5, 8), bronze, 0, 5.1, 0,
+      { parent: lantern, cast: false });
+    for (let e = 0; e < 3; e++) {
+      const a = (e / 3) * Math.PI * 2 + Math.PI / 2;
+      const side = this._m(new THREE.BoxGeometry(0.95, 0.07, 0.07), bronze,
+        Math.cos(a) * 0.28, 4.65, 0, { parent: lantern, cast: false });
+      side.rotation.z = a + Math.PI / 2;
+      side.position.y = 4.65 + Math.sin(a) * 0.28;
+    }
+    const moon = this._m(new THREE.TorusGeometry(0.42, 0.075, 8, 20, Math.PI * 1.15), bronze,
+      0, 6.5, 0, { parent: lantern, cast: false });
+    moon.rotation.z = -Math.PI * 0.075;
+    const eagle = this._m(new THREE.SphereGeometry(0.13, 10, 8), bronze, 0, 6.62, 0,
+      { parent: lantern, cast: false });
+    eagle.scale.set(0.9, 1.1, 1.3);
+    for (const sx of [-1, 1]) {
+      const w = this._m(new THREE.BoxGeometry(0.34, 0.05, 0.14), bronze, sx * 0.20, 6.76, -0.02,
+        { parent: lantern, cast: false });
+      w.rotation.z = sx * 0.55;
+    }
+    // four chains under the moon, and the bells the wind swings against the
+    // triangle: a sealed steel ball in each
+    for (let k = 0; k < 4; k++) {
+      const a = (k / 4) * Math.PI * 2 + Math.PI / 4;
+      const bx = Math.sin(a) * 0.30, bz = Math.cos(a) * 0.30;
+      this._m(new THREE.CylinderGeometry(0.012, 0.012, 1.1, 5), bronze, bx, 5.66, bz,
+        { parent: lantern, cast: false });
+      const bell = new THREE.Group();
+      bell.position.set(bx, 5.10, bz);
+      this._m(new THREE.ConeGeometry(0.10, 0.20, 10, 1, true), bronze, 0, -0.10, 0,
+        { parent: bell, cast: false });
+      this._m(new THREE.SphereGeometry(0.035, 7, 6), M(0xb8bcc4, { metalness: 0.7, roughness: 0.4, tone: 0.1 }),
+        0, -0.18, 0, { parent: bell, cast: false });
+      lantern.add(bell);
+      this._bells = this._bells || [];
+      this._bells.push({ g: bell, k });
+    }
+    lantern.position.set(TX, LB, TZ);
+    this.scene.add(lantern);
+    // the lantern's own columns, standing on the cupola
+    for (let k = 0; k < 8; k++) {
+      const a = (k / 8) * Math.PI * 2;
+      const col = new THREE.Group();
+      col.position.set(TX + Math.sin(a) * LR, LB, TZ + Math.cos(a) * LR);
+      this.scene.add(col);
+      this._m(new THREE.CylinderGeometry(0.14, 0.16, 2.5, 12), marble, 0, 1.25, 0,
+        { parent: col, cast: false, outline: true });
+      this._m(new THREE.BoxGeometry(0.42, 0.12, 0.42), marble, 0, 2.55, 0, { parent: col, cast: false });
+      this._m(new THREE.BoxGeometry(0.40, 0.10, 0.40), marble, 0, 0.05, 0, { parent: col, cast: false });
+    }
+
+    // ── the ministry: the Antistita, Polia, and the seven virgins ─────────
+    // The two vested heads are new ranks on the same machinery the chess
+    // liveries use (Cast.paintedFigureTexture): a mitre for the priestess and
+    // a tutulus with its veil for Polia and her sisters.
+    const at = (rad, deg) => [TX + Math.sin(deg * Math.PI / 180) * rad,
+                              TZ + Math.cos(deg * Math.PI / 180) * rad];
+    const face = (x, z) => Math.atan2(TX - x, TZ - z);
+
+    const [pxx, pzz] = at(2.5, 180);
+    const priestess = this.cast.nymph({ name: 'Antistita', robe: 0xf0ead8, h: 1.02,
+                                        rank: 'mitre', cutout: null });
+    this._npc('venus_antistita', priestess, pxx, pzz, face(pxx, pzz),
+      { label: 'The Antistita', sub: 'HIGH PRIESTESS OF VENVS PHYSIZOA', sway: 0.03 });
+
+    const [qxx, qzz] = at(2.4, 20);
+    const polia = this.cast.nymph({ name: 'Polia', robe: 0xd8c4e8, h: 1.0,
+                                    rank: 'tutulus', cutout: null });
+    this._npc('venus_polia_rite', polia, qxx, qzz, face(qxx, qzz),
+      { label: 'Polia', sub: 'HER TORCH PVT OVT', sway: 0.03 });
+
+    for (let i = 0; i < 7; i++) {
+      const deg = 60 + i * 40;
+      const [vx, vz] = at(3.3, deg);
+      const v = this.cast.nymph({ name: 'virgin_' + i, robe: 0xf2eee2, h: 0.95,
+                                  rank: 'tutulus', cutout: null });
+      this._npc('venus_virgin_' + i, v, vx, vz, face(vx, vz), { sway: 0.035 });
+    }
+
+    // ── what the rite says, on the wall behind the well ──────────────────
+    this._plaque({ main: 'SICVT AQVA HANC FACEM EXTINGVET',
+                   sub: 'SO SHALL THE FIRE OF LOVE RE-KINDLE HER GELID HEART · CH. XVII' },
+      3.6, 0.5, TX, PLAT_Y + 2.5, TZ - R + 0.62, Math.PI, true);
+    this._plaque({ main: 'CVSÌ FIA', sub: 'SO BE IT · THE VIRGINS ANSWER, THRICE' },
+      1.8, 0.34, TX, PLAT_Y + 1.85, TZ - R + 0.62, Math.PI, true);
+  }
+
   // ── The Polyandrion — the ruined temple of the dead ───────────────────────
   //
   // Chapter XIX, the longest in the untranslated range, and 27 of the book's
@@ -5178,7 +5638,11 @@ export class HPWorldScene {
       put(s * 9, 5.4); put(s * 9, -5.4);
       put(s * 13.5, 5.8, 0.9); put(s * 13.5, -5.8, 0.9);
     }
-    put(-29, 7, 1.2); put(-29, -7, 1.2);
+    put(-29, 7, 1.2);
+    // Moved west from (-29, -7): the Temple of Venus now stands at (-30, -21)
+    // and this tree sat squarely in its approach, filling the whole front of
+    // the building from the only angle a walker arrives at.
+    put(-25.5, -7, 1.2);
     put(28, 8, 1.2); put(28, -8, 1.2);
     put(-27, 15, 1.0); put(27, 14.5, 1.0);
 
@@ -5391,6 +5855,23 @@ export class HPWorldScene {
       }
     }
     this._chessUpdate(dt);
+
+    // The temple's own two moving systems (see _buildVenusTemple): the eight
+    // winds turn on their spindles to face away from the blast, and the four
+    // bells swing on their chains against the great triangle. The wind is one
+    // slow direction with a gust on top of it, so the vanes agree with each
+    // other the way real vanes do.
+    if (this._vanes) {
+      const wind = Math.sin(this._t * 0.11) * 1.7 + Math.sin(this._t * 0.53) * 0.34;
+      for (const v of this._vanes) v.g.rotation.y = wind + v.k * 0.04;
+      if (this._bells) {
+        const gust = Math.sin(this._t * 1.9) * 0.16 + Math.sin(this._t * 2.7) * 0.06;
+        for (const b of this._bells) {
+          b.g.rotation.z = gust * Math.cos(b.k * 1.57);
+          b.g.rotation.x = gust * Math.sin(b.k * 1.57);
+        }
+      }
+    }
     // The meadow leans with the travelling gusts
     for (const f of this._meadows) f.update(this._t);
     // Cythera draws only from the shore southward (the haze covers the seam)

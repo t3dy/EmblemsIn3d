@@ -55,8 +55,16 @@ displaying, and the same goes for all the other architectural features."*
   tiers exist as terraces; the theatre's own architecture does not. Use the shared members.
 - The **second** FIVE_SENSES fountain (#22) is not built as a distinct feature. (#23, the
   third, is the mainland fountain with its Graces, harpies and griffins.)
-- **Polia's torch extinguished in the altar-fountain** (#77) carries real narrative weight
-  and does not exist.
+- **Done 2026-09-05: the Temple of Venus** (#71–#85, fifteen plates, previously the largest
+  documented absence in the world). Built at (-30, -21) from our own translation of chapters
+  XVII–XVIII: seven porphyry steps, the black landing with its Cytherean-conch intaglio, the
+  jasper door with the uncertain ΚΥΛΟΠΕΡΑ and its lodestone jambs, the eight-bay drum, the
+  banded pavement and ten roundels, the crystal lamp with its four gem lamps, the lantern with
+  its eight turning winds, ewer-vases, hollow triangle and the moon with an eagle in it — and
+  **the rite: the mysterial cistern unsealed, and Polia's torch (#77) standing head-down in
+  the water, still steaming**, with the Antistita in her mitre, Polia in her tutulus, and the
+  seven virgins around them. Still unbuilt there: the sacrifice proper (#78–#83) and the
+  **miracle of the roses** (#84), the rose-tree rising from the altar with its doves.
 - The **Triumph of Cupid** on Cythera (#143–144) is a standard, not a procession.
 - The **Polyandrion's five hieroglyphic medallions** (#88–#92). No reading of them exists
   anywhere in the corpus, so they can only be built as *unread* devices — worth doing, but
@@ -102,7 +110,8 @@ gets ground of its own.
 ### 7. Smaller, still open
 - The **five-senses bath-house** (ch. VI–VII) and the **water-labyrinth** of ch. IX — the
   book's clearest single allegory — are not built; their stops are staged elsewhere.
-- The **Temple of Venus rite** (ch. XVIII) has ten plates and no geometry.
+- The **Temple of Venus rite** (ch. XVIII): the temple and the cistern-rite of ch. XVII are
+  built; the sacrifice of ch. XVIII (#78–#83) and the miracle of the roses (#84) are not.
 - Two stops carry `"wc": []` because no genuine plate is in `images/woodcuts/`: **the Great
   Portal** (ch. IV) and **the Three Doors** (ch. XII–XIII). Source those two plates.
 - `_carvedTexture('hieroglyph')` now draws fifteen named signs and `_frieze` can spell a

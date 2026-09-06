@@ -768,6 +768,57 @@ export function makeCast(S) {
         x.quadraticCurveTo(CX + HEAD_R * 0.30, capY - HEAD_R * 1.30, CX + HEAD_R * 0.92, capY - HEAD_R * 1.10);
         x.quadraticCurveTo(CX + HEAD_R * 0.34, capY - HEAD_R * 0.92, CX + HEAD_R * 0.14, capY - HEAD_R * 0.40);
         x.closePath(); x.fill();
+      } else if (rank === 'mitre' || rank === 'tutulus') {
+        // The rite of Venus Physizoa, our translation of ch. XVII (page_216):
+        // "the sage seeress first accepted a Tutulus, and bound the hair; then
+        // set over it the superb Mitre; and in the middle of the precious
+        // Mitre, tightened above the most-tenuous little veil, covering the
+        // holy head. The other Tutulus, with the other little veil, she gave to
+        // the Nymph." So both wear the tutulus and the veil; only the
+        // priestess adds the mitre over it. The jewel that pins the veil is
+        // hers of *ananchitides*, the divination-stone, and Polia's a sapphire
+        // — the one detail that tells the two apart at a glance.
+        // the veil, over the head and down the back
+        x.fillStyle = 'rgba(252,250,244,0.42)';
+        x.beginPath();
+        x.moveTo(CX - HEAD_R * 0.86, capY + HEAD_R * 0.36);
+        x.quadraticCurveTo(CX, capY - HEAD_R * 0.40, CX + HEAD_R * 0.86, capY + HEAD_R * 0.36);
+        x.quadraticCurveTo(CX + HEAD_R * 1.30, shY + HEAD_R * 1.5, CX + HEAD_R * 0.98, shY + HEAD_R * 2.7);
+        x.lineTo(CX - HEAD_R * 0.98, shY + HEAD_R * 2.7);
+        x.quadraticCurveTo(CX - HEAD_R * 1.30, shY + HEAD_R * 1.5, CX - HEAD_R * 0.86, capY + HEAD_R * 0.36);
+        x.closePath(); x.fill();
+        // the tutulus: the conical cap the hair is bound into, under it
+        x.fillStyle = '#e8dcc0';
+        x.beginPath();
+        x.moveTo(CX - HEAD_R * 0.50, capY + HEAD_R * 0.22);
+        x.quadraticCurveTo(CX, capY - HEAD_R * 0.76, CX + HEAD_R * 0.50, capY + HEAD_R * 0.22);
+        x.closePath(); x.fill();
+        if (rank === 'mitre') {
+          // the superb mitre over the tutulus, gold and gemmed
+          x.fillStyle = '#d8b048';
+          x.beginPath();
+          x.moveTo(CX - HEAD_R * 0.66, capY + HEAD_R * 0.16);
+          x.lineTo(CX - HEAD_R * 0.52, capY - HEAD_R * 0.60);
+          x.quadraticCurveTo(CX, capY - HEAD_R * 1.02, CX + HEAD_R * 0.52, capY - HEAD_R * 0.60);
+          x.lineTo(CX + HEAD_R * 0.66, capY + HEAD_R * 0.16);
+          x.closePath(); x.fill();
+          x.fillStyle = '#f0d488';
+          x.fillRect(CX - HEAD_R * 0.70, capY + HEAD_R * 0.10, HEAD_R * 1.40, HEAD_R * 0.16);
+          // the lemnisci, the mitre's two ribbons, falling behind the ears
+          x.strokeStyle = '#c8324a'; x.lineWidth = HEAD_R * 0.09; x.lineCap = 'round';
+          for (const sx of [-1, 1]) {
+            x.beginPath();
+            x.moveTo(CX + sx * HEAD_R * 0.62, capY + HEAD_R * 0.22);
+            x.quadraticCurveTo(CX + sx * HEAD_R * 0.86, shY + HEAD_R * 0.5,
+                               CX + sx * HEAD_R * 0.74, shY + HEAD_R * 1.5);
+            x.stroke();
+          }
+        }
+        // the jewel that conjoins the veils
+        x.fillStyle = rank === 'mitre' ? '#8fd0c0' : '#1e3f96';
+        x.beginPath(); x.arc(CX, capY - HEAD_R * 0.10, HEAD_R * 0.10, 0, 7); x.fill();
+        x.strokeStyle = '#d8b048'; x.lineWidth = HEAD_R * 0.035;
+        x.beginPath(); x.arc(CX, capY - HEAD_R * 0.10, HEAD_R * 0.13, 0, 7); x.stroke();
       } else if (rank === 'bishop') {
         // the "taciturnulo o vero secretario": a flat scholar's cap, and the
         // sealed letter she carries and does not read out.
@@ -1157,6 +1208,29 @@ export function makeCast(S) {
         const plume = add(g, mesh(new THREE.CapsuleGeometry(0.021 * h, 0.13 * h, 4, 7),
           M(0xb23a3a, { roughness: 0.85 }), 0, CAP + 0.11 * h, -0.05 * h));
         plume.rotation.x = -0.55;
+      } else if (rank === 'mitre' || rank === 'tutulus') {
+        // the tutulus, the veil over it, and — for the Antistita alone — the
+        // mitre and its two ribbons. See paintedFigureTexture for the text.
+        const capM = M(0xe8dcc0, { roughness: 0.8 });
+        add(g, mesh(new THREE.ConeGeometry(0.088 * h, 0.13 * h, 12), capM, 0, CAP + 0.03 * h, 0));
+        const veil = add(g, mesh(new THREE.PlaneGeometry(0.30 * h, 0.50 * h),
+          new THREE.MeshStandardMaterial({ color: 0xfcfaf4, roughness: 0.92,
+            transparent: true, opacity: 0.44, side: THREE.DoubleSide }),
+          0, CAP - 0.22 * h, -0.11 * h));
+        veil.rotation.x = -0.10;
+        if (rank === 'mitre') {
+          const mit = add(g, mesh(new THREE.CylinderGeometry(0.070 * h, 0.104 * h, 0.15 * h, 12),
+            M(0xd8b048, { metalness: 0.8, roughness: 0.3 }), 0, CAP + 0.055 * h, 0));
+          void mit;
+          for (const sx of [-1, 1]) {
+            const rib = add(g, mesh(new THREE.BoxGeometry(0.016 * h, 0.22 * h, 0.008 * h),
+              M(0xc8324a, { roughness: 0.85 }), sx * 0.088 * h, CAP - 0.10 * h, -0.02 * h));
+            rib.rotation.z = sx * 0.10;
+          }
+        }
+        add(g, mesh(new THREE.SphereGeometry(0.020 * h, 8, 7),
+          M(rank === 'mitre' ? 0x8fd0c0 : 0x1e3f96, { roughness: 0.2, metalness: 0.3 }),
+          0, CAP - 0.005 * h, 0.086 * h));
       } else if (rank === 'bishop') {
         // the "taciturnulo o vero secretario" — a flat scholar's cap, and the
         // sealed letter she carries and does not read out

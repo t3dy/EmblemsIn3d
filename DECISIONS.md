@@ -2,6 +2,37 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — The Temple of Venus, and the walker has no floor height
+
+Fifteen plates (#71–#85) and no geometry: the largest documented absence in the world, and
+the one the queue named twice. Built at **(-30, -21)**, west of the grove with the sea and
+Cythera behind it, entirely from **our own translation** of chapters XVII–XVIII
+(`translation/en/page_209.md`–`page_217.md`, CC0). Godwin is in copyright, is not in the
+corpus, and was not consulted.
+
+The station is `venus_temple`, discoverable rather than on the digit row (the row is full),
+and the two tour stops for chapters XVII and XVIII moved onto it from `fountain`, where
+they had been staged for want of anywhere better.
+
+**A constraint worth writing down: the walker has no floor height.** It walks the world at
+y = 0 with a fixed 1.7 eye, so a podium is scenery, not ground. The temple first got seven
+proper 17cm steps — and the interior floor then sat 1.19 above the dreamer's feet, leaving
+him chest-deep in his own temple and every figure in it sunk to the shoulders. The seven
+steps are still seven, because the book says seven, but each is 6cm: a crepidoma read from
+outside rather than a stair climbed. **Every raised thing in this world has to stay under
+about half a metre until the walker gains a floor.** The chess stylobate is 0.43 for the
+same reason.
+
+Two other things learned by looking rather than by reasoning:
+
+- **White marble blows out under this key light.** The first interior was a white void with
+  coloured saucers on the floor. The pavement is not white anyway — the book bands it in
+  porphyry and ophite — so the field went to warm stone, the marble dropped to 0xd6cdb6,
+  and the roundels became flush inlay at 0.36 rather than 0.52 dinner-plates.
+- **A doorcase needs its returns.** The door bay is 4.7 wide and the case 3.6; without two
+  short walls flanking it the case stood in the middle of a hole and read as a red screen
+  parked in front of the building.
+
 ## 2026-09-05 — The chess pieces wear the book's costumes, not Russell's (Ted)
 
 Ted: *"the players in the human chess board should be wearing costumes that make them look
