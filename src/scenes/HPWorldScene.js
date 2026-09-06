@@ -2916,9 +2916,13 @@ export class HPWorldScene {
     // The costumes, named in the book's own words on the south kerb, so a
     // reader who has just watched a turret walk two squares can find out what
     // she is looking at. Dallington's English is the gloss under each.
+    // Low, on the OUTER FACE of the kerb, so it reads as an inscription cut in
+    // the step. Hung at eye height and three metres wide it walled the whole
+    // south rank off — which is the mistake the note on the north plaque below
+    // already warns about, made again ten lines later.
     this._plaque({ main: 'HABITO REGALE · VESTITO DI REGINA',
                    sub: 'CVSTODI DELLA ROCHA · TACITVRNVLI O VERO SECRETARII · EQVITI · ET OCTO VNIFORME' },
-      3.4, 0.42, CX, 0.92, CZ - B / 2 - 1.05, Math.PI, true);
+      2.6, 0.32, CX, 0.55, CZ - B / 2 - 0.76, Math.PI, true);
     // On the north kerb, low and small enough to read over rather than through:
     // a banner at eye height in front of a board is a wall.
     this._plaque({ main: 'CHOREA ELEGANTISSIMA', sub: 'THE HUMAN CHESS MATCH · f.111 · XXXII MAIDENS, XVI SILVER, XVI GOLD' },
