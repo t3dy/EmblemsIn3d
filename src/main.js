@@ -83,7 +83,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '30'; // bump when data files are re-exported
+  const V = '31'; // bump when data files are re-exported
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   setProgress(50, 'Preparing the world…');

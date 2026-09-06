@@ -99,7 +99,10 @@ what this file and `ARCHITECTURE.md` used to say.
 
 ### 5. The marginalia not yet used
 `hp.db` holds 282 annotations and 15 hands; this session used Buffalo A, B, D and E and
-Chigi. Untouched:
+Chigi. **2026-09-06: Siena, Sydney, Como, Modena and Jonson are now all in the tour** — nine
+notes across the Dark Wood, the Horse, the Dragon, the Portal, Logistica, Priapus, the
+crossing, Book II's opening and its binding. Every hand in the census has now been heard from.
+What follows is the record of what each copy is, kept for the next reader:
 
 - **Siena O.III.38** — four hands, whose *line extensions* continue printed sentences as if
   from knowledge of the text before it was printed. Fumagalli thought them Dominican, close
