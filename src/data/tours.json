@@ -572,7 +572,7 @@
         "title": "The Human Chess Match",
         "chapter": "XI",
         "half": "dallington",
-        "lede": "After the banquet the queen has her nymphs dance a game of chess. Thirty-two maidens take the squares of a chequered pavement — sixteen in silver, sixteen in gold — and move to music through **three rounds**; when one piece takes another the two kiss before the taken one leaves the board. The 1499 gives this scene no woodcut at all: the most theatrical passage in the book is the one the printer did not illustrate. What survives instead is what its readers wrote in the margins beside it, and they wrote more here than almost anywhere else.",
+        "lede": "After the banquet the queen has her nymphs dance a game of chess. Thirty-two maidens take the squares of a chequered pavement — sixteen in cloth of silver, sixteen in cloth of gold, each dressed as the office she plays — and move to music through **three rounds**; when one piece takes another the two kiss before the taken one leaves the board. The 1499 gives this scene no woodcut at all: the most theatrical passage in the book is the one the printer did not illustrate. What survives instead is what its readers wrote in the margins beside it, and they wrote more here than almost anywhere else.",
         "wc": [],
         "see": [
           "The Winged Horse of Unhappiness",
@@ -585,12 +585,24 @@
             "text": "This is the scene the annotators cared about. In the **Buffalo copy** (Buffalo & Erie County Public Library, 1499 — the most densely annotated copy in James Russell's census, five interleaved hands) and in **Fabio Chigi's Vatican copy** the same three pages carry more marginalia than the great architectural set-pieces do. The dance beat the buildings."
           },
           {
+            "type": "quotation",
+            "text": "**What they are wearing is in the text, rank by rank.** The 1499 lets no one on the board without saying how she is dressed: thirty-two maidens enter, of whom *sedeci erano di panno aureo (ma octo uniforme) vestite* — sixteen in **cloth of gold, but eight of those uniform**, without difference of degree. The other eight are named one at a time: one *di habito regale*, one *in vestito di regina*, *dui custodi della rocha o vero arce* — **two keepers of the rock, or citadel** — *dui taciturnuli o vero secretarii*, **two little silent ones, or secretaries**, and *dui equiti*, **two horsemen**. Sixteen more in cloth of silver, *cum il magistrato medesimo*, under the same magistracy. So each of the thirty-two here wears her own office: the rook keeps a turret, the knight a rider's barred helm and plume, the eight pawns the garland and nothing else."
+          },
+          {
+            "type": "gloss",
+            "text": "**There is no bishop in the *Hypnerotomachia*.** Dallington, Englishing the book in 1592, is scrupulous about this: “two tower-keepers or Rookes, **as wee tearme them**, two counsell-keepers or Secretaries, **wee tearme them Bishoppes**.” The chessmen we know are his translation of them, not Colonna's figures. The third rank in this world therefore wears a clerk's flat cap and carries a sealed letter — a *taciturnulo*, a silent one, who moves on the diagonal and says nothing."
+          },
+          {
+            "type": "literary",
+            "text": "And the uniform all thirty-two share comes from the second round, when the dance speeds up and the book stops describing rules and starts describing bodies: the maidens go *cum le sue copiose trece sopra le delicate spalle effuse* — their plentiful tresses loose over their delicate shoulders, streaming behind them as they move — *nel capo innexe cum corolla di olente viole*, their heads bound with a garland of sweet-smelling violets. Every figure on this board wears that garland. It is the only thing the eight uniform ones are given, and it is the reason you can tell a pawn from a musician."
+          },
+          {
             "type": "alchemical",
             "text": "Buffalo **Hand E**, an alchemist of the pseudo-Geber school, read the match as three rounds of distillation and recorded each result. Round one, silver: *Argentum*, with a crescent moon drawn beside it, and *Rex ex argento factus victor remanet* — 'the king made out of silver remains victor.' Round two, silver again. Round three, gold at last — and there his hand falters: he writes *Rex ex auro factus victoriam ultimam… triumphat*, then revises *Rex* to *Regina*, *auro* to *aura*, *factus* to *☉ uestita*, *victor* to *victrix* — then cancels the queen and closes simply with *Aurum*. (Russell, 2014, pp. 189–190.)"
           },
           {
             "type": "allegory",
-            "text": "**The inversion is the point.** The book dresses the *queen* of both sides in gold and the *king* of both sides in silver. In Hand E's system that is the wrong way round — Sol is gold and masculine — so he read the whole match as the correction of it: a king made out of silver wins twice, and only at the third playing does gold come out on top. Refinement is iterative; the highest element wins last, after repeated distillations."
+            "text": "**The inversion, and who says so.** James Russell reports that although one side wears silver and the other gold, *“the queen piece of both sides ... is dressed in gold (‘vesta d’or’), and the king of both in silver”* — which is the inverse of the Geberian ideal, where Sol is gold and masculine, and which is exactly why Hand E could read the whole match as the correction of it (2014, p. 188). **But neither phrase he quotes is in the printed text.** The 1499 says the sixteen in cloth of gold stand on one side and the sixteen in silver opposite, and that both the king *di habito regale* and the queen *in vestito di regina* are drawn from *quelle sedeci vestite di oro* — from among those same sixteen. So the words are most likely the annotator's own, for what he saw. This world dresses each side in one cloth, because that is what the book says, and keeps the inversion where a reading belongs: on the plaques and in this note."
           },
           {
             "type": "literary",

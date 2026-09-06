@@ -2,6 +2,49 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — The chess pieces wear the book's costumes, not Russell's (Ted)
+
+Ted: *"the players in the human chess board should be wearing costumes that make them look
+like chess pieces, or whatever the text of the HP says they look like."* The text says,
+rank by rank, so the text won.
+
+**The costumes, f. g8r.** *"Sedeci erano di panno aureo (ma octo uniforme) vestite"* —
+sixteen in cloth of gold, **but eight of those uniform**, without difference of degree. The
+ranked eight are each named: one *di habito regale*, one *in vestito di regina*, *dui
+custodi della rocha o vero arce* (two keepers of the rock, or citadel), *dui taciturnuli o
+vero secretarii* (two little silent ones, or secretaries), *dui equiti* (two horsemen).
+Sixteen more in cloth of silver, *cum il magistrato medesimo*. Every one of the thirty-two
+now wears her office: a turret, a barred helm and plume, a clerk's cap and a sealed letter,
+two crowns — and for the eight uniform ones, the garland and nothing else.
+
+**No mitres.** Dallington 1592 is careful where the English chessman is his and not
+Colonna's: *"two tower-keepers or Rookes, **as wee tearme them**, two counsell-keepers or
+Secretaries, **wee tearme them Bishoppes**."* There is no bishop in the *Hypnerotomachia*.
+The third rank is a silent secretary who moves on the diagonal, and is dressed as one.
+
+**The uniform of all thirty-two**, from the second round: *"cum le sue copiose trece sopra
+le delicate spalle effuse ... nel capo innexe cum corolla di olente viole"* — tresses loose
+over the shoulders, heads bound with a garland of sweet-smelling violets. Both are painted
+on every piece, and the garland is the only mark a pawn carries.
+
+**And the livery is now by side, reversing this session's earlier call.** The first build
+dressed *both* queens in gold and *both* kings in silver, on Russell's report that "the
+queen piece of both sides ... is dressed in gold ('vesta d'or'), and the king of both in
+silver" (2014, p. 188) — the inversion that lets Hand E read the match as the correction of
+the Geberian ideal. **Neither phrase Russell quotes occurs in the printed text.** The 1499
+puts the sixteen gold opposite the sixteen silver, and draws both crowned figures from
+*quelle sedeci vestite di oro*, the same sixteen. So the quoted words are almost certainly
+the annotator's own, for what he saw — and putting a scholar's gloss on the book's body is
+backwards. Each side wears one cloth; the inversion is stated as Russell's claim, on the
+plaques and in the tour note, where a reading belongs. **Rule 2 cuts both ways: cite, don't
+invent — and don't promote a citation to a fact of the text when the text is on the shelf.**
+
+**Where the work went.** `Cast.paintedFigureTexture({ rank })` paints the costume into the
+card (the default figure variant, so this is what a walker sees) and `Cast.nymph({ rank })`
+builds it for the assembled rungs. `panno aureo` also gets a brocade diaper, since cloth of
+gold is woven through with metal thread and that is why the book names the cloth and not
+the colour — it is also what finally separates the two sides across a nine-metre board.
+
 ## 2026-09-05 — The Human Chess Match, built from the margins (Ted)
 
 Ted: *"we need to do the human chess match which the annotators to the buffalo copy of HP

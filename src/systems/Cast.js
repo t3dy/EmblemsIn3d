@@ -419,8 +419,8 @@ export function makeCast(S) {
   // tempera drapery is drawn: a dark core and a lit ridge, few and long.
   const _figCards = new Map();
   function paintedFigureTexture({ robe = 0xb8a0c8, hair = 0x4a3018, skin = 0xe6cdae,
-                                  gowned = true, mirrored = false } = {}) {
-    const key = [robe, hair, skin, gowned, mirrored].join('_');
+                                  gowned = true, mirrored = false, rank = null } = {}) {
+    const key = [robe, hair, skin, gowned, mirrored, rank].join('_');
     if (_figCards.has(key)) return _figCards.get(key);
     const W = 384, H = 768;
     const c = document.createElement('canvas');
@@ -441,6 +441,13 @@ export function makeCast(S) {
     const shY    = chinY + HEAD_R * 0.62;
     const waistY = shY + HEAD_R * 2.5;
     const hemY   = H - HEAD_R * 0.30;
+
+    // A ranked chess piece wears something on her head and the card has no room
+    // above the crown for it. So a livery figure is drawn a tenth smaller and
+    // dropped, which buys ~80px of headroom. EVERY one of the thirty-two takes
+    // the same transform, ranked or not, or the eight uniform pawns would stand
+    // taller than their own king.
+    if (rank) { x.translate(CX, H * 0.112); x.scale(0.893, 0.893); x.translate(-CX, 0); }
 
     // ── the gown: silhouette first, then the folds painted into it ──
     // A 3.7x flare from shoulder to hem read as a bell. Renaissance gowns fall
@@ -483,6 +490,24 @@ export function makeCast(S) {
       x.fillStyle = fg; x.globalAlpha = 0.85; x.fill();
     }
     x.globalAlpha = 1;
+    // "panno aureo" and "panno argenteo" — cloth of gold and cloth of silver
+    // are woven THROUGH with metal thread, which is why the book names the
+    // cloth and not the colour. A diaper of small highlights, the way a
+    // quattrocento painter renders brocade, and the two sides separate across
+    // the width of the board at last.
+    if (rank) {
+      x.fillStyle = lighten(robe, 0.52); x.globalAlpha = 0.34;
+      const step = HEAD_R * 0.44;
+      let row = 0;
+      for (let ry = shY; ry < hemY + step; ry += step, row++) {
+        for (let rx = CX - hemW - step; rx < CX + hemW + step; rx += step) {
+          x.beginPath();
+          x.arc(rx + (row % 2) * step * 0.5, ry, HEAD_R * 0.052, 0, 7);
+          x.fill();
+        }
+      }
+      x.globalAlpha = 1;
+    }
     // the shadow the body throws down the inside of the gown
     const core = x.createLinearGradient(0, shY, 0, hemY);
     core.addColorStop(0, css(0x000000, 0.16)); core.addColorStop(0.5, css(0x000000, 0.0));
@@ -600,6 +625,167 @@ export function makeCast(S) {
     x.strokeStyle = css(0xe0d2ae, 0.9); x.lineWidth = HEAD_R * 0.055;
     x.beginPath(); x.ellipse(CX, headY - HEAD_R * 0.36, HEAD_R * 0.76, HEAD_R * 0.30, 0, Math.PI * 1.05, Math.PI * 1.95); x.stroke();
 
+    // ── The chess liveries ─────────────────────────────
+    //
+    // 1499, f. g8r, in the book's own words: thirty-two maidens enter, of whom
+    // "sedeci erano di panno aureo (ma octo uniforme) vestite" — sixteen in
+    // cloth of gold, but EIGHT of those uniform, without difference of degree.
+    // The other eight are ranked, and the text names each costume:
+    //
+    //   · "di habito regale"          — in royal habit             (king)
+    //   · "in vestito di regina"      — in the dress of a queen    (queen)
+    //   · "dui custodi della rocha    — two keepers of the rock,
+    //      o vero arce"                   or citadel                (rook)
+    //   · "dui taciturnuli o vero     — two little silent ones,
+    //      secretarii"                    or secretaries            (bishop)
+    //   · "dui equiti"                — two horsemen              (knight)
+    //
+    // Dallington's 1592 English keeps every one of them, and is careful to mark
+    // where the English chess name differs from the book's: "two tower-keepers
+    // or Rookes, as wee tearme them, two counsell-keepers or Secretaries, wee
+    // tearme them Bishoppes". So the third rank wears a secretary's flat cap
+    // and carries a sealed letter. NOT a mitre: there is no bishop in the
+    // Hypnerotomachia, only a silent clerk who moves on the diagonal.
+    //
+    // And the uniform of all thirty-two, from the second round: the maidens go
+    // "cum le sue copiose trece sopra le delicate spalle effuse" — tresses
+    // loose over their shoulders — and "nel capo innexe cum corolla di olente
+    // viole", their heads bound with a garland of sweet-smelling violets.
+    if (rank) {
+      const trimL = lighten(robe, 0.58), trimD = darken(robe, 0.34);
+      const capY = headY - HEAD_R * 0.92;          // the top of the hair mass
+      const brow = headY - HEAD_R * 0.34;
+
+      // The loose tresses. A LOCK either side, swept outward over the point
+      // of the shoulder — drawn as a broad panel it covered the neckline and
+      // the whole chest, which is a stole, not hair.
+      // A lock TAPERS. Stroked at an even width it read as a rope laid over
+      // the chest, so it is a filled path: broad where it leaves the temple,
+      // drawn to a point at the tip, and carried out over the shoulder rather
+      // than down the front of the gown.
+      for (const sx of [-1, 1]) {
+        const x0 = CX + sx * HEAD_R * 0.52, y0 = headY - HEAD_R * 0.06;
+        const x1 = CX + sx * HEAD_R * 1.00, y1 = shY + HEAD_R * 1.62;
+        x.fillStyle = darken(hair, 0.04);
+        x.beginPath();
+        x.moveTo(x0 - sx * HEAD_R * 0.13, y0);
+        x.quadraticCurveTo(CX + sx * HEAD_R * 0.72, shY + HEAD_R * 0.28, x1, y1);
+        x.quadraticCurveTo(CX + sx * HEAD_R * 1.02, shY + HEAD_R * 0.30,
+                           x0 + sx * HEAD_R * 0.19, y0);
+        x.closePath(); x.fill();
+        x.strokeStyle = lighten(hair, 0.22); x.lineWidth = HEAD_R * 0.038;
+        x.beginPath();
+        x.moveTo(x0 + sx * HEAD_R * 0.02, y0 + HEAD_R * 0.10);
+        x.quadraticCurveTo(CX + sx * HEAD_R * 0.82, shY + HEAD_R * 0.30,
+                           x1 - sx * HEAD_R * 0.04, y1 - HEAD_R * 0.20);
+        x.stroke();
+      }
+
+      // the garland of violets, on every head
+      for (let i = 0; i <= 14; i++) {
+        const a = Math.PI * (1.03 + (0.94 * i) / 14);
+        const gx = CX + Math.cos(a) * HEAD_R * 0.80;
+        const gy = brow + Math.sin(a) * HEAD_R * 0.34 + HEAD_R * 0.02;
+        x.fillStyle = i % 3 === 0 ? '#3f7a3a' : (i % 2 ? '#7a5bb8' : '#553a94');
+        x.beginPath(); x.arc(gx, gy, HEAD_R * 0.062, 0, 7); x.fill();
+      }
+
+      if (rank === 'king' || rank === 'queen') {
+        // the crown: a band, and points above it. The king's are five and rise
+        // higher; the queen's are three fleurons, and she wears a veil.
+        if (rank === 'queen') {
+          x.fillStyle = 'rgba(255,255,255,0.30)';
+          x.beginPath();
+          x.moveTo(CX - HEAD_R * 0.80, capY + HEAD_R * 0.30);
+          x.quadraticCurveTo(CX - HEAD_R * 1.34, shY + HEAD_R * 1.6, CX - HEAD_R * 1.02, shY + HEAD_R * 2.6);
+          x.lineTo(CX + HEAD_R * 1.02, shY + HEAD_R * 2.6);
+          x.quadraticCurveTo(CX + HEAD_R * 1.34, shY + HEAD_R * 1.6, CX + HEAD_R * 0.80, capY + HEAD_R * 0.30);
+          x.closePath(); x.fill();
+        }
+        const pts = rank === 'king' ? 5 : 3;
+        const hgt = rank === 'king' ? HEAD_R * 0.62 : HEAD_R * 0.40;
+        x.fillStyle = trimL;
+        x.beginPath(); x.roundRect(CX - HEAD_R * 0.66, capY - HEAD_R * 0.18, HEAD_R * 1.32, HEAD_R * 0.26, HEAD_R * 0.06); x.fill();
+        for (let i = 0; i < pts; i++) {
+          const px = CX + (i / (pts - 1) - 0.5) * HEAD_R * 1.16;
+          x.beginPath();
+          x.moveTo(px - HEAD_R * 0.11, capY - HEAD_R * 0.16);
+          x.lineTo(px, capY - HEAD_R * 0.16 - hgt);
+          x.lineTo(px + HEAD_R * 0.11, capY - HEAD_R * 0.16);
+          x.closePath(); x.fill();
+          x.beginPath(); x.arc(px, capY - HEAD_R * 0.20 - hgt, HEAD_R * 0.075, 0, 7); x.fill();
+        }
+        x.fillStyle = trimD;
+        x.fillRect(CX - HEAD_R * 0.66, capY + HEAD_R * 0.02, HEAD_R * 1.32, HEAD_R * 0.05);
+      } else if (rank === 'rook') {
+        // "custode della rocha o vero arce" — she keeps the citadel, so she
+        // wears it: a crenellated turret, four merlons and three embrasures.
+        const tw = HEAD_R * 1.06, th = HEAD_R * 0.74;
+        x.fillStyle = trimL;
+        x.fillRect(CX - tw / 2, capY - th, tw, th);
+        x.fillStyle = trimD;
+        for (let i = 0; i < 3; i++) {
+          x.fillRect(CX - tw / 2 + tw * (0.19 + i * 0.235), capY - th, tw * 0.115, th * 0.42);
+        }
+        x.fillRect(CX - tw / 2, capY - th * 0.40, tw, HEAD_R * 0.055);
+        x.fillStyle = trimL;
+        x.fillRect(CX - tw * 0.60, capY - th * 0.16, tw * 1.20, HEAD_R * 0.10);
+      } else if (rank === 'knight') {
+        // "equite" — a horseman. A close helm with the visor barred, and a
+        // plume, which is what a rider wears; the horse's head is the modern
+        // piece and is nowhere in the book.
+        x.fillStyle = trimL;
+        x.beginPath();
+        x.ellipse(CX, capY - HEAD_R * 0.02, HEAD_R * 0.72, HEAD_R * 0.50, 0, Math.PI, 2 * Math.PI);
+        x.fill();
+        x.fillRect(CX - HEAD_R * 0.72, capY - HEAD_R * 0.04, HEAD_R * 1.44, HEAD_R * 0.16);
+        x.fillStyle = trimD;
+        for (let i = 0; i < 3; i++) {
+          x.fillRect(CX - HEAD_R * 0.40, capY - HEAD_R * 0.34 + i * HEAD_R * 0.13, HEAD_R * 0.80, HEAD_R * 0.05);
+        }
+        x.fillStyle = '#b23a3a';
+        x.beginPath();
+        x.moveTo(CX - HEAD_R * 0.10, capY - HEAD_R * 0.46);
+        x.quadraticCurveTo(CX + HEAD_R * 0.30, capY - HEAD_R * 1.30, CX + HEAD_R * 0.92, capY - HEAD_R * 1.10);
+        x.quadraticCurveTo(CX + HEAD_R * 0.34, capY - HEAD_R * 0.92, CX + HEAD_R * 0.14, capY - HEAD_R * 0.40);
+        x.closePath(); x.fill();
+      } else if (rank === 'bishop') {
+        // the "taciturnulo o vero secretario": a flat scholar's cap, and the
+        // sealed letter she carries and does not read out.
+        // A CLOTH cap, not a metal one — a clerk's, in the dark stuff a
+        // secretary wears, so it separates from both liveries and from the
+        // hair. A soft crown gathered under a flat top.
+        const CAPC = '#2a2233';
+        x.fillStyle = CAPC;
+        x.beginPath();
+        x.ellipse(CX, capY - HEAD_R * 0.02, HEAD_R * 0.52, HEAD_R * 0.34, 0, Math.PI, 2 * Math.PI);
+        x.fill();
+        x.fillRect(CX - HEAD_R * 0.52, capY - HEAD_R * 0.04, HEAD_R * 1.04, HEAD_R * 0.22);
+        x.beginPath();
+        x.roundRect(CX - HEAD_R * 0.66, capY - HEAD_R * 0.44, HEAD_R * 1.32, HEAD_R * 0.14, HEAD_R * 0.06);
+        x.fill();
+        x.fillStyle = trimL;                       // the livery cord round it
+        x.fillRect(CX - HEAD_R * 0.52, capY + HEAD_R * 0.10, HEAD_R * 1.04, HEAD_R * 0.06);
+        // the letter, in the right hand
+        const hX = CX + shW * 0.92 * 0.94, hY = shY + HEAD_R * 2.52;
+        x.save();
+        x.translate(hX, hY + HEAD_R * 0.10); x.rotate(-0.34);
+        x.fillStyle = '#efe6cd';
+        x.fillRect(-HEAD_R * 0.28, -HEAD_R * 0.34, HEAD_R * 0.56, HEAD_R * 0.80);
+        x.strokeStyle = '#b6a37c'; x.lineWidth = HEAD_R * 0.03;
+        x.strokeRect(-HEAD_R * 0.28, -HEAD_R * 0.34, HEAD_R * 0.56, HEAD_R * 0.80);
+        x.fillStyle = '#c8b48a';
+        for (let i = 0; i < 3; i++) {
+          x.fillRect(-HEAD_R * 0.19, -HEAD_R * 0.22 + i * HEAD_R * 0.13, HEAD_R * 0.38, HEAD_R * 0.035);
+        }
+        x.fillStyle = '#a03028';
+        x.beginPath(); x.arc(0, HEAD_R * 0.28, HEAD_R * 0.10, 0, 7); x.fill();
+        x.restore();
+      }
+      // rank === 'pawn' wears the garland and nothing else: "octo uniforme",
+      // eight uniform, without difference of degrees.
+    }
+
     if (mirrored) {                          // a second, flipped painting for variety
       const c2 = document.createElement('canvas');
       c2.width = W; c2.height = H;
@@ -654,10 +840,10 @@ export function makeCast(S) {
   }
 
   function paintedFigure({ h = 0.95, robe = 0xb8a0c8, hair = 0x4a3018, mirrored = false,
-                           cutout = null } = {}) {
+                           cutout = null, rank = null } = {}) {
     const g = new THREE.Group();
     const tex = cutout ? cutoutTexture(cutout)
-                       : paintedFigureTexture({ robe, hair, skin: SKIN, mirrored });
+                       : paintedFigureTexture({ robe, hair, skin: SKIN, mirrored, rank });
     const mat = new THREE.MeshBasicMaterial({
       map: tex, transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
       toneMapped: true,
@@ -811,12 +997,12 @@ export function makeCast(S) {
   // same and the two sides became indistinguishable.
   function nymph({ name = '', robe = 0xb8a0c8, h = 0.95, pose = 'stand',
                    attribute = null, hair = 0x4a3018, crowned = false, winged = false,
-                   cutout = undefined } = {}) {
+                   cutout = undefined, rank = null } = {}) {
     // The painted rung hands back a card instead of an assembly (see
     // paintedFigure). Seeded off the name so a row of nymphs is not the same
     // painting repeated.
     if (lit && figVariant() === 'card') {
-      return paintedFigure({ h, robe, hair,
+      return paintedFigure({ h, robe, hair, rank,
         cutout: cutout === null ? null : pickCutout(name, false) });
     }
     const g = new THREE.Group();
@@ -886,6 +1072,84 @@ export function makeCast(S) {
       cr.rotation.x = Math.PI / 2.3;
     }
 
+
+    // ── The chess liveries, built ─────────────────────────────
+    // The same six costumes the painted card carries, for the assembled rungs.
+    // Their warrant is set out in full above paintedFigureTexture's `rank`
+    // block: the book names every one of them on f. g8r.
+    if (rank) {
+      const trimM = M(0xffd24a, { metalness: 0.85, roughness: 0.25 });
+      const liveryM = M(robe, { metalness: 0.7, roughness: 0.3 });
+      const CAP = 1.660 * h;                       // just clear of the hair mass
+
+      // "corolla di olente viole" — the garland of violets every one of the
+      // thirty-two wears, ranked or uniform.
+      const violetM = M(0x6a4aa8, { roughness: 0.8 });
+      const leafM = M(0x3f7a3a, { roughness: 0.9 });
+      for (let i = 0; i < 11; i++) {
+        const a = Math.PI * (0.08 + (0.84 * i) / 10);
+        const bud = add(g, mesh(new THREE.SphereGeometry(0.017 * h, 6, 5),
+          i % 3 === 0 ? leafM : violetM,
+          Math.cos(a) * 0.104 * h, 1.606 * h, Math.sin(a) * 0.104 * h - 0.008 * h));
+        bud.scale.set(1, 0.8, 1);
+      }
+
+      if (rank === 'king' || rank === 'queen') {
+        const pts = rank === 'king' ? 5 : 3;
+        const hgt = (rank === 'king' ? 0.085 : 0.055) * h;
+        const band = add(g, mesh(new THREE.CylinderGeometry(0.101 * h, 0.104 * h, 0.036 * h, 14, 1, true),
+          trimM, 0, CAP));
+        band.material.side = THREE.DoubleSide;
+        for (let i = 0; i < pts; i++) {
+          const a = -Math.PI * 0.42 + (Math.PI * 0.84 * i) / (pts - 1);
+          const px = Math.sin(a) * 0.100 * h, pz = Math.cos(a) * 0.100 * h;
+          add(g, mesh(new THREE.ConeGeometry(0.020 * h, hgt, 5), trimM, px, CAP + hgt / 2 + 0.014 * h, pz));
+          add(g, mesh(new THREE.SphereGeometry(0.013 * h, 6, 5), trimM, px, CAP + hgt + 0.026 * h, pz));
+        }
+        if (rank === 'queen') {
+          // the veil, hanging behind from the coronet
+          const veil = add(g, mesh(new THREE.PlaneGeometry(0.26 * h, 0.44 * h),
+            new THREE.MeshStandardMaterial({ color: 0xf2ecdc, roughness: 0.9,
+              transparent: true, opacity: 0.42, side: THREE.DoubleSide }),
+            0, CAP - 0.20 * h, -0.10 * h));
+          veil.rotation.x = -0.12;
+        }
+      } else if (rank === 'rook') {
+        // the citadel she keeps, worn: a turret with four merlons
+        add(g, mesh(new THREE.CylinderGeometry(0.098 * h, 0.108 * h, 0.10 * h, 12), liveryM, 0, CAP + 0.05 * h));
+        for (let i = 0; i < 4; i++) {
+          const a = (Math.PI * 2 * i) / 4 + Math.PI / 4;
+          add(g, mesh(new THREE.BoxGeometry(0.042 * h, 0.048 * h, 0.042 * h), liveryM,
+            Math.sin(a) * 0.072 * h, CAP + 0.124 * h, Math.cos(a) * 0.072 * h)).rotation.y = -a;
+        }
+        add(g, mesh(new THREE.TorusGeometry(0.104 * h, 0.008 * h, 6, 16), trimM, 0, CAP + 0.006 * h))
+          .rotation.x = Math.PI / 2;
+      } else if (rank === 'knight') {
+        // a rider's close helm and a plume — not a horse's head, which is the
+        // modern piece and is nowhere in the book
+        const helm = add(g, mesh(new THREE.SphereGeometry(0.108 * h, 12, 10, 0, Math.PI * 2, 0, Math.PI * 0.62),
+          liveryM, 0, CAP - 0.036 * h));
+        helm.scale.set(1, 1.18, 1.06);
+        add(g, mesh(new THREE.BoxGeometry(0.16 * h, 0.014 * h, 0.05 * h), trimM, 0, CAP - 0.03 * h, 0.086 * h));
+        add(g, mesh(new THREE.BoxGeometry(0.16 * h, 0.014 * h, 0.05 * h), trimM, 0, CAP - 0.056 * h, 0.090 * h));
+        const plume = add(g, mesh(new THREE.CapsuleGeometry(0.021 * h, 0.13 * h, 4, 7),
+          M(0xb23a3a, { roughness: 0.85 }), 0, CAP + 0.11 * h, -0.05 * h));
+        plume.rotation.x = -0.55;
+      } else if (rank === 'bishop') {
+        // the "taciturnulo o vero secretario" — a flat scholar's cap, and the
+        // sealed letter she carries and does not read out
+        add(g, mesh(new THREE.CylinderGeometry(0.086 * h, 0.092 * h, 0.052 * h, 12), liveryM, 0, CAP - 0.006 * h));
+        add(g, mesh(new THREE.BoxGeometry(0.20 * h, 0.012 * h, 0.20 * h), liveryM, 0, CAP + 0.026 * h));
+        const letter = new THREE.Group();
+        const sheet = mesh(new THREE.BoxGeometry(0.052 * h, 0.072 * h, 0.006 * h),
+          M(0xefe6cd, { roughness: 0.95 }), 0, 0, 0);
+        letter.add(sheet);
+        letter.add(mesh(new THREE.SphereGeometry(0.011 * h, 7, 6), M(0xa03028, { roughness: 0.6 }), 0, -0.014 * h, 0.006 * h));
+        letter.rotation.z = 0.34;
+        parts.letter = letter;
+      }
+    }
+
     parts.armL = makeArm(-1, h, skinMat, robeMat);
     parts.armR = makeArm( 1, h, skinMat, robeMat);
     g.add(parts.armL); g.add(parts.armR);
@@ -905,6 +1169,11 @@ export function makeCast(S) {
         g.add(w);
         if (s < 0) parts.wingL = w; else parts.wingR = w;
       }
+    }
+
+    if (parts.letter) {
+      parts.armR.userData.hand.add(parts.letter);
+      parts.letter.position.set(0, -0.03 * h, 0.02 * h);
     }
 
     if (attribute && attributes[attribute]) {

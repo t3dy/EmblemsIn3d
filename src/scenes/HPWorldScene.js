@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=36';
+import { makeCast } from '../systems/Cast.js?v=37';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -2810,9 +2810,28 @@ export class HPWorldScene {
     this._circleCol(QX, CZ, 1.8);
 
     // ── the pieces ─────────────────────────────────────────────────────
-    // Sixteen a side. The liveries follow the book, INCLUDING its inversion:
-    // both queens in gold, both kings in silver.
-    // The two liveries have to be told apart across a nine-metre board in a
+    //
+    // Sixteen a side, and each of the thirty-two wears what the 1499 says she
+    // wears. The costumes are built in Cast.paintedFigureTexture, where the
+    // Italian and Dallington's English for each rank are set out in full.
+    //
+    // THE LIVERIES FOLLOW THE PRINTED TEXT. f. g8r: "sedeci vestite d'oro da
+    // una parte et sedeci d'argento dal'altra opposite" — sixteen dressed in
+    // gold on one side and sixteen in silver on the other, facing; and the
+    // king and queen alike are drawn from "quelle sedeci vestite di oro", from
+    // among those same sixteen. Each side therefore wears ONE cloth.
+    //
+    // Russell reports the opposite — "the queen piece of both sides ... is
+    // dressed in gold ('vesta d'or'), and the king of both in silver" (2014,
+    // p. 188) — and that inversion is what makes Hand E read the match as the
+    // correction of the Geberian ideal. But neither phrase he quotes occurs in
+    // the printed text, so they are almost certainly the annotator's own words
+    // for what he saw, not Colonna's. An earlier pass here built the inversion
+    // into the gowns; that put a scholar's gloss on the book's body, which is
+    // exactly backwards. The gloss now lives where a gloss belongs: on the
+    // round plaques and in the tour note, which say who claims what.
+    //
+    // The two cloths still have to be told apart across a nine-metre board in a
     // bright garden, so the silver is cooled and the gold deepened until they
     // separate; at the first values both sides read as cream.
     const SILVER = 0xdde6f4, GOLD = 0xc8901c;
@@ -2822,16 +2841,13 @@ export class HPWorldScene {
     const sq = (f, r) => [CX + (f - 3.5) * SQ, CZ + (r - 3.5) * SQ];
 
     const addPiece = (side, kind, f, r) => {
-      // the inversion: a queen wears gold whichever side she plays for, a king
-      // silver — which is the thing Hand E's whole reading turns on
-      const robe = kind === 'queen' ? GOLD
-                 : kind === 'king'  ? SILVER
-                 : side === 'gold'  ? GOLD : SILVER;
       const g = this.cast.nymph({
         name: side + '-' + kind + '-' + f,
-        robe,
+        robe: side === 'gold' ? GOLD : SILVER,
         h: kind === 'king' || kind === 'queen' ? 1.02 : kind === 'pawn' ? 0.9 : 0.95,
-        crowned: kind === 'king' || kind === 'queen',
+        // the costume: royal habit, queen's dress, citadel, secretary, horseman,
+        // or — for the eight "uniforme" — the violet garland and nothing else
+        rank: kind,
         // NOT a painting cut-out, in any variant: a Botticelli figure carries
         // her own colours, and the livery IS the content here (see Cast.nymph).
         cutout: null,
@@ -2897,6 +2913,12 @@ export class HPWorldScene {
       this._plaque(p, 1.55, 0.38, CX - B / 2 - 1.3, 1.15, CZ + (i - 1) * 2.4,
         -Math.PI / 2, true);
     });
+    // The costumes, named in the book's own words on the south kerb, so a
+    // reader who has just watched a turret walk two squares can find out what
+    // she is looking at. Dallington's English is the gloss under each.
+    this._plaque({ main: 'HABITO REGALE · VESTITO DI REGINA',
+                   sub: 'CVSTODI DELLA ROCHA · TACITVRNVLI O VERO SECRETARII · EQVITI · ET OCTO VNIFORME' },
+      3.4, 0.42, CX, 0.92, CZ - B / 2 - 1.05, Math.PI, true);
     // On the north kerb, low and small enough to read over rather than through:
     // a banner at eye height in front of a board is a wall.
     this._plaque({ main: 'CHOREA ELEGANTISSIMA', sub: 'THE HUMAN CHESS MATCH · f.111 · XXXII MAIDENS, XVI SILVER, XVI GOLD' },
