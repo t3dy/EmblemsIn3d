@@ -391,7 +391,16 @@
         "chapter": "IV",
         "half": "dallington",
         "lede": "He comes to a triumphal portal of impossible richness, and reads it like a scholar in a trance: the columns squared to the Vitruvian rule, the frieze crowded with sacrifices, the Egyptian hieroglyphs deciphered sign by sign. It is the book's architectural manifesto, beauty offered as proof. But past the threshold, in the black of the vaults, a dragon starts up — and awe turns in an instant to blind panic as Poliphilo flees deeper into the dark.",
-        "wc": [],
+        "wc": [
+          {
+            "file": "woodcuts/pyramid_1499.jpg",
+            "caption": "The great pyramidic temple with its obelisk — the full-page plate the Buffalo annotators labelled member by member (woodcut 5, f. b2v, the 1499 as scanned in the corpus)"
+          },
+          {
+            "file": "woodcuts/portal_1499.jpg",
+            "caption": "The ancient gate with its medallion busts — the portal itself, entered in chapter V (woodcut 16, f. c?r, p. 38 of the 1499)"
+          }
+        ],
         "see": [
           "The Elephant & Obelisk",
           "Reading the Hieroglyphs"
@@ -759,6 +768,12 @@
           {
             "type": "architecture",
             "text": "Each door is a fully worked portal in its own order and materials — the moral choice built as three rival architectures."
+          }
+        ],
+        "wc": [
+          {
+            "file": "woodcuts/three_doors_1499.jpg",
+            "caption": "Poliphilo at the three gates — THEODOXIA, COSMODOXIA, EROTOTROPHOS — in the rock (woodcut 37, f. h6v, p. 125 of the 1499)"
           }
         ]
       },

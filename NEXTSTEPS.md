@@ -127,8 +127,10 @@ gets ground of its own.
   book's clearest single allegory — are not built; their stops are staged elsewhere.
 - The **Temple of Venus rite** (ch. XVIII): the temple and the cistern-rite of ch. XVII are
   built; the sacrifice of ch. XVIII (#78–#83) and the miracle of the roses (#84) are not.
-- Two stops carry `"wc": []` because no genuine plate is in `images/woodcuts/`: **the Great
-  Portal** (ch. IV) and **the Three Doors** (ch. XII–XIII). Source those two plates.
+- **Done 2026-09-06:** the Great Portal and the Three Doors now carry the genuine 1499 plates
+  (woodcuts 5, 16 and 37), copied from the corpus's `site/images/woodcuts_1499/` at 800px. The
+  old `three_doors.jpg` was never the three doors — it is the wheeled vessel of f. 105 and is
+  still used, correctly captioned, at the palace stop.
 - `_carvedTexture('hieroglyph')` now draws fifteen named signs and `_frieze` can spell a
   sequence; the **portal piers and the obelisks still take the default random line** and
   could be given real ones.
