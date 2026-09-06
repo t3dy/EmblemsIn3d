@@ -117,9 +117,23 @@ gets ground of its own.
 - `_carvedTexture('hieroglyph')` now draws fifteen named signs and `_frieze` can spell a
   sequence; the **portal piers and the obelisks still take the default random line** and
   could be given real ones.
-- **Work the lexicon back against the world.** `research/lexicon.html` indexes 101 of the
-  book's nouns; any architectural or garden term in it that names a thing the world should
-  contain is a candidate asset. Nobody has checked the list against what is built.
+- **The lexicon has now been checked against the world** (2026-09-05). Of the 101 terms,
+  **39 name a thing rather than an idea** — the Architecture, Gardens, Places, Material
+  Culture, Processions and Characters categories. Thirty-four of the thirty-nine are built:
+  the bath, all three column orders, the fountains, the obelisks, the portal (which *is* the
+  stepped pyramid), the sleeping-nymph fountain, the triumphal gate, Cythera and its circular
+  garden, the elephant and obelisk, three pergolas, the topiary, the river and its bridges,
+  the dark forest, the ruined temple, the voyage, the procession, and all seven named
+  characters. Porphyry, jasper, chalcedony, gold and silk are all now on something. **Five are
+  not built**, and four of them are already on this list:
+
+  | missing | where it stands here |
+  |---|---|
+  | **Sacrifice to Priapus** (#71) | **NEW — not previously on this list.** A *full-page* woodcut, nineteen female and five male figures, the ass offered to the garden-god. It is in `gallery.json` and in the lexicon, and has no geometry. It is also the book's most explicit image, so **whether it belongs in the walkable world at all is Ted's call, not mine** — flagged, not built. |
+  | **Labyrinth** (ch. IX) | item 7 below; the dream narration already promises it ("a labyrinth of water where the boats go always forward and never back") and the world does not have it. The clearest single allegory in the book. |
+  | **Amphitheatre** (#147) | item 2. The theatre of Venus exists as terraces with the heptagonal fountain at their centre; the theatre's own architecture does not. |
+  | **Colossus** | item 3. |
+  | **Mosaic / *asaroton*** | nowhere in the world. The Temple of Venus's floor is documented as an "unswept floor" mosaic of foliage, animals and flowers under the aisle-vaults (`translation/en/page_209.md`) and was built as banding and roundels only. |
 - The **`/v1/` and `/v2/` archives still contain the full Atalanta site**, linked from the
   landing page as earlier releases, and the **dormant Atalanta modules** (`AFWorldScene.js`,
   `EmblemScene.js`, `ArchivesScene.js`, `af_*.js`, `images/emblems/`) are unreferenced
