@@ -56,6 +56,14 @@ export const HP_STATIONS = [
   // sea and Cythera behind it, which is the direction the pilgrims leave in.
   { key: 'venus_temple',     name: 'The Temple of Venus',    folio: 205,
     pos: [-30, -12], look: [-30, -21], radius: 9 },
+  { key: 'labyrinth',        name: 'The Water Labyrinth',    folio: 177,
+    pos: [-29.2, 34], look: [-44, 34], radius: 12 },   // outside the basin, beside the viewing mount
+  { key: 'colossus',         name: 'The Colossus',           folio: 34,
+    pos: [30, 4],    look: [38, 4],    radius: 8 },
+  { key: 'priapus',          name: 'The Rite of Priapus',    folio: 185,
+    pos: [44, -12],  look: [44, -6],   radius: 7 },
+  { key: 'book_two',         name: "Book II — Treviso",      folio: 387,
+    pos: [44, 32],   look: [44, 22],   radius: 12 },
   { key: 'polia',            name: "Polia's Garden",         folio: 143,
     pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
   { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158,
@@ -258,6 +266,8 @@ export class HPWorldScene {
     this._meadows = [];            // instanced grass / flower fields (lit only)
     this._vanes = [];              // weathervanes that turn with the wind
     this._windVanes = [];          // the Temple of Venus's eight winds (absolute)
+    this._foils = [];              // the gold foils on Priapus's canopy
+    this._hovers = [];             // things held in the air that breathe (the Book II vision)
     this._windBells = [];          // and the four bells under its moon
     this._trashGeo = new Set();    // originals swallowed by the draw-call compiler
     this._npcs = [];               // { g, phase, sway }
@@ -337,6 +347,11 @@ export class HPWorldScene {
     this._buildTriumphs();
     this._buildVenusTemple();
     this._buildPolyandrion();
+    this._polyandrionMedallions();
+    this._buildWaterLabyrinth();
+    this._buildColossus();
+    this._buildPriapusRite();
+    this._buildBookTwo();
     this._buildCythera();
     // The island is ~700 objects of its own. It lives in one group so that
     // when the player is deep in the mainland garden — where the haze has
@@ -439,6 +454,8 @@ export class HPWorldScene {
     for (const v of this._vanes) mark(v.g);
     for (const v of this._windVanes) mark(v.g);
     for (const b of this._windBells) mark(b.g);
+    for (const f of this._foils) mark(f);
+    for (const h of this._hovers) mark(h.g);
     if (this._quinta) { mark(this._quinta.dod); mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
     if (this._boat) { mark(this._boat); mark(this._boat.userData.cupid); }
@@ -4428,6 +4445,40 @@ export class HPWorldScene {
     this._m(new THREE.SphereGeometry(0.075, 8, 7), M(0x2a7a9a, { roughness: 0.75 }),
       AX - 0.50, WY + 1.55, AZ, { cast: false });
 
+    // ── the miracle of the roses (#84), and the sacrifice of the swans (#79) ─
+    // Our translation, page_224, the argument of chapter XVIII: "she scattered
+    // the roses, and, the sacrifice of the swans being made, from it
+    // miraculously germinated a rose-bush with fruits and flowers. Both of
+    // them tasted of these." Plate #79 has two virgins offering swans and
+    // doves; #84 the rose-tree rising from the altar with the doves flying.
+    // So: a rose-bush rising out of the altar-top, in flower and in fruit,
+    // the two virgins with the two swans, and the doves going up.
+    const roseM = M(0xc83a4a, { roughness: 0.7, tone: 0.2 });
+    const fruitM = M(0xd8602a, { roughness: 0.6, tone: 0.18 });
+    const stem = M(0x4a6a2a, { roughness: 0.9, tone: 0.2 });
+    for (let k = 0; k < 7; k++) {
+      const a = (k / 7) * Math.PI * 2, rr = 0.12 + (k % 3) * 0.1;
+      const st = this._m(new THREE.CylinderGeometry(0.02, 0.03, 0.9 + (k % 2) * 0.3, 5), stem,
+        AX + Math.cos(a) * rr, WY + 1.9 + (k % 2) * 0.15, AZ + Math.sin(a) * rr, { cast: false });
+      st.rotation.z = Math.cos(a) * 0.35; st.rotation.x = -Math.sin(a) * 0.35;
+      const top = [AX + Math.cos(a) * (rr + 0.28), WY + 2.36 + (k % 2) * 0.3, AZ + Math.sin(a) * (rr + 0.28)];
+      this._m(new THREE.SphereGeometry(0.07, 8, 6), k % 3 === 2 ? fruitM : roseM, ...top, { cast: false });
+      this._m(new THREE.SphereGeometry(0.06, 6, 5), this._leafMat, top[0] - 0.06, top[1] - 0.08, top[2] + 0.05, { cast: false }).scale.set(1.4, 0.4, 1);
+    }
+    for (const sx of [-1, 1]) {
+      const v = this.cast.nymph({ name: 'swan_virgin_' + sx, robe: 0xf2eee2, h: 0.95, rank: 'tutulus', cutout: null, pose: 'offer' });
+      this._npc('venus_swan_virgin_' + (sx + 1), v, AX + sx * 1.5, AZ + 1.3, sx * 0.5 + Math.PI, { sway: 0.03 });
+      const sw = this.cast.animals.swan(0.7); sw.position.set(AX + sx * 1.5, 0.95, AZ + 1.0); this.scene.add(sw);
+    }
+    for (let k = 0; k < 3; k++) {
+      const dove = this.cast.animals.bird ? this.cast.animals.bird(0.5) : null;
+      if (!dove) break;
+      dove.position.set(AX + (k - 1) * 0.6, WY + 3.0 + k * 0.45, AZ + 0.3 - k * 0.2); this.scene.add(dove);
+      this._hovers.push({ g: dove, y: dove.position.y, phase: k * 1.3 });
+    }
+    this._plaque({ main: 'MIRACVLVM ROSARVM', sub: 'THE ROSES SCATTERED, THE SWANS OFFERED, A ROSE-BVSH RISES FROM THE ALTAR · CH. XVIII' },
+      2.4, 0.38, AX, WY + 0.5, AZ + 0.9, 0, true);
+
     // ── the great lamp, hung from the cupola on four chains ───────────────
     const LY = PLAT_Y + WALL_H - 0.9;
     for (let k = 0; k < 4; k++) {
@@ -4581,6 +4632,492 @@ export class HPWorldScene {
       3.6, 0.5, TX, PLAT_Y + 2.5, TZ - R + 0.62, Math.PI, true);
     this._plaque({ main: 'CVSÌ FIA', sub: 'SO BE IT · THE VIRGINS ANSWER, THRICE' },
       1.8, 0.34, TX, PLAT_Y + 1.85, TZ - R + 0.62, Math.PI, true);
+  }
+
+  // ── The water labyrinth (ch. IX) ──────────────────────────
+  //
+  // Dallington 1592, pp. 177–180 (the corpus `md/Hypnerotomachia_by_Francesco_
+  // Colonna.md`, ll. 7440–7580). Logistica explains it from a height, and it is
+  // the book's clearest single allegory: a circular labyrinth of WATER, sailed
+  // not walked, in seven circuits between seven towers or "mounts", and
+  // "they can not returne or goe backe with theyr Shyppe." On the first tower
+  // the title ΔΟΞΑ ΚΟΣΜΙΚΗ ΩΣ ΠΟΜΦΟΛΥΞ — worldly glory is a bubble — and a
+  // matron with an urn marked ΘΕΣΠΙΟΝ who gives every entrant a pot of honey.
+  // The water runs against you from the third mount; the fifth is "speculable,
+  // lyke a mirrour" and carries MEDIVM TENVERE BEATI; from the sixth the
+  // broken circles slide toward the centre "with small or no rowing"; and over
+  // the centre, in thick darkness, "there sitteth a seuere Iudge" — the dragon
+  // that "cannot bee seene nor shunned", and the sentence over the devouring
+  // throat, which Dallington leaves in Greek. Hunt notes that the 1499 and the
+  // 1592 both decline to illustrate it (GARDENS.md §3); this is therefore a
+  // reading of the text, not of a plate.
+  _buildWaterLabyrinth(LX = -44, LZ = 34) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const stone = this._stoneMat, dark = this._darkStoneMat;
+    const water = this._waterMat();
+    const R = 9.0;
+
+    // the basin, and seven concentric channels with a hedge-bank between each
+    this._m(new THREE.CylinderGeometry(R + 0.8, R + 0.8, 0.24, 40), dark, LX, 0.12, LZ, { cast: false });
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(R, 40), water, LX, 0.26, LZ, { rx: -Math.PI / 2, cast: false }) });
+    const hedge = lit ? this._hedgeMat : S.mat({ tone: 0.12 });
+    for (let i = 1; i <= 7; i++) {
+      const r = R - i * 1.15;
+      // a bank broken at one point so the channel spirals inward — "the broken
+      // circles" — and the break moves round with each ring
+      const gap = i * 0.9;
+      // CylinderGeometry measures theta from +z (x = r sin θ, z = r cos θ), the
+      // towers from +x (cos, sin): θ = π/2 − a.
+      const rm = this._m(new THREE.CylinderGeometry(r + 0.18, r + 0.18, 0.55, 40, 1, true, Math.PI / 2 - gap + 0.35, Math.PI * 2 - 0.7), hedge,
+        LX, 0.52, LZ, { cast: false });
+      rm.material.side = THREE.DoubleSide;
+      // the seven mounts, one tower at each break
+      const tx = LX + Math.cos(gap) * (r + 0.18), tz = LZ + Math.sin(gap) * (r + 0.18);
+      this._m(new THREE.CylinderGeometry(0.34, 0.42, 1.9, 10), stone, tx, 1.2, tz, { outline: true });
+      this._m(new THREE.ConeGeometry(0.42, 0.5, 10), dark, tx, 2.4, tz, { cast: false });
+      this._circleCol(tx, tz, 0.55);
+      const words = [
+        ['ΔΟΞΑ ΚΟΣΜΙΚΗ ΩΣ ΠΟΜΦΟΛΥΞ', 'WORLDLY GLORY IS A BVBBLE · THE FIRST MOVNT'],
+        ['ΘΕΣΠΙΟΝ', 'THE VRN OF HONEY · ONE POT TO EVERY ENTRANT'],
+        ['III', 'HERE THE WATER FIRST RVNS AGAINST YOV'],
+        ['IV', 'YOVNG WOMEN COMBATTING · THE CVRRENT WORSE'],
+        ['MEDIVM TENVERE BEATI', 'THE FIFTH MOVNT · SPECVLABLE, LIKE A MIRROVR'],
+        ['VI', 'THE BROKEN CIRCLES SLIDE TOWARD THE CENTER'],
+        ['VII', 'AN OBSCVRE AND FOGGY CLOSE AYRE'],
+      ][i - 1];
+      this._plaque({ main: words[0], sub: words[1] }, 1.5, 0.34, tx, 1.75, tz + 0.5, 0, true);
+    }
+    // the matron with her urn at the first mount, and the little ship
+    const matron = this.cast.figure({ h: 0.95, robe: 0x6a5a7a });
+    const g0 = 1 * 0.9, r0 = R - 1.15 + 0.18;
+    this._npc('labyrinth_matron', matron, LX + Math.cos(g0) * (r0 + 0.9), LZ + Math.sin(g0) * (r0 + 0.9), Math.PI,
+      { label: 'The Matron', sub: 'PITTIFVLL AND BOVNTIFVLL · HONEY FOR EVERY ENTRANT', labelY: 1.9 });
+    this._m(new THREE.CylinderGeometry(0.16, 0.12, 0.34, 10), this._darkStoneMat,
+      LX + Math.cos(g0) * (r0 + 0.9) + 0.45, 0.5, LZ + Math.sin(g0) * (r0 + 0.9), { cast: false });
+    const ship = this.cast.props.boat(1.0);
+    ship.position.set(LX + Math.cos(g0 + 0.5) * (R - 0.6), 0.30, LZ + Math.sin(g0 + 0.5) * (R - 0.6));
+    ship.rotation.y = -(g0 + 0.5);
+    this.scene.add(ship);           // not a _float: that registry would sink it under the water
+
+    // the centre: thick darkness, the devouring throat, the judge, the dragon
+    this._m(new THREE.CylinderGeometry(1.1, 1.3, 0.3, 20), S.mat(lit ? { color: 0x0a0a0c, roughness: 0.3 } : { tone: 0.4 }),
+      LX, 0.34, LZ, { cast: false });
+    const drag = this.cast.animals.dragon ? this.cast.animals.dragon(0.9) : this.cast.animals.lion(0.9);
+    drag.position.set(LX, 0.5, LZ);
+    this.scene.add(drag);
+    this._circleCol(LX, LZ, 1.6);
+    this._plaque({ main: 'ΘΕΟΝ ΛΥΚΟΣ ΔΥΣΑΛΓΗΤΟΣ', sub: 'THE SENTENCE OVER THE MEDIAN CENTER · A SEVERE IVDGE SITS HERE' },
+      2.2, 0.4, LX, 2.2, LZ + 1.2, 0, true);
+    // Logistica shows it from above: a viewing mount outside the ring
+    // set off the axis, or it stands between the station and the labyrinth
+    this._m(new THREE.CylinderGeometry(1.6, 2.0, 1.4, 12), stone, LX + R + 2.2, 0.7, LZ - 5.5, { outline: true });
+    this._circleCol(LX + R + 2.2, LZ - 5.5, 2.1);
+    this._plaque({ main: 'LABYRINTHVS AQVATILIS',
+                   sub: 'THE BOATS GO ALWAYS FORWARD AND NEVER BACK · CH. IX · DALLINGTON PP. 177–180' },
+      2.6, 0.42, LX + R + 1.0, 1.1, LZ + 0.3, Math.PI / 2, true);
+  }
+
+  // ── The Colossus, as architecture ─────────────────────────
+  //
+  // Full brief in ARCHITECTURE.md ("The Colossus — researched, specified, and
+  // NOT built"). Lefaivre pp. 52–53: a hybrid sculpture/building, "the colossus
+  // supine in the sands", entered THROUGH THE MOUTH, its interior "formed
+  // exactly like the inside of a human body", every organ a chamber with its
+  // own door and above each organ its name and the sicknesses generated in
+  // it; in the heart, the chamber "where love is born", whose cures are
+  // written in Chaldean and which Poliphilo does not divulge. Beside it a
+  // female colossus, more buried, which he refuses to enter: Priki's first
+  // figure of loss. The brief's instruction, after the reverted anatomical
+  // attempt, is to build it AS ARCHITECTURE — a vaulted hall in the rough
+  // outline of a body, which is what "hybrid sculpture/building" means and
+  // what this toolkit can do. So: a head that is a dome with a doorway for a
+  // mouth, a chest that is a barrel-vaulted hall, and limbs that are low
+  // vaults, all in verdigris bronze; and inside, the organs as labelled cells.
+  _buildColossus(KX = 36, KZ = 4) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const bronze = lit ? S.mat({ color: 0x4f7a5a, metalness: 0.7, roughness: 0.55 }) : S.mat({ tone: 0.16 });
+    const dark   = lit ? S.mat({ color: 0x2c3a30, metalness: 0.5, roughness: 0.7 }) : S.mat({ tone: 0.3 });
+    const sand   = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
+    // The figure lies along +x with its head at KX and its feet at KX+17.
+    this._m(new THREE.CircleGeometry(12, 30), sand, KX + 8, 0.03, KZ, { rx: -Math.PI / 2, cast: false });
+    const half = (r, x, z, sx, sy, sz) => {
+      const m = this._m(new THREE.SphereGeometry(r, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2), bronze, x, 0, z, { outline: true });
+      m.scale.set(sx, sy, sz);
+      return m;
+    };
+    const vault = (x, z, w, h, len, ry = 0) => {
+      const m = this._m(new THREE.CylinderGeometry(h, h, len, 20, 1, false, 0, Math.PI), bronze, x, 0, z, { outline: true });
+      m.rotation.z = Math.PI / 2; m.rotation.y = ry;
+      m.scale.set(1, w / h, 1);
+      return m;
+    };
+    // the head: a dome, the face toward the west, the mouth a doorway
+    half(2.2, KX, KZ, 1, 1.05, 1.1);
+    this._m(new THREE.BoxGeometry(0.9, 1.5, 0.5), dark, KX - 2.15, 0.75, KZ, { cast: false });     // the mouth
+    this._m(new THREE.BoxGeometry(0.7, 1.3, 0.3), S.mat(lit ? { color: 0x08080a } : { tone: 0.5 }), KX - 2.3, 0.7, KZ, { cast: false });
+    for (const sz of [-1, 1]) this._m(new THREE.SphereGeometry(0.26, 10, 8), dark, KX - 1.4, 1.75, KZ + sz * 0.8, { cast: false }); // the eyes
+    // the chest: a barrel vault; the belly a lower one; the legs two long vaults
+    vault(KX + 4.6, KZ, 3.3, 2.5, 5.4);
+    vault(KX + 9.0, KZ, 2.6, 1.8, 3.6);
+    for (const sz of [-1, 1]) vault(KX + 14.0, KZ + sz * 1.3, 1.0, 0.95, 6.5);
+    // the arms, laid along the sides
+    for (const sz of [-1, 1]) vault(KX + 5.5, KZ + sz * 3.9, 0.85, 0.8, 7.0);
+    for (const dx of [2.5, 4.5, 6.5, 8.5, 10.5, 12.5]) {
+      for (const sz of [-1, 1]) this._wallCol(KX + dx - 1, KX + dx + 1, KZ + sz * 3.9 - 0.9, KZ + sz * 3.9 + 0.9);
+    }
+    this._circleCol(KX, KZ, 2.4);
+    this._wallCol(KX + 2, KX + 17, KZ - 3.4, KZ + 3.4);
+    // the organs, as the book has them: a chamber each, its name above it and
+    // the sicknesses generated in it; the doors face the path down the side
+    const ORGANS = [
+      ['COR',      'THE HEART · WHERE LOVE IS BORN · THE CVRES WRITTEN IN CHALDEAN, NOT DIVVLGED', 3.6],
+      ['PVLMONES', 'THE LVNGS · PLEVRISY · SHORTNESS OF BREATH', 5.2],
+      ['HEPAR',    'THE LIVER · CHOLER · THE IAVNDICE', 6.8],
+      ['LIEN',     'THE SPLEEN · MELANCHOLY', 8.2],
+      ['VENTER',   'THE BELLY · COLIC · DROPSY', 9.6],
+      ['RENES',    'THE KIDNEYS · THE STONE', 11.0],
+    ];
+    for (const [name, sick, dx] of ORGANS) {
+      this._m(new THREE.BoxGeometry(0.62, 1.0, 0.2), dark, KX + dx, 0.5, KZ - 3.05, { cast: false });
+      this._plaque({ main: name, sub: sick }, 1.3, 0.34, KX + dx, 1.35, KZ - 3.28, Math.PI, true);
+    }
+    this._plaque({ main: 'COLOSSVS', sub: 'A SCVLPTVRE THAT IS A BVILDING · ENTERED BY THE MOVTH · LEFAIVRE PP. 52–53' },
+      2.4, 0.42, KX - 2.4, 2.6, KZ, -Math.PI / 2, true);
+    // the female colossus beside him, more buried, and with NO door
+    half(1.8, KX + 1.0, KZ - 9.0, 1, 0.55, 1.1).position.y = -0.3;
+    vault(KX + 5.2, KZ - 9.0, 2.6, 1.5, 5.0).position.y = -0.55;
+    vault(KX + 10.0, KZ - 9.0, 2.0, 1.1, 4.0).position.y = -0.5;
+    this._wallCol(KX - 1, KX + 12.5, KZ - 11.0, KZ - 7.0);
+    this._plaque({ main: 'ALTERA', sub: 'THE OTHER · HALF-HIDDEN · POLIPHILO REFVSES TO ENTER · PRIKI' },
+      1.8, 0.34, KX + 5.2, 1.3, KZ - 6.3, 0, true);
+  }
+
+  // ── The rite of Priapus (#71) ─────────────────────────────
+  //
+  // The one full-page plate of the temple sequence — nineteen women and five
+  // men round the altar. Our translation, page_194: "the rude simulacrum of the
+  // garden-guardian, with all his decent and appropriated insignia" stands on
+  // the altar under "a cupola'd little canopy … upon four poles fixed in the
+  // ground", the poles "invested with fruited and flowered foliage", a lamp
+  // hung between each pair, and round the rim "gold foils, by the fresh and
+  // spring-bearing breezes inconstantly vexed, and sounding with metallic
+  // little rattles". The rite: the ass is sacrificed (Ovid, Fasti I and VI —
+  // its braying once foiled the god), with libations of milk and wine, and old
+  // Janus is "led bound in flower-ropes" to Fescennine, Talassian and Hymeneal
+  // songs. Dallington's Bacchic company (p. 235): nymphs "some naked with
+  // aprons of goates skins", timbrels and flutes, vine-sprigs about their
+  // heads. The god is built as the plate has him, a herm.
+  _buildPriapusRite(RX = 44, RZ = -6) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const gold = lit ? S.mat({ color: 0xd9b25a, metalness: 0.9, roughness: 0.25 }) : S.mat({ tone: 0.04 });
+    const stone = this._stoneMat;
+    // the altar: black, white-veined "to express the tenebrous, unlit air"
+    this._m(new THREE.BoxGeometry(1.5, 0.9, 1.1), S.mat(lit ? { color: 0x1a1a20, roughness: 0.5 } : { tone: 0.3 }),
+      RX, 0.45, RZ, { outline: true });
+    this._frieze(RX, 0.55, RZ + 0.56, 1.3, 0.22, 'meander');
+    // the herm of the garden-guardian on it, as the plate draws him
+    this._m(new THREE.BoxGeometry(0.34, 1.1, 0.3), stone, RX, 1.45, RZ, { outline: true });
+    const head = this._m(new THREE.SphereGeometry(0.17, 12, 10), stone, RX, 2.15, RZ);
+    head.scale.set(0.95, 1.1, 0.95);
+    this._m(new THREE.ConeGeometry(0.16, 0.22, 10), stone, RX, 1.98, RZ, { cast: false, rx: Math.PI }); // the beard
+    this._m(new THREE.CylinderGeometry(0.045, 0.05, 0.36, 8), stone, RX, 1.35, RZ + 0.30, { cast: false, rx: Math.PI / 2 }); // his insignia
+    this._circleCol(RX, RZ, 1.1);
+    // the canopy on four poles, wreathed, with a lamp between each pair
+    for (const [sx, sz] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+      const px = RX + sx * 1.4, pz = RZ + sz * 1.2;
+      this._m(new THREE.CylinderGeometry(0.06, 0.07, 3.2, 8), this._trunkMat, px, 1.6, pz);
+      for (let k = 0; k < 6; k++) {
+        this._m(new THREE.SphereGeometry(0.09, 6, 5), this._leafMat, px + Math.sin(k * 1.7) * 0.11, 0.5 + k * 0.5, pz + Math.cos(k * 1.7) * 0.11, { cast: false });
+        if (k % 2) this._m(new THREE.SphereGeometry(0.05, 6, 5), S.mat(lit ? { color: 0xc03a2a, roughness: 0.6 } : { tone: 0.2 }),
+          px + Math.sin(k * 1.7 + 0.4) * 0.13, 0.62 + k * 0.5, pz + Math.cos(k * 1.7 + 0.4) * 0.13, { cast: false });
+      }
+      this._circleCol(px, pz, 0.2);
+    }
+    const dome = this._m(new THREE.SphereGeometry(2.0, 18, 10, 0, Math.PI * 2, 0, Math.PI / 2.6), this._leafMat, RX, 2.75, RZ, { cast: false });
+    dome.scale.set(1, 0.55, 0.85);
+    for (let k = 0; k < 4; k++) {
+      const a = k * Math.PI / 2 + Math.PI / 4;
+      const lx = RX + Math.cos(a) * 1.5, lz = RZ + Math.sin(a) * 1.25;
+      this._m(new THREE.CylinderGeometry(0.01, 0.01, 0.5, 4), gold, lx, 2.95, lz, { cast: false });
+      this._m(new THREE.SphereGeometry(0.09, 8, 6),
+        lit ? S.mat({ color: 0xffd080, emissive: 0xe0a030, emissiveIntensity: 0.9 }) : S.mat({ tone: 0.04 }), lx, 2.66, lz, { cast: false });
+    }
+    // the gold foils round the rim, the ones the breeze rattles
+    for (let k = 0; k < 16; k++) {
+      const a = (k / 16) * Math.PI * 2;
+      const f = this._m(new THREE.PlaneGeometry(0.16, 0.26), gold, RX + Math.cos(a) * 1.75, 3.05, RZ + Math.sin(a) * 1.45, { cast: false });
+      f.rotation.y = -a; f.userData.foil = k;
+      this._foils = this._foils || []; this._foils.push(f);
+    }
+    // the ass brought to the altar, and old Janus led bound in flower-ropes
+    const ass = this.cast.animals.horse(0.8);
+    ass.position.set(RX - 2.8, 0, RZ + 0.6); ass.rotation.y = Math.PI / 2;
+    this.scene.add(ass); this._circleCol(RX - 2.8, RZ + 0.6, 0.7);
+    const janus = this.cast.figure({ h: 0.95, robe: 0x8a7a6a, pose: 'stand', beard: true });
+    this._npc('priapus_janus', janus, RX + 2.6, RZ + 1.4, -Math.PI / 2, { label: 'Janus', sub: 'LED BOVND IN FLOWER-ROPES' });
+    for (let k = 0; k < 5; k++) this._m(new THREE.SphereGeometry(0.06, 6, 5), S.mat(lit ? { color: [0xc83a4a, 0xe0b028, 0xf0ecd8][k % 3], roughness: 0.7 } : { tone: 0.2 }),
+      RX + 2.6 + (k - 2) * 0.09, 1.0 + (k % 2) * 0.06, RZ + 1.4 + 0.18, { cast: false });
+    // the company: nineteen women, five men, as the plate counts them
+    for (let i = 0; i < 24; i++) {
+      const a = (i / 24) * Math.PI * 2, r = 3.4 + (i % 3) * 0.6;
+      const x = RX + Math.cos(a) * r, z = RZ + Math.sin(a) * r;
+      const male = i % 5 === 4;
+      const g = male
+        ? (i === 4 ? this.cast.props.satyr(1.0) : this.cast.figure({ h: 0.92, robe: [0x7a5a3a, 0x5a6a4a][i % 2] }))
+        : this.cast.nymph({ name: 'priapus_' + i, robe: [0xe8ddc0, 0xd8a870, 0xc8b8a0][i % 3], h: 0.9,
+                            garland: 'pancarpial', attribute: i % 4 === 1 ? 'harp' : null });
+      this._npc('priapus_' + i, g, x, z, Math.atan2(RX - x, RZ - z), { sway: 0.05 });
+    }
+    this._plaque({ main: 'HORTORVM CVSTODI', sub: 'THE RITE OF PRIAPVS · THE ASS, THE MILK, THE WINE · PLATE 71 · CH. XVI' },
+      2.4, 0.42, RX, 0.5, RZ - 1.9, Math.PI, true);
+  }
+
+  // ── The amphitheatre of Venus (#147) ──────────────────────
+  //
+  // The terraces of flower-boxes already ring the theatre ("the auditorium
+  // turned into beds, as the book turns it", p. 353); what was missing is the
+  // theatre's own architecture. Our translation, pp. 350–352: the Area 32
+  // paces across; round it a colonnade 8 paces deep, quartered, each quarter
+  // of eight bays, radial and concentric columns carrying vaulted porticoes;
+  // the upper orders kept, against Vitruvius and on purpose, at ONE height;
+  // the whole of mortarless Indian alabaster; the gallery-walls of mirror-
+  // black stone; and the Area itself a single slab of polished obsidian in
+  // which Poliphilo's first step seems to plunge into an abyss.
+  _buildAmphitheatre(CX = 0, CZ = -150) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const alab = lit ? S.mat({ color: 0xf2e8d2, roughness: 0.35, metalness: 0.05 }) : S.mat({ tone: 0.03 });
+    const mirror = lit ? S.mat({ color: 0x0c0c12, roughness: 0.08, metalness: 0.6 }) : S.mat({ tone: 0.36 });
+    // the obsidian Area, over the dark stone floor
+    this._m(new THREE.CircleGeometry(7.4, 48), mirror, CX, 0.075, CZ, { rx: -Math.PI / 2, cast: false });
+    const RC = 7.15, H = 2.4, ORDERS = 3;
+    for (let q = 0; q < 4; q++) {
+      for (let b = 0; b <= 8; b++) {
+        // eight bays a quarter, and the cardinal gap for the roads and the cars
+        const a = q * Math.PI / 2 + 0.16 + (b / 8) * (Math.PI / 2 - 0.32);
+        const x = CX + Math.cos(a) * RC, z = CZ + Math.sin(a) * RC;
+        for (let o = 0; o < ORDERS; o++) {
+          const g = new THREE.Group(); g.position.set(x, o * (H + 0.5), z); this.scene.add(g);
+          this._column(0, 0, H, { order: ['doric', 'ionic', 'corinthian'][o], r: 0.13, parent: g, mat: alab });
+        }
+        if (b < 8) this._circleCol(x, z, 0.22);
+      }
+      // the entablatures, as chords over each quarter
+      for (let o = 0; o < ORDERS; o++) {
+        const a0 = q * Math.PI / 2 + 0.16, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.16;
+        for (let b = 0; b < 8; b++) {
+          const aa = a0 + (b + 0.5) / 8 * (a1 - a0);
+          const chord = 2 * RC * Math.sin((a1 - a0) / 16);
+          this._entablature(CX + Math.cos(aa) * RC, o * (H + 0.5) + H, CZ + Math.sin(aa) * RC, chord + 0.15, 0.7,
+            { ry: -aa + Math.PI / 2, dentils: o === 2, mat: alab });
+        }
+        // the gallery wall behind the columns of each order: mirror-black on
+        // the face the theatre sees, alabaster on the face the island sees.
+        // One double-sided black shell read from outside as three stacked oil
+        // tanks; the text's alabaster cavea is the outside of the building.
+        const inner = this._m(new THREE.CylinderGeometry(RC + 0.55, RC + 0.55, H - 0.2, 40, 1, true, Math.PI / 2 - a1, a1 - a0),
+          mirror.clone(), CX, o * (H + 0.5) + H / 2, CZ, { cast: false });
+        inner.material.side = THREE.BackSide; this._disp.push(inner.material);
+        this._m(new THREE.CylinderGeometry(RC + 0.62, RC + 0.62, H - 0.2, 40, 1, true, Math.PI / 2 - a1, a1 - a0),
+          alab, CX, o * (H + 0.5) + H / 2, CZ, { cast: false });
+      }
+    }
+    this._plaque({ main: 'THEATRVM VENERIS', sub: 'XXXII PACES ACROSS · ALABASTER WITHOVT LIME · THREE ORDERS OF ONE HEIGHT · THE AREA OBSIDIAN' },
+      2.6, 0.42, CX, 1.0, CZ + RC + 1.2, 0, true);
+  }
+
+  // ── The Triumph of Cupid (#143–#144) ──────────────────────
+  //
+  // The two-plate spread on Cythera: "nymphs, satyrs, dragons, captives".
+  // Our translation, p. 341: Cupid on a golden car, two gold-rimmed wheels on
+  // balustered spokes of coloured gemstone; POLIPHILO AND POLIA BOUND AS
+  // CAPTIVES behind it, their arms tied with rose-garlands, led by Synesia
+  // (Understanding) and bound by Plexaura and Ganoma; Psyche following in her
+  // golden chlamys pinned with a great diamond. It rolls down the north road
+  // toward the theatre, between the trophies.
+  _buildCupidTriumph(TX = 0, TZ = -127) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const gold = lit ? S.mat({ color: 0xd9b25a, metalness: 0.95, roughness: 0.22 }) : S.mat({ tone: 0.04 });
+    const g = new THREE.Group(); g.position.set(TX, 0, TZ); this.scene.add(g);
+    // the car
+    this._m(new THREE.BoxGeometry(1.6, 0.5, 2.4), gold, 0, 0.75, 0, { parent: g, outline: true });
+    this._frieze(0, 0.75, 0.81, 1.4, 0.3, 'meander');
+    for (const sx of [-1, 1]) {
+      const w = this._m(new THREE.TorusGeometry(0.5, 0.06, 8, 20), gold, sx * 0.9, 0.5, 0.3, { parent: g, ry: Math.PI / 2 });
+      for (let k = 0; k < 8; k++) {
+        const sp = this._m(new THREE.CylinderGeometry(0.03, 0.03, 0.9, 5),
+          lit ? S.mat({ color: [0xb3243c, 0x1e3f96, 0x0d7548, 0xdca62c][k % 4], roughness: 0.3 }) : gold, sx * 0.9, 0.5, 0.3, { parent: g });
+        sp.rotation.x = k * Math.PI / 8;
+      }
+      void w;
+    }
+    const cupid = this.cast.props.putto ? this.cast.props.putto(0.8) : this.cast.figure({ h: 0.6, robe: null });
+    cupid.position.set(0, 1.0, -0.2); g.add(cupid);
+    // drawn by the dragons the plate gives it
+    for (const sx of [-1, 1]) {
+      const d = this.cast.animals.dragon ? this.cast.animals.dragon(0.7) : this.cast.animals.lion(0.7);
+      d.position.set(sx * 0.7, 0, -2.6); d.rotation.y = Math.PI; g.add(d);
+    }
+    // the captives, bound in roses, and the three nymphs who lead and bind
+    const pol = this.cast.figure({ name: 'Poliphilo', h: 0.95, robe: 0x8a4a3a, pose: 'stand' });
+    const polia = this.cast.nymph({ name: 'Polia', robe: 0xd8c4e8, h: 0.95, garland: 'pancarpial' });
+    this._npc('cupid_poliphilo', pol, TX - 0.5, TZ + 2.4, Math.PI, { label: 'Poliphilo', sub: 'CAPTIVE, BOVND IN ROSES', sway: 0.03 });
+    this._npc('cupid_polia', polia, TX + 0.5, TZ + 2.4, Math.PI, { label: 'Polia', sub: 'CAPTIVE, BOVND IN ROSES', sway: 0.03 });
+    const rose = lit ? S.mat({ color: 0xc83a4a, roughness: 0.7 }) : S.mat({ tone: 0.2 });
+    for (let k = 0; k < 10; k++) this._m(new THREE.SphereGeometry(0.05, 6, 5), rose, TX - 0.5 + k * 0.11, 0.95 + (k % 2) * 0.05, TZ + 2.55, { cast: false });
+    const names = [['Synesia', 'VNDERSTANDING · SHE LEADS', -1.2, 1.4], ['Plexaura', 'SHE BINDS', -1.3, 3.2], ['Ganoma', 'SHE BINDS', 1.3, 3.2],
+                   ['Psyche', 'IN A GOLDEN CHLAMYS · A GREAT DIAMOND AT HER SHOVLDER', 0, 4.4]];
+    for (const [n, sub2, dx, dz] of names) {
+      const ny = this.cast.nymph({ name: n, robe: n === 'Psyche' ? 0xd9b25a : 0xe8ddc0, h: 0.95, garland: 'pancarpial' });
+      this._npc('cupid_' + n.toLowerCase(), ny, TX + dx, TZ + dz, Math.PI, { label: n, sub: sub2, sway: 0.04 });
+    }
+    for (let i = 0; i < 4; i++) {
+      const sat = this.cast.props.satyr(1.0);
+      sat.position.set(TX + (i % 2 ? 2.2 : -2.2), 0, TZ - 1 + i * 1.6); sat.rotation.y = i % 2 ? -0.5 : 0.5;
+      this.scene.add(sat);
+    }
+    this._wallCol(TX - 1.1, TX + 1.1, TZ - 3.2, TZ + 1.3);
+    this._plaque({ main: 'TRIVMPHVS AMORIS', sub: 'THE LOVERS LED BEHIND THE CAR, BOVND SOFTLY AND WILLINGLY · CH. XXII' },
+      2.2, 0.4, TX + 2.6, 1.0, TZ + 0.5, -Math.PI / 2, true);
+  }
+
+  // ── The Polyandrion's five medallions (#88–#92) ───────────
+  //
+  // Five hieroglyphic reliefs on the plates, and NO READING of them anywhere
+  // in the corpus — not Curran, not Russell, not the annotators. So they are
+  // built as unread devices: five roundels on a broken wall of the ruin, each
+  // spelling a sequence from the fifteen sourced signs, and the plaque says
+  // plainly that no one has read them. The tour must say the same.
+  _polyandrionMedallions(PX = 30, PZ = -27) {
+    const wz = PZ + 9.4;
+    this._m(new THREE.BoxGeometry(9.0, 0.5, 0.8), this._darkStoneMat, PX, 0.25, wz, { cast: false });
+    this._m(new THREE.BoxGeometry(9.0, 2.2, 0.6), this._stoneMat, PX, 1.6, wz, { outline: true });
+    this._m(new THREE.BoxGeometry(2.6, 0.9, 0.62), this._stoneMat, PX - 2.8, 3.15, wz, { outline: true });
+    this._wallCol(PX - 4.5, PX + 4.5, wz - 0.5, wz + 0.5);
+    const SEQ = [['eye', 'vulture', 'hook'], ['circle', 'anchor', 'dolphin'], ['skull', 'ant', 'elephant'],
+                 ['altar', 'ewer', 'rudder'], ['grain', 'sun', 'palm']];
+    SEQ.forEach((signs, i) => {
+      const x = PX - 3.4 + i * 1.7;
+      this._m(new THREE.CylinderGeometry(0.62, 0.62, 0.12, 24), this._darkStoneMat, x, 1.6, wz - 0.34, { cast: false, rx: Math.PI / 2 });
+      this._frieze(x, 1.6, wz - 0.42, 1.0, 0.36, 'hieroglyph', { signs, ry: Math.PI });
+    });
+    this._plaque({ main: 'QVINQVE SIGNA · NON LECTA', sub: 'FIVE HIEROGLYPHIC MEDALLIONS · PLATES 88–92 · NO READING OF THEM EXISTS' },
+      2.6, 0.4, PX, 0.75, wz - 0.5, Math.PI, true);
+  }
+
+  // ── Book II: the Temple of Diana, the bed-chamber, the throne ─
+  //
+  // Book II has no geography in the dream: it is Polia's own account, set in
+  // Treviso, and its thirteen stops were staged at whichever dream stations
+  // answered them. Ted's "build everything" settles the open decision in
+  // NEXTSTEPS §6: a precinct of its own, east of the meadow, built from our
+  // translation of chapters XXV–XXXVIII. The temple of Diana where Polia,
+  // plague-struck and healed, vows chastity and where Poliphilo finds her
+  // "alone, praying" and she freezes "more freezing than porphyry" (#152–#153,
+  // pp. 388–389); the priestesses who drive the lovers out (#159); Polia's
+  // bed-chamber, with the vision through its window of Diana's ice-chariot
+  // drawn by stags pursued by Venus's fire-chariot drawn by swans (#160,
+  // p. 425); and the Venus-priestess enthroned, the lovers kissing in her
+  // presence (#163). The chariots are built as the vision, on poles above
+  // the chamber, so the window frames them.
+  _buildBookTwo(BX = 44, BZ = 22) {
+    const S = this.style;
+    const lit = S.key !== 'woodcut';
+    const stone = this._stoneMat, dark = this._darkStoneMat;
+    const silver = lit ? S.mat({ color: 0xd8dee8, metalness: 0.8, roughness: 0.3 }) : S.mat({ tone: 0.1 });
+    const gold = lit ? S.mat({ color: 0xd9b25a, metalness: 0.9, roughness: 0.25 }) : S.mat({ tone: 0.04 });
+    // ── the Temple of Diana: a small prostyle temple, a crescent in the pediment
+    const DX = BX, DZ = BZ - 6;
+    this._m(new THREE.BoxGeometry(7.0, 0.5, 5.6), stone, DX, 0.25, DZ, { cast: false, outline: true });
+    for (let i = 0; i < 4; i++) this._column(DX - 2.4 + i * 1.6, DZ + 2.2, 3.2, { order: 'ionic', r: 0.15 });
+    for (const sx of [-1, 1]) this._m(new THREE.BoxGeometry(0.5, 3.2, 4.4), stone, DX + sx * 3.0, 2.1, DZ - 0.4, { outline: true });
+    this._m(new THREE.BoxGeometry(6.4, 3.0, 0.4), stone, DX, 2.0, DZ - 2.5, { outline: true });
+    this._entablature(DX, 3.7, DZ + 2.2, 6.8, 0.8, { ry: 0 });
+    // a triangular prism: the geometry itself is turned and flattened, since
+    // scaling a rotated mesh flattens the wrong axis and stood it on end
+    const pedGeo = new THREE.CylinderGeometry(3.6, 3.6, 0.4, 3);
+    pedGeo.rotateZ(Math.PI / 2); pedGeo.rotateY(Math.PI / 2); pedGeo.scale(1, 0.34, 1);
+    this._m(pedGeo, stone, DX, 4.55, DZ + 2.2, { cast: false, outline: true });
+    const moon = this._m(new THREE.TorusGeometry(0.42, 0.07, 8, 20, Math.PI * 1.1), silver, DX, 4.75, DZ + 2.65, { cast: false });
+    moon.rotation.z = -Math.PI * 0.05;
+    this._m(new THREE.BoxGeometry(5.9, 0.3, 4.4), dark, DX, 5.15, DZ - 0.4, { cast: false });
+    this._wallCol(DX - 3.3, DX + 3.3, DZ - 2.8, DZ - 2.2);
+    for (const sx of [-1, 1]) this._wallCol(DX + sx * 3.0 - 0.3, DX + sx * 3.0 + 0.3, DZ - 2.6, DZ + 1.8);
+    // Diana's image within, and the stag beside her
+    const diana = this.cast.nymph({ name: 'Diana', robe: 0xe8eef4, h: 1.05, attribute: null, cutout: null });
+    this._npc('b2_diana', diana, DX, DZ - 1.6, 0, { label: 'Diana', sub: 'THE VOW OF PERPETVAL CHASTITY · CH. XXVI', sway: 0.0 });
+    const stag = this.cast.animals.stag ? this.cast.animals.stag(0.7) : this.cast.animals.horse(0.6);
+    stag.position.set(DX + 1.5, 0.5, DZ - 1.4); this.scene.add(stag);
+    // Polia veiled among the virgins; Poliphilo prostrate at the threshold (#152)
+    const polia = this.cast.nymph({ name: 'Polia', robe: 0xe8e2d0, h: 0.98, rank: 'tutulus', cutout: null });
+    this._npc('b2_polia_diana', polia, DX - 1.2, DZ - 0.4, 0.3, { label: 'Polia', sub: 'MORE FREEZING THAN PORPHYRY', sway: 0.02 });
+    const pol = this.cast.figure({ h: 0.95, robe: 0x8a4a3a });
+    pol.position.set(DX + 0.6, 0.3, DZ + 1.2); pol.rotation.set(0, 0.4, Math.PI / 2); this.scene.add(pol);
+    for (let i = 0; i < 2; i++) {
+      const pr = this.cast.nymph({ name: 'priestess_' + i, robe: 0xdfe6ee, h: 0.95, rank: 'tutulus', cutout: null, pose: 'point' });
+      this._npc('b2_priestess_' + i, pr, DX - 2.2 + i * 4.4, DZ + 3.4, Math.PI, { sway: 0.04 });
+    }
+    this._plaque({ main: 'TEMPLVM DIANAE', sub: 'TREVISO · THE PLAGVE, THE VOW, THE LOVERS DRIVEN OVT · PLATES 152–159' },
+      2.4, 0.42, DX, 1.0, DZ + 3.3, 0, true);
+
+    // ── Polia's bed-chamber, and the vision through its window (#160)
+    const CX2 = BX + 8, CZ2 = BZ + 4;
+    this._m(new THREE.BoxGeometry(5.0, 0.3, 4.4), dark, CX2, 0.15, CZ2, { cast: false });
+    for (const [dx, dz, w, d] of [[0, -2.1, 5.0, 0.3], [-2.4, 0, 0.3, 4.4], [2.4, 0, 0.3, 4.4]]) {
+      this._m(new THREE.BoxGeometry(w, 3.0, d), stone, CX2 + dx, 1.8, CZ2 + dz, { outline: true });
+      this._wallCol(CX2 + dx - w / 2, CX2 + dx + w / 2, CZ2 + dz - d / 2, CZ2 + dz + d / 2);
+    }
+    // the window in the back wall, through which the chariots burst
+    this._m(new THREE.BoxGeometry(1.4, 1.4, 0.34), S.mat(lit ? { color: 0xbcd6f0, roughness: 0.2, transparent: true, opacity: 0.4 } : { tone: 0.05 }),
+      CX2, 2.0, CZ2 - 2.1, { cast: false });
+    this._m(new THREE.BoxGeometry(5.2, 0.3, 4.6), dark, CX2, 3.4, CZ2, { cast: false });
+    // the bed, and Polia in it reading the letter (#165)
+    this._m(new THREE.BoxGeometry(1.4, 0.5, 2.2), S.mat(lit ? { color: 0x8a2a3a, roughness: 0.8 } : { tone: 0.2 }), CX2 - 1.2, 0.55, CZ2 - 0.6, { outline: true });
+    this._m(new THREE.BoxGeometry(1.5, 0.9, 0.2), this._trunkMat, CX2 - 1.2, 1.0, CZ2 - 1.75, { cast: false });
+    const pb = this.cast.nymph({ name: 'Polia', robe: 0xe8e2d0, h: 0.9, pose: 'recline', cutout: null, garland: 'pancarpial' });
+    pb.position.set(CX2 - 1.2, 0.85, CZ2 - 0.4); pb.rotation.y = Math.PI / 2; this.scene.add(pb);
+    this._m(new THREE.BoxGeometry(0.3, 0.02, 0.2), S.mat(lit ? { color: 0xefe6cd, roughness: 0.9 } : { tone: 0.03 }), CX2 - 0.8, 1.05, CZ2 - 0.1, { cast: false });
+    this._wallCol(CX2 - 1.9, CX2 - 0.5, CZ2 - 1.7, CZ2 + 0.5);
+    // the vision in the sky behind the window: Diana's ice-chariot drawn by
+    // stags, empty quiver; Venus's fire-chariot drawn by swans, with roses
+    const ice = new THREE.Group(); ice.position.set(CX2 - 1.8, 5.2, CZ2 - 6.0); this.scene.add(ice);
+    this._m(new THREE.BoxGeometry(1.2, 0.4, 0.8), S.mat(lit ? { color: 0xdff0ff, roughness: 0.1, metalness: 0.3 } : { tone: 0.04 }), 0, 0, 0, { parent: ice });
+    for (const sx of [-1, 1]) {
+      const st = this.cast.animals.stag ? this.cast.animals.stag(0.5) : this.cast.animals.horse(0.45);
+      st.position.set(sx * 0.4, -0.2, -1.2); ice.add(st);
+    }
+    const fire = new THREE.Group(); fire.position.set(CX2 + 1.8, 4.6, CZ2 - 5.0); this.scene.add(fire);
+    this._m(new THREE.BoxGeometry(1.2, 0.4, 0.8), gold, 0, 0, 0, { parent: fire });
+    for (const sx of [-1, 1]) { const sw = this.cast.animals.swan(0.9); sw.position.set(sx * 0.4, -0.1, -1.1); fire.add(sw); }
+    const fl = this.cast.props.fire(0.6); fl.position.set(0, 0.2, 0); fire.add(fl);
+    for (let k = 0; k < 8; k++) this._m(new THREE.SphereGeometry(0.06, 6, 5), S.mat(lit ? { color: 0xc83a4a, roughness: 0.7 } : { tone: 0.2 }),
+      Math.sin(k) * 0.5, 0.25 + (k % 2) * 0.1, Math.cos(k) * 0.3, { parent: fire, cast: false });
+    for (const [gg, ph] of [[ice, 0.3], [fire, 2.1]]) this._hovers.push({ g: gg, y: gg.position.y, phase: ph });
+    this._plaque({ main: 'CVBICVLVM POLIAE', sub: 'DIANA IN ICE, VENVS IN FIRE, THROVGH THE WINDOW · PLATES 160–165' },
+      2.2, 0.4, CX2, 0.95, CZ2 + 2.35, 0, true);
+
+    // ── the Venus-priestess enthroned, the lovers kissing before her (#163)
+    const TX2 = BX - 8, TZ2 = BZ + 4;
+    this._m(new THREE.CylinderGeometry(2.6, 2.8, 0.3, 24), stone, TX2, 0.15, TZ2, { cast: false });
+    this._m(new THREE.BoxGeometry(1.1, 0.55, 1.0), stone, TX2, 0.57, TZ2 - 1.2, { outline: true });
+    this._m(new THREE.BoxGeometry(1.1, 1.3, 0.2), gold, TX2, 1.35, TZ2 - 1.65, { cast: false });
+    for (const sx of [-1, 1]) this._column(TX2 + sx * 1.6, TZ2 - 1.6, 2.6, { order: 'corinthian', r: 0.12 });
+    this._entablature(TX2, 2.7, TZ2 - 1.6, 3.6, 0.7, { ry: 0 });
+    const pr = this.cast.nymph({ name: 'Antistita', robe: 0xf0ead8, h: 1.0, rank: 'mitre', cutout: null });
+    this._npc('b2_venus_priestess', pr, TX2, TZ2 - 1.0, 0, { label: 'The Priestess of Venus', sub: 'ENTHRONED · CH. XXXV', sway: 0.0 });
+    const p2 = this.cast.figure({ name: 'Poliphilo', h: 0.95, robe: 0x8a4a3a, pose: 'reach' });
+    const q2 = this.cast.nymph({ name: 'Polia', robe: 0xd8c4e8, h: 0.95, garland: 'pancarpial', cutout: null, pose: 'offer' });
+    this._npc('b2_poliphilo_kiss', p2, TX2 - 0.4, TZ2 + 0.8, 0.55, { sway: 0.02 });
+    this._npc('b2_polia_kiss', q2, TX2 + 0.4, TZ2 + 0.8, -0.55, { sway: 0.02 });
+    this._circleCol(TX2, TZ2 - 1.2, 1.0);
+    this._plaque({ main: 'IN CONSPECTV ANTISTITAE', sub: 'THE LOVERS KISS IN HER PRESENCE · PLATE 163' },
+      2.0, 0.38, TX2, 0.95, TZ2 + 2.4, 0, true);
+    // the precinct's own paving, so it reads as one place
+    this._m(new THREE.CircleGeometry(14, 40), this._darkStoneMat, BX, 0.02, BZ + 1, { rx: -Math.PI / 2, cast: false });
   }
 
   // ── The Polyandrion — the ruined temple of the dead ───────────────────────
@@ -5042,6 +5579,8 @@ export class HPWorldScene {
     // ── The theatre floor, and the fountain the whole island converges on ──
     this._m(new THREE.CircleGeometry(7.8, 40), this._darkStoneMat, CX, 0.06, CZ, { rx: -Math.PI / 2, cast: false });
     this._buildFountain(CX, CZ, { enclosure: true });
+    this._buildAmphitheatre(CX, CZ);
+    this._buildCupidTriumph(CX, CZ + 23);
 
     // ── The landing ───────────────────────────────────────────────────────
     for (let i = 0; i < 3; i++) {
@@ -5895,6 +6434,8 @@ export class HPWorldScene {
     if (this._windVanes.length) {
       const wind = Math.sin(this._t * 0.11) * 1.7 + Math.sin(this._t * 0.53) * 0.34;
       for (const v of this._windVanes) v.g.rotation.y = wind + v.k * 0.04;
+      for (const f of this._foils) f.rotation.y = -f.userData.foil * Math.PI / 8 + Math.sin(this._t * 3.1 + f.userData.foil) * 0.5;
+      for (const h of this._hovers) h.g.position.y = h.y + Math.sin(this._t * 0.7 + h.phase) * 0.18;
       const gust = Math.sin(this._t * 1.9) * 0.16 + Math.sin(this._t * 2.7) * 0.06;
       for (const b of this._windBells) {
         b.g.rotation.z = gust * Math.cos(b.k * 1.57);

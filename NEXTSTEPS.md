@@ -48,6 +48,13 @@ material **point** — they mark where the eye should go — so place them, don'
 - **Audit the gold** while there: move it off surfaces it merely gilds.
 
 ### 2. The architecture the detail pass has not reached
+
+*2026-09-05, "build everything": the Cythera theatre's own architecture (#147), the Triumph of
+Cupid as a procession (#143–144), the Polyandrion's five medallions (#88–92, built as unread),
+the Colossus as architecture, the water-labyrinth (ch. IX), the rite of Priapus (#71), the
+miracle of the roses (#84), and a Book II precinct at (44, 22) — Diana's temple, Polia's
+bed-chamber with the chariot-vision, the priestess enthroned — are all built. Remaining below
+is only what still has no source located.*
 Ted's standing goal: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*
 

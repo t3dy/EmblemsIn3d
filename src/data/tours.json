@@ -239,6 +239,34 @@
         ]
       },
       {
+        "station": "colossus",
+        "title": "The Colossus",
+        "chapter": "III",
+        "half": "dallington",
+        "lede": "Beyond the horse and before the elephant the piazza holds the third of its set: a colossus lying supine in the sand, so large that Poliphilo walks in through its mouth. Inside it is \"formed exactly like the inside of a human body\" — every organ a chamber with its own door, its name above it and the sicknesses generated in it, and in the heart the chamber where love is born, whose cures are written in Chaldean and which he does not pass on. Beside it lies a second colossus, a woman, more buried, which he refuses to enter.",
+        "quote": "Lying next to it is a female counterpart, which Poliphilo refuses to enter.",
+        "quoteAttr": "Lefaivre, pp. 52–53",
+        "see": [
+          "The Winged Horse of Unhappiness",
+          "The Elephant & Obelisk"
+        ],
+        "wc": [],
+        "notes": [
+          {
+            "type": "architecture",
+            "text": "**Built as architecture, not as anatomy.** The first attempt (reverted the same day) built him as overlapping ellipsoids half-sunk in sand and he read as a row of green domes — the same failure as the massed animals: a recumbent, half-buried figure has no silhouette. So this is what \"hybrid sculpture/building\" means when it is built: a head that is a dome with a doorway for a mouth, a chest that is a barrel-vaulted hall, arms and legs that are low vaults, in verdigris bronze; and down his side the organs as labelled cells, COR first, with the note the book gives it."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Lefaivre's whole book turns on this object: the colossus and the elephant are \"the first architectural structures to be conceived organically\" — the architectural-body metaphor ceasing to be a metaphor. Nobody thinks this way again until the twentieth century (ARCHITECTURE.md)."
+          },
+          {
+            "type": "literary",
+            "text": "Priki reads the second colossus as the book's first figure of loss: half-hidden, doorless, she \"hints at what is lost and which Poliphilo cannot yet pinpoint\" — he has forgotten Polia and does not know it yet. She is built more buried than he is, and she has no door."
+          }
+        ]
+      },
+      {
         "station": "elephant",
         "title": "The Elephant & Obelisk",
         "chapter": "III",
@@ -525,7 +553,7 @@
         ]
       },
       {
-        "station": "planetary_palace",
+        "station": "labyrinth",
         "title": "The Palace, the Water-Labyrinth and the Banquet",
         "chapter": "IX–X",
         "half": "dallington",
@@ -537,6 +565,14 @@
           }
         ],
         "notes": [
+          {
+            "type": "quotation",
+            "text": "**The water-labyrinth is built now, from Dallington's pages 177–180**, since neither the 1499 nor the 1592 illustrates it (Hunt). Logistica shows it from a mount: a circular labyrinth of *water*, sailed not walked, in seven circuits between seven towers, and *\"they can not returne or goe backe with theyr Shyppe.\"* On the first tower, **ΔΟΞΑ ΚΟΣΜΙΚΗ ΩΣ ΠΟΜΦΟΛΥΞ** — worldly glory is a bubble — and a \"pittifull matron and bountifull\" with an urn marked **ΘΕΣΠΙΟΝ**, who gives every entrant a pot of honey. From the third mount the water runs against you; the fifth is \"speculable, lyke a mirrour\" and carries **MEDIVM TENVERE BEATI**; from the sixth the broken circles slide toward the centre \"with small or no rowing\"; and at the centre, in thick darkness, the dragon that \"cannot bee seene nor shunned\" and a severe judge over the devouring throat. Each tower here carries its own sentence."
+          },
+          {
+            "type": "allegory",
+            "text": "It is the book's clearest single allegory and it needs no gloss: a life, sailed in one direction only, getting faster and darker toward a centre you cannot see, with the pleasures of each circuit spent before the next. Hunt's warning applies (GARDENS.md §3): the two early editions *chose* not to draw this, and a drawn version is always more plausible than the text. The world builds it anyway, and says so."
+          },
           {
             "type": "architecture",
             "text": "Liane Lefaivre's Alberti thesis is at its strongest in these chapters: the palace is not described as a picture but as a set of proportional relations, room to room, in the technical vocabulary of a practising architect rather than a poet."
@@ -801,13 +837,17 @@
         ]
       },
       {
-        "station": "triumphs",
+        "station": "priapus",
         "title": "The Altar of the Seasons — where the English breaks off",
         "chapter": "XVI",
         "half": "dallington",
         "lede": "The rustic triumphs move on toward the rites; the offerings are prepared; the procession approaches the altar of the Seasons. And there, on facsimile page 193, in the middle of a sentence, at the word *Mustulento*, Robert Dallington's 1592 English stops. It was the only public-domain English the book had, and for four centuries everything past this point — the temple, the tombs, the whole of Cythera, all of Polia's own telling — existed in English only under copyright. **The next stop is the first sentence of our translation.**",
         "wc": [],
         "notes": [
+          {
+            "type": "context",
+            "text": "**The rite of Priapus is built** — plate #71, the one full-page woodcut of the temple sequence, nineteen women and five men round the altar, and the book's most explicit image. Our translation (page_194): on the altar \"the rude simulacrum of the garden-guardian, with all his decent and appropriated insignia\", under \"a cupola'd little canopy … upon four poles fixed in the ground\", the poles wreathed in fruit and flowers, a lamp between each pair, and round the rim gold foils \"by the fresh and spring-bearing breezes inconstantly vexed, and sounding with metallic little rattles\" — they rattle here. The ass is brought for sacrifice (Ovid, *Fasti*: its braying once foiled the god), with libations of milk and wine, and old **Janus is led bound in flower-ropes** to Fescennine, Talassian and Hymeneal songs. The god is built as the plate draws him, a herm."
+          },
           {
             "type": "context",
             "text": "Robert Dallington's *Hypnerotomachia: The Strife of Loue in a Dreame* (London, 1592) renders about two-fifths of Colonna. L. E. Semler's work on it shows the translation is also an abridgement with a Protestant temperature: Dallington trims what he finds idolatrous, and the reader of 1592 gets a cooler book than the reader of 1499."
@@ -979,6 +1019,10 @@
           {
             "type": "context",
             "text": "Tamara Griggs reads the book as the culmination of Quattrocento antiquarianism, not a Romantic escape: its epitaphs in lapidary Latin are the same connoisseur's collecting Cyriacus of Ancona pioneered — classical display as courtly self-promotion. (Griggs 1998.)"
+          },
+          {
+            "type": "gloss",
+            "text": "**Five medallions, unread.** Plates #88–#92 are five hieroglyphic reliefs, and no reading of them exists anywhere in the corpus — not Curran, not Russell, not any of the fifteen annotating hands. They are built on a broken wall at the north of the ruin as *unread* devices, each spelling a sequence from the fifteen sourced signs, under a plaque that says exactly that: QVINQVE SIGNA · NON LECTA. Anyone who reads them is the first."
           }
         ]
       },
@@ -1067,6 +1111,10 @@
         "quote": "The white doves dipped their golden bills in the spotless waters and bedewed the little Cytherean body, and the droplets showed on her translucent flesh as nothing other than orient pearls.",
         "quoteAttr": "The Fountain of Venus revealed (ch. XXIII)",
         "notes": [
+          {
+            "type": "architecture",
+            "text": "**The theatre has its architecture now, and the triumph its procession.** The terraces of flower-boxes were already the cavea; round the Area — 32 paces across, a single slab of polished obsidian in which Poliphilo's first step seems to plunge into an abyss (p. 352) — stands the colonnade of our pp. 350–351: quartered, eight bays a quarter, **three orders kept at one height** against Vitruvius and on purpose, of mortarless Indian alabaster outside and mirror-black stone within. And down the north road, between the trophies, the golden car of Cupid on gem-spoked wheels, drawn by the plate's dragons, with **Poliphilo and Polia bound behind it in rose-garlands** — led by Synesia, bound by Plexaura and Ganoma, Psyche following in her golden chlamys with the great diamond at her shoulder (p. 341)."
+          },
           {
             "type": "neoplatonic",
             "text": "The torn curtain and the revealed goddess is the Neoplatonic moment of vision: after the graded climb, the soul beholds Beauty itself. Everything before was the ascent to this unveiling."
@@ -1232,7 +1280,7 @@
         ]
       },
       {
-        "station": "polyandrion",
+        "station": "book_two",
         "title": "The Plague, the Vow, and the Cruelty",
         "chapter": "XXVI",
         "half": "ours",
@@ -1241,6 +1289,10 @@
         "quoteAttr": "Polia, of her own heart in Diana's temple (ch. XXVI, folio 389 — our translation)",
         "wc": [],
         "notes": [
+          {
+            "type": "architecture",
+            "text": "**Book II has ground of its own now.** Its stops had been staged at whichever dream stations answered them; east of the meadow there is now a precinct built from our translation of chapters XXV–XXXVIII: the **Temple of Diana** where the plague-struck Polia vows chastity and where Poliphilo finds her \"alone, praying\" and she freezes \"more freezing than porphyry\" (#152–#153) — he lies prostrate at its threshold, and the priestesses who drive the lovers out stand at its steps (#159); **Polia's bed-chamber**, with the vision through its window of Diana's ice-chariot drawn by stags pursued by Venus's fire-chariot drawn by swans (#160, p. 425), built in the air above it so the window frames them; and the **Venus-priestess enthroned**, the lovers kissing in her presence (#163). Treviso, in the dream's own east."
+          },
           {
             "type": "literary",
             "text": "Told from inside the woman who does it, and without excuse. Polia's own word for her heart at this moment is that it was 'more freezing than porphyry' — the hardest and coldest stone a Roman antiquary could name."
@@ -1268,7 +1320,7 @@
         ]
       },
       {
-        "station": "polyandrion",
+        "station": "book_two",
         "title": "The Visions of the Punished",
         "chapter": "XXVII",
         "half": "ours",
@@ -1338,7 +1390,7 @@
         ]
       },
       {
-        "station": "fountain",
+        "station": "book_two",
         "title": "The Conversion and the Revival",
         "chapter": "XXIX",
         "half": "ours",
@@ -1372,7 +1424,7 @@
         ]
       },
       {
-        "station": "cythera_theatre",
+        "station": "book_two",
         "title": "Before the Priestess",
         "chapter": "XXX–XXXI",
         "half": "ours",
@@ -1406,7 +1458,7 @@
         ]
       },
       {
-        "station": "court",
+        "station": "book_two",
         "title": "Poliphilo's Telling: the Love-Letters",
         "chapter": "XXXII–XXXIII",
         "half": "ours",
@@ -1442,7 +1494,7 @@
         ]
       },
       {
-        "station": "polyandrion",
+        "station": "book_two",
         "title": "The Death at Her Feet",
         "chapter": "XXXIV",
         "half": "ours",
@@ -1521,7 +1573,7 @@
         ]
       },
       {
-        "station": "cythera_theatre",
+        "station": "book_two",
         "title": "The Binding, and the Dissolution",
         "chapter": "XXXVI–XXXVII",
         "half": "ours",
