@@ -509,7 +509,15 @@ export class HPWorldScene {
       }
       let merged = null;
       try { merged = mergeGeometries(geos, false); } catch (e) { /* mixed attributes — leave unmerged */ }
-      if (!merged) { geos.forEach(g => g.dispose()); continue; }
+      if (!merged) {
+        // say WHICH bucket, or the console error from BufferGeometryUtils is
+        // a needle with no haystack
+        const sig = (g) => g.type + (g.index ? '+i' : '-i') + '[' + Object.keys(g.attributes).sort().join(',') + ']';
+        const first = sig(geos[0]), odd = geos.find(g => sig(g) !== first);
+        console.warn('[compile] bucket left unmerged:', b.mat.color ? '#' + b.mat.color.getHexString() : b.mat.type,
+          geos.length, 'geometries; first', first, 'differs from', odd ? sig(odd) : '(none — index mismatch elsewhere)');
+        geos.forEach(g => g.dispose()); continue;
+      }
       const mm = new THREE.Mesh(merged, b.mat);
       mm.castShadow = b.cast;
       mm.receiveShadow = b.recv;
@@ -586,6 +594,13 @@ export class HPWorldScene {
         else this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + sgn * half, y + 0.74, cz + t, o);
       }
     }
+  }
+
+  // PolyhedronGeometry is non-indexed; the draw-call merger wants a bucket
+  // all indexed or all not, so any polyhedron gets a trivial index first.
+  _indexed(geo) {
+    if (!geo.index) geo.setIndex(Array.from({ length: geo.attributes.position.count }, (_, k) => k));
+    return geo;
   }
 
   _circleCol(x, z, r) { this.walker.colliders.push({ x, z, r }); }
@@ -2340,58 +2355,89 @@ export class HPWorldScene {
     const S = this.style;
     const Z = 12, WALL_H = 4.8;
 
-    const edges = [-14, ...DOORS.flatMap(d => [d.x - d.w / 2 - 0.6, d.x + d.w / 2 + 0.6]), 14];
+    // Dallington p. 192–193 (corpus ll. 8100–8125): after the bridge "a rocky
+    // and stony place, where high & craggie Mountaines lifted vp themselues …
+    // full of broken and nybled stones, mounting vppe into the ayre, as high as
+    // a man might looke to, and without any greene grasse or hearbe, and there
+    // were hewen out the three gates, in the verie rocke it selfe, euen as
+    // plaine as might be. A worke verie auncient and past record, in a very
+    // displeasant seate." The titles over them "in Letters Ionic, Romaine,
+    // Hebrew and Arabic"; the right-hand gate's leaves "couered ouer with
+    // greene mosse". Plate #37 draws exactly that: doorways in a mountainside.
+    //
+    // The first build was a classical wall with an entablature and Corinthian
+    // columns — the opposite of "as plaine as might be". This is the rock.
+    const woodcut = S.key === 'woodcut';
+    const rock = woodcut ? S.mat({ tone: 0.14 }) : S.mat({ color: 0x6e6658, roughness: 0.98 });
+    if (!woodcut) this._dress(rock, this._surfaceTexture({ base: '#6e6658', dark: '#2e2a22', light: '#a49a86', blobs: 90, speckle: 5200, veins: 10, repeat: 3 }), 0.6);
+    const rockDk = woodcut ? S.mat({ tone: 0.26 }) : S.mat({ color: 0x4a443a, roughness: 0.98 });
+    const moss = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x4a6a2a, roughness: 0.95 });
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+
+    // the mountain: a bank of boulders along the line, rising behind and above
+    // the gates to "as high as a man might looke to", bare of any green
+    const gateGap = (x) => DOORS.some(d => Math.abs(x - d.x) < d.w / 2 + 0.9);
+    this._m(new THREE.BoxGeometry(30, 0.08, 9), rockDk, 0, 0.04, Z - 1.5, { cast: false });   // the stony ground
+    for (let i = 0; i < 70; i++) {
+      const x = -15 + rnd(i, 1) * 30;
+      const depth = rnd(i, 2);                          // 0 = the face, 1 = the back
+      const z = Z - 1.4 - depth * 6.5;
+      const r = 0.9 + rnd(i, 3) * 1.4 + depth * 1.4;
+      const y = r * 0.55 + depth * 3.2 + rnd(i, 4) * 1.6;
+      if (depth < 0.55 && gateGap(x)) continue;         // keep the gates clear, and their approach
+      // PolyhedronGeometry is non-indexed and the draw-call merger wants every
+      // geometry in a bucket alike, so the boulder gets a trivial index
+      const bg = new THREE.DodecahedronGeometry(r, 0);
+      bg.setIndex(Array.from({ length: bg.attributes.position.count }, (_, k) => k));
+      const b = this._m(bg, i % 3 ? rock : rockDk, x, y, z, { outline: true });
+      b.rotation.set(rnd(i, 5) * 3, rnd(i, 6) * 3, rnd(i, 7) * 3);
+      b.scale.set(1 + rnd(i, 8) * 0.6, 0.7 + rnd(i, 9) * 0.5, 1 + rnd(i, 10) * 0.4);
+    }
+    // the face itself at the gates: a straight-cut rock front the doors are
+    // hewn from, with rock piers between the openings
+    const edges = [-14, ...DOORS.flatMap(d => [d.x - d.w / 2 - 0.15, d.x + d.w / 2 + 0.15]), 14];
     for (let i = 0; i < edges.length; i += 2) {
       const a = edges[i], b = edges[i + 1];
-      this._m(new THREE.BoxGeometry(b - a, WALL_H, 0.7), this._stoneMat, (a + b) / 2, WALL_H / 2, Z);
-      this._wallCol(a, b, Z - 0.35, Z + 0.35);
+      const face = this._m(new THREE.BoxGeometry(b - a, WALL_H + 1.4, 1.6), rock, (a + b) / 2, (WALL_H + 1.4) / 2, Z - 0.3, { outline: true });
+      face.rotation.z = (rnd(i, 11) - 0.5) * 0.02;
+      this._wallCol(a, b, Z - 1.1, Z + 0.5);
     }
-    // The wall was a plain slab with a cap. This is the threshold of the dream
-    // proper — Lefaivre's architectural body at its most explicit — so it gets
-    // the shared classical members: a full entablature along its whole length,
-    // and engaged columns standing to either side of each gate.
-    this._entablature(0, WALL_H - 0.1, Z, 28.8, 1.0);
-    this._frieze(0, WALL_H + 0.62, Z + 0.55, 27.6, 0.5, 'meander');
-    this._m(new THREE.BoxGeometry(28.6, 0.35, 1.0), this._darkStoneMat, 0, WALL_H + 0.17, Z);
-
     DOORS.forEach((d, i) => {
-      const over = WALL_H - d.h;
-      this._m(new THREE.BoxGeometry(d.w + 1.2, over, 0.7), this._stoneMat, d.x, d.h + over / 2, Z);
-      for (const s of [-1, 1]) {
-        this._m(new THREE.BoxGeometry(0.28, d.h, 0.85), this._darkStoneMat, d.x + s * (d.w / 2 + 0.14), d.h / 2, Z, { outline: true });
-      }
-      this._m(new THREE.BoxGeometry(d.w + 0.8, 0.3, 0.85), this._darkStoneMat, d.x, d.h + 0.15, Z);
-
-      // Greek above, Latin below — the plate letters each gate in four scripts
-      this._plaque({ main: d.title, sub: d.sub, glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
-        2.3, 0.6, d.x, d.h + 0.72, Z + 0.42, 0, true);
-      this._plaque({ main: d.greek, sub: 'KEPT BY ' + d.keeper.toUpperCase(), glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
-        2.0, 0.5, d.x, d.h + 1.28, Z + 0.42, 0, true);
-
-      // engaged columns flanking the gate, of the order the gate's own colour
-      // suggests; and an egg-and-dart astragal under its lintel
+      // the rock over the opening, and the rough reveals — "as plaine as might be"
+      const over = WALL_H + 1.4 - d.h;
+      this._m(new THREE.BoxGeometry(d.w + 0.3, over, 1.6), rock, d.x, d.h + over / 2, Z - 0.3, { outline: true });
       for (const sx of [-1, 1]) {
-        const cx2 = d.x + sx * (d.w / 2 + 0.62);
-        const gc = new THREE.Group(); gc.position.set(0, 0, 0); this.scene.add(gc);
-        this._column(cx2, Z + 0.52, d.h + 0.35, { order: 'corinthian', r: 0.17, parent: gc });
+        this._m(new THREE.BoxGeometry(0.22, d.h, 1.7), rockDk, d.x + sx * (d.w / 2 + 0.04), d.h / 2, Z - 0.3, { cast: false });
       }
-      this._frieze(d.x, d.h + 0.38, Z + 0.5, d.w + 1.0, 0.24, 'eggdart');
+      this._m(new THREE.BoxGeometry(d.w + 0.4, 0.22, 1.7), rockDk, d.x, d.h + 0.1, Z - 0.3, { cast: false });
+      // the leaves of the gate, and on the right-hand one the green moss
+      const leafM = woodcut ? S.mat({ tone: 0.3 }) : S.mat({ color: 0x3a2e22, roughness: 0.9 });
+      for (const sx of [-1, 1]) {
+        const lf = this._m(new THREE.BoxGeometry(d.w / 2 - 0.05, d.h - 0.15, 0.1), leafM, d.x + sx * (d.w / 4 + 0.02), (d.h - 0.15) / 2, Z - 1.05, { cast: false });
+        lf.rotation.y = sx * 1.25;
+        lf.position.x = d.x + sx * (d.w / 2 - 0.05);
+        lf.position.z = Z - 1.05 - Math.sin(1.25) * (d.w / 4);
+        if (i === 0) for (let k = 0; k < 5; k++) {
+          this._m(new THREE.SphereGeometry(0.12 + rnd(k, 12) * 0.1, 7, 6), moss, lf.position.x, 0.3 + rnd(k, 13) * (d.h - 0.6), lf.position.z, { cast: false }).scale.set(1, 1.4, 0.4);
+        }
+      }
+      // the title over the gate, as the book has it: Greek and Latin here, and
+      // the plate's Hebrew and Arabic named rather than invented
+      this._plaque({ main: d.greek, sub: d.title.toUpperCase() + ' · ALSO IN HEBREW AND ARABIC ON THE PLATE', glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
+        2.4, 0.6, d.x, d.h + 0.72, Z + 0.52, 0, true);
+      this._plaque({ main: d.sub.split(' · ')[1] || d.sub, sub: 'KEPT BY ' + d.keeper.toUpperCase(), glyphColor: '#' + d.color.toString(16).padStart(6, '0') },
+        2.0, 0.4, d.x, d.h + 1.22, Z + 0.52, 0, true);
 
       const pm = S.portalMat(d.color);
       if (pm) {
-        this._m(new THREE.PlaneGeometry(d.w, d.h - 0.1), pm, d.x, (d.h - 0.1) / 2, Z, { cast: false, receive: false });
+        this._m(new THREE.PlaneGeometry(d.w, d.h - 0.1), pm, d.x, (d.h - 0.1) / 2, Z - 0.3, { cast: false, receive: false });
         this._portals.push({ mat: pm, base: pm.opacity, phase: i * 1.3 });
         const pl = S.pointLight(d.color, 1.2, 6);
         if (pl) { pl.position.set(d.x, 1.4, Z + 1.0); this.scene.add(pl); this._pulses.push({ pl, base: 1.2, phase: i * 1.3 }); }
       }
     });
-
-    // Pediment over the central door — apex up (thetaStart π puts a vertex at
-    // local -z → world +y once the prism is laid on its side)
-    const ped = this._m(
-      new THREE.CylinderGeometry(1.6, 1.6, 0.55, 3, 1, false, Math.PI),
-      this._stoneMat, 0, WALL_H + 0.55, Z, { rx: Math.PI / 2, outline: true });
-    ped.scale.set(2.0, 1, 0.62);
+    this._plaque({ main: 'HEWEN OVT IN THE VERIE ROCKE', sub: 'A WORKE VERIE AVNCIENT AND PAST RECORD, IN A VERY DISPLEASANT SEATE · CH. XII' },
+      2.6, 0.4, 0, 0.7, Z + 2.4, 0, true);
 
     // Logistica and Thelemia, Poliphilo's guides to the choice. Logistica argues
     // the hard gate with a lute (borrowed from Thelemia) and, when he chooses the
@@ -3355,7 +3401,7 @@ export class HPWorldScene {
     this._m(new THREE.CylinderGeometry(0.8, 1.0, 1.3, 20), this._stoneMat, CX, 1.2, CZ, { outline: true });
     this._circleCol(CX, CZ, 2.4);
 
-    const dod = this._m(new THREE.DodecahedronGeometry(0.82, 0),
+    const dod = this._m(this._indexed(new THREE.DodecahedronGeometry(0.82, 0)),
       S.key === 'woodcut' ? S.glowMat() : S.glowMat({ color: 0xffd24a, emissive: 0xc89020, emissiveIntensity: 1.1, metalness: 0.9, roughness: 0.15 }),
       CX, 3.2, CZ, { outline: 1.05 });
     const dl = S.pointLight(0xffd060, 2.4, 10);
