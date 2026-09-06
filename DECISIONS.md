@@ -2,6 +2,26 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-05 — "Build everything" (Ted)
+
+Ted: *"go! go! go! build everything!"* — in reply to a report whose two open questions were
+whether the rite of Priapus belonged in the walkable world and whether Book II should have
+ground of its own. Both are taken as answered **yes**, and both are built. Priapus is built
+as the plate draws him, a herm on the altar, and no more explicit than plate #71 already in
+the gallery. Book II gets a precinct at (44, 22), east of the meadow — Treviso in the dream's
+own east — and its seven interior stops move onto it.
+
+Also built in the same pass, each from the page it cites in its code comment: the
+water-labyrinth (Dallington pp. 177–180, since neither early edition illustrates it), the
+Colossus as architecture (per the brief in `ARCHITECTURE.md`; the reverted anatomical build
+is not repeated), the amphitheatre of Venus (our pp. 350–352), the Triumph of Cupid as a
+procession (p. 341), the Polyandrion's five medallions **as unread devices, labelled so**,
+and the miracle of the roses (p. 224).
+
+**Not built, and why:** the second five-senses fountain (#22) — the plate is a fragment and
+no passage for it has been located in either the 1592 or our range; the *asaroton* mosaic of
+the temple floor — no drawing of it survives to build from. Both stay on the queue.
+
 ## 2026-09-05 — The Temple of Venus, and the walker has no floor height
 
 Fifteen plates (#71–#85) and no geometry: the largest documented absence in the world, and
