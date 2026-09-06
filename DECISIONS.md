@@ -2,7 +2,39 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
-## 2026-09-05 — "Build everything" (Ted)
+## 2026-09-06 — The site is the Hypnerotomachia, and now so is the repo; plants, water, roofs (Ted)
+
+Ted: *"I just want the atalanta stuff archived so we can focus on the HP … We still have a lot
+of work to do on the architecture so that it matches the descriptions in HP and looks like
+real buildings that don't have impossible floating platforms, and fountains that look like
+real water. The gardens and trees don't look much like real plants. You were supposed to read
+the scholarship and the novel itself and get the actual names of the plants and trees and
+render them accordingly."*
+
+**Archived.** Branch `atalanta-archive` and tag `atalanta-archive-2026-09-06` hold everything;
+`main` lost `/v1/`, `/v2/`, `lab/`, the three dormant scenes, `af_*.js`, `emblems.json`,
+`images/emblems/` and the emblem cut-outs (≈93 MB). The landing page no longer links them.
+
+**Plants, from the text.** `PLANTS.md` §1 is now the book's own list with the place each
+species is named for: oak, beech, elm-with-vine and fir in the wood (1592 l. 625); the cypress
+avenue and the citron/orange/lemon enclosure on the way to the palace (p. 123); myrtle about
+Venus; the bosco's compartments of cypress, pine, juniper, olive, laurel, arbutus, palm,
+orange, plane (our pp. 317–318); the spice wood of citron, juniper, terebinth, almond (p. 324).
+`_tree()` is rebuilt on a species table with **leaf-spray cards** in the species' own leaf
+form over a dark matte core — foliage the light comes through, not blobs. Two lessons from
+looking: a card must be about half a metre whatever the tree (sized to the crown it read as
+a two-metre leaf), and the number of cards is a *coverage* — ~8πr²/size² — not a constant
+(forty on a metre crown left the core showing as a ball).
+
+**Water.** `_waterMat()` is a mirror finish that takes the environment map, a tiled ripple
+normal map whose offset drifts every frame, and a cool tint you can see through to the bed.
+The old painted rings stay underneath as the bed.
+
+**Roofs, not slabs.** `_roof()` puts a soffit of beams under a deck and a low tiled pitch with
+ridge and antefixes over it; the palace hall, Diana's temple and Polia's chamber use it. The
+rule: a horizontal plane in the air needs both what holds it up and what it does on top.
+
+
 
 Ted: *"go! go! go! build everything!"* — in reply to a report whose two open questions were
 whether the rite of Priapus belonged in the walkable world and whether Book II should have

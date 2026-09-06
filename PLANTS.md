@@ -9,48 +9,48 @@
 
 ---
 
-## 1. The species, and why these
+## 1. The species, and why these — from the text (rewritten 2026-09-06)
 
-The book names its plants. The world plants the ones it names, rather than generic trees:
+Ted: *"You were supposed to read the scholarship and the novel itself and get the actual
+names of the plants and trees and render them accordingly."* So this table is the book's,
+with the place each species is named for. Word-counts are hits in the 1592 and in our
+translation of XVII–XXXVIII; the 1592 spellings are given where they differ.
 
-| Species | Why it is here | How it is built |
+| Species | Where the book puts it | Text |
 |---|---|---|
-| **Cypress** | The signature tree of an Italian garden, and the book's crowning cypress arcade on Cythera's top terrace. | Columnar: four stacked, offset, tapering masses so the silhouette wavers instead of being a cone. |
-| **Umbrella pine** | The Roman pine of the antiquarian landscape. | A long bare trunk, four high branches, and a wide flat crown floating above them. |
-| **Laurel** | The evergreen of crowns and of Apollo; what the nymphs are wreathed with. | Short trunk splitting into three or four boughs under a dense round mass. |
-| **Myrtle** | Venus's own plant. Its presence in a garden is never neutral in this book. | As laurel, in a darker green. |
-| **Orange** | The book's orchards, and the fruit trees of Botticelli's own grove — the painting the garden's figures are cut from is set among orange trees. | Rounded low canopy on three boughs, bearing fruit. |
+| **Oak** (*oke*), **beech**, **elm** with its vine, **fir** | the dark wood, ch. I | 1592 l. 625: "towgh Elmes beloued of the fruitfull vines, harde Ebony, strong Okes, soft Beeche"; fir boughs at l. 500 |
+| **Cypress** | the way to the palace, ch. VII; the rim of Cythera's bosco; conifers of the first terrace | 1592 p. 123: "a waye set on either sides with Cyprus Trees"; our pp. 317–319 |
+| **Citron, orange, lemon** (*Cytrons, Orenges and Lymonds*) | the enclosure before the palace, ch. VII; the bitter-orange espalier of Cythera; the spice wood | 1592 p. 123; our pp. 311–313, 324 |
+| **Myrtle** | Venus's plant: the grove about her fountain, beneath the bosco's cypresses, about the theatre | our pp. 311, 322–325 (46 hits in XVII–XXXVIII) |
+| **Laurel** | the crowns of nymphs and poets; a bosco compartment | our pp. 318, 321, 327, 330 |
+| **Pine** (umbrella) | a bosco compartment; the terraces | our pp. 317, 320, 323 |
+| **Juniper, olive, arbutus, palm, plane** | bosco compartments and the spice wood | our pp. 317–318, 324 |
+| **Apple, pear, plum** | the prati's corner fruit trees, 240 in all (Segre) | our pp. 326–330 |
+| **Box** (*boxe*) | every hedge, knot and topiary | 97 hits; GARDENS.md §5 |
+| **Willow, poplar** | by water | our p. 312 |
+| **Rose, jasmine, ivy, vine** | the pergolas and Polia's garden | passim |
 
-Plus **topiary** (clipped forms on stepped bases, per the 1499 plates and the lexicon entry),
-**hedges**, **rose hedges** in Polia's garden, and the **flowery mead** — "at once meadow and
-garden" — ringing the fountain.
+## 2. How a tree is made (rewritten 2026-09-06)
 
-## 2. How a tree is made
+A canopy of overlapping spheres reads as a blob at any distance. A canopy of **leaf-spray
+cards** reads as foliage, because the silhouette breaks into leaves and light comes through.
+So `HPWorldScene._tree()` now works from a **species table** (`HPWorldScene.SPECIES`): each
+species has a leaf form (scale, needle, lanceolate, ovate, narrow, lobed, palmate, frond), two
+foliage tones, a crown shape, a trunk, bark colour, and extras — fruit, blossom, the vine
+trained up the elm, the plane's flaking bark, the olive's twisted double stem, the willow's
+hanging crown, the palm's radiating fronds. `_leafCardTexture(species)` draws one spray of
+that leaf; `_canopyCards()` scatters ~40–70 half-metre cards through the crown at fixed
+random orientations (not billboards — a card that turns to face you is a sticker), over a
+dark matte core that makes the gaps read as shadow rather than sky. Cards are capped at
+about a metre: a big crown gets *more* cards, not bigger ones.
 
-The trees were the single worst asset in the world: one `CylinderGeometry` trunk and one
-`ConeGeometry` canopy, in every garden and in the Dark Wood. One smooth primitive has no
-branch structure and no foliage mass, so it cannot catch light the way a painted tree does.
-
-They are now built the way a Quattrocento painter draws them:
-
-- a **tapered, slightly leaning trunk** with a **root flare**, so it grows out of the ground
-  rather than sitting on it;
-- **real boughs** — tapered limbs oriented by quaternion between two points;
-- a canopy of **several overlapping, jittered ellipsoids in two tones** — a lighter crown
-  over a darker underside — so the mass has a lit side;
-- everything **seeded from position**, so the garden and the wood are identical on every load.
-
-Two places make trees and both were fixed: `HPWorldScene._tree()` for the garden and
-`Cast.props.tree()` for the Dark Wood. Fixing only one left half the world in cones.
-
-**Variants** (Graphics menu → *Trees & foliage*): `primitive` keeps the founding cone —
-which is also what woodcut mode prefers, since flat ink wants a readable silhouette —
-and `massed` is the built-out version. Default is `massed`.
+The woodcut register keeps the massed silhouette (ink wants a shape, not leaves), and the
+`primitive` variant keeps the founding cone.
 
 ## 3. The planting logic
 
-- **The Dark Wood** — a dense deterministic scatter of 64 trees, roughly 60/40 cypress to
-  broadleaf, keeping the path clear. Dark duff underfoot. The *selva oscura*: the wood is so
+- **The Dark Wood** — a dense deterministic scatter of 64 trees of oak, beech, elm and fir —
+  the species the text names — keeping the path clear. No cypress: that is a garden tree. Dark duff underfoot. The *selva oscura*: the wood is so
   thick "neither light nor path survives beneath the crowns."
 - **The garden proper** — trees ringing the fountain grove and lining the processional
   approaches, with the ring deliberately open toward the shore so Cythera stays visible.

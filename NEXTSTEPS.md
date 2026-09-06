@@ -31,6 +31,15 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
+### 0. Ted's standing brief, 2026-09-06
+*"architecture … that looks like real buildings that don't have impossible floating platforms,
+fountains that look like real water, gardens and trees that look like real plants, from the
+names in the novel and the scholarship."* First pass done the same day (plants rebuilt on the
+text's species, water, `_roof()` on three buildings). **Still to sweep:** every remaining slab
+without a soffit (audit station by station); the fountains' jets and basins one by one;
+`Cast.props.tree()` in the woodcut register; Segre's knot gardens and parterres in box, which
+`PLANTS.md` §4 has called the biggest unbuilt garden item since it was written.
+
 ### 1. Finish dressing the buildings
 `_drape()` exists; four hangings frame the throne in Eleuterylida's court and nothing else
 in the world is dressed. Lefaivre's rule (`ARCHITECTURE.md` §0) is that cloth and precious

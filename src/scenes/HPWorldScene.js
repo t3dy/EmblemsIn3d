@@ -534,6 +534,60 @@ export class HPWorldScene {
     return m;
   }
 
+  // A roof, not a slab. Ted, 2026-09-06: "real buildings that don't have
+  // impossible floating platforms". What makes a horizontal plane read as a
+  // roof rather than a hovering slab is what holds it up and what it does on
+  // top: a SOFFIT of beams running between the supports, and a PITCH with a
+  // ridge and eaves above. This puts both under and over a rectangle.
+  //   cx, cz  centre;  y  the underside;  w  along x;  d  along z;
+  //   pitch   rise of the ridge (0 = flat with a parapet)
+  _roof(cx, y, cz, w, d, { pitch = 0.9, beams = true, parent = null, ridgeAlong = 'x' } = {}) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const timber = woodcut ? this._darkStoneMat : this.style.mat({ color: 0x4a3420, roughness: 0.9 });
+    const tile = woodcut ? this._darkStoneMat : this.style.mat({ color: 0x8a4a34, roughness: 0.85 });
+    const o = { parent, cast: false };
+    if (beams) {
+      // primary beams across the short span, purlins along the long one
+      const nB = Math.max(3, Math.round((ridgeAlong === 'x' ? w : d) / 1.5));
+      for (let i = 0; i < nB; i++) {
+        const t = (i / (nB - 1) - 0.5);
+        if (ridgeAlong === 'x') this._m(new THREE.BoxGeometry(0.22, 0.28, d), timber, cx + t * (w - 0.4), y + 0.14, cz, o);
+        else this._m(new THREE.BoxGeometry(w, 0.28, 0.22), timber, cx, y + 0.14, cz + t * (d - 0.4), o);
+      }
+      const nP = 3;
+      for (let i = 0; i < nP; i++) {
+        const t = (i / (nP - 1) - 0.5);
+        if (ridgeAlong === 'x') this._m(new THREE.BoxGeometry(w, 0.18, 0.18), timber, cx, y + 0.34, cz + t * (d - 0.5), o);
+        else this._m(new THREE.BoxGeometry(0.18, 0.18, d), timber, cx + t * (w - 0.5), y + 0.34, cz, o);
+      }
+    }
+    // the deck the beams carry
+    this._m(new THREE.BoxGeometry(w, 0.12, d), this._stoneMat, cx, y + 0.5, cz, o);
+    if (pitch <= 0) {
+      this._m(new THREE.BoxGeometry(w + 0.3, 0.42, d + 0.3), this._stoneMat, cx, y + 0.72, cz, { ...o, outline: true });
+      return;
+    }
+    // two sloped leaves meeting at a ridge, eaves overhanging the deck
+    const along = ridgeAlong === 'x' ? w : d, across = ridgeAlong === 'x' ? d : w;
+    const half = across / 2 + 0.35, leafLen = Math.hypot(half, pitch), ang = Math.atan2(pitch, half);
+    for (const sgn of [-1, 1]) {
+      const leaf = this._m(new THREE.BoxGeometry(ridgeAlong === 'x' ? along + 0.6 : leafLen, 0.14, ridgeAlong === 'x' ? leafLen : along + 0.6),
+        tile, ridgeAlong === 'x' ? cx : cx + sgn * half / 2, y + 0.56 + pitch / 2, ridgeAlong === 'x' ? cz + sgn * half / 2 : cz, { ...o, outline: true });
+      if (ridgeAlong === 'x') leaf.rotation.x = -sgn * ang; else leaf.rotation.z = sgn * ang;
+    }
+    // the ridge, and antefixes along both eaves
+    if (ridgeAlong === 'x') this._m(new THREE.BoxGeometry(along + 0.6, 0.16, 0.24), tile, cx, y + 0.6 + pitch, cz, o);
+    else this._m(new THREE.BoxGeometry(0.24, 0.16, along + 0.6), tile, cx, y + 0.6 + pitch, cz, o);
+    const nA = Math.max(4, Math.round(along / 1.5));
+    for (let i = 0; i < nA; i++) {
+      const t = (i / (nA - 1) - 0.5) * (along - 0.4);
+      for (const sgn of [-1, 1]) {
+        if (ridgeAlong === 'x') this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + t, y + 0.74, cz + sgn * half, o);
+        else this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + sgn * half, y + 0.74, cz + t, o);
+      }
+    }
+  }
+
   _circleCol(x, z, r) { this.walker.colliders.push({ x, z, r }); }
   _wallCol(x0, x1, z0, z1) { this.walker.walls.push({ x0, x1, z0, z1 }); }
 
@@ -777,14 +831,57 @@ export class HPWorldScene {
     const S = this.style;
     const m = S.waterMat();
     if (S.key === 'woodcut' || isVariant('water', 'primitive', S.key)) return m;
-    m.color.set(0xffffff);            // the map carries the blue
-    m.map = this._waterTexture();
-    // Water is not a matte surface: it holds light even in shade. Without
-    // this, any basin under a dome or an arcade reads as wet asphalt.
-    m.emissive = new THREE.Color(0x2a4460);
-    m.emissiveIntensity = 0.55;
-    m.roughness = 0.22;
+    // Ted, 2026-09-06: "fountains that look like real water". What water
+    // actually does is reflect the sky and the building, break that reflection
+    // into moving ripples, and let you see into it. So: a mirror finish that
+    // takes the shared environment map, a tiled ripple NORMAL map whose offset
+    // drifts every frame (two layers, counter-drifting, so it never reads as a
+    // sliding sheet), a cool tint you can see through, and the old painted
+    // rings kept underneath as the bed you see through it.
+    m.color.set(0x8fb8c8);
+    m.map = null;
+    m.normalMap = this._waterNormal();
+    m.normalScale = new THREE.Vector2(0.55, 0.55);
+    m.roughness = 0.06;
+    m.metalness = 0.12;
+    m.envMapIntensity = 1.6;
+    m.transparent = true;
+    m.opacity = 0.72;
+    m.emissive = new THREE.Color(0x0e2a3a);
+    m.emissiveIntensity = 0.35;
+    m.depthWrite = false;
     return m;
+  }
+
+  // One ripple normal map, shared by every water in the world and animated
+  // in update(). Sum of a few sine ridges plus a cellular jitter, encoded as
+  // a tangent-space normal.
+  _waterNormal() {
+    if (this._waterNrm) return this._waterNrm;
+    const N = 256;
+    const c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d');
+    const img = x.createImageData(N, N);
+    const h = (i, j) => {
+      const u = i / N * Math.PI * 2, v = j / N * Math.PI * 2;
+      return Math.sin(u * 3 + Math.sin(v * 2) * 1.3) * 0.5 + Math.sin(v * 5 + Math.cos(u * 3) * 1.1) * 0.35
+           + Math.sin((u + v) * 7) * 0.15 + Math.sin(u * 11 - v * 9) * 0.08;
+    };
+    for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
+      const dx = (h((i + 1) % N, j) - h((i - 1 + N) % N, j)) * 2.2;
+      const dy = (h(i, (j + 1) % N) - h(i, (j - 1 + N) % N)) * 2.2;
+      const len = Math.hypot(dx, dy, 1);
+      const k = (j * N + i) * 4;
+      img.data[k] = 128 + (-dx / len) * 127; img.data[k + 1] = 128 + (-dy / len) * 127; img.data[k + 2] = 128 + (1 / len) * 127; img.data[k + 3] = 255;
+    }
+    x.putImageData(img, 0, 0);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.NoColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(2.5, 2.5);
+    this._disp.push(t);
+    this._waterNrm = t;
+    return t;
   }
 
   _waterIsPainterly() {
@@ -929,12 +1026,11 @@ export class HPWorldScene {
       const z = 34.5 + rnd(i, 2) * 16;
       if (Math.abs(x) < 2.7) continue;                  // the path survives
       const s = 0.9 + rnd(i, 3) * 0.8;
-      const kind = rnd(i, 4) < 0.6 ? 'cypress' : 'broad';
-      const t = this.cast.props.tree(kind, s * 1.3, i + 1);
-      t.position.set(x, 0, z);
-      t.rotation.y = rnd(i, 5) * Math.PI;
-      this.scene.add(t);
-      this._circleCol(x, z, 0.5);
+      // the wood the book names (1592 l. 625): elms with their vines, oaks,
+      // beeches, and the fir whose boughs are hung on the horns of the
+      // sacrifice — no cypress, which belongs to the garden avenues
+      const WOOD = ['oak', 'oak', 'beech', 'elm', 'fir', 'oak', 'beech', 'fir'];
+      this._tree(x, z, s * 1.15, WOOD[Math.floor(rnd(i, 4) * WOOD.length) % WOOD.length]);
     }
 
     // The hungry wolf, watching the path
@@ -2848,12 +2944,9 @@ export class HPWorldScene {
     }
     this._doorway(CX, 0.57, WZ + 0.32, 2.0, 3.2);
     this._entablature(CX, 0.57 + WH - 0.2, WZ, 13.8, 0.75);
-    // a low roof over the hall, and antefixes along the eaves
-    this._m(new THREE.BoxGeometry(13.9, 0.24, 9.6), this._darkStoneMat, CX, 0.57 + WH + 1.1, WZ + 4.6, { cast: false });
-    for (let i = 0; i < 9; i++) {
-      const x = CX - 6.4 + i * 1.6;
-      this._m(new THREE.ConeGeometry(0.18, 0.34, 6), this._stoneMat, x, 0.57 + WH + 1.4, WZ + 0.05, { cast: false });
-    }
+    // the roof over the hall: beams across the span you look up at, a low
+    // tiled pitch with its ridge along the hall, antefixes at the eaves
+    this._roof(CX, 0.57 + WH + 0.98, WZ + 4.6, 13.9, 9.6, { pitch: 1.1, ridgeAlong: 'x' });
 
     METALS.forEach((m, i) => {
       const x = -26 + i * (11 / 6), z = -1.9;
@@ -5241,7 +5334,7 @@ export class HPWorldScene {
     this._m(pedGeo, stone, DX, 4.55, DZ + 2.2, { cast: false, outline: true });
     const moon = this._m(new THREE.TorusGeometry(0.42, 0.07, 8, 20, Math.PI * 1.1), silver, DX, 4.75, DZ + 2.65, { cast: false });
     moon.rotation.z = -Math.PI * 0.05;
-    this._m(new THREE.BoxGeometry(5.9, 0.3, 4.4), dark, DX, 5.15, DZ - 0.4, { cast: false });
+    this._roof(DX, 5.05, DZ - 0.4, 6.2, 5.0, { pitch: 0.9, ridgeAlong: 'x' });
     this._wallCol(DX - 3.3, DX + 3.3, DZ - 2.8, DZ - 2.2);
     for (const sx of [-1, 1]) this._wallCol(DX + sx * 3.0 - 0.3, DX + sx * 3.0 + 0.3, DZ - 2.6, DZ + 1.8);
     // Diana's image within, and the stag beside her
@@ -5271,7 +5364,7 @@ export class HPWorldScene {
     // the window in the back wall, through which the chariots burst
     this._m(new THREE.BoxGeometry(1.4, 1.4, 0.34), S.mat(lit ? { color: 0xbcd6f0, roughness: 0.2, transparent: true, opacity: 0.4 } : { tone: 0.05 }),
       CX2, 2.0, CZ2 - 2.1, { cast: false });
-    this._m(new THREE.BoxGeometry(5.2, 0.3, 4.6), dark, CX2, 3.4, CZ2, { cast: false });
+    this._roof(CX2, 3.3, CZ2, 5.2, 4.6, { pitch: 0.8, ridgeAlong: 'x' });
     // the bed, and Polia in it reading the letter (#165)
     this._m(new THREE.BoxGeometry(1.4, 0.5, 2.2), S.mat(lit ? { color: 0x8a2a3a, roughness: 0.8 } : { tone: 0.2 }), CX2 - 1.2, 0.55, CZ2 - 0.6, { outline: true });
     this._m(new THREE.BoxGeometry(1.5, 0.9, 0.2), this._trunkMat, CX2 - 1.2, 1.0, CZ2 - 1.75, { cast: false });
@@ -5571,25 +5664,24 @@ export class HPWorldScene {
     // ── Outer claustro: the bosco ─────────────────────────────────────────
     // Twelve wedge plantations, each one kind of tree, with the cypress
     // enclosure at the rim.
+    // "each a different tree plantation" (Segre): the twelve wedges take the
+    // species our translation names in the bosco, pp. 317–318 — cypress, pine,
+    // juniper, olive, laurel, arbutus, palm, orange — and the plane, oak, elm
+    // and citron it names elsewhere on the island.
+    const BOSCO = ['cypress', 'pine', 'juniper', 'olive', 'laurel', 'arbutus', 'palm', 'orange', 'plane', 'oak', 'elm', 'citron'];
     for (let k = 0; k < 12; k++) {
       const a0 = k * STEP;
-      const kind = k % 2 ? 'broad' : 'cypress';
       for (let t = 0; t < 5; t++) {
         const a = a0 + (0.14 + rnd(k * 7 + t, 1) * 0.72) * STEP;
         const r = 37 + rnd(k * 7 + t, 2) * 9.5;
         const [x, z] = pos(a, r);
-        const tree = this.cast.props.tree(kind, 0.9 + rnd(k * 7 + t, 3) * 0.5);
-        tree.position.set(x, 0.07, z);
-        tree.rotation.y = rnd(k * 7 + t, 4) * Math.PI;
-        this.scene.add(tree);
-        this._circleCol(x, z, 0.5);
+        this._tree(x, z, 0.9 + rnd(k * 7 + t, 3) * 0.5, BOSCO[k]);
       }
-      // one enclosure cypress at mid-wedge, on the rim
+      // the enclosure: a cypress at mid-wedge on the rim, myrtle beneath it
       const [ex, ez] = pos(a0 + STEP / 2, 48.2);
-      const cy = this.cast.props.tree('cypress', 1.25);
-      cy.position.set(ex, 0.07, ez);
-      this.scene.add(cy);
-      this._circleCol(ex, ez, 0.55);
+      this._tree(ex, ez, 1.25, 'cypress');
+      const [mx, mz] = pos(a0 + STEP / 2 + 0.06, 47.0);
+      this._tree(mx, mz, 0.55, 'myrtle');
     }
 
     // ── Middle claustro: the prati ────────────────────────────────────────
@@ -5717,15 +5809,14 @@ export class HPWorldScene {
       const a = (i / 16) * Math.PI * 2;
       if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(a - q * Math.PI / 2))) < 0.28) continue;
       const [x, z] = pos(a, 9.5);
-      this._m(new THREE.ConeGeometry(0.3, 1.35, 7), this._leafMat, x, 1.17, z, { cast: false });
+      const t = this._tree(x, z, 0.42, 'pine'); if (t) t.position.y = 0.42;   // on the first terrace
     }
     for (let i = 0; i < 10; i++) {
       const a = (i / 10) * Math.PI * 2 + 0.31;
       if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.3) continue;
       const [x, z] = pos(a, 15.5);
-      const sp = this.cast.props.tree('broad', 0.55);
-      sp.position.set(x, 1.26, z);
-      this.scene.add(sp);
+      // the spice wood of the third terrace: citron, juniper, almond, terebinth (p. 324)
+      const t = this._tree(x, z, 0.5, ['citron', 'juniper', 'laurel', 'olive'][i % 4]); if (t) t.position.y = 1.26;
     }
     // terrace guards: the walk enters only by the four crossroads
     for (let i = 0; i < 22; i++) {
@@ -6288,6 +6379,200 @@ export class HPWorldScene {
     return m;
   }
 
+  // ── Foliage as foliage ───────────────────────────────────
+  //
+  // Ted, 2026-09-06: "The gardens and trees don't look much like real plants.
+  // You were supposed to read the scholarship and the novel itself and get the
+  // actual names of the plants and trees and render them accordingly."
+  //
+  // The names, from the text (counts are word-hits in the 1592 and in our
+  // translation of XVII–XXXVIII; PLANTS.md carries the table):
+  //   the wood, ch. I (1592 l. 625): "towgh Elmes beloued of the fruitfull
+  //     vines, harde Ebony, strong Okes, soft Beeche", and fir boughs;
+  //   the way to the palace, ch. VII (1592 p. 123): "a waye set on either
+  //     sides with Cyprus Trees", and the enclosure "altogither of Cytrons,
+  //     Orenges and Lymonds";
+  //   Cythera, ch. XXI–XXII (our pp. 311–330): the bosco enclosed by cypress
+  //     with myrtle beneath and a bitter-orange espalier within; compartments
+  //     of pine, juniper, olive, laurel, arbutus, palm, orange, plane; the
+  //     prati with apples, pears, plums; conifers on the first terrace, box
+  //     knots, then the spice wood of citron, terebinth, almond and juniper;
+  //     myrtle — Venus's own — about the theatre.
+  //
+  // How they are built. A canopy of overlapping spheres reads as a blob at
+  // any distance; a canopy of LEAF-SPRAY CARDS reads as foliage, because the
+  // silhouette breaks into leaves and light comes through it. Each species
+  // gets a drawn spray of its own leaf — scale, needle, lanceolate, ovate,
+  // lobed, palmate, frond — in two tones, and a crown shape the cards are
+  // scattered through. Fixed random orientations, not billboards: a card that
+  // turns to face you is a sticker; a card that does not is a leaf.
+  static get SPECIES() {
+    //                 leaf        crown            trunk        bark      dark      light     cards  extras
+    return {
+      cypress:  { leaf: 'scale',   crown: [0.55, 2.4, 0.55], trunk: [0.9, 0.09], bark: 0x4a3a28, dark: 0x17300f, light: 0x2c4a18, n: 26, top: 0.62 },
+      fir:      { leaf: 'needle',  crown: [1.1, 2.2, 1.1],   trunk: [1.0, 0.11], bark: 0x3e2e1e, dark: 0x16311a, light: 0x2a5228, n: 28, top: 0.64, cone: true },
+      juniper:  { leaf: 'scale',   crown: [0.7, 1.7, 0.7],   trunk: [0.5, 0.08], bark: 0x5a4a34, dark: 0x274a3a, light: 0x4a7a5a, n: 20, top: 0.55 },
+      pine:     { leaf: 'needle',  crown: [1.9, 0.9, 1.9],   trunk: [3.2, 0.13], bark: 0x5a3a24, dark: 0x1c3612, light: 0x3a5c22, n: 30, top: 1.0, boughs: 4 },
+      laurel:   { leaf: 'lance',   crown: [1.2, 1.35, 1.2],  trunk: [1.3, 0.11], bark: 0x4a3a2a, dark: 0x1b3a13, light: 0x3f6a22, n: 26, top: 0.9, boughs: 3 },
+      myrtle:   { leaf: 'ovate',   crown: [1.1, 1.0, 1.1],   trunk: [0.9, 0.09], bark: 0x5a4030, dark: 0x16300f, light: 0x2f5419, n: 24, top: 0.8, boughs: 3, bloom: 0xf4f0e6 },
+      orange:   { leaf: 'ovate',   crown: [1.15, 1.15, 1.15],trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x1f3d16, light: 0x3d6524, n: 26, top: 0.9, boughs: 3, fruit: 0xe08a1c },
+      citron:   { leaf: 'ovate',   crown: [1.15, 1.2, 1.15], trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x233f1a, light: 0x456a26, n: 26, top: 0.9, boughs: 3, fruit: 0xe8d24a, big: true },
+      lemon:    { leaf: 'ovate',   crown: [1.05, 1.15, 1.05],trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x1f3d16, light: 0x3f6a26, n: 24, top: 0.9, boughs: 3, fruit: 0xf0e060 },
+      apple:    { leaf: 'ovate',   crown: [1.3, 1.1, 1.3],   trunk: [1.4, 0.11], bark: 0x5a4432, dark: 0x2a4a1c, light: 0x5a8a34, n: 26, top: 0.9, boughs: 4, fruit: 0xc83a3a },
+      olive:    { leaf: 'narrow',  crown: [1.35, 1.1, 1.35], trunk: [1.5, 0.16], bark: 0x6a5a48, dark: 0x4a5a3e, light: 0x8a9a74, n: 30, top: 0.9, boughs: 4, gnarled: true },
+      plane:    { leaf: 'palmate', crown: [2.2, 1.9, 2.2],   trunk: [2.8, 0.17], bark: 0x9a8a6c, dark: 0x2c5a1c, light: 0x6a9a3a, n: 34, top: 0.95, boughs: 4, mottled: true },
+      oak:      { leaf: 'lobed',   crown: [2.1, 1.8, 2.1],   trunk: [2.2, 0.20], bark: 0x3e2e1e, dark: 0x22421a, light: 0x4a7a2c, n: 34, top: 0.95, boughs: 5 },
+      beech:    { leaf: 'ovate',   crown: [1.7, 2.1, 1.7],   trunk: [2.4, 0.14], bark: 0x8a8070, dark: 0x2a4c1a, light: 0x5c8c30, n: 30, top: 0.95, boughs: 3 },
+      elm:      { leaf: 'ovate',   crown: [1.6, 2.4, 1.6],   trunk: [2.6, 0.14], bark: 0x4a3a2c, dark: 0x22441a, light: 0x4c7c2c, n: 30, top: 0.95, boughs: 3, vine: true },
+      willow:   { leaf: 'narrow',  crown: [1.8, 1.9, 1.8],   trunk: [1.8, 0.14], bark: 0x5a4a38, dark: 0x3a5a2a, light: 0x7a9a58, n: 34, top: 0.9, boughs: 3, weeping: true },
+      arbutus:  { leaf: 'lance',   crown: [1.2, 1.3, 1.2],   trunk: [1.2, 0.10], bark: 0x8a3a24, dark: 0x1c3a14, light: 0x3c6a22, n: 24, top: 0.9, boughs: 3, fruit: 0xd8402a },
+      palm:     { leaf: 'frond',   crown: [1.6, 0.9, 1.6],   trunk: [3.4, 0.12], bark: 0x7a6a4a, dark: 0x2a5a24, light: 0x5c9a3c, n: 14, top: 1.0, fronds: true },
+    };
+  }
+
+  // A spray of one species' leaves, drawn once and shared: the card texture.
+  _leafCardTexture(species) {
+    this._leafCards = this._leafCards || {};
+    if (this._leafCards[species]) return this._leafCards[species];
+    const SP = HPWorldScene.SPECIES[species] || HPWorldScene.SPECIES.laurel;
+    const N = 256;
+    const c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d');
+    const hex = (h) => '#' + h.toString(16).padStart(6, '0');
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7 + species.length * 17.3) * 43758.5453; return v - Math.floor(v); };
+    const leaf = (cx, cy, len, ang, tone) => {
+      x.save(); x.translate(cx, cy); x.rotate(ang);
+      x.fillStyle = tone; x.strokeStyle = tone; x.lineCap = 'round';
+      if (SP.leaf === 'scale' || SP.leaf === 'needle') {
+        x.lineWidth = SP.leaf === 'scale' ? 3.2 : 1.6;
+        const k = SP.leaf === 'scale' ? 5 : 9;
+        for (let i = 0; i < k; i++) {
+          const t = (i / (k - 1) - 0.5) * (SP.leaf === 'scale' ? 0.9 : 1.6);
+          x.beginPath(); x.moveTo(0, 0); x.lineTo(Math.sin(t) * len, -Math.cos(t) * len); x.stroke();
+        }
+      } else if (SP.leaf === 'frond') {
+        x.lineWidth = 2.4;
+        x.beginPath(); x.moveTo(0, 0); x.lineTo(0, -len * 2.2); x.stroke();
+        for (let i = 1; i < 9; i++) {
+          const yy = -len * 2.2 * i / 9;
+          for (const sgn of [-1, 1]) { x.beginPath(); x.moveTo(0, yy); x.lineTo(sgn * len * 0.55, yy - len * 0.25); x.stroke(); }
+        }
+      } else if (SP.leaf === 'palmate') {
+        x.beginPath();
+        for (let i = 0; i < 5; i++) {
+          const a = (i - 2) * 0.55, L = len * (i === 2 ? 1.0 : 0.8);
+          x.moveTo(0, 0); x.lineTo(Math.sin(a - 0.18) * L * 0.55, -Math.cos(a - 0.18) * L * 0.55);
+          x.lineTo(Math.sin(a) * L, -Math.cos(a) * L); x.lineTo(Math.sin(a + 0.18) * L * 0.55, -Math.cos(a + 0.18) * L * 0.55);
+        }
+        x.closePath(); x.fill();
+      } else if (SP.leaf === 'lobed') {
+        x.beginPath(); x.moveTo(0, 0);
+        for (let i = 0; i <= 6; i++) {
+          const t = i / 6, w = len * 0.28 * (i % 2 ? 1.0 : 0.55);
+          x.lineTo(w, -len * t);
+        }
+        x.lineTo(0, -len * 1.02);
+        for (let i = 6; i >= 0; i--) {
+          const t = i / 6, w = len * 0.28 * (i % 2 ? 1.0 : 0.55);
+          x.lineTo(-w, -len * t);
+        }
+        x.closePath(); x.fill();
+      } else {                                              // lance / ovate / narrow
+        const w = SP.leaf === 'narrow' ? 0.13 : SP.leaf === 'lance' ? 0.24 : 0.36;
+        x.beginPath(); x.moveTo(0, 0);
+        x.quadraticCurveTo(len * w, -len * 0.5, 0, -len);
+        x.quadraticCurveTo(-len * w, -len * 0.5, 0, 0); x.fill();
+        x.strokeStyle = 'rgba(0,0,0,0.18)'; x.lineWidth = 0.8;
+        x.beginPath(); x.moveTo(0, 0); x.lineTo(0, -len * 0.95); x.stroke();
+      }
+      x.restore();
+    };
+    // the spray: a twig from the centre, leaves along it, in two tones
+    const count = SP.leaf === 'frond' ? 3 : SP.leaf === 'scale' ? 26 : SP.leaf === 'needle' ? 22 : 18;
+    const len = { scale: 22, needle: 20, frond: 40, palmate: 34, lobed: 34, lance: 32, ovate: 28, narrow: 30 }[SP.leaf];
+    x.strokeStyle = hex(SP.bark); x.lineWidth = 2;
+    for (let i = 0; i < count; i++) {
+      const a = rnd(i, 1) * Math.PI * 2, r = 18 + rnd(i, 2) * 92;
+      const cx = N / 2 + Math.cos(a) * r, cy = N / 2 + Math.sin(a) * r;
+      if (i % 4 === 0 && SP.leaf !== 'frond') { x.beginPath(); x.moveTo(N / 2, N / 2); x.lineTo(cx, cy); x.stroke(); }
+      const tone = rnd(i, 3) < 0.45 ? hex(SP.light) : hex(SP.dark);
+      leaf(cx, cy, len * (0.7 + rnd(i, 4) * 0.5), a + Math.PI / 2 + (rnd(i, 5) - 0.5) * 1.2, tone);
+    }
+    if (SP.fruit) {
+      for (let i = 0; i < (SP.big ? 3 : 5); i++) {
+        const a = rnd(i, 7) * 6.3, r = 30 + rnd(i, 8) * 70;
+        x.fillStyle = hex(SP.fruit);
+        x.beginPath(); x.ellipse(N / 2 + Math.cos(a) * r, N / 2 + Math.sin(a) * r, SP.big ? 11 : 7, SP.big ? 15 : 7, 0, 0, 7); x.fill();
+        x.fillStyle = 'rgba(255,255,255,0.35)';
+        x.beginPath(); x.arc(N / 2 + Math.cos(a) * r - 2, N / 2 + Math.sin(a) * r - 3, 2.2, 0, 7); x.fill();
+      }
+    }
+    if (SP.bloom) {
+      x.fillStyle = hex(SP.bloom);
+      for (let i = 0; i < 9; i++) { const a = rnd(i, 9) * 6.3, r = 26 + rnd(i, 10) * 80; x.beginPath(); x.arc(N / 2 + Math.cos(a) * r, N / 2 + Math.sin(a) * r, 2.6, 0, 7); x.fill(); }
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+    this._disp.push(t);
+    this._leafCards[species] = t;
+    return t;
+  }
+
+  _leafCardMat(species) {
+    this._leafMatCache = this._leafMatCache || {};
+    if (this._leafMatCache[species]) return this._leafMatCache[species];
+    const m = new THREE.MeshStandardMaterial({
+      map: this._leafCardTexture(species), alphaTest: 0.5, side: THREE.DoubleSide,
+      roughness: 0.85, metalness: 0,
+    });
+    this._disp.push(m);
+    this._leafMatCache[species] = m;
+    return m;
+  }
+
+  // Scatter leaf cards through an ellipsoid crown. `rx, ry, rz` are the crown
+  // radii; cards near the top take the lighter of two sizes so the crown
+  // catches light; a few cast shadow, the rest do not (cost).
+  _canopyCards(parent, species, cx, cy, cz, rx, ry, rz, count, seed, { cone = false, weeping = false } = {}) {
+    const mat = this._leafCardMat(species);
+    // A spray is a spray: roughly half a metre across whatever the tree, so a
+    // big crown gets MORE cards, not bigger ones. Sized to the crown it read,
+    // up close, as a two-metre leaf.
+    const size = Math.min(0.95, Math.max(0.45, Math.max(rx, ry, rz) * 0.42));
+    const vol = Math.cbrt(rx * ry * rz);
+    // Coverage, not count: a crown of radius r has ~4πr² of shell and a card
+    // covers ~size²/2 of it at a random angle, so the number that closes the
+    // shell is ~8πr²/size². Forty cards on a metre crown left the core showing.
+    count = Math.round(Math.max(count, (8 * Math.PI * vol * vol) / (size * size)) * 1.15);
+    const geo = this._cardGeo = this._cardGeo || new THREE.PlaneGeometry(1, 1);
+    // A crown of cards alone had air between the leaves. A dark CORE inside the
+    // shell — the shadowed interior every real crown has — makes the gaps read
+    // as depth instead of sky, and the cards are half again as many.
+    const SPc = HPWorldScene.SPECIES[species];
+    if (SPc && !weeping) {
+      // matte and dark: it is shadow, not a fruit
+      this._coreMat = this._coreMat || (this.style.key === 'woodcut' ? this._leafMat : this.style.mat({ color: 0x0f1d0a, roughness: 1, metalness: 0 }));
+      const core = this._m(new THREE.SphereGeometry(1, 10, 8), this._coreMat, cx, cy, cz,
+        { parent, cast: false, receive: false });
+      core.scale.set(rx * (cone ? 0.26 : 0.34), ry * (cone ? 0.4 : 0.34), rz * (cone ? 0.26 : 0.34));
+    }
+    for (let i = 0; i < count; i++) {
+      const u = this._treeRand(seed, i * 5 + 1), v = this._treeRand(seed, i * 5 + 2), w = this._treeRand(seed, i * 5 + 3);
+      // a point in the ellipsoid, biased toward the shell so the middle is not solid
+      const th = u * Math.PI * 2, ph = Math.acos(2 * v - 1), rr = 0.55 + 0.45 * Math.cbrt(w);
+      let px = Math.sin(ph) * Math.cos(th) * rr, py = Math.cos(ph) * rr, pz = Math.sin(ph) * Math.sin(th) * rr;
+      if (cone) { const k = 1 - (py + 1) / 2 * 0.85; px *= k; pz *= k; }      // a fir narrows upward
+      if (weeping) { py = -Math.abs(py) * 0.9 - 0.1; }                            // a willow hangs
+      const m = new THREE.Mesh(geo, mat);
+      m.position.set(cx + px * rx, cy + py * ry, cz + pz * rz);
+      m.rotation.set(this._treeRand(seed, i * 5 + 4) * Math.PI, this._treeRand(seed, i * 5 + 5) * Math.PI, weeping ? Math.PI / 2 * 0.1 : this._treeRand(seed, i * 7 + 9) * Math.PI);
+      const sc = size * (0.62 + this._treeRand(seed, i * 3 + 11) * 0.55);
+      m.scale.set(sc, sc, 1);
+      m.castShadow = i < 6; m.receiveShadow = false;
+      parent.add(m);
+    }
+  }
+
   _tree(x, z, s = 1, species = null) {
     // The primitive variant is the founding manifesto look, kept selectable
     // (DECISIONS.md, 2026-09-05) and preferred by woodcut mode, which wants a
@@ -6299,8 +6584,12 @@ export class HPWorldScene {
       return null;
     }
     const seed = Math.abs(x * 73.1 + z * 19.7) + 1;
-    const KINDS = ['cypress', 'pine', 'laurel', 'myrtle', 'orange'];
-    species = species || KINDS[Math.floor(this._treeRand(seed, 7) * KINDS.length) % KINDS.length];
+    const ALL = Object.keys(HPWorldScene.SPECIES);
+    const GARDEN = ['laurel', 'myrtle', 'orange', 'cypress', 'olive'];
+    species = species || GARDEN[Math.floor(this._treeRand(seed, 7) * GARDEN.length) % GARDEN.length];
+    if (!HPWorldScene.SPECIES[species]) species = ALL.includes(species) ? species : 'laurel';
+    const SP = HPWorldScene.SPECIES[species];
+    const woodcut = this.style.key === 'woodcut';
 
     const g = new THREE.Group();
     g.position.set(x, 0, z);
@@ -6308,110 +6597,106 @@ export class HPWorldScene {
     g.rotation.z = (this._treeRand(seed, 13) - 0.5) * 0.09;   // no tree is plumb
     this.scene.add(g);
 
+    const bark = woodcut ? this._trunkMat : this.style.mat({ color: SP.bark, roughness: 0.95 });
+    if (!woodcut && !this._barkCache) this._barkCache = {};
     // Root flare, so the trunk grows out of the ground instead of sitting on it
-    this._m(new THREE.CylinderGeometry(0.15 * s, 0.28 * s, 0.18 * s, 8),
-      this._trunkMat, 0, 0.09 * s, 0, { parent: g });
-
-    if (species === 'cypress') {
-      // Tall, dark, columnar - the signature tree of an Italian garden. Four
-      // stacked offset masses so the silhouette wavers instead of being a cone.
-      const H = 4.2 * s;
-      this._m(new THREE.CylinderGeometry(0.07 * s, 0.15 * s, H * 0.5, 7),
-        this._trunkMat, 0, H * 0.25, 0, { parent: g });
-      const mats = this._foliageMats(0x17300f, 0x2c4a18);
-      for (let i = 0; i < 4; i++) {
-        const t = i / 4;
-        const b = this._m(new THREE.SphereGeometry((0.5 - t * 0.27) * s, 9, 8),
-          i > 1 ? mats[1] : mats[0],
-          (this._treeRand(seed, 20 + i) - 0.5) * 0.1 * s,
-          H * (0.26 + t * 0.5),
-          (this._treeRand(seed, 30 + i) - 0.5) * 0.1 * s,
-          { parent: g, cast: i < 2, receive: false, outline: i === 0 });
-        b.scale.set(1, 2.1 - t * 0.5, 1);
+    this._m(new THREE.CylinderGeometry(SP.trunk[1] * 1.3 * s, SP.trunk[1] * 2.4 * s, 0.18 * s, 8), bark, 0, 0.09 * s, 0, { parent: g });
+    const H = SP.trunk[0] * s, R = SP.trunk[1] * s;
+    if (SP.gnarled) {
+      // an olive's trunk is two twisted stems
+      for (const sx of [-1, 1]) {
+        this._limb(g, bark, sx * R * 0.6, 0.1 * s, 0, sx * R * 1.6, H, sx * R * 0.4, R * 0.9, R * 0.5);
       }
-      this._circleCol(x, z, 0.42 * s);
-
-    } else if (species === 'pine') {
-      // The Roman umbrella pine: long bare trunk, high branches, flat crown.
-      const H = 3.4 * s;
-      this._m(new THREE.CylinderGeometry(0.11 * s, 0.2 * s, H, 8),
-        this._trunkMat, 0, H / 2, 0, { parent: g });
-      for (let i = 0; i < 4; i++) {
-        const a = (i / 4) * Math.PI * 2 + this._treeRand(seed, 3) * 2;
-        this._limb(g, this._trunkMat, 0, H * 0.82, 0,
-          Math.cos(a) * 0.75 * s, H * 1.02, Math.sin(a) * 0.75 * s, 0.07 * s, 0.03 * s);
+    } else {
+      this._m(new THREE.CylinderGeometry(R * 0.72, R, H, 8), bark, 0, H / 2, 0, { parent: g });
+    }
+    if (SP.mottled && !woodcut) {
+      // a plane's bark flakes in pale patches
+      const pale = this.style.mat({ color: 0xc8bca0, roughness: 0.9 });
+      for (let i = 0; i < 6; i++) {
+        const a = this._treeRand(seed, 90 + i) * 6.3, yy = H * (0.15 + this._treeRand(seed, 100 + i) * 0.7);
+        const p = this._m(new THREE.SphereGeometry(R * 0.55, 6, 5), pale, Math.cos(a) * R * 0.75, yy, Math.sin(a) * R * 0.75, { parent: g, cast: false });
+        p.scale.set(1, 1.8, 0.4); p.rotation.y = -a;
       }
-      this._canopyMass(g, 0, H * 1.12, 0, 1.15 * s, 7,
-        this._foliageMats(0x1c3612, 0x36581f), seed, 0.5);
-      this._circleCol(x, z, 0.4 * s);
-
-    } else if (species === 'orange') {
-      // A fruit tree from the book's own orchards - rounded, low, bearing fruit.
-      const H = 1.7 * s;
-      this._m(new THREE.CylinderGeometry(0.1 * s, 0.17 * s, H, 8),
-        this._trunkMat, 0, H / 2, 0, { parent: g });
-      for (let i = 0; i < 3; i++) {
-        const a = (i / 3) * Math.PI * 2 + this._treeRand(seed, 5) * 3;
-        this._limb(g, this._trunkMat, 0, H * 0.7, 0,
-          Math.cos(a) * 0.5 * s, H * 1.15, Math.sin(a) * 0.5 * s, 0.06 * s, 0.03 * s);
+    }
+    // boughs from the trunk head out into the crown
+    const [cx, cy, cz] = [0, H * SP.top + SP.crown[1] * s * 0.55, 0];
+    if (SP.boughs) {
+      for (let i = 0; i < SP.boughs; i++) {
+        const a = (i / SP.boughs) * Math.PI * 2 + this._treeRand(seed, 5) * 3;
+        this._limb(g, bark, 0, H * 0.72, 0,
+          Math.cos(a) * SP.crown[0] * s * 0.6, cy + (this._treeRand(seed, 30 + i) - 0.3) * SP.crown[1] * s * 0.5, Math.sin(a) * SP.crown[2] * s * 0.6,
+          R * 0.6, R * 0.22);
       }
-      this._canopyMass(g, 0, H * 1.25, 0, 1.0 * s, 6,
-        this._foliageMats(0x1f3d16, 0x3d6524), seed, 0.86);
-      if (this.style.key !== 'woodcut') {
-        const fruitMat = this.style.mat({ color: 0xd8801c, roughness: 0.55 });
-        for (let i = 0; i < 7; i++) {
-          const a = this._treeRand(seed, 60 + i) * Math.PI * 2;
-          const rr = 0.55 + this._treeRand(seed, 70 + i) * 0.42;
-          this._m(new THREE.SphereGeometry(0.055 * s, 7, 6), fruitMat,
-            Math.cos(a) * rr * s,
-            H * (1.05 + this._treeRand(seed, 80 + i) * 0.4),
-            Math.sin(a) * rr * s, { parent: g, cast: false, receive: false });
+    }
+    if (SP.vine && !woodcut) {
+      // "towgh Elmes beloued of the fruitfull vines": the vine trained up the elm
+      const vine = this.style.mat({ color: 0x4a6a2a, roughness: 0.9 });
+      for (let i = 0; i < 5; i++) {
+        const a = i * 1.3 + this._treeRand(seed, 60 + i);
+        this._m(new THREE.TorusGeometry(R * 1.15, R * 0.18, 5, 12, Math.PI * 1.3), vine, 0, H * (0.15 + i * 0.16), 0, { parent: g, cast: false, rx: Math.PI / 2, ry: a });
+      }
+      this._canopyCards(g, 'elm', 0, H * 0.5, 0, R * 2.2, H * 0.4, R * 2.2, 10, seed + 7);
+    }
+    if (woodcut) {
+      // the woodcut keeps a massed silhouette: ink wants a shape, not leaves
+      this._canopyMass(g, cx, cy, cz, Math.max(SP.crown[0], SP.crown[1]) * s * 0.8, 6,
+        this._foliageMats(SP.dark, SP.light), seed, SP.crown[1] / SP.crown[0]);
+    } else if (SP.fronds) {
+      // a palm: fronds from the crown, each its own card, radiating and drooping
+      const mat = this._leafCardMat(species);
+      for (let i = 0; i < SP.n; i++) {
+        const a = (i / SP.n) * Math.PI * 2 + this._treeRand(seed, 40 + i) * 0.4;
+        const f = new THREE.Mesh(this._cardGeo = this._cardGeo || new THREE.PlaneGeometry(1, 1), mat);
+        const L = SP.crown[0] * s * 1.9;
+        f.position.set(Math.cos(a) * L * 0.42, H + L * 0.12 - (i % 3) * 0.1 * s, Math.sin(a) * L * 0.42);
+        f.rotation.set(0.9 + (i % 3) * 0.25, -a, 0, 'YXZ');
+        f.scale.set(L * 0.5, L, 1); f.castShadow = i < 4;
+        g.add(f);
+      }
+    } else {
+      this._canopyCards(g, species, cx, cy, cz, SP.crown[0] * s, SP.crown[1] * s, SP.crown[2] * s, SP.n,
+        seed, { cone: !!SP.cone, weeping: !!SP.weeping });
+      if (SP.cone) this._m(new THREE.ConeGeometry(SP.crown[0] * s * 0.55, SP.crown[1] * s * 1.9, 7), this._foliageMats(SP.dark, SP.light)[0], 0, cy, 0, { parent: g, cast: true, receive: false });
+      if (SP.fruit && !SP.big) {
+        // a few fruit as bodies, so they read at a distance where the card's do not
+        const fruitMat = this.style.mat({ color: SP.fruit, roughness: 0.55 });
+        for (let i = 0; i < 6; i++) {
+          const a = this._treeRand(seed, 60 + i) * Math.PI * 2, rr = 0.6 + this._treeRand(seed, 70 + i) * 0.35;
+          this._m(new THREE.SphereGeometry(0.05 * s, 7, 6), fruitMat,
+            Math.cos(a) * rr * SP.crown[0] * s, cy + (this._treeRand(seed, 80 + i) - 0.5) * SP.crown[1] * s * 0.9, Math.sin(a) * rr * SP.crown[2] * s,
+            { parent: g, cast: false, receive: false });
         }
       }
-      this._circleCol(x, z, 0.4 * s);
-
-    } else {
-      // Laurel / myrtle - the evergreens the nymphs are crowned with: a short
-      // trunk splitting into boughs under a dense round mass.
-      const dark  = species === 'myrtle' ? 0x16300f : 0x1b3a13;
-      const light = species === 'myrtle' ? 0x2d5119 : 0x35601d;
-      const H = 1.5 * s;
-      this._m(new THREE.CylinderGeometry(0.11 * s, 0.18 * s, H, 8),
-        this._trunkMat, 0, H / 2, 0, { parent: g });
-      const n = 3 + Math.floor(this._treeRand(seed, 17) * 2);
-      for (let i = 0; i < n; i++) {
-        const a = (i / n) * Math.PI * 2 + this._treeRand(seed, 19) * 3;
-        this._limb(g, this._trunkMat, 0, H * 0.62, 0,
-          Math.cos(a) * 0.62 * s, H * 1.3, Math.sin(a) * 0.62 * s, 0.07 * s, 0.03 * s);
-      }
-      this._canopyMass(g, 0, H * 1.5, 0, 1.16 * s, 7,
-        this._foliageMats(dark, light), seed, 0.9);
-      this._circleCol(x, z, 0.44 * s);
     }
+    this._circleCol(x, z, Math.max(0.3, R * 2.6));
     return g;
   }
 
   _buildTrees() {
     const put = (x, z, s = 1, species = null) => this._tree(x, z, s, species);
 
+    // the grove about the fountain of Venus: myrtle, her own plant, and laurel
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
       if (Math.abs(a - Math.PI / 2) < 0.38) continue;
       if (Math.abs(a - Math.PI * 1.5) < 0.38) continue;   // open toward the shore too
-      put(Math.cos(a) * 11.5, -20 + Math.sin(a) * 11.5, 1.1);
+      put(Math.cos(a) * 11.5, -20 + Math.sin(a) * 11.5, 1.1, i % 3 ? 'myrtle' : 'laurel');
     }
-    for (const z of [15.5, 24.5]) { put(-5.2, z); put(5.2, z); }
+    // the way to the palace, "set on either sides with Cyprus Trees" (ch. VII)
+    for (const z of [15.5, 24.5]) { put(-5.2, z, 1, 'cypress'); put(5.2, z, 1, 'cypress'); }
+    // and the enclosure "altogither of Cytrons, Orenges and Lymonds"
     for (const s of [-1, 1]) {
-      put(s * 9, 5.4); put(s * 9, -5.4);
-      put(s * 13.5, 5.8, 0.9); put(s * 13.5, -5.8, 0.9);
+      put(s * 9, 5.4, 1, 'orange'); put(s * 9, -5.4, 1, 'citron');
+      put(s * 13.5, 5.8, 0.9, 'lemon'); put(s * 13.5, -5.8, 0.9, 'orange');
     }
-    put(-29, 7, 1.2);
+    put(-29, 7, 1.2, 'plane');
     // Moved west from (-29, -7): the Temple of Venus now stands at (-30, -21)
     // and this tree sat squarely in its approach, filling the whole front of
     // the building from the only angle a walker arrives at.
-    put(-25.5, -7, 1.2);
-    put(28, 8, 1.2); put(28, -8, 1.2);
-    put(-27, 15, 1.0); put(27, 14.5, 1.0);
+    put(-25.5, -7, 1.2, 'plane');
+    put(28, 8, 1.2, 'oak'); put(28, -8, 1.2, 'plane');
+    put(-27, 15, 1.0, 'olive'); put(27, 14.5, 1.0, 'olive');
 
     // (Only the northern hedge pair remains: the southern pair stood exactly
     // on the triumphs' processional circuit and was garden fabric, not book.)
@@ -6684,7 +6969,12 @@ export class HPWorldScene {
         if (sh) sh.rotation.z = -b.rotation.y;   // the shadow stays put on the ground
       }
     }
-    for (const w of this._waters) w.m.rotation.z += dt * w.rate;
+    // the ripples drift; the painted beds and caustic discs still turn
+    if (this._waterNrm) {
+      this._waterNrm.offset.x = (this._waterNrm.offset.x + dt * 0.018) % 1;
+      this._waterNrm.offset.y = (this._waterNrm.offset.y + dt * 0.011) % 1;
+    }
+    for (const w of this._waters) if (!w.m.material.normalMap) w.m.rotation.z += dt * w.rate;
     if (this._sea) this._sea.mat.opacity = this._sea.base + Math.sin(this._t * 0.5) * 0.05;
     // Pollen drifts down through the afternoon light and recycles
     if (this._motes) {
