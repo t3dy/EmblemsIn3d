@@ -18,9 +18,13 @@ is not repeated), the amphitheatre of Venus (our pp. 350–352), the Triumph of 
 procession (p. 341), the Polyandrion's five medallions **as unread devices, labelled so**,
 and the miracle of the roses (p. 224).
 
-**Not built, and why:** the second five-senses fountain (#22) — the plate is a fragment and
-no passage for it has been located in either the 1592 or our range; the *asaroton* mosaic of
-the temple floor — no drawing of it survives to build from. Both stay on the queue.
+**Then both of those were built after all** ("just do your best with the text we have"). The
+second fountain (#22) turned out to be the **ΓΕΛΟΙΑΣΤΟΣ** inside the bath — Dallington pp.
+117–118, the golden nymphs holding the boy who pisses cold water into the hot pool, and the
+trick step "like the Keye and Iacke of a Virginall" that makes him aim at whoever treads on
+it. The step works: stand on it and he does. The *asaroton* is drawn, not modelled — the
+"unswept floor" is a type (Sosus of Pergamon), so an annulus of tesserae strewn with leaves,
+flowers, a mouse and a fish under the aisle is exactly as much as the text licenses.
 
 ## 2026-09-05 — The Temple of Venus, and the walker has no floor height
 

@@ -1777,6 +1777,62 @@ export class HPWorldScene {
     });
     this._caustics(BX, 0.62, BZ, 1.8, 0.06);
 
+    // ── ΓΕΛΟΙΑΣΤΟΣ — the second fountain (#22), the book's best joke ──────
+    // Dallington pp. 117–118 (corpus ll. 4853–4900): "within the Bathe there
+    // was another [fountain] of statues of fine metal … glistering of a golden
+    // colour", set in a marble niche "with two halfe Collumnes … a Trabet, a
+    // smal Zophor, and a Coronice, all cut in one sollid Marble". Two golden
+    // nymphs, skirts blown up above the knee, hold an infant between them,
+    // his feet one in each of their hands, "all their three countenances
+    // smiling", and the boy "continued pissing into the hotte water, fresh
+    // coole water". Achoe sends Poliphilo for a cup of it; he treads on the
+    // step, "the pissing Boye lift vp his pricke, and cast sodeinlye so colde
+    // water vppon my face, that I had lyke at that instant to haue fallen
+    // backward" — a hidden lever under the moveable step, "like the Keye and
+    // Iacke of a Virginall". On the zophor, in Attic letters: ΓΕΛΟΙΑΣΤΟΣ, the
+    // laughable. The step works here: stand on it and he does what he does.
+    {
+      const NZ = BZ - 2.45;
+      this._m(new THREE.BoxGeometry(1.7, 2.3, 0.5), this._stoneMat, BX, 1.15, NZ, { outline: true });
+      this._m(new THREE.BoxGeometry(1.2, 1.7, 0.36), this._darkStoneMat, BX, 1.1, NZ + 0.12, { cast: false });
+      for (const sx of [-1, 1]) {
+        this._m(new THREE.CylinderGeometry(0.11, 0.12, 1.7, 12, 1, false, 0, Math.PI), this._stoneMat,
+          BX + sx * 0.72, 1.1, NZ + 0.24, { cast: false });
+      }
+      this._m(new THREE.BoxGeometry(1.8, 0.14, 0.6), this._stoneMat, BX, 2.02, NZ + 0.05, { cast: false });   // trabet
+      this._m(new THREE.BoxGeometry(1.8, 0.2, 0.62), this._darkStoneMat, BX, 2.19, NZ + 0.05, { cast: false }); // zophor
+      this._m(new THREE.BoxGeometry(1.95, 0.12, 0.7), this._stoneMat, BX, 2.36, NZ + 0.05, { cast: false });   // cornice
+      this._plaque({ main: 'ΓΕΛΟΙΑΣΤΟΣ', sub: 'THE LAVGHABLE · TREAD ON THE STEP' }, 1.3, 0.22, BX, 2.19, NZ + 0.37, 0, true);
+      const goldSkin = gold;
+      for (const sx of [-1, 1]) {
+        const ny = this.cast.nymph({ name: 'geloiastos_' + sx, robe: 0xd9b25a, h: 0.72, pose: 'offer', cutout: null });
+        ny.traverse(o => { if (o.isMesh && o.material && o.material.color) o.material = goldSkin; });
+        ny.position.set(BX + sx * 0.36, 0.28, NZ + 0.22); ny.rotation.y = -sx * 0.5;
+        this.scene.add(ny);
+      }
+      const boy = new THREE.Group(); boy.position.set(BX, 1.02, NZ + 0.3); this.scene.add(boy);
+      this._m(new THREE.SphereGeometry(0.11, 10, 8), gold, 0, 0.25, 0, { parent: boy });
+      this._m(new THREE.CapsuleGeometry(0.075, 0.18, 4, 8), gold, 0, 0.02, 0, { parent: boy });
+      for (const sx of [-1, 1]) {
+        this._m(new THREE.CapsuleGeometry(0.03, 0.14, 4, 6), gold, sx * 0.06, -0.2, 0, { parent: boy });
+        this._m(new THREE.CapsuleGeometry(0.028, 0.13, 4, 6), gold, sx * 0.11, 0.06, 0.03, { parent: boy, rz: -sx * 0.8 });
+      }
+      const jet = this._m(new THREE.CylinderGeometry(0.014, 0.014, 0.06, 5), gold, 0, -0.05, 0.09, { parent: boy });
+      jet.rotation.x = Math.PI / 2 - 0.35;
+      const stream = new ParticleStream({
+        count: 26, source: new THREE.Vector3(BX, 0.98, NZ + 0.42),
+        target: new THREE.Vector3(BX, 0.62, NZ + 1.4), color: 0xbfe0ff, size: 0.03, speed: 0.9, arc: 0.4,
+      });
+      stream.opacity = 0.7; stream.active = true; this.style.tuneStream(stream);
+      this.scene.add(stream.points); this._streams.push(stream);
+      // the moveable step, on the far side of the water where the cup is filled
+      this._m(new THREE.BoxGeometry(0.9, 0.12, 0.6), this._darkStoneMat, BX, 0.06, BZ + 2.75, { cast: false });
+      this._plaque({ main: 'TAKE THAT CHRISTAL VESSEL', sub: 'AND BRING MEE SOME OF THAT FRESH WATER · ACHOE' },
+        1.3, 0.24, BX, 0.32, BZ + 3.1, 0, true);
+      this._geloi = { boy, jet, stream, step: [BX, BZ + 2.75], base: new THREE.Vector3(BX, 0.62, NZ + 1.4),
+                      up: 0, laugh: 0 };
+    }
+
     // paired pilasters at each corner, carrying the frieze
     for (let i = 0; i < 8; i++) {
       const a = (i + 0.5) * Math.PI / 4;
@@ -4372,6 +4428,44 @@ export class HPWorldScene {
         { cast: false, rx: Math.PI / 2 });
     }
 
+    // ── the Asaroton, under the aisle ─────────────────────────────────────
+    // p. 209: "Under the vaulting were, in the floor, an Asaroton of wormwork
+    // emblems — foliage, animals, and flowers, tessellated of most-minute
+    // little bodies". The asaroton is the "unswept floor" — scattered motifs
+    // on a ground, the type Sosus made at Pergamon (Pliny 36.184) — so it is
+    // DRAWN, as the register that works here: an annulus of tesserae with
+    // leaves, flowers and small creatures strewn across it, between the
+    // piers and the roundels.
+    if (!woodcut) {
+      const ac = document.createElement('canvas'); ac.width = 1024; ac.height = 256;
+      const x = ac.getContext('2d');
+      x.fillStyle = '#d9d0bb'; x.fillRect(0, 0, 1024, 256);
+      const rnd = (i) => { const v = Math.sin(i * 127.1) * 43758.5453; return v - Math.floor(v); };
+      for (let i = 0; i < 6000; i++) {            // the tesserae
+        x.fillStyle = ['#cfc6b0', '#e2d9c4', '#c4bba6'][i % 3];
+        x.fillRect((i * 37) % 1024, (Math.floor(i / 27) * 9) % 256, 7, 7);
+      }
+      for (let i = 0; i < 70; i++) {              // leaves, flowers, creatures
+        const px = rnd(i) * 1024, py = 20 + rnd(i + 99) * 216, k = i % 5;
+        x.save(); x.translate(px, py); x.rotate(rnd(i + 7) * 6.28);
+        if (k < 2) { x.fillStyle = '#4f7a2e'; x.beginPath(); x.ellipse(0, 0, 16, 6, 0, 0, 7); x.fill();
+                     x.strokeStyle = '#2f4a1a'; x.lineWidth = 2; x.beginPath(); x.moveTo(-16, 0); x.lineTo(16, 0); x.stroke(); }
+        else if (k === 2) { x.fillStyle = ['#c83a4a', '#e0b028', '#7a5bb8'][i % 3];
+                            for (let q = 0; q < 5; q++) { x.beginPath(); x.arc(Math.cos(q * 1.257) * 7, Math.sin(q * 1.257) * 7, 5, 0, 7); x.fill(); }
+                            x.fillStyle = '#f0e6a0'; x.beginPath(); x.arc(0, 0, 3.5, 0, 7); x.fill(); }
+        else if (k === 3) { x.fillStyle = '#5a4a3a'; x.beginPath(); x.ellipse(0, 0, 9, 5, 0, 0, 7); x.fill();   // a mouse
+                            x.beginPath(); x.arc(9, -1, 3.5, 0, 7); x.fill(); x.strokeStyle = '#5a4a3a'; x.lineWidth = 1.5;
+                            x.beginPath(); x.moveTo(-9, 0); x.quadraticCurveTo(-18, 4, -22, -3); x.stroke(); }
+        else { x.fillStyle = '#3a6a8a'; x.beginPath(); x.ellipse(0, 0, 10, 4, 0, 0, 7); x.fill();               // a fish
+               x.beginPath(); x.moveTo(-10, 0); x.lineTo(-15, -5); x.lineTo(-15, 5); x.closePath(); x.fill(); }
+        x.restore();
+      }
+      const at = new THREE.CanvasTexture(ac); at.colorSpace = THREE.SRGBColorSpace;
+      at.wrapS = THREE.RepeatWrapping; at.repeat.set(6, 1); at.anisotropy = 8; this._disp.push(at);
+      const am = new THREE.MeshStandardMaterial({ map: at, roughness: 0.9 }); this._disp.push(am);
+      this._m(new THREE.RingGeometry(R - 1.95, R - 0.55, 64), am, TX, PLAT_Y + 0.155, TZ, { rx: -Math.PI / 2, cast: false });
+    }
+
     // ── the mysterial Cistern ─────────────────────────────────────────────
     const WY = PLAT_Y + 0.18;
     this._m(new THREE.CylinderGeometry(1.30, 1.42, 0.30, 24), black, TX, WY + 0.15, TZ, { cast: false });
@@ -4758,6 +4852,19 @@ export class HPWorldScene {
     this._m(new THREE.BoxGeometry(0.9, 1.5, 0.5), dark, KX - 2.15, 0.75, KZ, { cast: false });     // the mouth
     this._m(new THREE.BoxGeometry(0.7, 1.3, 0.3), S.mat(lit ? { color: 0x08080a } : { tone: 0.5 }), KX - 2.3, 0.7, KZ, { cast: false });
     for (const sz of [-1, 1]) this._m(new THREE.SphereGeometry(0.26, 10, 8), dark, KX - 1.4, 1.75, KZ + sz * 0.8, { cast: false }); // the eyes
+    // The mouth is a DOOR, so it gets a door's members: two columns, an
+    // entablature, a threshold — the thing that makes a dome with a face read
+    // as a building with a face, which is the whole claim of the object.
+    for (const sz of [-1, 1]) this._column(KX - 3.0, KZ + sz * 0.95, 1.9, { order: 'doric', r: 0.11, mat: bronze });
+    this._entablature(KX - 3.0, 1.9, KZ, 2.6, 0.6, { ry: Math.PI / 2, dentils: false, mat: bronze });
+    this._m(new THREE.BoxGeometry(0.9, 0.12, 2.6), dark, KX - 3.0, 0.06, KZ, { cast: false });
+    // ribs along the vaults, so the body reads as built and not as blown
+    for (const [x0, len, hh] of [[KX + 4.6, 5.4, 2.5], [KX + 9.0, 3.6, 1.8]]) {
+      for (let k = 0; k < Math.floor(len / 0.9); k++) {
+        const rib = this._m(new THREE.TorusGeometry(hh * 1.01, 0.06, 6, 20, Math.PI), dark, x0 - len / 2 + 0.45 + k * 0.9, 0, KZ, { cast: false });
+        rib.rotation.y = Math.PI / 2;
+      }
+    }
     // the chest: a barrel vault; the belly a lower one; the legs two long vaults
     vault(KX + 4.6, KZ, 3.3, 2.5, 5.4);
     vault(KX + 9.0, KZ, 2.6, 1.8, 3.6);
@@ -4921,8 +5028,22 @@ export class HPWorldScene {
         const inner = this._m(new THREE.CylinderGeometry(RC + 0.55, RC + 0.55, H - 0.2, 40, 1, true, Math.PI / 2 - a1, a1 - a0),
           mirror.clone(), CX, o * (H + 0.5) + H / 2, CZ, { cast: false });
         inner.material.side = THREE.BackSide; this._disp.push(inner.material);
-        this._m(new THREE.CylinderGeometry(RC + 0.62, RC + 0.62, H - 0.2, 40, 1, true, Math.PI / 2 - a1, a1 - a0),
-          alab, CX, o * (H + 0.5) + H / 2, CZ, { cast: false });
+        // outside, an ARCADE — piers and arched openings, one a bay — because
+        // a continuous shell read from the north road as three stacked drums,
+        // and the text sets this building against the Colosseum and Verona
+        for (let b = 0; b < 8; b++) {
+          const ab = a0 + (b / 8) * (a1 - a0), ac = a0 + ((b + 0.5) / 8) * (a1 - a0);
+          const pier = this._m(new THREE.BoxGeometry(0.34, H - 0.2, 0.5), alab,
+            CX + Math.cos(ab) * (RC + 0.62), o * (H + 0.5) + H / 2, CZ + Math.sin(ab) * (RC + 0.62), { cast: false });
+          pier.rotation.y = -ab;
+          const arch = this._m(new THREE.TorusGeometry(0.5, 0.12, 6, 12, Math.PI), alab,
+            CX + Math.cos(ac) * (RC + 0.62), o * (H + 0.5) + H - 0.55, CZ + Math.sin(ac) * (RC + 0.62), { cast: false });
+          arch.rotation.y = -ac + Math.PI / 2;
+        }
+        const last = a1;
+        const lp = this._m(new THREE.BoxGeometry(0.34, H - 0.2, 0.5), alab,
+          CX + Math.cos(last) * (RC + 0.62), o * (H + 0.5) + H / 2, CZ + Math.sin(last) * (RC + 0.62), { cast: false });
+        lp.rotation.y = -last;
       }
     }
     this._plaque({ main: 'THEATRVM VENERIS', sub: 'XXXII PACES ACROSS · ALABASTER WITHOVT LIME · THREE ORDERS OF ONE HEIGHT · THE AREA OBSIDIAN' },
@@ -6425,6 +6546,22 @@ export class HPWorldScene {
       }
     }
     this._chessUpdate(dt);
+
+    // ΓΕΛΟΙΑΣΤΟΣ: tread on the step and the boy lifts and aims at your face
+    if (this._geloi) {
+      const G = this._geloi, p = this.walker.player.pos;
+      const on = Math.hypot(p.x - G.step[0], p.z - G.step[1]) < 0.75;
+      G.up += ((on ? 1 : 0) - G.up) * Math.min(1, dt * 6);
+      G.jet.rotation.x = Math.PI / 2 - 0.35 - G.up * 1.1;
+      G.boy.rotation.x = -G.up * 0.25;
+      if (G.up > 0.05) {
+        G.stream.target.set(p.x, 1.55, p.z);
+        G.stream.speed = 0.9 + G.up * 1.6;
+      } else {
+        G.stream.target.copy(G.base);
+        G.stream.speed = 0.9;
+      }
+    }
 
     // The temple's own two moving systems (see _buildVenusTemple): the eight
     // winds turn on their spindles to face away from the blast, and the four

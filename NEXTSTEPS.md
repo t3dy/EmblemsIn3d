@@ -60,8 +60,9 @@ displaying, and the same goes for all the other architectural features."*
 
 - The **Bridge**, and the Cythera **theatre** proper — the amphitheatre of plate #147. The
   tiers exist as terraces; the theatre's own architecture does not. Use the shared members.
-- The **second** FIVE_SENSES fountain (#22) is not built as a distinct feature. (#23, the
-  third, is the mainland fountain with its Graces, harpies and griffins.)
+- **Done 2026-09-05:** the second FIVE_SENSES fountain (#22) is the ΓΕΛΟΙΑΣΤΟΣ in the bath
+  (Dallington pp. 117–118), built with its working trick step. (#23, the third, is the
+  mainland fountain with its Graces, harpies and griffins.)
 - **Done 2026-09-05: the Temple of Venus** (#71–#85, fifteen plates, previously the largest
   documented absence in the world). Built at (-30, -21) from our own translation of chapters
   XVII–XVIII: seven porphyry steps, the black landing with its Cytherean-conch intaglio, the
@@ -140,7 +141,7 @@ gets ground of its own.
   | **Labyrinth** (ch. IX) | item 7 below; the dream narration already promises it ("a labyrinth of water where the boats go always forward and never back") and the world does not have it. The clearest single allegory in the book. |
   | **Amphitheatre** (#147) | item 2. The theatre of Venus exists as terraces with the heptagonal fountain at their centre; the theatre's own architecture does not. |
   | **Colossus** | item 3. |
-  | **Mosaic / *asaroton*** | nowhere in the world. The Temple of Venus's floor is documented as an "unswept floor" mosaic of foliage, animals and flowers under the aisle-vaults (`translation/en/page_209.md`) and was built as banding and roundels only. |
+  | **Mosaic / *asaroton*** | **done 2026-09-05** — drawn as an annulus of strewn tesserae under the temple's aisle, which is what an "unswept floor" is. |
 - The **`/v1/` and `/v2/` archives still contain the full Atalanta site**, linked from the
   landing page as earlier releases, and the **dormant Atalanta modules** (`AFWorldScene.js`,
   `EmblemScene.js`, `ArchivesScene.js`, `af_*.js`, `images/emblems/`) are unreferenced
