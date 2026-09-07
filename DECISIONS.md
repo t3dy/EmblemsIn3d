@@ -61,6 +61,15 @@ the ritual book; the characters signed in blood on the pavement, the sponge, the
 simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
 blood characters are strokes, not a reading — the book gives no forms — and the note says so.
 
+## 2026-09-07 — The woodcut register draws the same trees as the garden
+
+The woodcut view defaulted to the primitive cone trees "for a readable silhouette". The plates
+do not draw cones: #86 has plane trees, #94 ivy, the Cythera plates cypresses. So the woodcut
+register now builds the same eighteen species as the lit garden, with each leaf spray cut in
+ink — an ink silhouette under a paper leaf, unlit (`_leafCardTexture` ink mode,
+`_leafCardMat`). The primitive variant stays selectable in the Graphics panel; it is no longer
+any register's default. The queue item "`Cast.props.tree()` in the woodcut register" is closed.
+
 ## 2026-09-07 — The floating-slab sweep, by measurement
 
 Ted's brief named "impossible floating platforms". Rather than eyeball 21 stations, the scene

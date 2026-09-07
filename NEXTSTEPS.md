@@ -39,7 +39,7 @@ text's species, water, `_roof()` on three buildings). **Still to sweep:** every 
 without a soffit (audit station by station); ~~the fountains' jets and basins one by one~~ (`_jet()` — a tube along a parabola with sparkle
 and a splash; the folio-80 fountain built from Dallington pp. 124–127 with all its named jets
 in place of the copied Cythera fountain; the sleeping nymph's fall is a jet);
-`Cast.props.tree()` in the woodcut register. Stations checked against their chapters so far: the obelisk of the Trinity, the second bridge, the palace, the court, the three doors, and the Polyandrion (ciborium, crypt, Hell mosaic, Artemisia's sepulchre, six epitaphs — pp. 246-271, #94-#112); the Great Portal checked and left; the bath rebuilt to pp. 112-115 (columns, tables, zophor, leaf-ribs, censer, reliefs). **The list is done.** The soffit sweep was run on 2026-09-07 by measurement (see DECISIONS): no unsupported slab remains. **Segre's knot gardens and parterres are built**
+~~`Cast.props.tree()` in the woodcut register~~ (done 2026-09-07: ink-cut leaf sprays on the species trees). Stations checked against their chapters so far: the obelisk of the Trinity, the second bridge, the palace, the court, the three doors, and the Polyandrion (ciborium, crypt, Hell mosaic, Artemisia's sepulchre, six epitaphs — pp. 246-271, #94-#112); the Great Portal checked and left; the bath rebuilt to pp. 112-115 (columns, tables, zophor, leaf-ribs, censer, reliefs). **The list is done.** The soffit sweep was run on 2026-09-07 by measurement (see DECISIONS): no unsupported slab remains. **Segre's knot gardens and parterres are built**
 (same day, `_buildParterres`, pp. 316–318).
 
 ### 1. Finish dressing the buildings
@@ -69,8 +69,7 @@ is only what still has no source located.*
 Ted's standing goal: *"make sure we have all the parts we need of each fountain built and
 displaying, and the same goes for all the other architectural features."*
 
-- The **Bridge**, and the Cythera **theatre** proper — the amphitheatre of plate #147. The
-  tiers exist as terraces; the theatre's own architecture does not. Use the shared members.
+- ~~The **Bridge**, and the Cythera **theatre** proper~~ — stale: `_buildBridge`, `_buildSecondBridge` and `_buildAmphitheatre` (#147: obsidian area, three orders, mirror shell, alabaster arcade) are all built (2026-09-06).
 - **Done 2026-09-05:** the second FIVE_SENSES fountain (#22) is the ΓΕΛΟΙΑΣΤΟΣ in the bath
   (Dallington pp. 117–118), built with its working trick step. (#23, the third, is the
   mainland fountain with its Graces, harpies and griffins.)
@@ -84,7 +83,7 @@ displaying, and the same goes for all the other architectural features."*
   the water, still steaming**, with the Antistita in her mitre, Polia in her tutulus, and the
   seven virgins around them. Still unbuilt there: the sacrifice proper (#78–#83) and the
   **miracle of the roses** (#84), the rose-tree rising from the altar with its doves.
-- The **Triumph of Cupid** on Cythera (#143–144) is a standard, not a procession.
+- ~~The **Triumph of Cupid** on Cythera (#143–144) is a standard, not a procession.~~ Built as a car with its company, `_buildCupidTriumph` (2026-09-06).
 - The **Polyandrion's five hieroglyphic medallions** (#88–#92). No reading of them exists
   anywhere in the corpus, so they can only be built as *unread* devices — worth doing, but
   the tour must say plainly that they are unread. Its two documented inscriptions (the
@@ -134,7 +133,7 @@ in plates #152–#168 and modelled nowhere. **A decision is needed** on whether 
 gets ground of its own.
 
 ### 7. Smaller, still open
-- The **five-senses bath-house** (ch. VI–VII) and the **water-labyrinth** of ch. IX — the
+- ~~The **five-senses bath-house** (ch. VI–VII) and the **water-labyrinth** of ch. IX~~ — both built (the bath rebuilt to pp. 112–115 on 2026-09-06; `_buildWaterLabyrinth` the same day). Was: the
   book's clearest single allegory — are not built; their stops are staged elsewhere.
 - **Done 2026-09-07: the Temple of Venus rite** (ch. XVIII, #78–#85) — the sacello built opposite the door with the jasper altar, the anclabris and its offerings, the blood-signed pavement, the rose miracle inside it (see DECISIONS).
 - **Done 2026-09-06:** the Great Portal and the Three Doors now carry the genuine 1499 plates

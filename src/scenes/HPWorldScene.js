@@ -5473,6 +5473,8 @@ export class HPWorldScene {
     this._m(new THREE.SphereGeometry(0.22, 12, 8, 0, Math.PI, 0, Math.PI / 2), gold, TX, FY + 3.72, VZ + 0.24, { cast: false, rx: -Math.PI / 2, ry: 0 });   // the shell in the tympanum
     this._plaque({ main: 'SACELLVM', sub: 'ROVND AND BLIND, OF PHENGITE, LIT THROVGH ITS OWN STONE · THE GOLDEN VALVES · P. 219' },
       1.9, 0.3, TX, FY + 3.05, VZ + 0.28, 0, true);
+    // plate #80 hangs a swag across the top of the opening, under the entablature
+    this._drape(TX, FY + 2.55, VZ + 0.3, 2.3, 0.9, 0xc8485a, { swag: 0.45 });
 
     // the anclabris before the valves, and what the two virgins set on it
     const AX = TX, AZ = SZ;
@@ -7979,18 +7981,24 @@ export class HPWorldScene {
   // A spray of one species' leaves, drawn once and shared: the card texture.
   _leafCardTexture(species) {
     this._leafCards = this._leafCards || {};
-    if (this._leafCards[species]) return this._leafCards[species];
+    // In the woodcut register the spray is printed, not painted: each leaf is
+    // drawn twice, an ink silhouette a little larger under a paper leaf, which
+    // is how the 1499 blocks cut foliage (see the plane trees of #86, the ivy of
+    // #94). The cones of the primitive variant were never the plates' trees.
+    const ink = this.style.key === 'woodcut';
+    const cacheKey = species + (ink ? '#ink' : '');
+    if (this._leafCards[cacheKey]) return this._leafCards[cacheKey];
     const SP = HPWorldScene.SPECIES[species] || HPWorldScene.SPECIES.laurel;
     const N = 256;
     const c = document.createElement('canvas'); c.width = c.height = N;
     const x = c.getContext('2d');
     const hex = (h) => '#' + h.toString(16).padStart(6, '0');
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7 + species.length * 17.3) * 43758.5453; return v - Math.floor(v); };
-    const leaf = (cx, cy, len, ang, tone) => {
+    const leaf = (cx, cy, len, ang, tone, lw = 0) => {
       x.save(); x.translate(cx, cy); x.rotate(ang);
       x.fillStyle = tone; x.strokeStyle = tone; x.lineCap = 'round';
       if (SP.leaf === 'scale' || SP.leaf === 'needle') {
-        x.lineWidth = SP.leaf === 'scale' ? 3.2 : 1.6;
+        x.lineWidth = (SP.leaf === 'scale' ? 3.2 : 1.6) + lw;
         const k = SP.leaf === 'scale' ? 5 : 9;
         for (let i = 0; i < k; i++) {
           const t = (i / (k - 1) - 0.5) * (SP.leaf === 'scale' ? 0.9 : 1.6);
@@ -8036,13 +8044,15 @@ export class HPWorldScene {
     // the spray: a twig from the centre, leaves along it, in two tones
     const count = SP.leaf === 'frond' ? 3 : SP.leaf === 'scale' ? 26 : SP.leaf === 'needle' ? 22 : 18;
     const len = { scale: 22, needle: 20, frond: 40, palmate: 34, lobed: 34, lance: 32, ovate: 28, narrow: 30 }[SP.leaf];
-    x.strokeStyle = hex(SP.bark); x.lineWidth = 2;
+    x.strokeStyle = ink ? '#1a1410' : hex(SP.bark); x.lineWidth = 2;
     for (let i = 0; i < count; i++) {
       const a = rnd(i, 1) * Math.PI * 2, r = 18 + rnd(i, 2) * 92;
       const cx = N / 2 + Math.cos(a) * r, cy = N / 2 + Math.sin(a) * r;
       if (i % 4 === 0 && SP.leaf !== 'frond') { x.beginPath(); x.moveTo(N / 2, N / 2); x.lineTo(cx, cy); x.stroke(); }
+      const L = len * (0.7 + rnd(i, 4) * 0.5), ang = a + Math.PI / 2 + (rnd(i, 5) - 0.5) * 1.2;
+      if (ink) { leaf(cx, cy, L * 1.12, ang, '#1a1410', 2.2); leaf(cx, cy, L, ang, rnd(i, 3) < 0.3 ? '#d8d0bc' : '#f2ecd8'); continue; }
       const tone = rnd(i, 3) < 0.45 ? hex(SP.light) : hex(SP.dark);
-      leaf(cx, cy, len * (0.7 + rnd(i, 4) * 0.5), a + Math.PI / 2 + (rnd(i, 5) - 0.5) * 1.2, tone);
+      leaf(cx, cy, L, ang, tone);
     }
     if (SP.fruit) {
       for (let i = 0; i < (SP.big ? 3 : 5); i++) {
@@ -8060,17 +8070,19 @@ export class HPWorldScene {
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
     this._disp.push(t);
-    this._leafCards[species] = t;
+    this._leafCards[cacheKey] = t;
     return t;
   }
 
   _leafCardMat(species) {
     this._leafMatCache = this._leafMatCache || {};
     if (this._leafMatCache[species]) return this._leafMatCache[species];
-    const m = new THREE.MeshStandardMaterial({
-      map: this._leafCardTexture(species), alphaTest: 0.5, side: THREE.DoubleSide,
-      roughness: 0.85, metalness: 0,
-    });
+    const m = this.style.key === 'woodcut'
+      ? new THREE.MeshBasicMaterial({ map: this._leafCardTexture(species), alphaTest: 0.5, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({
+        map: this._leafCardTexture(species), alphaTest: 0.5, side: THREE.DoubleSide,
+        roughness: 0.85, metalness: 0,
+      });
     this._disp.push(m);
     this._leafMatCache[species] = m;
     return m;
@@ -8121,9 +8133,11 @@ export class HPWorldScene {
 
   _tree(x, z, s = 1, species = null) {
     // The primitive variant is the founding manifesto look, kept selectable
-    // (DECISIONS.md, 2026-09-05) and preferred by woodcut mode, which wants a
-    // readable silhouette rather than a modelled mass.
-    if (isVariant('tree', 'primitive', this.style.key)) {
+    // (DECISIONS.md, 2026-09-05). It used to be the woodcut register's default;
+    // since 2026-09-07 the woodcut draws the same species as the lit garden,
+    // with the leaves cut in ink (see _leafCardTexture), because the plates
+    // draw plane trees, ivy and cypresses, not cones.
+    if (isVariant('tree', 'primitive')) {
       this._m(new THREE.CylinderGeometry(0.12 * s, 0.16 * s, 0.8 * s, 6), this._trunkMat, x, 0.4 * s, z);
       this._m(new THREE.ConeGeometry(0.55 * s, 3.2 * s, 8), this._leafMat, x, 0.8 * s + 1.6 * s, z, { outline: true });
       this._circleCol(x, z, 0.5 * s);
@@ -8184,11 +8198,10 @@ export class HPWorldScene {
       }
       this._canopyCards(g, 'elm', 0, H * 0.5, 0, R * 2.2, H * 0.4, R * 2.2, 10, seed + 7);
     }
-    if (woodcut) {
-      // the woodcut keeps a massed silhouette: ink wants a shape, not leaves
-      this._canopyMass(g, cx, cy, cz, Math.max(SP.crown[0], SP.crown[1]) * s * 0.8, 6,
-        this._foliageMats(SP.dark, SP.light), seed, SP.crown[1] / SP.crown[0]);
-    } else if (SP.fronds) {
+    // (The woodcut used to take a massed silhouette here — "ink wants a shape,
+    // not leaves". The plates disagree: their foliage is cut leaf by leaf, so
+    // the woodcut now takes the same cards, printed in ink; see _leafCardTexture.)
+    if (SP.fronds) {
       // a palm: fronds from the crown, each its own card, radiating and drooping
       const mat = this._leafCardMat(species);
       for (let i = 0; i < SP.n; i++) {
