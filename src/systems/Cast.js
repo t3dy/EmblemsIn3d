@@ -1706,26 +1706,34 @@ export function makeCast(S) {
       const hp = pts[10], hb = pts[9];
       g.remove(g.userData.headBall);                                  // the serpent's ball head
       const aim = Math.atan2(-(hp.z - hb.z), hp.x - hb.x);            // the line the neck is travelling
-      const GAP = 0.24 * ss;                                          // clear of the tube, not touching it
+      const GAP = 0.096 * ss;                                         // 60% closer to the body than it was
       const hd = new THREE.Group();
       hd.position.set(hp.x + Math.cos(aim) * GAP, hp.y + 0.02 * ss, hp.z - Math.sin(aim) * GAP);
       hd.rotation.y = aim;
       g.add(hd);
       const pivot = new THREE.Group(); hd.add(pivot);                 // it looks around on this
       const tilt = new THREE.Group(); tilt.rotation.z = -20 * Math.PI / 180; pivot.add(tilt);
-      const flat = new THREE.Group(); flat.rotation.x = Math.PI / 2; tilt.add(flat);
       const HL = 0.62 * ss, HW = 0.19 * ss;
+      // The vane STANDS ON EDGE (it used to lie flat): rolled a quarter turn so
+      // its back side — the short one, at the neck — is upright, and the acute
+      // point leads. The 20° droop then leans that back edge off the vertical
+      // by the same 20°, which is what a nose-down head does.
       const hs = new THREE.Shape();
       hs.moveTo(0, HW); hs.lineTo(HL, 0); hs.lineTo(0, -HW); hs.closePath();
       const hvane = new THREE.Mesh(new THREE.ShapeGeometry(hs), wm);
-      hvane.castShadow = true; flat.add(hvane);
-      for (const sx of [-1, 1]) {                                     // three whiskers a side
+      hvane.castShadow = true; tilt.add(hvane);
+      // the whiskers keep the horizontal plane the vane has left, and move well
+      // forward — rooted at 0.58 of the head's length, up by the snout, so they
+      // read as whiskers rather than as ribs of the vane
+      const wsk = new THREE.Group(); wsk.rotation.x = Math.PI / 2; tilt.add(wsk);
+      const FWD = 0.58 * HL;
+      for (const sx of [-1, 1]) {                                     // three a side
         for (let f = 0; f < 3; f++) {
-          const th = sx * (0.42 + f * 0.32), len = HL * (0.86 - f * 0.14);
-          const wk = new THREE.Mesh(new THREE.CylinderGeometry(0.005 * ss, 0.011 * ss, len, 4), dm);
-          wk.position.set(Math.cos(th) * len / 2 + 0.06 * ss, Math.sin(th) * len / 2 + sx * 0.05 * ss, 0.007 * ss);
-          wk.rotation.z = th - Math.PI / 2;
-          flat.add(wk);
+          const th = sx * (0.35 + f * 0.29), len = HL * (0.78 - f * 0.13);
+          const w = new THREE.Mesh(new THREE.CylinderGeometry(0.005 * ss, 0.011 * ss, len, 4), dm);
+          w.position.set(Math.cos(th) * len / 2 + FWD, Math.sin(th) * len / 2 + sx * 0.02 * ss, 0);
+          w.rotation.z = th - Math.PI / 2;
+          wsk.add(w);
         }
       }
 

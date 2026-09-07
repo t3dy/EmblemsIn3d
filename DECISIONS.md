@@ -84,10 +84,17 @@ body at its POINT and opens out from there, on three ribs radiating from that sa
   body… tilting down slightly at a 20 degree angle and slightly separated from the tube of the
   body, with the ability to pivot and look around", and no eyes. So: a 34° apex leads; the base
   (the shortest of the three sides, since HL > √3·HW) meets the neck; six whiskers come off its
-  flanks, three a side, splayed wider than the vane's own edges so they show; it droops 20°; it
-  stands clear of the tube by 0.24 of the body scale; and it hangs on a pivot the flight
-  controller turns, so it leans into the bank, follows the climb and looks slowly about it.
-  The ball head, the horns, the jaw and the eyes are all gone.
+  flanks, three a side; it droops 20°; and it hangs on a pivot the flight controller turns, so
+  it leans into the bank, follows the climb and looks slowly about it. The ball head, the
+  horns, the jaw and the eyes are all gone.
+
+  Then, on seeing it: "the whiskers should be set further forward so that they look like
+  whiskers, and I want the triangle of the head 60% closer to the body and rotated 90 degrees
+  so that the back side of the triangle is standing straight up." So the vane **stands on
+  edge** rather than lying flat — its back side upright, leaned off the vertical only by the
+  20° droop (measured: 19.4°) — the whiskers keep the horizontal plane the vane has left and
+  root at 0.58 of the head's length, up by the snout, and the gap to the neck went from 0.24
+  to 0.096 of the body scale (measured: 0.75 world units to 0.31).
 
 Each wing hangs on a `beat` group (the flight controller's hinge) over a `splay` group (the
 fixed set), so beating never loses the set. The head hangs on an aim group over a lean group
