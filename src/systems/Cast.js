@@ -1626,7 +1626,7 @@ export function makeCast(S) {
         pts.push(new THREE.Vector3(Math.sin(t * Math.PI * 2 * coil) * 0.4 * s, 0.06 * s + t * 0.5 * s * coil, -t * 0.9 * s));
       }
       add(g, new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, 0.055 * s, 8), bm));
-      add(g, mesh(new THREE.SphereGeometry(0.08 * s, 8, 6), bm, pts[10].x, pts[10].y, pts[10].z));
+      g.userData.headBall = add(g, mesh(new THREE.SphereGeometry(0.08 * s, 8, 6), bm, pts[10].x, pts[10].y, pts[10].z));
       g.userData.spine = pts;
       g.userData.mat = bm;
       return g;
@@ -1636,62 +1636,84 @@ export function makeCast(S) {
       const g = animals.serpent(ss, { coil: 0.7 });
       const pts = g.userData.spine;
       const dm = M(0x2c3a20, { roughness: 0.8 });
+      const wm = M(0x3a4a2a, { side: THREE.DoubleSide, roughness: 0.75 });
       // a ridge of spikes down the spine — the crest the woodcut gives it
       for (let i = 2; i < 10; i++) {
         const p = pts[i];
         const sp = mesh(new THREE.ConeGeometry(0.03 * ss, 0.12 * ss, 4), dm, p.x, p.y + 0.06 * ss, p.z);
         g.add(sp);
       }
-      // the head made a head: horns, amber eyes, an open jaw
-      const hp = pts[10];
-      for (const sx of [-1, 1]) {
-        const horn = mesh(new THREE.ConeGeometry(0.022 * ss, 0.16 * ss, 5), dm,
-          hp.x + sx * 0.05 * ss, hp.y + 0.09 * ss, hp.z + 0.03 * ss);
-        horn.rotation.x = 0.5; horn.rotation.z = -sx * 0.35; g.add(horn);
-        const eyeM = lit ? M(0xffb030, { emissive: 0xa06000, emissiveIntensity: 1.1 }) : M(0x181008);
-        add(g, mesh(new THREE.SphereGeometry(0.018 * ss, 6, 5), eyeM,
-          hp.x + sx * 0.055 * ss, hp.y + 0.025 * ss, hp.z - 0.05 * ss));
-      }
-      const jaw = mesh(new THREE.ConeGeometry(0.035 * ss, 0.14 * ss, 5), g.userData.mat,
-        hp.x, hp.y - 0.035 * ss, hp.z - 0.1 * ss);
-      jaw.rotation.x = -Math.PI / 2 + 0.4; jaw.castShadow = true; g.add(jaw);
-      // bat-swept triangular membranes with ribs, not blank slabs
-      const wm = M(0x3a4a2a, { side: THREE.DoubleSide, roughness: 0.75 });
-      g.userData.wingParts = { L: [], R: [] };
-      for (const sx of [-1, 1]) {
-        const parts = sx < 0 ? g.userData.wingParts.L : g.userData.wingParts.R;
-        const w = mesh(new THREE.CircleGeometry(0.34 * s, 3), wm, sx * 0.34 * s, 0.44 * s, -0.45 * s);
-        w.scale.set(1.7, 1.05, 1);
-        w.rotation.z = sx * 0.75; w.rotation.y = sx * 0.55;
-        g.add(w); parts.push(w);
-        for (let f = 0; f < 3; f++) {
-          const rib = mesh(new THREE.CylinderGeometry(0.006 * s, 0.011 * s, 0.36 * s, 4), dm,
-            sx * (0.18 + f * 0.12) * s, (0.48 - f * 0.04) * s, -0.45 * s);
-          rib.rotation.z = sx * (0.45 + f * 0.4);
-          g.add(rib); parts.push(rib);
+
+      // ── One shape, three times: the membrane (2026-09-07) ────────────────
+      // Ted: the head should be "a triangle with the sticks coming off,
+      // identical to the complex objects that are the wings" — from behind, the
+      // two wing-triangles were reading as a face — and the wings should
+      // "connect to the dragon's body at their sharpest angle."
+      //
+      // So the whole creature is cut from one figure: a triangular vane that
+      // meets the body AT ITS POINT and opens out from there, carried on three
+      // ribs radiating from that same point. Two of them are the wings, hung
+      // from a shoulder on the spine itself (they used to float beside the body
+      // with their broad edge inward, which is the wrong way round twice over);
+      // the third is the head, smaller, laid flat and aimed down the line of
+      // the neck, so the neck ends in a point that opens into a fan. The ball
+      // head, the horns and the jaw are gone; only the two amber eyes survive,
+      // at the point where the head-vane meets the body.
+      const membrane = (L, W, rr) => {
+        const grp = new THREE.Group();
+        const sh = new THREE.Shape();
+        sh.moveTo(0, 0); sh.lineTo(L, W); sh.lineTo(L, -W); sh.closePath();
+        const vane = new THREE.Mesh(new THREE.ShapeGeometry(sh), wm);
+        vane.castShadow = true; grp.add(vane);
+        const half = Math.atan2(W, L);
+        for (const k of [-0.86, 0, 0.86]) {          // three sticks, fanning from the point
+          const th = half * k, len = L / Math.cos(th) * 0.98;
+          const rib = new THREE.Mesh(new THREE.CylinderGeometry(rr * 0.5, rr, len, 4), dm);
+          rib.position.set(Math.cos(th) * len / 2, Math.sin(th) * len / 2, rr);
+          rib.rotation.z = th - Math.PI / 2;
+          grp.add(rib);
         }
-      }
-      return g;
-    },
-    // The dragon as a mount, for the flight mode: the vaults' dragon exactly
-    // as it stands (Ted liked the look — the coiled crested serpent with the
-    // ribbed triangular wings of plate #16), with its two wings re-parented
-    // onto hinge groups at the shoulders so the flight controller can beat
-    // them (`userData.wingL/R`). Nothing about its shape changes.
-    flyingDragon: (s = 1) => {
-      const g = animals.dragon(s);
-      const wp = g.userData.wingParts;
-      const hinge = (sx, parts) => {
-        const h = new THREE.Group();
-        h.position.set(sx * 0.1 * s, 0.44 * s, -0.45 * s);
-        for (const m of parts) { g.remove(m); m.position.sub(h.position); h.add(m); }
-        g.add(h);
-        return h;
+        return grp;
       };
-      const wingL = hinge(-1, wp.L), wingR = hinge(1, wp.R);
-      g.userData = { ...g.userData, wingL, wingR };
+
+      // the wings: both points planted on the same vertebra, splayed up and
+      // swept back. `beat` is the hinge the flight controller works; `splay`
+      // holds the fixed set of the wing, so beating never loses it.
+      const sp4 = pts[4];
+      const shoulder = new THREE.Group();
+      shoulder.position.set(sp4.x, sp4.y, sp4.z);
+      g.add(shoulder);
+      const wingAt = (splayY, splayZ) => {
+        const beat = new THREE.Group(), splay = new THREE.Group();
+        splay.rotation.set(0, splayY, splayZ);
+        splay.add(membrane(0.87 * s, 0.31 * s, 0.012 * s));
+        beat.add(splay); shoulder.add(beat);
+        return beat;
+      };
+      const wingR = wingAt(-0.55, 0.75);
+      const wingL = wingAt(0.55, Math.PI - 0.75);
+
+      // the head: the same vane, two thirds the size, lying flat
+      const hp = pts[10], hb = pts[9];
+      g.remove(g.userData.headBall);
+      const hd = new THREE.Group();
+      hd.position.set(hp.x, hp.y, hp.z);
+      hd.rotation.y = Math.atan2(-(hp.z - hb.z), hp.x - hb.x);      // +x down the neck's own line
+      const hi = new THREE.Group(); hd.add(hi); g.add(hd);          // the controller leans this
+      const hv = new THREE.Group(); hv.rotation.x = Math.PI / 2; hi.add(hv);   // the vane lies flat
+      hv.add(membrane(0.52 * ss, 0.19 * ss, 0.011 * ss));
+      const eyeM = lit ? M(0xffb030, { emissive: 0xa06000, emissiveIntensity: 1.1 }) : M(0x181008);
+      for (const sx of [-1, 1]) {
+        hi.add(mesh(new THREE.SphereGeometry(0.026 * ss, 7, 6), eyeM, 0.05 * ss, 0.035 * ss, sx * 0.05 * ss));
+      }
+
+      g.userData.wingL = wingL; g.userData.wingR = wingR; g.userData.head = hi;
       return g;
     },
+    // The mount for the flight mode IS the vaults' dragon, unchanged: its
+    // wings and head are already hinged (userData.wingL / wingR / head), so the
+    // controller beats and leans them where they stand.
+    flyingDragon: (s = 1) => animals.dragon(s),
     ouroboros: (s = 1) => {
       const g = new THREE.Group();
       const bm = M(0x4a6a3a, { roughness: 0.7 });

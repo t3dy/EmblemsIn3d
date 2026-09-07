@@ -61,6 +61,32 @@ the ritual book; the characters signed in blood on the pavement, the sponge, the
 simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
 blood characters are strokes, not a reading — the book gives no forms — and the note says so.
 
+## 2026-09-07 — The dragon is one shape, three times
+
+Two corrections from Ted, in order. First: "I liked the way the dragon looked before" — the
+stretched-out flying body was thrown away and the mount became the vaults' dragon itself.
+Then, of that dragon: "I thought one of the triangular wings was its head! Can you change its
+head so that it's a triangle with the sticks coming off identical to the complex objects that
+are the wings?" and "I want the wings to connect to the dragon's body at their sharpest
+angle."
+
+So the creature is now cut from one figure — a **membrane**: a triangular vane that meets the
+body at its POINT and opens out from there, on three ribs radiating from that same point
+(`animals.dragon`, the local `membrane(L, W, rr)`). Three of them:
+
+- **the two wings**, both points planted on the same vertebra of the spine (`pts[4]`), splayed
+  up and swept back. They used to float beside the body with their *broad* edge inward, which
+  was wrong twice over — not touching the body, and the wrong way round.
+- **the head**, two thirds the size, laid flat and aimed down the line the neck is travelling,
+  so the neck ends in a point that opens into a fan. The ball head, the horns and the jaw are
+  gone; the two amber eyes survive, at the point where the vane meets the body.
+
+Each wing hangs on a `beat` group (the flight controller's hinge) over a `splay` group (the
+fixed set), so beating never loses the set. The head hangs on an aim group over a lean group
+over a flat group, for the same reason. `flyingDragon` is now just `animals.dragon` — the
+mount and the fixture in the vaults are the same beast, which is right: there is one dragon
+in the book.
+
 ## 2026-09-07 — A fourth way in: fly the dream as the dragon
 
 Ted: "a fourth mode of exploring the HP where you can fly around as the dragon. The point
