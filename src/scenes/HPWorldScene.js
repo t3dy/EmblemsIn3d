@@ -45,7 +45,7 @@ export const HP_STATIONS = [
     pos: [0, 6.5],    look: [0, 0],    radius: 6 },
   { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,
     pos: [-11.5, 0],  look: [-20, 0],  radius: 9 },
-  { key: 'quinta_essentia',  name: 'Quinta Essentia',        folio: 164,
+  { key: 'quinta_essentia',  name: 'The Obelisk of the Trinity', folio: 119,
     pos: [13, 0],     look: [21, 0],   radius: 8 },
   { key: 'fountain',         name: 'Fountain of Venus',      folio: 80,
     pos: [0, -10.5],  look: [0, -20],  radius: 8, pitch: 0.16 },
@@ -345,6 +345,7 @@ export class HPWorldScene {
     this._buildQuinta();
     this._buildGracesFountain(0, -20);   // folio 80's own fountain; ch. XXIII's stays on Cythera
     this._buildTriumphs();
+    this._buildSecondBridge();
     this._buildVenusTemple();
     this._buildPolyandrion();
     this._polyandrionMedallions();
@@ -456,7 +457,7 @@ export class HPWorldScene {
     for (const b of this._windBells) mark(b.g);
     for (const f of this._foils) mark(f);
     for (const h of this._hovers) mark(h.g);
-    if (this._quinta) { mark(this._quinta.dod); mark(this._quinta.rays); }
+    if (this._quinta) { mark(this._quinta.dod); if (this._quinta.rays) mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
     if (this._boat) { mark(this._boat); mark(this._boat.userData.cupid); }
     if (this._hiero) { mark(this._hiero.ant); mark(this._hiero.ele); }
@@ -1797,8 +1798,36 @@ export class HPWorldScene {
     // Queen holds court inside a building rather than on a paving stone.
     this._m(new THREE.BoxGeometry(15.4, 0.22, 12.4), this._darkStoneMat, CX - 1, 0.11, CZ, { cast: false });
     this._m(new THREE.BoxGeometry(14.6, 0.14, 11.6), this._stoneMat, CX - 1, 0.29, CZ, { cast: false, outline: true });
-    for (let i = 0; i < 5; i++) {                               // banded paving
-      this._m(new THREE.BoxGeometry(14.2, 0.02, 0.22), gold, CX - 1, 0.37, CZ - 4.4 + i * 2.2, { cast: false, receive: false });
+    // Dallington p. 133: "a space of sixtie foure Squadrates of three foote …
+    // one was of Iasper, of the colour of Corall, and the other greene,
+    // powdered with drops of blood … set togither in manner of a Chesse-boord.
+    // Compassed about with a border, the breadth of one pace … About this …
+    // an other marueylous kynde of Pauing of three paces broad, in knottes of
+    // Iasper, Praxin, Calcedonie, Agat" — so: the eight-by-eight of coral and
+    // blood-green jasper, the pace-wide border, the knot pavement outside it.
+    const coral = woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xc8604a, roughness: 0.5 });
+    const bloodG = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2f5a3a, roughness: 0.5 });
+    const SQ = 0.78;
+    for (let f = 0; f < 8; f++) for (let r = 0; r < 8; r++) {
+      this._m(new THREE.BoxGeometry(SQ, 0.03, SQ), (f + r) % 2 ? coral : bloodG, CX - 1 + (f - 3.5) * SQ, 0.375, CZ + (r - 3.5) * SQ, { cast: false });
+    }
+    this._m(new THREE.BoxGeometry(8 * SQ + 1.4, 0.02, 8 * SQ + 1.4), gold, CX - 1, 0.362, CZ, { cast: false });
+    if (!woodcut) {
+      const km = new THREE.MeshStandardMaterial({ map: this._knotTexture(), roughness: 0.9 }); this._disp.push(km);
+      this._m(new THREE.PlaneGeometry(14.2, 11.2), km, CX - 1, 0.355, CZ, { rx: -Math.PI / 2, cast: false });
+    }
+    // "Settles, of the wood of Palme Trees … couered ouer with greene Veluet
+    // … fastened to the same with tatch Nayles of Golde", along the sides
+    const palmWood = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0xa8843a, roughness: 0.7 });
+    const velvet = woodcut ? S.mat({ tone: 0.22 }) : S.mat({ color: 0x1f5a2e, roughness: 0.95 });
+    for (const sz of [-1, 1]) {
+      for (let i = 0; i < 4; i++) {
+        const x = CX - 5.2 + i * 2.8, z = CZ + sz * 4.55;
+        this._m(new THREE.BoxGeometry(2.2, 0.36, 0.55), palmWood, x, 0.54, z, { cast: false, outline: true });
+        this._m(new THREE.BoxGeometry(2.1, 0.14, 0.5), velvet, x, 0.79, z, { cast: false });
+        for (let k = 0; k < 6; k++) this._m(new THREE.SphereGeometry(0.02, 6, 5), gold, x - 0.95 + k * 0.38, 0.73, z + sz * 0.27, { cast: false });
+        this._wallCol(x - 1.1, x + 1.1, z - 0.3, z + 0.3);
+      }
     }
 
     // peristyle: columns down the two long sides and across the open east end
@@ -1824,6 +1853,17 @@ export class HPWorldScene {
       this._m(new THREE.BoxGeometry(0.2, WH - 0.5, 0.42), this._darkStoneMat, WX + 0.34, py + (WH - 0.5) / 2, z, { cast: false });
     }
     this._doorway(WX + 0.3, py, CZ, 1.8, 2.9, { ry: Math.PI / 2 });
+    // p. 134: the walls "couered ouer with Plates of beaten Golde", and in
+    // lozenges "rounde Iewels, bearing out and swelling beyond the plaine
+    // leuell of the wall … compassed about with greene"
+    for (let i = 0; i < 5; i++) {
+      const z = CZ - 4.4 + i * 2.2;
+      if (Math.abs(z - CZ) < 1.2) continue;
+      this._m(new THREE.BoxGeometry(0.05, 1.5, 1.5), gold, WX + 0.31, py + 2.9, z, { cast: false, ry: 0 }).rotation.x = Math.PI / 4;
+      this._m(new THREE.TorusGeometry(0.3, 0.05, 8, 20), woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2f6a3a, roughness: 0.6 }), WX + 0.36, py + 2.9, z, { cast: false, ry: Math.PI / 2 });
+      this._m(new THREE.SphereGeometry(0.26, 14, 10), woodcut ? S.mat({ tone: 0.08 }) : S.mat({ color: [0xb3243c, 0x1e3f96, 0x0d7548, 0xdca62c][i % 4], roughness: 0.15, metalness: 0.3 }),
+        WX + 0.42, py + 2.9, z, { cast: false }).scale.set(0.45, 1, 1);
+    }
     this._entablature(WX, py + WH - 0.2, CZ, 11.6, 0.7, { ry: Math.PI / 2 });
 
     // ── the throne ──
@@ -1968,6 +2008,78 @@ export class HPWorldScene {
   // water, an eight-square spire glazed with crystal quarrels — and on its
   // point the trumpet-boy weathervane whose hollow head sounds in the wind.
   // Over the entrance, in Greek: ΑΣΑΜΙΝΘΟΣ — "bath."
+  // ── The second bridge (#35–#36) ─────────────────────────
+  //
+  // Dallington pp. 191–192 (corpus ll. 8050–8090): on the way from the third
+  // garden to the three gates, "a fayre Riuer … a fine Groue of Plane Trees,
+  // in the which was an excellent fayre bridge ouer the Riuer made of stone,
+  // with three Arches, with pyles bearing foorth against the two fronts";
+  // "in the middle bending of the same, vpon eyther sides, there was a square
+  // stone of Porphyrite set, hauing in it a Catagliphic, engrauing of
+  // Hieragliphies. Vpon the right hand as I went ouer, I beheld a woman,
+  // casting abroade her armes, sitting onely vppon one buttocke, putting
+  // foorth one of her legges as if shee woulde rise; In her right hand … a
+  // payre of winges, and in the other hand … a Tortice. Right against her,
+  // there was a Circle, the center wherof two little Spyrits did hold, with
+  // their backs turned towards the circumference." Logistica: "The Circle,
+  // Medium tenuere beati. The other, temper thy hast by staying, and thy
+  // slownesse by rysing." The first bridge (ch. V) is upstream at z = 20 with
+  // its own two tables; this one crosses the same water lower down.
+  _buildSecondBridge() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const BX = -11, BZ = 14;
+    const stone = this._stoneMat, dark = this._darkStoneMat;
+    const porphyr = woodcut ? S.mat({ tone: 0.24 }) : S.mat({ color: 0x7a2a2c, roughness: 0.55 });
+    // three arches over the water, piers bearing forth against the two fronts
+    for (const dx of [-1.3, 0, 1.3]) {
+      const arch = this._m(new THREE.TorusGeometry(0.55, 0.16, 8, 16, Math.PI), stone, BX + dx, 0.12, BZ, { cast: false, outline: true });
+      arch.rotation.y = 0;
+    }
+    for (const dx of [-1.95, -0.65, 0.65, 1.95]) {
+      this._m(new THREE.BoxGeometry(0.34, 0.5, 3.2), dark, BX + dx, -0.05, BZ, { cast: false });
+      for (const sz of [-1, 1]) this._m(new THREE.CylinderGeometry(0.12, 0.16, 0.5, 3), dark, BX + dx, 0.0, BZ + sz * 1.75, { cast: false, ry: sz > 0 ? Math.PI / 6 : -Math.PI / 6 });
+    }
+    // the deck "with a moderate bending", and two parapets
+    const deck = this._m(new THREE.BoxGeometry(4.6, 0.24, 3.4), stone, BX, 0.42, BZ, { cast: false, outline: true });
+    deck.scale.y = 1;
+    for (const s2 of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(4.6, 0.6, 0.24), stone, BX, 0.82, BZ + s2 * 1.6, { outline: true });
+      this._wallCol(BX - 2.3, BX + 2.3, BZ + s2 * 1.6 - 0.12, BZ + s2 * 1.6 + 0.12);
+      // the square of porphyry in the middle bending of each parapet
+      this._m(new THREE.BoxGeometry(1.1, 0.5, 0.06), porphyr, BX, 0.84, BZ + s2 * 1.46, { cast: false });
+    }
+    // right hand going over (toward the gates, -z): the woman with wings and tortoise
+    const dev = (z, ry, fn) => { const g = new THREE.Group(); g.position.set(BX, 0.84, z); g.rotation.y = ry; this.scene.add(g); fn(g); };
+    const carved = woodcut ? S.mat({ tone: 0.18 }) : S.mat({ color: 0xd8b8a8, roughness: 0.8 });
+    dev(BZ - 1.42, Math.PI, (g) => {
+      // seated on one buttock, one leg out as if to rise; wings in the right hand, tortoise in the left
+      this._m(new THREE.SphereGeometry(0.06, 8, 7), carved, 0.02, 0.16, 0.0, { parent: g, cast: false });
+      this._m(new THREE.CapsuleGeometry(0.05, 0.16, 3, 6), carved, 0.0, 0.02, 0.0, { parent: g, cast: false });
+      this._m(new THREE.CapsuleGeometry(0.025, 0.2, 3, 6), carved, 0.12, -0.1, 0.0, { parent: g, cast: false, rz: 1.2 });    // the leg put forth
+      this._m(new THREE.CapsuleGeometry(0.02, 0.18, 3, 6), carved, -0.14, 0.1, 0.0, { parent: g, cast: false, rz: -1.3 });  // arm to the wings
+      this._m(new THREE.CapsuleGeometry(0.02, 0.18, 3, 6), carved, 0.16, 0.1, 0.0, { parent: g, cast: false, rz: 1.3 });    // arm to the tortoise
+      for (const sx of [-1, 1]) { const w = this._m(new THREE.SphereGeometry(0.08, 8, 6, 0, Math.PI), carved, -0.3 + sx * 0.05, 0.16, 0.0, { parent: g, cast: false }); w.scale.set(1.4, 0.6, 0.15); w.rotation.z = sx * 0.6; }
+      const t = this._m(new THREE.SphereGeometry(0.07, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), carved, 0.34, 0.1, 0.0, { parent: g, cast: false }); t.scale.set(1, 0.7, 1.2);
+    });
+    // and right against her, the circle held at its centre by two genii, backs to the rim
+    dev(BZ + 1.42, 0, (g) => {
+      this._m(new THREE.TorusGeometry(0.2, 0.02, 6, 24), carved, 0, 0.02, 0, { parent: g, cast: false });
+      for (const sx of [-1, 1]) {
+        this._m(new THREE.SphereGeometry(0.035, 7, 6), carved, sx * 0.07, 0.1, 0, { parent: g, cast: false });
+        this._m(new THREE.CapsuleGeometry(0.03, 0.08, 3, 6), carved, sx * 0.07, 0.0, 0, { parent: g, cast: false });
+        this._m(new THREE.CapsuleGeometry(0.012, 0.08, 3, 6), carved, sx * 0.03, 0.02, 0.01, { parent: g, cast: false, rz: sx * 1.3 });
+      }
+      this._m(new THREE.SphereGeometry(0.03, 7, 6), M2(this), 0, 0.02, 0.01, { parent: g, cast: false });
+    });
+    this._plaque({ main: 'VELOCITATEM SEDENDO, TARDITATEM TEMPERA SVRGENDO', sub: 'TEMPER THY HAST BY STAYING, AND THY SLOWNESSE BY RYSING · PLATE 35' },
+      1.8, 0.3, BX, 1.3, BZ - 1.42, Math.PI, true);
+    this._plaque({ main: 'MEDIVM TENVERE BEATI', sub: 'THE CIRCLE, HELD AT ITS CENTRE BY TWO GENII · PLATE 36' },
+      1.8, 0.3, BX, 1.3, BZ + 1.42, 0, true);
+    // the grove of plane trees the river runs through
+    for (const [dx, dz] of [[-3.2, -3.2], [3.4, -3.0], [-3.6, 3.4], [3.2, 3.6], [-5.0, 0.4]]) this._tree(BX + dx, BZ + dz, 1.0, 'plane');
+    function M2(self) { return self.style.mat(self.style.key === 'woodcut' ? { tone: 0.2 } : { color: 0xc03a2a, roughness: 0.6 }); }
+  }
+
   _buildBath(BX, BZ) {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
@@ -3026,19 +3138,65 @@ export class HPWorldScene {
     // tiled pitch with its ridge along the hall, antefixes at the eaves
     this._roof(CX, 0.57 + WH + 0.98, WZ + 4.6, 13.9, 9.6, { pitch: 1.1, ridgeAlong: 'x' });
 
+    // Plate #25 (folio 88) is "Panelled wall in Queen's palace with planetary
+    // names": the seven are PANELS on the wall, not glowing orbs on pedestals
+    // in the hall — which is what stood here, from the Atalanta register.
     METALS.forEach((m, i) => {
-      const x = -26 + i * (11 / 6), z = -1.9;
-      this._m(new THREE.CylinderGeometry(0.34, 0.46, 1.3, 16), this._stoneMat, x, 0.89, z);
-      const orb = this._m(new THREE.SphereGeometry(0.42, 28, 20), S.glowMat(m), x, 2.1, z, { outline: true });
-      this._orbs.push({ orb, base: 2.1, phase: i * 0.7, spin: true });
-
-      const pl = S.pointLight(m.color, 0.7, 3.6);
-      if (pl) { pl.position.set(x, 2.1, z + 0.5); this.scene.add(pl); this._pulses.push({ pl, base: 0.7, phase: i * 0.7 }); }
-
-      this._plaque({ glyph: m.glyph, glyphColor: '#' + m.color.toString(16).padStart(6, '0'), main: m.metal, sub: m.name.toUpperCase() },
-        1.15, 0.6, x, 0.95, z + 0.56);
-      this._circleCol(x, z, 0.7);
+      const x = CX - 5.5 + i * (11 / 6);
+      this._m(new THREE.BoxGeometry(1.5, 1.7, 0.1), this._darkStoneMat, x, 0.57 + 2.6, WZ + 0.36, { cast: false });
+      this._m(new THREE.BoxGeometry(1.3, 1.5, 0.06), S.key === 'woodcut' ? this._stoneMat : S.mat({ color: m.color, metalness: m.metalness, roughness: m.rough }),
+        x, 0.57 + 2.6, WZ + 0.42, { cast: false });
+      this._plaque({ glyph: m.glyph, glyphColor: '#' + m.color.toString(16).padStart(6, '0'), main: m.name.toUpperCase(), sub: m.metal.toUpperCase() },
+        1.15, 0.5, x, 0.57 + 1.55, WZ + 0.44);
     });
+
+    // Dallington pp. 130–131: "the laboures of Hercules grauen in stone with
+    // halfe the representation standing out … the skinnes, statues, tytles,
+    // and trophes" — a relief frieze along the front; "the going in was closed
+    // vp wth a hanging … of gould and silke, wrought together, and in the same
+    // two images. One of them hauing all kinde of instruments about hir …
+    // and the other with a maidenly countenance, looking vp with hyr eyes
+    // into heauen"; kept by Cinosia; then two rooms each "hung about and
+    // diuided by an other Curtaine" — of "Arras full of Imagerie", then of
+    // "infinite knottes, bucklinges, tyings" — kept by Indalomena and
+    // Mnemosina. And overhead "a loftie Gallery … the roofe whereof, was all
+    // painted with a greene foliature, with distinct flowers and folded
+    // leaues, and little flying Byrdes".
+    const relief = S.key === 'woodcut' ? S.mat({ tone: 0.08 }) : S.mat({ color: 0xcfc3a6, roughness: 0.8 });
+    for (let i = 0; i < 12; i++) {
+      // the labours as a rhythm of standing figures and beasts in half-relief
+      const x = CX - 6 + i * 1.1, y = 0.57 + COL_H + 0.72;
+      this._m(new THREE.CapsuleGeometry(0.07, 0.16, 3, 6), relief, x, y, 4.2 + 0.56, { cast: false });
+      if (i % 3 === 1) this._m(new THREE.SphereGeometry(0.1, 8, 6), relief, x + 0.32, y - 0.04, 4.2 + 0.56, { cast: false }).scale.set(1.5, 0.8, 0.5);
+      if (i % 4 === 2) this._m(new THREE.ConeGeometry(0.06, 0.22, 5), relief, x - 0.3, y + 0.05, 4.2 + 0.56, { cast: false });
+    }
+    this._plaque({ main: 'HERCVLIS LABORES', sub: 'GRAVEN IN STONE, HALF THE REPRESENTATION STANDING OVT · THE SKINS, STATVES, TITLES AND TROPHIES' },
+      2.6, 0.36, CX, 0.57 + COL_H + 0.3, 4.2 + 0.6, 0, true);
+    // the gold-and-silk hanging at the door, with its two images
+    this._drape(CX, 0.57, WZ + 0.55, 2.2, 3.1, 0xc8a24a, { ry: 0, swag: 0.25 });
+    this._plaque({ main: 'THE INSTRVMENTS · THE EYES TO HEAVEN', sub: 'TWO IMAGES WROVGHT IN GOLD AND SILK · KEPT BY CINOSIA' },
+      2.0, 0.3, CX, 0.57 + 3.35, WZ + 0.6, 0, true);
+    const keepers = [['Cinosia', 'KEEPER OF THE HANGING', 0], ['Indalomena', 'KEEPER OF THE ARRAS OF IMAGERIE', 1], ['Mnemosina', 'KEEPER OF THE KNOTTED CVRTAIN · MEMORY', 2]];
+    keepers.forEach(([name, sub2, k]) => {
+      const ny = this.cast.nymph({ name, robe: [0xe0d4b8, 0xc8b898, 0xb8a888][k], h: 0.96 });
+      this._npc('palace_' + name.toLowerCase(), ny, CX + 1.6 + k * 0.9, WZ + 1.2 + k * 0.5, Math.PI * 0.75, { label: name, sub: sub2, sway: 0.03 });
+    });
+    // the painted gallery ceiling: green foliature, flowers, folded leaves, little flying birds
+    if (S.key !== 'woodcut') {
+      const c = document.createElement('canvas'); c.width = 512; c.height = 256;
+      const x = c.getContext('2d');
+      x.fillStyle = '#2a6a9a'; x.fillRect(0, 0, 512, 256);                                   // the azure ground
+      const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+      x.strokeStyle = '#4a8a3a'; x.lineWidth = 3;
+      for (let i = 0; i < 26; i++) { x.beginPath(); x.moveTo(rnd(i, 1) * 512, rnd(i, 2) * 256); x.bezierCurveTo(rnd(i, 3) * 512, rnd(i, 4) * 256, rnd(i, 5) * 512, rnd(i, 6) * 256, rnd(i, 7) * 512, rnd(i, 8) * 256); x.stroke(); }
+      for (let i = 0; i < 60; i++) { x.fillStyle = ['#5a9a4a', '#3c7a32', '#7ab85a'][i % 3]; x.save(); x.translate(rnd(i, 9) * 512, rnd(i, 10) * 256); x.rotate(rnd(i, 11) * 6.3); x.beginPath(); x.ellipse(0, 0, 14, 6, 0, 0, 7); x.fill(); x.restore(); }
+      for (let i = 0; i < 30; i++) { x.fillStyle = ['#e8c040', '#f0ecd8', '#d84a5a'][i % 3]; for (let p = 0; p < 5; p++) { x.beginPath(); x.arc(rnd(i, 12) * 512 + Math.cos(p * 1.257) * 4, rnd(i, 13) * 256 + Math.sin(p * 1.257) * 4, 3.4, 0, 7); x.fill(); } }
+      x.fillStyle = '#d9b25a'; x.strokeStyle = '#d9b25a'; x.lineWidth = 2.5;
+      for (let i = 0; i < 16; i++) { const bx = rnd(i, 14) * 512, by = rnd(i, 15) * 256; x.beginPath(); x.moveTo(bx - 10, by); x.quadraticCurveTo(bx - 5, by - 7, bx, by); x.quadraticCurveTo(bx + 5, by - 7, bx + 10, by); x.stroke(); }
+      const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 2); this._disp.push(t);
+      const cm = new THREE.MeshStandardMaterial({ map: t, roughness: 0.9, side: THREE.DoubleSide }); this._disp.push(cm);
+      this._m(new THREE.PlaneGeometry(13.4, 9.2), cm, CX, 0.57 + WH + 0.9, WZ + 4.6, { rx: Math.PI / 2, cast: false });
+    }
   }
 
   // ── Quinta Essentia (f.164) — east court ──────────────────────────────────
@@ -3392,71 +3550,124 @@ export class HPWorldScene {
     if (C.t > 0.7) nextMove();
   }
 
+  // ── The obelisk of the Trinity (#33, f. 119) ──────────────
+  //
+  // This station was a glowing dodecahedron on drums with four element-orbs
+  // round it — the Atalanta register, and nothing the book describes. What
+  // stands in the third garden, at the centre, in Dallington pp. 183–185
+  // (corpus ll. 7690–7790), is this:
+  //
+  //   "a Base, of a cleere Christal-like Calcedonie stone, in a Cubic forme"
+  //   — on each face, in Greek letters "three, one, two and three":
+  //   ΔΥΣ Α ΛΩ ΤΟΣ, dysalotos, hard to take; "consecrated to the Deitie,
+  //   because it is euerie way alike".
+  //   "vppon that was set a round stone … two foote high, and by the Diameter
+  //   one pace and a halfe ouer, of most pure red Diaspre" — three hieroglyphs
+  //   under the feet of the images: the sun, an ewer ("an olde fashioned
+  //   Ower"), "a dyshe with a burning flame in it".
+  //   "a most blacke stone, in forme three square … in height one pace and a
+  //   halfe" — on each polished front a nymph-image, feet not touching the
+  //   stone, arms stretched to the corners, "where they held a Coppy … of
+  //   fine gold … seauen foote".
+  //   On its head "an Egiptian Monster of Gold, fower footed couchant" at each
+  //   corner — "One of thẽ hauing a face lyke man altogether. The other like
+  //   half a man, & halfe a beast. And the third like a beast", each "with a
+  //   linnen vaile ouer euery of their heades" — three sphinxes.
+  //   On their backs "a massiue Spyre of Gold, three square, sharpning vp to
+  //   the toppe, fiue tymes as high as broade below", a circle on each front
+  //   and over the circles Ο, Ω, Ν.
+  //   Logistica's reading: "Diuinæ infinitæque trinitati vnius essentiæ."
   _buildQuinta() {
-    const S = this.style;
+    const S = this.style, woodcut = S.key === 'woodcut';
     const CX = 21.5, CZ = 0;
+    const M = (color, extra = {}) => woodcut ? S.mat({ tone: extra.tone ?? 0.08 }) : S.mat({ color, ...extra, tone: undefined });
+    const chalced = M(0x9ec4d0, { roughness: 0.15, metalness: 0.2, transparent: !woodcut, opacity: 0.86, tone: 0.06 });
+    const jasper  = M(0xa03a2c, { roughness: 0.45, tone: 0.22 });
+    const black   = M(0x0e0e12, { roughness: 0.3, metalness: 0.2, tone: 0.36 });
+    const gold    = M(0xd9b25a, { metalness: 0.95, roughness: 0.22, tone: 0.02 });
+    const linen   = M(0xefe6d2, { roughness: 0.9, tone: 0.04 });
 
-    this._m(new THREE.CylinderGeometry(2.6, 2.9, 0.28, 28), this._stoneMat, CX, 0.14, CZ, { cast: false });
-    this._m(new THREE.CylinderGeometry(1.9, 2.2, 0.28, 24), this._stoneMat, CX, 0.42, CZ, { cast: false });
-    this._m(new THREE.CylinderGeometry(0.8, 1.0, 1.3, 20), this._stoneMat, CX, 1.2, CZ, { outline: true });
-    this._circleCol(CX, CZ, 2.4);
-
-    const dod = this._m(this._indexed(new THREE.DodecahedronGeometry(0.82, 0)),
-      S.key === 'woodcut' ? S.glowMat() : S.glowMat({ color: 0xffd24a, emissive: 0xc89020, emissiveIntensity: 1.1, metalness: 0.9, roughness: 0.15 }),
-      CX, 3.2, CZ, { outline: 1.05 });
-    const dl = S.pointLight(0xffd060, 2.4, 10);
-    if (dl) { dl.position.set(CX, 3.2, CZ + 0.5); this.scene.add(dl); }
-    this._quinta = { dod, dl };
-
-    if (S.rays) {
-      const pts = [];
-      for (let i = 0; i < 16; i++) {
-        const a = (i / 16) * Math.PI * 2;
-        const r0 = 1.15, r1 = i % 2 ? 1.75 : 2.15;
-        pts.push(new THREE.Vector3(0, Math.sin(a) * r0, Math.cos(a) * r0));
-        pts.push(new THREE.Vector3(0, Math.sin(a) * r1, Math.cos(a) * r1));
-      }
-      const rays = new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(pts), S.rayMat());
-      rays.position.set(CX, 3.2, CZ);
-      this.scene.add(rays);
-      this._quinta.rays = rays;
+    // the cube of chalcedony, lettered on every face
+    const CUBE = 1.6;
+    this._m(new THREE.BoxGeometry(CUBE, CUBE, CUBE), chalced, CX, CUBE / 2 + 0.05, CZ, { outline: true });
+    for (let k = 0; k < 4; k++) {
+      const a = k * Math.PI / 2;
+      this._plaque({ main: 'ΔΥΣ Α ΛΩ ΤΟΣ', sub: 'HARD TO TAKE · CONSECRATED TO THE DEITY, BECAUSE IT IS EVERY WAY ALIKE' },
+        1.4, 0.36, CX + Math.sin(a) * (CUBE / 2 + 0.02), 0.85, CZ + Math.cos(a) * (CUBE / 2 + 0.02), a, true);
     }
+    this._circleCol(CX, CZ, 1.5);
+    // the round of red jasper, two foot high, a pace and a half across, with
+    // the three hieroglyphs under the images' feet: sun, ewer, dish of flame
+    const RY = CUBE + 0.05, RR = 1.15, RH = 0.5;
+    this._m(new THREE.CylinderGeometry(RR, RR, RH, 32), jasper, CX, RY + RH / 2, CZ, { outline: true });
+    [['sun'], ['ewer'], ['altar']].forEach((signs, i) => {
+      const a = i * Math.PI * 2 / 3 + Math.PI / 2;
+      this._frieze(CX + Math.sin(a) * (RR + 0.01), RY + RH / 2, CZ + Math.cos(a) * (RR + 0.01), 0.5, 0.36, 'hieroglyph', { signs, reps: 1, ry: a });
+    });
+    // the black trigon, a pace and a half high, and on each front a nymph in
+    // gold holding a cornucopia to each corner
+    const TY = RY + RH, TH = 1.85, TR = 1.05;
+    const tri = new THREE.CylinderGeometry(TR, TR, TH, 3); tri.rotateY(Math.PI / 6);
+    this._m(tri, black, CX, TY + TH / 2, CZ, { outline: true });
+    for (let i = 0; i < 3; i++) {
+      const a = i * Math.PI * 2 / 3 + Math.PI / 2;            // the face normals
+      const ap = TR * Math.cos(Math.PI / 3);                   // apothem of the triangle
+      const fx = CX + Math.sin(a) * (ap + 0.02), fz = CZ + Math.cos(a) * (ap + 0.02);
+      const fig = this.cast.nymph({ name: 'trigon_' + i, robe: 0xd9b25a, h: 0.78, pose: 'reach', cutout: null });
+      fig.traverse(o => { if (o.isMesh && o.material && o.material.color) o.material = gold; });
+      fig.position.set(fx, TY + 0.14, fz); fig.rotation.y = a; this.scene.add(fig);
+      // the two horns, seven foot of gold, to the corners
+      for (const sx of [-1, 1]) {
+        const ca = a + sx * Math.PI / 3;                       // the corner directions
+        const cx2 = CX + Math.sin(ca) * TR, cz2 = CZ + Math.cos(ca) * TR;
+        const horn = this._limb(this.scene, gold, fx, TY + 1.0, fz, cx2, TY + TH - 0.1, cz2, 0.03, 0.09);
+        void horn;
+      }
+    }
+    // three sphinxes of gold, couchant at the corners, in linen veils: the
+    // man-faced, the half-man, the beast
+    const SY = TY + TH;
+    for (let i = 0; i < 3; i++) {
+      const ca = i * Math.PI * 2 / 3 + Math.PI / 2 + Math.PI / 3;
+      const g = new THREE.Group(); g.position.set(CX + Math.sin(ca) * TR * 0.62, SY, CZ + Math.cos(ca) * TR * 0.62); g.rotation.y = ca; this.scene.add(g);
+      const body = this._m(new THREE.CapsuleGeometry(0.16, 0.36, 4, 8), gold, 0, 0.16, -0.05, { parent: g }); body.rotation.x = Math.PI / 2;
+      for (const sx of [-1, 1]) this._m(new THREE.CapsuleGeometry(0.05, 0.22, 3, 6), gold, sx * 0.12, 0.07, 0.22, { parent: g, rx: Math.PI / 2 });
+      const head = this._m(new THREE.SphereGeometry(i === 2 ? 0.11 : 0.12, 10, 8), gold, 0, 0.42, 0.28, { parent: g });
+      if (i === 2) { head.scale.set(0.9, 0.85, 1.3); this._m(new THREE.ConeGeometry(0.04, 0.12, 6), gold, 0, 0.4, 0.42, { parent: g, rx: Math.PI / 2 }); }
+      if (i === 1) head.scale.set(0.95, 1, 1.15);
+      const veil = this._m(new THREE.BoxGeometry(0.3, 0.02, 0.5), linen, 0, 0.52, 0.16, { parent: g, cast: false });
+      veil.rotation.x = 0.35;
+      for (const sx of [-1, 1]) this._m(new THREE.BoxGeometry(0.06, 0.24, 0.02), linen, sx * 0.14, 0.36, 0.34, { parent: g, cast: false });
+    }
+    // the spire of gold, three square, five times as high as broad, a circle
+    // on each front and Ο, Ω, Ν over them
+    const OY = SY + 0.5, OB = 0.62, OH = OB * 5;
+    const spire = new THREE.CylinderGeometry(0.03, OB / Math.sqrt(3), OH, 3); spire.rotateY(Math.PI / 6);
+    this._m(spire, gold, CX, OY + OH / 2, CZ, { outline: true });
+    ['Ο', 'Ω', 'Ν'].forEach((L, i) => {
+      const a = i * Math.PI * 2 / 3 + Math.PI / 2;
+      const ap = (OB / Math.sqrt(3)) * Math.cos(Math.PI / 3) * 0.72;
+      this._m(new THREE.TorusGeometry(0.12, 0.02, 6, 20), M(0x2a2018, { tone: 0.3 }), CX + Math.sin(a) * (ap + 0.02), OY + 0.7, CZ + Math.cos(a) * (ap + 0.02), { cast: false, ry: a });
+      this._plaque({ main: L, sub: '' }, 0.34, 0.3, CX + Math.sin(a) * (ap * 0.9 + 0.02), OY + 1.15, CZ + Math.cos(a) * (ap * 0.9 + 0.02), a, true);
+    });
+    const gl = S.pointLight(0xffd060, 1.2, 8);
+    if (gl) { gl.position.set(CX, OY + 1, CZ + 0.5); this.scene.add(gl); }
+    this._quinta = null;
 
-    // A ring of eight columns about the shrine, carrying a circular entablature.
-    // The Quinta was three stacked drums and a glowing solid; it is a temple and
-    // now stands like one.
+    // the ring of columns stays: the garden's centre is a place, not a prop
     for (let i = 0; i < 8; i++) {
       const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
       const gx = CX + Math.cos(a) * 3.35, gz = CZ + Math.sin(a) * 3.35;
       const gc = new THREE.Group(); gc.position.y = 0.56; this.scene.add(gc);
       this._column(gx, gz, 2.9, { order: 'ionic', r: 0.17, parent: gc });
     }
-    for (let i = 0; i < 8; i++) {                 // the ring architrave, in eight bays
-      const a0 = (i / 8) * Math.PI * 2 + Math.PI / 8;
-      const a1 = ((i + 1) / 8) * Math.PI * 2 + Math.PI / 8;
+    for (let i = 0; i < 8; i++) {
+      const a0 = (i / 8) * Math.PI * 2 + Math.PI / 8, a1 = ((i + 1) / 8) * Math.PI * 2 + Math.PI / 8;
       const mx = CX + Math.cos((a0 + a1) / 2) * 3.35, mz = CZ + Math.sin((a0 + a1) / 2) * 3.35;
-      const span = 2 * 3.35 * Math.sin(Math.PI / 8);
-      this._entablature(mx, 3.46, mz, span + 0.22, 0.5, { ry: -(a0 + a1) / 2 });
+      this._entablature(mx, 3.46, mz, 2 * 3.35 * Math.sin(Math.PI / 8) + 0.22, 0.5, { ry: -(a0 + a1) / 2 });
     }
-
-    ELEMENTS.forEach((el, i) => {
-      const a = (el.deg * Math.PI) / 180;
-      const x = CX + Math.cos(a) * 4.6, z = CZ + Math.sin(a) * 4.6;
-      this._m(new THREE.CylinderGeometry(0.3, 0.4, 1.0, 14), this._stoneMat, x, 0.5, z);
-      const orb = this._m(new THREE.SphereGeometry(0.36, 22, 16),
-        S.key === 'woodcut' ? S.glowMat() : S.glowMat({ color: el.color, emissiveIntensity: 0.4, metalness: 0.3, roughness: 0.5 }),
-        x, 1.35, z, { outline: true });
-      this._orbs.push({ orb, base: 1.35, phase: i * 1.2, spin: false });
-
-      const pl = S.pointLight(el.color, 0.55, 3);
-      if (pl) { pl.position.set(x, 1.35, z); this.scene.add(pl); this._pulses.push({ pl, base: 0.55, phase: i * 1.2 }); }
-
-      const outward = Math.atan2(Math.cos(a), Math.sin(a));
-      this._plaque({ main: el.title, sub: el.sub, glyphColor: '#' + el.color.toString(16).padStart(6, '0') },
-        1.0, 0.34, x + Math.cos(a) * 0.45, 0.5, z + Math.sin(a) * 0.45, outward);
-      this._circleCol(x, z, 0.6);
-    });
-
+    this._plaque({ main: 'DIVINAE INFINITAEQVE TRINITATI VNIVS ESSENTIAE', sub: 'LOGISTICA READS THE MONVMENT · THE THIRD GARDEN · CH. XI · PLATE 33' },
+      3.0, 0.42, CX, 0.55, CZ + 3.9, 0, true);
     this._obelisk(25.5, -3.4, 1.1, 3.0);
     this._obelisk(25.5,  3.4, 1.1, 3.0);
   }

@@ -27,7 +27,7 @@ ever printed, and almost nobody finishes it.
 This project does three things with it.
 
 1. **Builds it.** Sixteen stations — the dark wood, the great portal, the queen's court,
-   the three doors, the elephant and obelisk, the planetary palace, the Quinta Essentia,
+   the three doors, the elephant and obelisk, the planetary palace, the obelisk of the Trinity,
    the fountain of Venus, the crossing to Cythera, Polia's garden, the triumphs, the
    Polyandrion, the gardens and theatre of Cythera, and the Queen's **human chess match** —
    as one continuous ground you walk, with the geometry sourced from the plates rather than

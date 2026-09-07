@@ -2,7 +2,33 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
-## 2026-09-06 — The site is the Hypnerotomachia, and now so is the repo; plants, water, roofs (Ted)
+## 2026-09-06 — Architecture against the text, station by station
+
+The rule for this pass, and for the rest of the brief: **read the chapter, then look at the
+station, and change whichever is wrong — and it is never the chapter.** Four stations went:
+
+- **The Quinta Essentia was not in the book.** A glowing dodecahedron with four element-orbs
+  is the Atalanta register. What stands at the centre of the third garden (Dallington pp.
+  183–185, plate #33) is the obelisk of the Trinity — the chalcedony cube lettered ΔΥΣ Α ΛΩ
+  ΤΟΣ, the red-jasper round with sun, ewer and dish of flame, the black trigon with its three
+  golden nymphs and cornucopias, three sphinxes in linen veils, the gold spire with Ο Ω Ν.
+  Station renamed *The Obelisk of the Trinity*, folio 119.
+- **The second bridge did not exist.** The woman with wings and tortoise and the two genii
+  holding the circle (#35–#36) belong on a three-arched bridge over the river in a grove of
+  plane trees (pp. 191–192), not on the first bridge with the anchor. Built at (−11, 14).
+- **The palace had orbs; the plate has panels.** #25 is a *panelled wall* with the planetary
+  names. The seven are panels now, and the front carries what pp. 130–131 say: the labours of
+  Hercules in half-relief, the gold-and-silk hanging with its two images, the three keepers,
+  the gallery ceiling painted with green foliage and little birds.
+- **The court's floor is the text's.** Sixty-four squares of coral and blood-green jasper, the
+  pace-wide border, the knot pavement, the palm-wood settles in green velvet, the gold-plated
+  wall with its jewelled lozenges (pp. 133–134).
+- **The three doors are hewn in rock** (earlier the same day); **the third fountain runs**.
+
+Still to check against their chapters: the Great Portal's own measurements (Bury/Pliny), the
+Polyandrion's temple front (ch. XIX plates), the bath's frieze.
+
+
 
 Ted: *"I just want the atalanta stuff archived so we can focus on the HP … We still have a lot
 of work to do on the architecture so that it matches the descriptions in HP and looks like
