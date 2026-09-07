@@ -69,9 +69,11 @@ control over the camera to move it further away or closer or rotate it." Built a
 `src/systems/DragonFlight.js`: a third-person flight controller (heading, climb, speed, bank;
 W/S, A/D, R/F, Shift, digits swoop to the wonders, Esc lands) with an orbit camera the reader
 owns — drag swings it round the dragon, wheel or +/− change the distance, C resets it to
-behind-and-above. The mount is a new `Cast.animals.flyingDragon`: the vaults' dragon of plate
-#16 stretched out for the air, with hinged wings the controller beats, a tail and a head that
-lean into turns. The walker is locked and parked under the dragon; landing puts it back. The
+behind-and-above. The mount is **the vaults' dragon itself** — Ted: "I liked the way the
+dragon looked before" — the coiled, crested serpent with the ribbed triangular wings of plate
+#16, unchanged in shape; `Cast.animals.flyingDragon` only re-parents its two wings onto hinge
+groups at the shoulders so the controller can beat them. (A first attempt at a stretched-out
+"flying" body was thrown away the same hour.) The walker is locked and parked under the dragon; landing puts it back. The
 station commentary keeps working from the air, with a wider radius. Fourth card on the entry
 screen. The dream's mood lens and the tour do not run in flight.
 

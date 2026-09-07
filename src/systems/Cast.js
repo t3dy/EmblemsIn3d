@@ -1657,94 +1657,39 @@ export function makeCast(S) {
       jaw.rotation.x = -Math.PI / 2 + 0.4; jaw.castShadow = true; g.add(jaw);
       // bat-swept triangular membranes with ribs, not blank slabs
       const wm = M(0x3a4a2a, { side: THREE.DoubleSide, roughness: 0.75 });
+      g.userData.wingParts = { L: [], R: [] };
       for (const sx of [-1, 1]) {
+        const parts = sx < 0 ? g.userData.wingParts.L : g.userData.wingParts.R;
         const w = mesh(new THREE.CircleGeometry(0.34 * s, 3), wm, sx * 0.34 * s, 0.44 * s, -0.45 * s);
         w.scale.set(1.7, 1.05, 1);
         w.rotation.z = sx * 0.75; w.rotation.y = sx * 0.55;
-        g.add(w);
+        g.add(w); parts.push(w);
         for (let f = 0; f < 3; f++) {
           const rib = mesh(new THREE.CylinderGeometry(0.006 * s, 0.011 * s, 0.36 * s, 4), dm,
             sx * (0.18 + f * 0.12) * s, (0.48 - f * 0.04) * s, -0.45 * s);
           rib.rotation.z = sx * (0.45 + f * 0.4);
-          g.add(rib);
+          g.add(rib); parts.push(rib);
         }
       }
       return g;
     },
-    // The dragon as a mount, for the flight mode. The vaults' dragon (above) is
-    // the coiled beast of plate #16 seen at floor level; this is the same
-    // creature stretched out for the air — a long undulating body facing -z,
-    // tucked legs, a finned tail, and two great ribbed membranes hinged at the
-    // shoulders so the flight controller can beat them (`userData.wingL/R`).
+    // The dragon as a mount, for the flight mode: the vaults' dragon exactly
+    // as it stands (Ted liked the look — the coiled crested serpent with the
+    // ribbed triangular wings of plate #16), with its two wings re-parented
+    // onto hinge groups at the shoulders so the flight controller can beat
+    // them (`userData.wingL/R`). Nothing about its shape changes.
     flyingDragon: (s = 1) => {
-      const g = new THREE.Group();
-      const bm = M(0x4a6a3a, { roughness: 0.7 });
-      const dm = M(0x2c3a20, { roughness: 0.8 });
-      const belly = M(0x9aa070, { roughness: 0.8 });
-      // the body, tail to neck, with a gentle wave in it
-      const pts = [];
-      for (let i = 0; i <= 12; i++) {
-        const t = i / 12;
-        pts.push(new THREE.Vector3(0, (Math.sin(t * Math.PI * 1.6) * 0.12 - t * 0.05) * s, (0.55 - t * 1.55) * s));
-      }
-      const body = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 32, 0.17 * s, 10), bm);
-      body.castShadow = true; g.add(body);
-      const under = new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts.map(p => p.clone().add(new THREE.Vector3(0, -0.07 * s, 0)))), 32, 0.11 * s, 8), belly);
-      g.add(under);
-      // the tail, hinged at the rump, ending in a fin
-      const tail = new THREE.Group(); tail.position.set(0, 0.02 * s, 0.55 * s); g.add(tail);
-      const tpts = [];
-      for (let i = 0; i <= 8; i++) { const t = i / 8; tpts.push(new THREE.Vector3(Math.sin(t * 3) * 0.06 * s, -t * 0.12 * s, t * 1.5 * s)); }
-      tail.add(new THREE.Mesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(tpts), 20, 0.11 * s, 8), bm));
-      for (let i = 1; i <= 8; i++) { const t = i / 8; const sp = mesh(new THREE.ConeGeometry(0.03 * s, 0.11 * s, 4), dm, Math.sin(t * 3) * 0.06 * s, -t * 0.12 * s + 0.09 * s, t * 1.5 * s); tail.add(sp); }
-      const fin = mesh(new THREE.ConeGeometry(0.16 * s, 0.4 * s, 3), dm, 0, -0.05 * s, 1.62 * s);
-      fin.rotation.x = Math.PI / 2; fin.scale.y = 1; fin.scale.x = 0.2; tail.add(fin);
-      // the crest of spikes down the spine
-      for (let i = 1; i < 11; i++) { const p = pts[i]; g.add(mesh(new THREE.ConeGeometry(0.035 * s, 0.14 * s, 4), dm, p.x, p.y + 0.16 * s, p.z)); }
-      // the neck and head, hinged so it can look into a turn
-      const head = new THREE.Group(); head.position.set(0, 0.06 * s, -1.0 * s); g.add(head);
-      const neck = mesh(new THREE.CylinderGeometry(0.1 * s, 0.15 * s, 0.5 * s, 10), bm, 0, 0.12 * s, -0.2 * s);
-      neck.rotation.x = -1.1; head.add(neck);
-      const skull = mesh(new THREE.SphereGeometry(0.15 * s, 12, 10), bm, 0, 0.3 * s, -0.42 * s);
-      skull.scale.set(0.85, 0.75, 1.35); skull.castShadow = true; head.add(skull);
-      for (const sx of [-1, 1]) {
-        const horn = mesh(new THREE.ConeGeometry(0.03 * s, 0.24 * s, 5), dm, sx * 0.07 * s, 0.42 * s, -0.36 * s);
-        horn.rotation.x = 0.6; horn.rotation.z = -sx * 0.35; head.add(horn);
-        const eyeM = lit ? M(0xffb030, { emissive: 0xa06000, emissiveIntensity: 1.2 }) : M(0x181008);
-        head.add(mesh(new THREE.SphereGeometry(0.028 * s, 7, 6), eyeM, sx * 0.075 * s, 0.33 * s, -0.55 * s));
-      }
-      const jaw = mesh(new THREE.ConeGeometry(0.06 * s, 0.26 * s, 6), bm, 0, 0.22 * s, -0.56 * s);
-      jaw.rotation.x = -Math.PI / 2 + 0.3; head.add(jaw);
-      const snout = mesh(new THREE.ConeGeometry(0.07 * s, 0.3 * s, 6), bm, 0, 0.3 * s, -0.6 * s);
-      snout.rotation.x = -Math.PI / 2; head.add(snout);
-      // four legs, tucked under
-      for (const [sx, z] of [[-1, -0.55], [1, -0.55], [-1, 0.3], [1, 0.3]]) {
-        const leg = mesh(new THREE.CapsuleGeometry(0.05 * s, 0.26 * s, 4, 6), bm, sx * 0.14 * s, -0.12 * s, z * s);
-        leg.rotation.x = 1.2; leg.rotation.z = sx * 0.3; g.add(leg);
-        for (let c = 0; c < 3; c++) g.add(mesh(new THREE.ConeGeometry(0.014 * s, 0.07 * s, 4), dm, sx * 0.14 * s + (c - 1) * 0.03 * s, -0.2 * s, (z + 0.2) * s));
-      }
-      // the wings: a membrane on ribs, hinged at the shoulder
-      const wm = M(0x3a4a2a, { side: THREE.DoubleSide, roughness: 0.75, transparent: true, opacity: 0.92 });
-      const wingOf = (sx) => {
-        const w = new THREE.Group(); w.position.set(sx * 0.16 * s, 0.14 * s, -0.5 * s);
-        const shape = new THREE.Shape();
-        const P = [[0, 0], [0.9, 0.42], [1.75, 0.55], [2.3, 0.1], [1.9, -0.35], [1.2, -0.6], [0.5, -0.5], [0.15, -0.25]];
-        shape.moveTo(0, 0); for (const [x, y] of P.slice(1)) shape.lineTo(x * s * sx, y * s); shape.closePath();
-        const mem = new THREE.Mesh(new THREE.ShapeGeometry(shape), wm);
-        mem.rotation.x = -Math.PI / 2;   // the membrane lies in the plane of flight (x, z): shape y → -z
-        mem.castShadow = true; w.add(mem);
-        for (const [x, y] of [[0.9, 0.42], [1.75, 0.55], [2.3, 0.1], [1.9, -0.35]]) {
-          const L = Math.hypot(x, y) * s;
-          const rib = mesh(new THREE.CylinderGeometry(0.008 * s, 0.016 * s, L, 5), dm, sx * x * s / 2, 0, -y * s / 2);
-          rib.rotation.z = Math.PI / 2; rib.rotation.y = -Math.atan2(-y, sx * x);
-          w.add(rib);
-        }
-        w.add(mesh(new THREE.SphereGeometry(0.08 * s, 8, 6), bm, 0, 0, 0));   // the shoulder
-        return w;
+      const g = animals.dragon(s);
+      const wp = g.userData.wingParts;
+      const hinge = (sx, parts) => {
+        const h = new THREE.Group();
+        h.position.set(sx * 0.1 * s, 0.44 * s, -0.45 * s);
+        for (const m of parts) { g.remove(m); m.position.sub(h.position); h.add(m); }
+        g.add(h);
+        return h;
       };
-      const wingL = wingOf(-1), wingR = wingOf(1);
-      g.add(wingL); g.add(wingR);
-      g.userData = { wingL, wingR, head, tail, jaw };
+      const wingL = hinge(-1, wp.L), wingR = hinge(1, wp.R);
+      g.userData = { ...g.userData, wingL, wingR };
       return g;
     },
     ouroboros: (s = 1) => {
