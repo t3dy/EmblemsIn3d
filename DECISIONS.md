@@ -25,8 +25,18 @@ station, and change whichever is wrong — and it is never the chapter.** Four s
   wall with its jewelled lozenges (pp. 133–134).
 - **The three doors are hewn in rock** (earlier the same day); **the third fountain runs**.
 
-Still to check against their chapters: the Great Portal's own measurements (Bury/Pliny), the
-Polyandrion's temple front (ch. XIX plates), the bath's frieze.
+- **The Polyandrion had a front and no inside** (later the same day). Chapter XIX, read from
+  our translation pp. 246-271 and plates #94-#112, gives the ruin a centre and a crypt: the
+  hexagonal porphyry ciborium over a grated shaft, the round marble-vaulted crypt under it on
+  six dwarf columns with the brass altar-furnace inscribed to Pluto, Proserpina and Cerberus,
+  the tribune whose vault carries the mosaic of Hell, the porphyry sepulchre of Artemisia
+  drinking her husband's ashes, and six of the epitaphs in the book's own words. The crypt is
+  genuinely below the sward — the ground plane is cut for the grate and the stair-pit
+  (`_holedGround`) — and since the walker has no floor height the pit is kerbed and fenced:
+  you look down the stair and through the grate, as Poliphilo first does, rather than descend.
+  The Great Portal was checked against Bury and left as it stands.
+
+Still to check against their chapters: the bath's frieze.
 
 
 
