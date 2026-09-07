@@ -48,6 +48,18 @@ station, and change whichever is wrong — and it is never the chapter.** Four s
 
 Every station on the 2026-09-06 list has now been checked against its chapter.
 
+## 2026-09-07 — The floating-slab sweep, by measurement
+
+Ted's brief named "impossible floating platforms". Rather than eyeball 21 stations, the scene
+was built in the browser with `_compileDrawCalls` stubbed (47,670 meshes, unmerged) and every
+mesh wider than 0.7 m in both x and z with its underside above 1 m was tested for a supporter:
+any other mesh overlapping it in plan whose top reaches within 0.4 m of its underside. **Zero
+slabs failed**; the only three hits were leaf cards on Cythera, which hang by design. A visual
+pass through all 21 stations agreed. The earlier `_roof()` work and the rebuilt stations had
+already removed what Ted saw. The sweep is closed; if a platform ever reads as floating again,
+the measure is the one above, not a hunch. (One station fix fell out of it: the court's spawn
+stood nose-to-nose with the bath's new east table, and moved 2.4 m east.)
+
 
 
 Ted: *"I just want the atalanta stuff archived so we can focus on the HP … We still have a lot

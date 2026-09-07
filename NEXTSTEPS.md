@@ -39,7 +39,7 @@ text's species, water, `_roof()` on three buildings). **Still to sweep:** every 
 without a soffit (audit station by station); ~~the fountains' jets and basins one by one~~ (`_jet()` — a tube along a parabola with sparkle
 and a splash; the folio-80 fountain built from Dallington pp. 124–127 with all its named jets
 in place of the copied Cythera fountain; the sleeping nymph's fall is a jet);
-`Cast.props.tree()` in the woodcut register. Stations checked against their chapters so far: the obelisk of the Trinity, the second bridge, the palace, the court, the three doors, and the Polyandrion (ciborium, crypt, Hell mosaic, Artemisia's sepulchre, six epitaphs — pp. 246-271, #94-#112); the Great Portal checked and left; the bath rebuilt to pp. 112-115 (columns, tables, zophor, leaf-ribs, censer, reliefs). **The list is done; the next sweep is the slabs without soffits.** **Segre's knot gardens and parterres are built**
+`Cast.props.tree()` in the woodcut register. Stations checked against their chapters so far: the obelisk of the Trinity, the second bridge, the palace, the court, the three doors, and the Polyandrion (ciborium, crypt, Hell mosaic, Artemisia's sepulchre, six epitaphs — pp. 246-271, #94-#112); the Great Portal checked and left; the bath rebuilt to pp. 112-115 (columns, tables, zophor, leaf-ribs, censer, reliefs). **The list is done.** The soffit sweep was run on 2026-09-07 by measurement (see DECISIONS): no unsupported slab remains. **Segre's knot gardens and parterres are built**
 (same day, `_buildParterres`, pp. 316–318).
 
 ### 1. Finish dressing the buildings
