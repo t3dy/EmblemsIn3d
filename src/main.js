@@ -3,6 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=166';
+import { VaultsScene } from './scenes/VaultsScene.js?v=3';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
@@ -25,6 +26,7 @@ const state = {
   inGallery: false,
   annotationTimer: null,
   commentsOff: false,      // the reader dismissed the commentary with its ×
+  vaults: false,           // the crawl under the pyramid has the keyboard
   tours: null,
   tour: null,
   tourStop: 0,
@@ -898,6 +900,9 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   if (state.activeScene) { state.activeScene.dispose(); state.activeScene = null; }
   state.world = 'HP';
   state.inGallery = false;
+  state.vaults = false;
+  setHidden(document.getElementById('vault-hud'), true);
+  setHidden(document.getElementById('vault-over'), true);
   setActiveWorldBtn('btn-hp');
 
   const scene = new HPWorldScene(renderer, composer, { style: state.hpStyle, station, spawn });
@@ -931,6 +936,130 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   }
   refreshTouchControls();
 }
+
+
+// ─── The Vaults: the crawl under the pyramid (chapter V, played) ────────────
+//
+// Ted, 2026-09-07: "I understand there are tunnels beneath the pyramid in the
+// HP — have we included those? I feel like we should have some kind of a
+// dungeon crawling game mode." They were not built; only the dragon stood
+// outside the portal. The chapter is already a roguelike and the scene is made
+// of its own sentences — see the header of `VaultsScene.js`.
+const VAULT_LINES = {
+  dragon: {
+    title: 'The dragon has you',
+    quote: '“I began to imagine that the Dragon was flying about my head, and with the noyse of hir scritching teeth and tearing clawes to take hould vpon me with hir deuouring iawes.”',
+  },
+  vault: {
+    title: 'You tumble into a vault',
+    quote: '“…feeling with my feete softlye before I did rest vpon them, for feare I should tumble downe into some vaulte vnder thys mighty Pyramides.”',
+  },
+  descend: {
+    title: 'The little wicket',
+    quote: '“I espied a light whiche so long I had wished for, comming in at a litle wicket as small as I could see.”',
+  },
+};
+
+function vaultHud(depth, lamps) {
+  const d = document.getElementById('vh-depth'), l = document.getElementById('vh-lamps');
+  if (d) d.textContent = depth;
+  if (l) l.textContent = lamps;
+}
+
+// The map fills in as you walk — the one mercy the chapter does not give him.
+function drawVaultMap(m) {
+  const c = document.getElementById('vault-map');
+  if (!c || !m) return;
+  const x = c.getContext('2d');
+  const s = Math.max(2, Math.floor(Math.min(c.width / m.W, c.height / m.H)));
+  const ox = Math.floor((c.width - s * m.W) / 2), oy = Math.floor((c.height - s * m.H) / 2);
+  x.fillStyle = '#0a0810'; x.fillRect(0, 0, c.width, c.height);
+  for (let gy = 0; gy < m.H; gy++) {
+    for (let gx = 0; gx < m.W; gx++) {
+      if (!m.known[gy][gx]) continue;
+      x.fillStyle = m.solid[gy][gx] ? '#2a2620' : '#5a5040';
+      x.fillRect(ox + gx * s, oy + gy * s, s, s);
+    }
+  }
+  const dot = (cx, cy, col, r = s) => { x.fillStyle = col; x.fillRect(ox + cx * s - (r - s) / 2, oy + cy * s - (r - s) / 2, r, r); };
+  m.altars.forEach((a, i) => { if (m.known[a[1]][a[0]]) dot(a[0], a[1], m.lampLit[i] ? '#ffc850' : '#7a6030'); });
+  if (m.known[m.wicket[1]][m.wicket[0]]) dot(m.wicket[0], m.wicket[1], '#fff0c0');
+  if (m.dragon && m.known[m.dragon[1]]?.[m.dragon[0]]) dot(m.dragon[0], m.dragon[1], '#c04030');
+  dot(m.player[0], m.player[1], '#8ad0ff', s + 2);
+}
+
+function showVaultCard(kind, depth, lamps) {
+  const el = document.getElementById('vault-over');
+  const L = VAULT_LINES[kind];
+  if (!el || !L) return;
+  document.getElementById('vo-title').textContent = L.title;
+  document.getElementById('vo-quote').innerHTML = L.quote;
+  const btns = document.getElementById('vo-btns');
+  if (kind === 'descend') {
+    document.getElementById('vo-score').textContent =
+      `You are ${depth - 1} ${depth - 1 === 1 ? 'vault' : 'vaults'} deep, with ${lamps} ${lamps === 1 ? 'lamp' : 'lamps'} lit behind you.`;
+    btns.innerHTML = `<button onclick="window.hpVaultsDeeper()">Go deeper &#9656;</button>
+                      <button onclick="window.hpVaultsExit()">Back to the garden</button>`;
+  } else {
+    document.getElementById('vo-score').textContent =
+      `You reached depth ${depth} and lit ${lamps} ${lamps === 1 ? 'lamp' : 'lamps'}.`;
+    btns.innerHTML = `<button onclick="window.hpVaults()">Try again</button>
+                      <button onclick="window.hpVaultsExit()">Back to the garden</button>`;
+  }
+  setHidden(el, false, 'flex');
+}
+
+async function launchVaults({ depth = 1, lamps = 0, seed = null } = {}) {
+  if (state.activeScene) { state.activeScene.dispose(); state.activeScene = null; }
+  state.world = 'HP';
+  state.inGallery = false;
+  state.vaults = true;
+  setActiveWorldBtn('btn-hp');
+  hideWalkNotes();
+  showFlightCards(false);
+  setHidden(document.getElementById('vault-over'), true);
+
+  const scene = new VaultsScene(renderer, composer, { depth, lamps, seed });
+  scene.onDepth = (next) => { state.vaultNext = { depth: next, lamps: scene.lamps }; showVaultCard('descend', next, scene.lamps); };
+  scene.onDeath = (how) => showVaultCard(how, scene.depth, scene.lamps);
+  scene.onLamp = (n) => { vaultHud(scene.depth, n); showHint('An everlasting lamp, burning before an altar.'); };
+  scene.onMap = drawVaultMap;
+  scene.onWarn = (kind) => {
+    const el = document.getElementById('vh-warn');
+    if (!el) return;
+    const L = {
+      vault: ['A vault opens at your feet', '#e8a040'],
+      dragon: ['Something is moving in the dark', '#c07050'],
+      'dragon-close': ['The dragon has your scent', '#e04030'],
+    }[kind];
+    el.textContent = L ? L[0] : '';
+    el.style.color = L ? L[1] : 'transparent';
+  };
+
+  await scene.build();
+  composer.passes[0] = new RenderPass(scene.scene, scene.camera);
+  state.activeScene = scene;
+
+  showHPHUD('The Vaults under the Pyramid', null);
+  setHPStyleBtn(false);
+  vaultHud(depth, scene.lamps);
+  setHidden(document.getElementById('vault-hud'), false, 'block');
+  drawVaultMap(scene.mapState());
+  showHint('W A S D to feel your way · Shift to run · find the lamps, then the little wicket · Esc to leave');
+  refreshTouchControls();
+}
+
+window.hpVaults = () => { showHPMode(false); launchVaults({ depth: 1, lamps: 0 }); };
+window.hpVaultsDeeper = () => {
+  const n = state.vaultNext || { depth: 2, lamps: 0 };
+  launchVaults({ depth: n.depth, lamps: n.lamps });
+};
+window.hpVaultsExit = () => {
+  state.vaults = false;
+  setHidden(document.getElementById('vault-hud'), true);
+  setHidden(document.getElementById('vault-over'), true);
+  launchHPWorld({ chooser: false, station: 'portal' });
+};
 
 // ─── Poliphilo's Dream (story mode) ───────────────────────────────────────────
 
@@ -1239,6 +1368,11 @@ function showMessage(title, msg) {
 window.addEventListener('keydown', (e) => {
   // Poliphilo's Dream owns the keyboard (Space/Enter advance, Esc wakes)
   if (state.activeScene?.dream) return;
+  // In the vaults the only key that is not the crawl's own is the way out
+  if (state.vaults) {
+    if (e.key === 'Escape') { e.preventDefault(); window.hpVaultsExit(); }
+    return;
+  }
   // A running tour captures the arrow keys for stop-to-stop navigation
   if (state.tour) {
     // …unless the woodcut viewer is open, where they page the woodcuts

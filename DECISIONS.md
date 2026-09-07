@@ -61,6 +61,36 @@ the ritual book; the characters signed in blood on the pavement, the sponge, the
 simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
 blood characters are strokes, not a reading — the book gives no forms — and the note says so.
 
+## 2026-09-07 — The Vaults: chapter V as a crawl
+
+Ted: "I understand there are tunnels beneath the pyramid in the HP — have we included those?
+I feel like we should have some kind of a dungeon crawling game mode that extends them into a
+roguelike video game side quest sort of thing." They were **not** included: the tour had a
+stop called *The Dragon in the Vaults*, but the world had only a dragon standing outside the
+portal, and nothing behind the door.
+
+Reading Dallington pp. 82–87 settles it — the chapter is already a roguelike, and it hands
+over every mechanic in its own words, so `VaultsScene.js` invents nothing but the numbers:
+
+| the book | the mechanic |
+|---|---|
+| "diuers crooked torments, ambagious passages and vnknowne waies… so full of wayes and winding turnings, **one entring into another, to deceiue the intent of the goer out, or in**" | a seeded maze, carved by depth-first search and then **knocked through** in a dozen places, because a tree maze has no crossings |
+| "although my eyes were somewhat wel acquainted with the darkenes, yet I could see iust nothing" | one guttering point light, and it shortens with depth |
+| "many huge and mightie pillers, **some fouresquare, some sixe square, some eight square**" | pillars of 4, 6 and 8 sides, which is exactly what he counts |
+| "**feeling with my feete softlye** before I did rest vpon them, for feare I should tumble downe into some vaulte" | unlit pits; standing beside one warns you, standing in one ends the run |
+| "an **euerlasting Lampe**, burning before an Aultar that was fiue foote high, and tenne foote broad, with the images of golde standing thereupon" | three altars a level — 1.5 m high, 3 m broad, two gold figures — that light, score, and reveal the map around them |
+| "I espied a light… comming in at a **litle wicket** as small as I could see" | the way down to the next depth |
+| "I began to imagine that the **Dragon** was flying about my head" | it wakes after a few seconds and hunts you by breadth-first search, quickening with depth |
+
+Depth is the score; lamps carry down with you; dying is permanent and puts you back at the
+Great Portal, which is where he actually comes out. The map fills in as you walk — the one
+mercy the chapter does not give him, and the only thing here that is not his.
+
+**A trap for next time:** the first build rendered pitch black. The renderer is on physical
+light units with ACES tone mapping at 1.2 exposure, so a `PointLight` of intensity 1.5 — which
+is what the lit garden's own helper uses, because that scene is carried by its sun — is
+nothing. Interior point lights here want **tens**: the lantern is 26, an altar 44.
+
 ## 2026-09-07 — The commentary obeys its own × , and the flight keys are cards
 
 Ted: "I keep closing it by hitting the x in the corner and it keeps coming back up. If you

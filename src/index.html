@@ -398,6 +398,47 @@
       color: #a89878; cursor: pointer; border-radius: 2px;
     }
     #tour-panel .tp-lenses-quick button:hover { border-color: #c8a040; color: #f0e8d8; }
+    /* ── The vaults: the crawl's HUD and its end-card ────────────────── */
+    #vault-hud {
+      position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 30;
+      background: linear-gradient(180deg, rgba(8,6,10,0.94), rgba(4,3,6,0.97));
+      border: 1px solid rgba(139,69,19,0.45); border-left: 2px solid #c8a040;
+      padding: 0.6rem 0.7rem; font-family: 'Georgia', serif; pointer-events: none;
+    }
+    #vault-hud .vh-row {
+      display: flex; justify-content: space-between; gap: 1.2rem;
+      font-size: 0.75rem; color: #e8c96a; letter-spacing: 0.04em; padding: 0.1rem 0;
+    }
+    #vault-hud .vh-k { color: #8a7a5a; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.62rem; }
+    #vault-map { display: block; margin: 0.5rem 0 0.3rem; image-rendering: pixelated; border: 1px solid #2a2018; }
+    #vh-warn {
+      min-height: 1.1em; text-align: center; font-size: 0.68rem; letter-spacing: 0.06em;
+      font-style: italic; color: transparent; margin-bottom: 0.25rem;
+    }
+    #vault-hud .vh-foot { font-size: 0.6rem; letter-spacing: 0.1em; color: #6a5a44; text-align: center; }
+    #vault-over {
+      position: fixed; inset: 0; z-index: 44; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(3,2,5,0.86); backdrop-filter: blur(3px);
+    }
+    #vault-over .vo-inner {
+      max-width: 540px; padding: 2rem; text-align: center; font-family: 'Georgia', serif;
+      border: 1px solid rgba(139,69,19,0.5); background: rgba(8,6,4,0.96);
+    }
+    #vault-over h3 { font-size: 1.4rem; font-weight: normal; color: #e8c96a; letter-spacing: 0.08em; margin: 0 0 1rem; }
+    #vault-over blockquote {
+      margin: 0 0 1.1rem; padding-left: 0.9rem; border-left: 2px solid #8b4513;
+      color: #b8a488; font-size: 0.86rem; line-height: 1.75; font-style: italic; text-align: left;
+    }
+    #vault-over p { color: #9a8a70; font-size: 0.8rem; margin: 0 0 1.4rem; }
+    #vault-over .vo-btns { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+    #vault-over button {
+      background: rgba(10,8,4,0.8); border: 1px solid #6a4a18; color: #e8c96a;
+      font-family: 'Georgia', serif; font-size: 0.84rem; padding: 0.5rem 1.2rem;
+      cursor: pointer; letter-spacing: 0.06em; transition: border-color 0.2s, color 0.2s;
+    }
+    #vault-over button:hover { border-color: #c8a040; color: #fff4dc; }
+
     /* ── The flight's key cards ──────────────────────────────────────
        The keys used to live only in the hint toast, which is no use once it
        has faded. They are cards now, each with its own × and its own toggle
@@ -838,6 +879,11 @@
           <h3>Fly as the Dragon</h3>
           <p>The dragon of the vaults (plate 16) takes to the air, and you ride it over the whole dream, from the dark wood to Cythera. W / S for speed, A / D to turn, R / F to climb and dive; drag to swing the camera round the dragon, wheel to bring it close or far; 1&ndash;9 swoop to the wonders; Esc to land where you are.</p>
         </button>
+        <button class="hpm-card" onclick="window.hpVaults()">
+          <span class="hpm-kicker">Roguelike &middot; a side quest</span>
+          <h3>The Vaults</h3>
+          <p>Chapter V, played. The dragon drives you off the threshold into the dark under the pyramid &mdash; &ldquo;diuers crooked torments, ambagious passages and vnknowne waies&rdquo;. Grope past the pillars, keep off the vaults in the floor, light the everlasting lamps and find the little wicket before the dragon finds you. Every descent is a new maze.</p>
+        </button>
         <button class="hpm-card" onclick="window.hpTour('novel')">
           <span class="hpm-kicker">Guided tour &middot; with the scholarship</span>
           <h3>The Novel</h3>
@@ -852,6 +898,23 @@
     position:fixed;inset:0;z-index:50;background:#060402;
     opacity:0;pointer-events:none;transition:opacity 0.3s ease;
   "></div>
+
+  <!-- The crawl's own HUD: how deep, how many lamps, and the map you make -->
+  <div id="vault-hud" hidden>
+    <div class="vh-row"><span class="vh-k">Depth</span><span id="vh-depth">1</span></div>
+    <div class="vh-row"><span class="vh-k">Lamps lit</span><span id="vh-lamps">0</span></div>
+    <canvas id="vault-map" width="180" height="180"></canvas>
+    <div id="vh-warn"></div>
+    <div class="vh-foot">Esc &mdash; leave the vaults</div>
+  </div>
+  <div id="vault-over" hidden>
+    <div class="vo-inner">
+      <h3 id="vo-title"></h3>
+      <blockquote id="vo-quote"></blockquote>
+      <p id="vo-score"></p>
+      <div class="vo-btns" id="vo-btns"></div>
+    </div>
+  </div>
 
   <!-- The flight's keys, as cards rather than a toast that fades away -->
   <div id="ctl-stack">
@@ -909,6 +972,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=244"></script>
+  <script type="module" src="./main.js?v=247"></script>
 </body>
 </html>

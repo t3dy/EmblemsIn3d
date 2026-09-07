@@ -126,6 +126,18 @@ What follows is the record of what each copy is, kept for the next reader:
   Book II was a late and separate composition.
 - **BL C.60.o.12** — Ben Jonson's hand, and the second alchemist.
 
+### 5b. The Vaults (built 2026-09-07) — what is not in it yet
+The crawl under the pyramid is playable (`src/scenes/VaultsScene.js`, entry card *The Vaults*).
+Built from Dallington pp. 82–87; see `DECISIONS.md`. Open, in rough order of value:
+- **No sound**, per the site-wide silence rule — but the chapter is all about *listening*
+  ("with my watchfull and attentiue eares, listning if the horrible monster… were drawing
+  towards mee"). If the silence rule is ever relaxed, this is the place it earns its keep.
+- The dragon is a single hunter with one behaviour. The chapter also has him *imagining* it
+  overhead; a false alarm now and then would be faithful and cheap.
+- Nothing to find but lamps. The book's own furniture down there — the "large foundations,
+  and fearefull vaultes, and subterraneal buttresses" — is not modelled as rooms.
+- No touch controls tuning for the crawl; the stick works but the map is hidden below 520px.
+
 ### 6. Book II has no geography
 Its thirteen stops are staged at the dream stations whose meaning they answer, and each
 says so — but the temple of Diana, Polia's bed-chamber and the priestess's throne are named
