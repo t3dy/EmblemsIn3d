@@ -5211,7 +5211,7 @@ export class HPWorldScene {
       const sill = this._m(new THREE.BoxGeometry(4.0, 1.1, 0.9),
         k === 0 ? marble : shadow, bx, PLAT_Y + 0.55, bz, { cast: false });
       sill.rotation.y = b;
-      if (k === 0) sill.visible = false;                 // the bay with the door
+      if (k === 0 || k === 4) sill.visible = false;     // the door, and the sacello opposite it
     }
 
     // the entablature ring and the scaled cupola
@@ -5417,59 +5417,185 @@ export class HPWorldScene {
     this.scene.add(steam.points);
     this._streams.push(steam);
 
-    // ── the altar (#80), and the candle that had never been lit ───────────
-    const AX = TX, AZ = TZ - 3.5;
-    this._m(new THREE.BoxGeometry(2.0, 0.24, 1.3), black, AX, WY + 0.12, AZ, { cast: false });
-    this._m(new THREE.CylinderGeometry(0.72, 0.86, 1.05, 20), marble, AX, WY + 0.76, AZ, { outline: true });
-    this._m(new THREE.CylinderGeometry(0.92, 0.78, 0.16, 20), marble, AX, WY + 1.36, AZ, { cast: false });
-    this._frieze(AX, WY + 1.05, AZ + 0.80, 1.5, 0.28, 'meander');
-    this._circleCol(AX, AZ, 1.0);
-    // the pure candle, kindled from the torch before it was quenched
-    this._m(new THREE.CylinderGeometry(0.045, 0.05, 0.62, 8), M(0xf2ecd8, { roughness: 0.7 }),
-      AX + 0.34, WY + 1.75, AZ, { cast: false });
-    this._m(new THREE.ConeGeometry(0.05, 0.15, 8),
-      woodcut ? S.mat({ tone: 0.04 })
-              : S.mat({ color: 0xffd88a, emissive: 0xe0a030, emissiveIntensity: 1.2, roughness: 0.5 }),
-      AX + 0.34, WY + 2.12, AZ, { cast: false });
-    // the ritual book, bound in cyan velvet worked into the shape of a dove
-    this._m(new THREE.BoxGeometry(0.42, 0.09, 0.30), M(0x2a7a9a, { roughness: 0.75 }),
-      AX - 0.34, WY + 1.49, AZ, { cast: false });
-    this._m(new THREE.SphereGeometry(0.075, 8, 7), M(0x2a7a9a, { roughness: 0.75 }),
-      AX - 0.50, WY + 1.55, AZ, { cast: false });
+    // ── The sacello (pp. 219-220), the altar (pp. 221-223, #80), the sacrifice
+    //    (pp. 226-232, #79-#83) and the miracle (pp. 233-234, #84-#85) ──────
+    //
+    // The rite does not happen in the drum. "Now toward the round and blind
+    // Sacello — situated directly opposite the door of the magnificent temple,
+    // and with it artfully joined and contiguous — all, composedly, went …
+    // all of stone … of precious Phengite marvellously built, with a cupola'd
+    // and round roof, of a single and solid rock … not being windowed, but all
+    // obtuse, and having only the golden valves — throughout, clearly, it was
+    // illuminated" (p. 219). Its pavement "all of gems … disposed in greening
+    // leaves, and flowers, and little birds … from which, doubled, it re-showed
+    // those who had entered" (p. 220). Before its golden valves two virgins set
+    // down "a pair of whitest male Swans … and a most-ancient little urn with
+    // sea-water; and … a pair of candid Turtledoves, by the feet bound together
+    // with crimson silk, upon a wicker basket full of vermilion roses and
+    // oyster-shells" on "a sacred and quadrangular anclabris" (p. 219). Plate
+    // #80 draws the valves in an aedicule with a shell in its pediment, the
+    // virgins with the swans and the basket outside it. The altar was here
+    // before; it stood loose in the drum, and the sacello did not exist.
+    const SZ = TZ - R - 2.6, SR = 2.5, FY = PLAT_Y;
+    const phengite = woodcut ? S.mat({ tone: 0.02 })
+      : S.mat({ color: 0xf4efe4, roughness: 0.55, emissive: 0xfff2d8, emissiveIntensity: 0.32 });
+    const phengite2 = phengite.clone(); phengite2.side = THREE.DoubleSide; this._disp.push(phengite2);
+    // the floor, of gems, mirror-bright; the wall, blind, with the one gap toward the drum; the cupola of one stone
+    const gemFloor = woodcut ? S.mat({ tone: 0.1 })
+      : new THREE.MeshStandardMaterial({ map: this._knotTexture(), roughness: 0.18, metalness: 0.55, envMapIntensity: 1.4 });
+    this._m(new THREE.CylinderGeometry(SR + 0.4, SR + 0.4, FY + 0.02, 40), marble, TX, (FY + 0.02) / 2, SZ, { cast: false });
+    this._m(new THREE.CircleGeometry(SR - 0.05, 40), gemFloor, TX, FY + 0.03, SZ, { rx: -Math.PI / 2, cast: false });
+    const GAP = 0.36;
+    this._m(new THREE.CylinderGeometry(SR, SR, 3.4, 40, 1, true, GAP, Math.PI * 2 - 2 * GAP), phengite2, TX, FY + 1.7, SZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(SR + 0.35, SR + 0.35, 3.4, 40, 1, true, GAP, Math.PI * 2 - 2 * GAP), phengite, TX, FY + 1.7, SZ, { cast: false });
+    for (const sx of [-1, 1]) this._m(new THREE.BoxGeometry(0.36, 3.4, 0.5), phengite, TX + sx * SR * Math.sin(GAP) * 1.0, FY + 1.7, SZ + SR * Math.cos(GAP) + 0.15, { cast: false });   // the jambs of the gap
+    this._m(new THREE.TorusGeometry(SR + 0.2, 0.18, 8, 40), phengite, TX, FY + 3.4, SZ, { rx: Math.PI / 2, cast: false });
+    const cup = this._m(new THREE.SphereGeometry(SR + 0.3, 40, 16, 0, Math.PI * 2, 0, Math.PI / 2), phengite2, TX, FY + 3.45, SZ, { cast: false });
+    cup.scale.y = 0.62;
+    // colliders round the wall, leaving the gap
+    for (let k = 0; k < 20; k++) { const a = GAP + 0.15 + k * (Math.PI * 2 - 2 * GAP - 0.3) / 19; this._circleCol(TX + Math.sin(a) * (SR + 0.15), SZ + Math.cos(a) * (SR + 0.15), 0.45); }
+    const sl = S.pointLight(0xfff0d0, 1.2, 7);
+    if (sl) { sl.position.set(TX, FY + 2.6, SZ); this.scene.add(sl); }
+    // the golden valves, standing open, and the aedicule of plate #80 round
+    // them on the drum's inner face: two pilasters, entablature, pediment, shell
+    const VZ = TZ - R + 0.5;
+    for (const sx of [-1, 1]) {
+      const leaf = this._m(new THREE.BoxGeometry(0.82, 2.7, 0.06), gold, 0, 0, 0, { cast: false });
+      leaf.rotation.y = -sx * 1.1;                                          // hinged at the pilasters, swung inward
+      leaf.position.set(TX + sx * (1.09 - 0.41 * Math.cos(1.1)), FY + 1.35, VZ - 0.05 - 0.41 * Math.sin(1.1));
+      for (let r = 0; r < 3; r++) this._m(new THREE.BoxGeometry(0.62, 0.5, 0.02), bronze, 0, -0.9 + r * 0.9, 0.04, { parent: leaf, cast: false });   // the panels of the valves
+      this._m(new THREE.BoxGeometry(0.32, 3.1, 0.34), marble, TX + sx * 1.25, FY + 1.55, VZ, { outline: true });
+      this._m(new THREE.BoxGeometry(0.42, 0.18, 0.44), gold, TX + sx * 1.25, FY + 3.19, VZ, { cast: false });
+    }
+    this._m(new THREE.BoxGeometry(3.2, 0.34, 0.5), marble, TX, FY + 3.45, VZ, { outline: true });
+    const pedi = this._m(new THREE.CylinderGeometry(1.75, 1.75, 0.46, 3), marble, TX, FY + 3.85, VZ, { rx: -Math.PI / 2, outline: true });
+    pedi.scale.z = 0.36;
+    this._m(new THREE.SphereGeometry(0.22, 12, 8, 0, Math.PI, 0, Math.PI / 2), gold, TX, FY + 3.72, VZ + 0.24, { cast: false, rx: -Math.PI / 2, ry: 0 });   // the shell in the tympanum
+    this._plaque({ main: 'SACELLVM', sub: 'ROVND AND BLIND, OF PHENGITE, LIT THROVGH ITS OWN STONE · THE GOLDEN VALVES · P. 219' },
+      1.9, 0.3, TX, FY + 3.05, VZ + 0.28, 0, true);
 
-    // ── the miracle of the roses (#84), and the sacrifice of the swans (#79) ─
-    // Our translation, page_224, the argument of chapter XVIII: "she scattered
-    // the roses, and, the sacrifice of the swans being made, from it
-    // miraculously germinated a rose-bush with fruits and flowers. Both of
-    // them tasted of these." Plate #79 has two virgins offering swans and
-    // doves; #84 the rose-tree rising from the altar with the doves flying.
-    // So: a rose-bush rising out of the altar-top, in flower and in fruit,
-    // the two virgins with the two swans, and the doves going up.
+    // the anclabris before the valves, and what the two virgins set on it
+    const AX = TX, AZ = SZ;
+    const ANZ = TZ - R + 2.1, ANY = FY + 0.86;
+    this._m(new THREE.BoxGeometry(1.5, 0.08, 0.8), marble, TX, ANY, ANZ, { cast: false });
+    for (const [lx, lz] of [[-0.62, -0.3], [0.62, -0.3], [-0.62, 0.3], [0.62, 0.3]]) this._m(new THREE.BoxGeometry(0.1, 0.8, 0.1), marble, TX + lx, FY + 0.42, ANZ + lz, { cast: false });
+    for (const sx of [-1, 1]) { const sw = this.cast.animals.swan(0.42); sw.position.set(TX - 0.45 + sx * 0.18, ANY + 0.04, ANZ + sx * 0.14); sw.rotation.y = sx * 0.6 + Math.PI / 2; this.scene.add(sw); }
+    const wicker = M(0xb08a4a, { roughness: 0.9 });
+    this._m(new THREE.CylinderGeometry(0.24, 0.18, 0.14, 12, 1, true), wicker.clone(), TX + 0.4, ANY + 0.11, ANZ + 0.05, { cast: false }).material.side = THREE.DoubleSide;
+    this._m(new THREE.TorusGeometry(0.24, 0.02, 6, 16), wicker, TX + 0.4, ANY + 0.18, ANZ + 0.05, { rx: Math.PI / 2, cast: false });
+    for (let k = 0; k < 9; k++) { const a = k * 0.7, rr = 0.06 + (k % 3) * 0.06; this._m(new THREE.SphereGeometry(0.04, 6, 5), k % 3 === 1 ? M(0xe8e2d0, { roughness: 0.5 }) : M(0xc8303c, { roughness: 0.7 }), TX + 0.4 + Math.cos(a) * rr, ANY + 0.19, ANZ + 0.05 + Math.sin(a) * rr, { cast: false }); }   // roses and oyster-shells
+    for (const sx of [-1, 1]) this._m(new THREE.SphereGeometry(0.05, 7, 5), M(0xf4f0e8, { roughness: 0.6 }), TX + 0.4 + sx * 0.07, ANY + 0.26, ANZ - 0.02, { cast: false }).scale.set(1.5, 0.9, 1);   // the turtledoves, bound
+    this._m(new THREE.BoxGeometry(0.2, 0.012, 0.02), M(0xa02040, { roughness: 0.6 }), TX + 0.4, ANY + 0.24, ANZ + 0.06, { cast: false });   // by the feet, with crimson silk
+    this._m(new THREE.CylinderGeometry(0.06, 0.08, 0.16, 10), bronze, TX + 0.05, ANY + 0.12, ANZ - 0.22, { cast: false });   // the little urn of sea-water
+    this._m(new THREE.CylinderGeometry(0.035, 0.05, 0.05, 10), bronze, TX + 0.05, ANY + 0.22, ANZ - 0.22, { cast: false });
+    this._m(new THREE.BoxGeometry(0.2, 0.012, 0.03), lode, TX - 0.05, ANY + 0.05, ANZ + 0.3, { cast: false, ry: 0.4 });   // the secespita
+    this._m(new THREE.CylinderGeometry(0.07, 0.05, 0.1, 10), gold, TX + 0.25, ANY + 0.09, ANZ + 0.28, { cast: false });   // the golden praefericulum
+    this._plaque({ main: 'ANCLABRIS', sub: 'TWO SWANS · TWO TVRTLEDOVES BOVND WITH CRIMSON SILK · ROSES AND OYSTER-SHELLS · THE VRN OF SEA-WATER · P. 219' },
+      1.7, 0.3, TX, FY + 0.5, ANZ + 0.6, 0, true);
+
+    // the altar of jasper, "all of one solid" (pp. 221-223): the stepped marble
+    // footing; the round slab with its foliage, cord and trochlea; the striated
+    // stylus, a cubit; the inverted flat with its sima and the calyxed flower;
+    // the knot; and the platter of purest gold with its four handles, gem
+    // strings between the volutes, and four strings of seven gems hung from
+    // the lip. Plate #80 draws it as a chalice on a stem.
+    const jasperA = woodcut ? S.mat({ tone: 0.26 }) : S.mat({ color: 0x8a3c2c, roughness: 0.32 });
+    if (!woodcut) this._dress(jasperA, this._surfaceTexture({ base: '#8a3c2c', dark: '#3c1a12', light: '#d08a64', blobs: 24, speckle: 3000, veins: 16, repeat: 2 }), 0.08);
+    this._m(new THREE.CylinderGeometry(1.15, 1.2, 0.08, 24), marble, AX, FY + 0.04, AZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(1.0, 1.05, 0.08, 24), marble, AX, FY + 0.12, AZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.62, 0.66, 0.1, 24), jasperA, AX, FY + 0.21, AZ, { cast: false });                 // the round slab
+    for (let k = 0; k < 12; k++) { const a = k * Math.PI / 6; this._m(new THREE.SphereGeometry(0.07, 6, 5), jasperA, AX + Math.cos(a) * 0.5, FY + 0.31, AZ + Math.sin(a) * 0.5, { cast: false }).scale.set(1, 0.7, 1.6); }   // the auricular foliage
+    this._m(new THREE.TorusGeometry(0.34, 0.03, 8, 24), jasperA, AX, FY + 0.36, AZ, { rx: Math.PI / 2, cast: false });      // the cord
+    this._m(new THREE.CylinderGeometry(0.3, 0.36, 0.22, 24), jasperA, AX, FY + 0.48, AZ, { cast: false });                  // the trochlea
+    this._m(new THREE.CylinderGeometry(0.34, 0.3, 0.06, 24), jasperA, AX, FY + 0.62, AZ, { cast: false });                  // its little cornice
+    this._m(new THREE.CylinderGeometry(0.24, 0.24, 0.1, 24), jasperA, AX, FY + 0.7, AZ, { cast: false });
+    const stylus = this._m(new THREE.CylinderGeometry(0.11, 0.16, 0.45, 16), jasperA, AX, FY + 0.975, AZ, { cast: false });   // the striated stylus, a cubit
+    for (let k = 0; k < 8; k++) { const a = k * Math.PI / 4; this._m(new THREE.BoxGeometry(0.025, 0.42, 0.025), lode, AX + Math.cos(a) * 0.13, FY + 0.975, AZ + Math.sin(a) * 0.13, { cast: false }); }
+    this._m(new THREE.CylinderGeometry(0.42, 0.12, 0.26, 24), jasperA, AX, FY + 1.33, AZ, { cast: false });                 // the inverted flat
+    this._m(new THREE.TorusGeometry(0.4, 0.035, 8, 24), jasperA, AX, FY + 1.46, AZ, { rx: Math.PI / 2, cast: false });      // the sima
+    for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2; this._m(new THREE.SphereGeometry(0.09, 7, 5), jasperA, AX + Math.cos(a) * 0.2, FY + 1.52, AZ + Math.sin(a) * 0.2, { cast: false }).scale.set(1.2, 0.5, 1); }   // the quadripartite acanthus
+    this._m(new THREE.SphereGeometry(0.1, 10, 8), jasperA, AX, FY + 1.58, AZ, { cast: false });                            // the knot
+    const PT = FY + 1.68;
+    this._m(new THREE.CylinderGeometry(0.7, 0.62, 0.06, 32), gold, AX, PT - 0.03, AZ, { cast: false });                     // the platter of purest gold
+    this._m(new THREE.CylinderGeometry(0.5, 0.5, 0.02, 32), lode, AX, PT + 0.01, AZ, { cast: false });                      // the fire-holder
+    for (let k = 0; k < 4; k++) {                                                                                           // four handles, their volutes, the gem strings
+      const a = k * Math.PI / 2 + Math.PI / 4;
+      const h = this._m(new THREE.TorusGeometry(0.16, 0.025, 6, 12, Math.PI), gold, AX + Math.cos(a) * 0.74, PT - 0.1, AZ + Math.sin(a) * 0.74, { cast: false });
+      h.rotation.y = -a + Math.PI / 2; h.rotation.z = Math.PI;
+      const b = a + Math.PI / 2;
+      const str = new THREE.Mesh(new THREE.TubeGeometry(new THREE.QuadraticBezierCurve3(new THREE.Vector3(AX + Math.cos(a) * 0.74, PT - 0.2, AZ + Math.sin(a) * 0.74), new THREE.Vector3(AX + Math.cos((a + b) / 2) * 0.9, PT - 0.42, AZ + Math.sin((a + b) / 2) * 0.9), new THREE.Vector3(AX + Math.cos(b) * 0.74, PT - 0.2, AZ + Math.sin(b) * 0.74)), 12, 0.006, 4), gold);
+      this.scene.add(str);
+      for (let g = 0; g < 7; g++) {                                                                                         // "larger than a hazelnut, seven to a thread"
+        const c = [0xb3243c, 0x1e3f96, 0xeeeeff, 0x0d7548][g % 4];          // ruby, sapphire, diamond, emerald
+        this._m(new THREE.SphereGeometry(0.028, 7, 5), woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: c, roughness: 0.15, metalness: 0.3, emissive: c, emissiveIntensity: 0.3 }), AX + Math.cos(a) * 0.62, PT - 0.12 - g * 0.06, AZ + Math.sin(a) * 0.62, { cast: false });
+      }
+    }
+    this._circleCol(AX, AZ, 1.3);
+    // the little priestess's ritual book, bound in cyan velvet worked into a dove, held open on a gold stand before the altar
+    this._m(new THREE.CylinderGeometry(0.02, 0.03, 1.0, 6), gold, AX + 0.9, FY + 0.5, AZ + 0.9, { cast: false });
+    this._m(new THREE.BoxGeometry(0.42, 0.06, 0.30), M(0x2a7a9a, { roughness: 0.75 }), AX + 0.9, FY + 1.02, AZ + 0.9, { cast: false, rx: -0.5 });
+    this._m(new THREE.SphereGeometry(0.06, 8, 7), M(0x2a7a9a, { roughness: 0.75 }), AX + 0.9, FY + 1.1, AZ + 1.05, { cast: false });
+    // the golden candelabrum before the altar's step, the pure candle set on it (pp. 225-226)
+    this._m(new THREE.CylinderGeometry(0.16, 0.2, 0.06, 12), gold, AX - 0.9, FY + 0.03, AZ + 0.8, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.03, 0.05, 1.1, 8), gold, AX - 0.9, FY + 0.6, AZ + 0.8, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.1, 0.05, 0.05, 12), gold, AX - 0.9, FY + 1.16, AZ + 0.8, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.03, 0.035, 0.4, 8), M(0xf2ecd8, { roughness: 0.7 }), AX - 0.9, FY + 1.38, AZ + 0.8, { cast: false });
+    this._m(new THREE.ConeGeometry(0.035, 0.11, 8),
+      woodcut ? S.mat({ tone: 0.04 }) : S.mat({ color: 0xffd88a, emissive: 0xe0a030, emissiveIntensity: 1.2, roughness: 0.5 }),
+      AX - 0.9, FY + 1.63, AZ + 0.8, { cast: false });
+    // the hyacinthine urn "set apart in the sacello" (p. 225), where Polia washed her face
+    this._m(new THREE.BoxGeometry(0.5, 0.5, 0.5), marble, AX - 1.7, FY + 0.25, AZ - 0.7, { cast: false });
+    this._m(new THREE.SphereGeometry(0.2, 12, 9), M(0x2a44b8, { roughness: 0.25, metalness: 0.2 }), AX - 1.7, FY + 0.72, AZ - 0.7, { cast: false }).scale.y = 1.2;
+    this._m(new THREE.CylinderGeometry(0.1, 0.13, 0.12, 12), M(0x2a44b8, { roughness: 0.25, metalness: 0.2 }), AX - 1.7, FY + 1.0, AZ - 0.7, { cast: false });
+    // the arcane characters signed in the blood of the swans and doves on the
+    // pavement (p. 231), the sponge Polia wiped them with, the golden ewer and
+    // simpulum of the washing (p. 232). The characters are not given; these are
+    // strokes, not a reading.
+    this._m(new THREE.PlaneGeometry(1.0, 0.6), new THREE.MeshBasicMaterial({ map: this._bloodCharacters(), transparent: true }), AX, FY + 0.045, AZ + 1.55, { rx: -Math.PI / 2, cast: false, receive: false });
+    this._m(new THREE.SphereGeometry(0.07, 8, 6), M(0xd8c890, { roughness: 1 }), AX + 0.62, FY + 0.09, AZ + 1.5, { cast: false }).scale.y = 0.6;
+    this._m(new THREE.CylinderGeometry(0.06, 0.08, 0.2, 10), gold, AX - 0.65, FY + 0.14, AZ + 1.5, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.05, 0.02, 0.1, 8), gold, AX - 0.5, FY + 0.09, AZ + 1.6, { cast: false });
+    this._plaque({ main: 'CHARACTERES ARCANI', sub: 'SIGNED IN THE BLOOD WITH HER FOREFINGER · WIPED WITH A VIRGIN SPONGE · THE WASHING POVRED ON THE FIRE · PP. 231–232' },
+      1.9, 0.3, AX, FY + 0.5, AZ + 2.0, 0, true);
+
+    // ── the miracle of the roses (#84) ────────────────────────────────────
+    // "Out of which, purest smoke I saw miraculously issue, germinating, and
+    // successively multiplying itself into a verdant rose-bush — which, with
+    // multiplied little branches, a great part of the sacred sacello copiously
+    // occupied, to the raised altitude of the cupola, with a numerosity of
+    // vermilion and rubricating roses together, and with many round fruits …
+    // Upon this rosy bush, then, appeared three white little doves" (p. 233).
+    // Three of the fruits are taken: one for the priestess, one each for the
+    // lovers (p. 233, #85).
     const roseM = M(0xc83a4a, { roughness: 0.7, tone: 0.2 });
-    const fruitM = M(0xd8602a, { roughness: 0.6, tone: 0.18 });
+    const fruitM = M(0xe8b090, { roughness: 0.6, tone: 0.18 });
     const stem = M(0x4a6a2a, { roughness: 0.9, tone: 0.2 });
-    for (let k = 0; k < 7; k++) {
-      const a = (k / 7) * Math.PI * 2, rr = 0.12 + (k % 3) * 0.1;
-      const st = this._m(new THREE.CylinderGeometry(0.02, 0.03, 0.9 + (k % 2) * 0.3, 5), stem,
-        AX + Math.cos(a) * rr, WY + 1.9 + (k % 2) * 0.15, AZ + Math.sin(a) * rr, { cast: false });
-      st.rotation.z = Math.cos(a) * 0.35; st.rotation.x = -Math.sin(a) * 0.35;
-      const top = [AX + Math.cos(a) * (rr + 0.28), WY + 2.36 + (k % 2) * 0.3, AZ + Math.sin(a) * (rr + 0.28)];
-      this._m(new THREE.SphereGeometry(0.07, 8, 6), k % 3 === 2 ? fruitM : roseM, ...top, { cast: false });
-      this._m(new THREE.SphereGeometry(0.06, 6, 5), this._leafMat, top[0] - 0.06, top[1] - 0.08, top[2] + 0.05, { cast: false }).scale.set(1.4, 0.4, 1);
+    for (let k = 0; k < 14; k++) {
+      const a = (k / 14) * Math.PI * 2, rr = 0.1 + (k % 3) * 0.1, len = 1.0 + (k % 4) * 0.35;
+      const st = this._m(new THREE.CylinderGeometry(0.02, 0.035, len, 5), stem,
+        AX + Math.cos(a) * rr, PT + len / 2, AZ + Math.sin(a) * rr, { cast: false });
+      st.rotation.z = Math.cos(a) * 0.45; st.rotation.x = -Math.sin(a) * 0.45;
+      const top = [AX + Math.cos(a) * (rr + len * 0.42), PT + len * 0.9, AZ + Math.sin(a) * (rr + len * 0.42)];
+      this._m(new THREE.SphereGeometry(k % 3 === 2 ? 0.075 : 0.065, 8, 6), k % 3 === 2 ? fruitM : roseM, ...top, { cast: false });
+      for (let q = 0; q < 3; q++) this._m(new THREE.PlaneGeometry(0.16, 0.2), this._leafCardMat('myrtle'), top[0] - 0.1 + q * 0.1, top[1] - 0.15 - q * 0.12, top[2] + 0.05, { cast: false, receive: false }).rotation.set(-0.4, q, 0);
+      if (k % 4 === 1) this._m(new THREE.SphereGeometry(0.06, 8, 6), roseM, top[0] + 0.12, top[1] - 0.3, top[2] - 0.08, { cast: false });
+    }
+    if (!woodcut) {
+      const smoke = new ParticleStream({ count: 18, source: new THREE.Vector3(AX, PT + 0.05, AZ), target: new THREE.Vector3(AX + 0.1, PT + 2.2, AZ), color: 0xf0ece4, size: 0.06, speed: 0.25, arc: 0.3 });
+      smoke.opacity = 0.28; smoke.active = true; this.style.tuneStream(smoke); this.scene.add(smoke.points); this._streams.push(smoke);
     }
     for (const sx of [-1, 1]) {
       const v = this.cast.nymph({ name: 'swan_virgin_' + sx, robe: 0xf2eee2, h: 0.95, rank: 'tutulus', cutout: null, pose: 'offer' });
-      this._npc('venus_swan_virgin_' + (sx + 1), v, AX + sx * 1.5, AZ + 1.3, sx * 0.5 + Math.PI, { sway: 0.03 });
-      const sw = this.cast.animals.swan(0.7); sw.position.set(AX + sx * 1.5, 0.95, AZ + 1.0); this.scene.add(sw);
+      this._npc('venus_swan_virgin_' + (sx + 1), v, TX + sx * 1.1, ANZ + 0.7, sx * 0.4 + Math.PI, { sway: 0.03 });
     }
     for (let k = 0; k < 3; k++) {
       const dove = this.cast.animals.bird ? this.cast.animals.bird(0.5) : null;
       if (!dove) break;
-      dove.position.set(AX + (k - 1) * 0.6, WY + 3.0 + k * 0.45, AZ + 0.3 - k * 0.2); this.scene.add(dove);
+      dove.position.set(AX + (k - 1) * 0.6, PT + 1.5 + k * 0.4, AZ + 0.3 - k * 0.2); this.scene.add(dove);
       this._hovers.push({ g: dove, y: dove.position.y, phase: k * 1.3 });
     }
-    this._plaque({ main: 'MIRACVLVM ROSARVM', sub: 'THE ROSES SCATTERED, THE SWANS OFFERED, A ROSE-BVSH RISES FROM THE ALTAR · CH. XVIII' },
-      2.4, 0.38, AX, WY + 0.5, AZ + 0.9, 0, true);
+    this._plaque({ main: 'MIRACVLVM ROSARVM', sub: 'THE ROSES SCATTERED, THE SWANS OFFERED, A ROSE-BVSH RISES FROM THE ALTAR TO THE CVPOLA · THREE FRVITS TASTED · PP. 233–234' },
+      2.2, 0.36, AX, FY + 0.95, AZ + 2.1, 0, true);
 
     // ── the great lamp, hung from the cupola on four chains ───────────────
     const LY = PLAT_Y + WALL_H - 0.9;
@@ -6791,6 +6917,25 @@ export class HPWorldScene {
     gT.add(this._plaque({ main: 'AN ARK WITH TWO DOORS', sub: 'WHO ENTERS, DYING; WHO GOES OVT, BEING BORN · THIS WORLD · P. 270 · PLATE #112' },
       1.6, 0.3, 0, 3.55, 0.3, 0, true));
     stand(x, z, 2.6, 1.2);
+  }
+
+  // Strokes of blood on the pavement of the sacello: "many arcane characters
+  // diligently signed" with a forefinger (p. 231). The book gives no forms.
+  _bloodCharacters() {
+    const N = 256, c = document.createElement('canvas'); c.width = N; c.height = Math.round(N * 0.6);
+    const x = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    x.strokeStyle = 'rgba(110,14,20,0.85)'; x.lineCap = 'round'; x.lineWidth = 5;
+    for (let i = 0; i < 9; i++) {
+      const cx = 20 + i * 26, cy = 40 + rnd(i, 1) * 60;
+      x.beginPath(); x.moveTo(cx, cy);
+      for (let k = 1; k < 5; k++) x.quadraticCurveTo(cx + (rnd(i, k * 2) - 0.5) * 30, cy + (rnd(i, k * 2 + 1) - 0.5) * 40, cx + (rnd(i, k * 3) - 0.5) * 22, cy + (k - 2) * 14);
+      x.stroke();
+    }
+    x.fillStyle = 'rgba(110,14,20,0.5)';
+    for (let i = 0; i < 20; i++) { x.beginPath(); x.arc(rnd(i, 7) * N, rnd(i, 8) * c.height, 1 + rnd(i, 9) * 3, 0, 6.3); x.fill(); }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; this._disp.push(t);
+    return t;
   }
 
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────

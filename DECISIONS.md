@@ -48,6 +48,19 @@ station, and change whichever is wrong — and it is never the chapter.** Four s
 
 Every station on the 2026-09-06 list has now been checked against its chapter.
 
+## 2026-09-07 — The sacello: the rite moved to where the book holds it
+
+Chapter XVIII's sacrifice was staged at an altar standing loose in the drum. Our translation
+pp. 219-234 puts it in **the round and blind sacello of phengite**, opposite the temple door,
+joined to it, windowless and lit through its own stone, entered by golden valves (plate #80's
+aedicule with the shell). Built: the sacello and its gem pavement; the altar of one jasper as
+pp. 221-223 describe it, stem, trochlea, calyx, knot and the gold platter with its hung gem
+strings; the anclabris before the valves with the swans, the bound turtledoves, the basket of
+roses and oyster-shells and the urn of sea-water; the golden candelabrum, the hyacinthine urn,
+the ritual book; the characters signed in blood on the pavement, the sponge, the ewer and
+simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
+blood characters are strokes, not a reading — the book gives no forms — and the note says so.
+
 ## 2026-09-07 — The floating-slab sweep, by measurement
 
 Ted's brief named "impossible floating platforms". Rather than eyeball 21 stations, the scene

@@ -136,8 +136,7 @@ gets ground of its own.
 ### 7. Smaller, still open
 - The **five-senses bath-house** (ch. VI–VII) and the **water-labyrinth** of ch. IX — the
   book's clearest single allegory — are not built; their stops are staged elsewhere.
-- The **Temple of Venus rite** (ch. XVIII): the temple and the cistern-rite of ch. XVII are
-  built; the sacrifice of ch. XVIII (#78–#83) and the miracle of the roses (#84) are not.
+- **Done 2026-09-07: the Temple of Venus rite** (ch. XVIII, #78–#85) — the sacello built opposite the door with the jasper altar, the anclabris and its offerings, the blood-signed pavement, the rose miracle inside it (see DECISIONS).
 - **Done 2026-09-06:** the Great Portal and the Three Doors now carry the genuine 1499 plates
   (woodcuts 5, 16 and 37), copied from the corpus's `site/images/woodcuts_1499/` at 800px. The
   old `three_doors.jpg` was never the three doors — it is the wheeled vessel of f. 105 and is
