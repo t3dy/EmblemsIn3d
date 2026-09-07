@@ -173,7 +173,12 @@ export class DragonFlight {
     if (u.wingL) u.wingL.rotation.z =  a;
     if (u.wingR) u.wingR.rotation.z = -a;
     if (u.tail) { u.tail.rotation.y = Math.sin(this._flap * 0.5) * 0.18 + this.bank * 0.4; u.tail.rotation.x = -this.pitch * 0.3; }
-    if (u.head) { u.head.rotation.y = this.bank * 0.35; u.head.rotation.x = this.pitch * 0.25; }
+    // the head pivots: it leans into the bank, follows the climb, and looks
+    // slowly about it the rest of the time
+    if (u.head) {
+      u.head.rotation.y = this.bank * 0.4 + Math.sin(this._flap * 0.21) * 0.34;
+      u.head.rotation.x = this.pitch * 0.25 + Math.sin(this._flap * 0.13 + 1.1) * 0.09;
+    }
     if (u.jaw)  u.jaw.rotation.x = -Math.PI / 2 + 0.3 + Math.max(0, Math.sin(this._flap * 0.31)) * 0.25;
     this._bob = Math.sin(this._flap) * 0.06;
   }

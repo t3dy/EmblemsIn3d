@@ -77,9 +77,17 @@ body at its POINT and opens out from there, on three ribs radiating from that sa
 - **the two wings**, both points planted on the same vertebra of the spine (`pts[4]`), splayed
   up and swept back. They used to float beside the body with their *broad* edge inward, which
   was wrong twice over — not touching the body, and the wrong way round.
-- **the head**, two thirds the size, laid flat and aimed down the line the neck is travelling,
-  so the neck ends in a point that opens into a fan. The ball head, the horns and the jaw are
-  gone; the two amber eyes survive, at the point where the vane meets the body.
+- **the head**, which is NOT the wings' vane turned round — Ted read his own plate back to me:
+  "the triangle looks like the dragon's head and the black sticks look like whiskers sticking
+  out on the sides… the point of the triangle with the acutest angle should be the front of the
+  dragon's head, with the shortest side of the triangle being the part that connects with the
+  body… tilting down slightly at a 20 degree angle and slightly separated from the tube of the
+  body, with the ability to pivot and look around", and no eyes. So: a 34° apex leads; the base
+  (the shortest of the three sides, since HL > √3·HW) meets the neck; six whiskers come off its
+  flanks, three a side, splayed wider than the vane's own edges so they show; it droops 20°; it
+  stands clear of the tube by 0.24 of the body scale; and it hangs on a pivot the flight
+  controller turns, so it leans into the bank, follows the climb and looks slowly about it.
+  The ball head, the horns, the jaw and the eyes are all gone.
 
 Each wing hangs on a `beat` group (the flight controller's hinge) over a `splay` group (the
 fixed set), so beating never loses the set. The head hangs on an aim group over a lean group

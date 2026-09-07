@@ -1655,10 +1655,8 @@ export function makeCast(S) {
       // ribs radiating from that same point. Two of them are the wings, hung
       // from a shoulder on the spine itself (they used to float beside the body
       // with their broad edge inward, which is the wrong way round twice over);
-      // the third is the head, smaller, laid flat and aimed down the line of
-      // the neck, so the neck ends in a point that opens into a fan. The ball
-      // head, the horns and the jaw are gone; only the two amber eyes survive,
-      // at the point where the head-vane meets the body.
+      // the head is its own vane, pointed the other way — see below. The ball
+      // head, the horns, the jaw and the eyes are all gone.
       const membrane = (L, W, rr) => {
         const grp = new THREE.Group();
         const sh = new THREE.Shape();
@@ -1693,21 +1691,45 @@ export function makeCast(S) {
       const wingR = wingAt(-0.55, 0.75);
       const wingL = wingAt(0.55, Math.PI - 0.75);
 
-      // the head: the same vane, two thirds the size, lying flat
+      // ── The head, to Ted's own reading of the plate (2026-09-07) ─────────
+      // "The triangle looks like the dragon's head and the black sticks look
+      // like whiskers sticking out on the sides… The point of the triangle with
+      // the acutest angle should be the front of the dragon's head, with the
+      // shortest side of the triangle being the part that connects with the
+      // body… tilting down slightly at a 20 degree angle and slightly separated
+      // from the tube of the body, with the ability to pivot and look around."
+      // And: no eyes. So the head is NOT the wings' membrane turned round — it
+      // is its own vane, pointed the other way: the 34° apex leads, the base
+      // (2·HW = the shortest of the three sides, since HL > √3·HW) meets the
+      // neck, and the sticks are six whiskers off its flanks rather than ribs
+      // radiating from a root.
       const hp = pts[10], hb = pts[9];
-      g.remove(g.userData.headBall);
+      g.remove(g.userData.headBall);                                  // the serpent's ball head
+      const aim = Math.atan2(-(hp.z - hb.z), hp.x - hb.x);            // the line the neck is travelling
+      const GAP = 0.24 * ss;                                          // clear of the tube, not touching it
       const hd = new THREE.Group();
-      hd.position.set(hp.x, hp.y, hp.z);
-      hd.rotation.y = Math.atan2(-(hp.z - hb.z), hp.x - hb.x);      // +x down the neck's own line
-      const hi = new THREE.Group(); hd.add(hi); g.add(hd);          // the controller leans this
-      const hv = new THREE.Group(); hv.rotation.x = Math.PI / 2; hi.add(hv);   // the vane lies flat
-      hv.add(membrane(0.52 * ss, 0.19 * ss, 0.011 * ss));
-      const eyeM = lit ? M(0xffb030, { emissive: 0xa06000, emissiveIntensity: 1.1 }) : M(0x181008);
-      for (const sx of [-1, 1]) {
-        hi.add(mesh(new THREE.SphereGeometry(0.026 * ss, 7, 6), eyeM, 0.05 * ss, 0.035 * ss, sx * 0.05 * ss));
+      hd.position.set(hp.x + Math.cos(aim) * GAP, hp.y + 0.02 * ss, hp.z - Math.sin(aim) * GAP);
+      hd.rotation.y = aim;
+      g.add(hd);
+      const pivot = new THREE.Group(); hd.add(pivot);                 // it looks around on this
+      const tilt = new THREE.Group(); tilt.rotation.z = -20 * Math.PI / 180; pivot.add(tilt);
+      const flat = new THREE.Group(); flat.rotation.x = Math.PI / 2; tilt.add(flat);
+      const HL = 0.62 * ss, HW = 0.19 * ss;
+      const hs = new THREE.Shape();
+      hs.moveTo(0, HW); hs.lineTo(HL, 0); hs.lineTo(0, -HW); hs.closePath();
+      const hvane = new THREE.Mesh(new THREE.ShapeGeometry(hs), wm);
+      hvane.castShadow = true; flat.add(hvane);
+      for (const sx of [-1, 1]) {                                     // three whiskers a side
+        for (let f = 0; f < 3; f++) {
+          const th = sx * (0.42 + f * 0.32), len = HL * (0.86 - f * 0.14);
+          const wk = new THREE.Mesh(new THREE.CylinderGeometry(0.005 * ss, 0.011 * ss, len, 4), dm);
+          wk.position.set(Math.cos(th) * len / 2 + 0.06 * ss, Math.sin(th) * len / 2 + sx * 0.05 * ss, 0.007 * ss);
+          wk.rotation.z = th - Math.PI / 2;
+          flat.add(wk);
+        }
       }
 
-      g.userData.wingL = wingL; g.userData.wingR = wingR; g.userData.head = hi;
+      g.userData.wingL = wingL; g.userData.wingR = wingR; g.userData.head = pivot;
       return g;
     },
     // The mount for the flight mode IS the vaults' dragon, unchanged: its
