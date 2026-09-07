@@ -24,7 +24,8 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=4';
-import { makeCast } from '../systems/Cast.js?v=39';
+import { makeCast } from '../systems/Cast.js?v=40';
+import { DragonFlight } from '../systems/DragonFlight.js?v=1';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -8711,9 +8712,55 @@ export class HPWorldScene {
 
   teleport(key) {
     const st = HP_STATIONS.find(s => s.key === key);
-    if (!st || this.walker.locked) return;
+    if (!st) return;
     const yaw = this.walker.yawToward(st.pos, st.look);
+    if (this.flight) {
+      // in the air the wonder is approached from above and a little behind
+      // the station's own viewpoint, so the swoop ends looking at it
+      const back = 6;
+      this.flight.flyTo(st.pos[0] + Math.sin(yaw) * back, 9, st.pos[1] + Math.cos(yaw) * back, yaw);
+      return;
+    }
+    if (this.walker.locked) return;
     this.walker.teleportTo(st.pos[0], st.pos[1], yaw, st.pitch ?? -0.04);
+  }
+
+  // ── The fourth mode: the dream from the air, as the dragon ──────────────
+  // The walker is locked and parked where it stood; the dragon rises from
+  // that spot. Landing puts the walker back under the dragon.
+  startFlight() {
+    if (this.flight) return this.flight;
+    const dragon = this.cast.animals.flyingDragon(1.4);
+    this.scene.add(dragon);
+    this.flight = new DragonFlight(this.renderer, dragon, {
+      bounds: { minX: -60, maxX: 60, minZ: -208, maxZ: 54, minY: 0.9, maxY: 48 },
+      onDigit: (n) => { if (n === 0) this.teleport('cythera_isle'); else { const st = HP_STATIONS[n - 1]; if (st) this.teleport(st.key); } },
+      onLand: () => { this.endFlight(); this.onLand?.(); },
+    });
+    const p = this.walker.player;
+    this.flight.placeAt(p.pos.x, 9, p.pos.z, p.yaw);
+    this.walker.locked = true;
+    this.flight.attach();
+    return this.flight;
+  }
+  endFlight() {
+    if (!this.flight) return;
+    const f = this.flight;
+    f.dispose();
+    this.scene.remove(f.dragon);
+    const p = this.walker.player;
+    // land on land: over the open sea the walker is set down on the nearest
+    // shore — the mainland strand, or Cythera's rim
+    let lx = f.pos.x, lz = f.pos.z;
+    const onIsle = Math.hypot(lx, lz + 150) < 46, onMain = lz > -34;
+    if (!onIsle && !onMain) {
+      if (lz > -95) { lz = -33; }
+      else { const a = Math.atan2(lz + 150, lx); lx = Math.cos(a) * 45; lz = -150 + Math.sin(a) * 45; }
+    }
+    p.pos.set(lx, 0, lz); p.yaw = f.yaw; p.pitch = -0.04;
+    this.walker.collide(p.pos);
+    this.walker.locked = false;
+    this.flight = null;
   }
 
   getSpawnState() {
@@ -8725,19 +8772,25 @@ export class HPWorldScene {
     this._t += dt;
     if (this.dream) this.dream.update(dt);
     if (this._mood) this._updateMood(dt);
-    this.walker.update(dt);
-    this.walker.applyTo(this.camera);
+    if (this.flight) {
+      this.flight.update(dt);
+      this.flight.applyTo(this.camera, dt);
+    } else {
+      this.walker.update(dt);
+      this.walker.applyTo(this.camera);
+    }
 
     // Station proximity → HUD callback (throttled; quiet during the dream)
     this._stTimer += dt;
     if (this._stTimer > 0.25 && !this.dream) {
       this._stTimer = 0;
-      const p = this.walker.player;
+      const p = this.flight ? { pos: this.flight.pos } : this.walker.player;
       let near = null, best = Infinity;
       for (const st of HP_STATIONS) {
         const dx = p.pos.x - st.pos[0], dz = p.pos.z - st.pos[1];
         const d2 = dx * dx + dz * dz;
-        if (d2 < st.radius * st.radius && d2 < best) { best = d2; near = st; }
+        const rr = this.flight ? st.radius * 2.2 : st.radius;   // from the air the wonders announce themselves sooner
+        if (d2 < rr * rr && d2 < best) { best = d2; near = st; }
       }
       if (near !== this._nearStation) {
         this._nearStation = near;

@@ -62,12 +62,13 @@ touching deploy configuration — publishing to one host does **not** publish to
 
 ---
 
-## The three ways in
+## The four ways in
 
 | Mode | What it is |
 |---|---|
 | **Walk Freely** | The whole world at your own pace. W A S D / arrows to walk, Shift to run, drag to look, digits to jump between stations. As you approach a wonder its commentary rises to meet you, filtered by the same lenses the tour uses. Named figures — the wolf, the Queen, the five sense-nymphs, Polia — keep their places. |
 | **Poliphilo's Dream** | The plot in twelve scenes, narrated from the 1499 text, with a reaction-choice at each wonder — wonder, desire, melancholy or dread — that the scene answers in light. No commentary; this one is the game. The loop is hardened so it cannot hang: a travel watchdog, a direct arrival path, and a fallback for every missing beat. |
+| **Fly as the Dragon** | The dragon of the vaults stretched out for the air, ridden in third person over the whole dream. W / S speed, A / D turn, R / F climb and dive, Shift boost; drag to orbit the camera round the dragon, wheel or + − to zoom it, C to reset it behind and above; 1–9 swoop to the wonders, Esc lands you where you are. |
 | **The Novel** | The guided tour: 38 stops across all 38 chapters, the 1499 woodcut at each stop that has one, and a deep link into the parallel edition at every chapter. Chapters I–XVI point to Dallington's 1592 English; chapter XVII onward is this project's own translation. |
 
 ### The nine commentary lenses
@@ -147,7 +148,7 @@ r168 from a CDN via importmap. The source in this repository is the source the b
 ```
 index.html              the landing page
 src/index.html          the app shell — ALL the CSS is inline here, and it is NOT cache-busted
-src/main.js             UI, the tour, the three modes, data loading, the Graphics menu
+src/main.js             UI, the tour, the four modes, data loading, the Graphics menu
 src/scenes/
   HPWorldScene.js       the world — every station, every model
 src/systems/

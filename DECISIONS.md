@@ -61,6 +61,20 @@ the ritual book; the characters signed in blood on the pavement, the sponge, the
 simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
 blood characters are strokes, not a reading — the book gives no forms — and the note says so.
 
+## 2026-09-07 — A fourth way in: fly the dream as the dragon
+
+Ted: "a fourth mode of exploring the HP where you can fly around as the dragon. The point
+of view should be from behind and slightly above the dragon but the user should have
+control over the camera to move it further away or closer or rotate it." Built as
+`src/systems/DragonFlight.js`: a third-person flight controller (heading, climb, speed, bank;
+W/S, A/D, R/F, Shift, digits swoop to the wonders, Esc lands) with an orbit camera the reader
+owns — drag swings it round the dragon, wheel or +/− change the distance, C resets it to
+behind-and-above. The mount is a new `Cast.animals.flyingDragon`: the vaults' dragon of plate
+#16 stretched out for the air, with hinged wings the controller beats, a tail and a head that
+lean into turns. The walker is locked and parked under the dragon; landing puts it back. The
+station commentary keeps working from the air, with a wider radius. Fourth card on the entry
+screen. The dream's mood lens and the tour do not run in flight.
+
 ## 2026-09-07 — Rhizopoulou fetched; the ground flora is the book's
 
 Ted: "download the papers, build everything you can". The 2016 paper was free-to-read but

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=157';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=158';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
@@ -755,6 +755,7 @@ function isTouchDevice() {
 
 function currentWalker() {
   const sc = state.activeScene;
+  if (sc && sc.flight) return sc.flight;          // the dragon takes the stick and the run toggle
   return (sc && sc.walker && !sc.dream) ? sc.walker : null;
 }
 
@@ -909,8 +910,26 @@ window.hpExplore = () => {
   });
 };
 
+const FLY_HINT = 'W / S speed · A / D turn · R / F climb, dive · Shift boost · drag to orbit the camera · wheel or + − to zoom · C reset · 1–9 the wonders · Esc to land';
+window.hpFly = () => {
+  showHPMode(false);
+  const sc = state.activeScene;
+  if (!(sc instanceof HPWorldScene)) return;
+  showFlavorChooser({
+    kicker: 'Flying the Dream Garden as the dragon', begin: 'Take wing',
+    onDone: () => {
+      sc.onLand = () => { showHint('Landed. W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera'); refreshTouchControls(); };
+      sc.startFlight();
+      showHint(FLY_HINT);
+      refreshTouchControls();
+    },
+  });
+};
+window.hpLand = () => { const sc = state.activeScene; if (sc && sc.flight) { sc.endFlight(); sc.onLand?.(); } };
+
 window.hpDream = () => {
   showHPMode(false);
+  if (state.activeScene?.flight) window.hpLand();
   showFlavorChooser({
     kicker: 'Poliphilo’s Dream · twelve scenes', begin: 'Begin the dream',
     onDone: () => startDream(),
@@ -922,6 +941,7 @@ window.hpDream = () => {
 // offering only that here sent readers into the game looking for commentary.
 window.hpTour = (id = 'novel') => {
   showHPMode(false);
+  if (state.activeScene?.flight) window.hpLand();
   startTour(id);
 };
 
