@@ -1712,12 +1712,12 @@ export function makeCast(S) {
       hd.rotation.y = aim;
       g.add(hd);
       const pivot = new THREE.Group(); hd.add(pivot);                 // it looks around on this
-      const tilt = new THREE.Group(); tilt.rotation.z = -20 * Math.PI / 180; pivot.add(tilt);
+      const tilt = new THREE.Group(); tilt.rotation.z = -50 * Math.PI / 180; pivot.add(tilt);   // Ted: "much sharper" than the first 20°
       const HL = 0.62 * ss, HW = 0.19 * ss;
       // The vane STANDS ON EDGE (it used to lie flat): rolled a quarter turn so
       // its back side — the short one, at the neck — is upright, and the acute
-      // point leads. The 20° droop then leans that back edge off the vertical
-      // by the same 20°, which is what a nose-down head does.
+      // point leads. The droop then leans that back edge off the vertical by
+      // the same angle, which is what a nose-down head does.
       const hs = new THREE.Shape();
       hs.moveTo(0, HW); hs.lineTo(HL, 0); hs.lineTo(0, -HW); hs.closePath();
       const hvane = new THREE.Mesh(new THREE.ShapeGeometry(hs), wm);
@@ -1730,14 +1730,22 @@ export function makeCast(S) {
       // off perpendicular to the plane of the triangle that forms the head."
       // So: rooted at the triangle's own centroid, and run 20° forward of the
       // face normal with a little downward set.
+      // Two a side, at 15° to each other — nearly black, and half the length
+      // they first had.
       const ROOT = new THREE.Vector3(HL / 3, 0, 0);                   // the triangle's centre point
-      const WLEN = 0.62 * HL;
+      const WLEN = 0.31 * HL;
+      const whm = M(0x12170b, { roughness: 0.85 });
+      const XAX = new THREE.Vector3(1, 0, 0);
       for (const sx of [-1, 1]) {
-        const d = new THREE.Vector3(0.30, -0.16, sx * 0.94).normalize();
-        const w = new THREE.Mesh(new THREE.CylinderGeometry(0.006 * ss, 0.013 * ss, WLEN, 4), dm);
-        w.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);   // the taper's tip runs outward
-        w.position.copy(ROOT).addScaledVector(d, WLEN / 2);
-        tilt.add(w);
+        const base = new THREE.Vector3(0.30, -0.16, sx * 0.94).normalize();
+        for (const k of [-1, 1]) {                                    // ±7.5° = 15° between the pair
+          const d = base.clone().applyAxisAngle(XAX, k * sx * 7.5 * Math.PI / 180);
+          const w = new THREE.Mesh(new THREE.CylinderGeometry(0.005 * ss, 0.011 * ss, WLEN, 4), whm);
+          w.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d); // the taper's tip runs outward
+          w.position.copy(ROOT).addScaledVector(d, WLEN / 2);
+          w.position.x += k * 0.04 * HL;                              // not quite the same root
+          tilt.add(w);
+        }
       }
 
       g.userData.wingL = wingL; g.userData.wingR = wingR; g.userData.head = pivot;

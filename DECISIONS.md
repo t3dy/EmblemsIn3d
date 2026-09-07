@@ -99,10 +99,16 @@ body at its POINT and opens out from there, on three ribs radiating from that sa
   as ribs lying IN the triangle's face. They are not: there the wing was swung about Y and its
   ribs were not, so they stand off it. "I just want two of them and they stick out from close
   to the center point of the triangle at angles just off perpendicular to the plane of the
-  triangle that forms the head." So: **two**, rooted at the vane's own centroid, running 20°
-  off its face normal (measured: 19.9° each), tapering to a tip outward. The lesson worth
-  keeping: when a reference image is offered three times, the thing being pointed at is
-  probably not the thing already being modelled.
+  triangle that forms the head." So they root at the vane's own centroid and run ~20° off its
+  face normal, tapering to a tip outward. Then: "two whiskers coming off each side… darker in
+  colour and about half as long… relative to each other the whiskers are at a 15 degree angle"
+  — **four** in all, nearly black (0x12170b), 0.31 of the head's length, each pair split by 15°
+  (measured: 14.3°) about the head's own fore-aft axis. And the droop went from 20° to **50°**:
+  "the head should be tilted down at a much sharper angle actually."
+
+  The lesson worth keeping: when a reference image is offered three times, the thing being
+  pointed at is probably not the thing already being modelled. Three passes were spent building
+  the sticks as ribs lying in the triangle's face before reading them as what they are.
 
 Each wing hangs on a `beat` group (the flight controller's hinge) over a `splay` group (the
 fixed set), so beating never loses the set. The head hangs on an aim group over a lean group
