@@ -2228,26 +2228,59 @@ export class HPWorldScene {
                       up: 0, laugh: 0 };
     }
 
-    // paired pilasters at each corner, carrying the frieze
+    // ── The bath's fabric, from Dallington pp. 112-115 (ll. 4640-4770) ─────
+    // "In the corners, & in euerry corner stoode a Chorinthian Collumne of
+    // diuers colours, waued with so pure & beautiful Iacintes as nature could
+    // affoord, with conuenient bases and their chapters curiously made vnder
+    // the beame, ouer the which was a Zophor, wherein were carued little naked
+    // Boyes playing in the water, with water monsters, with wrastling and
+    // childish strifes … Al which was beautiful ouer compassed about with a
+    // Coronice." And between the columns: "The wal … was of most blacke stone,
+    // of an extreame hardnes and shining, incloystered about and bordered
+    // with a conuenient border of Diasper redde as Coral, adorned with a
+    // Lyneament and worke of double Gurgules or Verticules. In the middle
+    // part of which table, betwixt the Collumnes, there sate an elegant Nymph
+    // naked … of the stone Gallatitis, of colour like Iuorie." The earlier
+    // build had paired pilasters and a frieze of "children with green boughs"
+    // that the text does not contain; this is what it does.
+    const jacinth = woodcut ? S.mat({ tone: 0.16 }) : S.mat({ color: 0xc46a3a, roughness: 0.35 });
+    if (!woodcut) this._dress(jacinth, this._surfaceTexture({ base: '#c46a3a', dark: '#6a2a14', light: '#f0b080', blobs: 20, speckle: 2400, veins: 14, repeat: 2 }), 0.1);
+    const blackStone = woodcut ? S.mat({ tone: 0.5 }) : S.mat({ color: 0x0c0c10, roughness: 0.15, metalness: 0.2 });
+    const coral = woodcut ? S.mat({ tone: 0.3 }) : S.mat({ color: 0xc03a3a, roughness: 0.45 });
+    const ivoryM = woodcut ? S.mat({ tone: 0.02 }) : S.mat({ color: 0xf0e6d0, roughness: 0.5 });
+    const RC = 2.35;
     for (let i = 0; i < 8; i++) {
       const a = (i + 0.5) * Math.PI / 4;
-      const px = BX + Math.cos(a) * 2.35, pz = BZ + Math.sin(a) * 2.35;
-      for (const s of [-0.12, 0.12]) {
-        const off = a + Math.PI / 2;
-        this._m(new THREE.BoxGeometry(0.16, 2.1, 0.16), this._stoneMat,
-          px + Math.cos(off) * s, 1.05, pz + Math.sin(off) * s, { ry: -a });
-      }
+      const px = BX + Math.cos(a) * RC, pz = BZ + Math.sin(a) * RC;
+      this._m(new THREE.BoxGeometry(0.4, 0.14, 0.4), this._stoneMat, px, 0.07, pz, { ry: -a });
+      this._m(new THREE.CylinderGeometry(0.14, 0.16, 1.8, 14), jacinth, px, 1.04, pz, { outline: true });
+      this._m(new THREE.CylinderGeometry(0.2, 0.14, 0.16, 14), jacinth, px, 2.0, pz);
+      for (const sx of [-1, 1]) this._m(new THREE.SphereGeometry(0.045, 6, 5), this._stoneMat, px + Math.cos(a + Math.PI / 2) * sx * 0.16, 2.06, pz + Math.sin(a + Math.PI / 2) * sx * 0.16, { cast: false });   // the volutes
+      this._m(new THREE.BoxGeometry(0.34, 0.06, 0.34), this._stoneMat, px, 2.11, pz, { ry: -a });
+      this._circleCol(px, pz, 0.28);
     }
-    // the frieze of children with their green boughs, then the cornice
-    const friezeM = woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xcbbb98, roughness: 0.8 });
-    this._m(new THREE.CylinderGeometry(2.42, 2.42, 0.3, 8, 1, true), friezeM, BX, 2.25, BZ, { cast: false });
+    // the black tables between the columns, bordered in coral jasper, each
+    // with its ivory nymph; the way in (+z) and the cold fountain (-z) stay open
+    const SIDE = 2 * RC * Math.sin(Math.PI / 8);
     for (let i = 0; i < 8; i++) {
-      const a = i * Math.PI / 4;
-      this._m(new THREE.SphereGeometry(0.07, 6, 5), woodcut ? S.mat({ tone: 0.0 }) : S.mat({ color: 0xdcc8a8, roughness: 0.7 }),
-        BX + Math.cos(a) * 2.44, 2.25, BZ + Math.sin(a) * 2.44, { cast: false });
-      this._m(new THREE.SphereGeometry(0.05, 5, 4), this._leafMat,
-        BX + Math.cos(a) * 2.46, 2.36, BZ + Math.sin(a) * 2.46, { cast: false });
+      if (i === 2 || i === 6) continue;
+      const a = i * Math.PI / 4, r = RC * Math.cos(Math.PI / 8) + 0.02;
+      const cx = BX + Math.cos(a) * r, cz = BZ + Math.sin(a) * r, ry = -a + Math.PI / 2;
+      const w = SIDE - 0.34;
+      this._m(new THREE.BoxGeometry(w, 1.15, 0.1), blackStone, cx, 1.45, cz, { ry, cast: false });
+      for (const [dx, dy, bw, bh] of [[0, 0.55, w, 0.06], [0, -0.55, w, 0.06], [-w / 2 + 0.03, 0, 0.06, 1.15], [w / 2 - 0.03, 0, 0.06, 1.15]]) {
+        this._m(new THREE.BoxGeometry(bw, bh, 0.13), coral, cx + Math.cos(ry) * dx, 1.45 + dy, cz - Math.sin(ry) * dx, { ry, cast: false });
+      }
+      // the double guilloche on the border — beads along the top and bottom rails
+      for (let k = -4; k <= 4; k++) this._m(new THREE.SphereGeometry(0.03, 5, 4), coral, cx + Math.cos(ry) * k * 0.15, 1.45 + 0.55, cz - Math.sin(ry) * k * 0.15 + Math.cos(a) * 0.04, { cast: false });
+      const nymph = this.cast.figure({ name: 'galactite' + i, h: 0.5, robe: null, skin: 0xf0e6d0, pose: 'stand' });
+      nymph.position.set(BX + Math.cos(a) * (r + 0.12), 0.9, BZ + Math.sin(a) * (r + 0.12)); nymph.rotation.y = Math.PI / 2 - a;
+      this.scene.add(nymph);
+      this._m(new THREE.BoxGeometry(0.36, 0.05, 0.16), ivoryM, BX + Math.cos(a) * (r + 0.12), 0.88, BZ + Math.sin(a) * (r + 0.12), { ry, cast: false });
     }
+    // the zophor: the boys, the water, the monsters, the wrestling; then the cornice
+    const friezeM = woodcut ? S.mat({ tone: 0.06 }) : new THREE.MeshStandardMaterial({ map: this._bathFriezeTexture(), roughness: 0.8 });
+    this._m(new THREE.CylinderGeometry(2.42, 2.42, 0.3, 8, 1, true), friezeM, BX, 2.25, BZ, { cast: false });
     this._m(new THREE.CylinderGeometry(2.55, 2.5, 0.14, 8), this._stoneMat, BX, 2.46, BZ);
 
     // the eight-square spire, glazed with crystal quarrels between gold ribs
@@ -2261,7 +2294,47 @@ export class HPWorldScene {
         BX + Math.cos(a) * 1.12, 3.42, BZ + Math.sin(a) * 1.12);
       rib.rotation.z = -Math.cos(a) * 0.75;
       rib.rotation.x = Math.sin(a) * 0.75;
+      // "a Tore moderator, increasing bigger and bigger of Oke leaues, one
+      // folding and lying ouer an other of greene Diasper hanging vppon their
+      // braunshing stalkes gilt, which ascending vp met togither" — the gilt
+      // stalk is the rib; the leaves climb it, growing as they go
+      for (let k = 0; k < 7; k++) {
+        const t = 0.08 + k * 0.13, r = 2.25 * (1 - t), y = 2.55 + 1.85 * t, sz = 0.1 + t * 0.17;
+        const lf = this._m(new THREE.PlaneGeometry(sz, sz * 1.2), this._leafCardMat('oak'), BX + Math.cos(a) * (r + 0.03), y + 0.03, BZ + Math.sin(a) * (r + 0.03), { cast: false, receive: false });
+        lf.rotation.y = Math.PI / 2 - a; lf.rotation.x = -0.5 + (k % 2) * 0.3; lf.rotation.z = (k % 3 - 1) * 0.4;
+      }
     }
+    // The censer (p. 113): "a Lyons head, with his haire standing vp round
+    // about his face, and holding a Ring in his iawes, vnto the whiche were
+    // fastened certaine chaines Orichalke … that held a large goodly vessel …
+    // hangyng two Cubites aboue the water, the bowle of the vessel which was
+    // of Christal onely except, the rest as the ribbes thereof and lippings,
+    // was of Asure blew, with bubbles of gold" — filled from the cleft in the
+    // earth with burning matter and sweet woods, "the lipping and ribbing
+    // perforated", so that "they rendered a pleasant and diuers coulered
+    // light, by the which through the smal holes the bathes were lightened".
+    const azure = woodcut ? S.mat({ tone: 0.28 }) : S.mat({ color: 0x2448b0, roughness: 0.3, metalness: 0.3 });
+    const lion = this._m(new THREE.SphereGeometry(0.15, 10, 8), gold, BX, 4.22, BZ, { cast: false });
+    lion.scale.set(1, 0.9, 0.9);
+    for (let k = 0; k < 12; k++) { const b = k * Math.PI / 6; this._m(new THREE.ConeGeometry(0.04, 0.12, 5), gold, BX + Math.cos(b) * 0.17, 4.22 + Math.sin(b) * 0.17, BZ, { cast: false, rz: b - Math.PI / 2 }); }   // the mane standing up round his face
+    this._m(new THREE.TorusGeometry(0.06, 0.012, 6, 12), gold, BX, 4.06, BZ, { cast: false });                       // the ring in his jaws
+    const VY = 0.62 + 0.9;                                                                                             // two cubits above the water
+    for (let k = 0; k < 3; k++) {
+      const b = k * Math.PI * 2 / 3, chain = this._m(new THREE.CylinderGeometry(0.01, 0.01, 4.02 - VY - 0.34, 5), gold, BX + Math.cos(b) * 0.14, (4.02 + VY + 0.34) / 2, BZ + Math.sin(b) * 0.14, { cast: false });
+      chain.rotation.z = -Math.cos(b) * 0.05; chain.rotation.x = Math.sin(b) * 0.05;
+    }
+    const vessel = new THREE.Group(); vessel.position.set(BX, VY, BZ); this.scene.add(vessel);
+    const crystal = woodcut ? S.mat({ tone: -0.05, rim: 0.4 }) : S.mat({ color: 0xe8f4ff, roughness: 0.05, metalness: 0.1, transparent: true, opacity: 0.4 });
+    this._m(new THREE.SphereGeometry(0.3, 16, 10, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), crystal, 0, 0.1, 0, { parent: vessel, cast: false });   // the bowl
+    for (let k = 0; k < 6; k++) { const b = k * Math.PI / 3; const rb = this._m(new THREE.TorusGeometry(0.31, 0.018, 6, 12, Math.PI / 2), azure, 0, 0.1, 0, { parent: vessel, cast: false }); rb.rotation.y = b; rb.rotation.z = -Math.PI / 2; }   // the azure ribs
+    this._m(new THREE.TorusGeometry(0.31, 0.03, 8, 20), azure, 0, 0.1, 0, { parent: vessel, cast: false, rx: Math.PI / 2 });                                   // the great lip
+    for (let k = 0; k < 14; k++) { const b = k * 0.9, rr = 0.31; this._m(new THREE.SphereGeometry(0.018, 5, 4), gold, Math.cos(b) * rr, 0.1 - (k % 4) * 0.06, Math.sin(b) * rr, { parent: vessel, cast: false }); }   // bubbles of gold
+    this._m(new THREE.SphereGeometry(0.31, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2), azure, 0, 0.1, 0, { parent: vessel, cast: false }).scale.y = 0.55;         // the cover, put down
+    this._m(new THREE.SphereGeometry(0.05, 7, 5), gold, 0, 0.3, 0, { parent: vessel, cast: false });
+    for (let k = 0; k < 10; k++) { const b = k * Math.PI / 5; this._m(new THREE.CylinderGeometry(0.012, 0.012, 0.06, 4), woodcut ? S.mat({ tone: 0.0 }) : S.mat({ color: 0xffe0a0, emissive: 0xffb050, emissiveIntensity: 1.5 }), Math.cos(b) * 0.28, 0.22, Math.sin(b) * 0.28, { parent: vessel, cast: false, rz: Math.PI / 2, ry: -b }); }   // the perforations, lit
+    if (!woodcut) this._m(new THREE.SphereGeometry(0.12, 8, 6), S.mat({ color: 0xff8030, emissive: 0xff5010, emissiveIntensity: 1.4 }), 0, 0.02, 0, { parent: vessel, cast: false });
+    const cl = S.pointLight(0xffb060, 1.8, 7);
+    if (cl) { cl.position.set(BX, VY, BZ); this.scene.add(cl); this._pulses.push({ pl: cl, base: 1.8, phase: 2.2 }); }
 
     // the trigon, the turning stalk, and the trumpet-boy who sounds in the wind
     this._m(new THREE.ConeGeometry(0.16, 0.3, 3), gold, BX, 4.5, BZ);
@@ -2279,11 +2352,153 @@ export class HPWorldScene {
     this.scene.add(vane);
     this._vanes.push({ g: vane, rate: 0.8, phase: 1.3 });
 
-    // ΑΣΑΜΙΝΘΟΣ over the way in
+    // ΑΣΑΜΙΝΘΟΣ "vpon the phrise" over the way in (p. 112)
     this._plaque({ main: 'ΑΣΑΜΙΝΘΟΣ', sub: 'THE BATH · EIGHT-SIDED, ROOFED WITH CRYSTAL' },
-      1.5, 0.4, BX, 1.5, BZ + 2.55, 0, true);
+      1.3, 0.28, BX, 2.25, BZ + 2.44 * Math.cos(Math.PI / 8) + 0.02, 0, true);
+
+    // "The paued ground vnder the water being of a diuers emblemature of hard
+    // stone … diuers fishes in the sides of the seates, and in the bottom by a
+    // museacall cutting expressed … As barbles, lampreys, and many others"
+    if (!woodcut) this._m(new THREE.CircleGeometry(1.9, 8), new THREE.MeshStandardMaterial({ map: this._fishMosaicTexture(), roughness: 0.6 }), BX, 0.22, BZ, { rx: -Math.PI / 2, cast: false });
+    // Over the door "a Dolphin swimming in the calme waues, and carrying vpon
+    // his back a young man, playing vpon an harpe" — Arion — "And on the
+    // contrarie side vpon the colde Fountaine, there was an other dolphin
+    // swimming, and Posidonius riding vpon him with a sharpe elle speare in
+    // his hand … set out in a most blacke ground" (pp. 114-115). The second is
+    // on the back of the cold fountain's niche, which is the face you can see.
+    this._m(new THREE.PlaneGeometry(1.5, 0.7), new THREE.MeshBasicMaterial({ map: this._dolphinRelief('arion') }), BX, 1.6, BZ + 2.2, { cast: false, receive: false });
+    this._m(new THREE.PlaneGeometry(1.4, 0.65), new THREE.MeshBasicMaterial({ map: this._dolphinRelief('poseidon') }), BX, 1.55, BZ - 2.72, { ry: Math.PI, cast: false, receive: false });
+    // "Not farre of, there was a cleft in the earth, the which continually did
+    // cast foorth burning matter" — the censer is filled from it
+    {
+      const KX = BX + 3.6, KZ = BZ - 0.4;
+      const rockM = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x3a3028, roughness: 0.98 });
+      const cleft = this._m(new THREE.CylinderGeometry(0.5, 0.5, 0.05, 12), woodcut ? S.mat({ tone: 0.5 }) : S.mat({ color: 0x100806, roughness: 1 }), KX, 0.03, KZ, { cast: false });
+      cleft.scale.x = 1.9;
+      for (let k = 0; k < 7; k++) {
+        const b = k * 0.9, rr = 0.95 * (0.5 + (k % 3) * 0.2);
+        this._m(this._indexed(new THREE.DodecahedronGeometry(0.16 + (k % 2) * 0.08, 0)), rockM, KX + Math.cos(b) * rr * 1.6, 0.1, KZ + Math.sin(b) * rr * 0.6, { cast: false }).rotation.set(k, k * 2, 0);
+      }
+      if (!woodcut) for (let k = 0; k < 6; k++) this._m(new THREE.SphereGeometry(0.05 + (k % 3) * 0.02, 6, 5), S.mat({ color: 0xff6a20, emissive: 0xff4010, emissiveIntensity: 1.6 }), KX - 0.6 + k * 0.24, 0.07, KZ + (k % 2) * 0.16 - 0.08, { cast: false });
+      const kl = S.pointLight(0xff6a20, 1.2, 4);
+      if (kl) { kl.position.set(KX, 0.5, KZ); this.scene.add(kl); this._pulses.push({ pl: kl, base: 1.2, phase: 0.4 }); }
+      this._circleCol(KX, KZ, 1.0);
+      this._plaque({ main: 'A CLEFT IN THE EARTH', sub: 'WHICH CONTINVALLY DID CAST FOORTH BVRNING MATTER · IT FILLS THE CENSER · P. 113' }, 1.6, 0.3, KX, 0.55, KZ + 1.05, 0, true);
+    }
+    this._plaque({ main: 'THE BATH, AS THE BOOK BVILDS IT', sub: 'IACINTH COLVMNS · BLACK TABLES IN CORAL · IVORY NYMPHS · THE ZOPHOR OF BOYS AND SEA-MONSTERS · OAK-LEAF RIBS · PP. 112–115' }, 2.2, 0.32, BX, 0.62, BZ + 2.85, 0, true);
 
     this._circleCol(BX, BZ, 2.6);
+  }
+
+  // The bath's zophor: "little naked Boyes playing in the water, with water
+  // monsters, with wrastling and childish strifes, with cunning flights and
+  // agilities fit for their yeares, in liuely motions and sportes" (p. 112).
+  // Ivory figures in low relief on the stone, repeated round the octagon.
+  _bathFriezeTexture() {
+    const W = 1024, H = 128, c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#c4b490'; x.fillRect(0, 0, W, H);
+    x.strokeStyle = '#8a7a58'; x.lineWidth = 2;
+    for (let j = 0; j < 4; j++) { x.beginPath(); for (let i = 0; i <= W; i += 16) { const y = 96 + j * 8 + Math.sin(i / 22 + j) * 4; i ? x.lineTo(i, y) : x.moveTo(i, y); } x.stroke(); }   // the water
+    const boy = (px, py, lean = 0, armUp = false, flip = 1) => {
+      x.save(); x.translate(px, py); x.rotate(lean); x.scale(flip, 1);
+      x.fillStyle = '#f0e6cc'; x.strokeStyle = '#6a5a3a'; x.lineWidth = 1.5;
+      x.beginPath(); x.ellipse(0, 0, 9, 16, 0, 0, 6.3); x.fill(); x.stroke();                     // the body
+      x.beginPath(); x.arc(0, -24, 9, 0, 6.3); x.fill(); x.stroke();                               // the head
+      x.lineWidth = 5; x.strokeStyle = '#f0e6cc';
+      x.beginPath(); x.moveTo(-6, -8); x.lineTo(armUp ? -16 : -18, armUp ? -28 : 2); x.stroke();    // arms
+      x.beginPath(); x.moveTo(6, -8); x.lineTo(18, armUp ? -22 : -2); x.stroke();
+      x.beginPath(); x.moveTo(-4, 14); x.lineTo(-10, 32); x.moveTo(4, 14); x.lineTo(12, 30); x.stroke();   // legs
+      x.restore();
+    };
+    const monster = (px, py, flip = 1) => {
+      x.save(); x.translate(px, py); x.scale(flip, 1);
+      x.fillStyle = '#e4d8b8'; x.strokeStyle = '#6a5a3a'; x.lineWidth = 1.5;
+      x.beginPath(); x.moveTo(-70, 10); x.quadraticCurveTo(-40, -20, 0, 5); x.quadraticCurveTo(30, 25, 60, 0); x.quadraticCurveTo(75, -10, 80, -22);   // the serpent body
+      x.lineTo(70, 0); x.quadraticCurveTo(30, 35, 0, 18); x.quadraticCurveTo(-40, -5, -70, 24); x.closePath(); x.fill(); x.stroke();
+      x.beginPath(); x.ellipse(-76, 14, 12, 8, 0, 0, 6.3); x.fill(); x.stroke();                                                                     // the head
+      x.beginPath(); x.moveTo(-84, 8); x.lineTo(-94, 2); x.lineTo(-86, 14); x.fill();                                                                // the jaw
+      for (const fx of [-30, 20]) { x.beginPath(); x.moveTo(fx, 0); x.lineTo(fx + 6, -22); x.lineTo(fx + 14, -2); x.closePath(); x.fill(); x.stroke(); }   // the fins
+      x.beginPath(); x.moveTo(80, -22); x.lineTo(96, -34); x.lineTo(90, -14); x.closePath(); x.fill(); x.stroke();                                    // the tail
+      x.restore();
+    };
+    // two boys wrestling; a boy astride a sea-monster; a boy swimming; another
+    // holding a struggling fish — then the strip repeats round the octagon
+    boy(70, 64, 0.35, false, 1); boy(104, 62, -0.35, false, -1);
+    monster(260, 72, 1); boy(262, 44, 0, true, 1);
+    boy(400, 84, 1.2, false, 1);
+    monster(560, 70, -1); boy(600, 40, -0.2, true, -1); boy(520, 62, 0.15, false, 1);
+    boy(760, 62, -0.5, false, 1); boy(800, 66, 0.5, false, -1);
+    boy(930, 60, 0, true, 1);
+    x.fillStyle = 'rgba(80,60,30,0.18)'; x.fillRect(0, 0, W, 6); x.fillRect(0, H - 6, W, 6);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+    t.wrapS = THREE.RepeatWrapping; t.repeat.set(4, 1); this._disp.push(t);
+    return t;
+  }
+
+  // The bath's floor under the water: a chequer of hard stones with fishes
+  // "by a museacall cutting expressed … barbles, lampreys, and many others" (p. 114).
+  _fishMosaicTexture() {
+    const N = 512, c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    const pal = ['#7a6a4a', '#5a7a6a', '#8a5a4a', '#6a6a8a', '#9a8a5a'];
+    for (let i = 0; i < 16; i++) for (let j = 0; j < 16; j++) { x.fillStyle = pal[(i + j * 3) % pal.length]; x.fillRect(i * 32, j * 32, 32, 32); }
+    for (let k = 0; k < 14; k++) {
+      const px = 40 + rnd(k, 1) * (N - 80), py = 40 + rnd(k, 2) * (N - 80), L = 40 + rnd(k, 3) * 50, lamprey = k % 4 === 0;
+      x.save(); x.translate(px, py); x.rotate(rnd(k, 4) * 6.3);
+      x.fillStyle = lamprey ? '#3a3a2a' : ['#d8d0b8', '#c8a870', '#a8b8c8'][k % 3]; x.strokeStyle = '#2a2418'; x.lineWidth = 2;
+      x.beginPath();
+      if (lamprey) { x.moveTo(-L, 0); x.quadraticCurveTo(-L / 2, -14, 0, 0); x.quadraticCurveTo(L / 2, 14, L, 0); x.quadraticCurveTo(L / 2, 6, 0, 8); x.quadraticCurveTo(-L / 2, -6, -L, 0); }
+      else { x.ellipse(0, 0, L / 2, L / 5, 0, 0, 6.3); }
+      x.fill(); x.stroke();
+      if (!lamprey) { x.beginPath(); x.moveTo(L / 2, 0); x.lineTo(L / 2 + 14, -10); x.lineTo(L / 2 + 14, 10); x.closePath(); x.fill(); x.stroke(); x.fillStyle = '#2a2418'; x.beginPath(); x.arc(-L / 3, -2, 2.5, 0, 6.3); x.fill(); }
+      x.restore();
+    }
+    x.strokeStyle = 'rgba(20,15,10,0.35)'; x.lineWidth = 1;
+    for (let i = 0; i <= N; i += 8) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, N); x.moveTo(0, i); x.lineTo(N, i); x.stroke(); }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; this._disp.push(t);
+    return t;
+  }
+
+  // Two histories "perfected within the compasse of one selfe same stone, and
+  // set out in a most blacke ground" (p. 115): Arion on his dolphin with the
+  // harp, and Poseidon on his with the eel-spear.
+  _dolphinRelief(kind) {
+    const W = 512, H = 240, c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#0a0a0e'; x.fillRect(0, 0, W, H);
+    x.strokeStyle = '#c03a3a'; x.lineWidth = 6; x.strokeRect(8, 8, W - 16, H - 16);
+    x.strokeStyle = '#8a8a90'; x.lineWidth = 2;
+    for (let j = 0; j < 3; j++) { x.beginPath(); for (let i = 20; i <= W - 20; i += 12) { const y = 170 + j * 18 + Math.sin(i / 26 + j) * 5; i > 20 ? x.lineTo(i, y) : x.moveTo(i, y); } x.stroke(); }   // the calm waves
+    x.fillStyle = '#ece4d0'; x.strokeStyle = '#6a6258'; x.lineWidth = 2;
+    x.beginPath(); x.moveTo(120, 150); x.quadraticCurveTo(200, 70, 300, 120); x.quadraticCurveTo(360, 150, 400, 110); x.lineTo(420, 90); x.lineTo(430, 130); x.lineTo(405, 135);
+    x.quadraticCurveTo(340, 190, 250, 170); x.quadraticCurveTo(170, 160, 120, 150); x.closePath(); x.fill(); x.stroke();       // the dolphin
+    x.beginPath(); x.moveTo(120, 150); x.lineTo(80, 140); x.lineTo(110, 162); x.closePath(); x.fill(); x.stroke();            // the beak
+    x.beginPath(); x.moveTo(250, 112); x.lineTo(270, 80); x.lineTo(290, 118); x.closePath(); x.fill(); x.stroke();            // the fin
+    x.fillStyle = '#2a2418'; x.beginPath(); x.arc(150, 138, 4, 0, 6.3); x.fill();
+    // the rider
+    x.fillStyle = '#ece4d0';
+    x.beginPath(); x.ellipse(250, 78, 16, 30, 0, 0, 6.3); x.fill(); x.stroke();
+    x.beginPath(); x.arc(250, 36, 14, 0, 6.3); x.fill(); x.stroke();
+    x.lineWidth = 8; x.strokeStyle = '#ece4d0';
+    x.beginPath(); x.moveTo(240, 100); x.lineTo(222, 130); x.moveTo(260, 100); x.lineTo(282, 128); x.stroke();                 // the legs astride
+    if (kind === 'arion') {
+      x.beginPath(); x.moveTo(238, 62); x.lineTo(205, 70); x.moveTo(262, 62); x.lineTo(295, 60); x.stroke();                  // arms to the harp
+      x.lineWidth = 3; x.strokeStyle = '#d8c070';
+      x.beginPath(); x.moveTo(300, 40); x.quadraticCurveTo(330, 30, 335, 70); x.lineTo(305, 80); x.closePath(); x.stroke();   // the harp frame
+      for (let k = 0; k < 6; k++) { x.beginPath(); x.moveTo(304 + k * 5, 42 + k * 2); x.lineTo(306 + k * 5, 78); x.stroke(); }
+    } else {
+      x.beginPath(); x.moveTo(238, 62); x.lineTo(210, 90); x.moveTo(262, 62); x.lineTo(300, 30); x.stroke();                  // the spear arm raised
+      x.lineWidth = 4; x.strokeStyle = '#d8c070';
+      x.beginPath(); x.moveTo(280, 60); x.lineTo(340, 4); x.stroke();                                                        // the sharp eel-spear
+      x.beginPath(); x.moveTo(330, 14); x.lineTo(345, 0); x.moveTo(334, 20); x.lineTo(350, 8); x.stroke();
+      x.fillStyle = '#ece4d0'; x.beginPath(); x.moveTo(262, 30); x.quadraticCurveTo(250, 12, 236, 30); x.lineTo(236, 40); x.lineTo(264, 40); x.closePath(); x.fill();   // the beard
+    }
+    x.fillStyle = '#c8b890'; x.font = '18px serif'; x.textAlign = 'center';
+    x.fillText(kind === 'arion' ? 'THE YOVNG MAN ON THE DOLPHIN, PLAYING VPON AN HARPE · OVER THE DOOR' : 'POSIDONIVS RIDING THE DOLPHIN, WITH A SHARPE ELLE SPEARE · OVER THE COLD FOVNTAIN', W / 2, H - 22);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; this._disp.push(t);
+    return t;
   }
 
   // ── Polia's Garden (the nymph with the torch) ─────────────────────────────

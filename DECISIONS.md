@@ -36,7 +36,17 @@ station, and change whichever is wrong — and it is never the chapter.** Four s
   you look down the stair and through the grate, as Poliphilo first does, rather than descend.
   The Great Portal was checked against Bury and left as it stands.
 
-Still to check against their chapters: the bath's frieze.
+- **The bath's frieze was invented; the bath's fabric was missing** (later still). Dallington
+  pp. 112-115 give the whole building: jacinth-waved Corinthian columns in the corners, black
+  polished tables between them bordered in coral jasper with an ivory nymph in each, a zophor
+  of naked boys wrestling and riding water-monsters (the "children with green boughs" were
+  ours, not the book's), oak-leaf ribs of green jasper on gilt stalks up the crystal spire,
+  the lion-head censer on orichalc chains two cubits above the water, the fish mosaic under
+  the water, the cleft of burning matter that fills the censer, and Arion and Poseidon on
+  their dolphins over the door and the cold fountain. All built; the frieze and the two
+  reliefs are drawn textures rather than modelled relief.
+
+Every station on the 2026-09-06 list has now been checked against its chapter.
 
 
 
