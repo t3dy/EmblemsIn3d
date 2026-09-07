@@ -1722,19 +1722,22 @@ export function makeCast(S) {
       hs.moveTo(0, HW); hs.lineTo(HL, 0); hs.lineTo(0, -HW); hs.closePath();
       const hvane = new THREE.Mesh(new THREE.ShapeGeometry(hs), wm);
       hvane.castShadow = true; tilt.add(hvane);
-      // the whiskers keep the horizontal plane the vane has left, and move well
-      // forward — rooted at 0.58 of the head's length, up by the snout, so they
-      // read as whiskers rather than as ribs of the vane
-      const wsk = new THREE.Group(); wsk.rotation.x = Math.PI / 2; tilt.add(wsk);
-      const FWD = 0.58 * HL;
-      for (const sx of [-1, 1]) {                                     // three a side
-        for (let f = 0; f < 3; f++) {
-          const th = sx * (0.35 + f * 0.29), len = HL * (0.78 - f * 0.13);
-          const w = new THREE.Mesh(new THREE.CylinderGeometry(0.005 * ss, 0.011 * ss, len, 4), dm);
-          w.position.set(Math.cos(th) * len / 2 + FWD, Math.sin(th) * len / 2 + sx * 0.02 * ss, 0);
-          w.rotation.z = th - Math.PI / 2;
-          wsk.add(w);
-        }
+      // TWO whiskers, and they come OUT OF the vane's plane. That is what the
+      // sticks actually do on the plate Ted keeps pointing at: there the wing
+      // was swung about Y and its ribs were not, so they stand off its face
+      // instead of lying in it. His words: "I just want two of them and they
+      // stick out from close to the center point of the triangle at angles just
+      // off perpendicular to the plane of the triangle that forms the head."
+      // So: rooted at the triangle's own centroid, and run 20° forward of the
+      // face normal with a little downward set.
+      const ROOT = new THREE.Vector3(HL / 3, 0, 0);                   // the triangle's centre point
+      const WLEN = 0.62 * HL;
+      for (const sx of [-1, 1]) {
+        const d = new THREE.Vector3(0.30, -0.16, sx * 0.94).normalize();
+        const w = new THREE.Mesh(new THREE.CylinderGeometry(0.006 * ss, 0.013 * ss, WLEN, 4), dm);
+        w.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d);   // the taper's tip runs outward
+        w.position.copy(ROOT).addScaledVector(d, WLEN / 2);
+        tilt.add(w);
       }
 
       g.userData.wingL = wingL; g.userData.wingR = wingR; g.userData.head = pivot;

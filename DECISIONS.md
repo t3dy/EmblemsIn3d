@@ -92,9 +92,17 @@ body at its POINT and opens out from there, on three ribs radiating from that sa
   whiskers, and I want the triangle of the head 60% closer to the body and rotated 90 degrees
   so that the back side of the triangle is standing straight up." So the vane **stands on
   edge** rather than lying flat — its back side upright, leaned off the vertical only by the
-  20° droop (measured: 19.4°) — the whiskers keep the horizontal plane the vane has left and
-  root at 0.58 of the head's length, up by the snout, and the gap to the neck went from 0.24
-  to 0.096 of the body scale (measured: 0.75 world units to 0.31).
+  20° droop (measured: 19.4°) — and the gap to the neck went from 0.24 to 0.096 of the body
+  scale (measured: 0.75 world units to 0.31).
+
+  And the whiskers were wrong three times because I had been reading the sticks on his plate
+  as ribs lying IN the triangle's face. They are not: there the wing was swung about Y and its
+  ribs were not, so they stand off it. "I just want two of them and they stick out from close
+  to the center point of the triangle at angles just off perpendicular to the plane of the
+  triangle that forms the head." So: **two**, rooted at the vane's own centroid, running 20°
+  off its face normal (measured: 19.9° each), tapering to a tip outward. The lesson worth
+  keeping: when a reference image is offered three times, the thing being pointed at is
+  probably not the thing already being modelled.
 
 Each wing hangs on a `beat` group (the flight controller's hinge) over a `splay` group (the
 fixed set), so beating never loses the set. The head hangs on an aim group over a lean group
