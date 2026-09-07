@@ -38,7 +38,7 @@ export const HP_STATIONS = [
   { key: 'portal',           name: 'The Great Portal',       folio: 13,
     pos: [0, 37],     look: [0, 26],   radius: 7, pitch: 0.2 },
   { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62,
-    pos: [-10.4, 23.8], look: [-23.5, 18.5], radius: 9 }   // the bath's east table stands at x −13.2,
+    pos: [-10.4, 23.8], look: [-23.5, 18.5], radius: 9 },
   { key: 'three_doors',      name: 'The Three Doors',        folio: 119,
     pos: [0, 21],     look: [0, 12],   radius: 6, pitch: 0.05 },
   { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,
