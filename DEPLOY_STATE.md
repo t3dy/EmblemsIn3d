@@ -74,3 +74,19 @@ on production and confirming zero calls (the site is silent by design; see `DECI
 - The Atalanta Fugiens side of the project is often being worked in a separate session.
   Check with Ted before touching `src/data/af_*`, `AFWorldScene.js`, `lab/` or
   `images/cutouts/`.
+
+## 2026-09-06 — the Vercel project vanished and was recreated
+
+Between two deploys fifteen minutes apart, `vercel` reported *"Your Project was either deleted,
+transferred to a new Team, or you don't have access to it anymore"*; `vercel project ls` no
+longer listed `emblems-in-3d`, and https://emblems-in-3d.vercel.app returned 404. Nothing in
+this repo removed it. With Ted's go-ahead the project was **recreated under
+`tedhand-2181s-projects` with the same name** (`vercel project add emblems-in-3d`, then
+`vercel link --yes --project emblems-in-3d`); the alias came back with the name and the site
+is live again at `main.js?v=227`. The old link is kept at `.vercel/project.json.lost-2026-09-06`
+(projectId `prj_kQPdmzFuJKbcQkHWBzJhPp26b4T2`); the new projectId is
+`prj_2Hq7NEQXJY1BT3qhTnzn9U1R02yS`. `vercel link` also wrote a local env file, now
+git-ignored and never to be printed. **Project-level settings did not carry over** — anything
+set in the dashboard (custom domains, environment variables) is gone and must be set again;
+`vercel.json` in the repo still supplies the cache headers. GitHub Pages was unaffected
+throughout and carried the site.
