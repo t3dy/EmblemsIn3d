@@ -139,23 +139,32 @@ claim it will not support.
   the world is a real pattern or a decorative squiggle.
 - **The limit:** design, not botany. For *which plant goes in the bed*, go to Rhizopoulou.
 
-### 6. Sophia Rhizopoulou — the actual plants  ⚠ **DB-only**
+### 6. Sophia Rhizopoulou — the actual plants  (2016 on disk since 2026-09-07)
 
-- **Works:** *On the Botanical Content of Hypnerotomachia Poliphili* (2016);
-  *Fascinating Landscapes of Hypnerotomachia Poliphili* (*Acta Horticulturae* 1189);
-  *The Botanical Content of Hypnerotomachia Poliphili Revisited*, *Botany Letters* 170:1
-  (2022).
-- **File:** **none on disk.** Catalogued in `hp.db.bibliography`, three works; the PDFs are
-  not in `E:\pdf\`. All three are findable open-access.
-- **What it settles:** the HP names a very large number of identifiable species, and the
-  identifications can be made. This is the only body of work in the corpus that treats the
-  book as a botanical document.
-- **Build with it:** `PLANTS.md`, and the actual species mix of the meadow, the grove, the
-  citrus pergola on the ring-river, and the herb-set inscriptions on the Cythera terraces.
-  Cross-check against `hp.db.dictionary_terms` filtered to plant names, which *is* on disk.
-- **The limit:** **until someone fetches the papers, cite her only as bibliography.** Do not
-  attribute a specific identification to her that you have not read. Where you need a plant
-  now, take it from the book's own text (`translation/en/`) and the lexicon, and say so.
+- **Works:** *On the botanical content of Hypnerotomachia Poliphili*, *Botany Letters*
+  163(2), 2016, pp. 191–201 — **full text and Table 1 (all 285 identifications) in
+  `sources/rhizopoulou/`**, captured from the publisher's free-access page; *Fascinating
+  landscapes of "Hypnerotomachia Poliphili"*, *Acta Horticulturae* 1189, 2017, pp. 19–24 —
+  abstract only (ISHS members' PDF); *The botanical content of Hypnerotomachia Poliphili
+  revisited* (with D. Koukos and A.-E. Rhizopoulou), *Botany Letters* 170(1), 2022, pp.
+  119–124 — **paywalled**, abstract and endnotes only. Links and status in
+  `E:\pdf\hypnerotomachia polyphili\rhizopoulou\README.txt`.
+- **What it settles:** 285 botanical entities in 672 passages (331 in 772 with the 2022
+  supplement); shrubs 43 %, herbs 28 %, trees 26 %; the most-cited plants are laurel,
+  myrtle, junipers, oaks, acanthus, violets, thyme, ivy, pines, cypress, sandalwoods,
+  orange trees and roses. Every identification carries the Aldine signature of its passage
+  (a3, e1′, u6′ …), which `hp.db.page_concordance` resolves to a page and a section.
+- **The method to know:** she worked from **Godwin's 1999 translation**, which this project
+  does not use. Her vernacular names are Godwin's; the identification is hers; the 1499
+  word is ours to find in `translation/en/` or Dallington. Record all three when they differ.
+- **Build with it — done 2026-09-07:** the palace fields' four colour-drifts (e1′–e2), the
+  spring and stream of ch. II with its reeds, rushes and osiers (a2–a4), Geusia's river with
+  bull-rush, nenuphar, arum and balm (e8), the Polyandrion's aster, pellitory, nettles,
+  thistles, wild fig and cedars (n1′, l8′, s8), Cythera's herb bands (u3–u6′). The species
+  table gained `fig` and `cedar`. See `PLANTS.md` §1b.
+- **The limit:** she does not say *where in the garden* a plant stands beyond the signature;
+  placement is the book's text and ours. The 46 entities of 2022 are not on disk — do not
+  attribute any of them to her.
 
 ### 7. James O'Neill — walking as method
 

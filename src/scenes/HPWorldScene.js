@@ -331,6 +331,7 @@ export class HPWorldScene {
     this._buildWood();
     this._buildGreatPortal();
     this._buildBridge();
+    this._buildRiverPlants();
     this._buildCourt();
     this._buildPoliaGarden();
     // The book's most copied image, and it was missing from the world: set
@@ -349,6 +350,7 @@ export class HPWorldScene {
     this._buildVenusTemple();
     this._buildPolyandrion();
     this._polyandrionMedallions();
+    this._buildRuinWeeds();
     this._buildWaterLabyrinth();
     this._buildColossus();
     this._buildPriapusRite();
@@ -1166,6 +1168,7 @@ export class HPWorldScene {
     spring.position.set(-3.6, 0, 37.5);
     this.scene.add(spring);
     this._circleCol(-3.6, 37.5, 0.9);
+    this._buildStream();
   }
 
   // ── The Great Portal (the colossal pyramid-gate) ──────────────────────────
@@ -2371,7 +2374,7 @@ export class HPWorldScene {
     // "Not farre of, there was a cleft in the earth, the which continually did
     // cast foorth burning matter" — the censer is filled from it
     {
-      const KX = BX + 3.6, KZ = BZ - 0.4;
+      const KX = BX, KZ = BZ + 5.8;    // beyond the court's back wall, north of the bath — east was in Geusia's river, west under the settles
       const rockM = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x3a3028, roughness: 0.98 });
       const cleft = this._m(new THREE.CylinderGeometry(0.5, 0.5, 0.05, 12), woodcut ? S.mat({ tone: 0.5 }) : S.mat({ color: 0x100806, roughness: 1 }), KX, 0.03, KZ, { cast: false });
       cleft.scale.x = 1.9;
@@ -6940,6 +6943,264 @@ export class HPWorldScene {
     return t;
   }
 
+  // ── The spring and the stream of chapter II (Dallington p. 18) ──────────
+  // "a pleasant spring or head of water, did offer it selfe vnto me, with a
+  // great vayne boyling vp, about the which did growe diuers sweet hearbes and
+  // water flowers, and from the same did flowe a cleare and chrystalline
+  // current streame, which deuided into diuers branches, ran thorow the desart
+  // wood, with a turning and winding body … In whose courses the stones lift vp
+  // by nature, and trunkes of trees denyed any longer by their roots to be
+  // vpholden, did cause a stopping hinderance to their current". Rhizopoulou
+  // 2016 lists the plants of these two leaves (a2-a4): cane and reed, rushes,
+  // willow and osier, bramble and briar, ash, elm, holm oak, prunus, thistles.
+  // The world had the spring as a round pool and no stream at all.
+  _buildStream() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const pts = [[-3.6, 37.5], [-6.4, 39.2], [-9.8, 40.4], [-13.4, 42.6], [-17.6, 43.4], [-21.8, 45.6], [-26.4, 46.2], [-30.6, 48.0], [-35.4, 48.8], [-40.5, 50.6], [-44, 52]];
+    const w = this._waterMat();
+    // a pale gravel bed under the water, or the stream is invisible on the duff
+    const bed = woodcut ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0xb8ad94, roughness: 0.95 });
+    if (!woodcut) this._dress(bed, this._surfaceTexture({ base: '#b8ad94', dark: '#6a6050', light: '#e0d8c4', blobs: 40, speckle: 5000, repeat: 6 }), 0.25);
+    this.scene.add(this._ribbon(pts.map(([x, z]) => new THREE.Vector3(x, 0.014, z)), 1.9, bed));
+    this.scene.add(this._ribbon([[-13.4, 42.6], [-14.8, 45.4], [-15.6, 48.6], [-16.2, 51.5]].map(([x, z]) => new THREE.Vector3(x, 0.013, z)), 1.2, bed));
+    const ribbon = this._ribbon(pts.map(([x, z]) => new THREE.Vector3(x, 0.025, z)), 1.3, w);
+    this.scene.add(ribbon);
+    const branch = this._ribbon([[-13.4, 42.6], [-14.8, 45.4], [-15.6, 48.6], [-16.2, 51.5]].map(([x, z]) => new THREE.Vector3(x, 0.024, z)), 0.7, w);
+    this.scene.add(branch);
+    const stone = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0x6a6660, roughness: 0.95 });
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    // the stones lifted up by nature, and two trunks fallen across
+    for (let i = 0; i < 16; i++) {
+      const t = 0.1 + rnd(i, 1) * 0.85, k = Math.floor(t * (pts.length - 1)), f = t * (pts.length - 1) - k;
+      const x = pts[k][0] + (pts[k + 1][0] - pts[k][0]) * f + (rnd(i, 2) - 0.5) * 1.0, z = pts[k][1] + (pts[k + 1][1] - pts[k][1]) * f + (rnd(i, 3) - 0.5) * 1.0;
+      this._m(this._indexed(new THREE.DodecahedronGeometry(0.12 + rnd(i, 4) * 0.18, 0)), stone, x, 0.06, z, { cast: false }).rotation.set(rnd(i, 5) * 3, rnd(i, 6) * 3, 0);
+    }
+    for (const [x, z, ry] of [[-11.5, 41.4, 0.5], [-28.5, 47.0, -0.35]]) {
+      const trunk = this._m(new THREE.CylinderGeometry(0.16, 0.2, 3.0, 8), this._trunkMat, x, 0.2, z, { outline: true });
+      trunk.rotation.z = Math.PI / 2; trunk.rotation.y = ry;
+    }
+    // the sweet herbs and water flowers about the spring
+    for (let k = 0; k < 10; k++) { const a = k * 0.63; this._tuft(-3.6 + Math.cos(a) * 1.25, 0.02, 37.5 + Math.sin(a) * 1.25, k % 2 ? 'waterflower' : 'mint', 0.3); }
+    // reeds and rushes on the banks, osiers leaning over the water
+    for (let i = 0; i < 44; i++) {
+      const t = 0.05 + rnd(i, 7) * 0.9, k = Math.floor(t * (pts.length - 1)), f = t * (pts.length - 1) - k;
+      const dx = pts[k + 1][0] - pts[k][0], dz = pts[k + 1][1] - pts[k][1], L = Math.hypot(dx, dz);
+      const nx = -dz / L, nz = dx / L, side = i % 2 ? 1 : -1, off = 0.85 + rnd(i, 8) * 0.5;
+      const x = pts[k][0] + dx * f + nx * side * off, z = pts[k][1] + dz * f + nz * side * off;
+      if (Math.abs(x) < 2.7) continue;
+      this._tuft(x, 0.02, z, i % 3 === 0 ? 'rush' : 'reed', 0.5 + rnd(i, 9) * 0.35);
+    }
+    for (const [x, z] of [[-8.6, 41.9], [-19.2, 42.2], [-24.6, 47.9], [-33.2, 47.3]]) this._tree(x, z, 0.45, 'willow');
+    this._plaque({ main: 'A PLEASANT SPRING OR HEAD OF WATER', sub: 'DIVERS SWEET HEARBES AND WATER FLOWERS · A CLEARE AND CHRYSTALLINE CVRRENT STREAME · DALLINGTON P. 18' },
+      2.4, 0.32, -3.6, 0.7, 35.9, 0, true);
+  }
+
+  // A flat ribbon of water along a curve, for streams. Width in metres; UVs
+  // run along the length so the water normal map drifts downstream.
+  _ribbon(points, width, mat) {
+    const curve = new THREE.CatmullRomCurve3(points, false, 'centripetal', 0.5);
+    const N = Math.max(12, Math.round(curve.getLength() * 3));
+    const pos = [], uv = [], idx = [];
+    for (let i = 0; i <= N; i++) {
+      const t = i / N, p = curve.getPointAt(t), tan = curve.getTangentAt(t);
+      const nx = -tan.z, nz = tan.x, hw = width / 2 * (0.85 + 0.15 * Math.sin(t * 23.1));
+      pos.push(p.x + nx * hw, p.y, p.z + nz * hw, p.x - nx * hw, p.y, p.z - nz * hw);
+      uv.push(t * curve.getLength() / 2.5, 0, t * curve.getLength() / 2.5, 1);
+      if (i < N) { const a = i * 2; idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }   // wound to face up
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    g.setIndex(idx); g.computeVertexNormals();
+    const m = new THREE.Mesh(g, mat); m.receiveShadow = true; m.castShadow = false;
+    return m;
+  }
+
+  // ── Geusia's river (Dallington p. 122; Rhizopoulou 2016 e8, h7) ─────────
+  // "comming neare to a fresh coole Riuer … Geussia … bowed her selfe downe to
+  // the water, beautifully adorned with the bendyng Bull Rushe, water Spyke,
+  // swimmyng Vitrix, and aboundaunce of water Symples, shee dyd plucke vp the
+  // Heraclea Nympha, of some called water Lillye or Nenuphar, and the roote of
+  // Aron or wake Robyn … And Amella or Bawme Gentill". The bridge's watercourse
+  // is that river; it had nothing growing in or beside it.
+  _buildRiverPlants(BX = -11, BZ = 20) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < 26; i++) {
+      const side = i % 2 ? 1 : -1, z = BZ - 7.2 + rnd(i, 1) * 14.4;
+      if (Math.abs(z - BZ) < 2.3 || Math.abs(z - 14) < 1.8) continue;          // the two bridges
+      this._tuft(BX + side * (1.55 + rnd(i, 2) * 0.35), 0.03, z, i % 3 === 0 ? 'rush' : i % 3 === 1 ? 'reed' : 'arum', 0.45 + rnd(i, 3) * 0.3);
+    }
+    // the nenuphar: pads on the water, a few white flowers
+    const pad = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2f6a2a, roughness: 0.6 });
+    const bloom = woodcut ? S.mat({ tone: 0.0 }) : S.mat({ color: 0xf6f2e4, roughness: 0.5 });
+    for (let i = 0; i < 18; i++) {
+      const x = BX + (rnd(i, 4) - 0.5) * 2.4, z = BZ - 7 + rnd(i, 5) * 14;
+      if (Math.abs(z - BZ) < 2.4 || Math.abs(z - 14) < 1.9) continue;
+      const p = this._m(new THREE.CircleGeometry(0.14 + rnd(i, 6) * 0.1, 12, 0.3, Math.PI * 2 - 0.5), pad, x, 0.075, z, { rx: -Math.PI / 2, cast: false });
+      p.rotation.z = rnd(i, 7) * 6.3;
+      if (i % 3 === 0) { for (let q = 0; q < 6; q++) this._m(new THREE.ConeGeometry(0.03, 0.09, 5), bloom, x + Math.cos(q * 1.05) * 0.05, 0.12, z + Math.sin(q * 1.05) * 0.05, { cast: false, rx: -0.5 * Math.cos(q * 1.05), rz: 0.5 * Math.sin(q * 1.05) }); this._m(new THREE.SphereGeometry(0.025, 6, 5), woodcut ? bloom : S.mat({ color: 0xe8c040, roughness: 0.6 }), x, 0.13, z, { cast: false }); }
+    }
+    for (const [x, z] of [[BX - 2.1, BZ + 5.6], [BX + 2.0, BZ - 5.8]]) this._tuft(x, 0.03, z, 'balm', 0.42);
+    this._plaque({ main: 'THE BENDYNG BVLL RVSHE · THE NENVPHAR · ARON · AMELLA', sub: 'WHAT GEVSSIA GATHERS AT THE FRESH COOLE RIVER · DALLINGTON P. 122' },
+      2.4, 0.32, BX + 2.6, 0.62, BZ + 4.8, -Math.PI / 2, true);
+  }
+
+  // ── The Polyandrion's weeds (our pp. 272-273; Rhizopoulou 2016) ─────────
+  // "I found huge stones of the putrescent wall gaping, and grassy through the
+  // cracks with aster and pellitory; which was also entangled and destroyed, as
+  // by a wedge fixed of a big root of an aged wild-fig" (p. 272); "among caustic
+  // nettles and pathless ruins … all full of burs and down, and thistle-tufts,
+  // and goat's-beard, and sowthistle" (p. 273). Rhizopoulou: "pellitory and
+  // hammerwort were growing in dry cracks of tombs", and "thorny plants, sharp
+  // thistles and cedars are cited in the text as occurring among ancient
+  // monuments and historical ruins".
+  _buildRuinWeeds(PX = 30, PZ = -27) {
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    const wz = PZ + 9.4;
+    // aster and pellitory in the cracks of the medallion wall and the temple front
+    for (let i = 0; i < 26; i++) {
+      const x = PX - 4.2 + rnd(i, 1) * 8.4, y = 0.35 + rnd(i, 2) * 2.0;
+      this._tuft(x, y, wz - 0.55, i % 2 ? 'pellitory' : 'aster', 0.36 + rnd(i, 3) * 0.16, { flat: true, ry: Math.PI });
+    }
+    for (const [dx, hgt] of [[-3.2, 3.4], [-1.1, 3.4], [1.1, 1.6], [3.2, 2.3]]) {
+      this._tuft(PX + dx + 0.3, 0.3 + hgt * 0.5, PZ - 3.4 + 0.42, 'pellitory', 0.2, { flat: true });
+      this._tuft(PX + dx - 0.25, hgt - 0.1, PZ - 3.4 + 0.42, 'aster', 0.18, { flat: true });
+    }
+    // the aged wild fig, rooted in the wall's end, its roots over the stones
+    this._tree(PX + 5.1, wz - 1.1, 0.7, 'fig');
+    for (let k = 0; k < 4; k++) this._limb(this.scene, this._trunkMat, PX + 5.1, 0.35, wz - 1.1, PX + 4.2 + k * 0.5, 0.06, wz - 0.4 - (k % 2) * 0.8, 0.07, 0.03);
+    // nettles, burs, thistle-tufts, goat's-beard and sowthistle round the ruin's rim
+    const KINDS = ['nettle', 'thistle', 'goatsbeard', 'sowthistle', 'thistle', 'nettle', 'bur'];
+    for (let i = 0; i < 46; i++) {
+      const a = rnd(i, 4) * Math.PI * 2, r = 9.3 + rnd(i, 5) * 1.6;
+      const x = PX + Math.cos(a) * r, z = PZ + Math.sin(a) * r;
+      if (z > PZ + 8.4 && Math.abs(x - PX) < 5.2) continue;                    // the medallion wall
+      this._tuft(x, 0.02, z, KINDS[i % KINDS.length], 0.32 + rnd(i, 6) * 0.25);
+    }
+    for (const [x, z] of [[PX - 11.5, PZ + 4.5], [PX + 11.8, PZ - 5.5]]) this._tree(x, z, 1.0, 'cedar');
+    this._plaque({ main: 'ASTER AND PELLITORY IN THE CRACKS', sub: 'AN AGED WILD-FIG ROOTED IN THE WALL · NETTLES, BVRS, THISTLE-TVFTS, GOAT’S-BEARD, SOWTHISTLE · PP. 272–273' },
+      2.4, 0.32, PX + 4.8, 0.62, wz - 1.9, Math.PI, true);
+  }
+
+  // ── Herbs: a clump drawn once per kind, stood up as crossed cards ────────
+  // `flat` pins a single card to a wall (the pellitory in a crack).
+  _tuft(x, y, z, kind, s = 0.4, { flat = false, ry = 0, parent = null } = {}) {
+    const mat = this._herbMat(kind);
+    const geo = this._tuftGeo = this._tuftGeo || new THREE.PlaneGeometry(1, 1).translate(0, 0.5, 0);
+    const g = new THREE.Group(); g.position.set(x, y, z); (parent || this.scene).add(g);
+    const n = flat ? 1 : 3;
+    for (let i = 0; i < n; i++) {
+      const m = new THREE.Mesh(geo, mat);
+      m.rotation.y = ry + (flat ? 0 : i * Math.PI / 3 + (x * 7.3 + z * 3.1) % 1.0);
+      if (flat) m.rotation.x = 0.12;
+      m.scale.set(s * (flat ? 1.4 : 1.0), s * 1.15, 1);
+      m.castShadow = false; m.receiveShadow = false;
+      g.add(m);
+    }
+    return g;
+  }
+  _herbMat(kind) {
+    this._herbMats = this._herbMats || {};
+    if (this._herbMats[kind]) return this._herbMats[kind];
+    const tex = this._herbTexture(kind);
+    const m = this.style.key === 'woodcut'
+      ? new THREE.MeshBasicMaterial({ map: tex, alphaTest: 0.5, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({ map: tex, alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.9 });
+    this._disp.push(m); this._herbMats[kind] = m;
+    return m;
+  }
+  static get HERBS() {
+    // form: blade | oval | spiky | serrated | feather | fern | rosette | reed
+    return {
+      reed:         { form: 'reed',     green: '#6a7a3a', light: '#9aa650', flower: '#5a3a1e', fsize: 7, stems: 9,  h: 1.0 },
+      rush:         { form: 'blade',    green: '#2e5a24', light: '#4a7a34', flower: '#7a5a2a', fsize: 3, stems: 14, h: 0.95 },
+      arum:         { form: 'oval',     green: '#2c5a22', light: '#4a8a34', flower: '#f4f0e0', fsize: 14, stems: 4, h: 0.8, spathe: true },
+      balm:         { form: 'serrated', green: '#3a6a2a', light: '#6a9a44', flower: '#f0eef4', fsize: 4, stems: 6, h: 0.75 },
+      mint:         { form: 'serrated', green: '#2e5e2a', light: '#5a8e44', flower: '#c8a0d8', fsize: 5, stems: 7, h: 0.7 },
+      waterflower:  { form: 'oval',     green: '#3c6a2c', light: '#6a9a4a', flower: '#f6f2d0', fsize: 7, stems: 6, h: 0.6, second: '#f0d040' },
+      nettle:       { form: 'serrated', green: '#254a1c', light: '#3e6e2c', flower: '#8a9a6a', fsize: 3, stems: 6, h: 0.9 },
+      thistle:      { form: 'spiky',    green: '#5a7a5a', light: '#8aa68a', flower: '#8a4aa8', fsize: 9, stems: 5, h: 0.95 },
+      sowthistle:   { form: 'spiky',    green: '#3e6a30', light: '#6a9a4a', flower: '#f0d030', fsize: 7, stems: 5, h: 0.85 },
+      goatsbeard:   { form: 'blade',    green: '#5a7a40', light: '#8aa860', flower: '#e8e2c0', fsize: 10, stems: 6, h: 0.9 },
+      bur:          { form: 'oval',     green: '#4a6a2c', light: '#7a9a48', flower: '#6a5a30', fsize: 6, stems: 5, h: 0.7 },
+      pellitory:    { form: 'oval',     green: '#7aa060', light: '#a8c88a', flower: '#b06a5a', fsize: 2, stems: 8, h: 0.6, stem: '#a04a3a' },
+      aster:        { form: 'blade',    green: '#3e6a34', light: '#6a9a54', flower: '#f4f0f8', fsize: 7, stems: 6, h: 0.7, second: '#e8c040' },
+      marjoram:     { form: 'oval',     green: '#6a8a5a', light: '#9ab48a', flower: '#d88ab0', fsize: 5, stems: 9, h: 0.7 },
+      southernwood: { form: 'feather',  green: '#7a8a6a', light: '#a8b898', flower: '#c8c060', fsize: 2, stems: 9, h: 0.8 },
+      groundpine:   { form: 'spiky',    green: '#6a8a2a', light: '#a0c040', flower: '#f0e050', fsize: 4, stems: 8, h: 0.55 },
+      thyme:        { form: 'oval',     green: '#3a5a34', light: '#5a7a54', flower: '#b070c0', fsize: 3, stems: 11, h: 0.5 },
+      rue:          { form: 'fern',     green: '#5a8a6a', light: '#8ab89a', flower: '#e8d040', fsize: 4, stems: 6, h: 0.7 },
+    };
+  }
+  _herbTexture(kind) {
+    this._herbTex = this._herbTex || {};
+    const ink = this.style.key === 'woodcut', key = kind + (ink ? '#ink' : '');
+    if (this._herbTex[key]) return this._herbTex[key];
+    const H = HPWorldScene.HERBS[kind] || HPWorldScene.HERBS.rush;
+    const N = 128, c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7 + kind.length * 5.7) * 43758.5453; return v - Math.floor(v); };
+    const draw = (sc, gTone, lTone, fTone, sTone, lw) => {
+      x.save(); x.translate(N / 2, N); x.scale(sc, sc); x.translate(-N / 2, -N);
+      x.lineCap = 'round';
+      for (let i = 0; i < H.stems; i++) {
+        const a = (i / (H.stems - 1) - 0.5) * 1.5 + (rnd(i, 1) - 0.5) * 0.3, len = N * H.h * (0.7 + rnd(i, 2) * 0.3);
+        const tx = N / 2 + Math.sin(a) * len * 0.55, ty = N - Math.cos(a) * len;
+        x.strokeStyle = sTone || gTone; x.lineWidth = 2 + lw;
+        x.beginPath(); x.moveTo(N / 2, N); x.quadraticCurveTo(N / 2 + Math.sin(a) * len * 0.2, N - len * 0.5, tx, ty); x.stroke();
+        const tone = rnd(i, 3) < 0.5 ? gTone : lTone;
+        x.fillStyle = tone; x.strokeStyle = tone;
+        if (H.form === 'blade' || H.form === 'reed') {
+          x.lineWidth = (H.form === 'reed' ? 5 : 3) + lw;
+          x.beginPath(); x.moveTo(N / 2, N); x.quadraticCurveTo(N / 2 + Math.sin(a) * len * 0.25, N - len * 0.55, tx, ty); x.stroke();
+        } else {
+          const leaves = H.form === 'feather' ? 10 : 6;
+          for (let k = 1; k <= leaves; k++) {
+            const t = k / (leaves + 1), px = N / 2 + (tx - N / 2) * t, py = N - (N - ty) * t, side = k % 2 ? 1 : -1;
+            const L = (H.form === 'feather' ? 7 : H.form === 'fern' ? 9 : 8) * (1 - t * 0.4);
+            x.save(); x.translate(px, py); x.rotate(a + side * 1.0);
+            if (H.form === 'oval') { x.beginPath(); x.ellipse(0, -L / 2, L * 0.35, L / 2 + lw / 2, 0, 0, 6.3); x.fill(); }
+            else if (H.form === 'serrated') { x.beginPath(); x.moveTo(0, 0); for (let q = 0; q < 5; q++) { x.lineTo(L * 0.35 * (q % 2 ? 0.55 : 1), -L * (q + 1) / 5); } x.lineTo(0, -L * 1.05); for (let q = 4; q >= 0; q--) { x.lineTo(-L * 0.35 * (q % 2 ? 0.55 : 1), -L * (q + 1) / 5); } x.closePath(); x.fill(); }
+            else if (H.form === 'spiky') { x.beginPath(); x.moveTo(0, 0); for (let q = 0; q < 4; q++) { x.lineTo(L * 0.5, -L * (q + 0.5) / 4); x.lineTo(L * 0.15, -L * (q + 1) / 4); } x.lineTo(0, -L * 1.1); for (let q = 3; q >= 0; q--) { x.lineTo(-L * 0.15, -L * (q + 1) / 4); x.lineTo(-L * 0.5, -L * (q + 0.5) / 4); } x.closePath(); x.fill(); }
+            else { x.lineWidth = 1.2 + lw; x.beginPath(); x.moveTo(0, 0); x.lineTo(0, -L); x.stroke(); for (let q = 1; q < 4; q++) { x.beginPath(); x.moveTo(0, -L * q / 4); x.lineTo(L * 0.3, -L * q / 4 - 2); x.moveTo(0, -L * q / 4); x.lineTo(-L * 0.3, -L * q / 4 - 2); x.stroke(); } }
+            x.restore();
+          }
+        }
+        // the flower head, or the seed
+        if (fTone && H.fsize) {
+          x.fillStyle = (H.second && i % 2) ? H.second : fTone;
+          if (H.spathe) { x.beginPath(); x.moveTo(tx, ty + 2); x.quadraticCurveTo(tx - H.fsize, ty - H.fsize, tx, ty - H.fsize * 1.6); x.quadraticCurveTo(tx + H.fsize * 0.8, ty - H.fsize * 0.6, tx, ty + 2); x.fill(); }
+          else if (H.form === 'reed') { x.fillRect(tx - 2.2 - lw / 2, ty - H.fsize * 2.4, 4.4 + lw, H.fsize * 2.4); }
+          else if (H.form === 'spiky' && kind === 'thistle') { x.beginPath(); x.arc(tx, ty, H.fsize * 0.45 + lw / 2, 0, 6.3); x.fill(); for (let q = 0; q < 9; q++) { x.beginPath(); x.moveTo(tx, ty); x.lineTo(tx + Math.cos(q * 0.7 - 2.6) * H.fsize, ty + Math.sin(q * 0.7 - 2.6) * H.fsize); x.lineWidth = 1.5 + lw; x.strokeStyle = x.fillStyle; x.stroke(); } }
+          else { for (let q = 0; q < (H.fsize > 5 ? 5 : 1); q++) { x.beginPath(); x.arc(tx + (q ? Math.cos(q * 1.257) * H.fsize * 0.45 : 0), ty + (q ? Math.sin(q * 1.257) * H.fsize * 0.45 : 0), H.fsize * (H.fsize > 5 ? 0.3 : 0.6) + lw / 2, 0, 6.3); x.fill(); } if (H.fsize > 5 && H.second) { x.fillStyle = H.second; x.beginPath(); x.arc(tx, ty, H.fsize * 0.22, 0, 6.3); x.fill(); } }
+        }
+      }
+      x.restore();
+    };
+    if (ink) { draw(1.06, '#1a1410', '#1a1410', '#1a1410', '#1a1410', 2.4); draw(1.0, '#f2ecd8', '#d8d0bc', '#f2ecd8', '#f2ecd8', 0); }
+    else draw(1.0, H.green, H.light, H.flower, H.stem, 0);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4; this._disp.push(t);
+    this._herbTex[key] = t;
+    return t;
+  }
+  // A bed of one herb, tiled round a terrace ring
+  _herbBedTexture(kind) {
+    this._herbBeds = this._herbBeds || {};
+    if (this._herbBeds[kind]) return this._herbBeds[kind];
+    const H = HPWorldScene.HERBS[kind] || HPWorldScene.HERBS.thyme;
+    const N = 128, c = document.createElement('canvas'); c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.fillStyle = '#3a2c1c'; x.fillRect(0, 0, N, N);
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7 + kind.length * 3.1) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < 160; i++) { x.fillStyle = i % 2 ? H.green : H.light; x.beginPath(); x.arc(rnd(i, 1) * N, rnd(i, 2) * N, 2.5 + rnd(i, 3) * 3.5, 0, 6.3); x.fill(); }
+    for (let i = 0; i < 70; i++) { x.fillStyle = H.flower; x.beginPath(); x.arc(rnd(i, 4) * N, rnd(i, 5) * N, 1.2 + rnd(i, 6) * 1.6, 0, 6.3); x.fill(); }
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(24, 2); this._disp.push(t);
+    this._herbBeds[kind] = t;
+    return t;
+  }
+
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
 
   _buildCythera() {
@@ -7150,10 +7411,16 @@ export class HPWorldScene {
     // first, knot gardens on the second and third, flower-bed rings at each
     // edge — the auditorium turned into beds, as the book turns it.
     const knot = lit ? this._knotTexture() : null;
+    // The beds are the "kitchen-garden" bands of our p. 320: "the first band
+    // was most densely of marjoram. The second of southernwood. The third of
+    // ground-pine. The rhomb of mountain thyme … the circuit of the rose …
+    // sweet-scented violets … the circles … filled with rue … flowering primrose".
+    // Rhizopoulou 2016 (u3-u6′) confirms every one of them as a plant of the
+    // book: marjoram, southernwood, ground-pine, thyme, germander, rue, primula.
     const tiers = [
-      { r0: 8, r1: 11, h: 0.42, bed: 0xc84a5a },
-      { r0: 11, r1: 14, h: 0.84, bed: 0xe07a8a },
-      { r0: 14, r1: 17, h: 1.26, bed: 0xd8a850 },
+      { r0: 8, r1: 11, h: 0.42, bed: 0xc84a5a, herb: 'marjoram' },
+      { r0: 11, r1: 14, h: 0.84, bed: 0xe07a8a, herb: 'southernwood' },
+      { r0: 14, r1: 17, h: 1.26, bed: 0xd8a850, herb: 'groundpine' },
     ];
     const terraceMat = lit ? S.mat({ color: 0x8a7a5a, roughness: 0.9 }) : S.mat({ tone: 0.08 });
     if (lit) this._dress(terraceMat, this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 4, courses: 3, repeat: 3 }), 0.3);
@@ -7172,13 +7439,23 @@ export class HPWorldScene {
       // not a tube — the torus read as a coloured pipe once real box-work
       // stood beside it
       const bedMat = lit
-        ? new THREE.MeshStandardMaterial({ map: this._flowerBedTexture(t.bed), roughness: 0.9 })
+        ? new THREE.MeshStandardMaterial({ map: this._herbBedTexture(t.herb), roughness: 0.9 })
         : S.mat({ tone: 0.16 });
       if (lit) this._disp.push(bedMat);
       this._m(new THREE.RingGeometry(t.r0 + 0.15, t.r0 + 0.75, 40), bedMat, CX, t.h + 0.02, CZ, { rx: -Math.PI / 2, cast: false });
       this._m(new THREE.CylinderGeometry(t.r0 + 0.78, t.r0 + 0.78, 0.12, 40, 1, true), this._hedgeMat, CX, t.h + 0.06, CZ, { cast: false })
         .material.side = THREE.DoubleSide;
     });
+    // the herbs themselves stand in the beds as tufts, and the bands are named
+    tiers.forEach((t, ti) => {
+      for (let k = 0; k < 40; k++) {
+        const a = k * Math.PI * 2 / 40 + ti * 0.05;
+        if (Math.abs(Math.sin(2 * a)) < 0.12) continue;                 // the four crossroads
+        this._tuft(CX + Math.cos(a) * (t.r0 + 0.45), t.h + 0.02, CZ + Math.sin(a) * (t.r0 + 0.45), t.herb, 0.34 + (k % 3) * 0.06);
+      }
+    });
+    this._plaque({ main: 'MARJORAM · SOVTHERNWOOD · GROVND-PINE', sub: 'THE FIRST BAND MOST DENSELY OF MARJORAM, THE SECOND OF SOVTHERNWOOD, THE THIRD OF GROVND-PINE · P. 320' },
+      2.4, 0.32, CX + 9.6, 0.42 + 0.7, CZ + 0.9, Math.PI / 2, true);
     // The rings in Segre's order, outermost first: the conifer parterre, the
     // knot cloister, the spice wood — the first build had them inverted.
     this._buildParterres(CX, CZ);
@@ -7975,6 +8252,10 @@ export class HPWorldScene {
       willow:   { leaf: 'narrow',  crown: [1.8, 1.9, 1.8],   trunk: [1.8, 0.14], bark: 0x5a4a38, dark: 0x3a5a2a, light: 0x7a9a58, n: 34, top: 0.9, boughs: 3, weeping: true },
       arbutus:  { leaf: 'lance',   crown: [1.2, 1.3, 1.2],   trunk: [1.2, 0.10], bark: 0x8a3a24, dark: 0x1c3a14, light: 0x3c6a22, n: 24, top: 0.9, boughs: 3, fruit: 0xd8402a },
       palm:     { leaf: 'frond',   crown: [1.6, 0.9, 1.6],   trunk: [3.4, 0.12], bark: 0x7a6a4a, dark: 0x2a5a24, light: 0x5c9a3c, n: 14, top: 1.0, fronds: true },
+      // the aged wild fig rooted in the Polyandrion's wall (our p. 272; Rhizopoulou 2016 n1′ 'wild fig', Ficus sycomorus/carica)
+      fig:      { leaf: 'lobed',   crown: [1.4, 1.0, 1.4],   trunk: [0.9, 0.13], bark: 0x9a8e7c, dark: 0x25461a, light: 0x578c2e, n: 22, top: 0.75, boughs: 3, gnarled: true },
+      // 'thorny plants, sharp thistles and cedars are cited in the text as occurring among ancient monuments and historical ruins' (Rhizopoulou 2016, abstract; l8′, s8)
+      cedar:    { leaf: 'needle',  crown: [2.6, 1.3, 2.6],   trunk: [2.4, 0.22], bark: 0x4a3a2a, dark: 0x1c3a24, light: 0x3a5e3c, n: 36, top: 1.0, boughs: 5 },
     };
   }
 
@@ -8393,7 +8674,34 @@ export class HPWorldScene {
       scale: 0.9,
     });
 
-    for (const f of [grass, wildflowers, roses, isleGrass, isleFlowers]) {
+    // ── The plain fields before the palace (Dallington pp. 100-101) ────────
+    // "beholding the plaine fieldes, it was woonderfull to see the greennes
+    // thereof, powdered with such varietie of sundrie sorted colours, and diuers
+    // fashioned floures, as yealow Crowfoote, or golden Knop, Oxeye, Satrion
+    // Dogges stone, the lesser Centorie, Mellilot, Saxifrage, Cowslops, Ladies
+    // fingers, wilde Cheruile … Sinquifolie Eyebright, Strawberies … wilde
+    // Columbindes Agnus Castus, Millfoyle, Yarrow … the white Muscarioli".
+    // Rhizopoulou 2016 (e1′-e2) sorts the same passage by colour: yellow for
+    // sweet clover and crowfoot, blue for centaury and eyebright, azure for
+    // chicory and periwinkle, white for lily-of-the-valley, purple for cyclamen,
+    // dittany and loosestrife. Four drifts, then, in those colours, on the
+    // sward round the palace and the court, and nowhere else.
+    const palaceField = (x, z) => x > -44 && x < -3 && z > -18 && z < 30;
+    const fieldDrift = (seed, thr, tip, tipB, back, scale) => createMeadowField({
+      ...common, count: mobile ? 220 : 620, seed,
+      accept: (x, z, clump) => palaceField(x, z) && clump > thr,
+      blade: { height: 0.46, width: 0.04, segments: 3, planes: 2, flare: 1.4 },
+      colors: { root: 0x3a5423, tip, rootB: 0x35521f, tipB, back },
+      wind: { windStrength: 0.2, windSpeed: 1.15 }, scale,
+    });
+    const yellowDrift = fieldDrift(1201, 0.60, 0xf0d040, 0xe8b020, 0xf6e080, 0.8);   // crowfoot, melilot, cowslip
+    const blueDrift   = fieldDrift(1202, 0.66, 0x3a56c8, 0x6a8ae0, 0x9ab0f0, 0.8);   // centaury, eyebright, chicory, periwinkle
+    const whiteDrift  = fieldDrift(1203, 0.70, 0xf4f0e6, 0xe8e6da, 0xffffff, 0.75);  // muscari, lily of the valley
+    const purpleDrift = fieldDrift(1204, 0.74, 0x8a3aa0, 0xb060c0, 0xd090d8, 0.8);   // cyclamen, loosestrife
+    this._plaque({ main: 'THE PLAINE FIELDES', sub: 'POWDERED WITH SVNDRIE SORTED COLOVRS · CROWFOOTE, OXEYE, CENTORIE, MELLILOT, COWSLOPS, EYEBRIGHT, MVSCARIOLI · DALLINGTON PP. 100–101' },
+      2.4, 0.34, -6.4, 0.62, 6.2, Math.PI / 2, true);
+
+    for (const f of [grass, wildflowers, roses, isleGrass, isleFlowers, yellowDrift, blueDrift, whiteDrift, purpleDrift]) {
       this.scene.add(f.mesh);
       this._meadows.push(f);
     }

@@ -107,7 +107,7 @@ what this file and `ARCHITECTURE.md` used to say.
   read by page-number offset lands in.
 - Still image-only and unread: O'Neill's *Allegory of Love*, the Da Capo facsimile, the
   Canone/Spruit emblematics volume.
-- **Sophia Rhizopoulou's three botanical papers are catalogued and not on disk** — the only
+- **Done 2026-09-07: Rhizopoulou 2016 fetched** (full text + Table 1 in `sources/rhizopoulou/`; 2022 is paywalled, 2017 members-only — abstracts captured) and built from: see `15scholars.md` §6 and `PLANTS.md` §1b. Was: the only
   scholarship treating the HP as a botanical document, and `PLANTS.md` needs it. Findable
   open-access. Cite her only as bibliography until someone fetches them.
 

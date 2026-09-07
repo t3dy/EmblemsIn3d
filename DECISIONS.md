@@ -61,6 +61,24 @@ the ritual book; the characters signed in blood on the pavement, the sponge, the
 simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
 blood characters are strokes, not a reading — the book gives no forms — and the note says so.
 
+## 2026-09-07 — Rhizopoulou fetched; the ground flora is the book's
+
+Ted: "download the papers, build everything you can". The 2016 paper was free-to-read but
+its publisher refuses scripted requests; its full text and Table 1 were captured through the
+project's browser into `sources/rhizopoulou/` (the PDF binary could not be saved by any
+sandbox route short of streaming it through the model; not worth it — the text is what we
+use). The 2022 supplement is paywalled and the 2017 conference paper members-only; abstracts
+kept, purchase is Ted's call. With her signatures the ground flora went in: the stream of
+ch. II, the palace fields' colours, Geusia's river, the Polyandrion's weeds and fig and
+cedars, Cythera's herb bands — each from the book's own words, with her identification.
+
+## 2026-09-07 — The woodcut register is bracketed
+
+Ted: the woodcut view "doesn't really look right … so many grid textures". It is a
+per-material object-space hatch, which is why it grids; the analysis and the fix (a
+screen-space edge pass and screen-space single-direction hatching driven by light) are in
+`WOODCUT.md`. Nothing more is built for that register until that plan is taken up.
+
 ## 2026-09-07 — The woodcut register draws the same trees as the garden
 
 The woodcut view defaulted to the primitive cone trees "for a readable silhouette". The plates

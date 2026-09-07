@@ -30,6 +30,26 @@ translation of XVII–XXXVIII; the 1592 spellings are given where they differ.
 | **Willow, poplar** | by water | our p. 312 |
 | **Rose, jasmine, ivy, vine** | the pergolas and Polia's garden | passim |
 
+## 1b. Rhizopoulou's census, and what it changed (2026-09-07)
+
+Her 2016 paper is on disk (`sources/rhizopoulou/`): 285 plant entities in 672 passages, each
+with the Aldine signature of the passage. Read against the world it settled five plantings,
+all now built:
+
+| Passage | What the book says | Built |
+|---|---|---|
+| a2–a4 (ch. I–II; Dallington p. 18) | the spring "about the which did growe diuers sweet hearbes and water flowers", the winding stream with its stones and fallen trunks; cane, reed, rushes, willow, osier, bramble, ash, elm, oaks | `_buildStream()`: the ribbon of water through the wood, stones, two trunks, reed and rush tufts, four osiers, the herbs at the spring |
+| e1′–e2 (ch. VII; Dallington pp. 100–101) | "the plaine fieldes … powdered with … sundrie sorted colours": crowfoot, oxeye, centaury, melilot, cowslips, eyebright, muscari … | four colour-drifts on the palace sward (`_buildMeadow`, yellow / blue / white / purple as she sorts them) |
+| e8 (ch. VIII; Dallington p. 122) | Geusia at the river: bull-rush, water-spike, nenuphar, arum, balm | `_buildRiverPlants()` on the bridge watercourse |
+| n1′, l8′, s8 (ch. XIX; our pp. 272–273) | aster and pellitory in the cracks, the wild fig rooted in the wall, nettles, burs, thistles, goat's-beard, sowthistle; cedars among ruins | `_buildRuinWeeds()` at the Polyandrion; species `fig` and `cedar` |
+| u3–u6′ (ch. XXI; our p. 320) | "the first band most densely of marjoram, the second of southernwood, the third of ground-pine" | Cythera's three tiers planted and named (`HERBS`, `_herbBedTexture`, `_tuft`) |
+
+Herbs are `HPWorldScene.HERBS`: a drawn clump per kind (`_herbTexture`), stood up as three
+crossed cards (`_tuft`) or pinned flat to a wall for the things that grow in cracks. Eighteen
+kinds so far. Not built, and hers to add: the shore plants of p2′ (cock's-crest, saltwort,
+purslane, spurge in "fissures of sea-dashed breakwaters" — the passage has not been located
+in our translation), the medicinal three, the exotic resins.
+
 ## 2. How a tree is made (rewritten 2026-09-06)
 
 A canopy of overlapping spheres reads as a blob at any distance. A canopy of **leaf-spray

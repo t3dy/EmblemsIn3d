@@ -147,6 +147,14 @@
           {
             "type": "context",
             "text": "**The hands that seem to have known the text before it was printed.** Siena O.III.38 — Fumagalli called it \"without equal, the most interesting\" annotated copy known to him — carries four hands, and the two principal ones, A and C, do something no other readers do: they write **line extensions**, continuations that form a single syntactic unit with the printed sentence, as if restoring it to an earlier wholeness. On this very page, at *quassabondo el mandava gli teneri ramuli*, Hand A emends to *quassabondo mandavano ad* — and the same emendation, letter for letter, appears in the copy now in **Sydney** (State Library of NSW). Fumagalli's inference is that these hands came from Dominican circles close to the author himself; Russell (ch. 9) finds the two copies took different paths from that shared start. This project holds a 478-image facsimile of the Siena copy."
+          },
+          {
+            "type": "context",
+            "text": "**The spring and the stream (Dallington p. 18).** Out of the wood Poliphilo finds 'a pleasant spring or head of water … with a great vayne boyling vp, about the which did growe diuers sweet hearbes and water flowers, and from the same did flowe a cleare and chrystalline current streame, which deuided into diuers branches, ran thorow the desart wood … the stones lift vp by nature, and trunkes of trees … did cause a stopping hinderance to their current'. Sophia Rhizopoulou's census of the book's plants (Botany Letters 2016, Table 1, leaves a2–a4) reads the same pages: cane and reed, rushes, willow and osier, bramble and briar, ash, elm, holm oak and cork oak, the vine on the elm, prunus, thistles. The stream runs now, with its stones and fallen trunks, reeds and rushes on the banks, osiers leaning over it, and the herbs and water-flowers round the spring."
+          },
+          {
+            "type": "context",
+            "text": "**Rhizopoulou's count.** The only scholarship that treats the Hypnerotomachia as a botanical document: 285 botanical entities in 672 passages (2016), raised to 331 in 772 passages by the 2022 'revisited' paper. Shrubs 43%, herbs 28%, trees 26%; the most-cited plants are laurel, myrtle, junipers, oaks, acanthus, violets, thyme, ivy, pines, cypress, sandalwoods, orange trees and roses. She notes that an early annotator saw that the riparian plants of this very stream are all in Pliny's *Natural History*, book 25. Her Table 1 is on disk in `sources/rhizopoulou/`; the world's species table now checks against it."
           }
         ]
       },
@@ -569,6 +577,10 @@
           {
             "type": "gloss",
             "text": "**The censer, and the cleft.** From a lion's head at the top of the cupola, 'holding a Ring in his iawes', hang chains of orichalc carrying a great vessel two cubits above the water: a crystal bowl ribbed in azure with 'bubbles of gold'. It is filled with burning matter from 'a cleft in the earth' nearby and with sweet woods; the cover is put down, and through the pierced ribs it gives 'a pleasant and diuers coulered light' that lights the bath while the heat stays 'incarcerated'. Over the door, a young man on a dolphin playing a harp (Arion); over the cold fountain, Poseidon on another with an eel-spear — both 'set out in a most blacke ground'."
+          },
+          {
+            "type": "quotation",
+            "text": "**Geusia's river (Dallington p. 122).** After the race, 'comming neare to a fresh coole Riuer … Geussia … bowed her selfe downe to the water, beautifully adorned with the bendyng Bull Rushe, water Spyke, swimmyng Vitrix, and aboundaunce of water Symples, shee dyd plucke vp the Heraclea Nympha, of some called water Lillye or Nenuphar, and the roote of Aron or wake Robyn … And Amella or Bawme Gentill' — and he refuses the cooling nenuphar and the hot arum and takes the balm. The bridge's watercourse is that river: bull-rushes and reeds on its banks now, the nenuphar's pads and white flowers on the water, arum and balm at the bank. Rhizopoulou identifies the nenuphar as *Nymphaea alba* and the aron as *Arum* (e8)."
           }
         ]
       },
@@ -610,6 +622,10 @@
           {
             "type": "context",
             "text": "Free Will (Eleuterylida) presiding over Reason and Will (Logistica, Thelemia) draws on the faculty-psychology every schooled reader knew — the soul's powers staged as a household."
+          },
+          {
+            "type": "context",
+            "text": "**The plaine fieldes (Dallington pp. 100–101).** Before the palace 'it was woonderfull to see the greennes thereof, powdered with such varietie of sundrie sorted colours, and diuers fashioned floures, as yealow Crowfoote, or golden Knop, Oxeye, Satrion Dogges stone, the lesser Centorie, Mellilot, Saxifrage, Cowslops, Ladies fingers, wilde Cheruile … Eyebright, Strawberies … wilde Columbindes Agnus Castus, Millfoyle, Yarrow … the white Muscarioli'. Rhizopoulou (2016, e1′–e2) sorts the passage by colour: yellow for sweet clover and crowfoot, blue for centaury and eyebright, azure for chicory and periwinkle, white for lily-of-the-valley, purple for cyclamen, dittany and loosestrife. The sward round the palace and the court now carries drifts in those four colours."
           }
         ]
       },
@@ -1142,6 +1158,10 @@
           {
             "type": "quotation",
             "text": "**Six epitaphs, in the book's own words** (our translation, CC0). Laodia Publia, who 'refused, against the custom of maidens, the commands of Love' (p. 252, an altar ARA DEVM INFER.); Leontia and Lollius, on a metal tablet you are told to kiss (p. 258); Lyndia and Thasius, 'Without thee I would not live; to die I preferred' (p. 260, #105); P. Cornelia Annia, who gave herself alive into her husband's coffin and asked for roses (p. 261, #106); Lopidia and Chrysanthes, O LECTOR INFOELIX, the snake among the ruins (p. 263, #108); and Trebia Quinta, dead of jealousy after a month, on the ark with two little doors — 'who enters, dying; who goes out, being born' (pp. 270–271, #112)."
+          },
+          {
+            "type": "context",
+            "text": "**What grows in the ruin (pp. 272–273).** Fleeing the Proserpina relief Poliphilo finds 'huge stones of the putrescent wall gaping, and grassy through the cracks with aster and pellitory; which was also entangled and destroyed, as by a wedge fixed of a big root of an aged wild-fig', and runs 'among caustic nettles and pathless ruins … all full of burs and down, and thistle-tufts, and goat's-beard, and sowthistle'. Rhizopoulou: 'pellitory and hammerwort were growing in dry cracks of tombs', and 'thorny plants, sharp thistles and cedars are cited in the text as occurring among ancient monuments and historical ruins'. All of it is here: the weeds in the cracks, the fig in the wall, the thistles round the rim, two cedars."
           }
         ]
       },
@@ -1218,6 +1238,10 @@
           {
             "type": "architecture",
             "text": "John Dixon Hunt reads the HP as a founding text for the *experience* of gardens — not the objects in them but the walking, the negotiation of body and place, process as much as product. Poliphilo passes through four distinct garden-worlds; Bomarzo, Pratolino and Versailles are its heirs, and so is this walkable one. (Hunt, 1998.)"
+          },
+          {
+            "type": "gloss",
+            "text": "**The herb bands (p. 320).** The terrace beds are the book's 'kitchen-garden' bands: 'the first band was most densely of marjoram. The second of southernwood. The third of ground-pine. The rhomb of mountain thyme. The rounding contained in the rhomb, of germander. The rose, of amethystine violets … The circles between the first and second square were filled with rue. The circles of the third, with flowering primrose' — mountain polium bordered with maidenhair, hollyhocks three cubits high in the spheres' centres. Rhizopoulou (u3–u6′) confirms each as a plant of the book. The three tiers are planted to the first three bands and named."
           }
         ]
       },

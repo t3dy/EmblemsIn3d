@@ -23,6 +23,12 @@ Agents can **Read the `.md` files directly** (they are plain markdown conversion
 PDFs — no need to parse the PDFs), and **query `hp.db` with sqlite3**. Read the source PDF
 only when a figure/plate is needed that the markdown lost.
 
+## In this repo: `sources/`
+
+- `sources/rhizopoulou/` — Rhizopoulou 2016 (full text, and Table 1 with all 285 plant
+  identifications keyed to Aldine signatures), the 2022 "revisited" abstract and endnotes,
+  and the 2017 Acta Horticulturae abstract. Captured 2026-09-07; see `15scholars.md` §6.
+
 ## hp.db — tables (query with `sqlite3` / Python)
 
 `folio_descriptions`, `woodcuts`, `woodcut_catalog`, `image_readings`, `alchemical_symbols`,
