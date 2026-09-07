@@ -1636,7 +1636,10 @@ export function makeCast(S) {
       const g = animals.serpent(ss, { coil: 0.7 });
       const pts = g.userData.spine;
       const dm = M(0x2c3a20, { roughness: 0.8 });
-      const wm = M(0x3a4a2a, { side: THREE.DoubleSide, roughness: 0.75 });
+      // the vanes read darker than they are, being thin planes seen at a
+      // grazing angle, so their colour is set a little ABOVE the body's
+      // (0x4a6a3a) to land at about the same brightness beside it
+      const wm = M(0x54764a, { side: THREE.DoubleSide, roughness: 0.72 });
       // a ridge of spikes down the spine — the crest the woodcut gives it
       for (let i = 2; i < 10; i++) {
         const p = pts[i];

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=165';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=166';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
@@ -24,6 +24,7 @@ const state = {
   activeScene: null,
   inGallery: false,
   annotationTimer: null,
+  commentsOff: false,      // the reader dismissed the commentary with its ×
   tours: null,
   tour: null,
   tourStop: 0,
@@ -555,6 +556,9 @@ function walkStopFor(stationKey) {
 }
 
 function showWalkNotes(st) {
+  // Dismissed means dismissed. Ted: "If you close it by hitting the x then the
+  // next time you hit a comment event trigger it should not come back up."
+  if (state.commentsOff) return;
   const el = document.getElementById('walk-notes');
   if (!el || !st) return;
   const stop = walkStopFor(st.key);
@@ -596,11 +600,47 @@ function renderWalkNotes() {
   el.querySelector('.wn-body').scrollTop = 0;
 }
 
-function hideWalkNotes() {
+function hideWalkNotes() {                 // leaving a wonder: just put it away
   _walkStation = null;
   setHidden(document.getElementById('walk-notes'), true);
 }
-window.hideWalkNotes = hideWalkNotes;
+function dismissWalkNotes() {              // the reader closed it: keep it closed
+  state.commentsOff = true;
+  setNavToggle('btn-comments', false);
+  hideWalkNotes();
+}
+window.hideWalkNotes = dismissWalkNotes;
+
+// ── The top bar's three toggles ───────────────────────────────────────────
+function setNavToggle(id, on) {
+  const b = document.getElementById(id);
+  if (b) b.classList.toggle('active', !!on);
+}
+window.toggleComments = () => {
+  state.commentsOff = !state.commentsOff;
+  setNavToggle('btn-comments', !state.commentsOff);
+  if (state.commentsOff) { hideWalkNotes(); return; }
+  const near = state.activeScene && state.activeScene._nearStation;
+  if (_walkStation) renderWalkNotes();
+  else if (near) showWalkNotes(near);
+};
+function ctlToggle(cardId, btnId, on) {
+  const el = document.getElementById(cardId);
+  if (!el) return;
+  const show = (on === undefined) ? !!el.hidden : !!on;
+  setHidden(el, !show, 'block');
+  setNavToggle(btnId, show);
+}
+window.toggleFlightCtl = () => ctlToggle('flight-ctl', 'btn-flightctl');
+window.toggleCamCtl    = () => ctlToggle('cam-ctl', 'btn-camctl');
+// the two cards, and their buttons, belong to the flight
+function showFlightCards(on) {
+  for (const [btnId, cardId] of [['btn-flightctl', 'flight-ctl'], ['btn-camctl', 'cam-ctl']]) {
+    const b = document.getElementById(btnId);
+    if (b) b.style.display = on ? '' : 'none';
+    ctlToggle(cardId, btnId, on);
+  }
+}
 
 // Re-open the chooser mid-walk so lenses can be changed without leaving.
 window.walkLenses = () => showFlavorChooser({
@@ -724,7 +764,9 @@ window.closeTourWoodcut = closeTourWoodcut;
 
 
 function setActiveWorldBtn(id) {
-  document.querySelectorAll('#world-nav button').forEach(b => b.classList.remove('active'));
+  // …but not the three toggles: `active` means "this is on" for them, not
+  // "this is the world you are in", and switching worlds must not clear it
+  document.querySelectorAll('#world-nav button:not(.nav-toggle)').forEach(b => b.classList.remove('active'));
   const el = document.getElementById(id);
   if (el) el.classList.add('active');
 }
@@ -910,7 +952,7 @@ window.hpExplore = () => {
   });
 };
 
-const FLY_HINT = 'W / S speed · A / D turn · R / F climb, dive · Shift boost · drag to orbit the camera · wheel or + − to zoom · C reset · 1–9 the wonders · Esc to land';
+const FLY_HINT = 'The dragon has you — the keys are on the Flight Controls and Camera Controls cards, toggled from the bar at the top.';
 window.hpFly = () => {
   showHPMode(false);
   const sc = state.activeScene;
@@ -918,8 +960,13 @@ window.hpFly = () => {
   showFlavorChooser({
     kicker: 'Flying the Dream Garden as the dragon', begin: 'Take wing',
     onDone: () => {
-      sc.onLand = () => { showHint('Landed. W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera'); refreshTouchControls(); };
+      sc.onLand = () => {
+        showFlightCards(false);
+        showHint('Landed. W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera');
+        refreshTouchControls();
+      };
       sc.startFlight();
+      showFlightCards(true);
       showHint(FLY_HINT);
       refreshTouchControls();
     },

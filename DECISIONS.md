@@ -61,6 +61,29 @@ the ritual book; the characters signed in blood on the pavement, the sponge, the
 simpulum; and the rose-bush rising from the platter to the cupola with its three doves. The
 blood characters are strokes, not a reading — the book gives no forms — and the note says so.
 
+## 2026-09-07 — The commentary obeys its own × , and the flight keys are cards
+
+Ted: "I keep closing it by hitting the x in the corner and it keeps coming back up. If you
+close it by hitting the x then the next time you hit a comment event trigger it should not
+come back up. There should be a button at the top to toggle the comments back on or off.
+Instructions for the controls for the dragon's flight should be visible on the screen (and
+also toggleable on and off with a Flight Controls button) as should the controls for the
+camera as Camera Controls."
+
+- **Dismissed means dismissed.** `state.commentsOff` is set by the panel's ×, and
+  `showWalkNotes()` returns early while it is set. Walking out of a wonder still just hides
+  the panel (`hideWalkNotes`) without setting the flag — leaving is not dismissing.
+- **Three toggles in the top bar**: *Commentary*, *Flight Controls*, *Camera Controls*, each
+  lit when its thing is on. They carry a `nav-toggle` class because `setActiveWorldBtn()`
+  strips `active` from every button in that bar, and for these `active` means "on", not
+  "this is the world you are in".
+- **The keys are cards now**, bottom-right in `#ctl-stack`, each with its own ×. They used to
+  live only in the hint toast, which is no use once it has faded. The two flight cards and
+  their buttons appear on taking wing and go on landing.
+- Also: the wings' and head's vanes were reading too dark against the body. Being thin planes
+  seen at a grazing angle they render darker than their colour, so their colour is now set a
+  little *above* the body's (0x54764a against 0x4a6a3a) to land at about the same brightness.
+
 ## 2026-09-07 — The dragon is one shape, three times
 
 Two corrections from Ted, in order. First: "I liked the way the dragon looked before" — the
