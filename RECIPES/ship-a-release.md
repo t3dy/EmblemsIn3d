@@ -32,6 +32,15 @@ the cache behaviour; this file is the running order.
    - `CREDITS.md` — if anything was imported
    - the relevant subject brief, if the sourcing changed
 4. **Commit** with an explicit path list.
+4b. **Parse-check every changed module before deploying** (added 2026-09-07, after a
+   trailing `//` comment ate a comma and served a blank world at v=153 for several minutes):
+   ```bash
+   node -e "const fs=require('fs');for(const f of ['src/scenes/HPWorldScene.js','src/main.js','src/systems/Cast.js']){const s=fs.readFileSync(f,'utf8');try{new Function(s.replace(/^import[^
+]*
+/mg,'').replace(/^export /mg,''));console.log('ok',f)}catch(e){console.log('PARSE FAIL',f,e.message);process.exitCode=1}}"
+   ```
+   The `?v=` curl in step 6 passes on a broken module; only a parse, or `window.hpExplore`
+   existing on the live page, catches it.
 5. **Deploy to both hosts:**
    ```bash
    vercel --prod --yes && git push origin main
