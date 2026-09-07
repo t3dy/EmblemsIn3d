@@ -1,0 +1,2906 @@
+{
+  "$schema_note": "See HPTOTOURPIPELINE.md for the field meanings and the workflow.",
+  "generated": "2026-09-07",
+  "generator": "scripts/coverage_seed.py",
+  "hand_edited_fields": [
+    "chapters[].research",
+    "chapters[].features"
+  ],
+  "derived_fields": [
+    "chapters[].pages_1499",
+    "chapters[].plates",
+    "chapters[].tour_stops",
+    "build_evidence"
+  ],
+  "modes": [
+    "walk",
+    "dream",
+    "tour",
+    "flight",
+    "vaults"
+  ],
+  "feature_kinds": [
+    "place",
+    "building",
+    "rite",
+    "object",
+    "creature",
+    "inscription",
+    "plant",
+    "machine",
+    "person",
+    "picture"
+  ],
+  "status_values": {
+    "built": "in the world and verified on the running page",
+    "partial": "some of it is there; the note says what is missing",
+    "unbuilt": "described in the book, absent from the world",
+    "declined": "deliberately not built; the note says why",
+    "unknown": "nobody has checked"
+  },
+  "sections_1499": [
+    {
+      "section": "PRELIMINARIES",
+      "pages_1499": [
+        1,
+        3
+      ]
+    },
+    {
+      "section": "DARK_FOREST",
+      "pages_1499": [
+        4,
+        15
+      ]
+    },
+    {
+      "section": "PYRAMID_RUINS",
+      "pages_1499": [
+        16,
+        37
+      ]
+    },
+    {
+      "section": "DRAGON_PORTAL",
+      "pages_1499": [
+        38,
+        62
+      ]
+    },
+    {
+      "section": "FIVE_SENSES",
+      "pages_1499": [
+        63,
+        79
+      ]
+    },
+    {
+      "section": "QUEEN_PALACE",
+      "pages_1499": [
+        80,
+        105
+      ]
+    },
+    {
+      "section": "JOURNEY_DOORS",
+      "pages_1499": [
+        106,
+        148
+      ]
+    },
+    {
+      "section": "PROCESSION",
+      "pages_1499": [
+        149,
+        167
+      ]
+    },
+    {
+      "section": "VENUS_TEMPLE",
+      "pages_1499": [
+        168,
+        185
+      ]
+    },
+    {
+      "section": "POLYANDRION",
+      "pages_1499": [
+        186,
+        215
+      ]
+    },
+    {
+      "section": "CYTHERA_VOYAGE",
+      "pages_1499": [
+        216,
+        220
+      ]
+    },
+    {
+      "section": "CYTHERA_GARDENS",
+      "pages_1499": [
+        221,
+        255
+      ]
+    },
+    {
+      "section": "VENUS_FOUNTAIN",
+      "pages_1499": [
+        256,
+        270
+      ]
+    },
+    {
+      "section": "BOOK_II_POLIA",
+      "pages_1499": [
+        271,
+        448
+      ]
+    }
+  ],
+  "build_evidence": {
+    "plates_cited_in_source": [
+      6,
+      7,
+      10,
+      18,
+      19,
+      22,
+      23,
+      24,
+      25,
+      33,
+      35,
+      36,
+      37,
+      44,
+      47,
+      49,
+      52,
+      54,
+      57,
+      58,
+      59,
+      60,
+      64,
+      65,
+      66,
+      67,
+      71,
+      79,
+      80,
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      92,
+      93,
+      94,
+      95,
+      96,
+      105,
+      106,
+      108,
+      110,
+      112,
+      116,
+      117,
+      120,
+      121,
+      125,
+      127,
+      130,
+      136,
+      143,
+      144,
+      147,
+      152,
+      153,
+      159,
+      160,
+      163,
+      165
+    ],
+    "builders": [
+      "Amphitheatre",
+      "Artemisia",
+      "Bath",
+      "BookTwo",
+      "Bridge",
+      "ChessBallet",
+      "Ciborium",
+      "ColossalHorse",
+      "Colossus",
+      "Court",
+      "Crypt",
+      "CupidTriumph",
+      "Cythera",
+      "CytheraIsle",
+      "DoorsWall",
+      "Elephant",
+      "Epitaphs",
+      "Folio80Company",
+      "Fortuna",
+      "Fountain",
+      "Garden",
+      "GracesFountain",
+      "GreatPortal",
+      "Ground",
+      "HellTribune",
+      "Meadow",
+      "MedusaDoor",
+      "Motes",
+      "NymphFountain",
+      "Palace",
+      "Parterres",
+      "PlanetaryPalace",
+      "PoliaGarden",
+      "Polyandrion",
+      "PriapusRite",
+      "Quinta",
+      "QuintaEssentia",
+      "RiverPlants",
+      "RuinWeeds",
+      "SecondBridge",
+      "Stream",
+      "ThreeDoors",
+      "Timeline",
+      "Trees",
+      "Triumphs",
+      "Venus",
+      "VenusTemple",
+      "WaterLabyrinth",
+      "WaterParticles",
+      "Wood"
+    ],
+    "stations": [
+      "bacchus",
+      "book_two",
+      "chess",
+      "colossus",
+      "court",
+      "cythera",
+      "cythera_isle",
+      "cythera_theatre",
+      "danae",
+      "elephant",
+      "europa",
+      "fountain",
+      "horse",
+      "labyrinth",
+      "leda",
+      "planetary_palace",
+      "polia",
+      "polyandrion",
+      "portal",
+      "priapus",
+      "quinta_essentia",
+      "three_doors",
+      "triumphs",
+      "venus_temple",
+      "vertumnus",
+      "wood"
+    ]
+  },
+  "plates_not_attached_to_a_chapter": [
+    {
+      "plate": 1,
+      "description": "Poliphilus entering the dark forest",
+      "page_1499": 4,
+      "section": "DARK_FOREST"
+    },
+    {
+      "plate": 2,
+      "description": "Poliphilus kneeling by a rivulet",
+      "page_1499": 8,
+      "section": "DARK_FOREST"
+    },
+    {
+      "plate": 3,
+      "description": "Poliphilus sleeping under a tree (dream within dream)",
+      "page_1499": 10,
+      "section": "DARK_FOREST"
+    },
+    {
+      "plate": 4,
+      "description": "Poliphilus among classical ruins with wolf",
+      "page_1499": 11,
+      "section": "DARK_FOREST"
+    },
+    {
+      "plate": 5,
+      "description": "The great pyramidic temple with obelisk",
+      "page_1499": 16,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 6,
+      "description": "Colossal bronze horse on pedestal with genii",
+      "page_1499": 22,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 7,
+      "description": "Pedestal end: garland of marjoram and ferns (D.AMBIG.D.D.)",
+      "page_1499": 23,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 8,
+      "description": "Pedestal end: garland of orpine (Equus infalicitatis)",
+      "page_1499": 23,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 9,
+      "description": "Pedestal side: two-faced youths and nymphs dancing",
+      "page_1499": 24,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 10,
+      "description": "Pedestal side: youth distributing flowers",
+      "page_1499": 25,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 11,
+      "description": "Elephant saddle-cloth with Greek and Arabic inscription",
+      "page_1499": 27,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 12,
+      "description": "Colossal elephant of black stone bearing obelisk",
+      "page_1499": 28,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 13,
+      "description": "Sarcophagus with nude King figure",
+      "page_1499": 29,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 14,
+      "description": "Sarcophagus with nude Queen figure",
+      "page_1499": 30,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 15,
+      "description": "Hieroglyphic devices with decorated casket",
+      "page_1499": 31,
+      "section": "PYRAMID_RUINS"
+    },
+    {
+      "plate": 16,
+      "description": "Ancient gate with medallion busts",
+      "page_1499": 38,
+      "section": "DRAGON_PORTAL"
+    },
+    {
+      "plate": 17,
+      "description": "Poliphilus fleeing the dragon",
+      "page_1499": 52,
+      "section": "DRAGON_PORTAL"
+    },
+    {
+      "plate": 18,
+      "description": "Emblematic devices (PATIENTIA / Anchor-Dolphin)",
+      "page_1499": 59,
+      "section": "DRAGON_PORTAL"
+    },
+    {
+      "plate": 19,
+      "description": "Sleeping nymph fountain with satyrs",
+      "page_1499": 63,
+      "section": "FIVE_SENSES"
+    },
+    {
+      "plate": 20,
+      "description": "Poliphilus meeting five nymphs",
+      "page_1499": 66,
+      "section": "FIVE_SENSES"
+    },
+    {
+      "plate": 21,
+      "description": "Weather-cock with genius blowing trumpet",
+      "page_1499": 71,
+      "section": "FIVE_SENSES"
+    },
+    {
+      "plate": 22,
+      "description": "Part of second fountain",
+      "page_1499": 75,
+      "section": "FIVE_SENSES"
+    },
+    {
+      "plate": 23,
+      "description": "Third fountain with Graces, harpies, griffins",
+      "page_1499": 80,
+      "section": "FIVE_SENSES"
+    },
+    {
+      "plate": 24,
+      "description": "Frieze ornament with genii, dolphins, bull skull",
+      "page_1499": 84,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 25,
+      "description": "Panelled wall in Queen's palace with planetary names",
+      "page_1499": 88,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 26,
+      "description": "Poliphilus before Queen Eleuterylida enthroned",
+      "page_1499": 90,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 27,
+      "description": "Medallion in canopy: youth with nimbus and eagle",
+      "page_1499": 92,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 28,
+      "description": "Richly ornamented tripod",
+      "page_1499": 93,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 29,
+      "description": "Golden basin upon wheels",
+      "page_1499": 94,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 30,
+      "description": "Tripod with three naked boys on lion-footed pedestal",
+      "page_1499": 95,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 31,
+      "description": "Vessel surmounted by coral-tree",
+      "page_1499": 102,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 32,
+      "description": "Magnificent vessel with gold shrub, twice nymph height",
+      "page_1499": 105,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 33,
+      "description": "Triangular obelisk of mystic Trinity with sphinxes",
+      "page_1499": 119,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 34,
+      "description": "Cameo: Jupiter with cornucopia and vanquished giants",
+      "page_1499": 122,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 35,
+      "description": "Woman with tortoise and wings (Velocitatem sedendo)",
+      "page_1499": 123,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 36,
+      "description": "Circular bas-relief: two genii holding apple (Medium tenuere beati)",
+      "page_1499": 124,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 37,
+      "description": "Poliphilus at three gates: GLORIA DEI, MATER AMORIS, GLORIA MUNDI",
+      "page_1499": 125,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 38,
+      "description": "Poliphilus meets venerable matron with six attendants",
+      "page_1499": 126,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 39,
+      "description": "Poliphilus receives crown and palm-branch on sword",
+      "page_1499": 127,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 40,
+      "description": "Poliphilus among nymphs; flight of Logistica",
+      "page_1499": 129,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 41,
+      "description": "Poliphilus embraced by the nymph",
+      "page_1499": 130,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 42,
+      "description": "Poliphilus looking through bower as Polia approaches",
+      "page_1499": 132,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 43,
+      "description": "Poliphilus and Polia retreating from bower",
+      "page_1499": 139,
+      "section": "JOURNEY_DOORS"
+    },
+    {
+      "plate": 44,
+      "description": "Triumphal car with Europa reliefs",
+      "page_1499": 149,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 45,
+      "description": "Relief: Rape of Europa",
+      "page_1499": 149,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 46,
+      "description": "Reliefs: Cupid shooting stars; Jupiter and Mars",
+      "page_1499": 150,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 47,
+      "description": "First Triumph of Europa: centaurs, nymphs, musicians (left)",
+      "page_1499": 151,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 48,
+      "description": "First Triumph of Europa (right continuation)",
+      "page_1499": 151,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 49,
+      "description": "Triumph of Leda reliefs: Leda lying-in, eggs presented",
+      "page_1499": 152,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 50,
+      "description": "Relief: King offering eggs at Temple of Apollo",
+      "page_1499": 153,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 51,
+      "description": "Reliefs: Cupid tracing figures; Judgment of Paris",
+      "page_1499": 154,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 52,
+      "description": "Second Triumph of Leda: elephants, swan (left)",
+      "page_1499": 155,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 53,
+      "description": "Second Triumph of Leda (right continuation)",
+      "page_1499": 155,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 54,
+      "description": "Triumph of Danae reliefs: Acrisius, tower construction",
+      "page_1499": 156,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 55,
+      "description": "Perseus with mirror and Medusa head; Pegasus",
+      "page_1499": 156,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 56,
+      "description": "Reliefs: Venus and Mars freed; Jupiter comforts Cupid",
+      "page_1499": 158,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 57,
+      "description": "Third Triumph of Danae: unicorns (left)",
+      "page_1499": 159,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 58,
+      "description": "Festival of Bacchus reliefs: Jupiter and Semele",
+      "page_1499": 160,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 59,
+      "description": "Third Triumph of Danae (right continuation)",
+      "page_1499": 159,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 60,
+      "description": "Jupiter commits infant Bacchus to Mercury",
+      "page_1499": 160,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 61,
+      "description": "Venus and Cupid before Jupiter; Psyche with lamp",
+      "page_1499": 161,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 62,
+      "description": "Vase relief: Jupiter and the Heliades",
+      "page_1499": 161,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 63,
+      "description": "Vintage scene with genii and young Bacchus",
+      "page_1499": 164,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 64,
+      "description": "Fourth Triumph: Festival of Bacchus, panthers (left)",
+      "page_1499": 165,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 65,
+      "description": "Festival of Bacchus with Silenus on ass (right)",
+      "page_1499": 165,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 66,
+      "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
+      "page_1499": 166,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 67,
+      "description": "Four Seasons relief: Spring (Venus and Cupid)",
+      "page_1499": 167,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 68,
+      "description": "Four Seasons: Summer (Ceres with boy)",
+      "page_1499": 167,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 69,
+      "description": "Four Seasons: Autumn (Wine God with ram)",
+      "page_1499": 167,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 70,
+      "description": "Four Seasons: Winter (Jupiter Pluvius)",
+      "page_1499": 167,
+      "section": "PROCESSION"
+    },
+    {
+      "plate": 71,
+      "description": "Worship of Priapus with nineteen female and five male figures",
+      "page_1499": 185,
+      "section": "VENUS_TEMPLE"
+    }
+  ],
+  "chapters": [
+    {
+      "id": "I",
+      "n": 1,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "wood",
+          "title": "The Dark Wood",
+          "notes": 12
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "dark-wood",
+          "name": "The selva oscura — the trackless wood",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 12–16 (corpus md ll. 600–700)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildWood",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "64 trees of oak, beech, elm and fir — the species the text names at l. 625. No cypress: a garden tree."
+        },
+        {
+          "id": "wolf",
+          "name": "The hungry wolf that watches the path",
+          "kind": "creature",
+          "plate": null,
+          "source": "Dallington p. 15 (\"inuading VVoolfe\")",
+          "status": "built",
+          "built_as": "HPWorldScene._buildWood → cast.animals.wolf",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "jupiter-prayer",
+          "name": "Poliphilo's prayer to Jupiter, which delivers him",
+          "kind": "rite",
+          "plate": null,
+          "source": "Dallington p. 17",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "dream"
+          ],
+          "note": "The dream mode narrates it; nothing in the world marks the place."
+        }
+      ]
+    },
+    {
+      "id": "II",
+      "n": 2,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "wood",
+          "title": "The Deeper Dream",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "spring",
+          "name": "The spring \"with a great vayne boyling vp\"",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 18",
+          "status": "built",
+          "built_as": "HPWorldScene._buildStream",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "With the \"diuers sweet hearbes and water flowers\" about it (Rhizopoulou 2016, a2–a4)."
+        },
+        {
+          "id": "stream",
+          "name": "The winding stream, its stones and its fallen trunks",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 18",
+          "status": "built",
+          "built_as": "HPWorldScene._buildStream",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Built 2026-09-07 on a gravel bed, with reeds, rushes and four osiers."
+        },
+        {
+          "id": "harmony",
+          "name": "The harmony he hears, which draws him on",
+          "kind": "rite",
+          "plate": null,
+          "source": "Dallington p. 17",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "dream"
+          ],
+          "note": "The site is silent by design (DECISIONS 2026-09-04), so this cannot be built as sound."
+        }
+      ]
+    },
+    {
+      "id": "III",
+      "n": 3,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "horse",
+          "title": "The Winged Horse of Unhappiness",
+          "notes": 11
+        },
+        {
+          "station": "colossus",
+          "title": "The Colossus",
+          "notes": 3
+        },
+        {
+          "station": "elephant",
+          "title": "The Elephant & Obelisk",
+          "notes": 10
+        },
+        {
+          "station": "elephant",
+          "title": "Reading the Hieroglyphs",
+          "notes": 10
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "IV",
+      "n": 4,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "portal",
+          "title": "The Great Portal",
+          "notes": 11
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "V",
+      "n": 5,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "portal",
+          "title": "The Dragon in the Vaults",
+          "notes": 9
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "dragon-at-door",
+          "name": "The dragon in the doorway",
+          "kind": "creature",
+          "plate": null,
+          "source": "Dallington p. 82",
+          "status": "built",
+          "built_as": "HPWorldScene._buildGreatPortal → _npc('dragon')",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "vaults-maze",
+          "name": "The vaults: \"ambagious passages and vnknowne waies\"",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington pp. 82–84",
+          "status": "built",
+          "built_as": "VaultsScene._carve",
+          "modes": [
+            "vaults"
+          ],
+          "note": "MISSED FOR MONTHS. No plate exists for it, so a plate-driven check could never find it. Built 2026-09-07 as the crawl. This feature is why the ledger exists."
+        },
+        {
+          "id": "vault-pillars",
+          "name": "Pillars \"some fouresquare, some sixe square, some eight square\"",
+          "kind": "building",
+          "plate": null,
+          "source": "Dallington p. 87",
+          "status": "built",
+          "built_as": "VaultsScene.build (pillar loop)",
+          "modes": [
+            "vaults"
+          ],
+          "note": ""
+        },
+        {
+          "id": "vault-pits",
+          "name": "The vaults in the floor he fears to tumble into",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 83",
+          "status": "built",
+          "built_as": "VaultsScene (pits)",
+          "modes": [
+            "vaults"
+          ],
+          "note": ""
+        },
+        {
+          "id": "everlasting-lamp",
+          "name": "The everlasting lamp on its altar, with the images of gold",
+          "kind": "object",
+          "plate": null,
+          "source": "Dallington p. 86–87 (\"an Aultar that was fiue foote high, and tenne foote broad\")",
+          "status": "built",
+          "built_as": "VaultsScene (altars)",
+          "modes": [
+            "vaults"
+          ],
+          "note": ""
+        },
+        {
+          "id": "little-wicket",
+          "name": "The little wicket, and the light coming in at it",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 87",
+          "status": "built",
+          "built_as": "VaultsScene (wicket)",
+          "modes": [
+            "vaults"
+          ],
+          "note": ""
+        },
+        {
+          "id": "subterranean-buttresses",
+          "name": "\"The large foundations, and fearefull vaultes, and subterraneal buttresses\"",
+          "kind": "building",
+          "plate": null,
+          "source": "Dallington p. 87",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "vaults"
+          ],
+          "note": "The crawl has corridors and pillars but no vaulted halls or buttressed chambers."
+        }
+      ]
+    },
+    {
+      "id": "VI",
+      "n": 6,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "fountain",
+          "title": "The Five Nymphs and the Bath",
+          "notes": 11
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "five-nymphs",
+          "name": "The five nymphs, who are the five senses",
+          "kind": "person",
+          "plate": null,
+          "source": "Dallington pp. 106–112",
+          "status": "built",
+          "built_as": "HPWorldScene (the five sense nymphs)",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "bath-house",
+          "name": "The eight-sided bath, ΑΣΑΜΙΝΘΟΣ",
+          "kind": "building",
+          "plate": null,
+          "source": "Dallington pp. 112–115",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBath",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Rebuilt 2026-09-06 to the text: jacinth columns, black tables in coral jasper, ivory nymphs, the zophor of boys and sea-monsters, oak-leaf ribs, the lion-head censer, the fish mosaic."
+        }
+      ]
+    },
+    {
+      "id": "VII",
+      "n": 7,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "fountain",
+          "title": "The Five Nymphs and the Bath",
+          "notes": 11
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "geloiastos",
+          "name": "ΓΕΛΟΙΑΣΤΟΣ — the pissing boy and the trick step",
+          "kind": "machine",
+          "plate": null,
+          "source": "Dallington pp. 117–118",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBath (the niche)",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The moveable step works: tread on it and he does what he does."
+        },
+        {
+          "id": "sleeping-nymph",
+          "name": "The fountain of the sleeping nymph, with the satyr",
+          "kind": "object",
+          "plate": 19,
+          "source": "Dallington pp. 119–121",
+          "status": "built",
+          "built_as": "HPWorldScene._buildNymphFountain",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "geusia-river",
+          "name": "Geusia's river: bull-rush, nenuphar, arum, balm",
+          "kind": "plant",
+          "plate": null,
+          "source": "Dallington p. 122",
+          "status": "built",
+          "built_as": "HPWorldScene._buildRiverPlants",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Identifications from Rhizopoulou 2016 (e8)."
+        }
+      ]
+    },
+    {
+      "id": "VIII",
+      "n": 8,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "court",
+          "title": null,
+          "notes": 9
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "IX",
+      "n": 9,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "labyrinth",
+          "title": "The Palace, the Water-Labyrinth and the Banquet",
+          "notes": 9
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "X",
+      "n": 10,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "labyrinth",
+          "title": "The Palace, the Water-Labyrinth and the Banquet",
+          "notes": 9
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XI",
+      "n": 11,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "chess",
+          "title": "The Human Chess Match",
+          "notes": 11
+        },
+        {
+          "station": "quinta_essentia",
+          "title": "Logistica and Thelemia",
+          "notes": 8
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XII",
+      "n": 12,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "three_doors",
+          "title": null,
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XIII",
+      "n": 13,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "three_doors",
+          "title": null,
+          "notes": 7
+        },
+        {
+          "station": "polia",
+          "title": null,
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XIV",
+      "n": 14,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "triumphs",
+          "title": null,
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XV",
+      "n": 15,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "triumphs",
+          "title": "Vertumnus and Pomona",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XVI",
+      "n": 16,
+      "book": 1,
+      "pages_1499": null,
+      "text_source": {
+        "edition": "Dallington 1592",
+        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+      },
+      "plates": [],
+      "plates_from": "not-yet-attached",
+      "tour_stops": [
+        {
+          "station": "priapus",
+          "title": "The Altar of the Seasons — where the English breaks off",
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XVII",
+      "n": 17,
+      "book": 1,
+      "pages_1499": [
+        193,
+        224
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 72,
+          "description": "Section and ground-plan of rotunda temple",
+          "page_1499": 195
+        },
+        {
+          "plate": 73,
+          "description": "Nude winged female half-figure with foliage",
+          "page_1499": 197
+        },
+        {
+          "plate": 74,
+          "description": "Globular lamp hung in chains",
+          "page_1499": 198
+        },
+        {
+          "plate": 75,
+          "description": "Crowning of lantern in cupola with bells",
+          "page_1499": 201
+        },
+        {
+          "plate": 76,
+          "description": "Temple of Venus: procession of seven virgins to altar",
+          "page_1499": 205
+        },
+        {
+          "plate": 77,
+          "description": "Polia's torch extinguished in altar-fountain",
+          "page_1499": 207
+        },
+        {
+          "plate": 78,
+          "description": "Temple ceremony continuation",
+          "page_1499": 208
+        },
+        {
+          "plate": 79,
+          "description": "Two virgins offering swans and doves for sacrifice",
+          "page_1499": 208
+        },
+        {
+          "plate": 80,
+          "description": "The altar in the Temple of Venus",
+          "page_1499": 210
+        },
+        {
+          "plate": 81,
+          "description": "Temple ceremony continuation",
+          "page_1499": 212
+        },
+        {
+          "plate": 82,
+          "description": "Temple ceremony continuation",
+          "page_1499": 213
+        },
+        {
+          "plate": 83,
+          "description": "Temple ceremony continuation",
+          "page_1499": 213
+        },
+        {
+          "plate": 84,
+          "description": "Miracle of the roses: rose-tree rising from altar, doves",
+          "page_1499": 221
+        },
+        {
+          "plate": 85,
+          "description": "Poliphilus and Polia receive fruits from priestess",
+          "page_1499": 221
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "venus_temple",
+          "title": "The Temple of Venus",
+          "notes": 13
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "venus-temple",
+          "name": "The round Temple of Venus Physizoa",
+          "kind": "building",
+          "plate": null,
+          "source": "our translation pp. 193–224",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Seven porphyry steps, the jasper door with its lodestone tablets, the eight-bay drum, the scaled cupola."
+        },
+        {
+          "id": "crystal-lamp",
+          "name": "The crystal lamp and its four gem lamps",
+          "kind": "object",
+          "plate": 74,
+          "source": "our p. 198 (plate #74)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "lantern-winds",
+          "name": "The lantern with its eight turning winds and bells",
+          "kind": "machine",
+          "plate": 75,
+          "source": "our p. 201 (plate #75)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple (_windVanes/_windBells)",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "cistern-rite",
+          "name": "Polia's torch quenched in the cistern",
+          "kind": "rite",
+          "plate": 77,
+          "source": "our p. 207 (plate #77)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "sacello",
+          "name": "The round blind sacello of phengite, opposite the door",
+          "kind": "building",
+          "plate": null,
+          "source": "our pp. 219–220",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple (sacello)",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Built 2026-09-07. The rite had been staged at an altar loose in the drum."
+        },
+        {
+          "id": "jasper-altar",
+          "name": "The altar of one jasper, with the gold platter and its gem strings",
+          "kind": "object",
+          "plate": 80,
+          "source": "our pp. 221–223 (plate #80)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "XVIII",
+      "n": 18,
+      "book": 1,
+      "pages_1499": [
+        225,
+        241
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 86,
+          "description": "Ruins of Temple Polyandrion with obelisk among trees",
+          "page_1499": 233
+        },
+        {
+          "plate": 87,
+          "description": "Obelisk with hieroglyphic devices",
+          "page_1499": 233
+        },
+        {
+          "plate": 88,
+          "description": "Hieroglyphic medallion relief (first)",
+          "page_1499": 233
+        },
+        {
+          "plate": 89,
+          "description": "Hieroglyphic medallion relief (second)",
+          "page_1499": 235
+        },
+        {
+          "plate": 90,
+          "description": "Hieroglyphic medallion relief (third)",
+          "page_1499": 235
+        },
+        {
+          "plate": 91,
+          "description": "Hieroglyphic medallion relief (fourth)",
+          "page_1499": 236
+        },
+        {
+          "plate": 92,
+          "description": "Hieroglyphic relief (fifth)",
+          "page_1499": 236
+        },
+        {
+          "plate": 93,
+          "description": "Architrave fragment with bird and lamp",
+          "page_1499": 236
+        },
+        {
+          "plate": 94,
+          "description": "Cupola above entrance to the crypt",
+          "page_1499": 237
+        },
+        {
+          "plate": 95,
+          "description": "Sarcophagus: Interna Plotoni",
+          "page_1499": 238
+        },
+        {
+          "plate": 96,
+          "description": "Mosaic of Hell on crypt ceiling (after Dante)",
+          "page_1499": 241
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "venus_temple",
+          "title": "The Sacrifice and the Miracle of the Roses",
+          "notes": 10
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "anclabris",
+          "name": "The anclabris: swans, bound turtledoves, roses, oyster-shells, sea-water",
+          "kind": "object",
+          "plate": 79,
+          "source": "our p. 219 (plate #79)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "swan-sacrifice",
+          "name": "The sacrifice of the swans and doves",
+          "kind": "rite",
+          "plate": null,
+          "source": "our pp. 226, 231",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "blood-characters",
+          "name": "The arcane characters signed in blood, and the sponge",
+          "kind": "inscription",
+          "plate": null,
+          "source": "our pp. 231–232",
+          "status": "partial",
+          "built_as": "HPWorldScene._bloodCharacters",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The forms are NOT given in the book. Drawn as strokes, and the tour note says so."
+        },
+        {
+          "id": "rose-miracle",
+          "name": "The rose-bush rising from the altar to the cupola",
+          "kind": "rite",
+          "plate": 84,
+          "source": "our p. 233 (plate #84)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildVenusTemple",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "fruit-communion",
+          "name": "The three fruits taken and tasted",
+          "kind": "rite",
+          "plate": 85,
+          "source": "our pp. 233–234 (plate #85)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "dream",
+            "tour"
+          ],
+          "note": "The bush is built; the giving of the three fruits is not staged."
+        }
+      ]
+    },
+    {
+      "id": "XIX",
+      "n": 19,
+      "book": 1,
+      "pages_1499": [
+        242,
+        282
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 97,
+          "description": "Sepulchral monument with masks",
+          "page_1499": 243
+        },
+        {
+          "plate": 98,
+          "description": "Sepulchral monument with Renaissance urn",
+          "page_1499": 245
+        },
+        {
+          "plate": 99,
+          "description": "Sacrifice relief: old man, youth, faun, dancers",
+          "page_1499": 245
+        },
+        {
+          "plate": 100,
+          "description": "Epitaph with eagle and dolphins",
+          "page_1499": 247
+        },
+        {
+          "plate": 101,
+          "description": "Epitaph fragment",
+          "page_1499": 247
+        },
+        {
+          "plate": 102,
+          "description": "Sepulchral urn with Greek inscription",
+          "page_1499": 249
+        },
+        {
+          "plate": 103,
+          "description": "Tombstone surmounted by urn",
+          "page_1499": 249
+        },
+        {
+          "plate": 104,
+          "description": "Epitaph fragment with skulls and laurel",
+          "page_1499": 247
+        },
+        {
+          "plate": 105,
+          "description": "Epitaph: D.M. Lyndia",
+          "page_1499": 251
+        },
+        {
+          "plate": 106,
+          "description": "Sarcophagus: P. Cornelia Annia",
+          "page_1499": 251
+        },
+        {
+          "plate": 107,
+          "description": "Sarcophagus with hieroglyphic devices",
+          "page_1499": 250
+        },
+        {
+          "plate": 108,
+          "description": "Large epitaph: O lector infoelix",
+          "page_1499": 252
+        },
+        {
+          "plate": 109,
+          "description": "Sepulchral monument with laurel wreath",
+          "page_1499": 254
+        },
+        {
+          "plate": 110,
+          "description": "Monument of Artemisia drinking ashes of Mausolus",
+          "page_1499": 258
+        },
+        {
+          "plate": 111,
+          "description": "Epitaph with busts of youth and woman",
+          "page_1499": 258
+        },
+        {
+          "plate": 112,
+          "description": "Sepulchral portal: narrow gates of life and death",
+          "page_1499": 260
+        },
+        {
+          "plate": 113,
+          "description": "Standard of Cupid's bark (blue silk with rebus)",
+          "page_1499": 275
+        },
+        {
+          "plate": 114,
+          "description": "The bark of the god of love",
+          "page_1499": 281
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "polyandrion",
+          "title": "The Polyandrion",
+          "notes": 13
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "polyandrion-front",
+          "name": "The ruin, its temple front and the D·M·S dedication",
+          "kind": "building",
+          "plate": 86,
+          "source": "our p. 246 (plates #86, #93)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildPolyandrion",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "ciborium",
+          "name": "The hexagonal porphyry ciborium over the grated shaft",
+          "kind": "building",
+          "plate": 94,
+          "source": "our p. 246 (plate #94)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCiborium",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "crypt",
+          "name": "The crypt: six dwarf columns, the brass altar-furnace, natron, owls",
+          "kind": "place",
+          "plate": 95,
+          "source": "our pp. 247–248 (plate #95)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCrypt",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "hell-mosaic",
+          "name": "The tribune vault: the fire-and-ice mosaic of Hell",
+          "kind": "picture",
+          "plate": 96,
+          "source": "our pp. 248–251 (plate #96)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildHellTribune",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "artemisia",
+          "name": "Artemisia's porphyry sepulchre, drinking Mausolus's ashes",
+          "kind": "building",
+          "plate": 110,
+          "source": "our pp. 264–266 (plate #110)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildArtemisia",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "epitaphs",
+          "name": "Six epitaph tombs, in the book’s own words",
+          "kind": "inscription",
+          "plate": null,
+          "source": "our pp. 252, 258, 260, 261, 263, 270–271",
+          "status": "built",
+          "built_as": "HPWorldScene._buildEpitaphs",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "five-medallions",
+          "name": "The five hieroglyphic medallions",
+          "kind": "inscription",
+          "plate": null,
+          "source": "plates #88–#92",
+          "status": "declined",
+          "built_as": "HPWorldScene._polyandrionMedallions",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "NO READING OF THEM EXISTS anywhere in the corpus. Built as explicitly unread, and the tour says so. Do not invent a reading."
+        },
+        {
+          "id": "proserpina-relief",
+          "name": "The Rape of Proserpina relief that frightens him back to Polia",
+          "kind": "picture",
+          "plate": null,
+          "source": "our pp. 280+",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The chapter’s climax and the reason he flees. Nothing in the world marks it."
+        },
+        {
+          "id": "ruin-weeds",
+          "name": "Aster and pellitory in the cracks, the wild fig, nettles and thistles",
+          "kind": "plant",
+          "plate": null,
+          "source": "our pp. 272–273",
+          "status": "built",
+          "built_as": "HPWorldScene._buildRuinWeeds",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        }
+      ]
+    },
+    {
+      "id": "XX",
+      "n": 20,
+      "book": 1,
+      "pages_1499": [
+        284,
+        289
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "cythera",
+          "title": null,
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXI",
+      "n": 21,
+      "book": 1,
+      "pages_1499": [
+        290,
+        325
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 115,
+          "description": "Water-work in garden of island of Venus",
+          "page_1499": 295
+        },
+        {
+          "plate": 116,
+          "description": "Tree clipped in ring-shape",
+          "page_1499": 295
+        },
+        {
+          "plate": 117,
+          "description": "Box-tree clipped as man supporting towers with arch",
+          "page_1499": 296
+        },
+        {
+          "plate": 118,
+          "description": "Box-tree",
+          "page_1499": 296
+        },
+        {
+          "plate": 119,
+          "description": "Box-tree clipped as centre piece",
+          "page_1499": 296
+        },
+        {
+          "plate": 120,
+          "description": "Box-tree clipped as mushroom",
+          "page_1499": 297
+        },
+        {
+          "plate": 121,
+          "description": "Peristyle in pleasure-ground of island of Venus",
+          "page_1499": 298
+        },
+        {
+          "plate": 122,
+          "description": "Plan of the island of Venus",
+          "page_1499": 301
+        },
+        {
+          "plate": 123,
+          "description": "Ornament of a flower-bed",
+          "page_1499": 309
+        },
+        {
+          "plate": 124,
+          "description": "Square ornament of a flower-bed",
+          "page_1499": 309
+        },
+        {
+          "plate": 125,
+          "description": "Clipped tree upon altar with bull's skull and festoons",
+          "page_1499": 295
+        },
+        {
+          "plate": 126,
+          "description": "Pattern of a flower-bed",
+          "page_1499": 311
+        },
+        {
+          "plate": 127,
+          "description": "Box-tree clipped as three peacocks on altar-vase",
+          "page_1499": 313
+        },
+        {
+          "plate": 128,
+          "description": "Flower-bed in shape of eagle",
+          "page_1499": 313
+        },
+        {
+          "plate": 129,
+          "description": "Flower-bed: two birds on a vase",
+          "page_1499": 317
+        },
+        {
+          "plate": 130,
+          "description": "Trophy of Roman arms with winged genius head",
+          "page_1499": 317
+        },
+        {
+          "plate": 131,
+          "description": "Trophy: tunic with winged genius head and laurel",
+          "page_1499": 317
+        },
+        {
+          "plate": 132,
+          "description": "Trophy: tiger-skin and bull's head",
+          "page_1499": 319
+        },
+        {
+          "plate": 133,
+          "description": "Trophy: disk with wings, tablet 'Quis evadet?'",
+          "page_1499": 319
+        },
+        {
+          "plate": 134,
+          "description": "Trophy with gold wings and tablet 'Nemo'",
+          "page_1499": 319
+        },
+        {
+          "plate": 135,
+          "description": "Trophy with gold wings and floating ribbons",
+          "page_1499": 319
+        },
+        {
+          "plate": 136,
+          "description": "Trophy: laurel wreath with Cupid, tablet 'Gained by spear'",
+          "page_1499": 321
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "cythera_isle",
+          "title": null,
+          "notes": 9
+        }
+      ],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Read against the world. Features below carry their citation and their build status."
+      },
+      "features": [
+        {
+          "id": "cythera-parterres",
+          "name": "Segre's knot-parterres, ring within ring",
+          "kind": "place",
+          "plate": null,
+          "source": "our pp. 316–318",
+          "status": "built",
+          "built_as": "HPWorldScene._buildParterres",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "herb-bands",
+          "name": "The kitchen-garden bands: marjoram, southernwood, ground-pine",
+          "kind": "plant",
+          "plate": null,
+          "source": "our p. 320",
+          "status": "built",
+          "built_as": "HPWorldScene (tiers + _herbBedTexture)",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": ""
+        },
+        {
+          "id": "hollyhocks",
+          "name": "Three-cubit hollyhocks in the spheres’ centres",
+          "kind": "plant",
+          "plate": null,
+          "source": "our p. 320",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Named in the same passage as the herb bands; not built."
+        }
+      ]
+    },
+    {
+      "id": "XXII",
+      "n": 22,
+      "book": 1,
+      "pages_1499": [
+        326,
+        357
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 137,
+          "description": "Superb nymph figure with javelin",
+          "page_1499": 327
+        },
+        {
+          "plate": 138,
+          "description": "Vase with dragon-handle monsters",
+          "page_1499": 330
+        },
+        {
+          "plate": 139,
+          "description": "Small precious stone vase with fiery sparks",
+          "page_1499": 331
+        },
+        {
+          "plate": 140,
+          "description": "Earthenware amphora with odoriferous fumes",
+          "page_1499": 331
+        },
+        {
+          "plate": 141,
+          "description": "Terminal figure with three male heads",
+          "page_1499": 334
+        },
+        {
+          "plate": 142,
+          "description": "Trophy with three heads of Cerberus and serpent",
+          "page_1499": 334
+        },
+        {
+          "plate": 143,
+          "description": "Triumph of Cupid: nymphs, satyrs, dragons, captives (left)",
+          "page_1499": 337
+        },
+        {
+          "plate": 144,
+          "description": "Triumph of Cupid (right continuation)",
+          "page_1499": 337
+        },
+        {
+          "plate": 145,
+          "description": "Column base with rams' heads and sacrifice medallion",
+          "page_1499": 339
+        },
+        {
+          "plate": 146,
+          "description": "Frieze ornament: bull with nude figure and satyrs",
+          "page_1499": 339
+        },
+        {
+          "plate": 147,
+          "description": "The Amphitheatre in island of Venus",
+          "page_1499": 341
+        },
+        {
+          "plate": 148,
+          "description": "Ground-plan of fountain of Venus",
+          "page_1499": 349
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "cythera_theatre",
+          "title": "The Triumph of Cupid and the Theatre of Venus",
+          "notes": 10
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXIII",
+      "n": 23,
+      "book": 1,
+      "pages_1499": [
+        358,
+        368
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 149,
+          "description": "Fountain of Venus: water from sarcophagus of Adonis",
+          "page_1499": 363
+        },
+        {
+          "plate": 150,
+          "description": "Statue of Venus on Tomb of Adonis with nymphs",
+          "page_1499": 365
+        },
+        {
+          "plate": 151,
+          "description": "Poliphilus and Polia at Fountain of Venus with nymphs",
+          "page_1499": 365
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "cythera_theatre",
+          "title": "The Fountain of Venus",
+          "notes": 9
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXIV",
+      "n": 24,
+      "book": 1,
+      "pages_1499": [
+        369,
+        379
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "cythera_theatre",
+          "title": "The Tomb of Adonis",
+          "notes": 5
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXV",
+      "n": 25,
+      "book": 2,
+      "pages_1499": [
+        381,
+        387
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 152,
+          "description": "Polia in temple of Diana; Poliphilus prostrate (Book II)",
+          "page_1499": 387
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "court",
+          "title": "Book II — Polia Takes the Telling",
+          "notes": 8
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXVI",
+      "n": 26,
+      "book": 2,
+      "pages_1499": [
+        388,
+        397
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 153,
+          "description": "Polia drags prostrate Poliphilus from sanctuary",
+          "page_1499": 389
+        },
+        {
+          "plate": 154,
+          "description": "Dream of Polia: Cupid punishes two women",
+          "page_1499": 391
+        },
+        {
+          "plate": 155,
+          "description": "Cupid brandishes sword over kneeling victim",
+          "page_1499": 392
+        },
+        {
+          "plate": 156,
+          "description": "Lion, dog, dragon devour victims; Cupid flies above",
+          "page_1499": 393
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "The Plague, the Vow, and the Cruelty",
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXVII",
+      "n": 27,
+      "book": 2,
+      "pages_1499": [
+        398,
+        408
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "The Visions of the Punished",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXVIII",
+      "n": 28,
+      "book": 2,
+      "pages_1499": [
+        409,
+        417
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 157,
+          "description": "Poliphilus as dead; Polia kneels in grief",
+          "page_1499": 411
+        },
+        {
+          "plate": 158,
+          "description": "Poliphilus revived in Polia's lap; embracing",
+          "page_1499": 412
+        },
+        {
+          "plate": 159,
+          "description": "Priestesses drive lovers from Temple of Diana",
+          "page_1499": 413
+        },
+        {
+          "plate": 160,
+          "description": "Polia in bed-chamber; Diana vs Venus vision in sky",
+          "page_1499": 415
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "cythera_isle",
+          "title": "The Nurse's Counsel",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXIX",
+      "n": 29,
+      "book": 2,
+      "pages_1499": [
+        418,
+        427
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 161,
+          "description": "Polia kneels before Venus priestess; Poliphilus beside",
+          "page_1499": 419
+        },
+        {
+          "plate": 162,
+          "description": "Enamoured couple kneeling before priestess",
+          "page_1499": 419
+        },
+        {
+          "plate": 163,
+          "description": "Priestess enthroned; lovers kissing in her presence",
+          "page_1499": 425
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "The Conversion and the Revival",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXX",
+      "n": 30,
+      "book": 2,
+      "pages_1499": [
+        428,
+        431
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "Before the Priestess",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXI",
+      "n": 31,
+      "book": 2,
+      "pages_1499": [
+        432,
+        435
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 164,
+          "description": "Poliphilus writing at carved desk",
+          "page_1499": 433
+        },
+        {
+          "plate": 165,
+          "description": "Polia reading lover's letter in bed-chamber",
+          "page_1499": 435
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "Before the Priestess",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXII",
+      "n": 32,
+      "book": 2,
+      "pages_1499": [
+        436,
+        443
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "Poliphilo's Telling: the Love-Letters",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXIII",
+      "n": 33,
+      "book": 2,
+      "pages_1499": [
+        444,
+        448
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [
+        {
+          "plate": 166,
+          "description": "Poliphilus before Venus in clouds; Cupid listens",
+          "page_1499": 447
+        },
+        {
+          "plate": 167,
+          "description": "Cupid with bust of Polia and arrow",
+          "page_1499": 448
+        },
+        {
+          "plate": 168,
+          "description": "Cupid shoots arrow at bust of Polia",
+          "page_1499": 448
+        }
+      ],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "Poliphilo's Telling: the Love-Letters",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXIV",
+      "n": 34,
+      "book": 2,
+      "pages_1499": [
+        449,
+        455
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "The Death at Her Feet",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXV",
+      "n": 35,
+      "book": 2,
+      "pages_1499": [
+        456,
+        460
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "quinta_essentia",
+          "title": "The Vision at Venus's Throne",
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXVI",
+      "n": 36,
+      "book": 2,
+      "pages_1499": [
+        461,
+        461
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "The Binding, and the Dissolution",
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXVII",
+      "n": 37,
+      "book": 2,
+      "pages_1499": [
+        462,
+        464
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "book_two",
+          "title": "The Binding, and the Dissolution",
+          "notes": 7
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    },
+    {
+      "id": "XXXVIII",
+      "n": 38,
+      "book": 2,
+      "pages_1499": [
+        465,
+        465
+      ],
+      "text_source": {
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+      },
+      "plates": [],
+      "plates_from": "page-range",
+      "tour_stops": [
+        {
+          "station": "wood",
+          "title": "The Waking",
+          "notes": 6
+        }
+      ],
+      "research": {
+        "status": "partial",
+        "enumerated_by": null,
+        "date": null,
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+      },
+      "features": []
+    }
+  ]
+}

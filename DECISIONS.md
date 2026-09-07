@@ -2,6 +2,45 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-07 — Coverage is tracked chapter by chapter, not plate by plate
+
+Ted: *"I feel like missing the tunnels was a pretty serious omission."* He was right, and the
+omission was structural rather than careless. Every coverage check anyone had run was driven
+by `hp.db.woodcut_catalog` — 168 plates, numbered, easy to tick off. **The vaults under the
+pyramid have no plate.** They are five pages of pure text in chapter V, and the tour even had
+a stop called *The Dragon in the Vaults* leading to a door with nothing behind it. A
+plate-driven check could not have found them, and nothing anywhere recorded that chapter V
+had never been read against the world.
+
+The calls made in response:
+
+- **The unit of coverage is the chapter**, all 38 of them, not the plate and not the tour
+  stop. Ted chose this over the alternatives (by plate, by station, by narrative section).
+- **`research/coverage.json` is the ledger; `COVERAGE.md` is generated from it.** JSON so a
+  script and an agent can both read it, Markdown so a person can. `COVERAGE.md` is never
+  hand-edited. `scripts/coverage_seed.py` rewrites only the derived fields and preserves
+  `research` and `features` verbatim, so refreshing it can never destroy a reading.
+- **The report leads with the research queue, not the build queue.** *Unresearched* and
+  *unbuilt* are different states and conflating them is the whole failure: a chapter nobody
+  has enumerated cannot show a gap. A chapter marked `partial` — tour notes, no feature list
+  — is a blind spot, and that is exactly what chapter V looked like.
+- **`status: built` is a claim about the deployed page**, not about the source. The seeder's
+  `plates_cited_in_source` grep is labelled weak on purpose: a plate number in a comment
+  proves someone looked.
+- **`declined` is a real answer and keeps its reason.** The five Polyandrion medallions stay
+  declined because no reading of them exists in the corpus.
+- **Research and build are separate passes.** A pass that stops at the first interesting
+  thing to go build it is how chapters get half-read.
+- **Three agents and three commands**, both, per Ted: `.claude/agents/hp-researcher.md`,
+  `hp-builder.md`, `hp-verifier.md`, driven by `/research-chapter`, `/build-feature` and
+  `/audit-coverage`. Written for HPin3D now but shaped to lift — `C:/Dev/CLAUDE.md` names
+  this project as the reference implementation for the other corpus-plus-build projects.
+
+This produced a sixth standing rule in `ROUTER.md` and `CLAUDE.md`: **the plates are an
+index, not an inventory.** Roughly a third of what is worth building was never drawn.
+
+The pipeline itself is [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md).
+
 ## 2026-09-06 — Architecture against the text, station by station
 
 The rule for this pass, and for the rest of the brief: **read the chapter, then look at the

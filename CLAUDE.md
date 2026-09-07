@@ -16,7 +16,7 @@ first token of every session.
 
 ---
 
-## The five rules
+## The six rules
 
 1. **Verify the live artifact before saying "done", "fixed", "working" or "deployed".**
    Load the real URL or running page and confirm *the specific thing that was asked for*.
@@ -37,6 +37,20 @@ first token of every session.
 5. **Write directional decisions down immediately** — `DECISIONS.md` for calls,
    `NEXTSTEPS.md` for the standing queue. A decision that lives only in chat gets
    summarised away and re-litigated.
+6. **The plates are an index, not an inventory.** Anything the book *describes* counts,
+   drawn or not. The tunnels under the pyramid went unbuilt for months because every
+   coverage check was driven by the woodcut catalogue and the vaults have no woodcut.
+   Coverage is tracked chapter by chapter in `research/coverage.json`, rendered as
+   [`COVERAGE.md`](COVERAGE.md). → [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md)
+
+## Corpus in, game out
+
+[`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md) is the pipeline: where each of the six
+categories of research material lives, the three artifacts the research pass produces, and
+how they reach the agent who writes the geometry. Three commands drive it —
+`/audit-coverage` to see the gap, `/research-chapter <numeral>` to close a research gap,
+`/build-feature <id>` to close a build gap — backed by the agents in `.claude/agents/`.
+**Research and build are separate passes.**
 
 ## The scholarship is on hand — use it
 

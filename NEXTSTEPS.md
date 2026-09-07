@@ -31,7 +31,26 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
-### 0. Ted's standing brief, 2026-09-06
+### 0. Work the coverage queue — 29 chapters have never been read against the world
+Added 2026-09-07 after the vaults. `python scripts/coverage_seed.py && python
+scripts/coverage_report.py`, then read `COVERAGE.md`. Nine chapters are enumerated (I, II, V,
+VI, VII, XVII, XVIII, XIX, XXI); the other 29 are blind spots, not clean. **Prefer this queue
+to inventing work**: it is the only artifact that can show a gap like the tunnels before Ted
+does. Use `/research-chapter <numeral>` — one chapter per pass, and build nothing during it.
+
+Known unbuilt features already in the ledger, in rough order of value:
+
+- **The Rape of Proserpina relief** (ch. XIX, our pp. 280+) — the chapter's climax and the
+  reason Poliphilo flees back to Polia. Nothing in the world marks it.
+- **The three fruits taken and tasted** (ch. XVIII, our pp. 233–234, plate #85) — the rose
+  bush is built; the communion is not staged.
+- **The subterranean buttresses and vaulted halls** (ch. V, Dallington p. 87) — the crawl has
+  corridors and pillars but no vaulted chambers.
+- **Three-cubit hollyhocks** in the spheres' centres (ch. XXI, our p. 320).
+- Jupiter's prayer (ch. I) and the harmony he hears (ch. II) — both dream-mode, and the
+  second cannot be sound because the site is silent by design.
+
+### 0b. Ted's standing brief, 2026-09-06 — closed
 *"architecture … that looks like real buildings that don't have impossible floating platforms,
 fountains that look like real water, gardens and trees that look like real plants, from the
 names in the novel and the scholarship."* First pass done the same day (plants rebuilt on the

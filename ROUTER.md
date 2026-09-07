@@ -37,6 +37,13 @@ a session.
    [`DECISIONS.md`](DECISIONS.md), and the standing queue in
    [`NEXTSTEPS.md`](NEXTSTEPS.md). A decision that lives only in chat gets summarised away
    and re-litigated.
+6. **The plates are an index, not an inventory.** Anything the book *describes* counts,
+   drawn or not — roughly a third of what is worth building has no woodcut. On 2026-09-07
+   the tunnels under the pyramid turned out never to have been built, because every
+   coverage check anyone ran was plate-driven and the vaults have no plate. Coverage is
+   tracked chapter by chapter in [`research/coverage.json`](research/coverage.json),
+   rendered as [`COVERAGE.md`](COVERAGE.md). →
+   [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md)
 
 ---
 
@@ -44,6 +51,9 @@ a session.
 
 | If your task is… | Read | Recipe |
 |---|---|---|
+| **Decide what to build next** | `COVERAGE.md` (generated — the two queues) | [`RECIPES/audit-coverage.md`](RECIPES/audit-coverage.md) · `/audit-coverage` |
+| **Read a chapter against the world** (enumerate its features) | `HPTOTOURPIPELINE.md` §1–§3 | [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md) · `/research-chapter <numeral>` |
+| **Build a feature from the build queue** | its entry in `research/coverage.json`, then the passage it cites | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) · `/build-feature <id>` |
 | **Add or edit a tour stop / commentary note** | `SOURCES.md`, `15scholars.md`, `DESIGN.md` | [`RECIPES/add-a-tour-stop.md`](RECIPES/add-a-tour-stop.md) |
 | **Model or improve a 3-D asset** (figure, fountain, gate, tree, car) | `SOURCES.md` asset table → the named scholar in `15scholars.md`; then the brief for that class (below) | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) |
 | **Add a swappable variant of an existing asset** | `src/systems/AssetVariants.js`, `IMPORTEXEMPLARS.md` | [`RECIPES/add-an-asset-variant.md`](RECIPES/add-an-asset-variant.md) |
@@ -79,6 +89,8 @@ Read the one that matches what you are building. Each is a research brief, not a
 
 | File | What it is | When to read it |
 |---|---|---|
+| [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md) | corpus in, game out: where every category of research material lives, and the three artifacts | before researching or building |
+| [`COVERAGE.md`](COVERAGE.md) | **generated.** What the book has and the world does not, chapter by chapter | before choosing work |
 | [`DESIGN.md`](DESIGN.md) | "The Dream in Lenses" — the design vision | before any feature work |
 | [`DECISIONS.md`](DECISIONS.md) | binding directional calls, newest first | before proposing a direction |
 | [`NEXTSTEPS.md`](NEXTSTEPS.md) | the standing work queue | at the start and end of every session |
@@ -116,8 +128,12 @@ src/index.html          the app shell — ALL the CSS is inline here, and it is 
 src/main.js             UI, the tour, the three modes, data loading, the graphics menu
 src/scenes/
   HPWorldScene.js       the Hypnerotomachia world — every station, every model
+  VaultsScene.js        the crawl beneath the pyramid — a seeded maze, cited to Dallington
+                        pp. 82-87 mechanic by mechanic (pillars of 4/6/8 sides, the pits,
+                        the everlasting lamps, the little wicket, the hunting dragon)
   AFWorldScene.js  EmblemScene.js  ArchivesScene.js  HPScene.js   ← DORMANT, not imported
 src/systems/
+  DragonFlight.js       third-person flight: the dragon, its camera, its controls
   Cast.js               figures, animals, props, labels — `nymph({ rank, garland })` carries
                         the chess liveries (king/queen/rook/bishop/knight/pawn), the vested
                         heads of the rite of Venus (mitre/tutulus), and the two wreaths
@@ -192,10 +208,25 @@ will conflict.
 | Research pages | `research/*.html`, `scripts/build_*.py` | `src/` |
 | Translation | `translation/` | everything else |
 | Landing page & docs | `index.html`, `README.md`, the `*.md` briefs | `src/`, `research/` |
+| Chapter research | `research/coverage.json`, `COVERAGE.md` | `src/` — a research pass builds nothing |
 
 Rules for a parallel run: each lane stages only its own paths; **one** agent owns the
 `?v=` bump and the deploy, at the end; and each lane records what it did in `NEXTSTEPS.md`
 before finishing.
+
+### The three defined agents
+
+Their briefs live in `.claude/agents/`, and each has a slash command that drives it.
+
+| Agent | Does | Never does | Command |
+|---|---|---|---|
+| `hp-researcher` | reads one chapter end to end, enumerates its features into the ledger | writes game code | `/research-chapter <numeral>` |
+| `hp-builder` | builds one enumerated feature, verifies it live, deploys, updates the ledger | invents a source | `/build-feature <id>` |
+| `hp-verifier` | confirms or refutes that a feature marked `built` is on the deployed page | builds | — |
+
+Research and build are **separate passes on purpose.** A pass that stops at the first
+interesting thing to go and build it is how chapters get half-read — which is how chapter V
+was half-read for months.
 
 ---
 
@@ -206,5 +237,8 @@ before finishing.
 3. Deployed to **both** hosts?
 4. Recorded new directional calls in `DECISIONS.md` and remaining work in `NEXTSTEPS.md`?
 5. Staged explicit paths, and checked `git status` before committing?
+6. If you built or researched anything: updated `research/coverage.json`, re-run
+   `python scripts/coverage_seed.py && python scripts/coverage_report.py`, and committed
+   `COVERAGE.md` with the code?
 
 If any answer is no, say so plainly in the report rather than rounding up to "done".
