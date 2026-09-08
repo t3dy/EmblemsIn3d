@@ -2085,9 +2085,9 @@
         289
       ],
       "text_source": {
-        "edition": "our translation (CC0)",
-        "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "edition": "this repo, CC0",
+        "file": "translation/en/page_284.md - page_289.md",
+        "note": "the boat itself is described at the end of XIX, pp. 276-277, and again at XXI p. 290-291"
       },
       "plates": [],
       "plates_from": "page-range",
@@ -2099,12 +2099,115 @@
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-08",
+        "date": "2026-09-08",
+        "note": "Read end to end, pp. 284-289, with the boat's description from XIX pp. 276-277 and XXI p. 290. Six pages, no plate, and a station (\"The Shore to Cythera\") whose tour note already described the prow-for-stern boat and the cyan standard with three hieroglyphs -- while the world had a generic skiff with a sail. The crossing itself is a teleport (digit 0), not a voyage."
       },
-      "features": []
+      "features": [
+        {
+          "id": "exeres",
+          "name": "Cupid's exeres -- the six-oared boat, prow for poop",
+          "kind": "vehicle",
+          "plate": null,
+          "source": "ours p. 276 (hull, balm, sandalwood and aloewood, gold nails with gems, red thwarts); p. 284 (\"for its poop the prow\"); p. 290",
+          "status": "built",
+          "built_as": "HPWorldScene._buildExeres",
+          "modes": [
+            "walk",
+            "tour",
+            "rollup"
+          ],
+          "note": "Both ends alike. No sail: p. 290 has Cupid \"making sail with his spread wings\"."
+        },
+        {
+          "id": "ivory-oars",
+          "name": "Six ivory oars in gold rowlocks",
+          "kind": "ornament",
+          "plate": null,
+          "source": "ours p. 276",
+          "status": "built",
+          "built_as": "HPWorldScene._buildExeres",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "\"of illustrious and snowy ivory ... the rowlocks of gold, and the oar-thongs of commixed and twisted silk\""
+        },
+        {
+          "id": "six-rowers",
+          "name": "The six rowing nymphs, named: Aselgia, Neolea, Chlidonia, Olvolia, Adea, Cypria",
+          "kind": "figure",
+          "plate": null,
+          "source": "ours p. 277 (names and dress), p. 285 (their six-voice song)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildExeres",
+          "modes": [
+            "walk"
+          ],
+          "note": "Three pairs: cloth-of-gold on cyan, Babylonian sea-purple, slashed melledarum with gold foil. Blond and raven by turns. Labelled with what their names mean."
+        },
+        {
+          "id": "standard-amor-vincit",
+          "name": "The golden spear and the cyan-silk standard: vase with flame, the world, an osier withy",
+          "kind": "inscription",
+          "plate": null,
+          "source": "ours p. 284",
+          "status": "built",
+          "built_as": "HPWorldScene._buildExeres / _standardTexture",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The three signs are on the silk, in gold thread and pearl, both faces alike; the reading AMOR VINCIT OMNIA is on a plaque by the pier, because reading it is Poliphilo's act, not the cloth's. The silk flutters \"at the soft breaths of the spring-bearing zephyr\"."
+        },
+        {
+          "id": "cupid-prow",
+          "name": "Cupid at the prow, wings \"of various and most-pleasant colouring\" as the sail",
+          "kind": "figure",
+          "plate": null,
+          "source": "ours p. 285, p. 290",
+          "status": "built",
+          "built_as": "HPWorldScene._buildExeres / _wingTexture",
+          "modes": [
+            "walk"
+          ],
+          "note": "Rainbow-banded feathered wings, spread. His multiform aspect (\"twin ... triple ... infinite effigies\", p. 285) is not attempted."
+        },
+        {
+          "id": "nymphs-song",
+          "name": "The six-voice chromatic song at the oars, and Polia's answer in the Lydian mode",
+          "kind": "rite",
+          "plate": null,
+          "source": "ours pp. 285-286, 289",
+          "status": "declined",
+          "built_as": null,
+          "modes": [],
+          "note": "The site is silent by standing decision (DECISIONS 2026-09-04). The tour note carries it."
+        },
+        {
+          "id": "the-crossing",
+          "name": "The voyage itself: the boat \"like a light water-skater\" over the calm sea",
+          "kind": "rite",
+          "plate": null,
+          "source": "ours p. 289",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [],
+          "note": "Digit 0 is a teleport to the island. A ridden crossing -- the walker seated in the poop, the boat under way, the nymphs at the oars, arriving at the landing -- is the obvious thing and a real piece of work: the boat would have to be a mover like the triumph floats, and the island group is culled by distance."
+        },
+        {
+          "id": "sea-gods-homage",
+          "name": "The sea-gods' homage to Cupid at the departure",
+          "kind": "figure",
+          "plate": null,
+          "source": "ours pp. 278-282 (end of XIX)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [],
+          "note": "Belongs to XIX's ledger by page but to the shore by place. Neptune, tritons and nereids \"submerging themselves, and thence bursting up\" (p. 281). Not built."
+        }
+      ]
     },
     {
       "id": "XXI",

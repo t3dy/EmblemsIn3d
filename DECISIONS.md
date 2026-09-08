@@ -2,6 +2,49 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Chapter XX: the boat of the crossing, out of the ledger again
+
+Second chapter the coverage pipeline has picked. Six pages, no plate, and a station
+(*The Shore to Cythera*) whose own tour note already said *"His vessel is a paradox
+— built prow-for-stern … and from its mast flies a cyan-silk standard worked with
+three hieroglyphs"* — while what stood at the pier was `cast.props.boat(2.0)`: a
+tub with a mast and a white sail. The commentary described a boat the world did
+not have. That is the ledger's whole job.
+
+Built as **`_buildExeres`**, from three pages of the book:
+
+- **The hull** (p. 276): an *exeres*, six-oared, of white sandalwood and citrine
+  with the seams of darker aloewood, gold nails with gems along the gunwale,
+  thwarts and gratings of blood-red sandalwood, and (p. 284) *"for its poop the
+  prow"* — both ends alike. **No sail**: p. 290 has Cupid *"making sail with his
+  spread wings"*, and the old prop's sail was simply wrong.
+- **Six ivory oars in gold rowlocks** (p. 276).
+- **Six rowers, named** (p. 277), in the three pairs the book dresses them in —
+  Aselgia and Neolea in cloth-of-gold, Chlidonia and Olvolia in sea-purple, Adea
+  and Cypria in slashed melledarum — blond and raven by turns, and labelled with
+  what their Greek names mean, because the crew of Love's boat are
+  personifications and the book says so.
+- **The standard** (p. 284): a golden spear at the mast-step, and cyan silk
+  carrying **the three signs in gold thread and pearl, both faces alike** — the
+  antique vase with a flame in its mouth, the world, and the osier withy binding
+  them. It flutters. **The reading, AMOR VINCIT OMNIA, is on a plaque by the pier
+  and not on the silk**: the cloth carries the signs, and reading them is
+  Poliphilo's act. That is the whole method of the book's hieroglyphs and the
+  world should not do his reading for him.
+- **Cupid at the prow**, wings *"of various and most-pleasant colouring"* (p. 285)
+  as the boat's sail: rainbow-banded feathers, spread.
+
+**Declined**: the six-voice song and Polia's answer in the Lydian mode — the site is
+silent by standing decision, and the tour note carries it. **Unbuilt and said so**:
+the crossing itself (digit 0 is a teleport; a ridden voyage would make the boat a
+mover like the triumph floats, and the island group is distance-culled), and the
+sea-gods' homage at the departure (pp. 278–282).
+
+One thing found while doing it: the first hull was aloewood-dark and read as
+*absent* against the water from the pier — the pale strakes floated over teal
+and I spent ten minutes hunting a rendering bug that was a colour choice. The
+book says white sandalwood; the hull is white sandalwood.
+
 ## 2026-09-08 — The floors are littered, in Roll Up only, and every object is in the book
 
 Ted: *"we are going to want tiny small and medium Renaissance objects to litter

@@ -534,7 +534,7 @@ export class HPWorldScene {
     for (const h of this._hovers) mark(h.g);
     if (this._quinta) { mark(this._quinta.dod); if (this._quinta.rays) mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
-    if (this._boat) { mark(this._boat); mark(this._boat.userData.cupid); }
+    if (this._boat) { mark(this._boat); if (this._boat.userData.cupid) mark(this._boat.userData.cupid); }
     if (this._hiero) { mark(this._hiero.ant); mark(this._hiero.ele); }
 
     // groups that move whole: compile inside, then fence off
@@ -9208,23 +9208,268 @@ export class HPWorldScene {
     this._plaque({ main: 'AD CYTHERAM', sub: 'PRESS 0 — CUPID FERRIES THE WILLING' },
       1.7, 0.42, 1.6, 1.15, -41.5, Math.PI * 0.06, true);
 
-    // Cupid's boat, riding at the pier's end
-    const boat = this.cast.props.boat(2.0);
-    boat.position.set(0, 0.1, -46.5);
-    this.scene.add(boat);
-    this._boat = boat;
-    const cupid = this.cast.figure({ h: 0.62, winged: true, pose: 'beckon' });
-    cupid.position.set(0, 1.15, -45.6);
-    boat.userData.cupid = cupid;
-    this.scene.add(cupid);
-    const cl = this.cast.label('Cupid', { sub: 'THE FERRYMAN' });
-    cl.position.set(0, 1.5, 0);
-    cupid.add(cl);
-    this.npcs.cupid = cupid;
+    // Cupid's boat, riding at the pier's end -- the book's own exeres, since
+    // 2026-09-08 (ch. XIX-XX, our pp. 276-277, 284-285, 290)
+    this._buildExeres(0, -47.2);
 
     // (The old distant-isle mock stood here at z = -58. The real island is now
     // built by _buildCytheraIsle at z = -150, hazed by the same fog that used
     // to stand in for it.)
+  }
+
+  // ── Cupid's exeres: the boat of the crossing (chs. XIX–XX) ─────────────────
+  //
+  // Found by the coverage ledger, 2026-09-08: chapter XX had never been read
+  // against the world, and the shore had a generic skiff with a sail. The book
+  // gives the boat in detail across three pages and the world had none of it.
+  //
+  // THE HULL (our p. 276). An *exeres*, "a little vessel … fixed with a
+  // rowing-apparatus of six oars", daubed not with pitch but with a balm of
+  // benzoin, ladanum, musk, amber, civet and storax, "compaginated and
+  // interwoven of white sandalwood, and citrine odoriferous, and of grave and
+  // non-carious aloewood", "fixed with little gold nails, which, in their
+  // bosses … shone with … most-precious gems". "The gratings and the thwarts
+  // were of blood-red sandalwood." And (p. 284) "which had for its poop the
+  // prow, and for its prow the poop": both ends alike. There is NO SAIL —
+  // p. 290 has "the divine boy making sail with his spread wings".
+  //
+  // THE OARS (p. 276). "Of illustrious and snowy ivory … and the rowlocks of
+  // gold, and the oar-thongs of commixed and twisted silk."
+  //
+  // THE ROWERS (p. 277), named and dressed in three pairs: Aselgia and Neolea
+  // in cloth-of-gold on a warp of cyan silk; Chlidonia and Olvolia in
+  // Babylonian sea-purple; Adea and Cypria in slashed melledarum set with gold
+  // foil, "the ivory arms bared". Hair "most-blond" on some, on others "more
+  // black than Indian ebony". Their names mean what they are — Aselgia is
+  // wantonness, Chlidonia daintiness, Cypria of Venus's own isle — and they are
+  // the six-voice choir of p. 285.
+  //
+  // THE STANDARD (p. 284). "In the mast-step was raised a golden spear, with a
+  // triumphal and imperatorial standard, of thin silken cloth, of cyan dye; in
+  // which, of little gems … with whitest pearls, were … re-woven, on both
+  // faces … three hieroglyphs: an antique little vase, in the mouth-gap of
+  // which burned a little flame; and then was the world; joined together with
+  // a little branch of osier." Poliphilo reads it: AMOR VINCIT OMNIA. The
+  // reading is on a plaque beside the pier, not on the silk — the silk carries
+  // the signs, and reading them is the point.
+  //
+  // CUPID (p. 285) stands at the prow, "fanning the sacred feathers of his
+  // perpetual wings … shone more than refined gold, of various and
+  // most-pleasant colouring, rotating in a circle above the little waves":
+  // rainbow wings, spread, the boat's only sail.
+  _buildExeres(BX, BZ) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const g = new THREE.Group();
+    g.position.set(BX, 0.1, BZ);
+    this.scene.add(g);
+    this._boat = g;
+    const at = (geo, mat, x, y, z, o = {}) => this._m(geo, mat, x, y, z, { parent: g, ...o });
+
+    const sandal = woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xd9c49a, roughness: 0.62 });   // white and citrine sandalwood
+    const aloe   = woodcut ? S.mat({ tone: 0.10 }) : S.mat({ color: 0x9a7a52, roughness: 0.7 });
+    const red    = woodcut ? S.mat({ tone: 0.2 })  : S.mat({ color: 0x8e2f28, roughness: 0.6 });     // blood-red sandalwood
+    const gold   = woodcut ? S.mat({ tone: 0.04 }) : S.mat({ color: 0xd9b25a, roughness: 0.22, metalness: 0.95 });
+    const ivory  = woodcut ? S.mat({ tone: 0.0 })  : S.mat({ color: 0xefe6d2, roughness: 0.4 });
+    const silk   = woodcut ? S.mat({ tone: 0.16 }) : S.mat({ color: 0xc8b4d8, roughness: 0.8 });
+    sandal.userData.roll = 'a plank of sandalwood'; red.userData.roll = 'a thwart of red sandalwood';
+    ivory.userData.roll = 'an ivory oar'; gold.userData.roll = 'a gold rowlock';
+
+    // ── the hull: one form at both ends, "for its prow the poop" ────────
+    const L = 3.7, BEAM = 1.05, DEPTH = 0.62;
+    // white sandalwood, "interwoven" with the darker aloewood as the seams of
+    // the strakes -- the pale wood is the hull, the dark is the joinery
+    const hull = at(new THREE.SphereGeometry(1, 20, 12, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), sandal, 0, DEPTH, 0, { outline: true });
+    hull.scale.set(BEAM, DEPTH, L);
+    for (let i = 0; i < 4; i++) {
+      const t = i / 4, ring = at(new THREE.TorusGeometry(1, 0.03, 6, 40), aloe, 0, DEPTH - t * DEPTH * 0.8, 0, { cast: false });
+      const k = Math.sqrt(1 - (t * 0.8) ** 2);
+      ring.scale.set(BEAM * k, L * k, 1);
+      ring.rotation.x = Math.PI / 2;
+    }
+    // the gunwale, and the gold nails with their gems along it
+    const rail = at(new THREE.TorusGeometry(1, 0.05, 8, 48), red, 0, DEPTH + 0.02, 0, { cast: false });
+    rail.scale.set(BEAM + 0.02, L + 0.02, 1); rail.rotation.x = Math.PI / 2;
+    const GEMS = woodcut ? [gold] : [gold, S.mat({ color: 0xc0303c, roughness: 0.2 }), gold, S.mat({ color: 0x2c58a8, roughness: 0.2 }),
+                                    gold, S.mat({ color: 0x3a8a4a, roughness: 0.2 })];
+    for (let i = 0; i < 36; i++) {
+      const a = (i / 36) * Math.PI * 2;
+      at(new THREE.SphereGeometry(0.03, 7, 5), GEMS[i % GEMS.length], Math.cos(a) * (BEAM + 0.02), DEPTH + 0.07, Math.sin(a) * (L + 0.02), { cast: false })
+        .userData.roll = i % 2 ? 'a gold nail' : 'a gem from the gunwale';
+    }
+    // the deck inside, the gratings fore and aft, the three thwarts
+    const deck = at(new THREE.CircleGeometry(1, 32), aloe, 0, DEPTH * 0.45, 0, { rx: -Math.PI / 2, cast: false });
+    deck.scale.set(BEAM * 0.86, L * 0.9, 1);
+    for (const e of [-1, 1]) {
+      for (let k = 0; k < 6; k++) at(new THREE.BoxGeometry(0.05, 0.03, 0.9), red, -0.5 + k * 0.2, DEPTH * 0.48, e * (L * 0.72), { cast: false });
+    }
+    for (const z of [-1.2, 0, 1.2]) at(new THREE.BoxGeometry(BEAM * 1.7, 0.08, 0.26), red, 0, DEPTH * 0.72, z, { cast: false });
+    this._circleCol(BX, BZ, 2.4);
+
+    // ── six ivory oars in gold rowlocks, three a side ───────────────────
+    const oarGeo = new THREE.CylinderGeometry(0.022, 0.03, 2.9, 8);
+    for (const side of [-1, 1]) {
+      for (let k = 0; k < 3; k++) {
+        const z = -1.2 + k * 1.2;
+        const lock = at(new THREE.TorusGeometry(0.06, 0.016, 6, 12), gold, side * (BEAM + 0.02), DEPTH + 0.12, z, { cast: false });
+        lock.rotation.y = Math.PI / 2;
+        const oar = at(oarGeo, ivory, side * (BEAM + 0.9), DEPTH - 0.25, z, { cast: false });
+        oar.rotation.z = side * -1.15; oar.rotation.y = side * 0.12;
+        const blade = at(new THREE.BoxGeometry(0.05, 0.55, 0.16), ivory, side * (BEAM + 2.05), DEPTH - 0.78, z, { cast: false });
+        blade.rotation.z = side * -1.15;
+      }
+    }
+
+    // ── the six rowers, named, in their three pairs ─────────────────────
+    // cloth-of-gold on cyan / Babylonian sea-purple / melledarum with gold foil
+    const CREW = [
+      { name: 'Aselgia',   sub: 'WANTONNESS',     robe: 0xd9b25a, hair: 0xe0c070 },
+      { name: 'Neolea',    sub: 'YOUTH',           robe: 0xc9a84a, hair: 0x1a1410 },
+      { name: 'Chlidonia', sub: 'DAINTINESS',      robe: 0x5a2a6a, hair: 0xe0c070 },
+      { name: 'Olvolia',   sub: 'HAPPINESS',       robe: 0x6a3478, hair: 0x1a1410 },
+      { name: 'Adea',      sub: 'FEARLESSNESS',    robe: 0xd8b07a, hair: 0xe0c070 },
+      { name: 'Cypria',    sub: 'OF VENUS’S ISLE', robe: 0xe2be86, hair: 0x1a1410 },
+    ];
+    CREW.forEach((c, i) => {
+      const side = i % 2 ? 1 : -1, z = -1.2 + Math.floor(i / 2) * 1.2;
+      const n = this.cast.nymph({ name: c.name, robe: c.robe, hair: c.hair, h: 0.9, pose: 'sit', cutout: null });
+      n.position.set(side * 0.34, DEPTH * 0.72 - 0.3, z + 0.1);   // seated: the thwart takes the gown's hem
+      n.rotation.y = Math.PI;                       // rowers face the poop
+      g.add(n);
+      const lb = this.cast.label(c.name, { sub: c.sub, scale: 0.7 });
+      lb.position.set(0, 1.35, 0);
+      n.add(lb);
+      this._npcs.push({ g: n, phase: i * 1.05, baseY: Math.PI, sway: 0.02 });
+    });
+
+    // ── the golden spear at the mast-step, and the cyan standard ────────
+    const SPEAR = 3.4;
+    at(new THREE.CylinderGeometry(0.03, 0.04, SPEAR, 8), gold, 0, DEPTH * 0.45 + SPEAR / 2, 0);
+    at(new THREE.ConeGeometry(0.07, 0.3, 8), gold, 0, DEPTH * 0.45 + SPEAR + 0.12, 0, { cast: false });
+    const std = woodcut
+      ? S.mat({ tone: 0.12, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({ map: this._standardTexture(), roughness: 0.75, side: THREE.DoubleSide });
+    if (!woodcut) this._disp.push(std);
+    std.userData.roll = 'the standard of the crossing';
+    const flag = at(new THREE.PlaneGeometry(1.5, 0.95, 12, 1), std, 0, DEPTH * 0.45 + SPEAR - 0.55, 0.8, { cast: false });
+    flag.rotation.y = Math.PI / 2;
+    // it flutters "at the soft breaths of the spring-bearing zephyr" (p. 284)
+    this._standard = { m: flag, base: flag.geometry.attributes.position.array.slice() };
+
+    // ── Cupid at the prow, his wings the sail ───────────────────────────
+    const cupid = this.cast.figure({ h: 0.62, robe: null, pose: 'beckon' });
+    cupid.position.set(0, DEPTH + 0.34, -L * 0.82);
+    cupid.rotation.y = Math.PI;                     // he faces the shore, and the willing
+    g.add(cupid);
+    const cl = this.cast.label('Cupid', { sub: 'THE FERRYMAN' });
+    cl.position.set(0, 1.0, 0);
+    cupid.add(cl);
+    this.npcs.cupid = cupid;
+    const wing = woodcut
+      ? S.mat({ tone: 0.02, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({ map: this._wingTexture(), alphaTest: 0.4, side: THREE.DoubleSide,
+                                         roughness: 0.6, emissive: 0x201008, emissiveIntensity: 0.3 });
+    if (!woodcut) this._disp.push(wing);
+    wing.userData.roll = 'a feather of Cupid’s wing';
+    for (const sx of [-1, 1]) {
+      const w = at(new THREE.PlaneGeometry(1.5, 1.1), wing, sx * 0.62, DEPTH + 0.95, -L * 0.82 + 0.1, { cast: false });
+      w.rotation.set(0.15, sx * 0.5, sx * 0.35);
+      if (sx > 0) w.scale.x = -1;
+    }
+
+    // ── and the reading, by the pier ────────────────────────────────────
+    this._plaque({ main: 'AMOR VINCIT OMNIA', sub: 'A VASE WITH A FLAME IN ITS MOVTH · THE WORLD · BOVND WITH A WITHY OF OSIER · SO THE STANDARD READS, ON CYAN SILK, IN GEMS AND PEARLS · OVR P. 284' },
+      2.6, 0.44, -1.9, 1.05, -42.6, Math.PI * 0.12, true);
+  }
+
+  // The standard: cyan silk, and the three signs of p. 284 in gold thread and
+  // pearl — "an antique little vase, in the mouth-gap of which burned a little
+  // flame; and then was the world; joined together with a little branch of
+  // osier". Both faces alike, as the book says.
+  _standardTexture() {
+    if (this._standardTex) return this._standardTex;
+    const W = 512, H = 320;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#1f6f93'; x.fillRect(0, 0, W, H);                  // cyan dye
+    // the weave
+    x.strokeStyle = 'rgba(255,255,255,0.05)'; x.lineWidth = 1;
+    for (let i = 0; i < W; i += 4) { x.beginPath(); x.moveTo(i, 0); x.lineTo(i, H); x.stroke(); }
+    for (let j = 0; j < H; j += 4) { x.beginPath(); x.moveTo(0, j); x.lineTo(W, j); x.stroke(); }
+    // gold border with pearls
+    x.strokeStyle = '#d9b25a'; x.lineWidth = 6; x.strokeRect(12, 12, W - 24, H - 24);
+    x.fillStyle = '#f4efe2';
+    for (let i = 0; i < 24; i++) { x.beginPath(); x.arc(24 + i * (W - 48) / 23, 12, 4, 0, 6.3); x.fill(); x.beginPath(); x.arc(24 + i * (W - 48) / 23, H - 12, 4, 0, 6.3); x.fill(); }
+    const gold = (draw) => {
+      x.save(); x.translate(2, 2); x.strokeStyle = '#7a5a20'; x.fillStyle = '#7a5a20'; x.lineWidth = 9; draw(); x.restore();
+      x.save(); x.strokeStyle = '#e8c86a'; x.fillStyle = '#e8c86a'; x.lineWidth = 7; draw(); x.restore();
+    };
+    // the vase, with the flame in its mouth
+    gold(() => {
+      x.lineJoin = 'round'; x.lineCap = 'round';
+      x.beginPath(); x.moveTo(120, 118); x.lineTo(108, 150); x.quadraticCurveTo(100, 230, 150, 240);
+      x.quadraticCurveTo(200, 230, 192, 150); x.lineTo(180, 118); x.closePath(); x.stroke();
+      x.beginPath(); x.moveTo(112, 118); x.lineTo(188, 118); x.stroke();
+      x.beginPath(); x.moveTo(108, 160); x.quadraticCurveTo(80, 170, 100, 200); x.stroke();     // handles
+      x.beginPath(); x.moveTo(192, 160); x.quadraticCurveTo(220, 170, 200, 200); x.stroke();
+    });
+    x.fillStyle = '#ffb648';                                             // the little flame
+    x.beginPath(); x.moveTo(150, 60); x.quadraticCurveTo(178, 92, 150, 114); x.quadraticCurveTo(122, 92, 150, 60); x.fill();
+    x.fillStyle = '#fff1c0';
+    x.beginPath(); x.moveTo(150, 80); x.quadraticCurveTo(161, 96, 150, 110); x.quadraticCurveTo(139, 96, 150, 80); x.fill();
+    // the world
+    gold(() => {
+      x.beginPath(); x.arc(370, 160, 68, 0, 6.3); x.stroke();
+      x.beginPath(); x.moveTo(302, 160); x.lineTo(438, 160); x.stroke();                     // the T-O of the mappa mundi
+      x.beginPath(); x.moveTo(370, 160); x.lineTo(370, 228); x.stroke();
+      x.beginPath(); x.moveTo(370, 92); x.lineTo(370, 70); x.stroke();                       // the cross above it
+      x.beginPath(); x.moveTo(358, 78); x.lineTo(382, 78); x.stroke();
+    });
+    // the osier withy, binding the two
+    x.save(); x.strokeStyle = '#8fb86a'; x.lineWidth = 8; x.lineCap = 'round';
+    x.beginPath(); x.moveTo(205, 185); x.bezierCurveTo(240, 120, 280, 120, 300, 178);
+    x.bezierCurveTo(280, 240, 240, 240, 205, 185); x.stroke();
+    x.strokeStyle = '#c8e090'; x.lineWidth = 3;
+    x.beginPath(); x.moveTo(206, 182); x.bezierCurveTo(240, 122, 280, 122, 298, 176); x.stroke();
+    x.restore();
+    // pearls scattered along the signs
+    x.fillStyle = '#f4efe2';
+    [[150, 240], [108, 150], [192, 150], [370, 92], [438, 160], [302, 160], [370, 228], [252, 132], [252, 228]].forEach(([px, py]) => {
+      x.beginPath(); x.arc(px, py, 4.5, 0, 6.3); x.fill();
+    });
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    return (this._standardTex = t);
+  }
+
+  // Cupid's wings, "of various and most-pleasant colouring" (p. 285): a
+  // feathered cutout banded through the colours of a rainbow, gold at the root.
+  _wingTexture() {
+    if (this._wingTex) return this._wingTex;
+    const W = 256, H = 192;
+    const c = document.createElement('canvas'); c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.clearRect(0, 0, W, H);
+    const BANDS = ['#e8c85a', '#e07a3a', '#d84a4a', '#b05aa8', '#4a70c8', '#3aa0b8', '#6ab86a'];
+    // seven rows of feathers, the outermost longest, each row a colour
+    for (let r = 0; r < BANDS.length; r++) {
+      const t = r / (BANDS.length - 1);
+      x.fillStyle = BANDS[r];
+      const n = 7 + r;
+      for (let i = 0; i < n; i++) {
+        const u = i / (n - 1);
+        const x0 = 10 + u * (W - 40) * (0.35 + t * 0.65);
+        const y0 = 20 + t * (H - 60) * 0.35;
+        const len = 40 + t * 70 - u * 20;
+        x.beginPath();
+        x.ellipse(x0 + len * 0.5, y0 + len * 0.45, len * 0.55, 13 + t * 5, 0.75 - u * 0.5, 0, 6.3);
+        x.fill();
+      }
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    return (this._wingTex = t);
   }
 
   // ── The Island of Cythera ─────────────────────────────────────────────────
@@ -11481,6 +11726,15 @@ export class HPWorldScene {
       this._boat.rotation.z = Math.sin(this._t * 0.7) * 0.03;
       const c = this._boat.userData.cupid;
       if (c) c.position.y = 1.15 + bobY;
+    }
+    // the standard flutters at the zephyr (p. 284): a travelling wave down the silk
+    if (this._standard) {
+      const pa = this._standard.m.geometry.attributes.position, b = this._standard.base;
+      for (let i = 0; i < pa.count; i++) {
+        const u = (b[i * 3] + 0.75) / 1.5;
+        pa.array[i * 3 + 2] = b[i * 3 + 2] + Math.sin(this._t * 4.2 + u * 5.5) * 0.07 * u;
+      }
+      pa.needsUpdate = true;
     }
     // Triumph floats process around the grove (and breathe); the skiff at
     // Cythera's landing, which has no orbit, only bobs

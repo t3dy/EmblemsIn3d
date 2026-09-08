@@ -8,13 +8,13 @@ Ledger generated **2026-09-08**. 38 chapters · 97 plates attached to a chapter 
 
 | | |
 |---|---|
-| Chapters **enumerated** (a feature list exists) | **11 of 38** |
-| Chapters **partial** (tour notes only, no feature list) | 27 |
+| Chapters **enumerated** (a feature list exists) | **12 of 38** |
+| Chapters **partial** (tour notes only, no feature list) | 26 |
 | Chapters **unread** | 0 |
-| Features **built** | 48 |
+| Features **built** | 53 |
 | Features **partial** | 2 |
-| Features **unbuilt** | **7** |
-| Features **declined** (on purpose, with a reason) | 1 |
+| Features **unbuilt** | **9** |
+| Features **declined** (on purpose, with a reason) | 2 |
 
 > The first row is the one that matters. A chapter that is not enumerated cannot have a gap, because nobody has looked. That is exactly how the vaults under the pyramid stayed unbuilt: they have **no woodcut**, so every plate-driven check passed them, and no one had read chapter V against the world.
 
@@ -34,7 +34,6 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | **XIV** | 1 | — | 0 | triumphs | Dallington 1592 |
 | **XV** | 1 | — | 0 | triumphs | Dallington 1592 |
 | **XVI** | 1 | — | 0 | priapus | Dallington 1592 |
-| **XX** | 1 | 284–289 | 0 | cythera | our translation (CC0) |
 | **XXII** | 1 | 326–357 | 12 | cythera_theatre | our translation (CC0) |
 | **XXIII** | 1 | 358–368 | 3 | cythera_theatre | our translation (CC0) |
 | **XXV** | 2 | 381–387 | 1 | court | our translation (CC0) |
@@ -63,6 +62,8 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | XVIII | **The arcane characters signed in blood, and the sponge** | inscription | ◐ partial | our pp. 231–232 | The forms are NOT given in the book. Drawn as strokes, and the tour note says so. |
 | XVIII | **The three fruits taken and tasted** | rite | ○ unbuilt | our pp. 233–234 (plate #85) | The bush is built; the giving of the three fruits is not staged. |
 | XIX | **The Rape of Proserpina relief that frightens him back to Polia** | picture | ○ unbuilt | our pp. 280+ | The chapter’s climax and the reason he flees. Nothing in the world marks it. |
+| XX | **The voyage itself: the boat "like a light water-skater" over the calm sea** | rite | ○ unbuilt | ours p. 289 | Digit 0 is a teleport to the island. A ridden crossing -- the walker seated in the poop, the boat under way, the nymphs at the oars, arriving at the landing -- is the obvious thing and a real piece of work: the boat would have to be a mover like the triumph floats, and the island group is culled by distance. |
+| XX | **The sea-gods' homage to Cupid at the departure** | figure | ○ unbuilt | ours pp. 278-282 (end of XIX) | Belongs to XIX's ledger by page but to the shore by place. Neptune, tritons and nereids "submerging themselves, and thence bursting up" (p. 281). Not built. |
 | XXI | **Three-cubit hollyhocks in the spheres’ centres** | plant | ○ unbuilt | our p. 320 | Named in the same passage as the herb bands; not built. |
 | XXIV | **The yearly rite of the Kalends of May, and the re-dyeing of the roses** | rite | ○ unbuilt | ours pp. 375-376 | Named on a plaque at the station, but not enacted. It is a four-part ceremony with a calendar — stripping and heaping on the eve of the Kalends, the overnight reflowering to the same number, the scattering into the fountain and the rivulet on the Ides, the unsealing of the repository, the oyster-shell of divine gore, the purpling of the roses, and three lustrations. It wants the same treatment as the Triumphs: a timed sequence you can stand in. |
 
@@ -276,11 +277,20 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 
 ### Chapter XX  · Book 1 · 1499 pp. 284–289
 
-*Research: **partial**. Tour notes exist, but nobody has enumerated this chapter's features.*  
-*Text: our translation (CC0) — `translation/en/page_NNN.md`*  
+*Research: **enumerated**. Read end to end, pp. 284-289, with the boat's description from XIX pp. 276-277 and XXI p. 290. Six pages, no plate, and a station ("The Shore to Cythera") whose tour note already described the prow-for-stern boat and the cyan standard with three hieroglyphs -- while the world had a generic skiff with a sail. The crossing itself is a teleport (digit 0), not a voyage.*  
+*Text: this repo, CC0 — `translation/en/page_284.md - page_289.md`*  
 *Tour: None (cythera, 6 notes)*  
 
-*No features enumerated yet.*
+| | Feature | Kind | Built as | Source |
+|---|---|---|---|---|
+| ✅ | Cupid's exeres -- the six-oared boat, prow for poop<br>*Both ends alike. No sail: p. 290 has Cupid "making sail with his spread wings".* | vehicle | `HPWorldScene._buildExeres` | ours p. 276 (hull, balm, sandalwood and aloewood, gold nails with gems, red thwarts); p. 284 ("for its poop the prow"); p. 290 |
+| ✅ | Six ivory oars in gold rowlocks<br>*"of illustrious and snowy ivory ... the rowlocks of gold, and the oar-thongs of commixed and twisted silk"* | ornament | `HPWorldScene._buildExeres` | ours p. 276 |
+| ✅ | The six rowing nymphs, named: Aselgia, Neolea, Chlidonia, Olvolia, Adea, Cypria<br>*Three pairs: cloth-of-gold on cyan, Babylonian sea-purple, slashed melledarum with gold foil. Blond and raven by turns. Labelled with what their names mean.* | figure | `HPWorldScene._buildExeres` | ours p. 277 (names and dress), p. 285 (their six-voice song) |
+| ✅ | The golden spear and the cyan-silk standard: vase with flame, the world, an osier withy<br>*The three signs are on the silk, in gold thread and pearl, both faces alike; the reading AMOR VINCIT OMNIA is on a plaque by the pier, because reading it is Poliphilo's act, not the cloth's. The silk flutters "at the soft breaths of the spring-bearing zephyr".* | inscription | `HPWorldScene._buildExeres / _standardTexture` | ours p. 284 |
+| ✅ | Cupid at the prow, wings "of various and most-pleasant colouring" as the sail<br>*Rainbow-banded feathered wings, spread. His multiform aspect ("twin ... triple ... infinite effigies", p. 285) is not attempted.* | figure | `HPWorldScene._buildExeres / _wingTexture` | ours p. 285, p. 290 |
+| — | The six-voice chromatic song at the oars, and Polia's answer in the Lydian mode<br>*The site is silent by standing decision (DECISIONS 2026-09-04). The tour note carries it.* | rite | — | ours pp. 285-286, 289 |
+| ○ | The voyage itself: the boat "like a light water-skater" over the calm sea<br>*Digit 0 is a teleport to the island. A ridden crossing -- the walker seated in the poop, the boat under way, the nymphs at the oars, arriving at the landing -- is the obvious thing and a real piece of work: the boat would have to be a mover like the triumph floats, and the island group is culled by distance.* | rite | — | ours p. 289 |
+| ○ | The sea-gods' homage to Cupid at the departure<br>*Belongs to XIX's ledger by page but to the shore by place. Neptune, tritons and nereids "submerging themselves, and thence bursting up" (p. 281). Not built.* | figure | — | ours pp. 278-282 (end of XIX) |
 
 ### Chapter XXI  · Book 1 · 1499 pp. 290–325
 
