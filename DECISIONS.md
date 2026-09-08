@@ -2,6 +2,81 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Roll Up: the world had to be made of things again
+
+Ted: *"add a game mode 'roll up' where you control a katamari damacy style ball with an
+alchemical sun and moon design and can roll up all the elements of the dream garden… that
+means we'll have to make sure all the objects have the sorts of properties that a katamari
+damacy style roll them up game will expect."*
+
+He named the real problem in that last clause. **The world is not made of objects.**
+`_compileDrawCalls()` melts about three thousand meshes into merged lumps, one per material,
+which is the only reason it runs at all — and after that there is nothing left to pick up.
+
+### The trick
+
+Un-merging for this mode was the obvious answer and the wrong one: it would have trebled the
+draw calls of a scene that already spends 20 ms a frame. So **the merge keeps a receipt.**
+`mergeGeometries` concatenates its inputs in order, so every source mesh occupies a known
+contiguous range of vertices in the lump it was folded into. Record the range, and:
+
+- rolling a thing up **slices its vertices out** into a little geometry of its own — which is
+  the *real* object, not a proxy — and **collapses the range in the merged buffer**, so it
+  vanishes from the world;
+- nothing is un-merged and nothing extra is drawn. The census costs one array.
+
+Collapse the range to **its own first vertex**, not to the origin. A point already inside the
+buffer's bounds leaves the bounding sphere valid; the first version collapsed to the origin and
+nulled the sphere, which made three.js re-measure a hundred-thousand-vertex buffer on *every
+mouthful* — fifteen thousand times in a full run.
+
+**Grass is the exception and needed its own answer.** It is not meshes at all: 58 000 instances
+of one blade in a single `InstancedMesh`, which is exactly why it is cheap. So the meadow got
+`pluck(x, z, r)` — zero the instance matrices under the ball, which collapses those blades to a
+point and costs sixteen floats each. Grass is the ball's first and most reliable food, which is
+how the genre is supposed to open.
+
+### How big is a thing?
+
+Not its bounding sphere. A leaf card is a 95 cm square of nothing and its sphere radius is
+67 cm, which would have put a leaf later in the meal than a plum-sized pebble — and 53 000 of
+the 66 000 census entries landed in one band. **The mean half-extent of the bounding box**
+behaves: a leaf comes out at 32 cm, a cube at half its side, a column at 58, a pebble at 5.
+
+### Where to start a walnut
+
+The census said Polia's garden had the thickest scattering of small things in the world by a
+wide margin. It was the wrong answer, and the ball sat there eating nothing: every one of those
+crumbs is a jasmine floret three metres up in the arbour, over a paved slab the meadow is masked
+off. **The census had to be asked the right question — small AND on the ground** — which points
+to the open sward between the elephant plaza and the fountain grove. Grass underfoot, the
+triumph cars and the rills a short roll away.
+
+### And the ball
+
+Sol on one hemisphere and Luna on the other, drawn as one equirectangular canvas so the two
+faces come round as it rolls, with the rays cut straight-and-wavy alternately as the plates cut
+them, the dot-in-circle of Sol on his brow, and the moon bitten to a crescent. It is a *rebis*:
+the two luminaries conjoined in one body that swallows the world and grows, which is what a
+Katamari is anyway.
+
+Four hundred swallowed things stay stuck to the outside; older ones are shed, because by then
+they are inside the ball rather than on it, and ten thousand of them would be ten thousand draw
+calls.
+
+### The bug it found
+
+Counting draw calls for the ball turned up something that had nothing to do with it: **22 137
+transparent meshes in the ordinary walk.** `_mergeInto` skips transparent materials, and every
+alpha-cutout material added on 2026-09-07 and -08 — the hedge fringes, the climbers, the jasmine,
+the shaded walk, the Cythera lattices — had been written `transparent: true, alphaTest: …`. An
+alpha-tested cutout is **not** transparent; it is opaque with a discard. Setting the flag exiled
+all of them from the merge, one draw call per leaf.
+
+Removing it: **24 886 meshes → 3 331, and 4 671 draw calls → 2 569**, with no visible change to
+the world. The note is now in `ROUTER.md` beside the other constraints that have each cost a
+rebuild.
+
 ## 2026-09-08 — The walker learns about height, and Cythera gets its section
 
 **The constraint that shaped this world for months is gone.** Until today the walker walked at

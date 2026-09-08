@@ -26,10 +26,11 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
+import { RollUp } from '../systems/RollUp.js?v=4';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
-import { createMeadowField, attachShade } from '../systems/Meadow.js?v=4';
+import { createMeadowField, attachShade } from '../systems/Meadow.js?v=5';
 
 // pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
@@ -221,9 +222,12 @@ const TRIUMPHS = [
 ];
 
 export class HPWorldScene {
-  constructor(renderer, composer, { style = 'lit', station = null, spawn = null } = {}) {
+  constructor(renderer, composer, { style = 'lit', station = null, spawn = null, rollup = false } = {}) {
+    // Roll-up mode wants the world as a list of things (see _census). The walk
+    // has no use for it, and it is a few thousand entries, so it is opt-in.
     this.renderer = renderer;
     this.composer = composer;
+    this._wantRoll = rollup;
     this.styleKey = style;
     this.style    = createStyle(style);
     this.scene    = new THREE.Scene();
@@ -261,6 +265,10 @@ export class HPWorldScene {
     this._t = 0;
     this._streams = [];
     this._shadeSpots = [];      // {x,z,r,h} per tree, for the baked shade map
+    // The roll-up census: one entry per thing in the world small enough to be
+    // picked up, with where it is, how big it is, what it is called, and how to
+    // take it. Filled by _compileDrawCalls; see RollUp.js.
+    this.rollables = [];
     this._orbs = [];
     this._pulses = [];
     this._portals = [];
@@ -333,6 +341,14 @@ export class HPWorldScene {
     this._hedgeMat = S.mat({ color: 0x243818, roughness: 0.95 });
     this._trunkMat = S.mat({ color: 0x3a2810, roughness: 0.9 });
     this._leafMat  = S.mat({ color: 0x1a3010, roughness: 0.9 });
+    // What the roll-up mode calls these when it eats them. A material is the
+    // cheapest place to hang a name, because everything made of a thing is
+    // made of the same material. See _rollName.
+    this._stoneMat.userData.roll = 'a block of white stone';
+    this._darkStoneMat.userData.roll = 'a dark stone';
+    this._hedgeMat.userData.roll = 'a sprig of box';
+    this._trunkMat.userData.roll = 'a bough';
+    this._leafMat.userData.roll = 'a bundle of leaves';
 
     // In the lit garden, dress the flat materials with procedural surface —
     // pitted ashlar for stone, mottled foliage for hedges — so the megaliths
@@ -528,8 +544,13 @@ export class HPWorldScene {
       if (o === root || !o.isMesh || o.isInstancedMesh || o.isSprite) return;
       if (exclude.has(o) || !o.visible) return;
       const m = o.material;
-      // transparent things keep their own draw order; unique materials
-      // (plaques, the crystal dome) fall below the bucket threshold anyway
+      // Transparent things keep their own draw order, so they cannot be folded
+      // in. NOTE, because it cost 3 000 draw calls once: an alpha-TESTED cutout
+      // -- a leaf card, a lattice panel -- is NOT transparent. It is opaque with
+      // a discard, and it belongs in here. Setting `transparent: true` on one of
+      // those quietly exiles it from the merge, and the foliage added on
+      // 2026-09-07/08 did exactly that: 22 000 meshes that should have been a
+      // few dozen.
       if (!m || Array.isArray(m) || m.transparent) return;
       const key = m.uuid + '|' + o.castShadow + '|' + o.receiveShadow;
       let b = buckets.get(key);
@@ -537,7 +558,7 @@ export class HPWorldScene {
       b.meshes.push(o);
     });
     for (const b of buckets.values()) {
-      if (b.meshes.length < 2) continue;
+      if (b.meshes.length < 2) { for (const o of b.meshes) this._census(o, null, 0, 0); continue; }
       const geos = [];
       const mtx = new THREE.Matrix4();
       for (const o of b.meshes) {
@@ -545,6 +566,16 @@ export class HPWorldScene {
         mtx.multiplyMatrices(inv, o.matrixWorld);
         g2.applyMatrix4(mtx);           // bakes positions AND fixes normals
         geos.push(g2);
+      }
+      // Where each source mesh will land in the merged buffer. mergeGeometries
+      // concatenates in order, so this is just a running total -- and it is the
+      // whole trick behind the roll-up census (see the header of this file).
+      const ranges = [];
+      let vtx = 0;
+      for (const g of geos) {
+        const n = g.attributes.position.count;
+        ranges.push([vtx, n]);
+        vtx += n;
       }
       let merged = null;
       try { merged = mergeGeometries(geos, false); } catch (e) { /* mixed attributes — leave unmerged */ }
@@ -561,6 +592,7 @@ export class HPWorldScene {
       mm.castShadow = b.cast;
       mm.receiveShadow = b.recv;
       root.add(mm);
+      b.meshes.forEach((o, i) => this._census(o, mm, ranges[i][0], ranges[i][1]));
       for (const o of b.meshes) { o.removeFromParent(); this._trashGeo.add(o.geometry); }
       geos.forEach(g => g.dispose());
     }
@@ -1586,7 +1618,7 @@ export class HPWorldScene {
     const woodcut = S.key === 'woodcut';
     const mat = new THREE.MeshStandardMaterial({
       map: this._drapeTexture(woodcut ? 0xe8e4da : color, swag),
-      transparent: true, alphaTest: 0.4, side: THREE.DoubleSide,
+      alphaTest: 0.4, side: THREE.DoubleSide,
       roughness: 0.95,
     });
     this._disp.push(mat);
@@ -2862,7 +2894,7 @@ export class HPWorldScene {
     const leafMat = woodcut ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
       : new THREE.MeshStandardMaterial({
           map: this._leafCardTexture('myrtle'),
-          transparent: true, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.88 });
+          alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.88 });
     const leafGeo = new THREE.PlaneGeometry(0.62, 0.62);
     // "flowers of three sortes commixt" — Rhizopoulou: red, yellow and white
     const JASMINE = woodcut
@@ -3405,8 +3437,9 @@ export class HPWorldScene {
     if (this.style.key === 'woodcut') return;      // the plates cut their own
     const mat = this._hedgeLeafMat = this._hedgeLeafMat || new THREE.MeshStandardMaterial({
       map: this._leafCardTexture('box'),
-      transparent: true, alphaTest: 0.42, side: THREE.DoubleSide,
+      alphaTest: 0.42, side: THREE.DoubleSide,
       roughness: 0.9, metalness: 0,
+      userData: { roll: 'a box leaf' },
     });
     if (!this._hedgeLeafGeo) this._hedgeLeafGeo = new THREE.PlaneGeometry(0.26, 0.26);
     const g = new THREE.Group();
@@ -3453,7 +3486,7 @@ export class HPWorldScene {
     if (this.style.key === 'woodcut') return;
     const mat = this._hedgeLeafMat = this._hedgeLeafMat || new THREE.MeshStandardMaterial({
       map: this._leafCardTexture('box'),
-      transparent: true, alphaTest: 0.42, side: THREE.DoubleSide,
+      alphaTest: 0.42, side: THREE.DoubleSide,
       roughness: 0.9, metalness: 0,
     });
     if (!this._hedgeLeafGeo) this._hedgeLeafGeo = new THREE.PlaneGeometry(0.26, 0.26);
@@ -3656,7 +3689,7 @@ export class HPWorldScene {
     const leafMat = woodcut ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
       : new THREE.MeshStandardMaterial({
           map: this._leafCardTexture('plane'),
-          transparent: true, alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88 });
+          alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88 });
     if (!woodcut) this._disp.push(leafMat);
     const FLOWERS = woodcut
       ? [S.mat({ tone: -0.03 }), S.mat({ tone: -0.02 }), S.mat({ tone: 0.01 })]
@@ -3851,10 +3884,10 @@ export class HPWorldScene {
       ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
       : new THREE.MeshStandardMaterial({
           map: this._latticeTexture(), color: 0xffffff,
-          transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
+          alphaTest: 0.35, side: THREE.DoubleSide,
           roughness: 0.45, metalness: 0.02,
         });
-    if (!woodcut) this._disp.push(openwork);
+    if (!woodcut) { openwork.userData.roll = 'a panel of pierced marble'; this._disp.push(openwork); }
 
     // the run is broken in the middle for the gate
     const mid = (r0 + r1) / 2;
@@ -3954,7 +3987,7 @@ export class HPWorldScene {
     if (this._climbMats[species]) return this._climbMats[species];
     const m = new THREE.MeshStandardMaterial({
       map: this._leafCardTexture(species),
-      transparent: true, alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88,
+      alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88,
     });
     this._disp.push(m);
     return (this._climbMats[species] = m);
@@ -4166,6 +4199,133 @@ export class HPWorldScene {
       { ry: -a, cast: false });
     this._plaque({ main: 'AD CYTHERAM', sub: 'FOR THE PASSAGE OF THE TRIVMPHALL CHARIOTS' },
       2.4, 0.34, x, y + H + W / 2 + 0.2, z + 0.28 * Math.sign(Math.cos(a) || 1), -a + Math.PI / 2, true);
+  }
+
+  // ── The roll-up census ───────────────────────────────────────────────────
+  //
+  // One entry per thing you could conceivably pick up. `merged` is the lump it
+  // was folded into and [start, count) its vertices in that lump; a standalone
+  // mesh has merged === null and is simply detached when taken.
+  //
+  // Only built when the scene is asked for it (`{ rollup: true }`), because the
+  // census is a few thousand objects and the walk has no use for it.
+  _census(mesh, merged, start, count) {
+    if (!this._wantRoll) return;
+    const g = mesh.geometry;
+    if (!g || !g.attributes || !g.attributes.position) return;
+    if (!g.boundingSphere) g.computeBoundingSphere();
+    if (!g.boundingBox) g.computeBoundingBox();
+    const bs = g.boundingSphere, bb = g.boundingBox;
+    if (!bs || !bb) return;
+    // How big a thing IS, for the purpose of being eaten. Not the bounding
+    // sphere: a leaf card is a 95 cm square of nothing, and its sphere radius
+    // is 67 cm, which would put a leaf later in the meal than a pebble the size
+    // of a plum. The mean half-extent of the bounding box behaves: a leaf comes
+    // out at 32 cm, a cube at half its side, a column at 58, a pebble at 5.
+    const sc = Math.max(Math.abs(mesh.scale.x), Math.abs(mesh.scale.y), Math.abs(mesh.scale.z));
+    const dx = (bb.max.x - bb.min.x) * Math.abs(mesh.scale.x);
+    const dy = (bb.max.y - bb.min.y) * Math.abs(mesh.scale.y);
+    const dz = (bb.max.z - bb.min.z) * Math.abs(mesh.scale.z);
+    const r = (dx + dy + dz) / 6;
+    // Anything bigger than this is architecture: the Great Portal, the sea, the
+    // ground itself. You roll past those, not over them.
+    if (r > 6 || r <= 0.004) return;
+    if (bs.radius * sc > 14) return;             // long thin things are architecture too
+    const c = new THREE.Vector3().copy(bs.center).applyMatrix4(mesh.matrixWorld);
+    this.rollables.push({
+      name: this._rollName(mesh, r), r, c,
+      mesh: merged ? null : mesh, merged, start, count,
+      mat: mesh.material, geo: merged ? null : null,
+      taken: false,
+    });
+  }
+
+  // What a thing is called. Katamari's whole charm is that the game knows the
+  // name of every object it eats, so this is not decoration -- it is the mode.
+  // Materials carry their own name where one is known (set at creation); the
+  // rest is read off the geometry and its size, and the nearest wonder supplies
+  // the "of" clause.
+  _rollName(mesh, r) {
+    const m = mesh.material;
+    let base = (m && m.userData && m.userData.roll) || null;
+    if (!base) {
+      const t = mesh.geometry.type;
+      if (t === 'SphereGeometry')      base = r < 0.07 ? 'a berry' : r < 0.2 ? 'a fruit' : 'a ball of stone';
+      else if (t === 'PlaneGeometry')  base = r < 0.3 ? 'a leaf' : 'a painted panel';
+      else if (t === 'CylinderGeometry') base = r < 0.15 ? 'a little baluster' : r < 0.8 ? 'a column drum' : 'a column';
+      else if (t === 'BoxGeometry')    base = r < 0.2 ? 'a tile' : r < 0.7 ? 'a brick' : 'a block of masonry';
+      else if (t === 'ConeGeometry')   base = r < 0.4 ? 'a finial' : 'a spire';
+      else if (t === 'TorusGeometry')  base = 'a ring of gold';
+      else if (t === 'DodecahedronGeometry') base = r < 0.12 ? 'a pebble' : r < 0.6 ? 'a stone' : 'a boulder';
+      else if (t === 'RingGeometry')   base = 'a bed of flowers';
+      else base = 'a piece of the dream';
+    }
+    const st = this._nearestStationName(mesh);
+    return st ? `${base}, from ${st}` : base;
+  }
+
+  _nearestStationName(mesh) {
+    const p = new THREE.Vector3().setFromMatrixPosition(mesh.matrixWorld);
+    let best = null, bd = 13 * 13;
+    for (const st of HP_STATIONS) {
+      const dx = p.x - st.pos[0], dz = p.z - st.pos[1];
+      const d = dx * dx + dz * dz;
+      if (d < bd) { bd = d; best = st.name; }
+    }
+    return best;
+  }
+
+  // Take a thing out of the world and hand back a little mesh of its own, in
+  // the ball's local space. The original stops existing: a standalone mesh is
+  // detached, and a merged one has its vertex range collapsed to a point, which
+  // costs one small write into the buffer and no draw calls at all.
+  takeRollable(e) {
+    if (e.taken) return null;
+    e.taken = true;
+    if (e.mesh) {
+      e.mesh.removeFromParent();
+      e.mesh.position.sub(e.c);        // re-centre on the thing itself
+      const g = new THREE.Group();
+      g.add(e.mesh);
+      return g;
+    }
+    if (!e.merged || !e.count) return null;
+    const src = e.merged.geometry;
+    const out = new THREE.BufferGeometry();
+    for (const key of ['position', 'normal', 'uv']) {
+      const a = src.getAttribute(key);
+      if (!a) continue;
+      const it = a.itemSize;
+      const arr = new Float32Array(e.count * it);
+      for (let i = 0; i < e.count * it; i++) arr[i] = a.array[e.start * it + i];
+      if (key === 'position') {                       // centre it on itself
+        for (let i = 0; i < e.count; i++) {
+          arr[i * 3] -= e.c.x; arr[i * 3 + 1] -= e.c.y; arr[i * 3 + 2] -= e.c.z;
+        }
+      }
+      out.setAttribute(key, new THREE.BufferAttribute(arr, it));
+    }
+    // The merged buffer keeps its index; collapsing this object's positions to a
+    // single point makes every one of its triangles degenerate, so it vanishes.
+    //
+    // Collapse to its OWN first vertex, not to the origin: a point already
+    // inside the buffer's bounds leaves the bounding sphere still valid, and
+    // three.js therefore does not recompute it. Collapsing to the origin (and
+    // nulling the sphere, which the first version did) made three.js re-measure
+    // a hundred-thousand-vertex buffer on every single mouthful -- fifteen
+    // thousand times in a full run.
+    const pa = src.getAttribute('position');
+    const ax = pa.array[e.start * 3], ay = pa.array[e.start * 3 + 1], az = pa.array[e.start * 3 + 2];
+    for (let i = 0; i < e.count; i++) {
+      pa.array[(e.start + i) * 3] = ax;
+      pa.array[(e.start + i) * 3 + 1] = ay;
+      pa.array[(e.start + i) * 3 + 2] = az;
+    }
+    pa.needsUpdate = true;
+    const mesh = new THREE.Mesh(out, e.mat);
+    mesh.castShadow = false; mesh.receiveShadow = false;
+    this._disp.push(out);
+    return mesh;
   }
 
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
@@ -8520,12 +8680,14 @@ export class HPWorldScene {
     return g;
   }
   _herbMat(kind) {
+    // (the material carries its own roll-up name; see _rollName)
     this._herbMats = this._herbMats || {};
     if (this._herbMats[kind]) return this._herbMats[kind];
     const tex = this._herbTexture(kind);
     const m = this.style.key === 'woodcut'
       ? new THREE.MeshBasicMaterial({ map: tex, alphaTest: 0.5, side: THREE.DoubleSide })
       : new THREE.MeshStandardMaterial({ map: tex, alphaTest: 0.5, side: THREE.DoubleSide, roughness: 0.9 });
+    m.userData.roll = `a tuft of ${kind}`;
     this._disp.push(m); this._herbMats[kind] = m;
     return m;
   }
@@ -9342,7 +9504,7 @@ export class HPWorldScene {
     // the cut spoils: alpha-tested so the shape is the silhouette, not the plane
     const spoilMat = (kind) => new THREE.MeshStandardMaterial({
       map: this._spoilTexture(kind, woodcut),
-      transparent: true, alphaTest: 0.42, side: THREE.DoubleSide,
+      alphaTest: 0.42, side: THREE.DoubleSide,
       roughness: 0.92,
     });
 
@@ -9881,6 +10043,7 @@ export class HPWorldScene {
         map: this._leafCardTexture(species), alphaTest: 0.5, side: THREE.DoubleSide,
         roughness: 0.85, metalness: 0,
       });
+    m.userData.roll = `a spray of ${species}`;
     this._disp.push(m);
     this._leafMatCache[species] = m;
     return m;
@@ -10329,6 +10492,37 @@ export class HPWorldScene {
     this.flight.attach();
     return this.flight;
   }
+  // ── Roll Up ──────────────────────────────────────────────────────────────
+  // The ball eats the census (see _census / takeRollable). It borrows the
+  // walker's floors so it can climb Cythera's terraces, and the walker itself
+  // is locked while it rolls.
+  startRoll(opts = {}) {
+    if (this.roll) return this.roll;
+    if (!this._wantRoll) {
+      console.warn('[rollup] this scene was not built with { rollup: true }; nothing to eat');
+    }
+    this.roll = new RollUp(this.scene, this.camera, this.walker, opts);
+    this.roll.onTake = (e) => this.takeRollable(e);
+    this.roll.onExit = () => { this.endRoll(); this.onRollExit?.(); };
+    this.roll.attach(this.rollables);
+    this.roll.meadows = this._meadows;          // the sward is the first course
+    this.roll.colliders = this.walker.colliders; // and the rest is scenery until it isn't
+    const p = this.walker.player;
+    this.roll.start(p.pos.x, p.pos.z);
+    this.walker.locked = true;
+    return this.roll;
+  }
+  endRoll() {
+    if (!this.roll) return;
+    const r = this.roll;
+    const p = this.walker.player;
+    p.pos.set(r.pos.x, 0, r.pos.z);
+    this.walker.collide(p.pos);
+    r.dispose();
+    this.roll = null;
+    this.walker.locked = false;
+  }
+
   endFlight() {
     if (!this.flight) return;
     const f = this.flight;
@@ -10358,7 +10552,10 @@ export class HPWorldScene {
     this._t += dt;
     if (this.dream) this.dream.update(dt);
     if (this._mood) this._updateMood(dt);
-    if (this.flight) {
+    if (this.roll) {
+      this.roll.update(dt);
+      this.roll.applyTo(this.camera, dt);
+    } else if (this.flight) {
       this.flight.update(dt);
       this.flight.applyTo(this.camera, dt);
     } else {
@@ -10370,7 +10567,7 @@ export class HPWorldScene {
     this._stTimer += dt;
     if (this._stTimer > 0.25 && !this.dream) {
       this._stTimer = 0;
-      const p = this.flight ? { pos: this.flight.pos } : this.walker.player;
+      const p = this.roll ? { pos: this.roll.pos } : this.flight ? { pos: this.flight.pos } : this.walker.player;
       let near = null, best = Infinity;
       for (const st of HP_STATIONS) {
         const dx = p.pos.x - st.pos[0], dz = p.pos.z - st.pos[1];
@@ -10526,6 +10723,8 @@ export class HPWorldScene {
   }
 
   dispose() {
+    this.roll?.dispose?.();
+    this.roll = null;
     this.dream?.dispose?.();
     this.dream = null;
     this.walker.dispose();

@@ -366,9 +366,57 @@ export function createMeadowField({
   }
   mesh.instanceMatrix.needsUpdate = true;
 
+  // Which instances stand where. Built on first pluck and not before, because
+  // the walk never asks and it is `placed` entries of bookkeeping.
+  let cells = null;
+  const CELL = 2;
+  const key = (x, z) => `${Math.floor(x / CELL)},${Math.floor(z / CELL)}`;
+
   return {
     mesh, material, geometry, placed,
     update(elapsed) { material.uniforms.uTime.value = elapsed; },
+
+    // Eat every blade within `r` of (x, z) and say how many. A blade is removed
+    // by zeroing its instance matrix: every vertex of it then maps to the same
+    // point, so all its triangles are degenerate and it draws nothing. There is
+    // no hole left in the buffer and nothing to re-upload but sixteen floats.
+    pluck(x, z, r) {
+      if (!cells) {
+        cells = new Map();
+        for (let i = 0; i < placed; i++) {
+          const ox = origins[i * 2], oz = origins[i * 2 + 1];
+          const k = key(ox, oz);
+          let b = cells.get(k);
+          if (!b) cells.set(k, b = []);
+          b.push(i);
+        }
+      }
+      const arr = mesh.instanceMatrix.array;
+      const r2 = r * r;
+      let n = 0;
+      const cx = Math.floor(x / CELL), cz = Math.floor(z / CELL);
+      const span = Math.ceil(r / CELL);
+      for (let i = -span; i <= span; i++) {
+        for (let j = -span; j <= span; j++) {
+          const b = cells.get(`${cx + i},${cz + j}`);
+          if (!b) continue;
+          for (let q = b.length - 1; q >= 0; q--) {
+            const idx = b[q];
+            const ox = origins[idx * 2], oz = origins[idx * 2 + 1];
+            const dx = ox - x, dz = oz - z;
+            if (dx * dx + dz * dz > r2) continue;
+            const o = idx * 16;
+            if (arr[o] === 0 && arr[o + 5] === 0 && arr[o + 10] === 0) continue;   // already eaten
+            for (let k2 = 0; k2 < 16; k2++) arr[o + k2] = 0;
+            b.splice(q, 1);
+            n++;
+          }
+        }
+      }
+      if (n) mesh.instanceMatrix.needsUpdate = true;
+      return n;
+    },
+
     dispose() { geometry.dispose(); material.dispose(); },
   };
 }

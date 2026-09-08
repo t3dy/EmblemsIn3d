@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=190';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=196';
 import { VaultsScene } from './scenes/VaultsScene.js?v=5';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
@@ -993,10 +993,14 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   setHidden(document.getElementById('vault-over'), true);
   setActiveWorldBtn('btn-hp');
 
-  const scene = new HPWorldScene(renderer, composer, { style: state.hpStyle, station, spawn });
+  const scene = new HPWorldScene(renderer, composer, {
+    style: state.hpStyle, station, spawn, rollup: !!state.wantRoll });
 
   // As the dreamer nears a wonder, surface its folio and its commentary
   scene.onStation = (st) => {
+    // While you are a ball, the scholarship holds its tongue. A commentary card
+    // rising over the Fountain of Venus as you eat it is the wrong register.
+    if (scene.roll) { if (st) showHPHUD(st.name, st.folio); return; }
     if (st) {
       showHPHUD(st.name, st.folio);
       // The one map in this world, shown once, at the shore, before the
@@ -1146,6 +1150,56 @@ async function launchVaults({ depth = 1, lamps = 0, seed = null } = {}) {
 }
 
 window.hpVaults = () => { showHPMode(false); launchVaults({ depth: 1, lamps: 0 }); };
+
+// ─── Roll Up ────────────────────────────────────────────────────────────────
+//
+// Ted, 2026-09-08. The scene has to be REBUILT for this, because the roll-up
+// census is only taken when the world is asked for it -- see
+// HPWorldScene._census. So this reloads the garden with { rollup: true } and
+// then hands the ball the list.
+window.hpRoll = async () => {
+  showHPMode(false);
+  state.wantRoll = true;
+  // spawn takes { pos: [x, y, z], yaw, pitch } — on the walk between the
+  // elephant plaza and the Three Doors, which is open sward with rills in it
+  // Where to start a walnut. The first siting was Polia's garden, which has the
+  // thickest scattering of small things in the world -- and every one of them
+  // is a jasmine floret three metres up in the arbour, over a paved slab the
+  // meadow is masked off. The census had to be asked the right question:
+  // small AND ON THE GROUND. That points here, the open sward between the
+  // elephant plaza and the fountain grove: grass underfoot, and the triumph
+  // cars and the rills within a short roll.
+  await launchHPWorld({ chooser: false, spawn: { pos: [7, 0, -7], yaw: Math.PI, pitch: -0.03 } });
+  const sc = state.activeScene;
+  if (!sc) return;
+  const hud = document.getElementById('roll-hud');
+  setHidden(hud, false);
+  // whatever the walk raised on the way in comes down: a ball reads no footnotes
+  hideWalkNotes();
+  dismissWalkNotes();
+  sc.onRollExit = () => window.hpRollExit();
+  sc.startRoll({
+    onEat: (name, count, r) => {
+      const n = document.getElementById('roll-name');
+      const c = document.getElementById('roll-count');
+      const z = document.getElementById('roll-size');
+      if (n) n.textContent = name;
+      if (c) c.textContent = String(count);
+      if (z) z.textContent = r < 1 ? `${Math.round(r * 100)} cm` : `${r.toFixed(2)} m`;
+      const nn = document.getElementById('roll-name');
+      if (nn) { nn.classList.remove('pop'); void nn.offsetWidth; nn.classList.add('pop'); }
+    },
+  });
+  showHint('W A S D / arrows roll · drag to swing the view · wheel to pull back · Esc to stop rolling');
+};
+
+window.hpRollExit = () => {
+  const sc = state.activeScene;
+  sc?.endRoll?.();
+  state.wantRoll = false;
+  setHidden(document.getElementById('roll-hud'), true);
+  showHPMode(true);
+};
 window.hpVaultsDeeper = () => {
   const n = state.vaultNext || { depth: 2, lamps: 0 };
   launchVaults({ depth: n.depth, lamps: n.lamps });

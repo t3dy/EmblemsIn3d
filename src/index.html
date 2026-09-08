@@ -391,6 +391,33 @@
       background: none; border: 1px solid #6a5426; color: #d8a24a; padding: 0.45rem 1.2rem; cursor: pointer;
     }
     #prospect button:hover { background: rgba(216,162,74,0.12); }
+    /* ── Roll Up ─────────────────────────────────────────────── */
+    #roll-hud {
+      position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%);
+      z-index: 30; text-align: center; pointer-events: none;
+      font-family: Georgia, serif; text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+    }
+    #roll-hud .rh-name {
+      font-size: 1.15rem; color: #f0e0b4; letter-spacing: 0.03em;
+      height: 1.5em; line-height: 1.5em; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis; max-width: 78vw;
+    }
+    #roll-hud .rh-name.pop { animation: rhpop 0.42s ease-out; }
+    @keyframes rhpop {
+      0%   { transform: scale(1.28) translateY(-6px); color: #ffffff; opacity: 0; }
+      35%  { opacity: 1; }
+      100% { transform: scale(1) translateY(0); color: #f0e0b4; opacity: 1; }
+    }
+    #roll-hud .rh-row {
+      margin-top: 0.35rem; display: flex; gap: 0.5rem 1.1rem; justify-content: center;
+      align-items: baseline; font-size: 0.9rem; color: #e8c96a;
+    }
+    #roll-hud .rh-k {
+      font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: #8a7a54;
+    }
+    #roll-hud .rh-foot {
+      margin-top: 0.5rem; font-size: 0.62rem; letter-spacing: 0.07em; color: #6a5c40;
+    }
     #tour-panel .tp-notes { display: flex; flex-direction: column; gap: 0.5rem; }
     #tour-panel .tp-note { border-left: 3px solid; padding: 0.4rem 0 0.4rem 0.8rem; background: rgba(255,255,255,0.018); }
     #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
@@ -949,6 +976,11 @@
           <h3>The Vaults</h3>
           <p>Chapter V, played. The dragon drives you off the threshold into the dark under the pyramid &mdash; &ldquo;diuers crooked torments, ambagious passages and vnknowne waies&rdquo;. Grope past the pillars, keep off the vaults in the floor, light the everlasting lamps and find the little wicket before the dragon finds you. Every descent is a new maze.</p>
         </button>
+        <button class="hpm-card" onclick="window.hpRoll()">
+          <span class="hpm-kicker">Roll-up &middot; third person</span>
+          <h3>Roll Up the Dream</h3>
+          <p>You are a ball with the Sun on one face and the Moon on the other, and the garden is food. Start the size of a walnut and roll up blades of grass, then leaves and pebbles and fruit, then tiles and balusters and nymphs, then trees, then whole wonders. Everything you eat comes with you, stuck to the outside and turning as you turn. W A S D to roll, drag to swing the view, wheel to pull back, Esc to stop.</p>
+        </button>
         <button class="hpm-card" onclick="window.hpTour('novel')">
           <span class="hpm-kicker">Guided tour &middot; with the scholarship</span>
           <h3>The Novel</h3>
@@ -963,6 +995,18 @@
     position:fixed;inset:0;z-index:50;background:#060402;
     opacity:0;pointer-events:none;transition:opacity 0.3s ease;
   "></div>
+
+  <!-- Roll Up: how big, how many, and the name of the last thing eaten.
+       Naming what it just swallowed is the whole charm of the genre, so the
+       name gets the room and the numbers get the corner. -->
+  <div id="roll-hud" hidden>
+    <div class="rh-name" id="roll-name">&nbsp;</div>
+    <div class="rh-row">
+      <span class="rh-k">Size</span><span id="roll-size">22 cm</span>
+      <span class="rh-k">Things</span><span id="roll-count">0</span>
+    </div>
+    <div class="rh-foot">W A S D roll &middot; drag to look &middot; wheel to pull back &middot; Esc &mdash; stop rolling</div>
+  </div>
 
   <!-- The crawl's own HUD: how deep, how many lamps, and the map you make -->
   <div id="vault-hud" hidden>
@@ -1037,6 +1081,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=275"></script>
+  <script type="module" src="./main.js?v=285"></script>
 </body>
 </html>

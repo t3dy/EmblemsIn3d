@@ -67,6 +67,7 @@ a session.
 | **Change how the world is *drawn*** (light, air, colour, register) | `RENDERING.md`, then `src/shaders/` | — |
 | **Work on UI, navigation, layout, typography** | `INTERFACECHOICES.md`, `TRANSLATIONDISPLAYCHOICES.md`, `DESIGN.md` | — |
 | **Work on the game loop / Dream mode** | `DESIGN.md`, `GAMIFYVRHP.md`, `src/systems/DreamMode.js` | — |
+| **Work on Roll Up** (the Katamari mode) | `src/systems/RollUp.js`, and `HPWorldScene._census` / `takeRollable` | — |
 | **Decide *whether* to do something** | `DESIGN.md`, `DECISIONS.md`, `NEXTSTEPS.md` | — |
 
 ### The subject briefs — one per class of thing in the world
@@ -138,6 +139,9 @@ src/scenes/
   AFWorldScene.js  EmblemScene.js  ArchivesScene.js  HPScene.js   ← DORMANT, not imported
 src/systems/
   DragonFlight.js       third-person flight: the dragon, its camera, its controls
+  RollUp.js             the Katamari mode: a Sol-and-Luna ball that eats the garden.
+                        Reads HPWorldScene's roll-up CENSUS — see _census /
+                        takeRollable there, which is where the interesting part is
   Cast.js               figures, animals, props, labels — `nymph({ rank, garland })` carries
                         the chess liveries (king/queen/rook/bishop/knight/pawn), the vested
                         heads of the rite of Venus (mitre/tutulus), and the two wreaths
@@ -186,6 +190,11 @@ scripts/                export_for_3d.py, build_translation_page.py, cut_figures
   world did until that date.
 - **An open-ended `CylinderGeometry` is invisible from inside** unless its material is
   `DoubleSide` — which is how the first Temple of Venus got a dome you could see sky through.
+- **An alpha-TESTED cutout must not be `transparent: true`.** `_mergeInto` skips transparent
+  materials, so a leaf card or a lattice panel marked transparent is quietly exiled from the
+  draw-call merge — and stays its own draw call, one per leaf. The foliage added on 2026-09-07/08
+  did exactly that and cost **22 000 meshes and about 2 100 draw calls** in the ordinary walk
+  before anyone counted. `alphaTest` alone is correct: a cutout is opaque with a discard.
 - **`_vanes` is Fortuna's registry**, integrated with `+=` from `{rate, phase}`. Anything else
   that turns needs its own array (`_windVanes`, `_windBells`), or the two animators write NaN
   through each other's meshes.
