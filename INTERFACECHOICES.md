@@ -99,3 +99,31 @@ opening of this particular book is the whole frame.
 
 1 (minutes) → 2 → 3 → 5 → 7, with 6 landing alongside the translation work
 already in flight. Each is independently shippable; none blocks another.
+
+
+---
+
+## The one map (2026-09-08)
+
+There is now exactly one map in this world, and it is on Cythera.
+
+The refusal of a minimap stands, and `GARDENS.md` §1 gives it a better reason than the one
+first offered here. It is not that "the processional axis is the map". It is Hunt's: **not
+being able to place yourself is the first garden experience the book stages.** On a complex
+site the relation of parts to whole is not available to a first-time visitor; each of
+Colonna's scenes is preternaturally clear in itself and baffling in its relation to the rest,
+and Poliphilo "is not therefore able to pace or place himself appropriately, either in his
+movement or his thinking."
+
+Cythera is the exception, and the **book** makes it one, not us. Hunt lists it first among the
+four things the island does that nowhere else does: it is **surveyed whole, in advance**.
+Poliphilo describes the entire topography before he lands, and only then explores; there and
+only there "everything falls into place."
+
+So: **the Prospect of Cythera** raises itself once, at the shore station, before the crossing.
+A drawn plan — the twenty divisions the book constructs on p. 294, the three *claustri*, the
+river, the six terraces, the theatre at the centre — with a note saying why it exists here and
+nowhere else. It is remembered in `localStorage` so it does not ambush a returning reader, and
+`window.hpProspect()` calls it back at any time.
+
+**Do not add a second one.** The exception is the whole point of the rule.

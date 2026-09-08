@@ -42,10 +42,19 @@ Vercel project**, or **one last deploy that redirects that URL to Pages**. Ask h
 Done that day: the sward rebuilt at realistic scale and colour, the jasmine arbour at Polia's
 garden, second nature north-west of the wood. Still open, in order:
 
-- **Cythera as Segre reconstructs it** — the perfect circle, three *miliaria* round, 20 radial
-  roads, three concentric *claustri*, 20 bosco compartments, 240 fruit trees on raised beds,
-  six terraces of seven steps each, the theatre at the centre. `GARDENS.md` §5 is detailed
-  enough to build straight from. **The largest single build left in the project.**
+- **Cythera — the twenty divisions are built (2026-09-08)**: twenty roads, twenty bosco
+  compartments each of one species, twenty marble lattice fences with a gate in each and a
+  named climber over each, twenty flowery lawns. What is still outstanding from Segre's
+  reconstruction, and it is no longer the largest thing in the project:
+  - **the six terraces of seven steps**, rising about 12.5 m from the river bank to the
+    theatre — the island's whole vertical structure, and the reason the planting inverts
+    (tallest trees outside, lowest at the centre);
+  - **the gates at the crossroads** where the steps break, *"for the passage of the triumphal
+    chariots"*;
+  - **240 fruit trees** on raised beds at the lawn corners — apples in the first order, pears
+    in the second, plums with pistachios in the third;
+  - **the theatre's three tiers of flower beds**, each separated from the one above by a
+    pergola.
 - **The three artificial gardens — glass, silk, and the counterfeit scent.** Hunt argues that
   illustrating them *damages* them, and that the 1499 and the 1592 both decline to for that
   reason. `GARDENS.md` §3 and item 5 of its ranked list: stage them as *described* rather than

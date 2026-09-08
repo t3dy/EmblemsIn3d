@@ -227,6 +227,33 @@ And its companion, on the craft itself:
 
 ---
 
+## 7b. Variety — "so each was varied"
+
+The Renaissance garden's other great pleasure, and the one the *Hypnerotomachia* is most
+extravagant about: **not one of anything.** Twenty compartments, and each a different
+plantation. Twenty fences, and each with a different climber running over it, named one after
+another in a single sentence:
+
+> "Along these serpentined the **periclymenon**; others the **jasmine**; some of **bindweed**;
+> some of **hops**; and some of **black bryony**, or black vine; others of **convolvulus, with
+> the lily-like half-azure bells**; **some all white**; some of **momordica** — so each was
+> varied. Some of **Jove's flammula**; of **smilax**, which for love of beautiful Crocus made
+> itself Autophoros, adorned with a white fragrant lily-flower, with a thorny and ivy-like
+> leaf; of **bittersweet**…" — our translation p. 294
+
+Hunt calls the property **plenitude**: a complete collection of herbs, plants, trees, animals,
+marbles and semi-precious stones, with microclimates so that "each tree is suited to the nature
+of the place". He suggests the round Paduan botanical garden of 1543 may echo it.
+
+**The build instruction is the hard one: variety has to be legible.** Twenty fences that differ
+only in a colour you cannot name are not varied, they are noisy. So each carries its own
+climber *and its own plaque at its gate*, with the book's name for it and a gloss. You can tell
+them apart, which is the only way "so each was varied" is true rather than merely asserted.
+
+→ **Built 2026-09-08.** See `GARDENS.md`'s ranked list, item 4.
+
+---
+
 ## 8. The pleasure of not wanting to leave
 
 > "**O happie were hee that myght bee but a drudge or kitchin slaue in suche a Paradice.**"
@@ -270,6 +297,8 @@ Two, and both matter.
 | 5c | **Hedges** — box with a leafy silhouette rather than a smooth green solid | **built 2026-09-08** |
 | 6 | **The bath's paragone** — carved and living nymphs composed into one view | open; needs a camera study, not new geometry |
 | 7 | **Seasonal and diurnal light** — the garden at one hour only, forever | open, large |
+| 8 | **Variety** — twenty compartments, twenty climbers, each named at its gate | **built 2026-09-08** |
+| 9 | **Orientation, once** — the Prospect of Cythera, the one map in this world | **built 2026-09-08** |
 
 
 ---

@@ -132,6 +132,13 @@ interface:
    *before he lands*, and only then explores. "Unlike any route Polifilo has
    hitherto taken, these converging paths lead him down axes along which everything
    falls into place." Everywhere else in the book he is lost; here he is oriented.
+
+   → **Built 2026-09-08 as the Prospect of Cythera** — a drawn plan of the island
+   that raises itself once, at the shore, before the crossing, and is **the only
+   map in this world**. The refusal of a minimap everywhere else is a decided
+   thing (`INTERFACECHOICES.md`) and §1 above gives it its real reason; a rule is
+   only worth having if its exception means something. `prospectPlan()` draws it;
+   `hpProspect()` calls it back up.
 2. **Plenitude.** A complete collection of herbs, plants, trees, animals, marbles
    and semi-precious stones — even microclimates, "where each tree is suited to
    the nature of the place." Hunt suggests the round Paduan botanical garden of
@@ -199,8 +206,32 @@ built as an object.
    reads with the olives and fruit trees as "an arboricultural economy." The
    meadow is masked off it: grass must not grow out of a furrow. Reachable as the
    station `fields`.
-4. **Cythera, properly** — the concentric island. **Still the largest single
-   build remaining.** This is the largest single build
+4. **Cythera** — **the twenty divisions built 2026-09-08**, which is the half of
+   Segre's reconstruction that changes what the island *is*. The world had twelve
+   wedges and no fences. The book has twenty, and it does not merely assert the
+   number — on our p. 294 it gives the **construction**, the classical
+   golden-section method of inscribing a decagon in a circle, and then says
+   *"these twenty divisions."* Segre's twenty bosco compartments and his 240
+   corner fruit trees (4 × 20 × 3 orders of meadow) are the same twenty. So
+   everything radial on the island is now twenty: the roads, the bosco
+   compartments each of one species, the espalier segments, the flowery lawns.
+
+   And the fences that were missing entirely, which are the best sentence in the
+   garden: *"by most noble fences, diversely latticed with fitting and convenient
+   marble openwork, two inches thick, between the measured placing of most
+   polished little pilasters, of whitening marble, and the rest most lustrously
+   reddening… In the middle of the fence there opened, level, in each, a gate —
+   seven feet in the opening, nine high up to the arching of its topmost curve."*
+   Every number in that is built. And each fence carries one climber from the
+   book's own list, in the book's own order — periclymenon, jasmine, bindweed,
+   hops, black bryony, convolvulus with its half-azure bells and the same all
+   white, momordica, Jove's flammula, smilax, bittersweet — each named on a
+   plaque at its gate, because *"so each was varied"* is only true if you can
+   tell them apart.
+
+   **Still to do:** the six terraces of seven steps rising 12.5 m, the gates at
+   the crossroads for the passage of the triumphal chariots, and the theatre's
+   three tiers of flower beds separated by pergolas. This is the largest single build
    remaining in the project and the book's culmination; Segre's plan above is
    detailed enough to work from directly. See [RESEARCHPASSFORVR.md](RESEARCHPASSFORVR.md)
    for why it should probably come before anything else.

@@ -2,6 +2,72 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Cythera gets its twenty divisions, and the world gets its one map
+
+Two decisions, and the second is the one I would defend hardest.
+
+### The twenty divisions
+
+The island had **twelve** wedges and no fences. The book has **twenty**, and it does not merely
+assert the number — on our p. 294 it gives the **construction**, the classical golden-section
+method of inscribing a decagon in a circle, worked step by step, and only then says *"these
+twenty divisions."* Segre's reading agrees from the other side: twenty bosco compartments each
+a different plantation, and 240 corner fruit trees, which is 4 × 20 × 3 orders of meadow.
+
+So everything radial on Cythera is now twenty — the roads, the compartments, the orange
+espalier, the flowery lawns. And the thing that was missing altogether, which is the best
+sentence in the whole garden:
+
+> *"…by most noble fences, diversely latticed with fitting and convenient marble openwork, two
+> inches thick, between the measured placing of most polished little pilasters, of whitening
+> marble, and the rest most lustrously reddening… In the middle of the fence there opened,
+> level, in each, a gate — seven feet in the opening, nine high up to the arching of its
+> topmost curve."*
+
+Every number in that is built: twenty fences, openwork two inches thick between little
+pilasters, white marble alternating with red, a gate 2.1 m wide and 2.75 m to the crown of its
+arch. The openwork is a drawn alpha map rather than modelled bars — pierced marble is a *hole
+pattern*, and holes are what a texture is for; two hundred little bars twenty times over would
+cost a hundred times as much and read no better at three paces. Seven rhombs to a panel, so
+each opening is about a hand's breadth; at four to a panel they were 60 cm across and read as
+farm trellis.
+
+**And each fence carries one climber, from the book's own list in the book's own order** —
+periclymenon, jasmine, bindweed, hops, black bryony, convolvulus with its half-azure bells and
+the same all white, momordica, Jove's flammula, smilax, bittersweet. `ivy` joined `SPECIES` so
+the lobed ones have a leaf to draw.
+
+**The hard part of variety is that it has to be legible.** Twenty fences differing only in a
+colour you cannot name are not varied, they are noisy. So each gate carries a plaque with the
+book's name for its climber and a gloss. *"So each was varied"* is only true if you can tell
+them apart — otherwise we have asserted the pleasure instead of delivering it.
+
+### The one map
+
+**There is now exactly one map in this world, and it is on Cythera.**
+
+The refusal of a minimap has always been a decided thing here, but the reason given in
+`INTERFACECHOICES.md` was the weak one ("the processional axis is the map"). `GARDENS.md` §1
+has the real one, from Hunt: **not being able to place yourself is the first garden experience
+the book stages.** On a complex site the relation of parts to whole is simply not available to
+a first-time visitor; each of Colonna's scenes is preternaturally clear in itself and baffling
+in its relation to the rest, and Poliphilo "is not therefore able to pace or place himself
+appropriately, either in his movement or his thinking."
+
+Cythera is the exception, and **the book makes it one, not us.** Hunt lists it first among the
+four things the island does that nowhere else does: it is *surveyed whole, in advance*.
+Poliphilo describes the entire topography before he lands, and only then explores; there and
+only there "everything falls into place."
+
+So the **Prospect of Cythera** raises itself once, at the shore station, before the crossing: a
+drawn plan in ink and wash — the twenty divisions with a gate marked in each, the three
+*claustri*, the river, the six terraces, the theatre at the heart — with a note saying plainly
+why it exists here and nowhere else. It is remembered in `localStorage` so it never ambushes a
+returning reader, and `hpProspect()` calls it back at will.
+
+**Do not add a second one.** A rule is only worth having if its exception means something, and
+this is the exception the book itself supplies.
+
 ## 2026-09-08 — Hedges, rills, the shaded walk, and four wrong guesses about a white blob
 
 Working the standing queue down. Three builds and one bug, and the bug is the interesting part.

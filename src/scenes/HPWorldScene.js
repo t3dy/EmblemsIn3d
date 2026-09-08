@@ -3744,6 +3744,360 @@ export class HPWorldScene {
       3.6, 0.42, X, 0.56, Z0 - 2.2, 0, true);
   }
 
+  // ── The twenty divisions of Cythera (our translation p. 294) ─────────────
+  //
+  // Built 2026-09-08. The island had twelve wedges and no fences. The book has
+  // twenty, and it does not merely assert them — it gives the CONSTRUCTION,
+  // the classical golden-section way of inscribing a decagon in a circle:
+  //
+  //   "…divide by an equal half, with a prick. And from this point draw
+  //    obliquely a straight line, toward the topmost summit of the
+  //    half-diameter; and at this topmost point, upon this aforesaid line,
+  //    mark off from the half-diameter as much as is a quarter part of a whole
+  //    diameter. Then extend a line from the centre, cutting over the mark to
+  //    the circumference: this will be the division of the ten-angled figure.
+  //    **These twenty divisions** were, by most noble fences, diversely
+  //    latticed with fitting and convenient marble openwork, two inches thick,
+  //    between the measured placing of most polished little pilasters, of
+  //    whitening marble, and the rest most lustrously reddening… In the middle
+  //    of the fence there opened, level, in each, a gate — seven feet in the
+  //    opening, nine high up to the arching of its topmost curve."
+  //
+  // Every number in that is built: twenty of them, openwork two inches thick
+  // between little pilasters, white marble and red, a gate seven feet wide and
+  // nine to the crown of its arch. Segre reads the same twenty as the bosco's
+  // twenty compartments, each a different plantation, which is why each wedge
+  // now carries one species and each fence one climber.
+  //
+  // And the climbers are the book's own list, in its own order — this is the
+  // single most various sentence in the whole garden:
+  //
+  //   "Along these serpentined the periclymenon; others the jasmine; some of
+  //    bindweed; some of hops; and some of black bryony, or black vine; others
+  //    of convolvulus, with the lily-like half-azure bells; some all white;
+  //    some of momordica — so each was varied. Some of Jove's flammula; of
+  //    smilax… adorned with a white fragrant lily-flower, with a thorny and
+  //    ivy-like leaf; of bittersweet…"
+  static get CYTHERA_CLIMBERS() {
+    // name, flower, second (berry or bell), leaf species for the card
+    return [
+      { name: 'PERICLYMENON',  gloss: 'honeysuckle',            flower: 0xf0e2b4, second: 0xd8a850, leaf: 'myrtle' },
+      { name: 'IASMINVM',      gloss: 'jasmine',                flower: 0xf6f0e2, second: null,     leaf: 'myrtle' },
+      { name: 'CONVOLVVLVS',   gloss: 'bindweed',               flower: 0xf4f2ea, second: null,     leaf: 'ivy' },
+      { name: 'LVPVLVS',       gloss: 'hops',                   flower: 0xc2cf92, second: 0xa8bc78, leaf: 'plane' },
+      { name: 'BRYONIA NIGRA', gloss: 'black bryony, black vine', flower: 0xd8dcc0, second: 0x2a1c22, leaf: 'ivy' },
+      { name: 'CAMPANVLA',     gloss: 'convolvulus, the lily-like half-azure bells', flower: 0x9ab4dc, second: null, leaf: 'ivy' },
+      { name: 'CAMPANVLA ALBA', gloss: 'the same, all white',   flower: 0xf8f6ee, second: null,     leaf: 'ivy' },
+      { name: 'MOMORDICA',     gloss: 'balsam-apple',           flower: 0xe8d488, second: 0xd0501e, leaf: 'plane' },
+      { name: 'FLAMMVLA IOVIS', gloss: "Jove's flammula, clematis", flower: 0xefeadc, second: null, leaf: 'myrtle' },
+      { name: 'SMILAX',        gloss: 'who for love of Crocus made herself Autophoros', flower: 0xf6f4e6, second: 0xc03028, leaf: 'ivy' },
+      { name: 'DVLCAMARA',     gloss: 'bittersweet',            flower: 0x8a5ac0, second: 0xd03020, leaf: 'myrtle' },
+    ];
+  }
+
+  // The openwork itself: "such rhombs, and little squares, and such degenerate
+  // from the quadrangle". Drawn once as an alpha map, because pierced marble is
+  // a hole pattern and holes are what a texture is for -- modelling two hundred
+  // little bars twenty times over would cost a hundred times as much and read
+  // no better at three paces.
+  _latticeTexture() {
+    if (this._latticeTex) return this._latticeTex;
+    const N = 256;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.clearRect(0, 0, N, N);
+    x.strokeStyle = '#efe9dc';
+    x.lineCap = 'square';
+    // The rhombs: a diagonal net. Seven to a panel, which puts each opening at
+    // about a hand's breadth -- pierced marble, not a farm gate. At four to a
+    // panel they were 60 cm across and read as trellis.
+    x.lineWidth = 8;
+    const S = N / 7;
+    for (let i = -7; i <= 14; i++) {
+      x.beginPath(); x.moveTo(i * S, 0); x.lineTo(i * S + N, N); x.stroke();
+      x.beginPath(); x.moveTo(i * S, N); x.lineTo(i * S + N, 0); x.stroke();
+    }
+    // the little squares, "degenerate from the quadrangle": an upright net over
+    // the diagonal one, half as dense
+    x.lineWidth = 6;
+    for (let i = 0; i <= 7; i++) {
+      x.beginPath(); x.moveTo(i * S, 0); x.lineTo(i * S, N); x.stroke();
+      x.beginPath(); x.moveTo(0, i * S); x.lineTo(N, i * S); x.stroke();
+    }
+    // a solid rail top and bottom
+    x.fillStyle = '#efe9dc';
+    x.fillRect(0, 0, N, 16); x.fillRect(0, N - 16, N, 16);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    this._disp.push(t);
+    return (this._latticeTex = t);
+  }
+
+  // One fence on one radius, from r0 out to r1, with its gate at the middle and
+  // its own climber running over it.
+  _cytheraFence(CX, CZ, a, r0, r1, climber, seed) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const H = 2.75;                       // nine feet to the crown of the arch
+    const GATE_W = 2.1;                   // seven feet in the opening
+    const at = (r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
+
+    const white = woodcut ? this._stoneMat
+      : S.mat({ color: 0xf0ebe0, roughness: 0.42, metalness: 0.02 });
+    const red = woodcut ? this._darkStoneMat
+      : S.mat({ color: 0xa8503e, roughness: 0.40, metalness: 0.02 });
+    const openwork = woodcut
+      ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({
+          map: this._latticeTexture(), color: 0xffffff,
+          transparent: true, alphaTest: 0.35, side: THREE.DoubleSide,
+          roughness: 0.45, metalness: 0.02,
+        });
+    if (!woodcut) this._disp.push(openwork);
+
+    // the run is broken in the middle for the gate
+    const mid = (r0 + r1) / 2;
+    const bays = [[r0, mid - GATE_W / 2], [mid + GATE_W / 2, r1]];
+    let pilaster = 0;
+    for (const [b0, b1] of bays) {
+      const n = Math.max(1, Math.round((b1 - b0) / 2.4));   // "the measured placing"
+      for (let i = 0; i < n; i++) {
+        const p0 = b0 + (i / n) * (b1 - b0), p1 = b0 + ((i + 1) / n) * (b1 - b0);
+        const [mx, mz] = at((p0 + p1) / 2);
+        // the panel of openwork, two inches thick
+        const panel = this._m(new THREE.PlaneGeometry(p1 - p0 - 0.16, H - 0.25), openwork,
+          mx, (H - 0.25) / 2 + 0.12, mz, { ry: -a, cast: false, receive: false });
+        panel.material.map && (panel.material.map.repeat = new THREE.Vector2(1, 1));
+        // a pilaster at each joint, white and red alternating
+        for (const pr of (i === 0 ? [p0, p1] : [p1])) {
+          const [px, pz] = at(pr);
+          this._m(new THREE.BoxGeometry(0.19, H, 0.19), pilaster++ % 2 ? red : white,
+            px, H / 2, pz, { ry: -a });
+          this._m(new THREE.BoxGeometry(0.27, 0.1, 0.27), white, px, H + 0.05, pz, { ry: -a, cast: false });
+        }
+      }
+    }
+
+    // ── the gate: seven feet in the opening, nine to the arch ─────────────
+    for (const sr of [-GATE_W / 2, GATE_W / 2]) {
+      const [jx, jz] = at(mid + sr);
+      this._m(new THREE.BoxGeometry(0.26, H, 0.3), white, jx, H / 2, jz, { ry: -a });
+    }
+    const [gx, gz] = at(mid);
+    // the arching of its topmost curve
+    const arch = this._m(new THREE.TorusGeometry(GATE_W / 2, 0.11, 8, 18, Math.PI), white,
+      gx, H - GATE_W / 2 + 0.02, gz, { cast: false });
+    arch.rotation.y = -a + Math.PI / 2;
+    this._m(new THREE.BoxGeometry(GATE_W + 0.7, 0.16, 0.34), white, gx, H + 0.1, gz, { ry: -a, cast: false });
+
+    // ── the climber that serpentines along it ─────────────────────────────
+    const stemMat = woodcut ? this._darkStoneMat : S.mat({ color: 0x4a3b26, roughness: 0.94 });
+    const leafMat = woodcut ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
+      : this._climberLeafMat(climber.leaf);
+    const florMat = woodcut ? S.mat({ tone: -0.03 }) : S.mat({ color: climber.flower, roughness: 0.6 });
+    const berryMat = climber.second
+      ? (woodcut ? S.mat({ tone: -0.01 }) : S.mat({ color: climber.second, roughness: 0.55 }))
+      : null;
+    const leafGeo = this._climbLeafGeo = this._climbLeafGeo || new THREE.PlaneGeometry(0.3, 0.3);
+    const florGeo = this._climbFlorGeo = this._climbFlorGeo || new THREE.SphereGeometry(0.045, 5, 4);
+    const rnd = (i, k) => { const v = Math.sin(i * 59.3 + k * 173.1 + seed * 23.7) * 43758.5453; return v - Math.floor(v); };
+    const span = r1 - r0;
+    const n = Math.round(span * 16);
+    for (let i = 0; i < n; i++) {
+      const t = rnd(i, 1);
+      const r = r0 + t * span;
+      if (Math.abs(r - mid) < GATE_W / 2 - 0.1 && rnd(i, 9) > 0.35) continue;   // thinner over the gate
+      const [lx, lz] = at(r);
+      const off = (rnd(i, 2) - 0.5) * 0.22;
+      const y = 0.15 + rnd(i, 3) * (H - 0.2);
+      const lf = this._m(leafGeo, leafMat, lx + Math.sin(a) * off, y, lz - Math.cos(a) * off,
+        { cast: false, receive: false });
+      lf.rotation.set(rnd(i, 4) * Math.PI, -a + (rnd(i, 5) - 0.5) * 1.1, rnd(i, 6) * Math.PI);
+      if (rnd(i, 7) < 0.3) {
+        this._m(florGeo, florMat, lx + Math.sin(a) * (off + 0.09), y - 0.07, lz - Math.cos(a) * (off + 0.09),
+          { cast: false });
+      } else if (berryMat && rnd(i, 8) < 0.16) {
+        this._m(florGeo, berryMat, lx + Math.sin(a) * (off - 0.09), y - 0.1, lz - Math.cos(a) * (off - 0.09),
+          { cast: false });
+      }
+    }
+    // the stems, running the length of the fence
+    for (const yy of [0.5, 1.5, 2.4]) {
+      const SEGN = Math.max(3, Math.round(span / 1.4));
+      for (let i = 0; i < SEGN; i++) {
+        const p0 = r0 + (i / SEGN) * span, p1 = r0 + ((i + 1) / SEGN) * span;
+        const [ax, az] = at(p0), [bx, bz] = at(p1);
+        const d = new THREE.Vector3(bx - ax, (rnd(i, 12) - 0.5) * 0.3, bz - az);
+        const seg = this._m(new THREE.CylinderGeometry(0.026, 0.026, d.length(), 5), stemMat,
+          (ax + bx) / 2, yy + (rnd(i, 13) - 0.5) * 0.2, (az + bz) / 2, { cast: false });
+        seg.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), d.clone().normalize());
+      }
+    }
+
+    // a plaque at the gate naming what grows on it, since "so each was varied"
+    // is only true if you can tell them apart
+    const [px2, pz2] = at(mid + GATE_W / 2 + 0.55);
+    this._plaque({ main: climber.name, sub: climber.gloss.toUpperCase() },
+      1.5, 0.24, px2, 0.42, pz2, -a + Math.PI / 2, true);
+
+    // you go through the gate, not through the fence
+    for (const [b0, b1] of bays) {
+      const [wx0, wz0] = at(b0), [wx1, wz1] = at(b1);
+      this._wallCol(Math.min(wx0, wx1) - 0.18, Math.max(wx0, wx1) + 0.18,
+                    Math.min(wz0, wz1) - 0.18, Math.max(wz0, wz1) + 0.18);
+    }
+  }
+
+  _climberLeafMat(species) {
+    this._climbMats = this._climbMats || {};
+    if (this._climbMats[species]) return this._climbMats[species];
+    const m = new THREE.MeshStandardMaterial({
+      map: this._leafCardTexture(species),
+      transparent: true, alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88,
+    });
+    this._disp.push(m);
+    return (this._climbMats[species] = m);
+  }
+
+  // ── The Prospect of Cythera ──────────────────────────────────────────────
+  //
+  // Built 2026-09-08, and it is the only map in this world.
+  //
+  // The refusal of a minimap is a decided thing here (INTERFACECHOICES.md), and
+  // GARDENS.md §1 gives it a better reason than the one first offered: Hunt
+  // argues that Poliphilo's *not being able to place himself* is the first
+  // garden experience the book stages. "The extreme precision of each scene …
+  // isolates that particular space and moment; preternaturally clear and
+  // explicit, its larger meaning … can be baffling. Polifilo, like garden
+  // visitors generally, is not therefore able to pace or place himself
+  // appropriately, either in his movement or his thinking."
+  //
+  // With one exception, and Hunt names it as the first of the four things
+  // Cythera does that nowhere else does: **it is surveyed whole, in advance.**
+  // Poliphilo describes the entire topography of the island BEFORE he lands,
+  // and only then explores. "Unlike any route Polifilo has hitherto taken,
+  // these converging paths lead him down axes along which everything falls into
+  // place." Everywhere else in the book he is lost. Here he is oriented.
+  //
+  // So the world hands you the plan exactly once, at the shore, in the boat,
+  // before you land — and never again anywhere else. A rule is only worth
+  // having if its exception means something.
+  //
+  // It is drawn, not diagrammed: a circle in ink and wash, with the twenty
+  // divisions the book constructs on p. 294, the three claustri, the river,
+  // the six terraces of seven steps, and the theatre at the centre.
+  prospectPlan(size = 620) {
+    if (this._prospectURL) return this._prospectURL;
+    const N = size;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    const CX = N / 2, CY = N / 2, R = N * 0.435;
+    const INK = '#2a2018', WASH = '#c9b48a', PAPER = '#efe4cc';
+
+    x.fillStyle = PAPER; x.fillRect(0, 0, N, N);
+    // the sea
+    x.fillStyle = 'rgba(120,150,170,0.20)'; x.fillRect(0, 0, N, N);
+    x.fillStyle = PAPER;
+    x.beginPath(); x.arc(CX, CY, R * 1.02, 0, Math.PI * 2); x.fill();
+
+    const ring = (r, w, col, dash) => {
+      x.beginPath(); x.arc(CX, CY, r, 0, Math.PI * 2);
+      x.strokeStyle = col; x.lineWidth = w;
+      x.setLineDash(dash || []); x.stroke(); x.setLineDash([]);
+    };
+    const band = (r0, r1, fill) => {
+      x.beginPath();
+      x.arc(CX, CY, r1, 0, Math.PI * 2);
+      x.arc(CX, CY, r0, 0, Math.PI * 2, true);
+      x.fillStyle = fill; x.fill('evenodd');
+    };
+
+    // ── the three claustri, each a semitertio of the radius ───────────────
+    band(R * 0.66, R, 'rgba(70,96,52,0.34)');        // the bosco
+    band(R * 0.36, R * 0.66, 'rgba(150,168,96,0.30)'); // the prati
+    band(0, R * 0.36, 'rgba(196,178,120,0.28)');     // the island within the island
+
+    // the river, which roofs itself with a pergola of citrus
+    band(R * 0.355, R * 0.40, 'rgba(120,158,182,0.75)');
+
+    // ── the twenty divisions (our translation p. 294) ─────────────────────
+    // "…this will be the division of the ten-angled figure. These twenty
+    // divisions were, by most noble fences, diversely latticed…"
+    for (let k = 0; k < 20; k++) {
+      const a = k * Math.PI / 10 - Math.PI / 2;
+      x.beginPath();
+      x.moveTo(CX + Math.cos(a) * R * 0.40, CY + Math.sin(a) * R * 0.40);
+      x.lineTo(CX + Math.cos(a) * R, CY + Math.sin(a) * R);
+      x.strokeStyle = k % 5 === 0 ? INK : 'rgba(42,32,24,0.45)';
+      x.lineWidth = k % 5 === 0 ? 2.2 : 1.1;
+      x.stroke();
+      // the gate in the middle of each fence
+      const g = R * 0.72;
+      const ga = a + Math.PI / 20;
+      x.beginPath();
+      x.arc(CX + Math.cos(ga) * g, CY + Math.sin(ga) * g, 2.6, 0, Math.PI * 2);
+      x.fillStyle = PAPER; x.fill();
+      x.strokeStyle = INK; x.lineWidth = 1; x.stroke();
+    }
+
+    // ── the six terraces of seven steps, inside the river ─────────────────
+    for (let t = 1; t <= 6; t++) ring(R * 0.34 - t * R * 0.032, 1, 'rgba(42,32,24,0.42)');
+    // the ring roads
+    ring(R, 2.4, INK);
+    ring(R * 0.66, 1.6, 'rgba(42,32,24,0.7)');
+    ring(R * 0.40, 1.6, 'rgba(42,32,24,0.7)');
+
+    // ── the theatre, and the fountain at its heart ────────────────────────
+    x.beginPath(); x.arc(CX, CY, R * 0.115, 0, Math.PI * 2);
+    x.fillStyle = 'rgba(239,228,204,0.95)'; x.fill();
+    x.strokeStyle = INK; x.lineWidth = 2; x.stroke();
+    ring(R * 0.085, 1, INK); ring(R * 0.055, 1, INK);
+    x.beginPath(); x.arc(CX, CY, R * 0.022, 0, Math.PI * 2);
+    x.fillStyle = INK; x.fill();
+
+    // ── lettering, in the plates' hand ────────────────────────────────────
+    x.textAlign = 'center'; x.fillStyle = INK;
+    const label = (txt, r, a, px) => {
+      x.save();
+      x.translate(CX + Math.cos(a) * r, CY + Math.sin(a) * r);
+      x.font = `${px}px Georgia, serif`;
+      x.fillStyle = 'rgba(239,228,204,0.85)';
+      const w = x.measureText(txt).width;
+      x.fillRect(-w / 2 - 4, -px * 0.78, w + 8, px * 1.05);
+      x.fillStyle = INK;
+      x.fillText(txt, 0, 0);
+      x.restore();
+    };
+    // The title sits outside the circle -- the plan is 87% of the plate and
+    // there is no room inside it for anything but the four names.
+    x.font = `${Math.round(N * 0.034)}px Georgia, serif`;
+    x.fillText('CYTHERA', CX, N * 0.040);
+    x.font = `italic ${Math.round(N * 0.0185)}px Georgia, serif`;
+    x.fillStyle = 'rgba(42,32,24,0.72)';
+    x.fillText('three miliaria about  ·  the twenty divisions  ·  our p. 294', CX, N * 0.058);
+
+    // Four names, each on its own bearing so none can collide with another.
+    const F = Math.round(N * 0.021);
+    label('IL BOSCO',     R * 0.84, -Math.PI * 0.72, F);   // upper left
+    label('I PRATI',      R * 0.53, -Math.PI * 0.28, F);   // upper right
+    label('THE RIVER',    R * 0.375, Math.PI * 0.28, F);   // lower right
+    label('THE TERRACES', R * 0.225, Math.PI * 0.78, F);   // lower left
+    label('THE THEATRE',  R * 0.115 + N * 0.038, Math.PI / 2, F);
+
+    // the compass of the crossing: you come from the north, over the water
+    x.fillStyle = INK;
+    x.font = `${Math.round(N * 0.024)}px Georgia, serif`;
+    x.fillText('▲', CX, N * 0.975 - N * 0.030);
+    x.font = `italic ${Math.round(N * 0.0175)}px Georgia, serif`;
+    x.fillStyle = 'rgba(42,32,24,0.75)';
+    x.fillText('you come this way', CX, N * 0.985);
+
+    this._prospectURL = c.toDataURL('image/png');
+    return this._prospectURL;
+  }
+
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
 
   _buildDoorsWall() {
@@ -8263,7 +8617,13 @@ export class HPWorldScene {
     const lit = S.key !== 'woodcut';
     const CX = 0, CZ = -150, R = 50;
     const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
-    const STEP = Math.PI / 6;                       // twelve radial roads
+    // TWENTY, not twelve (2026-09-08). Our p. 294 does not merely assert the
+    // number -- it gives the classical golden-section construction for
+    // inscribing a decagon in a circle and then says "these twenty divisions".
+    // Segre reads the same twenty as the bosco's twenty compartments, each a
+    // different plantation, and his 240 corner fruit trees are 4 x 20 x 3
+    // orders of meadow. Everything radial on this island is therefore twenty.
+    const STEP = Math.PI / 10;                      // twenty radial roads
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
 
     // Sand rim and sward
@@ -8284,8 +8644,8 @@ export class HPWorldScene {
     // river); the other eight stop at the river's outer bank.
     const isleTrack = lit ? S.mat({ color: 0x6a5a40, roughness: 0.92 }) : S.mat({ tone: 0.03, rim: 0 });
     if (lit) this._dress(isleTrack, this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 }), 0.3);
-    for (let k = 0; k < 12; k++) {
-      const a = k * STEP, cardinal = k % 3 === 0;
+    for (let k = 0; k < 20; k++) {
+      const a = k * STEP, cardinal = k % 5 === 0;
       const r0 = cardinal ? 7.6 : 22.2, r1 = 49;
       const [x, z] = pos(a, (r0 + r1) / 2);
       this._m(new THREE.PlaneGeometry(2.6, r1 - r0), isleTrack, x, 0.09, z,
@@ -8299,8 +8659,10 @@ export class HPWorldScene {
     // species our translation names in the bosco, pp. 317–318 — cypress, pine,
     // juniper, olive, laurel, arbutus, palm, orange — and the plane, oak, elm
     // and citron it names elsewhere on the island.
-    const BOSCO = ['cypress', 'pine', 'juniper', 'olive', 'laurel', 'arbutus', 'palm', 'orange', 'plane', 'oak', 'elm', 'citron'];
-    for (let k = 0; k < 12; k++) {
+    const BOSCO = ['cypress', 'pine', 'juniper', 'olive', 'laurel', 'arbutus', 'palm', 'orange',
+                   'plane', 'oak', 'elm', 'citron', 'fir', 'beech', 'cedar', 'myrtle',
+                   'fig', 'lemon', 'willow', 'apple'];
+    for (let k = 0; k < 20; k++) {
       const a0 = k * STEP;
       for (let t = 0; t < 5; t++) {
         const a = a0 + (0.14 + rnd(k * 7 + t, 1) * 0.72) * STEP;
@@ -8315,12 +8677,22 @@ export class HPWorldScene {
       this._tree(mx, mz, 0.55, 'myrtle');
     }
 
+    // ── The twenty fences (our p. 294) ────────────────────────────────────
+    // One on each half-radius, so each compartment has a road down its middle
+    // and a marble lattice on either hand, with a gate in each. Twenty fences,
+    // twenty climbers, the book's own list in the book's own order.
+    const CLIMB = HPWorldScene.CYTHERA_CLIMBERS;
+    for (let k = 0; k < 20; k++) {
+      this._cytheraFence(CX, CZ, (k + 0.5) * STEP, 36.0, 48.4,
+        CLIMB[k % CLIMB.length], k);
+    }
+
     // ── Middle claustro: the prati ────────────────────────────────────────
     // Flowery lawns, each with a fountain or a topiary at its centre and
     // fruit trees about it; bounded inside by the bitter-orange espalier.
     // (chords short enough to leave every radial road its full 2.6 u of way)
-    for (let i = 0; i < 24; i++) {
-      const a = (i + 0.5) * (Math.PI / 12);
+    for (let i = 0; i < 20; i++) {
+      const a = (i + 0.5) * STEP;
       const [x, z] = pos(a, 34.2);
       this._hedge(x, 0.55, z, 6.2, 1.05, 0.5, { ry: -a + Math.PI / 2 });
       this._circleCol(x, z, 2.2);
@@ -8331,7 +8703,7 @@ export class HPWorldScene {
           ox, 1.22, oz, { cast: false });
       }
     }
-    for (let k = 0; k < 12; k++) {
+    for (let k = 0; k < 20; k++) {
       const am = k * STEP + STEP / 2;
       const [cx, cz] = pos(am, 27.5);
       if (k % 2 === 0) {
@@ -8340,7 +8712,8 @@ export class HPWorldScene {
         // two towers and an arch (#117), the mushroom (#120), the three
         // peacocks on their altar-vase (#127), the ring-tree on its altar
         // (#116/#125). Six lawns, so each figure appears once or twice.
-        this._topiary(['man', 'mushroom', 'peacocks', 'ring', 'mushroom', 'man'][k / 2], cx, cz, 0.95);
+        this._topiary(['man', 'mushroom', 'peacocks', 'ring', 'mushroom',
+                       'man', 'ring', 'peacocks', 'mushroom', 'ring'][k / 2], cx, cz, 0.95);
       } else {
         const pool = this.cast.props.pool(1.0);
         pool.position.set(cx, 0.07, cz);
@@ -9268,6 +9641,10 @@ export class HPWorldScene {
       // nearest of the drawn forms, and it stands taller and narrower than a
       // plane, which is the difference the walk needs.
       ash:      { leaf: 'lance',   crown: [1.7, 2.1, 1.7],   trunk: [3.2, 0.15], bark: 0x8a8274, dark: 0x2a4c1c, light: 0x5e8a34, n: 32, top: 0.95, boughs: 4 },
+      // Ivy, for the climbers of Cythera's twenty fences (our p. 294) -- and
+      // the book names it often enough elsewhere. Never planted as a tree;
+      // this entry exists so _leafCardTexture('ivy') has a leaf to draw.
+      ivy:      { leaf: 'lobed',   crown: [0.7, 0.6, 0.7],   trunk: [0.4, 0.05], bark: 0x4a3a26, dark: 0x16300f, light: 0x365c22, n: 20, top: 0.5 },
       plane:    { leaf: 'palmate', crown: [2.2, 1.9, 2.2],   trunk: [2.8, 0.17], bark: 0x9a8a6c, dark: 0x2c5a1c, light: 0x6a9a3a, n: 34, top: 0.95, boughs: 4, mottled: true },
       oak:      { leaf: 'lobed',   crown: [2.1, 1.8, 2.1],   trunk: [2.2, 0.20], bark: 0x3e2e1e, dark: 0x22421a, light: 0x4a7a2c, n: 34, top: 0.95, boughs: 5 },
       beech:    { leaf: 'ovate',   crown: [1.7, 2.1, 1.7],   trunk: [2.4, 0.14], bark: 0x8a8070, dark: 0x2a4c1a, light: 0x5c8c30, n: 30, top: 0.95, boughs: 3 },
@@ -9638,8 +10015,8 @@ export class HPWorldScene {
     const rr = Math.hypot(dx, dz);
     if (rr > 48.6 || rr < 22.2) return 0;
     let d = Math.min(2, 48.6 - rr, rr - 22.2);
-    // radial roads every 30°
-    const STEP = Math.PI / 6;
+    // radial roads every 18 degrees -- the book's twenty divisions (p. 294)
+    const STEP = Math.PI / 10;
     let a = Math.atan2(dz, dx) % STEP;
     if (a < 0) a += STEP;
     const arc = Math.min(a, STEP - a) * rr;

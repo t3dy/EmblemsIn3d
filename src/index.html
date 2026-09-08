@@ -365,6 +365,32 @@
     .tp-voice-gloss { margin-top: 0.45rem; font-size: 0.72rem; color: #a09070; line-height: 1.65; }
     .tp-voice-silent { background: none; opacity: 0.85; }
     .tp-voice-silent .tp-voice-occ { font-style: italic; }
+    /* ── The Prospect of Cythera ─────────────────────────────────
+       The only map in this world, and it appears in one place. See
+       HPWorldScene.prospectPlan and GARDENS.md 6. */
+    #prospect {
+      position: fixed; inset: 0; z-index: 60; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(6,5,3,0.72); backdrop-filter: blur(2px);
+    }
+    #prospect.on { display: flex; }
+    #prospect .pr-card {
+      max-width: min(720px, 92vw); max-height: 92vh; overflow: auto;
+      background: #0d0a06; border: 1px solid #4a3a1e;
+      padding: 1.4rem 1.5rem 1.2rem; text-align: center;
+      box-shadow: 0 10px 60px rgba(0,0,0,0.7);
+    }
+    #prospect .pr-kicker { font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; color: #6a5a3a; }
+    #prospect h2 { font-size: 1.25rem; font-weight: normal; letter-spacing: 0.1em; color: #d8a24a; margin: 0.35rem 0 0.5rem; }
+    #prospect img { width: min(520px, 74vw); display: block; margin: 0.4rem auto 0.7rem; border: 1px solid #3a2c16; }
+    #prospect .pr-note { font-size: 0.78rem; color: #b0a084; line-height: 1.75; text-align: left; max-width: 520px; margin: 0 auto; }
+    #prospect .pr-note em { color: #d8c8a4; }
+    #prospect .pr-cite { font-size: 0.64rem; color: #7a6a4a; letter-spacing: 0.04em; margin-top: 0.7rem; text-align: left; max-width: 520px; margin-left: auto; margin-right: auto; }
+    #prospect button {
+      margin-top: 1rem; font-family: inherit; font-size: 0.76rem; letter-spacing: 0.08em;
+      background: none; border: 1px solid #6a5426; color: #d8a24a; padding: 0.45rem 1.2rem; cursor: pointer;
+    }
+    #prospect button:hover { background: rgba(216,162,74,0.12); }
     #tour-panel .tp-notes { display: flex; flex-direction: column; gap: 0.5rem; }
     #tour-panel .tp-note { border-left: 3px solid; padding: 0.4rem 0 0.4rem 0.8rem; background: rgba(255,255,255,0.018); }
     #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
@@ -800,6 +826,30 @@
     <a class="wn-link" href="../research/poliphilo.html" title="Every utterance of Poliphilo, catalogued">Poliphilo</a>
   </div>
 
+  <!-- The one map in this world; see HPWorldScene.prospectPlan -->
+  <div id="prospect" onclick="if(event.target===this)window.hpProspect(false)">
+    <div class="pr-card">
+      <div class="pr-kicker">Before you land</div>
+      <h2>The Prospect of Cythera</h2>
+      <img id="pr-plan" alt="A drawn plan of the island of Cythera"/>
+      <p class="pr-note">
+        Everywhere else in this dream you are lost, and that is the design: Hunt argues that
+        <em>not being able to place yourself</em> is the first garden experience the book stages,
+        which is why there is no map anywhere in this world. Cythera is the exception, and the
+        book makes it one: Poliphilo describes the whole topography of the island
+        <em>before he lands</em>, and only then explores it. Here, and only here, everything
+        falls into place.
+      </p>
+      <p class="pr-cite">
+        Twenty divisions, by the construction the book itself gives (our translation p. 294).
+        Three concentric <em>claustri</em>, each a third of the radius; the river roofed with a
+        pergola of citrus; six terraces of seven steps; the theatre at the centre.
+        After A. Segre and J. D. Hunt — see GARDENS.md §5–6.
+      </p>
+      <button onclick="window.hpProspect(false)">Land &rarr;</button>
+    </div>
+  </div>
+
   <div id="ui">
     <div id="emblem-hud">
       <div class="stage-badge" id="hud-stage">HYPNEROTOMACHIA</div>
@@ -987,6 +1037,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=268"></script>
+  <script type="module" src="./main.js?v=272"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=183';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=187';
 import { VaultsScene } from './scenes/VaultsScene.js?v=3';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
@@ -402,6 +402,8 @@ const NOTE_TYPES = {
 // The commentary lenses: each colour-coded flavour can be toggled on/off, and the
 // choice is sticky. `null` means "all on" (the default); once the reader touches a
 // chip we track an explicit enabled set.
+try { if (localStorage.getItem('hp_prospect')) state.prospectSeen = true; } catch (_) {}
+
 let _flavorsOn = (() => {
   try {
     const s = localStorage.getItem('hp_flavors');
@@ -997,6 +999,14 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   scene.onStation = (st) => {
     if (st) {
       showHPHUD(st.name, st.folio);
+      // The one map in this world, shown once, at the shore, before the
+      // crossing. Everywhere else being lost is the point; Cythera is the
+      // exception because the book makes it one. See GARDENS.md 6.
+      if (st.key === 'cythera' && !state.prospectSeen) {
+        state.prospectSeen = true;
+        try { localStorage.setItem('hp_prospect', '1'); } catch (_) {}
+        window.hpProspect(true);
+      }
       showWalkNotes(st);                    // the commentary meets you at the wonder
     } else {
       showHPHUD('The Dream Garden of Poliphilo', null);
@@ -1549,6 +1559,22 @@ function animate() {
 // Tuning handles.
 //   hpPigment(x)  0..1 -- how far colours are pulled to the shelf of 1499
 //   hpAir({...})  the fog that carries Leonardo's rule: colour and density
+// The Prospect of Cythera: the only map in this world. It raises itself once,
+// at the shore, and after that it is yours to call up whenever you like --
+// hpProspect() with no argument toggles it.
+window.hpProspect = (show) => {
+  const el = document.getElementById('prospect');
+  if (!el) return false;
+  const sc = state.activeScene;
+  if (show !== false && sc && sc.prospectPlan) {
+    const img = document.getElementById('pr-plan');
+    if (img && !img.src) img.src = sc.prospectPlan();
+  }
+  const on = show === undefined ? !el.classList.contains('on') : !!show;
+  el.classList.toggle('on', on);
+  return on;
+};
+
 window.hpPigment = (x) => {
   if (x != null) aerial.uniforms.uPigment.value = x;
   return { pigment: aerial.uniforms.uPigment.value, enabled: aerial.enabled };
