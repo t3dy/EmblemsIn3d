@@ -28,6 +28,7 @@ import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { RollUp } from '../systems/RollUp.js?v=5';
 import { Masonry } from '../systems/Masonry.js?v=7';
+import { buildLitter } from '../systems/Litter.js?v=5';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -425,6 +426,16 @@ export class HPWorldScene {
     // he meets them: birds seen and not heard, seats of flowering turf, and the
     // fume that is the only way scent can reach a screen.
     if (lit) { this._buildBirds(); this._buildTurfSeats(); this._buildFumes(); }
+    // ROLLING MODE ONLY: the small Renaissance things lying about the floors.
+    // Three thousand cups, urns, combs, sherds, sickles and beehives, every one
+    // of them a noun counted out of the two translations, and every one of them
+    // zoned to the station it belongs to. Nothing of this is built for the walk.
+    // See systems/Litter.js.
+    if (this._wantRoll) {
+      const n = buildLitter(this, HP_STATIONS);
+      console.info('[litter]', n.pieces, 'objects of', n.kinds, 'kinds');
+    }
+
     // last, because it has to see every tree that was planted
     if (lit) this._buildShadeMap();
 
@@ -552,6 +563,8 @@ export class HPWorldScene {
     if (this._wantRoll) {
       const n = this.masonry.resolve(this.rollables);
       console.info('[masonry]', this.masonry.structures.length, 'structures,', n, 'stones');
+      const g = this._resolveRollGroups();
+      if (g) console.info('[litter]', g, 'objects censused whole');
     }
   }
 
@@ -4316,13 +4329,53 @@ export class HPWorldScene {
       return;
     }
     if (r <= 0.004) return;
-    this.rollables.push({
+    const e = {
       name: this._rollName(mesh, r), r, c,
       src: mesh,                                 // how Masonry.resolve finds it
+      group: (mesh.userData && mesh.userData.rollGroup) || null,
       mesh: merged ? null : mesh, merged, start, count,
       mat: mesh.material, geo: merged ? null : null,
       taken: false,
-    });
+    };
+    this.rollables.push(e);
+    if (e.group) {
+      const g = (this._rollGroups = this._rollGroups || new Map());
+      let b = g.get(e.group);
+      if (!b) g.set(e.group, b = []);
+      b.push(e);
+    }
+  }
+
+  // A cup is a bowl and a foot; a lute is a body, a soundboard, a neck and a
+  // pegbox. The census sees meshes, so without this the ball would eat the
+  // soundboard and leave the neck lying on the grass, and the BITE test would
+  // measure the longest stick instead of the instrument.
+  //
+  // So: every mesh of a littered object carries the same `rollGroup` (see
+  // systems/Litter.js), and afterwards each group is given ONE size and ONE
+  // centre — the union of its parts — which every member then shares. The ball
+  // meets the object, and takeRollable hands back the whole of it.
+  _resolveRollGroups() {
+    if (!this._rollGroups) return 0;
+    const min = new THREE.Vector3(), max = new THREE.Vector3(), v = new THREE.Vector3();
+    for (const [, parts] of this._rollGroups) {
+      min.set(Infinity, Infinity, Infinity);
+      max.set(-Infinity, -Infinity, -Infinity);
+      for (const e of parts) {
+        const src = e.src, g = src.geometry;
+        if (!g.boundingBox) g.computeBoundingBox();
+        const bb = g.boundingBox;
+        for (const [cx, cy, cz] of [[bb.min.x, bb.min.y, bb.min.z], [bb.max.x, bb.max.y, bb.max.z],
+                                    [bb.min.x, bb.max.y, bb.max.z], [bb.max.x, bb.min.y, bb.min.z]]) {
+          v.set(cx, cy, cz).applyMatrix4(src.matrixWorld);
+          min.min(v); max.max(v);
+        }
+      }
+      const r = ((max.x - min.x) + (max.y - min.y) + (max.z - min.z)) / 6;
+      v.addVectors(min, max).multiplyScalar(0.5);
+      for (const e of parts) { e.r = r; e.c.copy(v); e.parts = parts; }
+    }
+    return this._rollGroups.size;
   }
 
   // What a thing is called. Katamari's whole charm is that the game knows the
@@ -4375,13 +4428,31 @@ export class HPWorldScene {
   // costs one small write into the buffer and no draw calls at all.
   takeRollable(e) {
     if (e.taken) return null;
+    // A littered object comes off whole: its parts were censused together and
+    // they leave together, in one holder, keeping the shape they had.
+    if (e.parts && e.parts.length > 1) {
+      const g = new THREE.Group();
+      for (const q of e.parts) {
+        if (q.taken) continue;
+        q.taken = true;
+        const piece = this._takeOne(q, e.c);
+        if (piece) g.add(piece);
+      }
+      return g.children.length ? g : null;
+    }
     e.taken = true;
+    return this._takeOne(e, e.c);
+  }
+
+  _takeOne(e, centre) {
     // …and the building it was part of finds out. Everything above the stone
     // settles into the gap; take enough and the whole thing comes down.
     if (e.course) this.masonry.take(e);
+    const c = centre || e.c;
     if (e.mesh) {
+      // Re-centre on the group's centre, which for a single piece IS its own.
       e.mesh.removeFromParent();
-      e.mesh.position.sub(e.c);        // re-centre on the thing itself
+      e.mesh.position.sub(c);
       const g = new THREE.Group();
       g.add(e.mesh);
       return g;
@@ -4395,9 +4466,9 @@ export class HPWorldScene {
       const it = a.itemSize;
       const arr = new Float32Array(e.count * it);
       for (let i = 0; i < e.count * it; i++) arr[i] = a.array[e.start * it + i];
-      if (key === 'position') {                       // centre it on itself
+      if (key === 'position') {                       // centre it on the object
         for (let i = 0; i < e.count; i++) {
-          arr[i * 3] -= e.c.x; arr[i * 3 + 1] -= e.c.y; arr[i * 3 + 2] -= e.c.z;
+          arr[i * 3] -= c.x; arr[i * 3 + 1] -= c.y; arr[i * 3 + 2] -= c.z;
         }
       }
       out.setAttribute(key, new THREE.BufferAttribute(arr, it));

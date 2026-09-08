@@ -74,6 +74,27 @@ and **the hedges' silhouette** are all built. Still open:
   representations"* (p. 114). This needs no new geometry — it needs the carved nymphs of the
   frieze and the living nymphs in the water composed into **one view**, at one scale, in one
   light, or the sentence cannot happen. A camera study.
+### 0h. The litter — what a second pass would add
+`systems/Litter.js`, 2026-09-08: 8 976 objects of 72 kinds, zoned by station,
+Roll Up only. Open:
+
+- **Nothing is inside anything.** A chest is a solid box, a basket is an open
+  cylinder with nothing in it, a quiver has three arrows modelled into it rather
+  than three arrows you could take. Eating a basket and finding the fruit still
+  standing where it stood would be the genre's own joke.
+- **The placement only avoids `walls`.** It does not avoid water, so a cup can
+  sit in the bottom of a fountain, and it does not avoid the colliders, so a
+  sherd can be inside a hedge. Both are arguably fine; the water is not.
+- **Twelve stations have no zone list** (`vaults`, `wood` beyond the nuts, the
+  bridges, the shore). They get only the everywhere-dust.
+- **The catalogue could go on.** The noun count in the scratchpad has more that
+  are attested and unbuilt: thyrsus, caduceus, sceptre, cushion, carpet, napkin,
+  fan, broom, spade, dagger, horn, cymbal, ladder, plough, bucket, anvil. Each is
+  ten lines.
+- **No object is ever more than one material deep in colour.** The palette is
+  nineteen materials and every cup in the world is the same silver. Two or three
+  tints per material, chosen per piece, would cost nothing and break the sameness.
+
 ### 0g. What is left of the masonry
 Columns are drums; the Great Portal's piers, the Temple of Venus's eight piers
 and the Planetary Palace's hall wall are ashlar; the temple's cupola and the

@@ -196,6 +196,10 @@ scripts/                export_for_3d.py, build_translation_page.py, cut_figures
   new building modelled as one big `BoxGeometry` — or a new arch modelled as one torus — is
   invisible to Roll Up (the census drops anything over 6 m) and cannot fall. `scene._monoliths`
   lists everything the census rejected for being too big, which is the ledger to check.
+- **A non-indexed geometry poisons its whole draw-call bucket.** `_mergeInto` wants a bucket
+  all indexed or all not; one bare `OctahedronGeometry` among the red things cost 500 draw
+  calls and silently lost every object that used it. `this._indexed(geo)` fixes it, and every
+  `PolyhedronGeometry` — dodecahedron, octahedron, icosahedron — needs it.
 - **An alpha-TESTED cutout must not be `transparent: true`.** `_mergeInto` skips transparent
   materials, so a leaf card or a lattice panel marked transparent is quietly exiled from the
   draw-call merge — and stays its own draw call, one per leaf. The foliage added on 2026-09-07/08

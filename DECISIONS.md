@@ -2,6 +2,63 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — The floors are littered, in Roll Up only, and every object is in the book
+
+Ted: *"we are going to want tiny small and medium Renaissance objects to litter
+the floors in the rolling mode only so there are lots of small things to roll
+up."*
+
+**`src/systems/Litter.js`**, and **8 976 objects of 72 kinds** — 6 561 tiny,
+1 852 small, 525 medium — built only when the scene is asked for
+`{ rollup: true }`. The walk is untouched; the ordinary garden is not carpeted in
+dropped cutlery.
+
+**Every object is in the book, and the catalogue was mined, not imagined.** The
+method was the project's own: count concrete portable nouns across the two
+translations this repo can legally read — Dallington 1592 for chapters I–XVI and
+our own CC0 text for XVII–XXXVIII — and keep what is actually there. Each kind
+carries that count as its `src`. So the garden is littered with urns (Dallington
+67, ours 193), cups (38 / 373), lamps (12 / 53), torches (8 / 58), mirrors
+(1 / 84), garlands and chaplets (22 / 15 and 0 / 12), quivers (0 / 22), harps
+(43 / 28), sandals (2 / 20), dice (3 / 8), pearls (42 / 61) and beehives
+(Dallington 15) — and with no barrels, no bottles and no candlesticks, because
+the book has none.
+
+**And every object is where it belongs**, which is the joke of the mode and half
+its use: **you can tell where you are by what you are eating.** The bath of the
+five sense-nymphs is littered with combs, mirrors, phials, casting bottles and
+sandals — their own attributes. The Queen's court has platters, knives, spoons
+and salt-cellars. The chess court has dice. The Polyandrion has urns, potsherds,
+grave-lamps and a chisel. The Great Portal has a mason's chisels, mallets,
+trowels, plumb-bobs and compasses. The fruitful fields have sickles, rakes and
+beehives of straw. Treviso has books, scrolls and an inkhorn. Cythera has arrows,
+quivers, chaplets and oars.
+
+Four things that had to be got right:
+
+- **An object is one thing, not a heap of parts.** The census works per mesh, so
+  the first pass would have had the ball eat a lute's soundboard and leave the
+  neck lying on the grass — and the bite test measured the longest stick instead
+  of the instrument. Every mesh of a piece now carries the same `rollGroup`, and
+  `_resolveRollGroups` gives each group one size and one centre, the union of its
+  parts. `takeRollable` hands back the whole of it in one holder.
+- **The bands are drawn at their own scale and in their own proportion.** Medium
+  things are set up by three-quarters — an urn modelled at 30 cm reads as a toy
+  — and a station is filled by band (55 / 30 / 15) rather than by picking evenly
+  from its list, so a place whose list is mostly small things still gets its
+  share of big ones. Nothing is quite the size of the thing beside it.
+- **A third of them have fallen over.** Litter that all stands bolt upright reads
+  as a shop display; a cup on its side reads as a cup somebody put down.
+- **One bare octahedron cost five hundred draw calls.** `OctahedronGeometry` is
+  not indexed, and the merger wants a bucket all indexed or all not — so the
+  single gem shape left *every red thing in the world* unmerged, and lost the gems
+  besides. Indexed, and the whole litter costs **34 extra meshes** and no new draw
+  calls. (This is the same trap ROUTER.md already records for `transparent: true`.)
+
+Density: about one object per square metre and a half. The first pass was one per
+six, which reads as a tidy garden with something dropped in it rather than as a
+floor to roll up.
+
 ## 2026-09-08 — The buildings are made of stones, and taking one out has consequences
 
 Ted: *"we need to make sure that the buildings are made from blocks or other
