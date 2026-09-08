@@ -28,6 +28,9 @@ translation of XVII–XXXVIII; the 1592 spellings are given where they differ.
 | **Apple, pear, plum** | the prati's corner fruit trees, 240 in all (Segre); and the orchard of second nature | our pp. 326–330 |
 | **Elm and vine together** (*arbustum*) | the worked countryside — "towgh Elmes beloued of the fruitfull vines" | 1592 l. 625; Rhizopoulou 2016 on the arboricultural economy |
 | **Jasmine, three sorts** — red, yellow, white | the arbour where he first sees Polia | 1592 p. 200; Rhizopoulou Table 1 (g2′, i3, s7′, y1; p5, g3; g3′) |
+| **Plane and ash**, laced with **honeysuckle, woodbine and hop** | the shaded walk out of the vaults | 1592 p. 92 |
+| **Polypody, hart's-tongue, black hellebore** — the *umbriphilous* herbs | under that walk, and nowhere else: they can live only in its shade | 1592 p. 92 |
+| **Box** (*Buxus*) as a leaf, not only a mass | the fringe on every hedge in the world | — |
 | **Box** (*boxe*) | every hedge, knot and topiary | 97 hits; GARDENS.md §5 |
 | **Willow, poplar** | by water | our p. 312 |
 | **Rose, jasmine, ivy, vine** | the pergolas and Polia's garden | passim |
@@ -117,6 +120,13 @@ The woodcut register keeps the massed silhouette (ink wants a shape, not leaves)
   joined `SPECIES` for it.
 - **The jasmine arbour — built 2026-09-07** (`_buildJasmineArbour`), replacing
   the flat-slab pergola at Polia's garden.
+- **The shaded walk — built 2026-09-08** (`_buildShadedWalk`): plane and ash in two rows, three
+  climbers swagged tree to tree as continuous cords (a vine is a cord, not a row of beads), a
+  floor of leaf litter, and the three shade-herbs. `ash` joined `SPECIES`; `polypody`,
+  `hartstongue` and `hellebore` joined `HERBS`.
+- **Hedges — built 2026-09-08** (`_hedgeFringe`, `_hedgeFringeArc`, `_hedge`): a box-leaf card
+  fringe standing proud of the box, so a hedge has a clipped, leafy edge instead of a smooth
+  face. `box` joined `SPECIES` for its leaf.
 - Topiary exists but is not worked from the specific clipped forms the 1499 plates show
   (the peacocks-on-an-altar-vase figure is catalogued and unbuilt).
 - No seasonal or diurnal variation in planting colour.

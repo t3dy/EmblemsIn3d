@@ -2,6 +2,71 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Hedges, rills, the shaded walk, and four wrong guesses about a white blob
+
+Working the standing queue down. Three builds and one bug, and the bug is the interesting part.
+
+**Hedges got a silhouette.** Box is the commonest single material in this world — every knot,
+every parterre, every rampart, every field boundary — and it was a smooth green solid with a
+mottled texture on it. A texture is not what makes a hedge read as a hedge. What reads is the
+**edge**: a clipped box has a fuzzy rim of half-cut twigs where the shears went, and light
+catches individual leaves standing proud of the mass. So the box stays — it is the body, and it
+is what the collider and the shadow want — and `_hedgeFringe` scatters box-leaf cards over its
+visible faces, standing a few centimetres off. `_hedgeFringeArc` does the same round a circle,
+for the labyrinth's seven banks, Cythera's rampart and its terrace kerbs. `box` joined
+`SPECIES` so `_leafCardTexture` can draw the leaf, and `_hedge()` builds and dresses in one
+call, so a new hedge is never a bare box again.
+
+**The rills (Dallington p. 196).** One sentence carries the entire water programme of an
+Italian garden, and this world had only the fountains and the wild stream:
+
+> *"Issuing and sending foorth in diuers places small streames of water, pyppling and slyding
+> downe vpon the Amber grauell in theyr crooking Channels heere and there, by some suddaine fall
+> making a still continued noyse, to great pleasure moystning the open fieldes, and making the
+> shadowed places vnder the leaffye Trees, coole and fresh."*
+
+Every clause is a specification. *Crooking channels*: they wind, and they are **cut**, with a
+kerb, unlike the wild stream in the wood which merely lies on the ground. *Amber gravel*: the
+bed is a warm ochre and it is what you actually see, because the water is two inches deep. *A
+suddaine fall*: each has a lip, which is the only reason a rill this small makes any sound —
+and since the site is silent, the fall is built to be **seen** making its noise, by the same
+rule as the birds. **The first siting ran all three straight through the Three Doors wall**,
+which occupies z 10.6–13.4 clear across the world; they were moved to the open band south of
+the elephant plaza.
+
+**The shaded walk (Dallington p. 92).** Plane and ash in two rows, laced with honeysuckle,
+woodbine and hop, over a floor of leaf litter, with the *umbriphilous* herbs the same sentence
+names growing along it — polypody, hart's-tongue and black hellebore, which can live nowhere
+else. `ash` joined `SPECIES`; the three herbs joined `HERBS`. The climbers were beads on a
+string until the swag was rebuilt as a chain of short cylinders laid along the catenary: **a
+vine is a cord, not a row of beads.** The walk registers with the shade map as a *line* rather
+than a set of pools, because laced trees throw continuous shade — that is what makes it a walk
+and not an avenue.
+
+**And the white blob.** A soft blown highlight had been sitting in the bottom of nearly every
+screenshot for two days, and I had been treating it as a quirk of the preview pane. It is not:
+it is the fountains' water. The mirror finish Ted asked for on 2026-09-06 ("fountains that look
+like real water") was very nearly a *perfect* mirror — roughness 0.06, ripples at half depth —
+so at grazing angles, which is how you see water from a 1.7 m eye, the sun's reflection stopped
+being a glitter path and became **a solid white sheet** across the surface, spilling onto the
+bank beside it.
+
+It took four wrong guesses to find, and the sequence is worth recording because each was
+plausible: the bloom threshold (raised it — no change); the environment intensity and ground
+roughness (patched 82 large meshes — no change); the meadow shader's view-dependent back-light
+(zeroed it — no change); the particle streams (hid every `Points` in the scene — no change, and
+they came back the next frame anyway because `ParticleStream.update` sets `visible` from
+`active`). **A raycast into the bright pixels named it in one call**, which is what I should
+have done first. The fix is faithful rather than a suppression: a real sun path on water is
+*broken by the ripples into glitter*, so the ripples got twice the depth and the finish a little
+tooth. It is still a mirror.
+
+**One thing measured and found innocent.** Now that shade is baked, the tree canopies' shadow
+casting looked like a free saving. It is not worth taking: turning off every alpha-tested
+leaf-card caster saved **19 draw calls out of 1539**, inside the timing noise. The frame's
+~1500 calls come from somewhere else, and nobody has looked; that is in `NEXTSTEPS.md` now
+rather than guessed at here.
+
 ## 2026-09-07 — Aerial perspective and the pigment shelf of 1499
 
 Ted asked me to search for rendering methods for Renaissance art and environments that I might

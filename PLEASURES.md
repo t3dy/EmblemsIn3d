@@ -159,7 +159,18 @@ He is the butt of the joke and he laughs; that is the *giochi d'acqua* exactly a
 d'Este or Pratolino meant them.
 
 **Built:** the jets, the basins, the stream on its gravel bed, the trick step.
-**Still to build:** the rills of p. 196 — water in cut channels crossing the walks.
+
+→ **The rills, built 2026-09-08** (`_buildRills`). Every clause of that sentence is a
+specification and all of them are in the build. *Crooking channels* — they wind, and they are
+**cut**, with a kerb, unlike the wild stream in the wood which merely lies on the ground.
+*Amber gravel* — the bed is a warm ochre and it is what you actually see, because the water is
+two inches deep. *A suddaine fall* — each has a lip in it, which is the only reason a rill this
+small makes any sound at all; the site is silent, so the fall is built to be **seen** making
+its noise (a white break and a splash), by the same rule as the birds. *Moystning the open
+fieldes* — they cross open sward, not paving, and the bank is greener and wetter than the field
+around it. The first siting ran them straight through the Three Doors wall, which occupies
+z 10.6–13.4 clear across the world; they were moved to the open band south of the elephant
+plaza.
 
 ---
 
@@ -254,7 +265,43 @@ Two, and both matter.
 | 2 | **Birds** — in the canopies and over the garden, seen not heard | **built 2026-09-07** |
 | 3 | **Repose** — turf seats and flowery banks | **built 2026-09-07** |
 | 4 | **Visible fragrance** — fume from the censers | **built 2026-09-07** |
-| 5 | **Rills** — water in cut channels over amber gravel, p. 196 | open |
-| 5b | **The shaded walk of p. 92** — planes and ashes laced with honeysuckle, woodbine and hop | open |
+| 5 | **Rills** — cut channels, amber gravel, a lip and a fall, p. 196 | **built 2026-09-08** |
+| 5b | **The shaded walk of p. 92** — plane and ash laced with honeysuckle, woodbine and hop, over a floor of leaf litter, with the umbriphilous herbs the same sentence names | **built 2026-09-08** |
+| 5c | **Hedges** — box with a leafy silhouette rather than a smooth green solid | **built 2026-09-08** |
 | 6 | **The bath's paragone** — carved and living nymphs composed into one view | open; needs a camera study, not new geometry |
 | 7 | **Seasonal and diurnal light** — the garden at one hour only, forever | open, large |
+
+
+---
+
+## 10. Addendum, 2026-09-08 — three more, and a fix
+
+**The shaded walk (p. 92)** is now built, and it is the sentence that taught this document what
+the book means by pleasure:
+
+> "…**Plane trees, Ashe trees**, and such like, spredding and stretching out their braunches:
+> **fowlded and imbraced with the running of Hunnisuckles or woodbines, and Hoppes, which made a
+> pleasaunt and coole shade**. Vnder the which grewe … **iagged Polypodie**, and the Trientall and
+> foure inched **Scolopendria, or Hartes toongue**, **Heleborous Niger**, or Melampodi … and such
+> other **Vmbriphilous hearbes** and Woodde Flowers." — p. 92
+
+Four things, and the book supplies all four: the trees, the climbers that lace them, the shade
+they make, and the herbs that can live *only* in that shade. All four are built — `ash` joined
+`SPECIES`, and `polypody`, `hartstongue` and `hellebore` joined `HERBS`. The walk registers
+itself with the shade map as a **line** rather than a set of pools, because a walk of laced
+trees throws continuous shade; that is what makes it a walk and not an avenue.
+
+**Hedges got a silhouette.** Box was the commonest single material in the world and it was a
+smooth green solid everywhere it appeared. A texture is not what makes a hedge read as a hedge
+— what reads is the **edge**, the fuzzy rim of half-cut twigs the shears leave. `_hedgeFringe`
+scatters box-leaf cards over a box that has already been built; `_hedgeFringeArc` does the same
+round a circle, for the labyrinth's seven banks, Cythera's rampart, and its terrace kerbs.
+
+**And the water stopped blowing out.** The fountains' mirror finish (Ted, 2026-09-06: "fountains
+that look like real water") was very nearly a perfect mirror — roughness 0.06, ripples at
+half depth — so at grazing angles, which is how you see water from a 1.7 m eye, the sun's
+reflection became a solid white wash across the whole surface and spilled onto the bank. It
+took four wrong guesses to find (bloom threshold, environment intensity, the meadow's
+back-light, the particle streams) before a raycast into the bright pixels named it. **A real sun
+path on water is not a sheet; it is broken by the ripples into glitter.** The ripples got twice
+the depth and the finish a little tooth. It is still a mirror.

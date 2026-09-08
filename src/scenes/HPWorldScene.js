@@ -356,6 +356,8 @@ export class HPWorldScene {
     this._buildGreatPortal();
     this._buildBridge();
     this._buildRiverPlants();
+    this._buildRills();
+    this._buildShadedWalk();
     this._buildCourt();
     this._buildPoliaGarden();
     // The book's most copied image, and it was missing from the world: set
@@ -962,8 +964,14 @@ export class HPWorldScene {
     m.color.set(0x8fb8c8);
     m.map = null;
     m.normalMap = this._waterNormal();
-    m.normalScale = new THREE.Vector2(0.55, 0.55);
-    m.roughness = 0.06;
+    // 2026-09-08: the ripples were too faint and the finish too near a perfect
+    // mirror, so at grazing angles -- which is how you see water from a 1.7 m
+    // eye -- the sun's reflection blew out into a solid white wash across the
+    // whole surface and spilled onto the bank. A real sun path on water is not
+    // a sheet; it is BROKEN by the ripples into glitter. So the ripples got
+    // twice the depth and the finish a little tooth. It is still a mirror.
+    m.normalScale = new THREE.Vector2(1.15, 1.15);
+    m.roughness = 0.12;
     m.metalness = 0.12;
     m.envMapIntensity = 1.6;
     m.transparent = true;
@@ -1810,7 +1818,7 @@ export class HPWorldScene {
     // Flanking obelisks and hedge walls
     for (const s of [-1, 1]) {
       this._obelisk(s * 11.2, Z, 1.3, 3.4);
-      this._m(new THREE.BoxGeometry(9, 1.1, 0.7), this._hedgeMat, s * 17.8, 0.55, Z);
+      this._hedge(s * 17.8, 0.55, Z, 9, 1.1, 0.7);
       this._wallCol(s * 17.8 - 4.5, s * 17.8 + 4.5, Z - 0.35, Z + 0.35);
     }
 
@@ -2774,7 +2782,7 @@ export class HPWorldScene {
 
     // Rose hedges
     for (const sz of [-1, 1]) {
-      this._m(new THREE.BoxGeometry(8, 0.8, 0.5), this._hedgeMat, CX, 0.4, CZ + sz * 4.6);
+      this._hedge(CX, 0.4, CZ + sz * 4.6, 8, 0.8, 0.5);
       this._wallCol(CX - 4, CX + 4, CZ + sz * 4.6 - 0.25, CZ + sz * 4.6 + 0.25);
     }
   }
@@ -3001,8 +3009,8 @@ export class HPWorldScene {
       }
       // the baulk: a low grassy ridge between one man's strip and the next
       if (i < STRIPS - 1) {
-        this._m(new THREE.BoxGeometry(WID, 0.16, 0.3), this._hedgeMat,
-          CXm, 0.08, Z0 + (i + 1) * SD, { cast: false });
+        this._hedge(CXm, 0.08, Z0 + (i + 1) * SD, WID, 0.16, 0.3,
+          { cast: false, fringe: { density: 7, faces: 'top', seed: i } });
       }
     }
 
@@ -3060,7 +3068,7 @@ export class HPWorldScene {
     // ── the hedgerow that closes the belt ────────────────────────────────
     // A field boundary, not a garden hedge: let grow, and only on the far side,
     // so the belt is walked into from the wood rather than fenced off.
-    this._m(new THREE.BoxGeometry(WID, 0.95, 0.55), this._hedgeMat, CXm, 0.48, Z1 + 0.5, { cast: false });
+    this._hedge(CXm, 0.48, Z1 + 0.5, WID, 0.95, 0.55, { cast: false, fringe: { density: 10 } });
     this._wallCol(X0, X1, Z1 + 0.2, Z1 + 0.8);
 
     this._plaque({ main: 'A FAYRE AND PLENTIFVLL COVNTRIE',
@@ -3374,6 +3382,366 @@ export class HPWorldScene {
 
     // and so does every blade of grass
     for (const f of this._meadows) attachShade(f, tex, X0, Z0, W, D);
+  }
+
+  // ── Hedges: the body is a box, the silhouette is leaves ──────────────────
+  //
+  // Built 2026-09-08. Box is the commonest material in this world and it was
+  // reading as a smooth green solid everywhere it appeared. A hedge is not
+  // smooth: the shears leave a fuzzy rim of half-cut twigs, and it is that rim,
+  // not the colour, that tells the eye what it is looking at.
+  //
+  // `_hedgeFringe` scatters small box-leaf cards over the faces of a box that
+  // has already been built, standing them a few centimetres proud so they break
+  // the edge. Cards share one material and merge into a single draw call, so a
+  // hundred hedges cost one.
+  //
+  //   x, y, z   centre of the box (y is its CENTRE, as _m takes it)
+  //   w, h, d   its size
+  //   ry        its rotation about Y, if any
+  //   faces     which sides to dress: 'top' is always worth it, the verticals
+  //             matter only where the player walks past them
+  _hedgeFringe(x, y, z, w, h, d, ry = 0, { density = 26, faces = 'all', seed = 0 } = {}) {
+    if (this.style.key === 'woodcut') return;      // the plates cut their own
+    const mat = this._hedgeLeafMat = this._hedgeLeafMat || new THREE.MeshStandardMaterial({
+      map: this._leafCardTexture('box'),
+      transparent: true, alphaTest: 0.42, side: THREE.DoubleSide,
+      roughness: 0.9, metalness: 0,
+    });
+    if (!this._hedgeLeafGeo) this._hedgeLeafGeo = new THREE.PlaneGeometry(0.26, 0.26);
+    const g = new THREE.Group();
+    g.position.set(x, y, z);
+    g.rotation.y = ry;
+    this.scene.add(g);
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 63.7 + k * 129.3 + seed * 7.1 + x * 2.3 + z * 1.7) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    // area of the faces we are dressing, so a long hedge gets more leaves than
+    // a short one rather than the same number spread thinner
+    const top = w * d, side = h * d, end = w * h;
+    const doSides = faces !== 'top';
+    const area = top + (doSides ? 2 * side + 2 * end : 0);
+    const n = Math.min(420, Math.round(area * density));
+    const OUT = 0.055;                              // how far a leaf stands proud
+    for (let i = 0; i < n; i++) {
+      const r = rnd(i, 1) * area;
+      let px, py, pz, nx = 0, ny = 0, nz = 0;
+      if (r < top) {                                // the clipped top
+        px = (rnd(i, 2) - 0.5) * w; pz = (rnd(i, 3) - 0.5) * d; py = h / 2; ny = 1;
+      } else if (r < top + 2 * side) {              // the two long faces
+        const sx = r < top + side ? 1 : -1;
+        px = (rnd(i, 2) - 0.5) * w; pz = sx * d / 2; py = (rnd(i, 3) - 0.5) * h; nz = sx;
+      } else {                                      // the two ends
+        const sx = r < top + 2 * side + end ? 1 : -1;
+        px = sx * w / 2; pz = (rnd(i, 2) - 0.5) * d; py = (rnd(i, 3) - 0.5) * h; nx = sx;
+      }
+      const m = new THREE.Mesh(this._hedgeLeafGeo, mat);
+      m.position.set(px + nx * OUT, py + ny * OUT, pz + nz * OUT);
+      m.rotation.set(rnd(i, 4) * Math.PI, rnd(i, 5) * Math.PI, rnd(i, 6) * Math.PI);
+      const sc = 0.7 + rnd(i, 7) * 0.75;
+      m.scale.set(sc, sc, 1);
+      m.castShadow = false; m.receiveShadow = false;
+      g.add(m);
+    }
+  }
+
+  // The same for a hedge bent round a circle: the labyrinth's seven banks, the
+  // rampart of Cythera, the kerbs of its terraces. `a0`/`a1` are the arc in
+  // radians measured the way CylinderGeometry measures theta.
+  _hedgeFringeArc(cx, cz, r, yTop, h, a0, a1, { density = 5, seed = 0 } = {}) {
+    if (this.style.key === 'woodcut') return;
+    const mat = this._hedgeLeafMat = this._hedgeLeafMat || new THREE.MeshStandardMaterial({
+      map: this._leafCardTexture('box'),
+      transparent: true, alphaTest: 0.42, side: THREE.DoubleSide,
+      roughness: 0.9, metalness: 0,
+    });
+    if (!this._hedgeLeafGeo) this._hedgeLeafGeo = new THREE.PlaneGeometry(0.26, 0.26);
+    const g = new THREE.Group();
+    g.position.set(cx, 0, cz);
+    this.scene.add(g);
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 47.9 + k * 151.7 + seed * 11.3 + r * 5.1) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    const span = Math.abs(a1 - a0);
+    const n = Math.min(500, Math.round(r * span * (h + 0.5) * density * 3));
+    for (let i = 0; i < n; i++) {
+      const a = a0 + rnd(i, 1) * span;
+      // two thirds on the crown, where the eye runs along the hedge, and the
+      // rest scattered down the two faces
+      const onTop = rnd(i, 2) < 0.62;
+      const rr = r + (onTop ? (rnd(i, 3) - 0.5) * 0.22 : (rnd(i, 3) < 0.5 ? -0.06 : 0.06));
+      const y = onTop ? yTop + 0.045 : yTop - rnd(i, 4) * h;
+      const m = new THREE.Mesh(this._hedgeLeafGeo, mat);
+      m.position.set(Math.sin(a) * rr, y, Math.cos(a) * rr);
+      m.rotation.set(rnd(i, 5) * Math.PI, rnd(i, 6) * Math.PI, rnd(i, 7) * Math.PI);
+      const sc = 0.7 + rnd(i, 8) * 0.7;
+      m.scale.set(sc, sc, 1);
+      m.castShadow = false; m.receiveShadow = false;
+      g.add(m);
+    }
+  }
+
+  // A hedge, built and dressed in one call, so a new one is never a bare box
+  // again. Returns the box mesh.
+  _hedge(x, y, z, w, h, d, o = {}) {
+    const m = this._m(new THREE.BoxGeometry(w, h, d), this._hedgeMat, x, y, z, o);
+    this._hedgeFringe(x, y, z, w, h, d, o.ry || 0, o.fringe || {});
+    return m;
+  }
+
+  // ── The rills (Dallington p. 196) ────────────────────────────────────────
+  //
+  // One sentence in the book carries the entire water programme of an Italian
+  // garden, and this world had only the fountains and the wild stream:
+  //
+  //   "Issuing and sending foorth in diuers places small streames of water,
+  //    pyppling and slyding downe vpon the Amber grauell in theyr crooking
+  //    Channels heere and there, by some suddaine fall making a still continued
+  //    noyse, to great pleasure moystning the open fieldes, and making the
+  //    shadowed places vnder the leaffye Trees, coole and fresh."
+  //
+  // Every clause is a specification. *Crooking channels* -- they wind, and they
+  // are CUT, with a kerb, unlike the wild stream in the wood which merely lies
+  // on the ground. *Amber gravel* -- the bed is a warm ochre, and it is what
+  // you actually see, because the water is two inches deep. *A suddaine fall*
+  // -- each has a step in it, which is the only reason a rill this small makes
+  // any sound at all. *Moystning the open fieldes* -- they cross open ground,
+  // not paving. *Making the shadowed places cool and fresh* -- they run to the
+  // trees, so the water and the shade are the same pleasure, which is exactly
+  // how the sentence has it. See PLEASURES.md 4.
+  //
+  // The site is silent, so the fall is built to be SEEN making its noise: a lip,
+  // a white break, and a splash. The same rule as the birds (PLEASURES.md 2).
+  _buildRills() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const water = this._waterMat();
+
+    // amber gravel, and the cut kerb that makes a channel a channel
+    const gravel = woodcut ? S.mat({ tone: 0.04, rim: 0 })
+      : S.mat({ color: 0xffffff, roughness: 0.95 });
+    if (!woodcut) this._dress(gravel, this._surfaceTexture({
+      base: '#c29a52', dark: '#7a5c28', light: '#e8cc92', blobs: 34, speckle: 6200, repeat: 7,
+    }), 0.3);
+    const kerb = woodcut ? S.mat({ tone: 0.10 }) : S.mat({ color: 0x9a9084, roughness: 0.92 });
+
+    // Three of them, on the open sward between the elephant plaza and the
+    // cross-path -- open field, which is what the sentence asks for. The first
+    // siting ran them straight through the Three Doors wall, which occupies
+    // z 10.6-13.4 clear across the world; these keep to the band z 2.5-9.5,
+    // east and west of the plaza, where there is nothing but grass.
+    //   [ points ..., which point carries the fall ]
+    const RILLS = [
+      { pts: [[16.4, 3.0], [13.8, 4.5], [11.4, 3.6], [9.0, 5.3], [6.6, 4.3], [4.9, 6.1]], fall: 2 },
+      { pts: [[-5.0, 6.5], [-7.3, 4.9], [-9.7, 6.5], [-12.0, 5.1]], fall: 1 },
+      { pts: [[5.9, 8.7], [8.5, 9.5], [11.1, 8.3], [13.7, 9.3], [16.2, 8.1]], fall: 2 },
+    ];
+
+    this._rillFalls = [];
+    for (let r = 0; r < RILLS.length; r++) {
+      const { pts, fall } = RILLS[r];
+      const P = (y) => pts.map(([x, z]) => new THREE.Vector3(x, y, z));
+
+      // the cut: a kerb ribbon a little wider than the channel, then the amber
+      // gravel bed inside it, then the water, barely above the gravel
+      this.scene.add(this._ribbon(P(0.012), 0.92, kerb));
+      this.scene.add(this._ribbon(P(0.020), 0.62, gravel));
+      const w = this._ribbon(P(0.038), 0.50, water);
+      this.scene.add(w);
+      this._waters.push({ m: w, rate: 0.14 });
+
+      // the suddaine fall: a lip across the channel, the white break under it,
+      // and the splash. Two inches of drop is all a rill ever has.
+      const [fx, fz] = pts[fall];
+      const [nx, nz] = pts[Math.min(fall + 1, pts.length - 1)];
+      const ang = Math.atan2(nx - fx, nz - fz);
+      this._m(new THREE.BoxGeometry(0.78, 0.1, 0.1), kerb, fx, 0.06, fz, { ry: ang, cast: false });
+      const foam = woodcut ? S.mat({ tone: -0.08 })
+        : S.mat({ color: 0xeef2f2, roughness: 0.35, emissive: 0xbfd4d8, emissiveIntensity: 0.18 });
+      this._m(new THREE.BoxGeometry(0.5, 0.02, 0.34), foam, fx + Math.sin(ang) * 0.22, 0.045, fz + Math.cos(ang) * 0.22,
+        { ry: ang, cast: false });
+      const stream = new ParticleStream({
+        count: 14,
+        source: new THREE.Vector3(fx, 0.10, fz),
+        target: new THREE.Vector3(fx + Math.sin(ang) * 0.5, 0.03, fz + Math.cos(ang) * 0.5),
+        color: 0xdfeef2, size: 0.02, speed: 0.7, arc: 0.25,
+      });
+      stream.opacity = 0.5; stream.active = true;
+      this.style.tuneStream(stream);
+      this.scene.add(stream.points);
+      this._streams.push(stream);
+
+      // "moystning the open fieldes": the bank is greener and wetter than the
+      // field it crosses, and the water plants stand in it
+      const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 133.7 + r * 17.9) * 43758.5453; return v - Math.floor(v); };
+      const KINDS = ['rush', 'waterflower', 'mint', 'reed'];
+      for (let i = 0; i < 26; i++) {
+        const t = rnd(i, 1) * (pts.length - 1);
+        const k = Math.floor(t), f = t - k, k2 = Math.min(k + 1, pts.length - 1);
+        const bx = pts[k][0] + (pts[k2][0] - pts[k][0]) * f;
+        const bz = pts[k][1] + (pts[k2][1] - pts[k][1]) * f;
+        const side = rnd(i, 2) < 0.5 ? -1 : 1;
+        this._tuft(bx + side * (0.42 + rnd(i, 3) * 0.3), 0.015, bz + (rnd(i, 4) - 0.5) * 0.4,
+          KINDS[i % KINDS.length], 0.20 + rnd(i, 5) * 0.12);
+      }
+      // and a few pebbles in the bed, which is what makes a rill "pypple"
+      const peb = woodcut ? S.mat({ tone: 0.08 }) : S.mat({ color: 0x8a8074, roughness: 0.9 });
+      for (let i = 0; i < 12; i++) {
+        const t = 0.06 + rnd(i, 6) * 0.88, k = Math.floor(t * (pts.length - 1)), f = t * (pts.length - 1) - k;
+        const k2 = Math.min(k + 1, pts.length - 1);
+        const bx = pts[k][0] + (pts[k2][0] - pts[k][0]) * f + (rnd(i, 7) - 0.5) * 0.3;
+        const bz = pts[k][1] + (pts[k2][1] - pts[k][1]) * f + (rnd(i, 8) - 0.5) * 0.3;
+        this._m(this._indexed(new THREE.DodecahedronGeometry(0.035 + rnd(i, 9) * 0.04, 0)), peb,
+          bx, 0.03, bz, { cast: false }).rotation.set(rnd(i, 10) * 3, rnd(i, 11) * 3, 0);
+      }
+    }
+
+    this._plaque({ main: 'IN THEYR CROOKING CHANNELS',
+      sub: 'SMALL STREAMES PYPPLING AND SLYDING DOWNE VPON THE AMBER GRAVELL · BY SOME SVDDAINE FALL · DALLINGTON P. 196' },
+      3.4, 0.42, 18.4, 0.54, 5.6, -Math.PI / 2, true);
+  }
+
+  // ── The shaded walk (Dallington p. 92) ───────────────────────────────────
+  //
+  // The first green thing Poliphilo sees after the vaults, and the sentence
+  // that first taught this project what the book means by pleasure:
+  //
+  //   "…Plane trees, Ashe trees, and such like, spredding and stretching out
+  //    their braunches: fowlded and imbraced with the running of Hunnisuckles
+  //    or woodbines, and Hoppes, which made a pleasaunt and coole shade. Vnder
+  //    the which grewe Ladyes Seale or Rape Violet, hurtfull for the sight,
+  //    iagged Polypodie, and the Trientall and foure inched Scolopendria, or
+  //    Hartes toongue, Heleborous Niger, or Melampodi, Trayfles, and such other
+  //    Vmbriphilous hearbes and Woodde Flowers."
+  //
+  // Four things, and the book supplies all four: the trees (plane and ash), the
+  // climbers that lace them together (honeysuckle, woodbine, hop), the shade
+  // they make -- which is the point of the sentence -- and the *umbriphilous*
+  // herbs that can only live in it: polypody and hart's-tongue, both ferns, and
+  // black hellebore.
+  //
+  // It runs down the east flank between the wood's edge and the Colossus, so a
+  // walker coming out of the portal and going east passes under it. The shade
+  // map is told about it as a LINE, not a set of pools, because a walk of laced
+  // trees throws continuous shade -- that is what makes it a walk and not an
+  // avenue. See PLEASURES.md 1.
+  _buildShadedWalk() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const X = 31, Z0 = 15, Z1 = 30, HALF = 2.6;
+    const N = 6;                                  // pairs of trees
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 83.1 + k * 149.7 + 31.7) * 43758.5453;
+      return v - Math.floor(v);
+    };
+
+    // ── the trees: plane and ash, alternating down the two sides ──────────
+    const zs = [];
+    for (let i = 0; i < N; i++) {
+      const z = Z0 + (i / (N - 1)) * (Z1 - Z0);
+      zs.push(z);
+      for (const sx of [-1, 1]) {
+        this._tree(X + sx * HALF, z, 0.82 + rnd(i, sx > 0 ? 1 : 2) * 0.18,
+          (i + (sx > 0 ? 0 : 1)) % 2 ? 'plane' : 'ash');
+      }
+    }
+
+    // ── the climbers, running from tree to tree and closing overhead ──────
+    // "fowlded and imbraced with the running of Hunnisuckles or woodbines, and
+    // Hoppes": three climbers, so three colours of flower. Honeysuckle is cream
+    // going to gold, woodbine the pinker form of the same, and the hop hangs
+    // its pale green cones.
+    const stemMat = woodcut ? this._darkStoneMat
+      : S.mat({ color: 0x4e3d24, roughness: 0.94 });
+    const leafMat = woodcut ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({
+          map: this._leafCardTexture('plane'),
+          transparent: true, alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88 });
+    if (!woodcut) this._disp.push(leafMat);
+    const FLOWERS = woodcut
+      ? [S.mat({ tone: -0.03 }), S.mat({ tone: -0.02 }), S.mat({ tone: 0.01 })]
+      : [S.mat({ color: 0xf0e2b4, roughness: 0.6 }),    // honeysuckle, cream
+         S.mat({ color: 0xd8a8a0, roughness: 0.6 }),    // woodbine, pinker
+         S.mat({ color: 0xc2cf92, roughness: 0.66 })];  // hop cones
+    const leafGeo = new THREE.PlaneGeometry(0.44, 0.44);
+    const florGeo = new THREE.SphereGeometry(0.05, 5, 4);
+
+    // a swag over the walk between each pair of opposite trees, and one down
+    // each side from tree to tree: that is what "imbraced" means here
+    // A vine is a cord, not a row of beads: each segment is a short cylinder
+    // laid between consecutive points of the catenary and turned to face along
+    // it, so the swag reads as one continuous running stem.
+    const swag = (x0, z0, x1, z1, y0, sag, seed) => {
+      const SEG = 10;
+      const at = (t) => new THREE.Vector3(
+        x0 + (x1 - x0) * t, y0 - Math.sin(t * Math.PI) * sag, z0 + (z1 - z0) * t);
+      const UP = new THREE.Vector3(0, 1, 0);
+      for (let g = 0; g < SEG; g++) {
+        const a = at(g / SEG), b = at((g + 1) / SEG);
+        const d = new THREE.Vector3().subVectors(b, a);
+        const seg = this._m(new THREE.CylinderGeometry(0.028, 0.028, d.length() * 1.06, 5),
+          stemMat, (a.x + b.x) / 2, (a.y + b.y) / 2, (a.z + b.z) / 2, { cast: false });
+        seg.quaternion.setFromUnitVectors(UP, d.clone().normalize());
+      }
+      for (let g = 0; g <= SEG; g++) {
+        const t = g / SEG;
+        const x = x0 + (x1 - x0) * t, z = z0 + (z1 - z0) * t;
+        const y = y0 - Math.sin(t * Math.PI) * sag;
+        for (let k = 0; k < 5; k++) {
+          const lf = this._m(leafGeo, leafMat,
+            x + (rnd(seed * 13 + g, k) - 0.5) * 0.5,
+            y - rnd(seed * 13 + g, k + 3) * 0.42,
+            z + (rnd(seed * 13 + g, k + 6) - 0.5) * 0.5,
+            { cast: false, receive: false });
+          lf.rotation.set(rnd(seed + g, k) * Math.PI, rnd(seed + g, k + 1) * Math.PI, rnd(seed + g, k + 2) * Math.PI);
+        }
+        if (g % 2 === 0) {
+          this._m(florGeo, FLOWERS[(g + seed) % 3],
+            x + (rnd(seed + g, 9) - 0.5) * 0.4, y - 0.2 - rnd(seed + g, 10) * 0.2,
+            z + (rnd(seed + g, 11) - 0.5) * 0.4, { cast: false });
+        }
+      }
+    };
+    for (let i = 0; i < N; i++) {
+      swag(X - HALF, zs[i], X + HALF, zs[i], 3.5, 0.75, i);           // across
+      if (i < N - 1) for (const sx of [-1, 1]) {
+        swag(X + sx * HALF, zs[i], X + sx * HALF, zs[i + 1], 3.1, 0.55, i * 3 + (sx > 0 ? 1 : 2));
+      }
+    }
+    // and the stems themselves, wound up the trunks
+    for (let i = 0; i < N; i++) for (const sx of [-1, 1]) {
+      for (let k = 0; k < 3; k++) {
+        const st = this._m(new THREE.CylinderGeometry(0.03, 0.05, 3.2, 5), stemMat,
+          X + sx * HALF + Math.cos(k * 2.1) * 0.2, 1.6, zs[i] + Math.sin(k * 2.1) * 0.2,
+          { cast: false });
+        st.rotation.z = (k - 1) * 0.06;
+      }
+    }
+
+    // ── the umbriphilous herbs, which can live nowhere else ───────────────
+    // Rhizopoulou 2016 reads the same passage: ferns and shade-flowers in the
+    // damp under a closed canopy.
+    const SHADE_HERBS = ['polypody', 'hartstongue', 'hellebore', 'polypody', 'hartstongue'];
+    for (let i = 0; i < 54; i++) {
+      const z = Z0 - 1 + rnd(i, 1) * (Z1 - Z0 + 2);
+      const x = X + (rnd(i, 2) - 0.5) * (HALF * 2.3);
+      this._tuft(x, 0.02, z, SHADE_HERBS[i % SHADE_HERBS.length], 0.24 + rnd(i, 3) * 0.14,
+        { ry: rnd(i, 4) * Math.PI });
+    }
+    // the walk's floor: leaf litter, not grass. Nothing grows in a path.
+    const duff = woodcut ? S.mat({ tone: 0.08, rim: 0 }) : S.mat({ color: 0xffffff, roughness: 0.98 });
+    if (!woodcut) this._dress(duff, this._surfaceTexture({
+      base: '#5b4a30', dark: '#33281a', light: '#846d46', blobs: 46, speckle: 5200, repeat: 5,
+    }), 0.22);
+    this._m(new THREE.PlaneGeometry(HALF * 1.5, Z1 - Z0 + 3), duff, X, 0.03, (Z0 + Z1) / 2,
+      { rx: -Math.PI / 2, cast: false });
+
+    // continuous shade, as a line: this is why it is a walk
+    (this._shadeLines = this._shadeLines || []).push([X, Z0 - 1, X, Z1 + 1, HALF * 1.35]);
+
+    this._plaque({ main: 'A PLEASAVNT AND COOLE SHADE',
+      sub: 'PLANE AND ASHE FOWLDED AND IMBRACED WITH HVNNISVCKLES, WOODBINES AND HOPPES · VMBRIPHILOVS HEARBES VNDER · DALLINGTON P. 92' },
+      3.6, 0.42, X, 0.56, Z0 - 2.2, 0, true);
   }
 
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
@@ -6419,6 +6787,9 @@ export class HPWorldScene {
       const rm = this._m(new THREE.CylinderGeometry(r + 0.18, r + 0.18, 0.55, 40, 1, true, Math.PI / 2 - gap + 0.35, Math.PI * 2 - 0.7), hedge,
         LX, 0.52, LZ, { cast: false });
       rm.material.side = THREE.DoubleSide;
+      this._hedgeFringeArc(LX, LZ, r + 0.18, 0.80, 0.55,
+        Math.PI / 2 - gap + 0.35, Math.PI / 2 - gap + 0.35 + Math.PI * 2 - 0.7,
+        { seed: i });
       // the seven mounts, one tower at each break
       const tx = LX + Math.cos(gap) * (r + 0.18), tz = LZ + Math.sin(gap) * (r + 0.18);
       this._m(new THREE.CylinderGeometry(0.34, 0.42, 1.9, 10), stone, tx, 1.2, tz, { outline: true });
@@ -7740,6 +8111,13 @@ export class HPWorldScene {
       reed:         { form: 'reed',     green: '#6a7a3a', light: '#9aa650', flower: '#5a3a1e', fsize: 7, stems: 9,  h: 1.0 },
       rush:         { form: 'blade',    green: '#2e5a24', light: '#4a7a34', flower: '#7a5a2a', fsize: 3, stems: 14, h: 0.95 },
       arum:         { form: 'oval',     green: '#2c5a22', light: '#4a8a34', flower: '#f4f0e0', fsize: 14, stems: 4, h: 0.8, spathe: true },
+      // The umbriphilous three of Dallington p. 92: "iagged Polypodie, and the
+      // Trientall and foure inched Scolopendria, or Hartes toongue, Heleborous
+      // Niger, or Melampodi ... and such other Vmbriphilous hearbes". Two ferns
+      // and a shade flower; they grow in the shaded walk and nowhere else.
+      polypody:     { form: 'fern',     green: '#2a4a20', light: '#48762e', flower: '#3a5a26', fsize: 2, stems: 7, h: 0.55 },
+      hartstongue:  { form: 'blade',    green: '#28522a', light: '#4e8438', flower: '#2e5a2c', fsize: 2, stems: 8, h: 0.7 },
+      hellebore:    { form: 'rosette',  green: '#1e3c1c', light: '#3a6030', flower: '#e8eae0', fsize: 9, stems: 5, h: 0.5, second: '#b8c0a8' },
       balm:         { form: 'serrated', green: '#3a6a2a', light: '#6a9a44', flower: '#f0eef4', fsize: 4, stems: 6, h: 0.75 },
       mint:         { form: 'serrated', green: '#2e5e2a', light: '#5a8e44', flower: '#c8a0d8', fsize: 5, stems: 7, h: 0.7 },
       waterflower:  { form: 'oval',     green: '#3c6a2c', light: '#6a9a4a', flower: '#f6f2d0', fsize: 7, stems: 6, h: 0.6, second: '#f0d040' },
@@ -7944,7 +8322,7 @@ export class HPWorldScene {
     for (let i = 0; i < 24; i++) {
       const a = (i + 0.5) * (Math.PI / 12);
       const [x, z] = pos(a, 34.2);
-      this._m(new THREE.BoxGeometry(6.2, 1.05, 0.5), this._hedgeMat, x, 0.55, z, { ry: -a + Math.PI / 2 });
+      this._hedge(x, 0.55, z, 6.2, 1.05, 0.5, { ry: -a + Math.PI / 2 });
       this._circleCol(x, z, 2.2);
       for (const s of [-1.9, 0, 1.9]) {
         const [ox, oz] = pos(a + s / 34.2, 34.2);
@@ -8069,6 +8447,8 @@ export class HPWorldScene {
       this._m(new THREE.RingGeometry(t.r0 + 0.15, t.r0 + 0.75, 40), bedMat, CX, t.h + 0.02, CZ, { rx: -Math.PI / 2, cast: false });
       this._m(new THREE.CylinderGeometry(t.r0 + 0.78, t.r0 + 0.78, 0.12, 40, 1, true), this._hedgeMat, CX, t.h + 0.06, CZ, { cast: false })
         .material.side = THREE.DoubleSide;
+      this._hedgeFringeArc(CX, CZ, t.r0 + 0.78, t.h + 0.12, 0.12, 0, Math.PI * 2,
+        { density: 2.2, seed: Math.round(t.r0) });
     });
     // the herbs themselves stand in the beds as tufts, and the bands are named
     tiers.forEach((t, ti) => {
@@ -8185,6 +8565,8 @@ export class HPWorldScene {
       const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2;
       this._m(new THREE.CylinderGeometry(RR + 0.3, RR + 0.3, HH, 40, 1, true, Math.PI / 2 - a1, a1 - a0), box, CX, HH / 2 + 1.26, CZ, { cast: false })
         .material.side = THREE.DoubleSide;
+      this._hedgeFringeArc(CX, CZ, RR + 0.3, HH + 1.26, HH, Math.PI / 2 - a1, Math.PI / 2 - a0,
+        { density: 3.2, seed: q });
       this._m(new THREE.RingGeometry(RR, RR + 0.6, 40, 1, a0, a1 - a0), box, CX, HH + 1.26, CZ, { rx: -Math.PI / 2, cast: false });
       // five towers a quarter, a door in each, and the clipped triumphs between
       for (let t = 0; t < 5; t++) {
@@ -8863,6 +9245,10 @@ export class HPWorldScene {
       juniper:  { leaf: 'scale',   crown: [0.7, 1.7, 0.7],   trunk: [0.5, 0.08], bark: 0x5a4a34, dark: 0x274a3a, light: 0x4a7a5a, n: 20, top: 0.55 },
       pine:     { leaf: 'needle',  crown: [1.9, 0.9, 1.9],   trunk: [3.2, 0.13], bark: 0x5a3a24, dark: 0x1c3612, light: 0x3a5c22, n: 30, top: 1.0, boughs: 4 },
       laurel:   { leaf: 'lance',   crown: [1.2, 1.35, 1.2],  trunk: [1.3, 0.11], bark: 0x4a3a2a, dark: 0x1b3a13, light: 0x3f6a22, n: 26, top: 0.9, boughs: 3 },
+      // Buxus: tiny, dark, glossy, and the commonest leaf in the whole world.
+      // Here for _leafCardTexture('box') -- the hedges' fringe -- though
+      // _tree(x, z, s, 'box') gives a clipped ball if one is ever wanted.
+      box:      { leaf: 'ovate',   crown: [0.6, 0.55, 0.6],  trunk: [0.5, 0.06], bark: 0x4a3a28, dark: 0x16280e, light: 0x385a1e, n: 22, top: 0.55 },
       myrtle:   { leaf: 'ovate',   crown: [1.1, 1.0, 1.1],   trunk: [0.9, 0.09], bark: 0x5a4030, dark: 0x16300f, light: 0x2f5419, n: 24, top: 0.8, boughs: 3, bloom: 0xf4f0e6 },
       orange:   { leaf: 'ovate',   crown: [1.15, 1.15, 1.15],trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x1f3d16, light: 0x3d6524, n: 26, top: 0.9, boughs: 3, fruit: 0xe08a1c },
       citron:   { leaf: 'ovate',   crown: [1.15, 1.2, 1.15], trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x233f1a, light: 0x456a26, n: 26, top: 0.9, boughs: 3, fruit: 0xe8d24a, big: true },
@@ -8877,6 +9263,11 @@ export class HPWorldScene {
       pear:     { leaf: 'ovate',   crown: [1.05, 1.5, 1.05], trunk: [1.7, 0.10], bark: 0x54402e, dark: 0x27441a, light: 0x527f30, n: 26, top: 0.95, boughs: 4, fruit: 0xc0b055 },
       plum:     { leaf: 'ovate',   crown: [1.4, 0.95, 1.4],  trunk: [1.2, 0.11], bark: 0x4e3b2c, dark: 0x25401c, light: 0x4c7a30, n: 26, top: 0.85, boughs: 4, fruit: 0x6a4a86 },
       olive:    { leaf: 'narrow',  crown: [1.35, 1.1, 1.35], trunk: [1.5, 0.16], bark: 0x6a5a48, dark: 0x4a5a3e, light: 0x8a9a74, n: 30, top: 0.9, boughs: 4, gnarled: true },
+      // Ash, named with the plane in the shaded walk of Dallington p. 92. Its
+      // leaf is pinnate -- a row of leaflets on a stalk -- so 'lance' is the
+      // nearest of the drawn forms, and it stands taller and narrower than a
+      // plane, which is the difference the walk needs.
+      ash:      { leaf: 'lance',   crown: [1.7, 2.1, 1.7],   trunk: [3.2, 0.15], bark: 0x8a8274, dark: 0x2a4c1c, light: 0x5e8a34, n: 32, top: 0.95, boughs: 4 },
       plane:    { leaf: 'palmate', crown: [2.2, 1.9, 2.2],   trunk: [2.8, 0.17], bark: 0x9a8a6c, dark: 0x2c5a1c, light: 0x6a9a3a, n: 34, top: 0.95, boughs: 4, mottled: true },
       oak:      { leaf: 'lobed',   crown: [2.1, 1.8, 2.1],   trunk: [2.2, 0.20], bark: 0x3e2e1e, dark: 0x22421a, light: 0x4a7a2c, n: 34, top: 0.95, boughs: 5 },
       beech:    { leaf: 'ovate',   crown: [1.7, 2.1, 1.7],   trunk: [2.4, 0.14], bark: 0x8a8070, dark: 0x2a4c1a, light: 0x5c8c30, n: 30, top: 0.95, boughs: 3 },
@@ -9188,7 +9579,7 @@ export class HPWorldScene {
     // (Only the northern hedge pair remains: the southern pair stood exactly
     // on the triumphs' processional circuit and was garden fabric, not book.)
     for (const [x, z, w, d] of [[-8.5, 8.8, 6, 0.5], [8.5, 8.8, 6, 0.5]]) {
-      this._m(new THREE.BoxGeometry(w, 0.9, d), this._hedgeMat, x, 0.45, z);
+      this._hedge(x, 0.45, z, w, 0.9, d);
       this._wallCol(x - w / 2, x + w / 2, z - d / 2, z + d / 2);
     }
   }
@@ -9212,6 +9603,11 @@ export class HPWorldScene {
       rect(-19.5, 19.5, -1.65, 1.65),    // cross path to the courts
       rect(-19.5, 19.5, 18.35, 21.65),   // cross path, upper
       rect(-13, -9, 12.5, 27.5),         // the bridge and its watercourse
+      // the shaded walk of p. 92: its floor is leaf litter, and nothing grows
+      // in a path -- what grows is the umbriphilous herbs, placed by hand
+      rect(28.0, 34.0, 13.4, 31.6),
+      // the rills of p. 196: a cut channel has a kerb and gravel, not grass
+      rect(4.4, 16.9, 2.5, 6.6), rect(-12.5, -4.5, 4.4, 7.0), rect(5.4, 16.7, 7.8, 10.0),
       circle(0, 0, 7.2),                 // Elephant plaza
       circle(0, -20, 8.8),               // fountain grove
       rect(-27.5, -12.5, 14, 26),        // court of Eleuterylida slab
