@@ -534,7 +534,19 @@ export class HPWorldScene {
     for (const h of this._hovers) mark(h.g);
     if (this._quinta) { mark(this._quinta.dod); if (this._quinta.rays) mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
-    if (this._boat) { mark(this._boat); if (this._boat.userData.cupid) mark(this._boat.userData.cupid); }
+    if (this._boat) {
+      // The exeres is compiled INSIDE its own group, the way the triumph floats
+      // are, so the hull, oars and gems ride the swell and still reach the
+      // roll-up census (a wholesale mark() kept every plank out of it). The
+      // standard stays live -- its silk is re-written every frame -- and so do
+      // the rowers, who sway.
+      const local = new Set(dyn);
+      if (this._standard) local.add(this._standard.m);
+      for (const n of this._npcs) if (this._boat.getObjectById(n.g.id)) n.g.traverse(x => local.add(x));
+      this._mergeInto(this._boat, local);
+      mark(this._boat);
+      if (this._boat.userData.cupid) mark(this._boat.userData.cupid);
+    }
     if (this._hiero) { mark(this._hiero.ant); mark(this._hiero.ele); }
 
     // groups that move whole: compile inside, then fence off
@@ -633,8 +645,27 @@ export class HPWorldScene {
 
   // ── Small helpers ─────────────────────────────────────────────────────────
 
+  // Roll Up eats meshes, and a thing built of several meshes on several
+  // materials would otherwise come off in pieces (see _resolveRollGroups).
+  // `_rollGroup(id, fn)` runs a builder and tags every mesh it makes with one
+  // group id, so the census measures and takes them together.
+  _rollGroup(id, fn, name = null) {
+    const before = this._madeMeshes ? this._madeMeshes.length : 0;
+    this._madeMeshes = this._madeMeshes || [];
+    this._grouping = (this._grouping || 0) + 1;
+    try { fn(); } finally { this._grouping--; }
+    for (let i = before; i < this._madeMeshes.length; i++) {
+      this._madeMeshes[i].userData.rollGroup = id;
+      // the whole has a name of its own -- "the second table, of beryl" -- and
+      // a ball that ate it should not report "a leg of ebony"
+      if (name) this._madeMeshes[i].userData.rollGroupName = name;
+    }
+    if (!this._grouping) this._madeMeshes.length = 0;
+  }
+
   _m(geo, mat, x = 0, y = 0, z = 0, o = {}) {
     const m = new THREE.Mesh(geo, mat);
+    if (this._grouping) this._madeMeshes.push(m);
     m.position.set(x, y, z);
     if (o.rx) m.rotation.x = o.rx;
     if (o.ry) m.rotation.y = o.ry;
@@ -2229,7 +2260,8 @@ export class HPWorldScene {
     const SEATS = [[CX - 3.2, CZ], [CX - 0.4, CZ - 2.6], [CX + 1.7, CZ - 1.4], [CX + 2.4, CZ + 1.2],
                    [CX - 0.4, CZ + 2.7], [CX + 1.4, CZ - 3.6], [CX - 2.4, CZ + 3.4]];
 
-    COURSES.forEach((c, i) => {
+    const ORD = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
+    COURSES.forEach((c, i) => this._rollGroup('banquet_table' + i, () => {
       const [x, z] = SEATS[i];
       const top = M(c.top, c.met ? { roughness: 0.22, metalness: 0.95 } : { roughness: 0.25, metalness: 0.1 }, 0.05);
       top.userData.roll = 'a round table of ' + c.stone;
@@ -2290,7 +2322,7 @@ export class HPWorldScene {
       this._plaque({ main: 'THE ' + ord + ' TABLE · ' + c.stone.toUpperCase(),
         sub: c.dish.toUpperCase() + ' · DALLINGTON PP. 151–155' },
         1.1, 0.24, x, FLOOR + 0.12, z + R + 0.34, 0, true);
-    });
+    }, `the ${ORD[i]} table, of ${c.stone}`));
 
     // ── the three that wait on the Queen's table: carver, plate, towel ─────
     const [qx, qz] = SEATS[0];
@@ -2307,6 +2339,7 @@ export class HPWorldScene {
 
     // ── the perfuming vessel, "in the middest" (pp. 147–148) ────────────
     const PX = CX + 0.6, PZ = CZ + 0.4, PY = FLOOR;
+    this._rollGroup('banquet_perfumer', () => {
     // the triangular base on three harpies' feet
     const tri = this._m(new THREE.CylinderGeometry(0.62, 0.66, 0.1, 3), gold, PX, PY + 0.19, PZ, { cast: false, outline: true });
     tri.rotation.y = Math.PI / 6;
@@ -2339,6 +2372,7 @@ export class HPWorldScene {
     cb.rotation.x = Math.PI;
     this._m(new THREE.CylinderGeometry(0.15, 0.15, 0.03, 14), M(0x3a1a0a, { emissive: 0xff5010, emissiveIntensity: 1.4 }, 0.3), PX, PY + 1.43, PZ, { cast: false });
     this._fume(PX, PY + 1.5, PZ, { rise: 2.2, drift: 0.3, count: 16, speed: 0.14 });
+    }, 'the perfuming vessel, with its six flying spirits');
     const pl = S.pointLight ? S.pointLight(0xff7030, 1.6, 4.5) : null;
     if (pl) { pl.position.set(PX, PY + 1.3, PZ); this.scene.add(pl); this._pulses.push({ pl, base: 1.6, phase: 0.6 }); }
     this._circleCol(PX, PZ, 0.9);
@@ -2347,6 +2381,7 @@ export class HPWorldScene {
 
     // ── the fountain on four wheels, for the washing of hands (pp. 145–146) ──
     const FX = CX - 1.9, FZ = CZ - 1.55, FY = FLOOR;
+    this._rollGroup('banquet_fountain', () => {
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
       const w = this._m(new THREE.TorusGeometry(0.09, 0.025, 6, 14), gold, FX + sx * 0.3, FY + 0.09, FZ + sz * 0.22, { cast: false });
       w.rotation.y = Math.PI / 2;
@@ -2363,6 +2398,7 @@ export class HPWorldScene {
     this._m(new THREE.CylinderGeometry(0.02, 0.03, 0.5, 8), gold, FX, FY + 0.8, FZ, { cast: false });
     const dia = this._m(this._indexed(new THREE.OctahedronGeometry(0.06, 0)), M(0xeaf4ff, { roughness: 0.05, metalness: 0.2, emissive: 0x88aacc, emissiveIntensity: 0.4 }, -0.04), FX, FY + 1.1, FZ, { cast: false });
     dia.scale.set(0.8, 1.3, 0.8);
+    }, 'the fountain on four little wheels');
     this._jet(FX, FY + 1.0, FZ, FX + 0.05, FY + 0.58, FZ + 0.05, { apex: 0.25, r: 0.02, sparkle: 12 });
     this._circleCol(FX, FZ, 0.5);
     this._plaque({ main: 'THE FOVNTAINE ON FOVRE LITTLE WHEELES', sub: 'CONTINVALLY RVNNING WITH WATER, AND REASSVMING THE SAME · OF ROSES, LYMON PILLES AND AMBER · DALLINGTON PP. 145–146' },
@@ -2370,6 +2406,7 @@ export class HPWorldScene {
 
     // ── the repository, a ship on four wheels (p. 150), at the open east end ──
     const SX = CX + 5.2, SZ = CZ - 3.6;
+    this._rollGroup('banquet_ship', () => {
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
       const w = this._m(new THREE.TorusGeometry(0.14, 0.035, 6, 16), gold, SX + sx * 0.7, FLOOR + 0.14, SZ + sz * 0.3, { cast: false });
       w.rotation.y = Math.PI / 2;
@@ -2382,24 +2419,28 @@ export class HPWorldScene {
     }
     this._m(new THREE.BoxGeometry(1.5, 0.06, 0.7), gold, SX, FLOOR + 0.98, SZ, { cast: false });   // the lid, a deck
     for (let k = 0; k < 3; k++) this._m(new THREE.CylinderGeometry(0.05, 0.04, 0.09, 10), ivory, SX - 0.4 + k * 0.4, FLOOR + 1.06, SZ, { cast: false });  // the cups within
+    }, 'the repository, a ship of gold');
     this._circleCol(SX, SZ, 1.0);
     this._plaque({ main: 'THE REPOSITORIE', sub: 'IN FASHION LIKE VNTO A SHIPPE, OF MOST FINE GOLDE, WITH MANY FISHES AND WATER MONSTERS · CLOTHES, FLOWERS, CVPPES, TOWELLES AND VESSELLES · P. 150' },
       1.8, 0.3, SX, FLOOR + 0.12, SZ + 0.75, 0, true);
 
     // ── the vessel of coals the cloths are cleaned in (p. 155) ─────────────
     const VX = CX + 4.6, VZ = CZ + 3.9;
+    this._rollGroup('banquet_coals', () => {
     const vc = this._m(new THREE.SphereGeometry(0.3, 14, 7, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, VX, FLOOR + 0.46, VZ, { outline: true });
     vc.rotation.x = Math.PI;
     this._m(new THREE.CylinderGeometry(0.1, 0.16, 0.16, 10), gold, VX, FLOOR + 0.08, VZ, { cast: false });
     this._m(new THREE.CylinderGeometry(0.26, 0.26, 0.04, 14), M(0x3a1a0a, { emissive: 0xff4010, emissiveIntensity: 1.6 }, 0.3), VX, FLOOR + 0.47, VZ, { cast: false });
     this._m(new THREE.BoxGeometry(0.34, 0.03, 0.26), M(0xf2eee6, { roughness: 0.9 }, 0.0), VX + 0.04, FLOOR + 0.5, VZ, { cast: false }).rotation.y = 0.4;   // a napkin in the fire, unhurt
     this._fume(VX, FLOOR + 0.55, VZ, { rise: 1.4, drift: 0.15, count: 8, speed: 0.1 });
+    }, 'the vessel of coals the cloths are cleaned in');
     this._circleCol(VX, VZ, 0.42);
     this._plaque({ main: 'THE TABLE CLOATHES, NAPKINS AND TOWELLES OF SILKE WERE THROWNE IN', sub: 'AND AFTER, BEEING TAKEN OVT AND COOLED, THEY WERE WHOLE, VNHVRT AND CLEANE · THE WONDERFVLL STRAVNGEST OF ALL THE REST · P. 155' },
       1.7, 0.36, VX, FLOOR + 0.12, VZ + 0.55, 0, true);
 
     // ── the coral tree on the chalice (pp. 156–157, plate #31) ─────────────
     const KX = CX - 3.9, KZ = CZ - 2.2;
+    this._rollGroup('banquet_chalice', () => {
     this._m(new THREE.CylinderGeometry(0.14, 0.2, 0.06, 14), gold, KX, FLOOR + 0.03, KZ, { cast: false });
     this._m(new THREE.CylinderGeometry(0.035, 0.06, 0.3, 10), gold, KX, FLOOR + 0.21, KZ, { cast: false });
     const chal = this._m(new THREE.SphereGeometry(0.16, 14, 7, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, KX, FLOOR + 0.52, KZ, { cast: false, outline: true });
@@ -2424,6 +2465,7 @@ export class HPWorldScene {
     [[0.0, 1.09, 0], [0.19, 1.13, 0.04], [-0.14, 1.02, 0.07]].forEach(([dx, dy, dz]) => {
       this._m(new THREE.SphereGeometry(0.018, 7, 5), ivory, KX + dx, FLOOR + dy + 0.03, KZ + dz, { cast: false });
     });
+    }, 'the chalice with the tree of coral');
     this._circleCol(KX, KZ, 0.3);
     const bearer = this.cast.nymph({ name: 'coral-bearer', robe: 0x2c4aa8, h: 0.92, pose: 'offer' });
     this._npc('banquet_coral', bearer, KX + 0.05, KZ - 0.55, 0, { label: 'The middlemost of five', sub: 'IN BLEWE SILKE AND GOLDE, WITH THE TREE OF CORRALL', labelY: 1.95, sway: 0.02 });
@@ -4685,7 +4727,13 @@ export class HPWorldScene {
       }
       const r = ((max.x - min.x) + (max.y - min.y) + (max.z - min.z)) / 6;
       v.addVectors(min, max).multiplyScalar(0.5);
-      for (const e of parts) { e.r = r; e.c.copy(v); e.parts = parts; }
+      const whole = parts.find(e => e.src && e.src.userData && e.src.userData.rollGroupName);
+      const gname = whole ? whole.src.userData.rollGroupName : null;
+      const st = gname ? this._nearestStationName(parts[0].src) : null;
+      for (const e of parts) {
+        e.r = r; e.c.copy(v); e.parts = parts;
+        if (gname) e.name = st ? `${gname}, from ${st}` : gname;
+      }
     }
     return this._rollGroups.size;
   }
@@ -9588,6 +9636,7 @@ export class HPWorldScene {
 
     // ── the hull: one form at both ends, "for its prow the poop" ────────
     const L = 3.7, BEAM = 1.05, DEPTH = 0.62;
+    this._rollGroup('exeres_hull', () => {
     // white sandalwood, "interwoven" with the darker aloewood as the seams of
     // the strakes -- the pale wood is the hull, the dark is the joinery
     const hull = at(new THREE.SphereGeometry(1, 20, 12, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), sandal, 0, DEPTH, 0, { outline: true });
@@ -9615,6 +9664,7 @@ export class HPWorldScene {
       for (let k = 0; k < 6; k++) at(new THREE.BoxGeometry(0.05, 0.03, 0.9), red, -0.5 + k * 0.2, DEPTH * 0.48, e * (L * 0.72), { cast: false });
     }
     for (const z of [-1.2, 0, 1.2]) at(new THREE.BoxGeometry(BEAM * 1.7, 0.08, 0.26), red, 0, DEPTH * 0.72, z, { cast: false });
+    }, 'the hull of Cupid\u2019s exeres');
     this._circleCol(BX, BZ, 2.4);
 
     // ── six ivory oars in gold rowlocks, three a side ───────────────────
@@ -10344,9 +10394,11 @@ export class HPWorldScene {
     // ── the sepulchre, five feet long, of alabaster ──────────────────────
     const [px, pz] = at(ang, -2.55);
     const TL = 1.5, TW = 0.84, TH = 0.58;
+    this._rollGroup('adonis_sepulchre', () => {
     this._m(new THREE.BoxGeometry(TL + 0.28, 0.16, TW + 0.28), alab, px, 0.18, pz, { ry: -ang, outline: true });
     this._m(new THREE.BoxGeometry(TL, TH, TW), alab, px, 0.26 + TH / 2, pz, { ry: -ang, outline: true });
     this._m(new THREE.BoxGeometry(TL + 0.2, 0.09, TW + 0.2), alab, px, 0.26 + TH + 0.045, pz, { ry: -ang });
+    }, 'the sepulchre of Adonis');
     this._circleCol(px, pz, 0.95);
 
     // the two long sides, carved (see _adonisRelief)

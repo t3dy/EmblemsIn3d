@@ -2,6 +2,34 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Every addition is thought through in all five modes, and written up
+
+Ted: *"think about how we need to update the writing and mechanics and other assets for each
+of our modes (walk, fly, tour, game, roll) as you go. Make sure you are continuing to output
+.md files detailing all the stuff you're adding and how it plays out in each mode and with
+the commentary layers."*
+
+So: **`MODES.md`** defines the five modes, the ten layers and a standard **"How it plays"**
+table; every subject brief ends with that table, filled in honestly, *nothing* being an
+acceptable cell if it is true and deliberate. Ten briefs written today under the rule:
+`BANQUET`, `CROSSING`, `ADONIS`, `MASONRY`, `LITTER`, `ROLLMODE`, `CHESSBOARD`,
+`DRAGONFLIGHT`, `MUSICIANS`, `HARPIES`. `ROUTER.md` carries the rule and lists them.
+
+What the rule found on its first pass — the point of having it:
+
+- **The tour called the boat's standard a sail.** Stop 21's *gloss* said "the three signs on
+  the sail"; the book has no sail (p. 290: Cupid "making sail with his spread wings") and the
+  world no longer has one. Fixed, with the reason.
+- **Three new stations had no *quotation* note.** The banquet, the boat and the tomb were in
+  the world before they were in the tour's own words. Six notes added (stops 9, 21, 25).
+- **Poliphilo's layer had nothing at the banquet and nothing at the tomb.** He does speak at
+  the supper — to himself, twice (pp. 155–156) — and he pointedly does not at the tomb
+  (p. 374). Two utterances and one silence added; the palace-sequence silence note amended.
+- **Roll was eating the new things in pieces.** A banquet table came off as three ebony legs
+  and a cloth. `_rollGroup(id, fn)` tags everything a builder makes as one object; the seven
+  tables, the five vessels, the exeres hull and the sepulchre now come off whole.
+- **The Dream's paths cross none of the new colliders** — checked, not assumed.
+
 ## 2026-09-08 — Chapter X: the banquet, laid in the court at last
 
 Third pick of the coverage ledger, and the biggest so far. Chapter X is Dallington's

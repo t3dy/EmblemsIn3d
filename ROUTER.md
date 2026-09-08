@@ -89,6 +89,17 @@ Read the one that matches what you are building. Each is a research brief, not a
 | [`MYTHOLOGY.md`](MYTHOLOGY.md) | the gods, the myths, what each figure means |
 | [`RENAISSANCEART.md`](RENAISSANCEART.md) | how to get period painting into this medium at all |
 | [`IMPORTEXEMPLARS.md`](IMPORTEXEMPLARS.md) | what has been imported, from where, under what licence |
+| [`MODES.md`](MODES.md) | **the five modes and the ten layers, and the "How it plays" table every brief below ends with** |
+| [`BANQUET.md`](BANQUET.md) | Eleuterylida's supper: the seven changes of table, the perfuming vessel, the wheeled fountain, the repository |
+| [`CROSSING.md`](CROSSING.md) | Cupid's exeres, the six rowers, the AMOR VINCIT OMNIA standard |
+| [`ADONIS.md`](ADONIS.md) | the fountain and sepulchre that close Book I, and why the roses are white |
+| [`CHESSBOARD.md`](CHESSBOARD.md) | the human chess match, the gold-and-silver liveries, Hand E and Chigi |
+| [`MASONRY.md`](MASONRY.md) | drums, ashlar, voussoirs; what settles, what topples, what depends on what |
+| [`LITTER.md`](LITTER.md) | the seventy-two attested kinds of small thing on the floors, Roll only |
+| [`ROLLMODE.md`](ROLLMODE.md) | the hermaphrodite, the ladder of the metals, what every object owes the ball |
+| [`DRAGONFLIGHT.md`](DRAGONFLIGHT.md) | the dream from the air: controls, bounds, what reads from forty metres |
+| [`MUSICIANS.md`](MUSICIANS.md) | everyone who plays or sings, and how a silent site meets each |
+| [`HARPIES.md`](HARPIES.md) | the harpy as bracket: feet, angle-figures, tails turning to leaves |
 
 ### The standing documents
 
@@ -190,6 +201,11 @@ scripts/                export_for_3d.py, build_translation_page.py, cut_figures
   world did until that date.
 - **An open-ended `CylinderGeometry` is invisible from inside** unless its material is
   `DoubleSide` — which is how the first Temple of Venus got a dome you could see sky through.
+- **Every addition is thought through in all five modes and written up.** Walk, Tour, Dream, Fly,
+  Roll, and the ten commentary layers: what the new thing gives each and what it still owes,
+  in the "How it plays" table of its subject brief (`MODES.md` defines the columns). A station
+  is not finished until it has a *quotation* note in the tour and either a Poliphilo utterance
+  or a recorded silence.
 - **Architecture is built of stones, not boxes.** `_column` makes drums, `_ashlar` makes
   courses of ashlar and `_arch` makes voussoirs with a keystone; all three register a
   structure with `systems/Masonry.js` so Roll Up can undermine them and bring them down. A

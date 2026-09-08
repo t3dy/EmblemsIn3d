@@ -95,6 +95,22 @@ Roll Up only. Open:
   nineteen materials and every cup in the world is the same silver. Two or three
   tints per material, chosen per piece, would cost nothing and break the sameness.
 
+### 0i. What the mode briefs say is still owed (2026-09-08)
+Gathered from the "How it plays" tables; each is small and each is named in its brief.
+
+- **Dream**: reaction prompts at the banquet (the *copia*, the cloth in the fire, the waiter
+  who moves like Polia) and at the standard (reading it, or hearing "perseverance alone wears
+  the victor's diadem" as a rebuke). A thirteenth stop for the tomb of Adonis, Book I's actual
+  last scene.
+- **Tour**: a stop of the banquet's own; an *architecture* note at the portal on drums and
+  dowels; a *gloss* on Iasian and Lydian; a *myth* note on the harpy as Virgil's snatcher made
+  a footstool.
+- **Fly**: a scripted circuit of Cythera at rim height; something that marks the
+  water-labyrinth from the air, since the book itself shows it from a mount.
+- **Roll**: name the chessboard's squares and courses; a harpy's foot by name; the pomanders
+  on the court's litter list.
+- **Walk**: a second instrument for half the musicians; the ridden crossing.
+
 ### 0g. What is left of the masonry
 Columns are drums; the Great Portal's piers, the Temple of Venus's eight piers
 and the Planetary Palace's hall wall are ashlar; the temple's cupola and the
