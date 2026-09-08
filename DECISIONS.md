@@ -2,6 +2,54 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — The walker learns about height, and Cythera gets its section
+
+**The constraint that shaped this world for months is gone.** Until today the walker walked at
+y = 0 with a fixed 1.7 m eye, which meant every podium, step and terrace was *scenery* — you
+walked through it, not onto it — and `ROUTER.md` carried the rule in so many words: "anything
+you can stand on must stay under about half a metre or the dreamer ends up chest-deep in it."
+That is why Cythera's terraces were 42 cm apart when Segre reads six of them rising 12.5 m,
+and why the Temple of Venus's seven porphyry steps are a ramp you walk through.
+
+`Walker.floors` is the smallest change that unlocks it: a list of rectangles, discs and
+annuli, each with a `y`; `floorAt(x, z)` returns the highest one under the feet; and the eye is
+**eased** toward it, rate-limited going up (3.4 m/s) and quicker coming down. A 30 cm riser
+takes 90 ms and is imperceptible; a wall you should not be climbing crawls, and feels like the
+mistake it is. **A scene that registers no floors behaves exactly as before**, so nothing
+outside Cythera changed today.
+
+Two details that mattered. A ring floor can be limited to an **arc**, because Cythera's terrace
+tops are drawn as four quadrants with the crossroads left out — and if the floor covered the
+crossroads the last stride of every flight would be a teleport. And the **landings**: a
+crossroad is a road *across* the terrace, level with it, not a hole between two stairs. Without
+those the walk dropped to the sward the instant it stepped off a flight, which the first
+scripted traverse showed immediately.
+
+### Cythera's section
+
+The island's three rings were the right *shape* at a sixth of the depth. The shape is right
+because **those three rings are the auditorium** — "its auditorium turned into three tiers of
+flower beds" — and an auditorium descends to its orchestra. So: a ridge at r 14–18 at 2.10 m,
+falling through 1.40 and 0.70 into the theatre Area at 0.
+
+**Four flights of seven steps** at each of the four crossroads: up from the river bank onto the
+ridge, then down through the three rings into the theatre. Seven risers in every one, because
+seven is the book's number here and at the Temple of Venus both. The outer flight runs at about
+37°, which is a temple stair; the three garden flights at 30°. And an **ornate gate on the
+ridge at each crossroad** — 4.4 m in the opening, 4.6 m to the springing, gold balls on the
+posts, AD CYTHERAM on the tablet — *"for the passage of the triumphal chariots."*
+
+**The compromise, stated plainly rather than smuggled.** Segre's six terraces rise 12.5 m over
+a radius of some 700 m. Ours is 50 m: the plan is compressed about fourteen-fold while the
+gates, the people and the trees are full size. Six flights over that run would be a staircase,
+not a garden. **Four flights of seven steps over a ridge of 2.10 m** — the count of steps is
+the book's, the rise is the island's.
+
+Verified by driving rather than watching: a scripted traverse of the cardinal from the bank to
+the Area, settling the floor at 1/60 s a frame, gives 0 → 2.10 → 1.40 → 0.70 → 0 with no void
+anywhere along it and a maximum rise of 0.30 m per tenth of a second, which is the rate cap
+doing its job.
+
 ## 2026-09-08 — Cythera gets its twenty divisions, and the world gets its one map
 
 Two decisions, and the second is the one I would defend hardest.

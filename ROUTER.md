@@ -176,9 +176,14 @@ scripts/                export_for_3d.py, build_translation_page.py, cut_figures
 
 **Three constraints that have each cost a rebuild:**
 
-- **The walker has no floor height.** It walks at y = 0 with a fixed 1.7 eye, so a podium is
-  scenery, not ground: anything you can stand on must stay under about half a metre or the
-  dreamer ends up chest-deep in it. See DECISIONS.md, the Temple of Venus.
+- **The walker HAS floor height, since 2026-09-08 — this line used to say the opposite.**
+  `Walker.floors` is a list of `{kind:'rect'|'disc'|'ring', y, …}`; `floorAt(x, z)` returns the
+  highest one under the feet and the eye is eased toward it, rate-limited climbing so a step is
+  walked up rather than teleported onto. A ring floor may carry `a0`/`a1` to cover one arc only.
+  **A scene that registers no floors behaves exactly as before**, at y = 0, which is still true
+  of everything except Cythera's terraces. If you build something to stand on, register it —
+  otherwise it is scenery and the dreamer walks through it, which is what every podium in this
+  world did until that date.
 - **An open-ended `CylinderGeometry` is invisible from inside** unless its material is
   `DoubleSide` — which is how the first Temple of Venus got a dome you could see sky through.
 - **`_vanes` is Fortuna's registry**, integrated with `+=` from `{rate, phase}`. Anything else

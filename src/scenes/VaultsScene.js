@@ -33,7 +33,7 @@
 
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
-import { Walker } from '../systems/Walker.js?v=4';
+import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { createStyle } from '../shaders/HPStyles.js?v=4';
 

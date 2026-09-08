@@ -1,6 +1,7 @@
 // Walker.js — shared first-person controller for the explorable worlds.
 //
-// Owns the player state (position on the ground plane, yaw, pitch), keyboard +
+// Owns the player state (position on the ground plane, yaw, pitch, and since
+// 2026-09-08 the floor under it), keyboard +
 // pointer-drag input, a light collision system (circle colliders for columns/
 // trees/pedestals, AABBs for walls and hedges), head-bob, and smooth teleport
 // glides. Used by both the Hypnerotomachia dream garden and the Atalanta
@@ -27,6 +28,18 @@ export class Walker {
     this.player = { pos: new THREE.Vector3(), yaw: 0, pitch: 0 };
     this.colliders = [];     // { x, z, r }
     this.walls = [];         // { x0, x1, z0, z1 }
+    // Floors you can stand ON, highest wins. Empty means the old behaviour --
+    // one ground plane at y = 0 -- so no scene changes until it registers one.
+    //   { kind: 'rect', x0, x1, z0, z1, y }
+    //   { kind: 'disc', cx, cz, r, y }
+    //   { kind: 'ring', cx, cz, r0, r1, y, a0, a1 }
+    //       an annulus, optionally limited to one arc: Cythera's terraces are
+    //       registered as four quadrant arcs each, so the crossroads between
+    //       them belong to the flights of steps and not to the terrace top.
+    this.floors = [];
+    this.floorY = 0;         // where the feet are now, eased
+    this.climbRate = 3.4;    // m/s up: a 30 cm step takes 90 ms, a cliff crawls
+    this.fallRate = 7.0;     // m/s down: quicker, as falling is
     this.locked = false;     // dream mode: input ignored, pos driven externally
 
     this._keys = new Set();
@@ -35,6 +48,42 @@ export class Walker {
     this._lookId = null;              // the pointer currently driving look
     this.moveVec = { x: 0, y: 0 };    // analog joystick: y forward (+), x strafe (+)
     this.running = false;             // held by an on-screen run toggle
+  }
+
+  // The highest floor under (x, z), or 0 if the player is on the ground plane.
+  floorAt(x, z) {
+    let y = 0;
+    for (const f of this.floors) {
+      if (f.y <= y) continue;                       // cannot beat what we have
+      if (f.kind === 'rect') {
+        if (x < f.x0 || x > f.x1 || z < f.z0 || z > f.z1) continue;
+      } else {
+        const d = Math.hypot(x - f.cx, z - f.cz);
+        if (f.kind === 'disc') { if (d > f.r) continue; }
+        else {                                      // ring, maybe an arc of one
+          if (d < f.r0 || d > f.r1) continue;
+          if (f.a0 !== undefined) {
+            let a = Math.atan2(z - f.cz, x - f.cx);
+            const TAU = Math.PI * 2;
+            a = ((a - f.a0) % TAU + TAU) % TAU;      // angle since a0, in [0, 2pi)
+            if (a > ((f.a1 - f.a0) % TAU + TAU) % TAU) continue;
+          }
+        }
+      }
+      y = f.y;
+    }
+    return y;
+  }
+
+  // Ease the feet toward the floor. A step is *walked up*, not snapped onto:
+  // rising is rate-limited, so a 30 cm riser is imperceptible and a wall you
+  // should not be climbing feels like the mistake it is.
+  _settleFloor(dt) {
+    const target = this.floorAt(this.player.pos.x, this.player.pos.z);
+    const d = target - this.floorY;
+    if (Math.abs(d) < 1e-4) { this.floorY = target; return; }
+    const rate = (d > 0 ? this.climbRate : this.fallRate) * dt;
+    this.floorY += Math.sign(d) * Math.min(Math.abs(d), rate);
   }
 
   // The on-screen thumb-stick feeds movement here (values in [-1, 1]).
@@ -139,8 +188,12 @@ export class Walker {
       p.yaw   = tp.fyaw + (tp.tyaw - tp.fyaw) * e;
       p.pitch = tp.fpitch + (tp.tpitch - tp.fpitch) * e;
       if (k >= 1) this._tp = null;
+      this.floorY = this.floorAt(p.pos.x, p.pos.z);   // a glide arrives standing
       return false;
     }
+    // Height is settled even when the walker is locked, because Dream mode
+    // drives player.pos directly and still has to stand on things.
+    this._settleFloor(dt);
     if (this.locked) return false;
 
     const K = this._keys;
@@ -164,6 +217,7 @@ export class Walker {
       mv.multiplyScalar((run ? this.runSpeed : this.speed) * dt);
       p.pos.add(mv);
       this.collide(p.pos);
+      this._settleFloor(dt);
       this._bob += dt * (run ? 11 : 7.5);
       return true;
     }
@@ -172,7 +226,7 @@ export class Walker {
 
   applyTo(camera) {
     const p = this.player;
-    camera.position.set(p.pos.x, this.eye + Math.sin(this._bob) * 0.035, p.pos.z);
+    camera.position.set(p.pos.x, this.floorY + this.eye + Math.sin(this._bob) * 0.035, p.pos.z);
     camera.rotation.set(p.pitch, p.yaw, 0);
   }
 }

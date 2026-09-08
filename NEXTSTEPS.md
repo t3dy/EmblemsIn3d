@@ -46,15 +46,13 @@ garden, second nature north-west of the wood. Still open, in order:
   compartments each of one species, twenty marble lattice fences with a gate in each and a
   named climber over each, twenty flowery lawns. What is still outstanding from Segre's
   reconstruction, and it is no longer the largest thing in the project:
-  - **the six terraces of seven steps**, rising about 12.5 m from the river bank to the
-    theatre — the island's whole vertical structure, and the reason the planting inverts
-    (tallest trees outside, lowest at the centre);
-  - **the gates at the crossroads** where the steps break, *"for the passage of the triumphal
-    chariots"*;
+  - ~~the terraces and their flights of seven steps~~ — **built 2026-09-08**, once the walker
+    was given floor height. Four flights of seven at each of the four crossroads, a ridge of
+    2.10 m falling through three rings into the theatre, and an ornate chariot gate on the
+    ridge at each crossroad;
   - **240 fruit trees** on raised beds at the lawn corners — apples in the first order, pears
-    in the second, plums with pistachios in the third;
-  - **the theatre's three tiers of flower beds**, each separated from the one above by a
-    pergola.
+    in the second, plums with pistachios in the third. The only substantial thing left in
+    Segre's reconstruction.
 - **The three artificial gardens — glass, silk, and the counterfeit scent.** Hunt argues that
   illustrating them *damages* them, and that the 1499 and the 1592 both decline to for that
   reason. `GARDENS.md` §3 and item 5 of its ranked list: stage them as *described* rather than
@@ -76,6 +74,21 @@ and **the hedges' silhouette** are all built. Still open:
   representations"* (p. 114). This needs no new geometry — it needs the carved nymphs of the
   frieze and the living nymphs in the water composed into **one view**, at one scale, in one
   light, or the sentence cannot happen. A camera study.
+### 0e. Floor height is now available — go and use it
+Added 2026-09-08. `Walker.floors` exists and Cythera's terraces are the only thing registered
+on it. Everything else in the world is still flat, and several things that should not be:
+
+- **the Temple of Venus's seven porphyry steps** — you walk through them;
+- **the Polyandrion's crypt**, which is genuinely below the sward and reached by a stair you
+  cannot climb;
+- **the Great Portal's podium**, the palace slabs, the court, Polia's garden slab — all of them
+  are "scenery, not ground" and were kept under half a metre for that reason. Several could
+  now be their real height;
+- **the Vaults**: the pits are lethal but flat, and the altars are steps you walk through.
+
+None of it is broken as it stands. But the constraint that shaped it is gone, and the shapes
+it forced are still there.
+
 ### 0. Work the coverage queue — 29 chapters have never been read against the world
 Added 2026-09-07 after the vaults. `python scripts/coverage_seed.py && python
 scripts/coverage_report.py`, then read `COVERAGE.md`. Nine chapters are enumerated (I, II, V,

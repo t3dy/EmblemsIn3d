@@ -23,7 +23,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
-import { Walker } from '../systems/Walker.js?v=4';
+import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
@@ -4096,6 +4096,76 @@ export class HPWorldScene {
 
     this._prospectURL = c.toDataURL('image/png');
     return this._prospectURL;
+  }
+
+  // A flight of seven steps at one crossroad, between two radii and two
+  // heights. Seven because the book says seven, and because seven is the count
+  // of the Temple of Venus's porphyry steps too -- the number is not decorative
+  // in this book. `r0` is the outer radius (where you start), `r1` the inner.
+  _cytheraSteps(CX, CZ, a, r0, r1, y0, y1, n = 7) {
+    const S = this.style;
+    const stone = S.key === 'woodcut' ? this._stoneMat
+      : S.mat({ color: 0xcfc0a2, roughness: 0.72 });
+    const W = 3.6;                              // wide enough for a chariot
+    const tx = -Math.sin(a), tz = Math.cos(a);  // the tangent, across the flight
+    const dr = (r1 - r0) / n, dy = (y1 - y0) / n;
+    for (let i = 0; i < n; i++) {
+      const r = r0 + dr * (i + 0.5);
+      const y = y0 + dy * (i + 1);
+      const x = CX + Math.cos(a) * r, z = CZ + Math.sin(a) * r;
+      // the tread, and the riser under it: a step you can see the edge of
+      this._m(new THREE.BoxGeometry(W, 0.06, Math.abs(dr) * 1.08), stone, x, y, z,
+        { ry: -a, cast: false });
+      this._m(new THREE.BoxGeometry(W, Math.abs(dy) + 0.06, 0.07), stone,
+        x + Math.cos(a) * Math.abs(dr) / 2, y - Math.abs(dy) / 2, z + Math.sin(a) * Math.abs(dr) / 2,
+        { ry: -a, cast: false });
+      // and the floor for each tread, so the walk actually rises with it
+      this.walker.floors.push({
+        kind: 'ring', cx: CX, cz: CZ,
+        r0: Math.min(r0 + dr * i, r0 + dr * (i + 1)),
+        r1: Math.max(r0 + dr * i, r0 + dr * (i + 1)),
+        y: Math.max(0, y),
+      });
+    }
+    // cheeks either side, so the flight reads as cut into the terrace
+    for (const sgn of [-1, 1]) {
+      const mr = (r0 + r1) / 2;
+      this._m(new THREE.BoxGeometry(0.22, Math.abs(y1 - y0) + 0.2, Math.abs(r1 - r0)), stone,
+        CX + Math.cos(a) * mr + tx * sgn * (W / 2 + 0.11),
+        Math.min(y0, y1) + (Math.abs(y1 - y0) + 0.2) / 2 - 0.1,
+        CZ + Math.sin(a) * mr + tz * sgn * (W / 2 + 0.11),
+        { ry: -a, cast: false });
+    }
+  }
+
+  // "…ornate gates for the passage of the triumphal chariots." A gate wide
+  // enough and high enough for a car and its six beasts, standing on the ridge
+  // where the flight from the bank arrives.
+  _chariotGate(CX, CZ, a, r, y) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const stone = woodcut ? this._stoneMat : S.mat({ color: 0xe6dcc4, roughness: 0.5 });
+    const gold = woodcut ? this._darkStoneMat
+      : S.glowMat ? S.glowMat({ color: 0xc8a040, emissive: 0x3a2a08, emissiveIntensity: 0.2 })
+      : S.mat({ color: 0xc8a040, roughness: 0.35, metalness: 0.7 });
+    const W = 4.4, H = 4.6;
+    const tx = -Math.sin(a), tz = Math.cos(a);
+    const x = CX + Math.cos(a) * r, z = CZ + Math.sin(a) * r;
+    for (const sgn of [-1, 1]) {
+      const px = x + tx * sgn * W / 2, pz = z + tz * sgn * W / 2;
+      this._m(new THREE.BoxGeometry(0.62, H, 0.62), stone, px, y + H / 2, pz, { ry: -a });
+      this._m(new THREE.BoxGeometry(0.86, 0.18, 0.86), stone, px, y + H + 0.09, pz, { ry: -a, cast: false });
+      // a gold ball on each, as the plates put on every gate-post they draw
+      this._m(new THREE.SphereGeometry(0.24, 12, 10), gold, px, y + H + 0.32, pz, { outline: true });
+      this._circleCol(px, pz, 0.5);
+    }
+    // the arch over, and the tablet on it
+    const arch = this._m(new THREE.TorusGeometry(W / 2, 0.24, 10, 24, Math.PI), stone,
+      x, y + H, z, { cast: false });
+    arch.rotation.y = -a + Math.PI / 2;
+    this._m(new THREE.BoxGeometry(W + 1.3, 0.42, 0.5), stone, x, y + H + W / 2 + 0.2, z,
+      { ry: -a, cast: false });
+    this._plaque({ main: 'AD CYTHERAM', sub: 'FOR THE PASSAGE OF THE TRIVMPHALL CHARIOTS' },
+      2.4, 0.34, x, y + H + W / 2 + 0.2, z + 0.28 * Math.sign(Math.cos(a) || 1), -a + Math.PI / 2, true);
   }
 
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
@@ -8792,11 +8862,28 @@ export class HPWorldScene {
     // sweet-scented violets … the circles … filled with rue … flowering primrose".
     // Rhizopoulou 2016 (u3-u6′) confirms every one of them as a plant of the
     // book: marjoram, southernwood, ground-pine, thyme, germander, rue, primula.
+    // 2026-09-08: 0.42 / 0.84 / 1.26 -> 0.70 / 1.40 / 2.10, now that the walker
+    // has floor height and a terrace can be stood on instead of walked through.
+    // The outer ring is the ridge and the rings fall away inward to the Area,
+    // because these three rings ARE the auditorium. Its outer face reaches to
+    // r 18 so the box rampart stands on the terrace rather than beside it.
     const tiers = [
-      { r0: 8, r1: 11, h: 0.42, bed: 0xc84a5a, herb: 'marjoram' },
-      { r0: 11, r1: 14, h: 0.84, bed: 0xe07a8a, herb: 'southernwood' },
-      { r0: 14, r1: 17, h: 1.26, bed: 0xd8a850, herb: 'groundpine' },
+      { r0: 8, r1: 11, h: 0.70, bed: 0xc84a5a, herb: 'marjoram' },
+      { r0: 11, r1: 14, h: 1.40, bed: 0xe07a8a, herb: 'southernwood' },
+      { r0: 14, r1: 18, h: 2.10, bed: 0xd8a850, herb: 'groundpine' },
     ];
+    // …and they are floors you stand on -- but as FOUR ARCS each, with the
+    // crossroads left out, exactly as the tops themselves are drawn. The
+    // crossroads belong to the flights of steps; if the terrace floor covered
+    // them the last stride of every flight would be a teleport.
+    for (let q = 0; q < 4; q++) {
+      const t0 = q * Math.PI / 2 + 0.17, t1 = q * Math.PI / 2 + Math.PI / 2 - 0.17;
+      this.walker.floors.push(
+        { kind: 'ring', cx: CX, cz: CZ, r0: 14.0, r1: 18.0, y: 2.10, a0: t0, a1: t1 },
+        { kind: 'ring', cx: CX, cz: CZ, r0: 11.0, r1: 14.0, y: 1.40, a0: t0, a1: t1 },
+        { kind: 'ring', cx: CX, cz: CZ, r0:  8.0, r1: 11.0, y: 0.70, a0: t0, a1: t1 },
+      );
+    }
     const terraceMat = lit ? S.mat({ color: 0x8a7a5a, roughness: 0.9 }) : S.mat({ tone: 0.08 });
     if (lit) this._dress(terraceMat, this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 4, courses: 3, repeat: 3 }), 0.3);
     tiers.forEach((t, ti) => {
@@ -8832,7 +8919,7 @@ export class HPWorldScene {
       }
     });
     this._plaque({ main: 'MARJORAM · SOVTHERNWOOD · GROVND-PINE', sub: 'THE FIRST BAND MOST DENSELY OF MARJORAM, THE SECOND OF SOVTHERNWOOD, THE THIRD OF GROVND-PINE · P. 320' },
-      2.4, 0.32, CX + 9.6, 0.42 + 0.7, CZ + 0.9, Math.PI / 2, true);
+      2.4, 0.32, CX + 9.6, 0.70 + 0.7, CZ + 0.9, Math.PI / 2, true);
     // The rings in Segre's order, outermost first: the conifer parterre, the
     // knot cloister, the spice wood — the first build had them inverted.
     this._buildParterres(CX, CZ);
@@ -8850,13 +8937,43 @@ export class HPWorldScene {
     this._wallCol(-2.1, -1.5, CZ - 17.4, CZ - 7.6); this._wallCol(1.5, 2.1, CZ - 17.4, CZ - 7.6);
     this._wallCol(CX + 7.6, CX + 17.4, CZ - 2.1, CZ - 1.5); this._wallCol(CX + 7.6, CX + 17.4, CZ + 1.5, CZ + 2.1);
     this._wallCol(CX - 17.4, CX - 7.6, CZ - 2.1, CZ - 1.5); this._wallCol(CX - 17.4, CX - 7.6, CZ + 1.5, CZ + 2.1);
-    // the ornate gates at the four crossroads
+    // ── The flights of seven steps, at the four crossroads ───────────────
+    // "each reached by a flight of seven steps; the steps break at crossroads
+    // marked by ornate gates for the passage of the triumphal chariots"
+    // (Segre, GARDENS.md 5). Four flights on each of the four crossroads: up
+    // from the bank onto the ridge, then down through the three rings of the
+    // auditorium to the Area. Seven risers in every one of them.
+    for (let q = 0; q < 4; q++) {
+      const a = q * Math.PI / 2;
+      // The runs are long enough to be walked rather than climbed: 2.10 m over
+      // 2.8 m of run is about 37 degrees, which is a temple stair; the three
+      // garden flights are 30. Seven risers in each, whatever the run.
+      this._cytheraSteps(CX, CZ, a, 20.40, 17.60, 0,    2.10);   // the bank to the ridge
+      this._cytheraSteps(CX, CZ, a, 14.60, 13.40, 2.10, 1.40);   // then down the auditorium
+      this._cytheraSteps(CX, CZ, a, 11.60, 10.40, 1.40, 0.70);
+      this._cytheraSteps(CX, CZ, a,  8.60,  7.40, 0.70, 0);
+      // …and the landings between them. A crossroad is a ROAD across the
+      // terrace, level with it, not a hole between two flights: without these
+      // the walk drops to the sward the moment it steps off a stair.
+      const G = 0.19;                                    // half the road, in radians
+      for (const [r0, r1, y] of [[14.60, 17.60, 2.10], [11.60, 13.40, 1.40], [8.60, 10.40, 0.70]]) {
+        this.walker.floors.push({ kind: 'ring', cx: CX, cz: CZ, r0, r1, y,
+                                  a0: a - G, a1: a + G });
+        // and the road surface itself, so the landing is seen as well as felt
+        const rm = (r0 + r1) / 2;
+        this._m(new THREE.PlaneGeometry(3.4, r1 - r0), isleTrack,
+          CX + Math.cos(a) * rm, y + 0.012, CZ + Math.sin(a) * rm,
+          { rx: -Math.PI / 2, rz: -a - Math.PI / 2, cast: false });
+      }
+    }
+    // the ornate gates at the four crossroads, for the passage of the chariots
     for (let q = 0; q < 4; q++) {
       const a = q * Math.PI / 2;
       for (const s of [-1.9, 1.9]) {
         const [x, z] = pos(a, 18.6);
         this._obelisk(x - Math.sin(a) * s, z + Math.cos(a) * s, 0.75, 2.1);
       }
+      this._chariotGate(CX, CZ, a, 17.4, 2.10);
     }
 
     // ── The crowning cypress arcade ───────────────────────────────────────
@@ -8865,7 +8982,7 @@ export class HPWorldScene {
     // colonnade ringing the auditorium. Eight pairs on the top terrace, the
     // four cardinals left open for the crossroads. Purely decorative — off the
     // walk, so no colliders.
-    const arcadeR = 16.4, arcH = 1.26, span = 0.5;
+    const arcadeR = 16.4, arcH = 2.10, span = 0.5;
     for (let i = 0; i < 12; i++) {
       const a = (i / 12) * Math.PI * 2;
       if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.34) continue;
@@ -8936,11 +9053,11 @@ export class HPWorldScene {
     const RR = 17.6, HH = 1.2, TH = 1.8;
     for (let q = 0; q < 4; q++) {
       const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2;
-      this._m(new THREE.CylinderGeometry(RR + 0.3, RR + 0.3, HH, 40, 1, true, Math.PI / 2 - a1, a1 - a0), box, CX, HH / 2 + 1.26, CZ, { cast: false })
+      this._m(new THREE.CylinderGeometry(RR + 0.3, RR + 0.3, HH, 40, 1, true, Math.PI / 2 - a1, a1 - a0), box, CX, HH / 2 + 2.10, CZ, { cast: false })
         .material.side = THREE.DoubleSide;
-      this._hedgeFringeArc(CX, CZ, RR + 0.3, HH + 1.26, HH, Math.PI / 2 - a1, Math.PI / 2 - a0,
+      this._hedgeFringeArc(CX, CZ, RR + 0.3, HH + 2.10, HH, Math.PI / 2 - a1, Math.PI / 2 - a0,
         { density: 3.2, seed: q });
-      this._m(new THREE.RingGeometry(RR, RR + 0.6, 40, 1, a0, a1 - a0), box, CX, HH + 1.26, CZ, { rx: -Math.PI / 2, cast: false });
+      this._m(new THREE.RingGeometry(RR, RR + 0.6, 40, 1, a0, a1 - a0), box, CX, HH + 2.10, CZ, { rx: -Math.PI / 2, cast: false });
       // five towers a quarter, a door in each, and the clipped triumphs between
       for (let t = 0; t < 5; t++) {
         const a = a0 + (t + 0.5) / 5 * (a1 - a0);
@@ -8976,7 +9093,7 @@ export class HPWorldScene {
     }
 
     // ── the first cloister, on the outer terrace: circle, rhomb, circle …
-    const T3 = { r0: 14, r1: 17, h: 1.26 }, mid = (T3.r0 + T3.r1) / 2;
+    const T3 = { r0: 14, r1: 17, h: 2.10 }, mid = (T3.r0 + T3.r1) / 2;
     for (let q = 0; q < 4; q++) {
       const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2, n = 7;
       for (let i = 0; i < n; i++) {
@@ -9011,7 +9128,7 @@ export class HPWorldScene {
     // ── the second cloister, on the middle terrace: orange towers, the
     //    hedges of eight kinds, crescent-horns with a tiered juniper, box
     //    spheres on stalks; the knot squares are the terrace's own tile
-    const T2 = { r0: 11, r1: 14, h: 0.84 }, m2 = T2.r1 - 0.5;
+    const T2 = { r0: 11, r1: 14, h: 1.40 }, m2 = T2.r1 - 0.5;
     for (let q = 0; q < 4; q++) {
       const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2, n = 4;
       for (let i = 0; i <= n; i++) {
@@ -9045,7 +9162,7 @@ export class HPWorldScene {
       const a = (i / 16) * Math.PI * 2 + 0.2;
       if (onRoad(a, 0.28)) continue;
       const [x, z] = pos(a, 9.5);
-      const t = this._tree(x, z, 0.42, ['citron', 'juniper', 'olive', 'laurel'][i % 4]); if (t) t.position.y = 0.42;
+      const t = this._tree(x, z, 0.42, ['citron', 'juniper', 'olive', 'laurel'][i % 4]); if (t) t.position.y = 0.70;
     }
     this._plaque({ main: 'TAPETI CHARAINI', sub: 'THE BEDS LIKE CARPETS FROM CAIRO · A CIRCLE BETWEEN TWO RHOMBS · CH. XXI' },
       2.2, 0.36, CX + 2.6, 1.3 + 0.5, CZ + 18.6, 0, true);

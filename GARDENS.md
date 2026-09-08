@@ -229,9 +229,33 @@ built as an object.
    plaque at its gate, because *"so each was varied"* is only true if you can
    tell them apart.
 
-   **Still to do:** the six terraces of seven steps rising 12.5 m, the gates at
-   the crossroads for the passage of the triumphal chariots, and the theatre's
-   three tiers of flower beds separated by pergolas. This is the largest single build
+   **The terraces and their flights, built 2026-09-08.** They were capped at
+   1.26 m for one reason: the walker had no floor height, so a terrace was
+   scenery and anything you were meant to stand on had to stay under half a
+   metre. That is fixed (`Walker.floors`), so the island now has its real
+   section — a ridge at r 14–18 falling away through three rings to the Area,
+   because **those three rings *are* the auditorium** ("its auditorium turned
+   into three tiers of flower beds") and an auditorium descends to its orchestra.
+
+   **Four flights of seven steps** at each of the four crossroads: up from the
+   river bank onto the ridge, then down through the three rings into the
+   theatre. Seven risers in every one, at about 37° for the monumental outer
+   flight and 30° for the three garden ones, with a landing at the terrace level
+   between each pair — a crossroad is a *road across the terrace*, not a hole
+   between two stairs. And an **ornate gate on the ridge at each crossroad**,
+   4.4 m in the opening and 4.6 m to the springing, "for the passage of the
+   triumphal chariots."
+
+   **The compromise, stated plainly.** Segre's six terraces rise 12.5 m over a
+   radius of some 700 m. Ours is 50 m — the plan is compressed about fourteen
+   fold — while the gates, the people and the trees are full size. Six flights
+   over that run would be a staircase, not a garden. So: **four flights of seven
+   steps over a ridge of 2.10 m.** The count of steps is the book's; the rise is
+   the island's.
+
+   **Still to do:** the 240 fruit trees on raised beds at the lawn corners —
+   apples in the first order, pears in the second, plums with pistachios in the
+   third. This is the largest single build
    remaining in the project and the book's culmination; Segre's plan above is
    detailed enough to work from directly. See [RESEARCHPASSFORVR.md](RESEARCHPASSFORVR.md)
    for why it should probably come before anything else.
