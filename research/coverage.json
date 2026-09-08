@@ -457,33 +457,9 @@
       "section": "QUEEN_PALACE"
     },
     {
-      "plate": 28,
-      "description": "Richly ornamented tripod",
-      "page_1499": 93,
-      "section": "QUEEN_PALACE"
-    },
-    {
       "plate": 29,
       "description": "Golden basin upon wheels",
       "page_1499": 94,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 30,
-      "description": "Tripod with three naked boys on lion-footed pedestal",
-      "page_1499": 95,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 31,
-      "description": "Vessel surmounted by coral-tree",
-      "page_1499": 102,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 32,
-      "description": "Magnificent vessel with gold shrub, twice nymph height",
-      "page_1499": 105,
       "section": "QUEEN_PALACE"
     },
     {
@@ -1253,22 +1229,234 @@
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 28,
+          "description": "Richly ornamented tripod",
+          "page_1499": 93
+        },
+        {
+          "plate": 30,
+          "description": "Tripod with three naked boys on lion-footed pedestal",
+          "page_1499": 95
+        },
+        {
+          "plate": 31,
+          "description": "Vessel surmounted by coral-tree",
+          "page_1499": 102
+        },
+        {
+          "plate": 32,
+          "description": "Magnificent vessel with gold shrub, twice nymph height",
+          "page_1499": 105
+        }
+      ],
+      "plates_from": "attached 2026-09-08 from woodcut_catalog (QUEEN_PALACE, page_seq 93-105)",
       "tour_stops": [
         {
           "station": "labyrinth",
           "title": "The Palace, the Water-Labyrinth and the Banquet",
           "notes": 9
+        },
+        {
+          "station": "court",
+          "title": "(the banquet is laid in the court)",
+          "notes": null,
+          "note": "built 2026-09-08 in the court, where the book puts it; the stop still points at the labyrinth"
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-08",
+        "date": "2026-09-08",
+        "note": "Read against the world: Dallington pp. 143-158 (corpus md ll. 5960-6640), the banquet. Chapter IX (the palace rooms, the water-labyrinth) is the first half of the same tour stop and is still partial. Fourteen facsimile pages of a supper, and the world had the throne and the pavement and no banquet. Four plates belong here and were attached to no chapter: #28, #30, #31, #32."
       },
-      "features": []
+      "features": [
+        {
+          "id": "banquet-tripods",
+          "name": "The ebony tripod frames: lion-claw feet, winged child-heads, garlands",
+          "kind": "furniture",
+          "plate": 28,
+          "source": "Dallington pp. 143-144",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk",
+            "tour",
+            "rollup"
+          ],
+          "note": "\"frames of Hebony, with three feete ... the tearing claw of a Lyon ... the head of a childe betwixt two wings ... in maner of a Garland a bundle of leaues and fruites\""
+        },
+        {
+          "id": "banquet-seven-tables",
+          "name": "The seven changes of table: gold, beryl, topaz, chrysolite, emerald, sapphire, ivory-on-aloes",
+          "kind": "rite",
+          "plate": null,
+          "source": "Dallington pp. 151-155",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk",
+            "tour",
+            "rollup"
+          ],
+          "note": "Built as seven tables each standing at the course it served -- its stone, its cloth, its strewn flowers, its dish -- because the sequence cannot be animated and this way it can be read. The Queen's is the first."
+        },
+        {
+          "id": "banquet-cloths-flowers",
+          "name": "The seven cloths and the seven strewings",
+          "kind": "ornament",
+          "plate": null,
+          "source": "Dallington pp. 144, 152-155",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "green Hormisine and violets; Talasike and citrus flowers; murrey-and-carnation and five kinds of rose; yellow silk and lily-of-the-valley and daffodil; crimson; purple and jasmine; white drawn-work and gilliflowers."
+        },
+        {
+          "id": "banquet-dishes",
+          "name": "The courses: the cordial, five fritters, six gilded breads, seven partridge, eight pheasant, nine peacock, three gilded date-shellfish",
+          "kind": "ornament",
+          "plate": null,
+          "source": "Dallington pp. 151-155",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "The counts are the book's own (5, 6, 7, 8, 9, 3). Each dish is named to the roll-up."
+        },
+        {
+          "id": "banquet-perfuming-vessel",
+          "name": "The perfuming vessel on harpies' feet, six flying spirits holding bowls of coals",
+          "kind": "object",
+          "plate": 30,
+          "source": "Dallington pp. 147-148",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "\"six naked shapes of flying spirites ... of two cubites high\" in a ring, a candlestick-stem with the seventh bowl, little gold pots boiling rose-water, orange-flower, myrtle, laurel, elder. Fumes and a pulsing light."
+        },
+        {
+          "id": "banquet-wheeled-fountain",
+          "name": "The self-refilling fountain on four little wheels, with the pear diamond",
+          "kind": "object",
+          "plate": null,
+          "source": "Dallington pp. 145-146",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk"
+          ],
+          "note": "\"continually running with water, and reassuming the same\" -- the hydraulics (\"two small pypes on eyther sides, and running vp straight in the middest\") are the kind of thing this book explains. A jet; the reassuming is not simulated."
+        },
+        {
+          "id": "banquet-repository",
+          "name": "The repository, a ship of gold on four wheels with fishes and water-monsters",
+          "kind": "object",
+          "plate": 32,
+          "source": "Dallington p. 150",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk"
+          ],
+          "note": "Plate #32 is the great vessel \"twice nymph height\" (the tour lede mentions it); the repository here is a first reading and stands at the open east end."
+        },
+        {
+          "id": "banquet-musicians",
+          "name": "Fourteen damsel musicians, seven a side of the jasper door",
+          "kind": "figure",
+          "plate": null,
+          "source": "Dallington p. 143",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk"
+          ],
+          "note": "Mute: the site is silent by decision. They stand; their instruments change with every service in the book and do not here."
+        },
+        {
+          "id": "banquet-attendants",
+          "name": "The three that wait on the Queen: carver, plate, towel",
+          "kind": "figure",
+          "plate": null,
+          "source": "Dallington p. 149",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk"
+          ],
+          "note": "and \"one of those three which in the last chaunge attended ... did represent in her behauiour the sweet iesture and resemblance of Polia\" (p. 156), who stands at the seventh table."
+        },
+        {
+          "id": "banquet-vessel-of-coals",
+          "name": "The vessel of coals the cloths are thrown into and come out clean",
+          "kind": "object",
+          "plate": null,
+          "source": "Dallington p. 155",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk"
+          ],
+          "note": "\"the wonderfull straungest of all the rest.\" Asbestos cloth, which antiquity knew and Colonna treats as a marvel; the plaque keeps his wonder rather than explaining it away."
+        },
+        {
+          "id": "banquet-coral-tree",
+          "name": "The chalice of gold with the coral tree on its cover, flowered with sapphire, jacinth and beryl",
+          "kind": "object",
+          "plate": 31,
+          "source": "Dallington pp. 156-157",
+          "status": "built",
+          "built_as": "HPWorldScene._buildBanquet",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "Carried by \"the middlemost\" of five nymphs in blue silk and gold; \"monstrous great pearle\" on the twig-tips."
+        },
+        {
+          "id": "banquet-amber-balls",
+          "name": "The pierced gold balls stuffed with amber paste, given to every guest",
+          "kind": "object",
+          "plate": null,
+          "source": "Dallington p. 150",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [],
+          "note": "\"to the ende their hands, eyes, and sences should not be idle\" -- a pomander. Ten lines; it belongs on the litter list for the court as much as on a table."
+        },
+        {
+          "id": "banquet-great-vessel",
+          "name": "The perpetual fountain on an axle-tree with harpies at the angles (plate #32), \"twice a nymph's height\"",
+          "kind": "object",
+          "plate": 32,
+          "source": "Dallington pp. 158-160",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [],
+          "note": "The second wheeled fountain, after the coral tree: a quadrangle three by two by six feet with a harpy at each angle, satyr-and-nymph triumphs in half-relief, an antique vessel rising from the centre. Not built; the tour lede already promises it."
+        },
+        {
+          "id": "banquet-music",
+          "name": "Trumpets and cornets at every change, and the singers \"that would haue caused the Syrens to sleepe\"",
+          "kind": "rite",
+          "plate": null,
+          "source": "Dallington p. 151",
+          "status": "declined",
+          "built_as": null,
+          "modes": [],
+          "note": "The site is silent by standing decision."
+        }
+      ]
     },
     {
       "id": "XI",

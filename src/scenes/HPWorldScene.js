@@ -2120,6 +2120,10 @@ export class HPWorldScene {
       this._circleCol(x, z, 0.4);
     });
 
+    // The banquet (ch. X, Dallington pp. 143-158), laid in the court itself:
+    // "in the middest of this admirable and stupendious Court" (p. 147)
+    this._buildBanquet(CX, CZ);
+
     // The bath of the nymphs — the eight-sided bath-house of the book
     this._buildBath(CX + 3.5, CZ + 2.8);
 
@@ -2133,6 +2137,314 @@ export class HPWorldScene {
     this.style.tuneStream(stream);
     this.scene.add(stream.points);
     this._streams.push(stream);
+  }
+
+  // ── The banquet of Queen Eleuterylida (ch. X) ─────────────────────────────
+  //
+  // Found by the coverage ledger, 2026-09-08. Chapter X is Dallington's most
+  // sustained material description — fourteen facsimile pages of a supper —
+  // and the tour has called it "the banquet" since the commentary was written;
+  // the world had the throne, the chess-board pavement and the settles, and no
+  // banquet. Four woodcuts belong to it and were attached to no chapter: #28
+  // the ornamented tripod, #30 the tripod with three naked boys on a
+  // lion-footed pedestal, #31 the vessel surmounted by a coral-tree, #32 the
+  // great vessel with the gold shrub, twice a nymph's height.
+  //
+  // THE FRAMES (pp. 143–144): "frames of Hebony, with three feete", each stypit
+  // ending "in the forme of the tearing claw of a Lyon", with "the head of a
+  // childe betwixt two wings" on every leg and "in maner of a Garland a bundle
+  // of leaues and fruites" slung between them; over them a round table "three
+  // foote by the Diameter … to be quickly taken of and on … at euery changing".
+  //
+  // THE SEVEN CHANGES (pp. 151–155). Each course comes on a new table of a new
+  // stone, under a new cloth, with new flowers strewn, the waiters dressed to
+  // match. So the seven tables here are the seven changes, each standing at
+  // the course it served, the Queen's at the first:
+  //   1. gold — green Hormisine — violets, tawny, blue and white — the cordial
+  //   2. beryl — cloth of Talasike — flowers of cedar, orange and lemon — five
+  //      saffron fritters in five oils
+  //   3. topaz — murrey and carnation silk — roses white, red, damask, musk,
+  //      yellow — six pieces of gilded bread and manchet
+  //   4. chrysolite — yellow silk — lily of the valley and daffodil — seven
+  //      morsels of partridge
+  //   5. emerald — crimson silk — purple, yellow, white and tawny — eight
+  //      morsels of pheasant
+  //   6. sapphire — purple silk — jasmine — nine morsels of peacock
+  //   7. ivory on aloes, inlaid with amber-and-musk paste — white drawn-work —
+  //      violet and gilliflowers — three morsels of the date-shellfish, gilded
+  //      "that euerie piece taken vp, seemed as if it had beene all Gold"
+  //
+  // THE PERFUMING VESSEL (pp. 147–148), "in the middest": gold, on "three
+  // Harpyes feete", with "six naked shapes of flying spirites … of two cubites
+  // high" in a ring holding bowls, and "in the Center point … a steale like an
+  // olde fashioned Candlesticke" with a seventh; every bowl of coals with "a
+  // little pot of gold" boiling rose-water, orange-flower, myrtle, laurel, elder.
+  //
+  // THE FOUNTAIN ON WHEELS (pp. 145–146): "an artificious fountaine continually
+  // running with water, and reassuming the same agayne … of fine golde …
+  // carryed vpon foure little wheeles … to wash the handes", a pear diamond
+  // "of a huge and vnseene bignes" at the top; the water "of Roses, mixt with
+  // the iuice of Lymon pilles, and a little Amber".
+  //
+  // THE REPOSITORY (p. 150): "vppon foure turning wheeles a stately repositorie
+  // or cupbord, in fashion like vnto a shippe … of most fine golde, with many
+  // fishes and water monsters", holding cloths, flowers, cups, towels, vessels.
+  //
+  // THE MUSICIANS (p. 143): "seuen vpon a side" of the jasper door, "which at
+  // euery change of seruice, did alter their Musicke and Instruments" — mute
+  // here, the site being silent by decision.
+  //
+  // THE VESSEL OF COALS (p. 155): the cloths and napkins thrown into the fire
+  // "and after that beeing taken out and cooled, they were whole, vnhurt and
+  // cleane … the wonderfull straungest of all the rest." Asbestos cloth; the
+  // book calls it a marvel and so does this.
+  //
+  // THE CORAL TREE (pp. 156–157, plate #31): after the tables, five nymphs in
+  // blue silk and gold bring a chalice of gold whose cover is a mountain with
+  // a coral tree a cubit high, flowered with sapphire, jacinth and beryl.
+  _buildBanquet(CX, CZ) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const FLOOR = 0.36;
+    const M = (c, e = {}, t = 0.08) => woodcut ? S.mat({ tone: t }) : S.mat({ color: c, ...e });
+    const gold  = M(0xd9b25a, { roughness: 0.22, metalness: 0.95 }, 0.04);
+    const ebony = M(0x1a1410, { roughness: 0.45, metalness: 0.1 }, 0.36);
+    const leaf  = M(0x3d6a2c, { roughness: 0.9 }, 0.18);
+    const fruit = M(0xc85a30, { roughness: 0.55 }, 0.12);
+    const ivory = M(0xefe6d2, { roughness: 0.4 }, 0.0);
+    gold.userData.roll = 'a piece of the Queen’s gold plate';
+    ebony.userData.roll = 'a leg of ebony';
+
+    // the seven changes, as the book gives them
+    const COURSES = [
+      { stone: 'gold',       top: 0xd9b25a, cloth: 0x2e6a3a, flowers: [0x8a5a2a, 0x3a4aa0, 0xf2eee2], dish: 'the cordial confection, in lozenges', met: true },
+      { stone: 'beryl',      top: 0x9fd4c0, cloth: 0x2f6a7a, flowers: [0xf6f2e8, 0xf6f2e8, 0xf0e8c0], dish: 'five saffron fritters, in five oils' },
+      { stone: 'topaz',      top: 0xe0b060, cloth: 0x7a2a4a, flowers: [0xf6f2e8, 0xc0303c, 0xd88090, 0xe8c860], dish: 'six pieces of gilded bread, and manchet' },
+      { stone: 'chrysolite', top: 0xb8d060, cloth: 0xe0c040, flowers: [0xf6f2e8, 0xf0e070], dish: 'seven morsels of partridge, in a sharp broth' },
+      { stone: 'emerald',    top: 0x2a8a4a, cloth: 0xb02030, flowers: [0x7a3a9a, 0xf0e070, 0xf6f2e8, 0x8a5a2a], dish: 'eight morsels of pheasant, in the gravy' },
+      { stone: 'sapphire',   top: 0x2c4aa8, cloth: 0x5a2a7a, flowers: [0x8a5a2a, 0xf0e070, 0xf6f2e8], dish: 'nine morsels of restorative peacock' },
+      { stone: 'ivory, on aloes', top: 0xefe6d2, cloth: 0xf2eee6, flowers: [0x7a4aa0, 0xd870a0, 0xc8a0c0], dish: 'three morsels of the date-shellfish, gilded' },
+    ];
+    // where the seven stand: the Queen's straight before her, the six about
+    // the pavement, clear of the nymphs' arc, the bath and the perfuming vessel
+    const SEATS = [[CX - 3.2, CZ], [CX - 0.4, CZ - 2.6], [CX + 1.7, CZ - 1.4], [CX + 2.4, CZ + 1.2],
+                   [CX - 0.4, CZ + 2.7], [CX + 1.4, CZ - 3.6], [CX - 2.4, CZ + 3.4]];
+
+    COURSES.forEach((c, i) => {
+      const [x, z] = SEATS[i];
+      const top = M(c.top, c.met ? { roughness: 0.22, metalness: 0.95 } : { roughness: 0.25, metalness: 0.1 }, 0.05);
+      top.userData.roll = 'a round table of ' + c.stone;
+      const cloth = M(c.cloth, { roughness: 0.92 }, 0.14);
+      cloth.userData.roll = 'a perfumed carpet of silk';
+      // the ebony frame: three stypits on lion's claws, a winged child's head on
+      // each, and the garland slung between (plate #28)
+      const R = 0.46, TY = FLOOR + 0.74;
+      for (let k = 0; k < 3; k++) {
+        const a = (k / 3) * Math.PI * 2 + 0.4;
+        const lx = x + Math.cos(a) * R * 0.7, lz = z + Math.sin(a) * R * 0.7;
+        this._m(new THREE.CylinderGeometry(0.03, 0.045, TY - FLOOR - 0.08, 7), ebony, lx, FLOOR + (TY - FLOOR) / 2 - 0.04, lz, { cast: false });
+        const claw = this._m(new THREE.SphereGeometry(0.06, 7, 5), ebony, lx + Math.cos(a) * 0.04, FLOOR + 0.04, lz + Math.sin(a) * 0.04, { cast: false });
+        claw.scale.set(1.4, 0.6, 1.1);
+        this._m(new THREE.SphereGeometry(0.045, 8, 6), gold, lx, FLOOR + 0.42, lz, { cast: false });    // the child's head
+        for (const sw of [-1, 1]) {                                                              // its two wings
+          const w = this._m(new THREE.BoxGeometry(0.09, 0.05, 0.012), gold, lx + Math.cos(a + sw * 1.4) * 0.07, FLOOR + 0.45, lz + Math.sin(a + sw * 1.4) * 0.07, { cast: false });
+          w.rotation.y = -(a + sw * 1.4);
+        }
+        // the garland between this leg and the next, "biggest towardes the midst"
+        const a2 = ((k + 1) / 3) * Math.PI * 2 + 0.4;
+        for (let t = 1; t < 6; t++) {
+          const u = t / 6, sag = Math.sin(u * Math.PI) * 0.1;
+          const gx = x + Math.cos(a) * R * 0.7 * (1 - u) + Math.cos(a2) * R * 0.7 * u;
+          const gz = z + Math.sin(a) * R * 0.7 * (1 - u) + Math.sin(a2) * R * 0.7 * u;
+          this._m(new THREE.SphereGeometry(0.025 + sag * 0.25, 6, 5), t % 2 ? leaf : fruit, gx, FLOOR + 0.36 - sag, gz, { cast: false });
+        }
+      }
+      // the round table, three foot across, and the carpet down to the pavement
+      this._m(new THREE.CylinderGeometry(R, R, 0.035, 24), top, x, TY, z, { cast: false, outline: true });
+      const skirt = this._m(new THREE.CylinderGeometry(R + 0.03, R + 0.12, TY - FLOOR - 0.02, 24, 1, true), cloth, x, FLOOR + (TY - FLOOR) / 2, z, { cast: false });
+      skirt.material.side = THREE.DoubleSide;
+      this._m(new THREE.TorusGeometry(R + 0.11, 0.012, 5, 24), gold, x, FLOOR + 0.03, z, { rx: Math.PI / 2, cast: false });   // the gold fringe
+      // the flowers strewn — a dusting over the cloth, and some fallen to the floor
+      const rnd = (n, k) => { const v = Math.sin(n * 91.3 + k * 47.1 + i * 13.7) * 43758.5453; return v - Math.floor(v); };
+      for (let f = 0; f < 22; f++) {
+        const a = rnd(f, 1) * Math.PI * 2, r = rnd(f, 2) * R * 0.9;
+        const onFloor = f > 15;
+        const fm = M(c.flowers[f % c.flowers.length], { roughness: 0.7 }, 0.0);
+        fm.userData.roll = 'a strewn flower';
+        const rr = onFloor ? R + 0.2 + rnd(f, 3) * 0.5 : r;
+        this._m(new THREE.SphereGeometry(0.016, 6, 5), fm, x + Math.cos(a) * rr, onFloor ? FLOOR + 0.02 : TY + 0.03, z + Math.sin(a) * rr, { cast: false });
+      }
+      // the vessels of the course's stone: a covered cup, a dish, and the dish's morsels
+      const cup = this._m(new THREE.CylinderGeometry(0.05, 0.035, 0.09, 10, 1, true), top, x + 0.2, TY + 0.065, z - 0.12, { cast: false });
+      cup.material.side = THREE.DoubleSide;
+      this._m(new THREE.SphereGeometry(0.052, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2), top, x + 0.2, TY + 0.11, z - 0.12, { cast: false });   // "with his couer"
+      this._m(new THREE.CylinderGeometry(0.16, 0.13, 0.02, 18), top, x - 0.1, TY + 0.03, z + 0.08, { cast: false });
+      const N = [1, 5, 6, 7, 8, 9, 3][i];
+      const morsel = M(i === 6 ? 0xd9b25a : [0xf0e0b0, 0xe8b040, 0xd8b070, 0xa07040, 0x8a5a40, 0x7a5a3a, 0xd9b25a][i], { roughness: 0.6 }, 0.1);
+      morsel.userData.roll = c.dish;
+      for (let k = 0; k < N; k++) {
+        const a = (k / N) * Math.PI * 2;
+        this._m(new THREE.SphereGeometry(0.022, 6, 5), morsel, x - 0.1 + Math.cos(a) * 0.08, TY + 0.06, z + 0.08 + Math.sin(a) * 0.08, { cast: false });
+      }
+      this._circleCol(x, z, 0.62);
+      const ord = ['FIRST', 'SECOND', 'THIRD', 'FOVRTH', 'FIFTH', 'SIXTH', 'SEVENTH'][i];
+      this._plaque({ main: 'THE ' + ord + ' TABLE · ' + c.stone.toUpperCase(),
+        sub: c.dish.toUpperCase() + ' · DALLINGTON PP. 151–155' },
+        1.1, 0.24, x, FLOOR + 0.12, z + R + 0.34, 0, true);
+    });
+
+    // ── the three that wait on the Queen's table: carver, plate, towel ─────
+    const [qx, qz] = SEATS[0];
+    [['the carver', 0, 0.85], ['she that holds the plate', -1, 0.75], ['she that holds the towel', 1, 0.75]].forEach(([role, side, r], k) => {
+      const a = side * 0.9;
+      const n = this.cast.nymph({ name: 'attendant' + k, robe: [0xd9b25a, 0xc0a040, 0xe8d080][k], h: 0.92, pose: k === 0 ? 'offer' : 'carry', attribute: k === 1 ? null : null });
+      this._npc('banquet_att' + k, n, qx + 0.9 + Math.cos(a) * r * 0.4, qz + Math.sin(a) * r * 1.4, -Math.PI / 2, { label: role, sub: 'AT THE QVEEN’S TABLE', labelY: 1.9, sway: 0.02 });
+      n.position.y = FLOOR;
+    });
+    // …and the one among them who "did represent … the resemblance of Polia" (p. 156)
+    const polia = this.cast.nymph({ name: 'like Polia', robe: 0xf2eee6, h: 0.95, pose: 'offer' });
+    this._npc('banquet_polia', polia, SEATS[6][0] + 0.75, SEATS[6][1] - 0.4, Math.PI * 0.75, { label: 'One of the three', sub: 'THE RESEMBLANCE OF POLIA · P. 156', labelY: 1.95, sway: 0.02 });
+    polia.position.y = FLOOR;
+
+    // ── the perfuming vessel, "in the middest" (pp. 147–148) ────────────
+    const PX = CX + 0.6, PZ = CZ + 0.4, PY = FLOOR;
+    // the triangular base on three harpies' feet
+    const tri = this._m(new THREE.CylinderGeometry(0.62, 0.66, 0.1, 3), gold, PX, PY + 0.19, PZ, { cast: false, outline: true });
+    tri.rotation.y = Math.PI / 6;
+    for (let k = 0; k < 3; k++) {
+      const a = (k / 3) * Math.PI * 2 + Math.PI / 6;
+      const f = this._m(new THREE.SphereGeometry(0.07, 7, 5), gold, PX + Math.cos(a) * 0.55, PY + 0.07, PZ + Math.sin(a) * 0.55, { cast: false });
+      f.scale.set(1.5, 0.7, 1.0); f.rotation.y = -a;
+    }
+    // six naked flying spirits, two cubits high, in a ring, each holding a bowl
+    const spiritMat = 0xd9b25a;
+    for (let k = 0; k < 6; k++) {
+      const a = (k / 6) * Math.PI * 2;
+      const sx = PX + Math.cos(a) * 0.38, sz = PZ + Math.sin(a) * 0.38;
+      const sp = this.cast.figure({ h: 0.9, skin: spiritMat, robe: null, pose: 'reach', winged: true });
+      sp.position.set(sx, PY + 0.24, sz);
+      sp.rotation.y = -a + Math.PI / 2;     // shoulders turned one toward another
+      this.scene.add(sp);
+      this._npcs.push({ g: sp, phase: k * 0.8, baseY: sp.rotation.y, sway: 0.01 });
+      const bx = PX + Math.cos(a) * 0.62, bz = PZ + Math.sin(a) * 0.62;
+      const bowl = this._m(new THREE.SphereGeometry(0.11, 12, 6, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, bx, PY + 1.0, bz, { cast: false });
+      bowl.rotation.x = Math.PI;
+      this._m(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 12), M(0x3a1a0a, { emissive: 0xff5010, emissiveIntensity: 1.4 }, 0.3), bx, PY + 1.01, bz, { cast: false });   // the coals
+      this._m(new THREE.SphereGeometry(0.035, 8, 6), gold, bx, PY + 1.06, bz, { cast: false });   // the little pot
+      this._fume(bx, PY + 1.08, bz, { rise: 1.6, drift: 0.2, count: 10, speed: 0.12 });
+    }
+    // the candlestick stem in the centre with the seventh bowl
+    this._m(new THREE.CylinderGeometry(0.035, 0.06, 1.05, 10), gold, PX, PY + 0.75, PZ, { cast: false });
+    for (const y of [0.45, 0.75, 1.0]) this._m(new THREE.TorusGeometry(0.07, 0.02, 6, 14), gold, PX, PY + y, PZ, { rx: Math.PI / 2, cast: false });
+    const cb = this._m(new THREE.SphereGeometry(0.17, 14, 7, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, PX, PY + 1.42, PZ, { cast: false, outline: true });
+    cb.rotation.x = Math.PI;
+    this._m(new THREE.CylinderGeometry(0.15, 0.15, 0.03, 14), M(0x3a1a0a, { emissive: 0xff5010, emissiveIntensity: 1.4 }, 0.3), PX, PY + 1.43, PZ, { cast: false });
+    this._fume(PX, PY + 1.5, PZ, { rise: 2.2, drift: 0.3, count: 16, speed: 0.14 });
+    const pl = S.pointLight ? S.pointLight(0xff7030, 1.6, 4.5) : null;
+    if (pl) { pl.position.set(PX, PY + 1.3, PZ); this.scene.add(pl); this._pulses.push({ pl, base: 1.6, phase: 0.6 }); }
+    this._circleCol(PX, PZ, 0.9);
+    this._plaque({ main: 'THE PERFVMING VESSEL', sub: 'SIX NAKED SHAPES OF FLYING SPIRITES OF TWO CVBITES HIGH · ROSE-WATER, ORANGE FLOWERS, MYRTLE, LAVRELL, ELDER, BOYLING TOGITHER · DALLINGTON PP. 147–148' },
+      2.0, 0.34, PX, FLOOR + 0.14, PZ + 1.05, 0, true);
+
+    // ── the fountain on four wheels, for the washing of hands (pp. 145–146) ──
+    const FX = CX - 1.9, FZ = CZ - 1.55, FY = FLOOR;
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const w = this._m(new THREE.TorusGeometry(0.09, 0.025, 6, 14), gold, FX + sx * 0.3, FY + 0.09, FZ + sz * 0.22, { cast: false });
+      w.rotation.y = Math.PI / 2;
+    }
+    this._m(new THREE.BoxGeometry(0.72, 0.06, 0.5), gold, FX, FY + 0.2, FZ, { cast: false });
+    const basinMat = gold;
+    const bas = this._m(new THREE.SphereGeometry(0.34, 16, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), basinMat, FX, FY + 0.58, FZ, { cast: false, outline: true });
+    bas.rotation.x = Math.PI; bas.scale.set(1, 0.7, 0.8);
+    for (let k = 0; k < 14; k++) {                                          // "bubbles of pearle standing vp" on the brim
+      const a = (k / 14) * Math.PI * 2;
+      this._m(new THREE.SphereGeometry(0.018, 6, 5), ivory, FX + Math.cos(a) * 0.35, FY + 0.6, FZ + Math.sin(a) * 0.28, { cast: false });
+    }
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(0.3, 18), this._waterMat(), FX, FY + 0.56, FZ, { rx: -Math.PI / 2, cast: false }), rate: 0.08 });
+    this._m(new THREE.CylinderGeometry(0.02, 0.03, 0.5, 8), gold, FX, FY + 0.8, FZ, { cast: false });
+    const dia = this._m(this._indexed(new THREE.OctahedronGeometry(0.06, 0)), M(0xeaf4ff, { roughness: 0.05, metalness: 0.2, emissive: 0x88aacc, emissiveIntensity: 0.4 }, -0.04), FX, FY + 1.1, FZ, { cast: false });
+    dia.scale.set(0.8, 1.3, 0.8);
+    this._jet(FX, FY + 1.0, FZ, FX + 0.05, FY + 0.58, FZ + 0.05, { apex: 0.25, r: 0.02, sparkle: 12 });
+    this._circleCol(FX, FZ, 0.5);
+    this._plaque({ main: 'THE FOVNTAINE ON FOVRE LITTLE WHEELES', sub: 'CONTINVALLY RVNNING WITH WATER, AND REASSVMING THE SAME · OF ROSES, LYMON PILLES AND AMBER · DALLINGTON PP. 145–146' },
+      1.5, 0.28, FX, FLOOR + 0.12, FZ - 0.62, Math.PI, true);
+
+    // ── the repository, a ship on four wheels (p. 150), at the open east end ──
+    const SX = CX + 5.2, SZ = CZ - 3.6;
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const w = this._m(new THREE.TorusGeometry(0.14, 0.035, 6, 16), gold, SX + sx * 0.7, FLOOR + 0.14, SZ + sz * 0.3, { cast: false });
+      w.rotation.y = Math.PI / 2;
+    }
+    const ship = this._m(new THREE.SphereGeometry(1, 16, 8, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, SX, FLOOR + 0.95, SZ, { outline: true });
+    ship.scale.set(0.9, 0.62, 0.42);
+    for (let k = 0; k < 5; k++) {                                           // the fishes and water-monsters along the side
+      const f = this._m(new THREE.SphereGeometry(0.06, 7, 5), ivory, SX - 0.6 + k * 0.3, FLOOR + 0.62 + (k % 2) * 0.1, SZ + 0.42, { cast: false });
+      f.scale.set(1.8, 0.7, 0.5);
+    }
+    this._m(new THREE.BoxGeometry(1.5, 0.06, 0.7), gold, SX, FLOOR + 0.98, SZ, { cast: false });   // the lid, a deck
+    for (let k = 0; k < 3; k++) this._m(new THREE.CylinderGeometry(0.05, 0.04, 0.09, 10), ivory, SX - 0.4 + k * 0.4, FLOOR + 1.06, SZ, { cast: false });  // the cups within
+    this._circleCol(SX, SZ, 1.0);
+    this._plaque({ main: 'THE REPOSITORIE', sub: 'IN FASHION LIKE VNTO A SHIPPE, OF MOST FINE GOLDE, WITH MANY FISHES AND WATER MONSTERS · CLOTHES, FLOWERS, CVPPES, TOWELLES AND VESSELLES · P. 150' },
+      1.8, 0.3, SX, FLOOR + 0.12, SZ + 0.75, 0, true);
+
+    // ── the vessel of coals the cloths are cleaned in (p. 155) ─────────────
+    const VX = CX + 4.6, VZ = CZ + 3.9;
+    const vc = this._m(new THREE.SphereGeometry(0.3, 14, 7, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, VX, FLOOR + 0.46, VZ, { outline: true });
+    vc.rotation.x = Math.PI;
+    this._m(new THREE.CylinderGeometry(0.1, 0.16, 0.16, 10), gold, VX, FLOOR + 0.08, VZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.26, 0.26, 0.04, 14), M(0x3a1a0a, { emissive: 0xff4010, emissiveIntensity: 1.6 }, 0.3), VX, FLOOR + 0.47, VZ, { cast: false });
+    this._m(new THREE.BoxGeometry(0.34, 0.03, 0.26), M(0xf2eee6, { roughness: 0.9 }, 0.0), VX + 0.04, FLOOR + 0.5, VZ, { cast: false }).rotation.y = 0.4;   // a napkin in the fire, unhurt
+    this._fume(VX, FLOOR + 0.55, VZ, { rise: 1.4, drift: 0.15, count: 8, speed: 0.1 });
+    this._circleCol(VX, VZ, 0.42);
+    this._plaque({ main: 'THE TABLE CLOATHES, NAPKINS AND TOWELLES OF SILKE WERE THROWNE IN', sub: 'AND AFTER, BEEING TAKEN OVT AND COOLED, THEY WERE WHOLE, VNHVRT AND CLEANE · THE WONDERFVLL STRAVNGEST OF ALL THE REST · P. 155' },
+      1.7, 0.36, VX, FLOOR + 0.12, VZ + 0.55, 0, true);
+
+    // ── the coral tree on the chalice (pp. 156–157, plate #31) ─────────────
+    const KX = CX - 3.9, KZ = CZ - 2.2;
+    this._m(new THREE.CylinderGeometry(0.14, 0.2, 0.06, 14), gold, KX, FLOOR + 0.03, KZ, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.035, 0.06, 0.3, 10), gold, KX, FLOOR + 0.21, KZ, { cast: false });
+    const chal = this._m(new THREE.SphereGeometry(0.16, 14, 7, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2), gold, KX, FLOOR + 0.52, KZ, { cast: false, outline: true });
+    chal.rotation.x = Math.PI;
+    this._m(new THREE.ConeGeometry(0.15, 0.14, 12), M(0x8a7a5a, { roughness: 0.9 }, 0.12), KX, FLOOR + 0.59, KZ, { cast: false });   // "a little mountayne", the cover
+    const coral = M(0xc25a4a, { roughness: 0.55 }, 0.2);
+    coral.userData.roll = 'a branch of the coral tree';
+    const branch = (x0, y0, z0, len, rz, rx) => {
+      const b = this._m(new THREE.CylinderGeometry(0.008, 0.014, len, 5), coral, x0, y0, z0, { cast: false });
+      b.rotation.set(rx, 0, rz);
+      return b;
+    };
+    branch(KX, FLOOR + 0.86, KZ, 0.44, 0, 0);
+    branch(KX + 0.07, FLOOR + 0.95, KZ, 0.26, -0.7, 0);
+    branch(KX - 0.06, FLOOR + 0.9, KZ + 0.03, 0.22, 0.8, 0.2);
+    branch(KX + 0.02, FLOOR + 1.03, KZ - 0.05, 0.16, 0.2, -0.9);
+    branch(KX + 0.12, FLOOR + 1.05, KZ + 0.02, 0.14, -1.1, 0.3);
+    // the five-leaved flowers of sapphire, jacinth and beryl, and the great pearls on the tips
+    [[0.0, 1.09, 0, 0x2c4aa8], [0.12, 1.02, 0.02, 0xd8301c], [-0.1, 0.98, 0.05, 0x9fd4c0], [0.05, 1.11, -0.09, 0x2c4aa8], [0.18, 1.1, 0.03, 0xd8301c]].forEach(([dx, dy, dz, col]) => {
+      this._m(new THREE.SphereGeometry(0.022, 7, 5), M(col, { roughness: 0.2 }, 0.05), KX + dx, FLOOR + dy, KZ + dz, { cast: false });
+    });
+    [[0.0, 1.09, 0], [0.19, 1.13, 0.04], [-0.14, 1.02, 0.07]].forEach(([dx, dy, dz]) => {
+      this._m(new THREE.SphereGeometry(0.018, 7, 5), ivory, KX + dx, FLOOR + dy + 0.03, KZ + dz, { cast: false });
+    });
+    this._circleCol(KX, KZ, 0.3);
+    const bearer = this.cast.nymph({ name: 'coral-bearer', robe: 0x2c4aa8, h: 0.92, pose: 'offer' });
+    this._npc('banquet_coral', bearer, KX + 0.05, KZ - 0.55, 0, { label: 'The middlemost of five', sub: 'IN BLEWE SILKE AND GOLDE, WITH THE TREE OF CORRALL', labelY: 1.95, sway: 0.02 });
+    bearer.position.y = FLOOR;
+    this._plaque({ main: 'A BRAVNCH OF COORRALL, LYKE A TREE', sub: 'OF ONE CVBITE HIGH, VPON A LITTLE MOVNTAYNE, THE COVER OF AN OLD FASHIONED VESSELL OF PVRE GOLD · FLOWERS OF SAPHYRE, IACYNTH AND BERILL · PP. 156–157' },
+      1.5, 0.3, KX - 0.7, FLOOR + 0.12, KZ, Math.PI / 2, true);
+
+    // ── the fourteen musicians, seven a side of the jasper door (p. 143) ────
+    const WX = CX - 7.4 + 0.95;
+    for (const side of [-1, 1]) {
+      for (let k = 0; k < 7; k++) {
+        const z = CZ + side * (2.7 + k * 0.42);
+        const mus = this.cast.nymph({ name: 'musician', robe: [0x9a6ab8, 0x6a8ab8, 0xb88a6a][k % 3], h: 0.9, pose: 'carry', attribute: k % 2 ? 'harp' : null });
+        mus.position.set(WX, FLOOR, z);
+        mus.rotation.y = Math.PI / 2;
+        this.scene.add(mus);
+        this._npcs.push({ g: mus, phase: k * 0.6 + (side > 0 ? 3 : 0), baseY: Math.PI / 2, sway: 0.015 });
+      }
+    }
+    this._plaque({ main: 'SEVEN VPON A SIDE', sub: 'YOONG DAMOSELS MVSITIANS, WHICH AT EVERY CHANGE OF SERVICE DID ALTER THEIR MVSICKE AND INSTRVMENTS · MVTE HERE: THE SITE IS SILENT BY DECISION · P. 143' },
+      1.7, 0.3, WX + 0.5, FLOOR + 1.9, CZ - 5.0, Math.PI / 2, true);
   }
 
   // ── The Bridge into Eleuterylida's realm ─────────────────────────────────

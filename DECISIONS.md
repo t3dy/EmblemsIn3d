@@ -2,6 +2,56 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Chapter X: the banquet, laid in the court at last
+
+Third pick of the coverage ledger, and the biggest so far. Chapter X is Dallington's
+most sustained material description — **fourteen facsimile pages of a supper** — and
+the tour has said "the banquet" in two stop ledes since the commentary was written.
+The world had the throne, the chess-board pavement of coral and blood-green jasper,
+the settles of palm-wood and green velvet, and **no banquet**. Four woodcuts belong
+to it and were attached to no chapter (#28 the ornamented tripod, #30 the tripod
+with three naked boys on a lion-footed pedestal, #31 the vessel with the coral
+tree, #32 the great vessel twice a nymph's height). They are attached now.
+
+**`_buildBanquet`**, in the court, *"in the middest of this admirable and stupendious
+Court"* (p. 147), which is where the book puts it:
+
+- **Seven tripod tables of ebony** on lion's claws, a winged child's head on every
+  leg and a garland of leaves and fruit slung between (pp. 143–144, plate #28).
+- **The seven changes as seven tables.** The book changes the table, the cloth, the
+  flowers, the waiters' dress and the vessels' stone at every course, and none of
+  that can be animated without a wait; so each table stands **at the course it
+  served** — gold under green Hormisine strewn with violets for the cordial; beryl
+  under Talasike with citrus flowers for the five saffron fritters; topaz under
+  murrey-and-carnation with five kinds of rose for the six gilded breads;
+  chrysolite under yellow with lily-of-the-valley and daffodil for the seven
+  partridge; emerald under crimson for the eight pheasant; sapphire under purple
+  with jasmine for the nine peacock; ivory on aloes under white drawn-work for the
+  three gilded date-shellfish. The counts are the book's. Walking round the
+  pavement is walking through the supper.
+- **The perfuming vessel** on three harpies' feet, six gilded flying spirits in a
+  ring holding bowls of coals, the candlestick-stem with the seventh, the little
+  pots boiling — fumes over every bowl and a pulsing coal-light (pp. 147–148,
+  plate #30).
+- **The fountain on four little wheels** with its pear diamond and a jet
+  (pp. 145–146); **the repository**, a ship of gold with fishes along its side, at
+  the open east end (p. 150); **the vessel of coals** with a napkin lying unhurt in
+  the fire (p. 155 — asbestos, which the plaque leaves as the marvel Colonna
+  found it); **the coral tree on the chalice** with its flowers of sapphire, jacinth
+  and beryl and its bearer (pp. 156–157, plate #31).
+- **Fourteen musicians**, seven a side of the jasper door, mute; **the three that
+  wait** on the Queen's table; and, at the seventh table, **the one whose bearing
+  was the resemblance of Polia** (p. 156) — the line that ends Poliphilo's appetite.
+
+**Unbuilt and said so**: the pierced gold pomanders of amber (p. 150), and the second
+great fountain on its axle-tree with the harpies at the angles (pp. 158–160, plate
+#32), which the tour lede already promises. **Declined**: the trumpets, cornets and
+singers.
+
+The tour stop for IX–X still points at the water-labyrinth; the banquet is at the
+court, one station east, and the ledger records both. Chapter IX itself — the
+palace rooms and the labyrinth — is still `partial`.
+
 ## 2026-09-08 — Chapter XX: the boat of the crossing, out of the ledger again
 
 Second chapter the coverage pipeline has picked. Six pages, no plate, and a station
