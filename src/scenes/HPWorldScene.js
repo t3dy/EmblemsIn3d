@@ -29,7 +29,7 @@ import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
-import { createMeadowField } from '../systems/Meadow.js?v=2';
+import { createMeadowField, attachShade } from '../systems/Meadow.js?v=4';
 
 // pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
@@ -260,6 +260,7 @@ export class HPWorldScene {
 
     this._t = 0;
     this._streams = [];
+    this._shadeSpots = [];      // {x,z,r,h} per tree, for the baked shade map
     this._orbs = [];
     this._pulses = [];
     this._portals = [];
@@ -303,7 +304,7 @@ export class HPWorldScene {
       this.scene.environment = getEnvMap(this.renderer);
       this.scene.environmentIntensity = 0.3;
     }
-    S.setupLights(this.scene);
+    this._lights = S.setupLights(this.scene);
     if (lit) addSkyDome(this.scene, { top: 0x86a4cc, horizon: 0xf0d6a8, stars: 0 });
     else if (S.sky) addSkyDome(this.scene, S.sky);
     // Lit garden: a bright afternoon key with enough fill to stay sunny, while
@@ -377,6 +378,12 @@ export class HPWorldScene {
     if (lit) this._buildMotes();
     if (lit) this._buildMeadow();
     this._buildSecondNature();
+    // The pleasures of the garden (PLEASURES.md), from what Poliphilo says when
+    // he meets them: birds seen and not heard, seats of flowering turf, and the
+    // fume that is the only way scent can reach a screen.
+    if (lit) { this._buildBirds(); this._buildTurfSeats(); this._buildFumes(); }
+    // last, because it has to see every tree that was planted
+    if (lit) this._buildShadeMap();
 
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
@@ -467,6 +474,9 @@ export class HPWorldScene {
     for (const v of this._windVanes) mark(v.g);
     for (const b of this._windBells) mark(b.g);
     for (const f of this._foils) mark(f);
+    // The birds fly and hop, so they must not be baked into the static merge --
+    // a merged bird is a bird nailed to the sky.
+    for (const b of (this._birds || [])) mark(b.g);
     for (const h of this._hovers) mark(h.g);
     if (this._quinta) { mark(this._quinta.dod); if (this._quinta.rays) mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
@@ -2882,6 +2892,8 @@ export class HPWorldScene {
     this._wallCol(CX - HALF - 0.2, CX - HALF + 0.2, CZ - LEN / 2, CZ + LEN / 2);
     this._wallCol(CX + HALF - 0.2, CX + HALF + 0.2, CZ - LEN / 2, CZ + LEN / 2);
 
+    (this._shadeLines = this._shadeLines || []).push(
+      [CX, CZ - LEN / 2, CX, CZ + LEN / 2, HALF * 1.5]);
     this._plaque({ main: 'ARBOVR OF SWEETE GESSAMINE',
       sub: 'LIFTING VPPE AND BENDING OVER · FLOVRES OF THREE SORTES COMMIXT · DALLINGTON P. 200' },
       2.5, 0.34, CX, 0.5, CZ - LEN / 2 - 0.5, 0, true);
@@ -3039,6 +3051,314 @@ export class HPWorldScene {
     this._plaque({ main: 'A FAYRE AND PLENTIFVLL COVNTRIE',
       sub: 'FRVITEFVLL FIELDES AND FERTILE GROVNDES · DALLINGTON P. 90 · SECOND NATVRE, AFTER HVNT' },
       3.2, 0.42, CXm + 9, 0.58, Z0 - 6.2, 0, true);
+  }
+
+  // ── The pleasures of the garden (PLEASURES.md) ───────────────────────────
+  //
+  // Built 2026-09-07. Ted asked for the pleasures of the Renaissance garden,
+  // taken from what Poliphilo says when he meets them. Four of them are here;
+  // shade, the fifth and the loudest in the book, is in _canopyCards, because
+  // it was a shadow-casting flag and not a thing to build.
+
+  // Birds. "the trees full of small birdes and foules" (Dallington p. 94);
+  // "the sweet chirpings and quiet singing of Birds" (p. 101); "from the trees
+  // resounded the sweete consents of small chirping birds" (p. 257).
+  //
+  // This site is silent by standing decision, so the birds are SEEN and not
+  // heard -- which is what the book itself does at the fountain of the sleeping
+  // nymph, where it does not describe birds singing but birds CARVED "as yf
+  // they had beene chirping and singing of hir a sleep" (p. 98). Where a
+  // pleasure cannot be delivered, show it being represented. That is the
+  // paragone, and it is the book's own method.
+  //
+  // A bird is four triangles and costs nothing: a body, a head, two wings. The
+  // perched ones sit in the canopies; the flying ones wheel over the garden on
+  // slow circles, and are the only things in the sky.
+  _bird(scale = 1, { flying = false } = {}) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const g = new THREE.Group();
+    const body = woodcut ? S.mat({ tone: 0.02 })
+      : S.mat({ color: 0x4a4038, roughness: 0.92 });
+    const breast = woodcut ? S.mat({ tone: -0.03 })
+      : S.mat({ color: 0xb8a184, roughness: 0.9 });
+    const b = this._m(new THREE.SphereGeometry(0.075 * scale, 6, 5), body, 0, 0, 0,
+      { parent: g, cast: false, receive: false });
+    b.scale.set(1.5, 0.85, 0.85);
+    this._m(new THREE.SphereGeometry(0.048 * scale, 6, 5), breast, 0.085 * scale, 0.012 * scale, 0,
+      { parent: g, cast: false, receive: false });
+    // the tail, a wedge
+    const tail = this._m(new THREE.ConeGeometry(0.038 * scale, 0.13 * scale, 4), body,
+      -0.14 * scale, 0.012 * scale, 0, { parent: g, cast: false, receive: false });
+    tail.rotation.z = Math.PI / 2;
+    const wings = [];
+    for (const sz of [-1, 1]) {
+      const w = this._m(new THREE.ConeGeometry(0.05 * scale, 0.2 * scale, 3), body,
+        0, 0.03 * scale, sz * 0.06 * scale, { parent: g, cast: false, receive: false });
+      w.rotation.x = sz * (flying ? -0.5 : -1.35);
+      w.scale.set(1, 1, 0.35);
+      wings.push({ w, sz });
+    }
+    g.userData.wings = wings;
+    return g;
+  }
+
+  _buildBirds() {
+    if (this.style.key === 'woodcut') return;    // the plates cut their own birds
+    this._birds = [];
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 53.7 + k * 197.3) * 43758.5453;
+      return v - Math.floor(v);
+    };
+
+    // Perched: in the trees of the garden and the wood's edge, where the book
+    // puts them -- "the trees full of small birdes and foules".
+    const PERCH = [
+      [-8.6, 41.9, 2.5], [-19.2, 42.2, 2.4], [-24.6, 47.9, 2.6], [3.5, 40.0, 3.1],
+      [10.5, 16.5, 2.3], [-13.0, 18.0, 2.5], [17.5, 17.0, 2.2], [21.0, 24.5, 2.4],
+      [-31.5, 4.0, 2.6], [-27.0, -6.5, 2.4], [4.5, -6.0, 2.3], [-4.0, -14.5, 2.5],
+      [26.5, -19.0, 2.7], [-33.0, -14.0, 2.5], [-46.0, 44.5, 2.6], [-30.0, 44.5, 2.4],
+      [-52.0, 43.0, 2.5], [-24.0, 44.0, 2.7],
+    ];
+    for (let i = 0; i < PERCH.length; i++) {
+      const [x, z, y] = PERCH[i];
+      const g = this._bird(0.9 + rnd(i, 1) * 0.35);
+      g.position.set(x + (rnd(i, 2) - 0.5) * 0.8, y, z + (rnd(i, 3) - 0.5) * 0.8);
+      g.rotation.y = rnd(i, 4) * Math.PI * 2;
+      this.scene.add(g);
+      // a perched bird is never quite still: it turns its head and shifts
+      this._birds.push({ g, kind: 'perch', phase: rnd(i, 5) * Math.PI * 2,
+                         y: g.position.y, yaw0: g.rotation.y });
+    }
+
+    // Flying: slow wheeling circles over the garden and over the fields. They
+    // are the only moving things in the sky, which is the point -- a still sky
+    // reads as a painted backdrop.
+    const RINGS = [
+      [0, 10, 22, 14], [-24, 20, 16, 12], [20, -14, 18, 15],
+      [-40, 52, 20, 13], [0, -120, 26, 17],
+    ];
+    for (let r = 0; r < RINGS.length; r++) {
+      const [cx, cz, rad, h] = RINGS[r];
+      const n = 2 + Math.floor(rnd(r, 9) * 2);
+      for (let i = 0; i < n; i++) {
+        const g = this._bird(1.0 + rnd(r * 7 + i, 1) * 0.5, { flying: true });
+        this.scene.add(g);
+        this._birds.push({
+          g, kind: 'fly', cx, cz, r: rad * (0.6 + rnd(r * 7 + i, 2) * 0.55),
+          h: h + rnd(r * 7 + i, 3) * 5,
+          a: rnd(r * 7 + i, 4) * Math.PI * 2,
+          spd: 0.10 + rnd(r * 7 + i, 5) * 0.09,
+          phase: rnd(r * 7 + i, 6) * Math.PI * 2,
+        });
+      }
+    }
+  }
+
+  _updateBirds(t) {
+    if (!this._birds) return;
+    for (const b of this._birds) {
+      if (b.kind === 'fly') {
+        b.a += b.spd * 0.016;
+        const x = b.cx + Math.cos(b.a) * b.r, z = b.cz + Math.sin(b.a) * b.r;
+        b.g.position.set(x, b.h + Math.sin(t * 0.6 + b.phase) * 0.9, z);
+        b.g.rotation.y = -b.a + Math.PI / 2;
+        b.g.rotation.z = 0.28;                                  // banked into the turn
+        const beat = Math.sin(t * 6 + b.phase);
+        for (const { w, sz } of b.g.userData.wings) w.rotation.x = sz * (-0.5 + beat * 0.5);
+      } else {
+        // a small turn of the head, and a hop now and then
+        b.g.rotation.y = b.yaw0 + Math.sin(t * 0.7 + b.phase) * 0.5;
+        const hop = Math.max(0, Math.sin(t * 1.3 + b.phase) - 0.93) * 4.0;
+        b.g.position.y = b.y + hop * 0.09;
+      }
+    }
+  }
+
+  // Repose. "…were constrained to rest our selues for want of breath, vpon the
+  // odoriferous floures & coole grasse … And as they thus contentedly rested
+  // themselues a while, vnder the coole vmbrage of the leafie Trees"
+  // (Dallington p. 121).
+  //
+  // The flowery bank you lie on is a real fifteenth-century garden object --
+  // the turf seat -- and it is where this book puts its people when it wants
+  // them to stop and talk. A low retaining kerb, a raised bed of turf, and the
+  // flowers growing out of the seat itself.
+  _turfSeat(x, z, w, ry = 0) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const kerb = woodcut ? this._darkStoneMat
+      : S.mat({ color: 0x8a7a5e, roughness: 0.95 });
+    const turf = woodcut ? S.mat({ tone: 0.08 }) : this._hedgeMat;
+    const g = new THREE.Group();
+    g.position.set(x, 0, z); g.rotation.y = ry;
+    this.scene.add(g);
+    const D = 0.62, H = 0.46;
+    // the kerb that holds the earth in
+    this._m(new THREE.BoxGeometry(w, H, 0.12), kerb, 0, H / 2, D / 2, { parent: g });
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.12, H, D), kerb, sx * (w / 2 - 0.06), H / 2, 0, { parent: g });
+    }
+    // the turf itself, proud of the kerb, as a made seat always is
+    this._m(new THREE.BoxGeometry(w - 0.2, 0.14, D - 0.06), turf, 0, H + 0.04, 0,
+      { parent: g, cast: false });
+    // and the flowers growing out of it -- it is a seat OF flowers
+    const rnd = (i, k) => { const v = Math.sin(i * 41.3 + k * 87.1 + x * 3.7) * 43758.5453; return v - Math.floor(v); };
+    // aromatic, and all in HERBS: the book calls them odoriferous floures
+    const KINDS = ['aster', 'thyme', 'marjoram', 'balm'];
+    for (let i = 0; i < Math.round(w * 4); i++) {
+      const kind = KINDS[i % KINDS.length];
+      this._tuft(-w / 2 + 0.2 + rnd(i, 1) * (w - 0.4), H + 0.1,
+        (rnd(i, 2) - 0.5) * (D - 0.24), kind, 0.17 + rnd(i, 3) * 0.07,
+        { parent: g, ry: rnd(i, 4) * Math.PI });
+    }
+    // seats are for sitting on, not walking through
+    const hw = Math.abs(Math.cos(ry)) * w / 2 + Math.abs(Math.sin(ry)) * D / 2;
+    const hd = Math.abs(Math.sin(ry)) * w / 2 + Math.abs(Math.cos(ry)) * D / 2;
+    this._wallCol(x - hw, x + hw, z - hd, z + hd);
+    return g;
+  }
+
+  _buildTurfSeats() {
+    // Where the book actually rests its people: under the trees by the bath,
+    // where the five nymphs sit down on the flowers and the cool grass (p. 121);
+    // in the jasmine arbour's garden, where Polia is met; under the arbour
+    // where Thelemia sits down to sing (p. 182); and on the shore, facing
+    // Cythera, which is the one view in the book he is given whole.
+    const SEATS = [
+      [ -2.6, -25.2, 2.4, 0 ],          // the shore, looking out to Cythera
+      [  2.6, -25.2, 2.4, 0 ],
+      [ 22.6,  20.0, 2.0, -Math.PI / 2 ],   // Polia's garden, beside the arbour
+      [ 15.4,  20.0, 2.0,  Math.PI / 2 ],
+      [ -6.4,  30.6, 2.2, 0 ],          // the walk between the portal and the court
+      [  6.4,  30.6, 2.2, 0 ],
+      [ -21.0,  8.6, 2.0, Math.PI ],    // by the planetary palace
+      [ -40.0, 44.0, 2.4, Math.PI ],    // looking over the fruitful fields
+    ];
+    for (const [x, z, w, ry] of SEATS) this._turfSeat(x, z, w, ry);
+    this._plaque({ main: 'VPON THE ODORIFEROVS FLOVRES & COOLE GRASSE',
+      sub: 'WHERE THEY RESTED THEM SELVES · VNDER THE COOLE VMBRAGE OF THE LEAFIE TREES · DALLINGTON P. 121' },
+      3.0, 0.4, 0, 0.6, -26.4, 0, true);
+  }
+
+  // Visible fragrance. Smell cannot be shipped, but smoke can be seen, and the
+  // book gives us smoke: "out of the which did ascend a thicke smoake or fume,
+  // of an inestimable fragrancie" (Dallington p. 224). So scent enters this
+  // world as fume, and only where the text puts a censer or a fire. Built on
+  // the ParticleStream the triumph censers already use -- there is no reason
+  // for a second smoke system.
+  _fume(x, y, z, { rise = 2.4, drift = 0.5, count = 20, speed = 0.16 } = {}) {
+    if (this.style.key === 'woodcut') return null;   // the plates do not draw smoke
+    const stream = new ParticleStream({
+      count,
+      source: new THREE.Vector3(x, y, z),
+      target: new THREE.Vector3(x + drift, y + rise, z + drift * 0.4),
+      color: 0xd8cdb8, size: 0.07, speed, arc: 0.55,
+    });
+    stream.opacity = 0.16; stream.active = true;
+    this.style.tuneStream(stream);
+    this.scene.add(stream.points);
+    this._streams.push(stream);
+    return stream;
+  }
+
+  _buildFumes() {
+    // Only where the book puts a censer or a burning: the lion-head censer
+    // hanging over the bath (p. 113), the cleft in the earth that feeds it
+    // (p. 112), the brass altar-furnace in the Polyandrion crypt (ch. XIX),
+    // and the fire-holder on the jasper altar in the Temple of Venus, which is
+    // where the fume of "inestimable fragrancie" is actually described.
+    const F = [
+      [  0.0, 4.05, -20.0, { rise: 3.0, drift: 0.55 }],   // fountain grove, the standing censer
+      [ -30.0, 1.5, -12.0, { rise: 2.6, drift: 0.42 }],   // Temple of Venus, the jasper altar
+      [ 44.0, 1.2, -12.0, { rise: 2.2, drift: 0.5 }],     // the rite of Priapus, the altar fire
+      [ 30.0, 0.9, -27.0, { rise: 1.8, drift: 0.35, count: 14 }],  // the Polyandrion crypt furnace
+    ];
+    for (const [x, y, z, o] of F) this._fume(x, y, z, o);
+  }
+
+  // ── Shade, baked (PLEASURES.md 1) ────────────────────────────────────────
+  //
+  // "…which made a pleasaunt and coole shade" (Dallington p. 92); "vnder the
+  // coole vmbrage of the leafie Trees" (p. 121); "making the shadowed places
+  // vnder the leaffye Trees, coole and fresh" (p. 196). It is the sensation the
+  // book returns to more than any other, and this world had none of it: every
+  // part of the garden was lit exactly like every other part, which is another
+  // way of saying it had no interior.
+  //
+  // The canopies do now cast into the sun's shadow map, and over a 130 m world
+  // with one 2048 map and an environment light carrying most of the
+  // illumination, that alone put nothing visible on the grass. So the shade is
+  // BAKED, which for this world is not a compromise: the sun is a single fixed
+  // key at (16, 22, 10), there is no time of day, and a tree's shadow therefore
+  // never moves. One canvas serves the ground plane and all 58 000 blades of
+  // the meadow, and unlike a shadow map it can be art-directed.
+  _buildShadeMap() {
+    if (this.style.key === 'woodcut') return;     // the plates hatch their own
+    const X0 = -66, Z0 = -68, W = 132, D = 132;   // covers the whole ground
+    const N = 1024;                               // ~13 cm per texel
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const g = c.getContext('2d');
+    g.clearRect(0, 0, N, N);
+    const px = N / W, pz = N / D;
+
+    // A shadow lies down-sun of the thing that casts it. The key is at
+    // (16, 22, 10), so a crown at height h throws its pool (16/22, 10/22) * h
+    // the other way.
+    const SX = -16 / 22, SZ = -10 / 22;
+
+    const blob = (wx, wz, r, alpha) => {
+      const cx = (wx - X0) * px, cy = (wz - Z0) * pz;
+      const rr = r * px;
+      // Not black: shade under leaves is COOL, because what still reaches it is
+      // the sky and not the sun. A blue-green dark keeps the grass looking like
+      // grass in shadow rather than grass with dirt on it.
+      const grd = g.createRadialGradient(cx, cy, rr * 0.15, cx, cy, rr);
+      grd.addColorStop(0, `rgba(20,34,44,${alpha})`);
+      grd.addColorStop(0.55, `rgba(24,38,46,${alpha * 0.72})`);
+      grd.addColorStop(1, 'rgba(28,42,50,0)');
+      g.fillStyle = grd;
+      g.beginPath(); g.arc(cx, cy, rr, 0, Math.PI * 2); g.fill();
+    };
+
+    for (const t of this._shadeSpots) {
+      const ox = t.x + SX * t.h, oz = t.z + SZ * t.h;
+      // the pool, and a few broken satellites so the rim is leaf-torn rather
+      // than a clean disc -- dappling, at the only scale this map can hold it
+      blob(ox, oz, t.r * 1.3, 0.58);
+      for (let k = 0; k < 5; k++) {
+        const a = (k / 5) * Math.PI * 2 + t.x * 0.7;
+        const d = t.r * (0.55 + ((Math.sin(t.z * 13.1 + k) + 1) / 2) * 0.6);
+        blob(ox + Math.cos(a) * d, oz + Math.sin(a) * d, t.r * 0.46, 0.34);
+      }
+    }
+    // the jasmine arbour and the shaded walk throw a continuous shade, not a
+    // pool: a tunnel of leaves is the deepest shade in the garden
+    for (const [x0, z0, x1, z1, wdt] of (this._shadeLines || [])) {
+      const n = Math.ceil(Math.hypot(x1 - x0, z1 - z0) / (wdt * 0.4));
+      for (let i = 0; i <= n; i++) {
+        const t = i / n;
+        blob(x0 + (x1 - x0) * t + SX * 2.2, z0 + (z1 - z0) * t + SZ * 2.2, wdt, 0.42);
+      }
+    }
+
+    const tex = new THREE.CanvasTexture(c);
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.anisotropy = 4;
+    this._disp.push(tex);
+    this._shadeTex = tex;
+
+    // the ground takes it as a transparent overlay, just clear of the sward
+    const mat = new THREE.MeshBasicMaterial({
+      map: tex, transparent: true, depthWrite: false, opacity: 0.85,
+    });
+    this._disp.push(mat);
+    const plane = this._m(new THREE.PlaneGeometry(W, D), mat, X0 + W / 2, 0.055, Z0 + D / 2,
+      { rx: -Math.PI / 2, cast: false, receive: false });
+    plane.renderOrder = 1;
+
+    // and so does every blade of grass
+    for (const f of this._meadows) attachShade(f, tex, X0, Z0, W, D);
   }
 
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
@@ -8688,8 +9008,15 @@ export class HPWorldScene {
     if (SPc && !weeping) {
       // matte and dark: it is shadow, not a fruit
       this._coreMat = this._coreMat || (this.style.key === 'woodcut' ? this._leafMat : this.style.mat({ color: 0x0f1d0a, roughness: 1, metalness: 0 }));
+      // The core CASTS (2026-09-07). Coolness and shade are the pleasure this
+      // book names more often than any other -- "a pleasaunt and coole shade"
+      // (p. 92), "the coole vmbrage of the leafie Trees" (p. 121), "making the
+      // shadowed places vnder the leaffye Trees, coole and fresh" (p. 196).
+      // A garden with no shade has no interior: every part of it is the same
+      // part. See PLEASURES.md 1. One sphere per tree, and it is what gives the
+      // pool of shade its body.
       const core = this._m(new THREE.SphereGeometry(1, 10, 8), this._coreMat, cx, cy, cz,
-        { parent, cast: false, receive: false });
+        { parent, cast: true, receive: false });
       core.scale.set(rx * (cone ? 0.26 : 0.34), ry * (cone ? 0.4 : 0.34), rz * (cone ? 0.26 : 0.34));
     }
     for (let i = 0; i < count; i++) {
@@ -8704,7 +9031,12 @@ export class HPWorldScene {
       m.rotation.set(this._treeRand(seed, i * 5 + 4) * Math.PI, this._treeRand(seed, i * 5 + 5) * Math.PI, weeping ? Math.PI / 2 * 0.1 : this._treeRand(seed, i * 7 + 9) * Math.PI);
       const sc = size * (0.62 + this._treeRand(seed, i * 3 + 11) * 0.55);
       m.scale.set(sc, sc, 1);
-      m.castShadow = i < 6; m.receiveShadow = false;
+      // and about half the cards cast, so the pool has a broken, leaf-shaped
+      // edge rather than the hard rim of a disc. The cards are alphaTest'd and
+      // three.js carries map + alphaTest into the depth material, so what lands
+      // on the grass is the shape of the leaves. Six casters out of sixty --
+      // which is what this was -- is not dappling, it is nothing.
+      m.castShadow = i < Math.max(10, count * 0.5); m.receiveShadow = false;
       parent.add(m);
     }
   }
@@ -8807,6 +9139,9 @@ export class HPWorldScene {
       }
     }
     this._circleCol(x, z, Math.max(0.3, R * 2.6));
+    // Remember it for the shade map: where the crown is, how wide, how high.
+    // (PLEASURES.md 1 -- shade is the pleasure this book names most.)
+    if (SP) this._shadeSpots.push({ x, z, r: SP.crown[0] * s * 1.25, h: cy });
     return g;
   }
 
@@ -9129,6 +9464,8 @@ export class HPWorldScene {
 
     // Living world
     this._streams.forEach(s => s.update(this._t));
+    this._updateBirds(this._t);
+
     for (const v of this._venuses) v.rotation.y += dt * 0.2;
     for (const { orb, base, phase, spin } of this._orbs) {
       orb.position.y = base + Math.sin(this._t * 1.15 + phase) * 0.1;

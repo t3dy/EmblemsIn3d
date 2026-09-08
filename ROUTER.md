@@ -55,6 +55,7 @@ a session.
 | **Read a chapter against the world** (enumerate its features) | `HPTOTOURPIPELINE.md` §1–§3 | [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md) · `/research-chapter <numeral>` |
 | **Build a feature from the build queue** | its entry in `research/coverage.json`, then the passage it cites | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) · `/build-feature <id>` |
 | **Add or edit a tour stop / commentary note** | `SOURCES.md`, `15scholars.md`, `DESIGN.md` | [`RECIPES/add-a-tour-stop.md`](RECIPES/add-a-tour-stop.md) |
+| **Make a place feel like a garden** (light, shade, sound, scent, rest) | `PLEASURES.md`, then `GARDENS.md` | — |
 | **Model or improve a 3-D asset** (figure, fountain, gate, tree, car) | `SOURCES.md` asset table → the named scholar in `15scholars.md`; then the brief for that class (below) | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) |
 | **Add a swappable variant of an existing asset** | `src/systems/AssetVariants.js`, `IMPORTEXEMPLARS.md` | [`RECIPES/add-an-asset-variant.md`](RECIPES/add-an-asset-variant.md) |
 | **Import a scan, model or painting cut-out** | `IMPORTEXEMPLARS.md`, `RENAISSANCEART.md`, `LICENSECHOICES.md` | [`RECIPES/import-an-exemplar.md`](RECIPES/import-an-exemplar.md) |
@@ -75,6 +76,7 @@ Read the one that matches what you are building. Each is a research brief, not a
 |---|---|
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | orders, members, the portal, the temples, the theatre |
 | [`GARDENS.md`](GARDENS.md) | the island's rings, terraces, parterres, topiary |
+| [`PLEASURES.md`](PLEASURES.md) | what a Renaissance garden was *for* — shade, birdsong, scent, water, repose — each paired with what Poliphilo says when he meets it |
 | [`PLANTS.md`](PLANTS.md) | species, planting, the herb-set inscriptions |
 | [`ANIMALS.md`](ANIMALS.md) | the beasts — elephants, unicorns, panthers, griffins, harpies |
 | [`NYMPHS.md`](NYMPHS.md) + [`CHARACTERS.md`](CHARACTERS.md) | Polia, the nymphs, the human figures |

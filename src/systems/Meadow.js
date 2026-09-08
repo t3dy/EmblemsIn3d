@@ -110,6 +110,13 @@ function meadowMaterial({
       uBackColor:      { value: new THREE.Color(back) },
       uFogColor:       { value: new THREE.Color(fogColor) },
       uFogDensity:     { value: fogDensity },
+      // The baked shade map (see HPWorldScene._buildShadeMap). Without it the
+      // sward is lit flat and no tree can throw shade on it, which is what it
+      // did until 2026-09-07. See PLEASURES.md 1.
+      uShadeMap:       { value: null },
+      uShadeOrigin:    { value: new THREE.Vector2(0, 0) },
+      uShadeSize:      { value: new THREE.Vector2(1, 1) },
+      uShadeOn:        { value: 0 },
     },
     side: THREE.DoubleSide,
     vertexShader: /* glsl */`
@@ -118,6 +125,7 @@ function meadowMaterial({
       attribute vec2 aFacing;
       attribute float aSeed;
       uniform float uTime, uBladeHeight, uWindStrength, uWindSpeed, uWindAngle;
+
       uniform float uGustScale, uTurbulence, uFlutter, uHeightVariation, uHeightNoiseScale;
       varying vec2 vWorldXZ;
       varying float vBladeT;
@@ -188,6 +196,9 @@ function meadowMaterial({
       precision highp float;
       uniform vec3 uSunDirection, uRootColor, uTipColor, uRootColorB, uTipColorB, uBackColor, uFogColor;
       uniform float uColorPatchScale, uColorVariation, uMacroScale, uMacroVariation, uFogDensity;
+      uniform sampler2D uShadeMap;
+      uniform vec2 uShadeOrigin, uShadeSize;
+      uniform float uShadeOn;
       varying vec2 vWorldXZ;
       varying float vBladeT;
       varying float vSeed;
@@ -209,6 +220,16 @@ function meadowMaterial({
           u.y);
       }
 
+      // 1.0 in the sun, 0.0 in full shade, read from the baked map by world
+      // position. One tap. The sun in this world does not move, so this is not
+      // an approximation of a shadow -- it IS the shadow.
+      float sunMask() {
+        if (uShadeOn < 0.5) return 1.0;
+        vec2 uv = (vWorldXZ - uShadeOrigin) / uShadeSize;
+        if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return 1.0;
+        return 1.0 - texture2D(uShadeMap, uv).a;
+      }
+
       void main() {
         vec3 N = normalize(vWorldNormal + vec3(0.0, 0.42, 0.0));
         vec3 V = normalize(cameraPosition - vWorldPosition);
@@ -225,10 +246,16 @@ function meadowMaterial({
         float diffuse = max(dot(N, L), 0.0);
         float backLight = pow(max(dot(V, -normalize(L + N * 0.5)), 0.0), 3.0);
         float rim = pow(1.0 - max(dot(N, V), 0.0), 4.0);
+        // Shade. The sun's contribution and the warm back-light are what a
+        // canopy takes away; the sky fill is what stays, which is why real
+        // shade is cool and blue rather than merely dark.
+        float sun = sunMask();
         vec3 color =
-          baseColor * brightness * macro * (hemi * 0.74 + diffuse * 0.4) +
-          uBackColor * backLight * pow(vBladeT, 1.5) * 0.55 +
-          vec3(0.92, 0.88, 0.62) * rim * 0.14;
+          baseColor * brightness * macro * (hemi * 0.74 * (0.72 + 0.28 * sun) + diffuse * 0.4 * sun) +
+          uBackColor * backLight * pow(vBladeT, 1.5) * 0.55 * sun +
+          vec3(0.92, 0.88, 0.62) * rim * 0.14 * (0.4 + 0.6 * sun);
+        // and it cools as it darkens
+        color = mix(color * vec3(0.82, 0.88, 1.0), color, 0.45 + 0.55 * sun);
         // Saturation was pushed to 1.25 here and the whole field read as
         // cartoon lime. Real turf is far greyer than its own local colour, and
         // the tone mapper adds chroma of its own, so this now sits just above
@@ -247,6 +274,18 @@ function meadowMaterial({
       }
     `,
   });
+}
+
+// Hand a field the world's baked shade map (HPWorldScene._buildShadeMap), with
+// the world rectangle it covers. Called once, after everything is built.
+export function attachShade(field, texture, x0, z0, w, d) {
+  if (!field || !field.mesh || !texture) return;
+  const u = field.mesh.material.uniforms;
+  if (!u || !u.uShadeMap) return;
+  u.uShadeMap.value = texture;
+  u.uShadeOrigin.value.set(x0, z0);
+  u.uShadeSize.value.set(w, d);
+  u.uShadeOn.value = 1;
 }
 
 // One instanced field. `clearance(x, z)` returns the open-ground distance in

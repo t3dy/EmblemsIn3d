@@ -55,6 +55,23 @@ garden, second nature north-west of the wood. Still open, in order:
 - **Hedges are still flat green boxes.** Everything else in the garden now carries a drawn
   surface; they do not, and they are everywhere.
 
+### 0d. The pleasures still unbuilt (PLEASURES.md)
+Added 2026-09-07. Shade, birds, repose and visible fragrance are built. Still open, in order:
+
+- **The rills of p. 196** — *"small streames of water, pyppling and slyding downe vpon the
+  Amber grauell in theyr crooking Channels heere and there, by some suddaine fall making a
+  still continued noyse."* Water in cut channels crossing the walks: the whole water programme
+  of an Italian garden is in that one sentence, and we have only the fountains and the stream.
+- **The shaded walk of p. 92** — planes and ashes *"fowlded and imbraced with the running of
+  Hunnisuckles or woodbines, and Hoppes, which made a pleasaunt and coole shade,"* with the
+  shade-loving herbs the same sentence lists growing under it.
+- **The bath's paragone.** *"Oh how exsquitely were the same Images cut, that oftentimes my
+  eyes would wander from the real and liuely shapes, to looke vpon those feyned
+  representations"* (p. 114). This needs no new geometry — it needs the carved nymphs of the
+  frieze and the living nymphs in the water composed into **one view**, at one scale, in one
+  light, or the sentence cannot happen. A camera study.
+- **Hedges are still flat green boxes**, and they are everywhere.
+
 ### 0. Work the coverage queue — 29 chapters have never been read against the world
 Added 2026-09-07 after the vaults. `python scripts/coverage_seed.py && python
 scripts/coverage_report.py`, then read `COVERAGE.md`. Nine chapters are enumerated (I, II, V,

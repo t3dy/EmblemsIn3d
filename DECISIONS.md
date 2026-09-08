@@ -2,6 +2,69 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-07 — The garden's pleasures, taken from what Poliphilo says
+
+Ted: *"Think about all the pleasures of the renaissance garden that we want to simulate and
+what Poliphilo says when he witnesses them as your guide to how to build the model."* That is
+a better brief than any I would have written, because the book already organises its pleasures
+for us and says so out loud. At the bath five nymphs take charge of the dreamer, and
+Dallington's own marginal gloss on p. 109 reads **"These nimphs were his fiue sences."** Each
+carries her instrument — Offressia the boxes and white cloths, Orassia the shining glass,
+Achoe the sounding harp, Geusia the casting bottle, and Aphea, who is Touch, who simply says
+*"giue mee thy hand."* They are already standing in this world with those attributes in their
+hands. The brief was therefore to give each sense something to enjoy.
+
+The enumeration is [`PLEASURES.md`](PLEASURES.md), which pairs each pleasure with the sentence
+Poliphilo says when he meets it. Four were built.
+
+**Shade, which is the pleasure the book names more often than any other**, and which this
+world had none of. Count them: *coole shade* (p. 92), *a delightfull shadowe* (p. 94), *fresh
+coole shadow* (p. 102), *the coole vmbrage of the leafie Trees* (p. 121), *the shadowed places
+vnder the leaffye Trees, coole and fresh* (p. 196), *the coole grasse* (p. 237), *fresh
+shadowes* (p. 241), *the grasse coole and sweet* (p. 257). A garden with no shade has no
+interior — every part of it is the same part.
+
+- **First attempt: make the canopies cast.** They were casting from six of sixty leaf-cards,
+  and the dark core of each crown cast nothing. Fixed. **It changed nothing on the ground** —
+  over 130 m with one 2048 map and an environment light carrying most of the illumination, no
+  pool appeared. Kept anyway, because it is correct.
+- **Second, and this is the call: bake it.** The sun is one fixed key at (16, 22, 10); there is
+  no time of day and no season, so a tree's shadow never moves. A baked shade map is therefore
+  **not an approximation of a shadow — it is the shadow.** One canvas over the world, a pool
+  dropped down-sun of each of the 285 trees, serving both the ground plane and all 58 000
+  blades of the meadow through a single texture lookup in the shader that already existed. It
+  is art-directable, which a shadow map is not, and it cost one texture.
+- **Shade is tinted cool, not black.** What reaches shaded grass is the sky and not the sun;
+  shade that is merely dark reads as dirt.
+
+**Birds, seen and not heard.** *"the trees full of small birdes and foules"* (p. 94); *"the
+sweet chirpings and quiet singing of Birds"* (p. 101). The site is silent by standing decision
+and that looked like a problem until the book solved it: at the fountain of the sleeping nymph
+Colonna does not describe birds singing, he describes birds **carved as though they were
+singing** — *"prettye byrdes as yf they had beene chirping and singing of hir a sleep"*
+(p. 98). **Where a pleasure cannot be delivered, show it being represented.** That is the
+*paragone*, it is the book's own method, and it is now the rule for every acoustic pleasure
+here. Eighteen perched and thirteen wheeling; they are the only moving things in the sky,
+because a still sky reads as a painted backdrop.
+
+**Repose.** *"…were constrained to rest our selues for want of breath, vpon the odoriferous
+floures & coole grasse"* (p. 121). Turf seats — kerb, raised bank, and aromatic flowers growing
+out of the seat itself — put where the book actually rests its people, plus two on the shore
+facing Cythera, which is the one prospect in the book he is given whole.
+
+**Visible fragrance.** Smell cannot be shipped, but smoke can be seen, and the book gives us
+smoke: *"a thicke smoake or fume, of an inestimable fragrancie"* (p. 224). Fume rises from the
+censers and the altar fires, and **only where the text puts one** — built on the ParticleStream
+the triumph censers already used, because a second smoke system would be a second thing to
+maintain.
+
+**And one thing deliberately not built.** The counterfeits — the glass garden's balls "lyke
+pearles shining", the silk garden's pearled flowers, and the fragrance washed on with oil
+(p. 176). Hunt's argument stands: the 1499 and the 1592 both decline to illustrate them, the
+1546 French edition did and *damaged* them, and the omission "forces readers to adjudicate
+these designs for themselves." Withholding is the faithful move, and this is the only place in
+this world where that is true.
+
 ## 2026-09-07 — GitHub Pages is the only host; Vercel retired
 
 Ted: *"Stop hosting on vercel for now and bake into system files that we are only hosting on
