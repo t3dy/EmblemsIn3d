@@ -26,7 +26,7 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
-import { RollUp } from '../systems/RollUp.js?v=4';
+import { RollUp } from '../systems/RollUp.js?v=5';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -2902,6 +2902,9 @@ export class HPWorldScene {
       : [S.mat({ color: 0xf6f0e2, roughness: 0.62 }),    // white
          S.mat({ color: 0xe8c451, roughness: 0.62 }),    // yellow
          S.mat({ color: 0xc4485a, roughness: 0.62 })];   // red
+    ['a white jasmine flower', 'a yellow jasmine flower', 'a red jasmine flower']
+      .forEach((n, i) => { JASMINE[i].userData.roll = n; });
+    leafMat.userData.roll = 'a jasmine leaf';
     const flowerGeo = new THREE.SphereGeometry(0.032, 5, 4);
 
     const rnd = (i, k) => {
@@ -2933,6 +2936,7 @@ export class HPWorldScene {
     }
     // the stems themselves, wound up the outer posts
     const stemMat = woodcut ? this._darkStoneMat : S.mat({ color: 0x4a3a22, roughness: 0.95 });
+    stemMat.userData.roll = 'a jasmine stem';
     for (let b = 0; b <= BAYS; b++) {
       const z = -LEN / 2 + (b / BAYS) * LEN;
       for (const sx of [-1, 1]) {
@@ -3073,6 +3077,8 @@ export class HPWorldScene {
     // because a single sphere at this size reads as a purple ball on a string.
     const grapeMat = woodcut ? S.mat({ tone: -0.02 })
       : S.mat({ color: 0x3d2447, roughness: 0.55 });
+    grapeMat.userData.roll = 'a grape';
+    vineMat.userData.roll = 'a length of vine';
     const berryGeo = new THREE.SphereGeometry(0.055, 5, 4);
     const bunch = (bx, by, bz) => {
       for (const [ox, oy, oz] of [[0, 0, 0], [0.075, -0.05, 0.02], [-0.07, -0.06, -0.03],
@@ -3696,6 +3702,10 @@ export class HPWorldScene {
       : [S.mat({ color: 0xf0e2b4, roughness: 0.6 }),    // honeysuckle, cream
          S.mat({ color: 0xd8a8a0, roughness: 0.6 }),    // woodbine, pinker
          S.mat({ color: 0xc2cf92, roughness: 0.66 })];  // hop cones
+    ['a honeysuckle', 'a woodbine flower', 'a hop cone']
+      .forEach((n, i) => { FLOWERS[i].userData.roll = n; });
+    stemMat.userData.roll = 'a length of woodbine';
+    if (!woodcut) leafMat.userData.roll = 'a plane leaf';
     const leafGeo = new THREE.PlaneGeometry(0.44, 0.44);
     const florGeo = new THREE.SphereGeometry(0.05, 5, 4);
 
@@ -3880,6 +3890,8 @@ export class HPWorldScene {
       : S.mat({ color: 0xf0ebe0, roughness: 0.42, metalness: 0.02 });
     const red = woodcut ? this._darkStoneMat
       : S.mat({ color: 0xa8503e, roughness: 0.40, metalness: 0.02 });
+    white.userData.roll = 'a piece of whitening marble';
+    red.userData.roll = 'a piece of reddening marble';
     const openwork = woodcut
       ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
       : new THREE.MeshStandardMaterial({
@@ -3932,6 +3944,11 @@ export class HPWorldScene {
     const berryMat = climber.second
       ? (woodcut ? S.mat({ tone: -0.01 }) : S.mat({ color: climber.second, roughness: 0.55 }))
       : null;
+    // what the roll-up calls them, since each fence carries a different plant
+    const low = climber.name.toLowerCase();
+    stemMat.userData.roll = `a length of ${low}`;
+    florMat.userData.roll = `a flower of ${low}`;
+    if (berryMat) berryMat.userData.roll = `a berry of ${low}`;
     const leafGeo = this._climbLeafGeo = this._climbLeafGeo || new THREE.PlaneGeometry(0.3, 0.3);
     const florGeo = this._climbFlorGeo = this._climbFlorGeo || new THREE.SphereGeometry(0.045, 5, 4);
     const rnd = (i, k) => { const v = Math.sin(i * 59.3 + k * 173.1 + seed * 23.7) * 43758.5453; return v - Math.floor(v); };
@@ -3989,6 +4006,7 @@ export class HPWorldScene {
       map: this._leafCardTexture(species),
       alphaTest: 0.44, side: THREE.DoubleSide, roughness: 0.88,
     });
+    m.userData.roll = `a leaf of ${species}`;
     this._disp.push(m);
     return (this._climbMats[species] = m);
   }
@@ -4139,6 +4157,7 @@ export class HPWorldScene {
     const S = this.style;
     const stone = S.key === 'woodcut' ? this._stoneMat
       : S.mat({ color: 0xcfc0a2, roughness: 0.72 });
+    stone.userData.roll = 'a step';
     const W = 3.6;                              // wide enough for a chariot
     const tx = -Math.sin(a), tz = Math.cos(a);  // the tangent, across the flight
     const dr = (r1 - r0) / n, dy = (y1 - y0) / n;
@@ -4250,12 +4269,17 @@ export class HPWorldScene {
     let base = (m && m.userData && m.userData.roll) || null;
     if (!base) {
       const t = mesh.geometry.type;
-      if (t === 'SphereGeometry')      base = r < 0.07 ? 'a berry' : r < 0.2 ? 'a fruit' : 'a ball of stone';
+      if (t === 'SphereGeometry')      base = r < 0.07 ? 'a berry' : r < 0.2 ? 'a fruit' : r < 0.6 ? 'a ball of clipped box' : 'a mass of leaves';
       else if (t === 'PlaneGeometry')  base = r < 0.3 ? 'a leaf' : 'a painted panel';
       else if (t === 'CylinderGeometry') base = r < 0.15 ? 'a little baluster' : r < 0.8 ? 'a column drum' : 'a column';
       else if (t === 'BoxGeometry')    base = r < 0.2 ? 'a tile' : r < 0.7 ? 'a brick' : 'a block of masonry';
       else if (t === 'ConeGeometry')   base = r < 0.4 ? 'a finial' : 'a spire';
-      else if (t === 'TorusGeometry')  base = 'a ring of gold';
+      else if (t === 'TorusGeometry') {
+        // it was calling every arch in the world a ring of gold
+        const c = m && m.color ? m.color : null;
+        const goldish = c && c.r > 0.55 && c.g > 0.42 && c.b < 0.42;
+        base = goldish ? 'a ring of gold' : r < 0.4 ? 'a hoop' : 'an arch';
+      }
       else if (t === 'DodecahedronGeometry') base = r < 0.12 ? 'a pebble' : r < 0.6 ? 'a stone' : 'a boulder';
       else if (t === 'RingGeometry')   base = 'a bed of flowers';
       else base = 'a piece of the dream';
@@ -7606,6 +7630,8 @@ export class HPWorldScene {
     const lit = S.key !== 'woodcut';
     const alab = lit ? S.mat({ color: 0xf2e8d2, roughness: 0.35, metalness: 0.05 }) : S.mat({ tone: 0.03 });
     const mirror = lit ? S.mat({ color: 0x0c0c12, roughness: 0.08, metalness: 0.6 }) : S.mat({ tone: 0.36 });
+    alab.userData.roll = 'a piece of Indian alabaster';
+    mirror.userData.roll = 'a shard of mirror-black stone';
     // the obsidian Area, over the dark stone floor
     this._m(new THREE.CircleGeometry(7.4, 48), mirror, CX, 0.075, CZ, { rx: -Math.PI / 2, cast: false });
     const RC = 7.15, H = 2.4, ORDERS = 3;
@@ -10071,6 +10097,7 @@ export class HPWorldScene {
     if (SPc && !weeping) {
       // matte and dark: it is shadow, not a fruit
       this._coreMat = this._coreMat || (this.style.key === 'woodcut' ? this._leafMat : this.style.mat({ color: 0x0f1d0a, roughness: 1, metalness: 0 }));
+      this._coreMat.userData.roll = this._coreMat.userData.roll || 'the shade inside a crown';
       // The core CASTS (2026-09-07). Coolness and shade are the pleasure this
       // book names more often than any other -- "a pleasaunt and coole shade"
       // (p. 92), "the coole vmbrage of the leafie Trees" (p. 121), "making the

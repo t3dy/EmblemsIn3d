@@ -47,6 +47,35 @@ const BITE = 0.58;
 // dropped. Four hundred is enough that the surface is always crusted.
 const CRUST = 400;
 
+// ── The ladder of the metals ────────────────────────────────────────────────
+//
+// From hp.db.alchemical_symbols, which RECIPES/query-the-corpus.md names as the
+// only licensed basis for an alchemical reading here: Taylor 1951 and Russell
+// 2014 on the annotating hands of the Buffalo copy. Saturn's lead is "the base
+// metal, starting point of transmutation"; Hand B "maps the god's hierarchical
+// position to the tin-gold transmutation sequence"; Sol is "the king of metals"
+// and Luna "the queen"; and the Hermaphrodite is "the product of the chemical
+// wedding: union of Sol and Luna". A ball with the Sun on one face and the Moon
+// on the other is that hermaphrodite, so the wedding is where the work ends.
+export const METALS = [
+  { at: 0.00, sign: '\u2644', name: 'Saturn',  metal: 'Lead',         tint: 0x6e7076,
+    note: 'The base metal. The starting point of transmutation.' },
+  { at: 0.50, sign: '\u2643', name: 'Jupiter', metal: 'Tin',          tint: 0xb2bac2,
+    note: 'Hand B maps the god\u2019s hierarchy to the tin\u2013gold sequence.' },
+  { at: 1.00, sign: '\u2642', name: 'Mars',    metal: 'Iron',         tint: 0x6b6560,
+    note: 'The martial metal.' },
+  { at: 1.80, sign: '\u2640', name: 'Venus',   metal: 'Copper',       tint: 0xb87333,
+    note: 'Love, generation, and the feminine principle.' },
+  { at: 3.00, sign: '\u263f', name: 'Mercury', metal: 'Quicksilver',  tint: 0xc9cdd2,
+    note: 'Master Mercury: the catalytic agent uniting all elements.' },
+  { at: 5.00, sign: '\u263d', name: 'Luna',    metal: 'Silver',       tint: 0xe4e8ee,
+    note: 'The queen of metals.' },
+  { at: 8.00, sign: '\u2609', name: 'Sol',     metal: 'Gold',         tint: 0xe0b74e,
+    note: 'The king of metals.' },
+];
+// …and the work is finished at the wedding.
+export const WEDDING = 12.0;
+
 export class RollUp {
   constructor(scene, camera, walker, {
     r0 = 0.22,
@@ -76,6 +105,7 @@ export class RollUp {
       new THREE.MeshStandardMaterial({
         map: this._faceTexture(), roughness: 0.34, metalness: 0.42,
         emissive: 0x1a1206, emissiveIntensity: 0.35,
+        color: new THREE.Color(METALS[0].tint),   // it begins as lead
       }));
     this.spinner.add(this.ball);
     this.group.visible = false;
@@ -87,6 +117,9 @@ export class RollUp {
     this.meadows = [];                       // fields whose blades are food
     this.colliders = null;                   // things too big to climb, for now
     this.grass = 0;                          // blades eaten
+    this.stage = 0;                          // where on the ladder of metals
+    this.t = 0;                              // how long the work has taken
+    this.done = false;
   }
 
   // ── The face: Sol on one side, Luna on the other ───────────────────────
@@ -301,7 +334,27 @@ export class RollUp {
     this._block();
     this._eat();
     this._graze(dt);
+    this._transmute();
+    this.t += dt;
     this._sync();
+  }
+
+  // Has the work moved on? The ball wears its metal, so lead greys the sun and
+  // gold gilds the moon, and you can see the transmutation happening.
+  _transmute() {
+    if (this.done) return;
+    let k = 0;
+    for (let i = 0; i < METALS.length; i++) if (this.r >= METALS[i].at) k = i;
+    if (k !== this.stage) {
+      this.stage = k;
+      this.ball.material.color.setHex(METALS[k].tint);
+      this.onStage?.(METALS[k], k);
+    }
+    if (this.r >= WEDDING) {
+      this.done = true;
+      this.active = false;
+      this.onWedding?.({ count: this.count, grass: this.grass, seconds: this.t, r: this.r });
+    }
   }
 
   // Anything much bigger than the ball is a wall, which is the rule that makes
@@ -311,7 +364,11 @@ export class RollUp {
     if (!this.colliders) return;
     const R = this.r;
     for (const c of this.colliders) {
-      if (c.r < R * 1.9) continue;                  // small enough to roll over
+      // 2026-09-08: this used to let the ball walk through anything under twice
+      // its own size, which meant a hedge you were far too small for was simply
+      // ignored. Anything you cannot EAT should stop you -- that is the whole
+      // shape of the game, and the bump is half the comedy.
+      if (c.r < R * BITE * 1.25) continue;           // small enough to roll over
       const dx = this.pos.x - c.x, dz = this.pos.z - c.z;
       const d = Math.hypot(dx, dz), want = c.r + R * 0.7;
       if (d > want || d < 1e-5) continue;

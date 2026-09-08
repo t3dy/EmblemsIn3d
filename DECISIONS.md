@@ -2,6 +2,53 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Roll Up gets an ending, and the ending was already in the database
+
+The mode was a toy: you rolled until you were bored. It needed a goal, and inventing one —
+four colour-stages of the Great Work, say — would have been the easy thing and would have
+broken this project's first rule. So the corpus was asked instead:
+`hp.db.alchemical_symbols`, which `RECIPES/query-the-corpus.md` names as **the only licensed
+basis for an alchemical reading here**, sourced to Taylor 1951 and Russell 2014 on the
+annotating hands of the Buffalo copy.
+
+It gave back exactly the mode, which was startling:
+
+- **Sol** — gold, the Sun, masculine, *"the king of metals."*
+- **Luna** — silver, the Moon, feminine, *"the queen of metals."*
+- **The Hermaphrodite** — *"the product of the chemical wedding: union of Sol and Luna,
+  producing a being that reconciles masculine and feminine. Hand E identifies hermaphroditic
+  imagery on h1r."*
+
+**Ted's ball has Sol on one face and Luna on the other. It IS the hermaphrodite**, and the
+database says so about this very copy of this very book. So the goal is the chemical wedding.
+
+And the road there is the ladder in the same table: Saturn's lead at the bottom — *"the base
+metal, starting point of transmutation"* — climbing through Jupiter's tin, Mars's iron, Venus's
+copper, Mercury's quicksilver and Luna's silver to Sol's gold. That ladder is not our idea
+either: the table records that **Hand B "annotates the Jupiter passage on a4r, mapping the
+god's hierarchical position to the tin–gold transmutation sequence"** — a reading somebody
+wrote in the margin of a 1499 *Hypnerotomachia*.
+
+**The ball wears its metal.** It begins a dull lead and is tinted through tin, iron, copper,
+quicksilver and silver to gold, so the transmutation is something you watch happening to the
+thing you are steering. At twelve metres the work is finished and the end card gives Russell's
+sentence, the count, the blades of grass, and how long it took from lead to gold. A scripted
+run does it in about three minutes and 65 000 things, which is the right length for the genre.
+
+**There is no timer and no fail state**, and that is deliberate: the garden is meant to be
+wandered. The clock runs and is reported at the end as a *time*, not a limit.
+
+Two other things in the same pass:
+
+- **It bumps now.** `_block` used to ignore anything under twice the ball's own size, so a hedge
+  you were far too small for was walked through. Anything you cannot **eat** now stops you,
+  which is the whole shape of the game and half of the comedy.
+- **It knows 121 names.** The census reported its own commonest generic labels and which
+  material each came from, and those materials were tagged at the point they are made — the
+  only place the name is actually known. "A ring of gold" was being applied to every white
+  marble arch in the world; that fallback now looks at the material. 325 things out of 88 130
+  are still "a piece of the dream", which is a good enough tail.
+
 ## 2026-09-08 — Roll Up: the world had to be made of things again
 
 Ted: *"add a game mode 'roll up' where you control a katamari damacy style ball with an

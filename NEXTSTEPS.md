@@ -74,23 +74,21 @@ and **the hedges' silhouette** are all built. Still open:
   representations"* (p. 114). This needs no new geometry — it needs the carved nymphs of the
   frieze and the living nymphs in the water composed into **one view**, at one scale, in one
   light, or the sentence cannot happen. A camera study.
-### 0f. Roll Up — what a second pass would add
-Built 2026-09-08. The loop works: a walnut on the sward grows to four metres in a couple of
-minutes, eating grass, then leaves and berries, then tiles and balusters and boughs. Open:
+### 0f. Roll Up — what is left
+Second pass done 2026-09-08. It now has an ending (the ladder of the seven metals to the
+chemical wedding, all of it out of `hp.db.alchemical_symbols`), it bumps on anything it cannot
+eat, and it knows **121 distinct names** for what it swallows — 325 things out of 88 130 are
+still "a piece of the dream". Open:
 
-- **Nothing ends.** There is no timer, no target size, no King of All Cosmos telling you it is
-  not enough. A three-minute round with a size to beat would make it a game rather than a toy.
-- **The ball passes through the small stuff it cannot eat.** `_block` only pushes off colliders
-  bigger than about twice the ball, so a hedge you are too small for is walked through rather
-  than bumped. It should bump, and the bump is half the comedy.
 - **People are just meshes.** The nymphs and Poliphilo are excluded from the merge (they
   animate) and so are censused as standalone — they come off whole, which is right — but they
-  do not react. Katamari's crowds run.
+  do not react. Katamari's crowds run, and this one's should at least flinch.
 - **No sound**, and the site is silent by standing decision, so the mode has none of the genre's
   best joke. §2 of PLEASURES.md is the precedent for what to do instead: show it.
-- **The names could be better.** They come from the material where one is tagged and from the
-  geometry where not, so there are a lot of "a piece of the dream". Tagging more materials at
-  creation is a five-minute job each and pure profit — the naming IS the genre.
+- **The ball never gets stuck but it never struggles either.** There is no momentum and no
+  friction — it moves at a speed and stops. A little inertia would make the big ball feel big.
+- **Nothing carries between rounds.** A record of the fastest wedding, kept in `localStorage`
+  beside the lens set, would cost ten lines.
 
 ### 0e. Floor height is now available — go and use it
 Added 2026-09-08. `Walker.floors` exists and Cythera's terraces are the only thing registered

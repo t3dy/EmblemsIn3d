@@ -393,7 +393,10 @@
     #prospect button:hover { background: rgba(216,162,74,0.12); }
     /* ── Roll Up ─────────────────────────────────────────────── */
     #roll-hud {
-      position: fixed; left: 50%; bottom: 1.6rem; transform: translateX(-50%);
+      /* clear of the hint bar, which lives at the bottom and says the same
+         sort of thing -- two lines of gold text on top of each other is worse
+         than either alone */
+      position: fixed; left: 50%; bottom: 4.4rem; transform: translateX(-50%);
       z-index: 30; text-align: center; pointer-events: none;
       font-family: Georgia, serif; text-shadow: 0 2px 10px rgba(0,0,0,0.9);
     }
@@ -410,14 +413,48 @@
     }
     #roll-hud .rh-row {
       margin-top: 0.35rem; display: flex; gap: 0.5rem 1.1rem; justify-content: center;
-      align-items: baseline; font-size: 0.9rem; color: #e8c96a;
+      align-items: baseline; font-size: 0.86rem; color: #e8c96a; white-space: nowrap;
     }
     #roll-hud .rh-k {
       font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase; color: #8a7a54;
     }
+    #roll-hud .rh-metal { color: #d8c48a; }
     #roll-hud .rh-foot {
       margin-top: 0.5rem; font-size: 0.62rem; letter-spacing: 0.07em; color: #6a5c40;
     }
+    #roll-done {
+      position: fixed; inset: 0; z-index: 60; display: none;
+      align-items: center; justify-content: center;
+      background: rgba(6,5,3,0.76); backdrop-filter: blur(2px);
+    }
+    #roll-done.on { display: flex; }
+    #roll-done .rd-card {
+      max-width: min(560px, 92vw); max-height: 92vh; overflow: auto;
+      background: #0d0a06; border: 1px solid #6a5426; padding: 1.6rem 1.7rem 1.3rem;
+      text-align: center; box-shadow: 0 10px 60px rgba(0,0,0,0.75);
+    }
+    #roll-done .rd-kicker { font-size: 0.56rem; letter-spacing: 0.2em; text-transform: uppercase; color: #6a5a3a; }
+    #roll-done h2 { font-size: 1.4rem; font-weight: normal; letter-spacing: 0.1em; color: #e8c96a; margin: 0.35rem 0 0.2rem; }
+    #roll-done .rd-glyph { font-size: 2.1rem; color: #e0b74e; letter-spacing: 0.12em; margin: 0.4rem 0 0.7rem; }
+    #roll-done .rd-note { font-size: 0.84rem; color: #c0b08c; line-height: 1.8; text-align: left; }
+    #roll-done .rd-note em { color: #e8dcb8; }
+    #roll-done .rd-cite { font-size: 0.62rem; color: #7a6a4a; letter-spacing: 0.04em; margin-top: 0.7rem; }
+    #roll-done .rd-stats {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 0.9rem 1.6rem;
+      margin: 1.1rem 0 0.3rem; padding-top: 1rem; border-top: 1px solid #33280f;
+    }
+    #roll-done .rd-stats div { display: flex; flex-direction: column; gap: 0.15rem; }
+    #roll-done .rd-stats span { font-size: 1.15rem; color: #f0e0b4; }
+    #roll-done .rd-stats em {
+      font-style: normal; font-size: 0.56rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: #7a6a4a;
+    }
+    #roll-done .rd-btns { display: flex; gap: 0.8rem; justify-content: center; margin-top: 1.2rem; flex-wrap: wrap; }
+    #roll-done button {
+      font-family: inherit; font-size: 0.76rem; letter-spacing: 0.08em;
+      background: none; border: 1px solid #6a5426; color: #d8a24a; padding: 0.45rem 1.1rem; cursor: pointer;
+    }
+    #roll-done button:hover { background: rgba(216,162,74,0.12); }
     #tour-panel .tp-notes { display: flex; flex-direction: column; gap: 0.5rem; }
     #tour-panel .tp-note { border-left: 3px solid; padding: 0.4rem 0 0.4rem 0.8rem; background: rgba(255,255,255,0.018); }
     #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
@@ -979,7 +1016,7 @@
         <button class="hpm-card" onclick="window.hpRoll()">
           <span class="hpm-kicker">Roll-up &middot; third person</span>
           <h3>Roll Up the Dream</h3>
-          <p>You are a ball with the Sun on one face and the Moon on the other, and the garden is food. Start the size of a walnut and roll up blades of grass, then leaves and pebbles and fruit, then tiles and balusters and nymphs, then trees, then whole wonders. Everything you eat comes with you, stuck to the outside and turning as you turn. W A S D to roll, drag to swing the view, wheel to pull back, Esc to stop.</p>
+          <p>You are a ball with the Sun on one face and the Moon on the other &mdash; which is to say you are the <em>hermaphrodite</em>, &ldquo;the product of the chemical wedding&rdquo;, and the garden is food. Start a walnut of Saturn&rsquo;s lead and roll up blades of grass, then leaves and pebbles and fruit, then tiles and balusters and nymphs, then trees, then whole wonders &mdash; climbing the ladder of the metals to tin, iron, copper, quicksilver, silver and gold, until the work is finished. Everything you eat comes with you, stuck to the outside and turning as you turn. W A S D to roll, drag to swing the view, wheel to pull back, Esc to stop.</p>
         </button>
         <button class="hpm-card" onclick="window.hpTour('novel')">
           <span class="hpm-kicker">Guided tour &middot; with the scholarship</span>
@@ -1004,8 +1041,37 @@
     <div class="rh-row">
       <span class="rh-k">Size</span><span id="roll-size">22 cm</span>
       <span class="rh-k">Things</span><span id="roll-count">0</span>
+      <span class="rh-k">Metal</span><span id="roll-metal">&#9796; Lead</span>
     </div>
     <div class="rh-foot">W A S D roll &middot; drag to look &middot; wheel to pull back &middot; Esc &mdash; stop rolling</div>
+  </div>
+
+  <!-- The work finished: the chemical wedding. Every word of this is from
+       hp.db.alchemical_symbols, sourced to Russell 2014 on the annotators of
+       the Buffalo copy; see RollUp.js. -->
+  <div id="roll-done" hidden>
+    <div class="rd-card">
+      <div class="rd-kicker">The work is finished</div>
+      <h2>The Chemical Wedding</h2>
+      <div class="rd-glyph">&#9737;&nbsp;&#9789;</div>
+      <p class="rd-note">
+        &ldquo;The product of the chemical wedding: <em>union of Sol and Luna, producing a
+        being that reconciles masculine and feminine.</em> Hand E identifies hermaphroditic
+        imagery on h1r.&rdquo;
+      </p>
+      <p class="rd-cite">Sol, the king of metals &middot; Luna, the queen &middot;
+        <span id="rd-src">hp.db, after Russell 2014, pp. 189&ndash;190</span></p>
+      <div class="rd-stats">
+        <div><span id="rd-size">12.0 m</span><em>across</em></div>
+        <div><span id="rd-count">0</span><em>things</em></div>
+        <div><span id="rd-grass">0</span><em>blades of grass</em></div>
+        <div><span id="rd-time">0:00</span><em>from lead to gold</em></div>
+      </div>
+      <div class="rd-btns">
+        <button onclick="window.hpRoll()">Begin the work again</button>
+        <button onclick="window.hpRollExit()">Leave the garden standing</button>
+      </div>
+    </div>
   </div>
 
   <!-- The crawl's own HUD: how deep, how many lamps, and the map you make -->
@@ -1081,6 +1147,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=285"></script>
+  <script type="module" src="./main.js?v=288"></script>
 </body>
 </html>

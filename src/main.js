@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=196';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=198';
 import { VaultsScene } from './scenes/VaultsScene.js?v=5';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
@@ -1178,6 +1178,8 @@ window.hpRoll = async () => {
   hideWalkNotes();
   dismissWalkNotes();
   sc.onRollExit = () => window.hpRollExit();
+  setHidden(document.getElementById('roll-done'), true);
+  document.getElementById('roll-done')?.classList.remove('on');
   sc.startRoll({
     onEat: (name, count, r) => {
       const n = document.getElementById('roll-name');
@@ -1190,6 +1192,23 @@ window.hpRoll = async () => {
       if (nn) { nn.classList.remove('pop'); void nn.offsetWidth; nn.classList.add('pop'); }
     },
   });
+  // The ladder of the metals, and the wedding at the top of it. Both come
+  // straight out of hp.db.alchemical_symbols — see the header of RollUp.js.
+  sc.roll.onStage = (m) => {
+    const el = document.getElementById('roll-metal');
+    if (el) el.innerHTML = `${m.sign} ${m.metal}`;
+    showHint(`${m.sign}  ${m.name} — ${m.metal}.  ${m.note}`);
+  };
+  sc.roll.onWedding = (r) => {
+    const mm = Math.floor(r.seconds / 60), ss = Math.round(r.seconds % 60);
+    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+    set('rd-size', `${r.r.toFixed(1)} m`);
+    set('rd-count', r.count.toLocaleString());
+    set('rd-grass', r.grass.toLocaleString());
+    set('rd-time', `${mm}:${String(ss).padStart(2, '0')}`);
+    const d = document.getElementById('roll-done');
+    setHidden(d, false); d?.classList.add('on');
+  };
   showHint('W A S D / arrows roll · drag to swing the view · wheel to pull back · Esc to stop rolling');
 };
 
@@ -1198,6 +1217,8 @@ window.hpRollExit = () => {
   sc?.endRoll?.();
   state.wantRoll = false;
   setHidden(document.getElementById('roll-hud'), true);
+  const d = document.getElementById('roll-done');
+  setHidden(d, true); d?.classList.remove('on');
   showHPMode(true);
 };
 window.hpVaultsDeeper = () => {
