@@ -2,7 +2,8 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=177';
+import { AerialPass } from './shaders/AerialPerspective.js?v=3';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=178';
 import { VaultsScene } from './scenes/VaultsScene.js?v=3';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
@@ -57,6 +58,13 @@ const dummyScene = new THREE.Scene();
 const dummyCam   = new THREE.PerspectiveCamera();
 const composer   = new EffectComposer(renderer);
 composer.addPass(new RenderPass(dummyScene, dummyCam));
+
+// Leonardo's prospettiva aerea, and the pigment shelf of 1499. It goes BEFORE
+// the bloom, because haze is in the air and the bloom is in the eye: the bloom
+// should be blooming the hazed picture, not the other way round.
+// See src/shaders/AerialPerspective.js and RENDERING.md.
+const aerial = new AerialPass();
+composer.addPass(aerial);
 
 const bloom = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight), 0.6, 0.4, 0.85
@@ -1528,6 +1536,9 @@ function animate() {
     if (composer.passes[0]) {
       composer.passes[0].scene  = state.activeScene.scene;
       composer.passes[0].camera = state.activeScene.camera;
+      // The woodcut page is paper: it has no air in it and no pigments on a
+      // shelf, so the pass stands down there.
+      aerial.enabled = state.hpStyle !== 'woodcut' && !state.aerialOff;
     }
   }
 
@@ -1535,7 +1546,26 @@ function animate() {
 }
 
 // Debug handle so the view can be driven from the console during development
-window._hp = { renderer, composer, state, clock };
+// Tuning handles.
+//   hpPigment(x)  0..1 -- how far colours are pulled to the shelf of 1499
+//   hpAir({...})  the fog that carries Leonardo's rule: colour and density
+window.hpPigment = (x) => {
+  if (x != null) aerial.uniforms.uPigment.value = x;
+  return { pigment: aerial.uniforms.uPigment.value, enabled: aerial.enabled };
+};
+window.hpAir = (o) => {
+  const sc = state.activeScene;
+  if (!sc || !sc.scene || !sc.scene.fog) return null;
+  if (o && typeof o === 'object') {
+    if (o.haze != null)    sc.scene.fog.color.setHex(o.haze);
+    if (o.density != null) sc.scene.fog.density = o.density;
+    if (o.off != null)     state.aerialOff = !!o.off;
+    sc.syncAir?.();
+  }
+  return { haze: '#' + sc.scene.fog.color.getHexString(), density: sc.scene.fog.density };
+};
+
+window._hp = { renderer, composer, state, clock, aerial };
 
 // ─── Audio ────────────────────────────────────────────────────────────────────
 // The site is silent by design (Ted, 2026-09-04): no music or ambient audio

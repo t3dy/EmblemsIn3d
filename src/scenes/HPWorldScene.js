@@ -294,8 +294,23 @@ export class HPWorldScene {
     // warm late afternoon so nothing reads as dark. (Woodcut keeps its paper.)
     const lit = S.key !== 'woodcut';
     this.scene.background = new THREE.Color(lit ? 0x9fb6d6 : S.bg);
+    // ── The air (prospettiva aerea) ──────────────────────────────────────
+    // Leonardo, in the Trattato: to make a thing look five times more distant,
+    // make it five times bluer. Distance drains the colour, closes the tonal
+    // range, and shifts what is left toward the blue of the air -- he is
+    // describing Rayleigh scattering three centuries early, and it is the one
+    // piece of Renaissance picture-making this world did not have.
+    //
+    // The fog was a warm sand, which says "dusty" and not "far". It is now a
+    // pale azurite: azurite rather than ultramarine because ultramarine cost
+    // more than its weight in gold and azurite is what a Venetian workshop in
+    // 1499 actually reached for. Kept light in value so the seam against the
+    // sky's warm horizon stays soft -- blue hills under a pale warm sky is
+    // precisely the quattrocento landscape.
+    // See src/shaders/AerialPerspective.js and RENDERING.md.
+    this.AIR = 0xb0c4da;
     this.scene.fog = lit
-      ? new THREE.FogExp2(0xd0be9e, 0.0072)
+      ? new THREE.FogExp2(this.AIR, 0.0082)
       : new THREE.FogExp2(S.fog.color, S.fog.density);
 
     this.renderer.shadowMap.enabled = true;
@@ -9245,7 +9260,11 @@ export class HPWorldScene {
     const mobile = /Mobi|Android/i.test(navigator.userAgent);
     const clearance = (x, z) => this._meadowClearance(x, z);
     const sun = new THREE.Vector3(16, 22, 10).normalize();   // the lit style's key
-    const common = { clearance, sunDirection: sun, fogColor: 0xd0be9e, fogDensity: 0.0072 };
+    // the meadow is a hand-written shader and fogs itself, so it has to be
+    // told the same air the rest of the world is standing in
+    const common = { clearance, sunDirection: sun,
+                     fogColor: this.scene.fog.color.getHex(),
+                     fogDensity: this.scene.fog.density };
 
     // The sward, rebuilt 2026-09-07. The first version read as cartoon: the
     // blades were 10 cm across at the base, half a metre tall, and lime. Three
@@ -9369,6 +9388,19 @@ export class HPWorldScene {
                      yellowDrift, blueDrift, whiteDrift, purpleDrift]) {
       this.scene.add(f.mesh);
       this._meadows.push(f);
+    }
+  }
+
+  // Push a change of air through to the things that fog themselves. The
+  // meadow's shader carries its own uFogColor/uFogDensity, so recolouring
+  // scene.fog alone would leave the grass standing in yesterday's weather.
+  syncAir() {
+    const f = this.scene.fog;
+    if (!f) return;
+    for (const m of this._meadows) {
+      const u = m.mesh.material.uniforms;
+      if (u.uFogColor) u.uFogColor.value.copy(f.color);
+      if (u.uFogDensity) u.uFogDensity.value = f.density;
     }
   }
 

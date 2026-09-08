@@ -201,3 +201,24 @@ that says what it is.
   at #86 (trees), #94 (the ciborium: how a dome is shaded with a handful of strokes),
   #96 (the Hell lunette: the one place the cutter uses dense cross-hatch, and why),
   #147 (the theatre: architecture as pure line).
+
+
+---
+
+## Addendum, 2026-09-07 — the machinery has a name
+
+A rendering survey (see [`RENDERING.md`](RENDERING.md) §3) turned up the standard literature
+for exactly what this document argues for from first principles.
+
+- **The direction hatching should run** is the dominant eigenvector of the **structure
+  tensor** — build it from Sobel gradients (`Gx·Gx, Gx·Gy; Gx·Gy, Gy·Gy`), smooth it, take its
+  eigenvectors. That is how an engraver's line follows form, and it is computed in screen
+  space, which is precisely the fix this file asks for.
+- **The swimming and moire** as you walk is solved by **tonal art maps** (Praun, Hoppe, Webb &
+  Finkelstein, *Real-Time Hatching*): a mip-chain of hatch images at increasing tone, blended
+  by multitexturing, with strokes scaled so density stays constant on screen at every
+  resolution. Stroke *coherence* is the whole problem that paper solves.
+- **The anisotropic Kuwahara filter** (Kyprianidis, Kang & Döllner 2009) shares the tensor
+  step, so whichever is built first pays for the other.
+
+None of it is built. The register stays bracketed until Ted unbrackets it.

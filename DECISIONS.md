@@ -2,6 +2,67 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-07 — Aerial perspective and the pigment shelf of 1499
+
+Ted asked me to search for rendering methods for Renaissance art and environments that I might
+have overlooked, and to apply what I found. Two things came back that were worth having, one of
+them embarrassing to have missed.
+
+**Leonardo's rule, which this world had backwards.** He coined *prospettiva aerea* in the
+Trattato della Pittura and stated it as an instruction to painters: *to make an object look
+five times more distant, make it five times bluer.* Distance drains colour, closes the tonal
+range, and shifts what is left toward the blue of the air — Rayleigh scattering, three
+centuries before anyone could explain it, and the first written statement of a thing Masaccio
+and others had only done by instinct.
+
+This world's distance cue was a **warm sand-coloured fog**. That is a real cue and the wrong
+one: a warm haze reads as dust, not as distance, and it was flattening the far ground into the
+same family of colours as the near. The fog is now a pale **azurite** (`0xb0c4da`) — azurite
+and not ultramarine because ultramarine cost more than its own weight in gold and azurite is
+what a Venetian shop in 1499 actually reached for. Kept light in value, so the seam against the
+sky's warm horizon stays soft: **blue hills under a pale warm sky is the quattrocento landscape
+exactly**, and that mismatch is the effect rather than a defect.
+
+**It belongs in the fog, and I proved that the hard way.** I wrote the post-process pass first,
+with the three moves separated and staged over a tunable distance band. It needs scene depth,
+and reading depth out of an `EffectComposer` means hanging a `DepthTexture` on its ping-pong
+targets — which binds that texture as an attachment on the target being *written* while it is
+being *sampled*. Black canvas. Sharing one texture between both targets does not fix that; it
+guarantees it. The fog does the same job better: three.js evaluates it per fragment with true
+depth, on every standard material, for free. `syncAir()` pushes a change through to the meadow,
+which fogs itself in its own shader and would otherwise stand in yesterday's weather.
+
+**The pigment shelf.** A Venetian painter's colours were not a gamut, they were a shelf, and a
+short one: azurite, ultramarine and indigo; verdigris, green earth, malachite and sap green;
+lead-tin yellow, Naples yellow and the ochres; vermilion, madder lake, red ochre; raw umber and
+burnt sienna; lead white and vine black. `src/shaders/AerialPerspective.js` now pulls every
+pixel about a third of the way toward whichever of seventeen is nearest. **This is a constraint
+rather than an effect** — the image stops containing hues nobody in 1499 could have mixed, and
+a limited palette binds a picture the way it always has.
+
+Three things learned by tasting it: 0.18 barely registers and 0.55 turns the sea flatly
+verdigris and bands the grass, so **0.30**; the shelf needed two warm greens added or sunlit
+grass snapped to verdigris and the whole sward went teal; and **three.js silently uploads
+nothing for an array of `THREE.Color` in a `vec3[]` uniform**, because it flattens `{x,y,z}`
+and a Color has `{r,g,b}`.
+
+**What I turned down, and why.** The **anisotropic Kuwahara filter** is the standard route to a
+real-time painterly image and it is genuinely good — a structure tensor from Sobel gradients,
+its eigenvectors giving the local flow direction, the sampling kernel squeezed and rotated
+along it so the output reads as strokes following form. It would be a **fourth aesthetic
+register**, and the third one is already bracketed as unsatisfactory. Shipping a second
+half-finished register is a worse project, not a better one. It is written up in
+[`RENDERING.md`](RENDERING.md) anyway, because **the structure tensor is also the missing piece
+for the woodcut register** — an engraver's hatching follows form, and the tensor is how you
+find which way form runs. `WOODCUT.md` had independently arrived at the same machinery from the
+other end.
+
+Also read and set aside: **tonal art maps / real-time hatching** (parked with the woodcut
+register, where it belongs); **sfumato, chiaroscuro and verdaccio**, which are figure
+techniques and belong to `NYMPHS.md` if anywhere; and **canvas grain, craquelure and a painted
+frame**, which are cheap and all say "this is a photograph of a painting" when the whole point
+is that it is a place you walk in.
+
 ## 2026-09-07 — The garden's pleasures, taken from what Poliphilo says
 
 Ted: *"Think about all the pleasures of the renaissance garden that we want to simulate and

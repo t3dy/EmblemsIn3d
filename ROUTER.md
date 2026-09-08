@@ -64,6 +64,7 @@ a session.
 | **Check that a change actually landed** | `DEPLOY_STATE.md` | [`RECIPES/verify-live.md`](RECIPES/verify-live.md) |
 | **Find what the book/scholarship says about anything** | `SOURCES.md`, `15scholars.md` | [`RECIPES/query-the-corpus.md`](RECIPES/query-the-corpus.md) |
 | **Work on the translation or the parallel edition** | `translation/NOTES.md`, `scripts/build_translation_page.py` | — |
+| **Change how the world is *drawn*** (light, air, colour, register) | `RENDERING.md`, then `src/shaders/` | — |
 | **Work on UI, navigation, layout, typography** | `INTERFACECHOICES.md`, `TRANSLATIONDISPLAYCHOICES.md`, `DESIGN.md` | — |
 | **Work on the game loop / Dream mode** | `DESIGN.md`, `GAMIFYVRHP.md`, `src/systems/DreamMode.js` | — |
 | **Decide *whether* to do something** | `DESIGN.md`, `DECISIONS.md`, `NEXTSTEPS.md` | — |
@@ -77,6 +78,7 @@ Read the one that matches what you are building. Each is a research brief, not a
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | orders, members, the portal, the temples, the theatre |
 | [`GARDENS.md`](GARDENS.md) | the island's rings, terraces, parterres, topiary |
 | [`PLEASURES.md`](PLEASURES.md) | what a Renaissance garden was *for* — shade, birdsong, scent, water, repose — each paired with what Poliphilo says when he meets it |
+| [`RENDERING.md`](RENDERING.md) | how the world is drawn: aerial perspective, the 1499 pigment shelf, and the painterly techniques considered and turned down |
 | [`PLANTS.md`](PLANTS.md) | species, planting, the herb-set inscriptions |
 | [`ANIMALS.md`](ANIMALS.md) | the beasts — elephants, unicorns, panthers, griffins, harpies |
 | [`NYMPHS.md`](NYMPHS.md) + [`CHARACTERS.md`](CHARACTERS.md) | Polia, the nymphs, the human figures |
