@@ -74,17 +74,23 @@ and **the hedges' silhouette** are all built. Still open:
   representations"* (p. 114). This needs no new geometry — it needs the carved nymphs of the
   frieze and the living nymphs in the water composed into **one view**, at one scale, in one
   light, or the sentence cannot happen. A camera study.
-### 0g. The rest of the world is still solid
-Columns are drums and the Great Portal's piers are ashlar (2026-09-08, `_ashlar`
-+ `systems/Masonry.js`). Everything else that ought to be built of stones is
-still one box:
+### 0g. What is left of the masonry
+Columns are drums; the Great Portal's piers, the Temple of Venus's eight piers
+and the Planetary Palace's hall wall are ashlar; the temple's cupola and the
+palace's roof are carried loads that come down with their supports (2026-09-08,
+`_ashlar` + `systems/Masonry.js`). **`scene._monoliths` is the ledger** — every
+object `_census` rejects for being over six metres — and it now holds nothing but
+sea, sky, ground discs, roads and terrace shells. What is left:
 
-- **The Temple of Venus**, the Queen's palace and court, the Polyandrion, the
-  amphitheatre's ring walls, the obelisk plinths. `_ashlar(cx, cy, cz, w, h, d,
-  mat, {course, block, ry, name})` does the job in one call and registers the
-  structure; the only care needed is that a wall which is also a `_wallCol`
-  should drop that collider when it topples (pass the collider in as `col`, the
-  way `_column` does).
+- **The obelisk plinths, the bath, the Court screen, Book II's Treviso front.**
+  `_ashlar(cx, cy, cz, w, h, d, mat, {course, block, ry, name})` does it in one
+  call and registers the structure. The one care needed: a wall that also has a
+  `_wallCol` should drop that collider when it topples — assign it to `st.col`,
+  the way the Temple of Venus's piers do.
+- **The amphitheatre and the Cythera terrace shells are NOT walls** — they are
+  ground you stand on, and the walker's floors are registered against them.
+- **The Polyandrion is not a candidate either.** It is a ruin; its columns are
+  already broken on purpose and its stones are already down.
 - **The Three Doors wall is not a candidate.** The book insists it is "hewen ovt
   in the verie rocke" and it is boulders on purpose.
 - **Arches and vaults have no model at all.** An arch whose springing stone is

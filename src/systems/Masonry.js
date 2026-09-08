@@ -314,4 +314,17 @@ export class Masonry {
     return out;
   }
 
+  // Every structure within `r` of a point — how a ring of columns finds the
+  // architrave set on its radius, where an axis-aligned box would be wrong for
+  // seven bays out of eight.
+  near(x, z, r) {
+    const rr = r * r, out = [];
+    for (const st of this.structures) {
+      const dx = st.x - x, dz = st.z - z;
+      if (dx * dx + dz * dz <= rr) out.push(st);
+    }
+    return out;
+  }
+
+
 }

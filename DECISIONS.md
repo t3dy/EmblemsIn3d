@@ -59,12 +59,35 @@ at all. Verified on the running page: the Great Portal's left pier undermined
 course by course, the lintel tracking down 7.10 → 6.30 → 5.50 → 4.70 m as each
 course went, then the whole portal over and the lintel on the grass at 0.22 m.
 
-**What is not done**: the walls of the temple, the palace and the Polyandrion are
-still solid. `_ashlar` is the tool and they are a morning's work each; the Great
-Portal was done first because it is the world's signature building and the
-clearest case of a lintel on two supports. The Three Doors wall is deliberately
-NOT a candidate — the book insists it is "hewen ovt in the verie rocke", not
-built, and it is boulders on purpose.
+**Then the rest of the buildings, the same day, and the ledger picked them.**
+`_census` now keeps a list of every object it rejects for being over six metres
+— `scene._monoliths`, the only place in the code that knows what is still one
+block — and asking it was more useful than reading the source. It said that after
+the Great Portal **there were no monoliths left in the world at all**: the 59
+rejects are the sea, the sky dome, the ground discs, the roads and the terrace
+shells. So the remaining targets were not giants but the largest single things a
+player can walk up to, and those were:
+
+- **The Temple of Venus.** Its eight piers are ashlar, eight courses each, and
+  together they carry the entablature ring *and* the nine shells of the scaled
+  cupola. Verified: undermining one pier walked the dome down 6.57 → 5.92 → 5.27
+  → 4.62 m course by course, and when that one pier went over the whole cupola
+  came down to 0.64 m **with seven piers still standing** — which is exactly the
+  rule, a load answers to whichever of its supports fails first.
+- **The Planetary Palace.** The hall wall is seven courses of eleven, and
+  `_roof` now returns what it builds so the roof can be hung on what holds it up:
+  the wall **and all twelve Ionic columns of the two colonnades**, thirteen
+  supports for thirty-four pieces. Eat out three courses of the wall and the roof
+  of the Queen's palace falls into the chess court. It does.
+- **`_entablature` learned the ring case.** A rotated one — seven bays out of
+  eight at the temple — asks `masonry.near(x, z, r)` by radius instead of an
+  axis-aligned box, which was wrong for every bay off the cardinals.
+
+**What is still not done**: the Polyandrion (deliberately — it is a *ruin*, its
+columns are already broken on purpose), the Cythera terrace shells (they are
+ground, not walls), and arches, which have no voussoir model at all. The Three
+Doors wall is not a candidate either: the book insists it is "hewen ovt in the
+verie rocke", not built, and it is boulders on purpose.
 
 ## 2026-09-08 — Chapter XXIV: the ledger found the last station of Book I
 

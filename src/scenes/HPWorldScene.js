@@ -27,7 +27,7 @@ import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { RollUp } from '../systems/RollUp.js?v=5';
-import { Masonry } from '../systems/Masonry.js?v=1';
+import { Masonry } from '../systems/Masonry.js?v=3';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -635,31 +635,38 @@ export class HPWorldScene {
   // ridge and eaves above. This puts both under and over a rectangle.
   //   cx, cz  centre;  y  the underside;  w  along x;  d  along z;
   //   pitch   rise of the ridge (0 = flat with a parapet)
+  // Returns every piece it made, so that whatever holds the roof up can be told
+  // it is holding the roof up (2026-09-08; see systems/Masonry.js). A roof that
+  // stays in the air when its wall is eaten out from under it is the exact
+  // failure Ted's note was about.
   _roof(cx, y, cz, w, d, { pitch = 0.9, beams = true, parent = null, ridgeAlong = 'x' } = {}) {
     const S = this.style, woodcut = S.key === 'woodcut';
     const timber = woodcut ? this._darkStoneMat : this.style.mat({ color: 0x4a3420, roughness: 0.9 });
     const tile = woodcut ? this._darkStoneMat : this.style.mat({ color: 0x8a4a34, roughness: 0.85 });
+    const made = [];
     const o = { parent, cast: false };
     if (beams) {
       // primary beams across the short span, purlins along the long one
       const nB = Math.max(3, Math.round((ridgeAlong === 'x' ? w : d) / 1.5));
       for (let i = 0; i < nB; i++) {
         const t = (i / (nB - 1) - 0.5);
-        if (ridgeAlong === 'x') this._m(new THREE.BoxGeometry(0.22, 0.28, d), timber, cx + t * (w - 0.4), y + 0.14, cz, o);
-        else this._m(new THREE.BoxGeometry(w, 0.28, 0.22), timber, cx, y + 0.14, cz + t * (d - 0.4), o);
+        made.push(ridgeAlong === 'x'
+          ? this._m(new THREE.BoxGeometry(0.22, 0.28, d), timber, cx + t * (w - 0.4), y + 0.14, cz, o)
+          : this._m(new THREE.BoxGeometry(w, 0.28, 0.22), timber, cx, y + 0.14, cz + t * (d - 0.4), o));
       }
       const nP = 3;
       for (let i = 0; i < nP; i++) {
         const t = (i / (nP - 1) - 0.5);
-        if (ridgeAlong === 'x') this._m(new THREE.BoxGeometry(w, 0.18, 0.18), timber, cx, y + 0.34, cz + t * (d - 0.5), o);
-        else this._m(new THREE.BoxGeometry(0.18, 0.18, d), timber, cx + t * (w - 0.5), y + 0.34, cz, o);
+        made.push(ridgeAlong === 'x'
+          ? this._m(new THREE.BoxGeometry(w, 0.18, 0.18), timber, cx, y + 0.34, cz + t * (d - 0.5), o)
+          : this._m(new THREE.BoxGeometry(0.18, 0.18, d), timber, cx + t * (w - 0.5), y + 0.34, cz, o));
       }
     }
     // the deck the beams carry
-    this._m(new THREE.BoxGeometry(w, 0.12, d), this._stoneMat, cx, y + 0.5, cz, o);
+    made.push(this._m(new THREE.BoxGeometry(w, 0.12, d), this._stoneMat, cx, y + 0.5, cz, o));
     if (pitch <= 0) {
-      this._m(new THREE.BoxGeometry(w + 0.3, 0.42, d + 0.3), this._stoneMat, cx, y + 0.72, cz, { ...o, outline: true });
-      return;
+      made.push(this._m(new THREE.BoxGeometry(w + 0.3, 0.42, d + 0.3), this._stoneMat, cx, y + 0.72, cz, { ...o, outline: true }));
+      return made;
     }
     // two sloped leaves meeting at a ridge, eaves overhanging the deck
     const along = ridgeAlong === 'x' ? w : d, across = ridgeAlong === 'x' ? d : w;
@@ -668,18 +675,22 @@ export class HPWorldScene {
       const leaf = this._m(new THREE.BoxGeometry(ridgeAlong === 'x' ? along + 0.6 : leafLen, 0.14, ridgeAlong === 'x' ? leafLen : along + 0.6),
         tile, ridgeAlong === 'x' ? cx : cx + sgn * half / 2, y + 0.56 + pitch / 2, ridgeAlong === 'x' ? cz + sgn * half / 2 : cz, { ...o, outline: true });
       if (ridgeAlong === 'x') leaf.rotation.x = -sgn * ang; else leaf.rotation.z = sgn * ang;
+      made.push(leaf);
     }
     // the ridge, and antefixes along both eaves
-    if (ridgeAlong === 'x') this._m(new THREE.BoxGeometry(along + 0.6, 0.16, 0.24), tile, cx, y + 0.6 + pitch, cz, o);
-    else this._m(new THREE.BoxGeometry(0.24, 0.16, along + 0.6), tile, cx, y + 0.6 + pitch, cz, o);
+    made.push(ridgeAlong === 'x'
+      ? this._m(new THREE.BoxGeometry(along + 0.6, 0.16, 0.24), tile, cx, y + 0.6 + pitch, cz, o)
+      : this._m(new THREE.BoxGeometry(0.24, 0.16, along + 0.6), tile, cx, y + 0.6 + pitch, cz, o));
     const nA = Math.max(4, Math.round(along / 1.5));
     for (let i = 0; i < nA; i++) {
       const t = (i / (nA - 1) - 0.5) * (along - 0.4);
       for (const sgn of [-1, 1]) {
-        if (ridgeAlong === 'x') this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + t, y + 0.74, cz + sgn * half, o);
-        else this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + sgn * half, y + 0.74, cz + t, o);
+        made.push(ridgeAlong === 'x'
+          ? this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + t, y + 0.74, cz + sgn * half, o)
+          : this._m(new THREE.ConeGeometry(0.14, 0.28, 6), this._stoneMat, cx + sgn * half, y + 0.74, cz + t, o));
       }
     }
+    return made;
   }
 
   // PolyhedronGeometry is non-indexed; the draw-call merger wants a bucket
@@ -4269,11 +4280,27 @@ export class HPWorldScene {
     const dy = (bb.max.y - bb.min.y) * Math.abs(mesh.scale.y);
     const dz = (bb.max.z - bb.min.z) * Math.abs(mesh.scale.z);
     const r = (dx + dy + dz) / 6;
-    // Anything bigger than this is architecture: the Great Portal, the sea, the
-    // ground itself. You roll past those, not over them.
-    if (r > 6 || r <= 0.004) return;
-    if (bs.radius * sc > 14) return;             // long thin things are architecture too
+    // Anything bigger than this is architecture: the sea, the ground itself,
+    // and whatever is still modelled as one block. You roll past those.
+    //
+    // But keep a LIST of them (2026-09-08). A thing over six metres that is not
+    // the ground or the water is a monolith — a building that was not built out
+    // of stones — and this is the only place in the code that knows. It is how
+    // the ashlar work finds its next target instead of guessing: see
+    // `window._hp.state.activeScene._monoliths` and NEXTSTEPS.md 0g.
     const c = new THREE.Vector3().copy(bs.center).applyMatrix4(mesh.matrixWorld);
+    const tooBig = r > 6 || bs.radius * sc > 14;   // long thin things are architecture too
+    if (tooBig) {
+      (this._monoliths = this._monoliths || []).push({
+        r: +r.toFixed(2), span: +(bs.radius * sc).toFixed(1), type: g.type,
+        size: [+dx.toFixed(1), +dy.toFixed(1), +dz.toFixed(1)],
+        at: [+c.x.toFixed(1), +c.y.toFixed(1), +c.z.toFixed(1)],
+        near: this._nearestStationName(mesh) || '(nowhere)',
+        mat: mesh.material && mesh.material.color ? '#' + mesh.material.color.getHexString() : '',
+      });
+      return;
+    }
+    if (r <= 0.004) return;
     this.rollables.push({
       name: this._rollName(mesh, r), r, c,
       src: mesh,                                 // how Masonry.resolve finds it
@@ -5058,18 +5085,23 @@ export class HPWorldScene {
     // …and now find out who is carrying it. Only when it sits in the world
     // unrotated, for the same reason a column inside a moving group gets no
     // bookkeeping: the masonry reasons in world space.
-    const flat = (!parent || (!parent.rotation.x && !parent.rotation.y && !parent.rotation.z)) && !ry;
+    const flat = !parent || (!parent.rotation.x && !parent.rotation.y && !parent.rotation.z);
     if (flat) {
       const ox = parent ? parent.position.x : 0, oz = parent ? parent.position.z : 0;
       const oy = parent ? parent.position.y : 0;
       const x0 = cx + ox, z0 = cz + oz;
-      // Only the columns whose tops are near this entablature's soffit: the Area
-      // stacks three orders one above another at the same x,z, and the second
-      // storey must not be found carrying the ground-floor architrave.
-      const props = this.masonry.under(x0 - w / 2 - 0.5, x0 + w / 2 + 0.5,
-                                       z0 - d / 2 - 0.5, z0 + d / 2 + 0.5)
+      // A ring of them, as at the Temple of Venus, is set on a radius; a
+      // rectangular query in world axes would be wrong for seven bays out of
+      // eight, so a rotated entablature asks by RADIUS instead.
+      const props = (ry
+        ? this.masonry.near(x0, z0, Math.max(w, d) / 2 + 0.6)
+        : this.masonry.under(x0 - w / 2 - 0.5, x0 + w / 2 + 0.5,
+                             z0 - d / 2 - 0.5, z0 + d / 2 + 0.5))
+        // Only the columns whose tops are near this entablature's soffit: the
+        // Area stacks three orders one above another at the same x,z, and the
+        // second storey must not be found carrying the ground floor's architrave.
         .filter(st => Math.abs(st.ground - oy) < 1.2 || (st.courses.length
-                 && Math.abs(st.courses[st.courses.length - 1].y - (cy + oy)) < 1.2));
+                 && Math.abs(st.courses[st.courses.length - 1].y - (cy + oy)) < 1.4));
       if (props.length) {
         const c = this.masonry.carry(props[0], load);
         for (let i = 1; i < props.length; i++) this.masonry.alsoCarriedBy(c, props[i]);
@@ -5188,7 +5220,9 @@ export class HPWorldScene {
     // The rear wall of the hall, with its great door and flanking pilasters —
     // a palace needs somewhere to be the inside of.
     const WZ = -5.2, WH = 5.4;
-    this._m(new THREE.BoxGeometry(13.4, WH, 0.6), this._stoneMat, CX, 0.57 + WH / 2, WZ, { outline: true });
+    // seven courses of eleven ashlars, joints broken (2026-09-08)
+    this._ashlar(CX, 0.57, WZ, 13.4, WH, 0.6, this._stoneMat,
+      { course: 0.77, block: 1.2, name: 'the hall wall of the Planetary Palace' });
     this._wallCol(CX - 6.7, CX + 6.7, WZ - 0.3, WZ + 0.3);
     for (let i = 0; i < 6; i++) {
       const x = CX - 5.5 + i * 2.2;
@@ -5199,7 +5233,15 @@ export class HPWorldScene {
     this._entablature(CX, 0.57 + WH - 0.2, WZ, 13.8, 0.75);
     // the roof over the hall: beams across the span you look up at, a low
     // tiled pitch with its ridge along the hall, antefixes at the eaves
-    this._roof(CX, 0.57 + WH + 0.98, WZ + 4.6, 13.9, 9.6, { pitch: 1.1, ridgeAlong: 'x' });
+    const roof = this._roof(CX, 0.57 + WH + 0.98, WZ + 4.6, 13.9, 9.6, { pitch: 1.1, ridgeAlong: 'x' });
+    // …and it is HELD UP by the hall wall and by the twelve Ionic columns of
+    // the two colonnades. Undermine any one of them in Roll Up and the roof of
+    // the Queen's palace comes in.
+    const props = this.masonry.under(CX - 7.5, CX + 7.5, WZ - 1, 5.5);
+    if (props.length) {
+      const load = this.masonry.carry(props[0], roof);
+      for (let i = 1; i < props.length; i++) this.masonry.alsoCarriedBy(load, props[i]);
+    }
 
     // Plate #25 (folio 88) is "Panelled wall in Queen's palace with planetary
     // names": the seven are PANELS on the wall, not glowing orbs on pedestals
@@ -6968,14 +7010,21 @@ export class HPWorldScene {
       TX, PLAT_Y + 0.23, zFront + 1.95, { cast: false });
 
     // ── the drum: eight bays, seven of them windows and one the door ──────
+    // 2026-09-08: the eight piers are ASHLAR, eight courses each, and together
+    // they carry the entablature ring and the scaled cupola. Undermine one and
+    // the dome comes down on you — which is the correct answer to "what happens
+    // when a block is rolled up out from underneath the structure it supports",
+    // and, for a round temple on eight supports, a fairly dramatic one.
+    const piers = [];
     const bay = (k) => (k * Math.PI * 2) / 8;
     for (let k = 0; k < 8; k++) {
       const a = bay(k) + Math.PI / 8;      // the piers sit BETWEEN the bays
       const px = TX + Math.sin(a) * R, pz = TZ + Math.cos(a) * R;
-      const p = this._m(new THREE.BoxGeometry(PIER, WALL_H, 1.0), marble,
-        px, PLAT_Y + WALL_H / 2, pz, { outline: true });
-      p.rotation.y = a;
-      this._circleCol(px, pz, 0.62);
+      const col = this._circleCol(px, pz, 0.62);
+      const st = this._ashlar(px, PLAT_Y, pz, PIER, WALL_H, 1.0, marble,
+        { ry: a, course: 0.65, block: 0.95, name: 'a pier of the Temple of Venus' });
+      st.col = col;
+      piers.push(st);
       // the spandrel over each bay, so the wall reads as pierced rather than
       // as eight standing stones
       const b = bay(k);
@@ -7005,15 +7054,21 @@ export class HPWorldScene {
     domeA.side = THREE.DoubleSide; domeB.side = THREE.DoubleSide;
     this._disp.push(domeA, domeB);
     const SC = 9;
+    const domeCourses = [];
     for (let i = 0; i < SC; i++) {
       const t = i / SC, t2 = (i + 1) / SC;
       const r0 = R * Math.cos(t * Math.PI / 2) * 1.02;
       const r1 = R * Math.cos(t2 * Math.PI / 2) * 1.02;
-      this._m(new THREE.CylinderGeometry(r1, r0, R * 0.46 / SC * 2.2, 32, 1, true),
+      domeCourses.push(this._m(new THREE.CylinderGeometry(r1, r0, R * 0.46 / SC * 2.2, 32, 1, true),
         i % 2 ? domeA : domeB,
-        TX, DOME_Y + Math.sin(t * Math.PI / 2) * R * 0.52, TZ, { cast: false });
+        TX, DOME_Y + Math.sin(t * Math.PI / 2) * R * 0.52, TZ, { cast: false }));
     }
     const APEX = DOME_Y + R * 0.52;
+    // the cupola is a load, and every pier under it takes a share
+    if (piers.length) {
+      const dome = this.masonry.carry(piers[0], domeCourses);
+      for (let i = 1; i < piers.length; i++) this.masonry.alsoCarriedBy(dome, piers[i]);
+    }
 
     // ── the door: jasper, Doric, its gilt valves standing open ────────────
     // The door bay is 4.7 wide and the doorcase 3.6, so without these two
