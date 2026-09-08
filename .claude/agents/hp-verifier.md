@@ -13,10 +13,10 @@ For each feature you are asked about:
 2. Open the running page — the local preview or the live URL — get into the mode the feature
    lives in (walk, dream, tour, flight, vaults), and **see the thing**. Screenshot it, or query
    the scene graph through `javascript_tool` and report the numbers.
-3. Check that both hosts serve the same version:
+3. Check what the one host is serving. GitHub Pages is canonical; Vercel was retired on
+   2026-09-07 and `emblems-in-3d.vercel.app` is a stale mirror that proves nothing.
    ```bash
-   curl -s "https://emblems-in-3d.vercel.app/src/index.html?x=$RANDOM" | grep -o 'main.js?v=[0-9]*'
-   curl -s "https://t3dy.github.io/EmblemsIn3d/src/index.html?x=$RANDOM"  | grep -o 'main.js?v=[0-9]*'
+   curl -s "https://t3dy.github.io/EmblemsIn3d/src/index.html?x=$RANDOM" | grep -o 'main.js?v=[0-9]*'
    ```
    A matching `?v=` proves the file is **served**, not that it **parses**. Confirm the page
    actually runs: a trailing `//` comment once swallowed a comma and served a blank world at a

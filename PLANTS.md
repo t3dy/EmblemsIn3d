@@ -25,7 +25,9 @@ translation of XVII–XXXVIII; the 1592 spellings are given where they differ.
 | **Laurel** | the crowns of nymphs and poets; a bosco compartment | our pp. 318, 321, 327, 330 |
 | **Pine** (umbrella) | a bosco compartment; the terraces | our pp. 317, 320, 323 |
 | **Juniper, olive, arbutus, palm, plane** | bosco compartments and the spice wood | our pp. 317–318, 324 |
-| **Apple, pear, plum** | the prati's corner fruit trees, 240 in all (Segre) | our pp. 326–330 |
+| **Apple, pear, plum** | the prati's corner fruit trees, 240 in all (Segre); and the orchard of second nature | our pp. 326–330 |
+| **Elm and vine together** (*arbustum*) | the worked countryside — "towgh Elmes beloued of the fruitfull vines" | 1592 l. 625; Rhizopoulou 2016 on the arboricultural economy |
+| **Jasmine, three sorts** — red, yellow, white | the arbour where he first sees Polia | 1592 p. 200; Rhizopoulou Table 1 (g2′, i3, s7′, y1; p5, g3; g3′) |
 | **Box** (*boxe*) | every hedge, knot and topiary | 97 hits; GARDENS.md §5 |
 | **Willow, poplar** | by water | our p. 312 |
 | **Rose, jasmine, ivy, vine** | the pergolas and Polia's garden | passim |
@@ -49,6 +51,26 @@ crossed cards (`_tuft`) or pinned flat to a wall for the things that grow in cra
 kinds so far. Not built, and hers to add: the shore plants of p2′ (cock's-crest, saltwort,
 purslane, spurge in "fissures of sea-dashed breakwaters" — the passage has not been located
 in our translation), the medicinal three, the exotic resins.
+
+## 1c. The sward, rebuilt 2026-09-07
+
+Ted: *"The plants should look a lot more realistic."* The meadow was the worst
+offender and the cheapest to fix, because it is all one `InstancedMesh` and the
+problems were parameters rather than architecture:
+
+| Was | Is | Why |
+|---|---|---|
+| blade 0.05 wide, 0.42 tall | 0.019 wide, 0.30 tall | a 10 cm blade is a leek. The eye reads grass by the *count of edges*, not their size |
+| 22 000 blades, nothing under them | 36 000, plus 22 000 in a 0.15 m understorey | the ground was showing through as flat paint between separate spikes |
+| tips 0x7a9c42 / 0xa8b050, back-light gold | greyer, cooler, back-light pale straw | the gold back-light made the whole field glow lime |
+| saturation pushed to **1.25** in the shader | **1.06** | real turf is much greyer than its own local colour, and the ACES tone mapper adds chroma of its own |
+
+Flower spikes went the same way — narrower (0.017–0.020) with the `flare`
+raised to ~1.9, so a flower is a spike with a head, not a paddle. Cythera's
+sward and understorey match the mainland's.
+
+`_meadowClearance` now masks the worked belt of second nature: grass does not
+grow out of a ploughed furrow.
 
 ## 2. How a tree is made (rewritten 2026-09-06)
 
@@ -89,6 +111,12 @@ The woodcut register keeps the massed silhouette (ink wants a shape, not leaves)
   box crescent-horns with a tiered juniper and a box-sphere on a stalk, and the knotwork
   square as the terrace tile; the spice wood innermost. The flower beds are flat and
   flowered, not tubes.
+- **Second nature — built 2026-09-07** (`_buildSecondNature`, GARDENS.md §2 and
+  the ranked list): strip fields in three states with real ridge-and-furrow, an
+  orchard of apple/pear/plum in quincunx, and the arbustum. `pear` and `plum`
+  joined `SPECIES` for it.
+- **The jasmine arbour — built 2026-09-07** (`_buildJasmineArbour`), replacing
+  the flat-slab pergola at Polia's garden.
 - Topiary exists but is not worked from the specific clipped forms the 1499 plates show
   (the peacocks-on-an-altar-vase figure is catalogued and unbuilt).
 - No seasonal or diurnal variation in planting colour.

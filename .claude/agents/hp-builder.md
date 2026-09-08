@@ -24,7 +24,9 @@ Order of work, and none of it is optional:
    parse; that once served a blank world at a perfectly correct version number.
 6. **Verify on the running page** — `RECIPES/verify-live.md`. Re-reading your own diff is not
    verification.
-7. **Deploy to both hosts** — `RECIPES/ship-a-release.md`. Vercel and GitHub Pages, every time.
+7. **Deploy** — `RECIPES/ship-a-release.md`. `git push origin main`; GitHub Pages is the
+   only host. Never run `vercel`, and never cite `emblems-in-3d.vercel.app` — it is a stale
+   mirror, retired 2026-09-07.
 8. **Update the ledger**: the feature's `status` and `built_as`, re-render `COVERAGE.md`, and
    commit the ledger with the code.
 

@@ -2,6 +2,100 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-07 — GitHub Pages is the only host; Vercel retired
+
+Ted: *"Stop hosting on vercel for now and bake into system files that we are only hosting on
+github pages."* Done, in `DEPLOY_STATE.md`, `CLAUDE.md`, `ROUTER.md`, `README.md`,
+`RECIPES/ship-a-release.md`, `RECIPES/verify-live.md`, `RECIPES/bump-cache-versions.md` and
+both the builder and verifier agents. The canonical URL is now
+**https://t3dy.github.io/EmblemsIn3d/** and `git push origin main` is the whole deploy.
+
+This also brings the project into line with the workspace hosting policy in `C:\Dev\CLAUDE.md`,
+which makes Pages the default and reserves Vercel for projects that genuinely need a server.
+This one never did: no serverless route, no Blob storage, and `vercel.json`'s only real work
+was a `Cache-Control` header that Pages ignored anyway.
+
+**The open risk, which is Ted's to close.** `emblems-in-3d.vercel.app` is still live and now
+frozen at `main.js?v=247`. It will drift further with every push, and this project's own
+documented failure mode is *"Ted opens whichever link is to hand."* It can be closed by
+deleting the Vercel project, or by one final deploy that redirects that URL to Pages. Both are
+outward-facing, so neither was done unasked. Until then the docs say in three places that the
+Vercel URL is a stale mirror and is not evidence of anything.
+
+## 2026-09-07 — Poliphilo speaks as a commentary layer of his own
+
+Ted asked for *"a catalog of every utterance of Poliphilo as a page for the website and for
+them all to be included on the tour as a separate commentary layer,"* with one reading of the
+tour being *"toggle all the others off and just watch P go around reacting to the sights."*
+
+- **An utterance is what leaves his mouth or his pen** — direct speech, apostrophe, prayer,
+  question, letter, and the interior speech the book sets down *as speech*. Narration is not an
+  utterance however first-person it is, or the whole book qualifies and the layer means
+  nothing. **50 of them**, in `src/data/poliphilo.json`.
+- **The extraction had to be read, not scripted.** Our translation marks speech with quotation
+  marks, so its 154 quoted spans came out mechanically. **Dallington's 1592 English has almost
+  no quotation marks at all** — 30 in 279 pages — so Book I was found by speech cues and
+  sentence-initial apostrophes over a de-wrapped copy of the text, and then read one by one. A
+  cue proves a sentence is speech, not whose: Polia's, the nymphs', Logistica's and the
+  priestess's were discarded, and his own words *quoted by Polia* in Book II were kept and
+  marked as reaching us at one remove.
+- **The layer lives outside `tours.json`.** It is keyed to stop indices in its own file and
+  merged at render time as note type `poliphilo`, so one catalogue feeds the tour panel, the
+  free-walk notes and `research/poliphilo.html` without being written down three times.
+- **"Poliphilo alone" is a button**, not eleven clicks — `window.onlyPoliphilo()`.
+- **The eleven silent stops are recorded as a finding, not left blank.** He says essentially
+  nothing across the whole palace sequence — fed, entertained, shown a labyrinth and a chess
+  match danced by living pieces, and he asks not one question about any of it — and *nothing at
+  all* in the four chapters on Cythera, where everything quoted is an inscription. He arrives
+  at what he wanted and stops speaking. A stop with no utterance now says so.
+- Returning readers get the new lens turned on once, under a one-time `hp_flavors_poliphilo`
+  flag, rather than silently never learning it exists.
+
+## 2026-09-07 — The gardens: realism was parameters, fidelity was geometry
+
+Ted: *"I'm still really dissatisfied with the gardens both in terms of layouts and in terms of
+the flora."* Two different problems, wanting two different fixes.
+
+**The flora was garish, and that was all parameters.** The meadow blades were 10 cm across at
+the base and half a metre tall — leeks, not grass — the field was 22 000 spikes with bare
+painted ground showing between them, and `Meadow.js` was pushing saturation to **1.25** in the
+fragment shader on top of what ACES already adds. Now: blades 0.019 by 0.30, 36 000 of them
+over a 22 000-blade understorey that closes the ground, greyer and cooler colour, straw rather
+than gold in the back-light, and saturation at 1.06. Flower spikes narrowed and their `flare`
+raised, so a flower reads as a spike with a head instead of a paddle. **No new system and no
+new cost** — it is one `InstancedMesh` per field either way.
+
+**The layout was answered from `GARDENS.md`'s own ranked list**, which had been sitting there
+since the 2026-09-01 research pass with two of its top three unbuilt:
+
+- **The Polia pergola becomes the jasmine arbour** it is in the book: a tunnel he walks in
+  under, not a slab on four columns. Dallington p. 200 settles its shape, its use and its
+  finish in a single sentence — *lifting vppe and bending ouer* (a barrel, not a lid),
+  *entring in vnder the same* (a tunnel, open at both ends), *all to bee painted* (joinery, not
+  bare pole). Rhizopoulou settles the "flowers of three sortes commixt": jasmine in red, yellow
+  and white, which she also records as the book's symbol of divine love and happiness. It is
+  one of only two things the Venice edition illustrates **twice**, which is the measure of how
+  wrong a bus shelter was.
+- **Second nature exists at last.** Hunt reads the whole book through the doctrine of the three
+  natures, and this world had the first and the third and nothing in between, so the meadow was
+  being asked to be wilderness-edge and garden at once and read as neither. Strip fields, an
+  orchard in quincunx, and the arbustum — vines married to elms — laid north-west of the dark
+  wood, so that you walk out of the wilderness into worked land.
+- **It was built in the wrong place first.** The belt went west of the water labyrinth, whose
+  basin is 9.8 m in radius about (−44, 34); the fields were standing in it. Moved, and the
+  aspect re-laid — the strips run east–west now, because the new ground is wide and shallow.
+- **Ploughland is built, not drawn.** Stripes painted on a flat plane read as a striped rug at
+  grazing angles, and a grazing angle is how you see a field you are standing in. The turned
+  strips carry real ridge-and-furrow and scattered clods; they cost nothing, because
+  `_compileDrawCalls()` merges them into one call. The meadow is masked off the belt: grass
+  does not grow out of a furrow.
+- `pear` and `plum` joined `SPECIES` for the orchard. Segre has apple, pear and plum together
+  in the prati of Cythera, so they were owed anyway.
+
+Still outstanding, and still the largest single build in the project: **Cythera as Segre
+reconstructs it** — the perfect circle, 20 radial roads, three concentric *claustri*, the six
+terraces of seven steps. `GARDENS.md` §5 is detailed enough to build straight from.
+
 ## 2026-09-07 — Coverage is tracked chapter by chapter, not plate by plate
 
 Ted: *"I feel like missing the tunnels was a pretty serious omission."* He was right, and the

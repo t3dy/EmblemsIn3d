@@ -59,7 +59,7 @@ a session.
 | **Add a swappable variant of an existing asset** | `src/systems/AssetVariants.js`, `IMPORTEXEMPLARS.md` | [`RECIPES/add-an-asset-variant.md`](RECIPES/add-an-asset-variant.md) |
 | **Import a scan, model or painting cut-out** | `IMPORTEXEMPLARS.md`, `RENAISSANCEART.md`, `LICENSECHOICES.md` | [`RECIPES/import-an-exemplar.md`](RECIPES/import-an-exemplar.md) |
 | **Change anything the browser loads** (any `src/` file) | — | [`RECIPES/bump-cache-versions.md`](RECIPES/bump-cache-versions.md) |
-| **Deploy** | `DEPLOY_STATE.md` (both hosts, every time) | [`RECIPES/ship-a-release.md`](RECIPES/ship-a-release.md) |
+| **Deploy** | `DEPLOY_STATE.md` (GitHub Pages only — Vercel retired 2026-09-07) | [`RECIPES/ship-a-release.md`](RECIPES/ship-a-release.md) |
 | **Check that a change actually landed** | `DEPLOY_STATE.md` | [`RECIPES/verify-live.md`](RECIPES/verify-live.md) |
 | **Find what the book/scholarship says about anything** | `SOURCES.md`, `15scholars.md` | [`RECIPES/query-the-corpus.md`](RECIPES/query-the-corpus.md) |
 | **Work on the translation or the parallel edition** | `translation/NOTES.md`, `scripts/build_translation_page.py` | — |
@@ -96,7 +96,7 @@ Read the one that matches what you are building. Each is a research brief, not a
 | [`NEXTSTEPS.md`](NEXTSTEPS.md) | the standing work queue | at the start and end of every session |
 | [`SOURCES.md`](SOURCES.md) | the corpus map + the asset→scholar table | before writing or modelling |
 | [`15scholars.md`](15scholars.md) | who settles what, where their text is, what not to claim | when you need depth on a source |
-| [`DEPLOY_STATE.md`](DEPLOY_STATE.md) | two hosts, the cache trap, how to check | before and after deploying |
+| [`DEPLOY_STATE.md`](DEPLOY_STATE.md) | one host (Pages), the cache trap, how to check | before and after deploying |
 | [`TECH_STACK.md`](TECH_STACK.md) | Three.js r168 via importmap, no build step | when touching the loader |
 | [`CREDITS.md`](CREDITS.md) | attribution for every imported asset | whenever you import anything |
 
@@ -211,7 +211,7 @@ will conflict.
 | Chapter research | `research/coverage.json`, `COVERAGE.md` | `src/` — a research pass builds nothing |
 
 Rules for a parallel run: each lane stages only its own paths; **one** agent owns the
-`?v=` bump and the deploy, at the end; and each lane records what it did in `NEXTSTEPS.md`
+`?v=` bump and the push, at the end; and each lane records what it did in `NEXTSTEPS.md`
 before finishing.
 
 ### The three defined agents
@@ -234,7 +234,7 @@ was half-read for months.
 
 1. Live-verified the specific thing asked for? → [`RECIPES/verify-live.md`](RECIPES/verify-live.md)
 2. Bumped the `?v=` chain for every changed module?
-3. Deployed to **both** hosts?
+3. Pushed to `main` and confirmed Pages is serving it?
 4. Recorded new directional calls in `DECISIONS.md` and remaining work in `NEXTSTEPS.md`?
 5. Staged explicit paths, and checked `git status` before committing?
 6. If you built or researched anything: updated `research/coverage.json`, re-run

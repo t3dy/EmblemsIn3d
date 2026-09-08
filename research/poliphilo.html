@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Poliphilo Speaking — the Hypnerotomachia Poliphili in 3-D</title>
+<meta name="description" content="A catalogue of every utterance of Poliphilo in the Hypnerotomachia Poliphili: what he says, where he says it, to whom — and the eleven places where he says nothing at all."/>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --gold:#c8a878; --gold-dk:#8b4513; --dim:#6a5848; --faint:#3a2a18;
+  --bg:#070503; --fg:#f0ebe0; --card:rgba(255,255,255,.014);
+  --voice:#d8a24a;
+}
+body { background:var(--bg); color:var(--fg); font-family:Georgia,serif; min-height:100vh; }
+a { color:inherit; }
+
+.wrap { max-width:920px; margin:0 auto; padding:5.5rem 2rem 5rem; }
+
+header.head { text-align:center; display:flex; flex-direction:column; gap:1rem; margin-bottom:2.4rem; }
+.kicker { font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:#4a3a28; }
+h1 { font-size:clamp(1.6rem,4vw,2.6rem); font-weight:normal; letter-spacing:.14em; color:var(--gold); }
+.lede { font-size:.86rem; color:var(--dim); line-height:1.95; max-width:640px; margin:0 auto; }
+.caveat {
+  font-size:.72rem; color:#7a6858; line-height:1.7; max-width:660px; margin:.4rem auto 0;
+  border-left:2px solid var(--faint); padding-left:.9rem; text-align:left;
+}
+
+/* controls */
+.controls { display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; justify-content:center; margin:1.8rem 0 .5rem; }
+#q {
+  font-family:inherit; font-size:.85rem; color:var(--fg);
+  background:rgba(10,8,4,.9); border:1px solid var(--faint);
+  padding:.5rem .85rem; min-width:min(320px,80vw);
+}
+#q:focus { outline:none; border-color:var(--gold-dk); }
+.kinds { display:flex; flex-wrap:wrap; gap:.4rem; justify-content:center; }
+.kind {
+  font-family:inherit; font-size:.68rem; letter-spacing:.06em;
+  background:none; border:1px solid var(--faint); color:var(--dim);
+  padding:.34rem .7rem; cursor:pointer;
+}
+.kind:hover { border-color:var(--gold-dk); color:var(--gold); }
+.kind.on { border-color:var(--gold); color:var(--fg); background:rgba(200,168,120,.09); }
+.count { font-size:.7rem; color:#5a4a38; letter-spacing:.06em; text-align:center; margin-bottom:2rem; }
+
+/* the run of utterances */
+.ch { margin-bottom:2.4rem; }
+.ch > h2 {
+  font-size:.66rem; letter-spacing:.18em; text-transform:uppercase; color:var(--gold);
+  border-bottom:1px solid var(--faint); padding-bottom:.5rem; margin-bottom:1.2rem; font-weight:normal;
+  display:flex; justify-content:space-between; gap:1rem; align-items:baseline;
+}
+.ch > h2 em { font-style:normal; color:#4a3a28; letter-spacing:.1em; text-transform:none; font-size:.62rem; }
+
+.utt { border-left:2px solid var(--faint); padding:0 0 0 1.1rem; margin-bottom:1.7rem; }
+.utt .occ { font-size:.72rem; color:#7a6858; line-height:1.7; margin-bottom:.5rem; }
+.utt blockquote {
+  font-size:.98rem; color:#efe4cc; line-height:1.85; padding-left:0;
+}
+.utt blockquote::before { content:'\201C'; color:var(--gold-dk); }
+.utt blockquote::after  { content:'\201D'; color:var(--gold-dk); }
+.utt .meta {
+  margin-top:.55rem; display:flex; flex-wrap:wrap; gap:.5rem .9rem; align-items:baseline;
+  font-size:.62rem; letter-spacing:.09em; color:#5a4a38; text-transform:uppercase;
+}
+.utt .meta .tag { border:1px solid var(--faint); padding:.14rem .5rem; }
+.utt .meta .src { text-transform:none; letter-spacing:.04em; color:#6a5848; font-style:italic; }
+.utt .gloss { margin-top:.6rem; font-size:.74rem; color:#8a7a64; line-height:1.8; }
+
+/* the silences */
+.sil { border:1px solid #1e130a; background:var(--card); padding:1.2rem 1.3rem; margin-bottom:1rem; }
+.sil h3 { font-size:.85rem; font-weight:normal; color:#e8dcc4; margin-bottom:.5rem; letter-spacing:.02em; }
+.sil p { font-size:.78rem; color:#8a7a64; line-height:1.85; }
+
+footer.foot {
+  margin-top:3.4rem; padding-top:1.4rem; border-top:1px solid var(--faint);
+  font-size:.7rem; color:#5a4a38; line-height:1.9; text-align:center;
+}
+footer.foot a { color:var(--gold-dk); }
+.back { display:inline-block; margin-bottom:2rem; font-size:.68rem; letter-spacing:.12em;
+        text-transform:uppercase; color:var(--dim); text-decoration:none; }
+.back:hover { color:var(--gold); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="../src/index.html">&larr; back to the dream</a>
+
+  <header class="head">
+    <div class="kicker">Hypnerotomachia Poliphili &middot; Venice, 1499</div>
+    <h1>Poliphilo Speaking</h1>
+    <p class="lede" id="lede"></p>
+    <p class="caveat" id="caveat"></p>
+  </header>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="search the utterances&hellip;" autocomplete="off"/>
+    <div class="kinds" id="kinds"></div>
+  </div>
+  <div class="count" id="count"></div>
+
+  <main id="run"></main>
+
+  <section id="silences" class="ch">
+    <h2>Where he says nothing <em>three long silences</em></h2>
+    <div id="sil-body"></div>
+  </section>
+
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<script>
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+let DATA = null, onKinds = new Set();
+
+fetch('../src/data/poliphilo.json?v=1').then(r => r.json()).then(d => {
+  DATA = d;
+  document.getElementById('lede').textContent = d.subtitle;
+  document.getElementById('caveat').textContent = d.note;
+  document.getElementById('foot').innerHTML =
+    esc(d.method) +
+    '<br><br>Chapters I&ndash;XVI from Robert Dallington, <i>Hypnerotomachia: The Strife of Loue in a Dreame</i> ' +
+    '(London, 1592), public domain. Chapters XVII&ndash;XXXVIII from ' +
+    '<a href="translation.html">our own translation</a>, CC0. ' +
+    'Godwin&rsquo;s 1999 English is in copyright and is not used here.';
+
+  const kinds = Object.keys(d.kinds);
+  document.getElementById('kinds').innerHTML = kinds.map(k =>
+    `<button class="kind on" data-kind="${k}" title="${esc(d.kinds[k])}">${k}</button>`).join('');
+  onKinds = new Set(kinds);
+  document.querySelectorAll('.kind').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.kind;
+    if (onKinds.has(k)) onKinds.delete(k); else onKinds.add(k);
+    b.classList.toggle('on', onKinds.has(k));
+    render();
+  }));
+  document.getElementById('q').addEventListener('input', render);
+
+  document.getElementById('sil-body').innerHTML = d.silences.map(s =>
+    `<div class="sil"><h3>${esc(s.where)}</h3><p>${esc(s.text)}</p></div>`).join('');
+  render();
+});
+
+function render() {
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const hit = u => onKinds.has(u.kind) &&
+    (!q || (u.text + ' ' + u.occasion + ' ' + (u.note || '') + ' ' + u.source + ' ' + u.chapter)
+             .toLowerCase().includes(q));
+  const shown = DATA.utterances.filter(hit);
+
+  // group by chapter, in the order the chapters first appear
+  const order = [], by = new Map();
+  for (const u of shown) {
+    if (!by.has(u.chapter)) { by.set(u.chapter, []); order.push(u.chapter); }
+    by.get(u.chapter).push(u);
+  }
+  document.getElementById('count').textContent =
+    `${shown.length} of ${DATA.utterances.length} utterances` + (q ? ` matching “${q}”` : '');
+
+  document.getElementById('run').innerHTML = order.map(ch => {
+    const list = by.get(ch);
+    const ed = list[0].edition === 'dallington' ? 'Dallington 1592' : 'our translation';
+    return `<section class="ch"><h2><span>Chapter ${esc(ch)}</span><em>${ed}</em></h2>` +
+      list.map(u => `
+        <article class="utt">
+          <div class="occ">${esc(u.occasion)}</div>
+          <blockquote>${esc(u.text)}</blockquote>
+          <div class="meta">
+            <span class="tag">${esc(u.kind)}</span>
+            <span class="src">${esc(u.source)}</span>
+          </div>
+          ${u.note ? `<div class="gloss">${esc(u.note)}</div>` : ''}
+        </article>`).join('') +
+      `</section>`;
+  }).join('');
+}
+</script>
+</body>
+</html>

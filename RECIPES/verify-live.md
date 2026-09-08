@@ -48,16 +48,16 @@ const p = document.getElementById('tour-panel');
 // and confirm nothing is constructed. AlchemicalAudio.js is a no-op stub by design.
 ```
 
-## On the live hosts
+## On the live host
 
-**Both.** `vercel --prod` does not push to GitHub; `git push` does not deploy to Vercel.
+**GitHub Pages, and only it.** Vercel was retired on 2026-09-07;
+`emblems-in-3d.vercel.app` is a stale mirror and proves nothing.
 
 ```bash
-curl -s https://emblems-in-3d.vercel.app/src/index.html | grep -o 'main.js?v=[0-9]*'
-curl -s https://t3dy.github.io/EmblemsIn3d/src/index.html | grep -o 'main.js?v=[0-9]*'
+curl -s "https://t3dy.github.io/EmblemsIn3d/src/index.html?x=$RANDOM" | grep -o 'main.js?v=[0-9]*'
 ```
 
-Both must show the number you just bumped to. GitHub Pages lags a push by 30–90 s
+It must show the number you just bumped to. Pages lags a push by 30–90 s
 (`gh api repos/t3dy/EmblemsIn3d/pages/builds`).
 
 Then **open the live URL in the browser and do the thing the user asked about.** A matching
@@ -104,7 +104,8 @@ than stopping in one, and no transform has gone NaN. Any state machine in this p
 - **Trusting a stale console.** The buffer keeps errors from previous page loads. An
   `Init failed` from `main.js?v=130` said nothing about `?v=149`. Read the version in the
   message.
-- **Deploying one host.** Ted opens whichever link is to hand. He was looking at GitHub
-  Pages while only Vercel had been redeployed.
+- **Deploying one host.** Ted opens whichever link is to hand; he was once looking at
+  GitHub Pages while only Vercel had been redeployed. That is why there is one host now —
+  and why the dead Vercel alias must never be quoted as evidence.
 - **Verifying the wrong artifact.** Checking that a JSON file parses is not checking that
   the stop renders. Drive the UI.

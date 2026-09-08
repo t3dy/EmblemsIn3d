@@ -166,15 +166,41 @@ built as an object.
 
 ## What to build, ranked
 
-1. **The Venus fountain's enclosure** — gold pergola, real roses, flowery mead,
-   zig-zag marble balustrade. Completes a station we have already rebuilt and is
-   the resolution of the book's central argument. *One session.*
-2. **Turn the Polia pergola into a tunnel** with three jasmines. Small, and it is
-   one of only two things the book illustrates twice.
-3. **Second nature** — a worked countryside between the wood and the courts:
-   fields, orchard rows, a vineyard on elms. Currently the meadow is asked to be
-   both wilderness-edge and garden and reads as neither.
-4. **Cythera, properly** — the concentric island. This is the largest single build
+1. ~~**The Venus fountain's enclosure**~~ — **built.** Gold pergola carrying real
+   roses, flowery mead, zig-zag book-matched balustrade, on the true fountain at
+   the centre of Cythera only. `_buildFountain(..., { enclosure: true })`.
+2. ~~**Turn the Polia pergola into a tunnel**~~ — **built 2026-09-07**,
+   `_buildJasmineArbour`. What stood there was four columns under a flat slab, a
+   bus shelter. The book's sentence settles all three of its properties at once:
+   *"a fine Arbour of sweete Gessamine, somewhat high, lifting vppe and bending
+   ouer, all to bee painted and decked with the pleasant and odoriferous flowers
+   of three sortes commixt, and entring in vnder the same"* (Dallington p. 200).
+   *Lifting up and bending over* → carpenter's ribs sprung post to post, a barrel
+   and not a lid. *Entering in under the same* → a tunnel eleven metres long, open
+   at both ends, walls down the sides only. *Painted* → lead-white green joinery,
+   the construction Segre finds surviving at Villa Medici in Fiesole and at
+   Trebbio. The "three sortes commixt" are Rhizopoulou's three jasmines, "with
+   red, yellow and white flowers" (2016, Table 1, g2′/i3/s7′/y1, p5/g3, g3′) — and
+   she records flowering jasmine as the book's symbol of divine love and
+   happiness, which is what the arbour is for. Polia and Poliphilo now stand
+   under it rather than beside it.
+3. ~~**Second nature**~~ — **built 2026-09-07**, `_buildSecondNature`, from
+   Dallington p. 90: *"a fayre and plentifull countrie, fruitefull fieldes, and
+   fertile groundes."* A belt of strip fields across the open ground **north-west
+   of the dark wood**, so that coming out of the wilderness you come into worked
+   land. Seven strips in three states — turned, young wheat, stubble — the turned
+   ones ridged and clodded rather than merely striped, because painted stripes on
+   a flat plane read as a rug at exactly the grazing angle you see a field from.
+   An orchard of apple, pear and plum in quincunx (`pear` and `plum` added to
+   SPECIES for it; Segre has all three in the prati of Cythera). And the
+   **arbustum** — vines married to elms, swagged tree to tree in the festoons the
+   Veneto calls a *piantata* — which chapter I names in the wood's own species
+   list, "towgh Elmes beloued of the fruitfull vines," and which Rhizopoulou 2016
+   reads with the olives and fruit trees as "an arboricultural economy." The
+   meadow is masked off it: grass must not grow out of a furrow. Reachable as the
+   station `fields`.
+4. **Cythera, properly** — the concentric island. **Still the largest single
+   build remaining.** This is the largest single build
    remaining in the project and the book's culmination; Segre's plan above is
    detailed enough to work from directly. See [RESEARCHPASSFORVR.md](RESEARCHPASSFORVR.md)
    for why it should probably come before anything else.

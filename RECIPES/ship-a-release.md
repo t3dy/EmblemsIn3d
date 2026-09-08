@@ -2,9 +2,12 @@
 
 ## When to use this
 
-Any time work should reach `emblems-in-3d.vercel.app`. Read
-[`../DEPLOY_STATE.md`](../DEPLOY_STATE.md) first — it is the authority on the two hosts and
-the cache behaviour; this file is the running order.
+Any time work should reach **https://t3dy.github.io/EmblemsIn3d/**. Read
+[`../DEPLOY_STATE.md`](../DEPLOY_STATE.md) first — it is the authority on the host and the
+cache behaviour; this file is the running order.
+
+**Vercel is retired (2026-09-07).** Do not run it. `emblems-in-3d.vercel.app` is a stale
+mirror and is not evidence of anything.
 
 ## Before you start
 
@@ -41,16 +44,16 @@ the cache behaviour; this file is the running order.
    ```
    The `?v=` curl in step 6 passes on a broken module; only a parse, or `window.hpExplore`
    existing on the live page, catches it.
-5. **Deploy to both hosts:**
+5. **Deploy:**
    ```bash
-   vercel --prod --yes && git push origin main
+   git push origin main
    ```
-6. **Verify live, on both:**
+6. **Verify live** (Pages lags a push by 30–90 s):
    ```bash
-   curl -s https://emblems-in-3d.vercel.app/src/index.html | grep -o 'main.js?v=[0-9]*'
-   curl -s https://t3dy.github.io/EmblemsIn3d/src/index.html | grep -o 'main.js?v=[0-9]*'
+   curl -s "https://t3dy.github.io/EmblemsIn3d/src/index.html?x=$RANDOM" | grep -o 'main.js?v=[0-9]*'
    ```
-   Then open the canonical URL in the browser and do the thing the change was for.
+   Then open https://t3dy.github.io/EmblemsIn3d/ in the browser and do the thing the change
+   was for. The version number proves the file shipped; it does not prove the feature works.
 
 ## Cutting a numbered version
 
@@ -66,14 +69,16 @@ Past releases are kept as directories at the repo root and linked from the landi
 
 - [ ] no Atalanta path in the commit unless the task was Atalanta
 - [ ] the `?v=` chain and `const V` are bumped
-- [ ] **both** hosts return the new version number
-- [ ] you have opened the live canonical URL and confirmed the specific requested change
+- [ ] Pages returns the new version number
+- [ ] you have opened https://t3dy.github.io/EmblemsIn3d/ and confirmed the specific
+      requested change
 - [ ] `DECISIONS.md` / `NEXTSTEPS.md` reflect this session
 
 ## What has gone wrong here before
 
-- **One host deployed, "shipped" claimed.** See `DEPLOY_STATE.md`.
+- **One host deployed, "shipped" claimed.** The reason there is now only one. See
+  `DEPLOY_STATE.md`.
 - **`git add -A src/`** swept `src/data/af_lore.js` into an HP commit. Twice.
 - **A fixed CSS bug reappearing after deploy**, because `src/index.html` is not
-  cache-busted and GitHub Pages ignores the `Cache-Control` header in `vercel.json`. If your
-  fix is CSS-only, make the JS enforce it too.
+  cache-busted and GitHub Pages serves HTML with a fixed `max-age=600`. If your fix is
+  CSS-only, make the JS enforce it too.

@@ -4,7 +4,7 @@
 a guided tour of the whole book, and a complete new English translation of everything the
 1592 English never reached.**
 
-**Live:** **[emblems-in-3d.vercel.app](https://emblems-in-3d.vercel.app)** (canonical)
+**Live:** **[t3dy.github.io/EmblemsIn3d](https://t3dy.github.io/EmblemsIn3d/)**
 · [t3dy.github.io/EmblemsIn3d](https://t3dy.github.io/EmblemsIn3d) (GitHub Pages mirror)
 · **[Repository](https://github.com/t3dy/EmblemsIn3d)**
 
@@ -47,9 +47,9 @@ This project does three things with it.
 
 | | Release | Where | What it is |
 |---|---|---|---|
-| **v3** | current | [`/`](https://emblems-in-3d.vercel.app) | The *Hypnerotomachia* alone: the whole-book tour, the Graphics menu, commentary that meets you as you walk, a dream loop that cannot hang, and a silent site. |
-| **v2** | archived | [`/v2/`](https://emblems-in-3d.vercel.app/v2/) | The tour with its commentary lenses, the Gallery, Poliphilo's Dream as a game, mobile controls, and the first imported model. Also carried the *Atalanta Fugiens* worlds. |
-| **v1** | archived | [`/v1/`](https://emblems-in-3d.vercel.app/v1/) | The original release: the emblem worlds, the games, and the first walkable Dream Garden. |
+| **v3** | current | [`/`](https://t3dy.github.io/EmblemsIn3d/) | The *Hypnerotomachia* alone: the whole-book tour, the Graphics menu, commentary that meets you as you walk, a dream loop that cannot hang, and a silent site. |
+| **v2** | archived | [`/v2/`](https://t3dy.github.io/EmblemsIn3d/v2/) | The tour with its commentary lenses, the Gallery, Poliphilo's Dream as a game, mobile controls, and the first imported model. Also carried the *Atalanta Fugiens* worlds. |
+| **v1** | archived | [`/v1/`](https://t3dy.github.io/EmblemsIn3d/v1/) | The original release: the emblem worlds, the games, and the first walkable Dream Garden. |
 
 **On 2026-09-05 the *Atalanta Fugiens* side was removed from the site** — its worlds, its
 four tours, its games and its cross-reference graph — so that everything here is the
@@ -167,9 +167,9 @@ research/  translation/  game/  scripts/
 ### Two facts about this layout that cause bugs
 
 1. **All the CSS is inline in `src/index.html`, which no `?v=` covers.** A returning
-   visitor can receive new JavaScript with old CSS. `vercel.json` forces HTML to
-   revalidate; **GitHub Pages ignores that** and serves HTML with a fixed `max-age=600`.
-   So: never fix a layout bug in CSS alone if the JS can enforce it too.
+   visitor can receive new JavaScript with old CSS: **GitHub Pages serves HTML with a
+   fixed `max-age=600`** and offers no way to change it. So: never fix a layout bug in CSS
+   alone if the JS can enforce it too.
 2. **A different `?v=` is a different module to the browser.** Importing a file as `?v=1`
    from one place and `?v=2` from another gives two module instances with separate state.
    Bump the whole chain or none of it. → [`RECIPES/bump-cache-versions.md`](RECIPES/bump-cache-versions.md)
@@ -208,17 +208,17 @@ exported JSON is committed, so the pipeline only needs re-running if that databa
 
 ## Deploying
 
-**Both hosts, every time.** `vercel --prod` does not push to GitHub; `git push` does not
-deploy to Vercel.
+**One host: GitHub Pages.** Vercel was retired on 2026-09-07;
+`emblems-in-3d.vercel.app` is a frozen mirror, not the site.
 
 ```bash
-vercel --prod --yes && git push origin main
+git push origin main
 ```
 
-Then verify, on both:
+Then verify (Pages lags a push by 30–90 s):
 
 ```bash
-curl -s https://emblems-in-3d.vercel.app/src/index.html | grep -o 'main.js?v=[0-9]*'
+curl -s "https://t3dy.github.io/EmblemsIn3d/src/index.html?x=$RANDOM" | grep -o 'main.js?v=[0-9]*'
 ```
 
 Full procedure: [`RECIPES/ship-a-release.md`](RECIPES/ship-a-release.md). Host details and

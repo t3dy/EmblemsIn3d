@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=166';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=173';
 import { VaultsScene } from './scenes/VaultsScene.js?v=3';
 import { DreamMode } from './systems/DreamMode.js?v=7';
 import { DREAM_STOPS } from './data/hp_dream.js?v=3';
@@ -86,9 +86,10 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '37'; // bump when data files are re-exported
+  const V = '38'; // bump when data files are re-exported
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
+  state.poliphilo   = await fetch(`./data/poliphilo.json?v=${V}`).then(r => r.json()).catch(() => null);
   setProgress(50, 'Preparing the world…');
 }
 
@@ -374,6 +375,11 @@ window.tourSee = (title) => {
 // explainer. The type sets a colour-coded border and a label. One registry so
 // the data files only ever store a type key.
 const NOTE_TYPES = {
+  // Poliphilo's own voice, catalogued in src/data/poliphilo.json. First in the
+  // order because it is not commentary: it is the narrator talking, and the
+  // whole layer can be run alone ("Poliphilo alone" below) so a reader can walk
+  // the tour and hear nothing but him reacting to what he is shown.
+  poliphilo:   { label: 'Poliphilo speaking',      color: '#e0b877' },
   quotation:   { label: 'From the book',           color: '#d8a24a' },
   context:     { label: 'Renaissance context',     color: '#c98a4a' },
   architecture:{ label: 'Architectural theory',    color: '#7fa8c0' },
@@ -389,7 +395,21 @@ const NOTE_TYPES = {
 // choice is sticky. `null` means "all on" (the default); once the reader touches a
 // chip we track an explicit enabled set.
 let _flavorsOn = (() => {
-  try { const s = localStorage.getItem('hp_flavors'); if (s) return new Set(JSON.parse(s)); } catch (_) {}
+  try {
+    const s = localStorage.getItem('hp_flavors');
+    if (s) {
+      const set = new Set(JSON.parse(s));
+      // 'poliphilo' was added 2026-09-07. A reader who saved a lens set before
+      // that would find the new layer silently off and never know it existed,
+      // so turn it on once, and remember that we did.
+      if (!localStorage.getItem('hp_flavors_poliphilo')) {
+        set.add('poliphilo');
+        localStorage.setItem('hp_flavors_poliphilo', '1');
+        localStorage.setItem('hp_flavors', JSON.stringify([...set]));
+      }
+      return set;
+    }
+  } catch (_) {}
   return null;
 })();
 function flavorOn(type) { return !_flavorsOn || _flavorsOn.has(type); }
@@ -408,7 +428,52 @@ function tourFlavorSet(tour) {
     if (s.quote) present.add('quotation');
     for (const nt of (s.notes || [])) present.add(nt.type);
   }
+  // The utterances are not stored in stop.notes -- they are their own
+  // catalogue, keyed to stops -- so the lens has to be added by hand.
+  if (voiceCount()) present.add('poliphilo');
   return Object.keys(NOTE_TYPES).filter(t => present.has(t));
+}
+
+// ── Poliphilo's own voice ─────────────────────────────────────────────────
+// src/data/poliphilo.json catalogues every utterance in the book: direct
+// speech, apostrophe, prayer, question, letter, and the interior speech the
+// book sets down as speech. Each carries the stop it belongs to, so the layer
+// can be laid over the tour without touching tours.json.
+function voiceCount() {
+  const d = state.poliphilo;
+  return (d && Array.isArray(d.utterances)) ? d.utterances.length : 0;
+}
+function voiceFor(stopIndex, station) {
+  if (!voiceCount()) return [];
+  return state.poliphilo.utterances.filter(u =>
+    (typeof stopIndex === 'number' && u.stop === stopIndex) ||
+    (stopIndex == null && station && u.station === station));
+}
+// The silence at a stop is a finding, not a gap: he says nothing at all across
+// the palace, and nothing at all on Cythera. Say so rather than showing blank.
+function voiceSilence(stopIndex) {
+  const d = state.poliphilo;
+  if (!d || !Array.isArray(d.silences)) return null;
+  return d.silences.find(s => (s.stops || []).includes(stopIndex)) || null;
+}
+function renderVoice(stopIndex, station) {
+  if (!flavorOn('poliphilo')) return '';
+  const col = NOTE_TYPES.poliphilo.color;
+  const list = voiceFor(stopIndex, station);
+  if (!list.length) {
+    const sil = voiceSilence(stopIndex);
+    if (!sil) return '';
+    return `<div class="tp-voice tp-voice-silent" style="border-color:${col}">
+      <div class="tp-voice-label" style="color:${col}">Poliphilo says nothing here</div>
+      <p class="tp-voice-occ">${fmtProse(sil.text)}</p></div>`;
+  }
+  return list.map(u => `<div class="tp-voice" style="border-color:${col}">
+      <div class="tp-voice-label" style="color:${col}">Poliphilo &middot; ${u.kind}</div>
+      <p class="tp-voice-occ">${fmtProse(u.occasion)}</p>
+      <blockquote class="tp-voice-said">${fmtProse(u.text)}</blockquote>
+      <div class="tp-voice-src">${fmtProse(u.source)}</div>
+      ${u.note ? `<p class="tp-voice-gloss">${fmtProse(u.note)}</p>` : ''}
+    </div>`).join('');
 }
 
 // The commentary control. This has to read as a control, not decoration: a
@@ -438,6 +503,7 @@ function renderFlavorBar(tour) {
     <div class="tp-lenses-quick">
       <button onclick="window.setAllFlavors(true)">Show all</button>
       <button onclick="window.setAllFlavors(false)">Just the story</button>
+      ${voiceCount() ? `<button onclick="window.onlyPoliphilo()">Poliphilo alone</button>` : ''}
     </div>
   </div>`;
 }
@@ -445,6 +511,15 @@ function renderFlavorBar(tour) {
 // All on / all off from inside the tour, mirroring the pre-tour chooser.
 window.setAllFlavors = (all) => {
   _flavorsOn = all ? new Set(Object.keys(NOTE_TYPES)) : new Set();
+  try { localStorage.setItem('hp_flavors', JSON.stringify([..._flavorsOn])); } catch (_) {}
+  renderTourPanel();
+  renderWalkNotes();
+};
+
+// Every other lens off: walk the whole book and hear only Poliphilo reacting
+// to the sights. Ted asked for this reading of the tour by name.
+window.onlyPoliphilo = () => {
+  _flavorsOn = new Set(['poliphilo']);
   try { localStorage.setItem('hp_flavors', JSON.stringify([..._flavorsOn])); } catch (_) {}
   renderTourPanel();
   renderWalkNotes();
@@ -524,6 +599,7 @@ function renderTourPanel() {
         <p class="tp-lede">${fmtProse(stop.lede)}</p>
         ${renderFlavorBar(tour)}
         ${stop.quote && flavorOn('quotation') ? `<blockquote class="tp-quote" style="border-color:${NOTE_TYPES.quotation.color}">${fmtProse(stop.quote)}${stop.quoteAttr ? `<cite>${fmtProse(stop.quoteAttr)}</cite>` : ''}</blockquote>` : ''}
+        ${renderVoice(i, stop.station)}
         ${renderNotes(stop.notes)}
         <div class="tp-rule"></div>
         ${seeBar}
@@ -577,8 +653,10 @@ function renderWalkNotes() {
   if (!stop) return;
   const notes = (stop.notes || []).filter(n => flavorOn(n.type));
   const quote = stop.quote && flavorOn('quotation') ? stop.quote : null;
-  const body = (notes.length || quote)
+  const voice = renderVoice(null, st.key);
+  const body = (notes.length || quote || voice)
     ? `${quote ? `<blockquote class="wn-quote">${fmtProse(quote)}</blockquote>` : ''}
+       ${voice}
        ${notes.map(n => {
          const t = NOTE_TYPES[n.type] || { label: n.type, color: '#8a7a5a' };
          return `<div class="wn-note" style="border-color:${t.color}">

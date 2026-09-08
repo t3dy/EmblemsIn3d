@@ -229,8 +229,12 @@ function meadowMaterial({
           baseColor * brightness * macro * (hemi * 0.74 + diffuse * 0.4) +
           uBackColor * backLight * pow(vBladeT, 1.5) * 0.55 +
           vec3(0.92, 0.88, 0.62) * rim * 0.14;
+        // Saturation was pushed to 1.25 here and the whole field read as
+        // cartoon lime. Real turf is far greyer than its own local colour, and
+        // the tone mapper adds chroma of its own, so this now sits just above
+        // neutral. (Ted, 2026-09-07: the plants should look a lot more real.)
         float luma = dot(color, vec3(0.2126, 0.7152, 0.0722));
-        color = mix(vec3(luma), color, 1.25) * 1.04;
+        color = mix(vec3(luma), color, 1.06);
 
         // Match the scene's FogExp2 so the meadow recedes with its ground.
         float fogDepth = length(vWorldPosition - cameraPosition);

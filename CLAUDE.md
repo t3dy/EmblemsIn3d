@@ -2,7 +2,7 @@
 
 *Emblems in 3D: interactive 3-D worlds, a guided tour, and a complete digital edition built
 from the 1499 **Hypnerotomachia Poliphili** (and Maier's Atalanta Fugiens). Live at
-https://emblems-in-3d.vercel.app.*
+https://t3dy.github.io/EmblemsIn3d/.*
 
 ## → Read [ROUTER.md](ROUTER.md) first
 
@@ -76,8 +76,9 @@ imported glTF models.
   up the chain to `main.js?v=N` in `src/index.html`. Data files use the single `const V` in
   `main.js` `loadData()`. A different `?v=` is a *different module* with separate state.
   → `RECIPES/bump-cache-versions.md`
-- **Two hosts, both every time:** `vercel --prod --yes && git push origin main`.
-  → `DEPLOY_STATE.md`, `RECIPES/ship-a-release.md`
+- **One host: GitHub Pages.** `git push origin main` is the whole deploy. **Vercel is
+  retired (2026-09-07)** — never run it, and never cite emblems-in-3d.vercel.app, which is
+  now a stale mirror. → `DEPLOY_STATE.md`, `RECIPES/ship-a-release.md`
 - **All CSS is inline in `src/index.html`, which no `?v=` covers.** Never fix a layout bug
   in CSS alone if the JS can enforce it.
 

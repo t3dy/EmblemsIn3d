@@ -8,11 +8,11 @@ Ledger generated **2026-09-07**. 38 chapters · 97 plates attached to a chapter 
 
 | | |
 |---|---|
-| Chapters **enumerated** (a feature list exists) | **9 of 38** |
-| Chapters **partial** (tour notes only, no feature list) | 29 |
+| Chapters **enumerated** (a feature list exists) | **10 of 38** |
+| Chapters **partial** (tour notes only, no feature list) | 28 |
 | Chapters **unread** | 0 |
-| Features **built** | 33 |
-| Features **partial** | 1 |
+| Features **built** | 36 |
+| Features **partial** | 2 |
 | Features **unbuilt** | **6** |
 | Features **declined** (on purpose, with a reason) | 1 |
 
@@ -31,7 +31,6 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | **X** | 1 | — | 0 | labyrinth | Dallington 1592 |
 | **XI** | 1 | — | 0 | chess, quinta_essentia | Dallington 1592 |
 | **XII** | 1 | — | 0 | three_doors | Dallington 1592 |
-| **XIII** | 1 | — | 0 | three_doors, polia | Dallington 1592 |
 | **XIV** | 1 | — | 0 | triumphs | Dallington 1592 |
 | **XV** | 1 | — | 0 | triumphs | Dallington 1592 |
 | **XVI** | 1 | — | 0 | priapus | Dallington 1592 |
@@ -61,6 +60,7 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | I | **Poliphilo's prayer to Jupiter, which delivers him** | rite | ○ unbuilt | Dallington p. 17 | The dream mode narrates it; nothing in the world marks the place. |
 | II | **The harmony he hears, which draws him on** | rite | ○ unbuilt | Dallington p. 17 | The site is silent by design (DECISIONS 2026-09-04), so this cannot be built as sound. |
 | V | **"The large foundations, and fearefull vaultes, and subterraneal buttresses"** | building | ○ unbuilt | Dallington p. 87 | The crawl has corridors and pillars but no vaulted halls or buttressed chambers. |
+| XIII | **The doubt: is this nymph Polia?** | rite | ◐ partial | Dallington pp. 207-217 | The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt. |
 | XVIII | **The arcane characters signed in blood, and the sponge** | inscription | ◐ partial | our pp. 231–232 | The forms are NOT given in the book. Drawn as strokes, and the tour note says so. |
 | XVIII | **The three fruits taken and tasted** | rite | ○ unbuilt | our pp. 233–234 (plate #85) | The bush is built; the giving of the three fruits is not staged. |
 | XIX | **The Rape of Proserpina relief that frightens him back to Polia** | picture | ○ unbuilt | our pp. 280+ | The chapter’s climax and the reason he flees. Nothing in the world marks it. |
@@ -134,6 +134,7 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 |---|---|---|---|---|
 | ✅ | The five nymphs, who are the five senses | person | `HPWorldScene (the five sense nymphs)` | Dallington pp. 106–112 |
 | ✅ | The eight-sided bath, ΑΣΑΜΙΝΘΟΣ<br>*Rebuilt 2026-09-06 to the text: jacinth columns, black tables in coral jasper, ivory nymphs, the zophor of boys and sea-monsters, oak-leaf ribs, the lion-head censer, the fish mosaic.* | building | `HPWorldScene._buildBath` | Dallington pp. 112–115 |
+| ✅ | The fruitful fields: the worked countryside<br>*Built 2026-09-07. Hunt reads the book through the three natures and the world had the first (the selva oscura) and the third (the courts) and nothing between them. Strip fields with real ridge-and-furrow, an orchard of apple/pear/plum in quincunx, and the arbustum -- vines married to elms, ch. I l. 625. Station key `fields`.* | place | `HPWorldScene._buildSecondNature` | Dallington p. 90 ("a fayre and plentifull countrie, fruitefull fieldes, and fertile groundes") |
 
 ### Chapter VII  · Book 1 · page range not yet fixed
 
@@ -189,11 +190,15 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 
 ### Chapter XIII  · Book 1 · page range not yet fixed
 
-*Research: **partial**. Tour notes exist, but nobody has enumerated this chapter's features.*  
+*Research: **enumerated**. Enumerated from the arbour and three-doors passages while building the jasmine arbour and cataloguing Poliphilo’s utterances. Not a full chapter pass.*  
 *Text: Dallington 1592 — `C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md`*  
 *Tour: None (three_doors, 7 notes); None (polia, 7 notes)*  
 
-*No features enumerated yet.*
+| | Feature | Kind | Built as | Source |
+|---|---|---|---|---|
+| ✅ | The arbour of sweet jessamine, where he first sees Polia<br>*Rebuilt 2026-09-07 as the tunnel the book describes -- "lifting vppe and bending ouer ... and entring in vnder the same" -- replacing four columns under a flat slab. The "flowers of three sortes commixt" are Rhizopoulou 2016’s three jasmines, red, yellow and white. One of only two things the Venice edition illustrates twice.* | place | `HPWorldScene._buildJasmineArbour` | Dallington p. 200 |
+| ✅ | The three doors, and his choice of the third<br>*His recoil from Philtronia’s house of Voluptuousness, immediately after choosing it, is now in the Poliphilo layer (our p. 197).* | rite | `HPWorldScene._buildDoorsWall` | Dallington pp. 189-197 |
+| ◐ | The doubt: is this nymph Polia?<br>*The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt.* | rite | — | Dallington pp. 207-217 |
 
 ### Chapter XIV  · Book 1 · page range not yet fixed
 

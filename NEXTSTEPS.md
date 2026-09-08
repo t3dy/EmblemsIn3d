@@ -31,6 +31,30 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
+### 0a. Ted's open call: close the stale Vercel mirror
+Added 2026-09-07. Vercel is retired and Pages is the only host, but
+`emblems-in-3d.vercel.app` is still up and frozen at `main.js?v=247`. Every push widens the
+gap, and "Ted opens whichever link is to hand" is this project's own documented way of losing
+an afternoon. Two ways to close it, both his call because both are outward-facing: **delete the
+Vercel project**, or **one last deploy that redirects that URL to Pages**. Ask him.
+
+### 0c. The gardens, after the 2026-09-07 pass
+Done that day: the sward rebuilt at realistic scale and colour, the jasmine arbour at Polia's
+garden, second nature north-west of the wood. Still open, in order:
+
+- **Cythera as Segre reconstructs it** — the perfect circle, three *miliaria* round, 20 radial
+  roads, three concentric *claustri*, 20 bosco compartments, 240 fruit trees on raised beds,
+  six terraces of seven steps each, the theatre at the centre. `GARDENS.md` §5 is detailed
+  enough to build straight from. **The largest single build left in the project.**
+- **The three artificial gardens — glass, silk, and the counterfeit scent.** Hunt argues that
+  illustrating them *damages* them, and that the 1499 and the 1592 both decline to for that
+  reason. `GARDENS.md` §3 and item 5 of its ranked list: stage them as *described* rather than
+  shown. The one place in this world where withholding is the faithful move.
+- **Topiary from the plates.** The clipped forms are catalogued and unbuilt — the
+  peacocks-on-an-altar-vase figure in particular.
+- **Hedges are still flat green boxes.** Everything else in the garden now carries a drawn
+  surface; they do not, and they are everywhere.
+
 ### 0. Work the coverage queue — 29 chapters have never been read against the world
 Added 2026-09-07 after the vaults. `python scripts/coverage_seed.py && python
 scripts/coverage_report.py`, then read `COVERAGE.md`. Nine chapters are enumerated (I, II, V,
@@ -198,7 +222,7 @@ gets ground of its own.
   off `main` (≈93 MB) and on the branch `atalanta-archive`, tag `atalanta-archive-2026-09-06`.
   The landing page no longer links the old releases.
 - The repository is still called **EmblemsIn3d** and the canonical URL is still
-  `emblems-in-3d.vercel.app`. Only the *displayed* name changed. Ted's call.
+  `t3dy.github.io/EmblemsIn3d`. Only the *displayed* name changed. Ted's call.
 
 ---
 

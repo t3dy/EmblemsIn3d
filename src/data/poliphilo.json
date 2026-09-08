@@ -1,0 +1,571 @@
+{
+ "title": "Poliphilo Speaking",
+ "subtitle": "Every utterance in the Hypnerotomachia — what he says, where he says it, and to whom",
+ "note": "An utterance is what leaves his mouth or his pen: direct address, apostrophe, prayer, question, letter, and the interior speech the book sets down as speech. Ordinary narration is not included, however first-person it is — the whole book is that. Chapters I–XVI are quoted from Robert Dallington's 1592 English, by his page numbers; chapters XVII–XXXVIII from our own CC0 translation, by the 1499 page numbers. Spelling is left as it stands.",
+ "kinds": {
+  "speech": "spoken aloud, to someone present",
+  "interior": "said to himself, and set down as speech",
+  "apostrophe": "addressed to a thing, a god, an absent person, or the reader",
+  "prayer": "addressed to a god, asking",
+  "question": "asked, and answered",
+  "letter": "written"
+ },
+ "utterances": [
+  {
+   "stop": 0,
+   "station": "wood",
+   "chapter": "I",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 14",
+   "occasion": "Alone on the empty plain at the very beginning of the dream, before the wood closes over him.",
+   "text": "Heere appeareth no humaine creature to my sight, nor sylvan beast, flying bird, countrey house, field tent, or shepheards cote: neyther vpon the gras could I perceiue feeding eyther flock of sheep, or heard of cattell, or rustike herdman with Oten pipe making pastorall melodie."
+  },
+  {
+   "stop": 0,
+   "station": "wood",
+   "chapter": "I",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 21",
+   "occasion": "Parched and lost, remembering that Homer's herb against enchantment is a thing one reads about and cannot find.",
+   "text": "O hi me, where might I there among so many dyuerse and sundry sorts of hearbes finde the Mercurial Moli, an herb greatly commended of Homer and thought to be souereigne against inchauntments, of moderne authors altogether vnknowne?",
+   "note": "The first of his many complaints that the ancients had what he lacks."
+  },
+  {
+   "stop": 1,
+   "station": "wood",
+   "chapter": "II",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 24",
+   "occasion": "The wolf has gone and the tower has appeared; he takes stock of his own senses.",
+   "text": "Wherevpon, returning to my selfe, and casting my eyes towards the wooddie mountaines, which seemed to ioyne themselues together being looked vnto a farre off, I sawe the forme of a tower of an incredible heygth.",
+   "note": "Reported rather than quoted: the book gives his coming-to as something he says to himself."
+  },
+  {
+   "stop": 2,
+   "station": "horse",
+   "chapter": "III",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 37",
+   "occasion": "His own sigh comes back to him as an echo off the stone, and turns into the thought of Polia.",
+   "text": "O hi me, that so small or anye intermission should cause that hir louely and celestiall Idea and shape was not still imprinted in my minde, and continued a dayly companion, in whose brest my life is resolued to abide.",
+   "note": "The first time the sights of the dream give way to the person he is looking for."
+  },
+  {
+   "stop": 3,
+   "station": "colossus",
+   "chapter": "III",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 45",
+   "occasion": "On the anatomy written over the giant's organs in Chaldean, Greek and Latin.",
+   "text": "Oh wonderfull conceit.",
+   "note": "Four words: the shortest utterance in the book. He is standing inside a building that is a body."
+  },
+  {
+   "stop": 3,
+   "station": "colossus",
+   "chapter": "III",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 45",
+   "occasion": "Inside the bronze giant, having found the chamber of the heart, where love is generated.",
+   "text": "Oh the excellency of passed wittes, and perfect golden age, when Vertue did striue with Fortune, leauing onely behind him for an heritage to this our world blinde, ignorant, and grudging desire of worldly pelfe."
+  },
+  {
+   "stop": 4,
+   "station": "elephant",
+   "chapter": "III",
+   "kind": "question",
+   "edition": "dallington",
+   "source": "Dallington p. 189",
+   "occasion": "Long afterwards, at the palace, he finally asks Logistica what the elephant's inscription meant.",
+   "text": "Before the horrible feare that I was driuen into by the Dragon, I beheld a mighty huge Elephant of stone, with an entrance into his bellie, where were two Sepulchres, with a wryting the meaning wherof is too mysticall for me: that was, that I shoulde not touch the bodie, but take away the head.",
+   "note": "Her answer: leave the body, which is ease and idleness, and take the head, which is labour and industry."
+  },
+  {
+   "stop": 5,
+   "station": "elephant",
+   "chapter": "III",
+   "kind": "question",
+   "edition": "dallington",
+   "source": "Dallington p. 190",
+   "occasion": "His third question to the nymphs, on the hieroglyphs of the bridge: why the branches are cut in porphyry and not in ophite.",
+   "text": "Most wise Nymph, in my comming out of the subterraneall vast darksome place, as I passed on, I came to a goodlie bridge, and vppon the same I beheld engrauen certaine Hieragliphs, both which I did interprete, but I stoode doubtfull of certaine branches that were tyed to the hornes of the scalpe of the Oxe.",
+   "note": "Poliphilo reads the hieroglyphs correctly and still does not trust his reading. Logistica praises the asking: to behold, consider and measure is the way to knowledge."
+  },
+  {
+   "stop": 6,
+   "station": "portal",
+   "chapter": "IV",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 55",
+   "occasion": "Coming up to the great portal, having now seen all four wonders of the piazza.",
+   "text": "Oh reuerend arthists of times past, what despite hath gotten the vpper hand of your cunning, that the same is buried with you, and none left for vs to inherite in this age?"
+  },
+  {
+   "stop": 7,
+   "station": "portal",
+   "chapter": "V",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 82",
+   "occasion": "The hissing behind him in the dark doorway resolves into the dragon.",
+   "text": "Oh vnhappie wretch, oppressed with aduers and sad fortune!"
+  },
+  {
+   "stop": 7,
+   "station": "portal",
+   "chapter": "V",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 85",
+   "occasion": "Lost in the tunnels under the pyramid, in the dark, expecting to die there.",
+   "text": "If I die heere thus miserably, sorrowfully, and vncomfortably, all alone, who shal bee a woorthie successour of so precious a gemme? And who shal be the possor of such a treasure of so inestimable valure? And what faire heauen shal shew so cleare a light? Oh most wretched Poliphilus, whether dost thou go vnfortunate? whether dost thou hasten thy steppes?",
+   "note": "He addresses himself by name for the first time. It becomes his habit under strain."
+  },
+  {
+   "stop": 7,
+   "station": "portal",
+   "chapter": "V",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 86",
+   "occasion": "Deeper in, among the pillars and the pits, certain that this is the end.",
+   "text": "Oh lamentable and vnaccustomed death. O miserable end of my desired life. Where are my eyes? what be they barreine? Is their humor gone? Are there no more teares left to fall trickeling downe my blubbered cheekes?"
+  },
+  {
+   "stop": 7,
+   "station": "portal",
+   "chapter": "V",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 87",
+   "occasion": "The little wicket, and the daylight coming in at it.",
+   "text": "Oh with what ioy, and with what a glad heart I beheld it, and with what cheare did I hasten my steppes towards it!"
+  },
+  {
+   "stop": 7,
+   "station": "portal",
+   "chapter": "V",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 89",
+   "occasion": "Out in the light again, arguing himself out of going back for a second look at the vaults.",
+   "text": "There is no cause that should lead mee to turne back againe, all things considered: is not this a safer place, and more fit to flie from daunger? Is it not better to hassard a mans lyfe in the light and cleere Sunne, then to dye and sterue in a blinde darkenesse?",
+   "note": "The one moment in the book where his curiosity loses an argument."
+  },
+  {
+   "stop": 8,
+   "station": "fountain",
+   "chapter": "VI",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 90",
+   "occasion": "First sight of the pleasant country beyond the pyramid.",
+   "text": "Heere without all doubte is no habitation but for ciuill people, or rather for Angles and noble personages, and a place for Nimphes to frequent vnto, or for the Goddes and Auncients, Monarches and princes."
+  },
+  {
+   "stop": 8,
+   "station": "fountain",
+   "chapter": "VII",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 114",
+   "occasion": "In the eight-sided bath, on the carved nymphs of the frieze.",
+   "text": "Oh how exsquitely were the same Images cut, that oftentimes my eyes would wander from the real and liuely shapes to looke vpon those feyned representations!",
+   "note": "He keeps mistaking the sculpture for the bathing nymphs, and the nymphs for the sculpture."
+  },
+  {
+   "stop": 8,
+   "station": "fountain",
+   "chapter": "VII",
+   "kind": "speech",
+   "edition": "dallington",
+   "source": "Dallington p. 121",
+   "occasion": "The nymph Aphea asks why he has gone quiet. This is his answer, and they laugh at it.",
+   "text": "Pardon mee that I binde and vexe my selfe more then a willow Garland. Giue mee leaue to destroy my selfe in a lasciuious fire."
+  },
+  {
+   "stop": 8,
+   "station": "fountain",
+   "chapter": "VII",
+   "kind": "speech",
+   "edition": "dallington",
+   "source": "Dallington p. 121",
+   "occasion": "They tease him with Polia's name and he begs them to stop.",
+   "text": "Alas my desire, euen by the deitie which you serue, I beseech you put not Flaxe and Rosin to the fire whiche burneth mee out of all measure. Put no Pitch to the fire in my heart, make me not to forget my selfe I beseech you."
+  },
+  {
+   "stop": 8,
+   "station": "fountain",
+   "chapter": "VII",
+   "kind": "speech",
+   "edition": "dallington",
+   "source": "Dallington p. 121",
+   "occasion": "Soaked by the trick step of the pissing boy, to the nymphs who steered him onto it.",
+   "text": "O you women, that are burners and destroyers, doo you vse mee thus?",
+   "note": "Said in the same breath as the laughter: the book's one piece of slapstick, and he is the butt of it."
+  },
+  {
+   "stop": 12,
+   "station": "quinta_essentia",
+   "chapter": "XI",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 174",
+   "occasion": "Leaving Eleuterylida's palace with Logistica and Thelemia, unable to stay and look any longer.",
+   "text": "O happie were hee that myght bee but a drudge or kitchin slaue in suche a Paradice.",
+   "note": "Over the gate as he goes out: Ο ΤΗΣ ΦΥΣΕΩΣ ΟΛΒΟΣ — the wealth of nature."
+  },
+  {
+   "stop": 13,
+   "station": "three_doors",
+   "chapter": "XIII",
+   "kind": "speech",
+   "edition": "dallington",
+   "source": "Dallington p. 189",
+   "occasion": "Emboldened by two answered questions, he asks leave for a third.",
+   "text": "Seeing that, most gracious Nymphs, my speeches be not displeasant vnto you, and that I am not yet satis-fied in all that I haue seene, I pray you let me vnderstand this."
+  },
+  {
+   "stop": 13,
+   "station": "three_doors",
+   "chapter": "XIII",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 197",
+   "occasion": "Having chosen the third gate — Philtronia's, the house of Voluptuousness — and recoiled from it.",
+   "text": "Oh adulterated and vnkindly pleasure, fraught with miserie, contayning such bitternesse, like honnie and yet gall dropping from greene leaues. O lyfe worse then death, and yet deadly, delighted in sweete poyson."
+  },
+  {
+   "stop": 13,
+   "station": "three_doors",
+   "chapter": "XIII",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 197",
+   "occasion": "The same diatribe, turned from the pleasure to the faculty that chose it.",
+   "text": "O detestable madnesse, oh beguiled senses! Oh blinde Monster, how doost thou blinde, and with what deceipt doost thou couer the eyes and deceiue the vnderstanding sences of vnhappie and miserable Louers with vailes and mystes?",
+   "note": "He condemns the door he has just walked through, and then walks on through it."
+  },
+  {
+   "stop": 14,
+   "station": "polia",
+   "chapter": "XIII",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 200",
+   "occasion": "In the green arbour, before he has recognised her.",
+   "text": "Alas, my Polia!",
+   "note": "Said with a sigh so loud, the book says, that the whole arbour resounded with it."
+  },
+  {
+   "stop": 14,
+   "station": "polia",
+   "chapter": "XIII",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 207",
+   "occasion": "Watching the nymph who may or may not be Polia.",
+   "text": "Oh happie hee that may enioy such and so great a treasure of loue; and not onely a happie possessor I account him, but most happie that shall possesse and obtaine her obedience."
+  },
+  {
+   "stop": 14,
+   "station": "polia",
+   "chapter": "XIII",
+   "kind": "speech",
+   "edition": "dallington",
+   "source": "Dallington p. 212",
+   "occasion": "His first declaration, made before he knows who she is.",
+   "text": "Oh delycate and heauenly Damosell, whatsoeuer thou art, thy forcyble loue hath set me on fire and consumeth my grieued heart. I finde my selfe all ouer burning in an vncessant flame, and a sharpe dart cast into the middest of my breast, where it sticketh fast, hauing made a mortall wounde vncurable."
+  },
+  {
+   "stop": 14,
+   "station": "polia",
+   "chapter": "XIII",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington pp. 216–217",
+   "occasion": "Measuring her against the heroines other men were given.",
+   "text": "Oh most valiant Perseus, thou wouldest more feirsly haue fought with the cruell Dragon for the fauour of this then for the loue of thy fayre Andromada. Oh Iason, if the marriage of this had beene offered vnto thee, thou wouldest haue let goe the golden fleece."
+  },
+  {
+   "stop": 14,
+   "station": "polia",
+   "chapter": "XIII",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 217",
+   "occasion": "The book's central crisis in one sentence: he is falling in love with a woman who may be the woman he already loves.",
+   "text": "O Poliphilus, howe canst thou leaue at any tyme thy inseperable loue, kindled towardes thy sweete Polia, for any other?"
+  },
+  {
+   "stop": 15,
+   "station": "triumphs",
+   "chapter": "XIV",
+   "kind": "interior",
+   "edition": "dallington",
+   "source": "Dallington p. 247",
+   "occasion": "Among the four triumphal cars, wishing he could stay in the dream.",
+   "text": "Oh that I might be, if it were possible, a free man in such a place, for no sorrow shoulde greeue me, nor imminent danger should make me afraid."
+  },
+  {
+   "stop": 15,
+   "station": "triumphs",
+   "chapter": "XIV",
+   "kind": "prayer",
+   "edition": "dallington",
+   "source": "Dallington p. 248",
+   "occasion": "The nearest thing in Book I to a prayer, and the only thing he ever asks for.",
+   "text": "Oh God, if this be that desired Polia which I see at this present, and whose precious impression without intermission I haue stil born in my burning and wounded hart from the first yeers of my loue vntil this present, I am contented with all sorrows; and besides hir I desire no other request but only this, that she may be drawne to my feruent loue."
+  },
+  {
+   "stop": 16,
+   "station": "triumphs",
+   "chapter": "XV",
+   "kind": "apostrophe",
+   "edition": "dallington",
+   "source": "Dallington p. 249",
+   "occasion": "Comparing his condition, favourably, to the torments of the damned.",
+   "text": "Oh Titius, thou canst not perswade me that thy paine is equall with mine, although that the vultures teare open thy breast and, taking out thy smoking warm hart, do pluck it in peeces with their crooked beaks."
+  },
+  {
+   "stop": 17,
+   "station": "priapus",
+   "chapter": "XVI",
+   "kind": "speech",
+   "edition": "dallington",
+   "source": "Dallington p. 259",
+   "occasion": "The last thing he says in Dallington's English, before the 1592 translation breaks off.",
+   "text": "Alas, most delighted Polia, at this present to die by thee is a thing that I desire; and my death, if it were effected by these thy small, slender and faire hands, the ende thereof should be more tolerable, sweete and glorious vnto me.",
+   "note": "Dallington stops in chapter XVI. Everything after this is quoted from our own translation."
+  },
+  {
+   "stop": 18,
+   "station": "venus_temple",
+   "chapter": "XVII",
+   "kind": "interior",
+   "edition": "ours",
+   "source": "our translation p. 197",
+   "occasion": "Walking to the temple beside her, castigating himself for wanting what he wants.",
+   "text": "Alas, I dare not obtain that thing for which, with a thorny goad and with sedulous vehement impulse, I am solicited — and especially that thing so warmly desired, which I firmly judge that, obtaining it, I could make myself content above whatever lover."
+  },
+  {
+   "stop": 18,
+   "station": "venus_temple",
+   "chapter": "XVII",
+   "kind": "prayer",
+   "edition": "ours",
+   "source": "our translation p. 216",
+   "occasion": "The high priestess asks him, at the cistern, what he is asking for. This is his petition.",
+   "text": "I, most-sacred Lady, not only the efficacious grace of the supernal mother supplicate, but above all — that she, whom, doubtful, I esteem to be my most-desired Polia, I beseech that by her, more ambiguous, in so great an amorous torment I be not thus retained.",
+   "note": "Even at the altar, under oath, what he asks for is to stop being uncertain who she is."
+  },
+  {
+   "stop": 19,
+   "station": "venus_temple",
+   "chapter": "XVIII",
+   "kind": "interior",
+   "edition": "ours",
+   "source": "our translation p. 241",
+   "occasion": "After the rite, alone with her and with himself.",
+   "text": "Alas, how wilt thou do here, Poliphilo? Somewhat cogitate of the violence done to Deianira, and to the chaste Roman — badly and unhappily turned out. Revoke into memory that all long time accrues to him who can wait; and that the fierce lions, again, by continued days, are made gentle.",
+   "note": "He talks himself down by name, as he did in the vaults — the strife of love in a dream, argued out loud."
+  },
+  {
+   "stop": 20,
+   "station": "polyandrion",
+   "chapter": "XIX",
+   "kind": "apostrophe",
+   "edition": "ours",
+   "source": "our translation pp. 272–273",
+   "occasion": "Alone in the ruin among the tombs of those who died for love, having wandered off to read them when he should have stayed with her.",
+   "text": "Alas, wretched, impudent and unhappy me! O importunate investigation, and unbridled curiosity of past things!",
+   "note": "The most self-aware thing he says: his curiosity is the very thing that keeps taking him away from what he wants."
+  },
+  {
+   "stop": 20,
+   "station": "polyandrion",
+   "chapter": "XIX",
+   "kind": "apostrophe",
+   "edition": "ours",
+   "source": "our translation p. 282",
+   "occasion": "Back with Polia, to the little Cupid she carries.",
+   "text": "O sweetest winged one — how sweetly thou nestlest in my soul!"
+  },
+  {
+   "stop": 20,
+   "station": "polyandrion",
+   "chapter": "XIX",
+   "kind": "apostrophe",
+   "edition": "ours",
+   "source": "our translation p. 282",
+   "occasion": "And to her eyes, immediately after, in the same breath.",
+   "text": "O sweetest executioners — how, of my sad heart, have ye known to compose and gird so full and crammed a quiver to the divine flanks of Love?"
+  },
+  {
+   "stop": 21,
+   "station": "cythera",
+   "chapter": "XX",
+   "kind": "prayer",
+   "edition": "ours",
+   "source": "our translation p. 288",
+   "occasion": "In the boat to Cythera, with Cupid at the helm.",
+   "text": "O flame-bearing Cupid — you, some time, my lord, with the most-beautiful Psyche wounded your very self, and with your own cruel arrows, up to the newest line of ardour; and it pleased you to love her above all girls.",
+   "note": "He reminds the god of love that the god has been in love, and been hurt by it."
+  },
+  {
+   "stop": 26,
+   "station": "court",
+   "chapter": "XXVI",
+   "kind": "speech",
+   "edition": "ours",
+   "source": "our translation p. 390",
+   "occasion": "Book II, in Polia's mouth: Poliphilo dying at her feet in the temple of Diana, quoted by her, years later, to the nymphs.",
+   "text": "Alas, Polia, fair-haired Nymph! My goddess! My heart! My life! And sweetest trainer of my soul! Have pity on me.",
+   "note": "From here to chapter XXXII every utterance reaches us at one remove: he is being quoted by the person he was speaking to."
+  },
+  {
+   "stop": 30,
+   "station": "book_two",
+   "chapter": "XXIX",
+   "kind": "speech",
+   "edition": "ours",
+   "source": "our translation p. 422",
+   "occasion": "The first thing he says on coming back to life in her arms.",
+   "text": "Polia, my sweet Lady — why so wrongfully dost thou make me suffer?"
+  },
+  {
+   "stop": 32,
+   "station": "book_two",
+   "chapter": "XXXII",
+   "kind": "speech",
+   "edition": "ours",
+   "source": "our translation p. 436",
+   "occasion": "Before the priestess, taking the story back from Polia.",
+   "text": "Wishing, then, I, legitimately, the honour — which is the due and expected prize of my amorous Agon — to consequute…"
+  },
+  {
+   "stop": 32,
+   "station": "book_two",
+   "chapter": "XXXII",
+   "kind": "speech",
+   "edition": "ours",
+   "source": "our translation p. 437",
+   "occasion": "Beginning his own account of the events Polia has just finished narrating.",
+   "text": "Notable Priestess, and most-outstanding Lady: after that my lethal languors are quieted and somewhat settled…"
+  },
+  {
+   "stop": 32,
+   "station": "book_two",
+   "chapter": "XXXIII",
+   "kind": "letter",
+   "edition": "ours",
+   "source": "our translation pp. 444–445",
+   "occasion": "The first of the two love-letters, quoted in full in his telling.",
+   "text": "Most-avid, and supremely most-cupidinous to reveal somewhat the not-mediocre flame of the impatient Heart… Most-comely Polia, may it please thee now, to these my first speeches and anxious writing, to offer thyself.",
+   "note": "Written, not spoken — and so the only utterance in the book he had time to revise."
+  },
+  {
+   "stop": 32,
+   "station": "book_two",
+   "chapter": "XXXIII",
+   "kind": "letter",
+   "edition": "ours",
+   "source": "our translation pp. 447–448",
+   "occasion": "The second letter, sent after the first got no answer.",
+   "text": "If less were my harsh torment than thy accustomed cruelty, most-beautiful Nymph and Polia — a slaughterer of virtue… Now, my hope, deny not to me, wholly thine, who thus piteously supplicate pity."
+  },
+  {
+   "stop": 33,
+   "station": "book_two",
+   "chapter": "XXXIV",
+   "kind": "speech",
+   "edition": "ours",
+   "source": "our translation p. 453",
+   "occasion": "In the temple of Diana, the words he dies on — his side of the scene Polia narrated in chapter XXVI.",
+   "text": "Alas me, Polia — golden and precious Column of my living, sole consolable hope of my afflictions!",
+   "note": "Set beside p. 390 this is the book's real experiment: one moment, spoken twice, by each of the two people who were in it."
+  },
+  {
+   "stop": 34,
+   "station": "quinta_essentia",
+   "chapter": "XXXV",
+   "kind": "apostrophe",
+   "edition": "ours",
+   "source": "our translation p. 460",
+   "occasion": "At Venus's throne, to his own soul as it comes back into him.",
+   "text": "Come, indigene inhabitant, and Lady of the supreme citadel of my mind, best rational portion. Come, my heart, domicile of love."
+  },
+  {
+   "stop": 35,
+   "station": "book_two",
+   "chapter": "XXXVII",
+   "kind": "speech",
+   "edition": "ours",
+   "source": "our translation p. 463",
+   "occasion": "The last speech of the dream, and the only one in which he calls her by names he has invented for her.",
+   "text": "Philareta Polia, most-desired, and my most-elegant Eupathia: henceforth, every vulgar pondering excluded and every turbid suspicion exploded — thou art, by every mode, that unique, pre-elected among the mortals… to-be-worshipped Goddess of my soul, and of my every good.",
+   "note": "Philareta: virtue-loving. Eupathia: well-feeling. The doubt of chapter XIII is finally gone."
+  },
+  {
+   "stop": 36,
+   "station": "wood",
+   "chapter": "XXXVIII",
+   "kind": "apostrophe",
+   "edition": "ours",
+   "source": "our translation p. 465",
+   "occasion": "The sun comes up, the dream breaks, and for the first time he speaks to us.",
+   "text": "In that instant — alas, ah me, amorous readers — I ached all over from the hard clasping of that blessed image, that happy presence, that venerable majesty, which left me and deserted me between wondrous sweetness and piercing bitterness.",
+   "note": "The dream's last utterance is addressed out of the book, to whoever is reading it."
+  },
+  {
+   "stop": 37,
+   "station": "polyandrion",
+   "chapter": "Epitaphium Poliae",
+   "kind": "letter",
+   "edition": "ours",
+   "source": "our translation p. 466",
+   "occasion": "The closing leaf: an epitaph spoken by the dead flower, which the book titles the epitaph in which Poliphilo speaks.",
+   "text": "Traveller, make a little pause, I beg you: here is the perfume-shop of the nymph Polia… Alas, Poliphilo, give over. A flower thus dried never lives again. Farewell.",
+   "note": "His last recorded words are an instruction to himself to stop — and the flower does not revive."
+  }
+ ],
+ "silences": [
+  {
+   "stops": [
+    9,
+    10,
+    11
+   ],
+   "where": "Eleuterylida's court, the water-labyrinth and the human chess (chapters VIII-XI)",
+   "text": "Poliphilo says almost nothing across the whole palace sequence. He is fed, entertained, shown a labyrinth and a chess match danced by living pieces, and he asks not one question about any of it. His three questions to Logistica and Thelemia (Dallington pp. 189-191) are all about things he saw BEFORE he arrived - the elephant, the bridge. The palace is the one place in the book where he is a guest rather than an investigator."
+  },
+  {
+   "stops": [
+    22,
+    23,
+    24,
+    25
+   ],
+   "where": "the island of Cythera: the ring gardens, the theatre, the Fountain of Venus, the tomb of Adonis (chapters XXI-XXIV)",
+   "text": "Four chapters, some of the most elaborate description in the book, and not a single word from him. Everything quoted on Cythera is an inscription, cut in stone or spelled out in planting. He arrives at what he wanted and stops speaking; Polia and the nymphs do the talking, and he reads."
+  },
+  {
+   "stops": [
+    27,
+    28,
+    29,
+    31
+   ],
+   "where": "Polia's account of the plague, the visions, the nurse's counsel and the priestess (chapters XXVII-XXXI)",
+   "text": "He is not silent here so much as absent: Polia has the telling, and in these chapters she is recounting her own dreams, her nurse's long argument, and her own vows. He does not speak again until chapter XXXII, when he takes the narration back."
+  }
+ ],
+ "method": "Candidates were extracted mechanically - quoted spans in our translation, and speech cues and sentence-initial apostrophes in Dallington, whose 1592 text marks speech with almost no quotation marks at all - and then read one by one, since a cue proves a sentence is speech but not whose. Speeches by Polia, the nymphs, Logistica, Thelemia and the priestess were discarded; Poliphilo's own words quoted by Polia in Book II were kept, and marked. The eleven stops where he says nothing are recorded above rather than filled in."
+}

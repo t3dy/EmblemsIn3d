@@ -56,8 +56,9 @@ it.** A returning visitor can receive new JS with old CSS.
 
 Consequences, both of which are load-bearing:
 
-- `vercel.json` sets `Cache-Control: max-age=0, must-revalidate` on `*.html` and
-  `/src/data/*`. **GitHub Pages ignores this** and serves HTML with a fixed `max-age=600`.
+- **GitHub Pages serves HTML with a fixed `max-age=600`** and offers no way to change it.
+  (`vercel.json` used to ask for `must-revalidate`; Pages ignored it then too, and Vercel
+  was retired on 2026-09-07.)
 - Therefore **never fix a layout bug in CSS alone if JS can enforce it.** `setHidden()` in
   `main.js` writes `style.display` directly rather than relying on the stylesheet's
   `[hidden]{display:none!important}`, because that rule lives in the un-bustable HTML. A

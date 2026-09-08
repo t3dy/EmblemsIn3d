@@ -229,6 +229,7 @@
       "GreatPortal",
       "Ground",
       "HellTribune",
+      "JasmineArbour",
       "Meadow",
       "MedusaDoor",
       "Motes",
@@ -244,6 +245,7 @@
       "RiverPlants",
       "RuinWeeds",
       "SecondBridge",
+      "SecondNature",
       "Stream",
       "ThreeDoors",
       "Timeline",
@@ -267,6 +269,7 @@
       "danae",
       "elephant",
       "europa",
+      "fields",
       "fountain",
       "horse",
       "labyrinth",
@@ -1093,6 +1096,20 @@
             "tour"
           ],
           "note": "Rebuilt 2026-09-06 to the text: jacinth columns, black tables in coral jasper, ivory nymphs, the zophor of boys and sea-monsters, oak-leaf ribs, the lion-head censer, the fish mosaic."
+        },
+        {
+          "id": "second-nature",
+          "name": "The fruitful fields: the worked countryside",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 90 (\"a fayre and plentifull countrie, fruitefull fieldes, and fertile groundes\")",
+          "status": "built",
+          "built_as": "HPWorldScene._buildSecondNature",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Built 2026-09-07. Hunt reads the book through the three natures and the world had the first (the selva oscura) and the third (the courts) and nothing between them. Strip fields with real ridge-and-furrow, an orchard of apple/pear/plum in quincunx, and the arbustum -- vines married to elms, ch. I l. 625. Station key `fields`."
         }
       ]
     },
@@ -1331,12 +1348,55 @@
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-07",
+        "date": "2026-09-07",
+        "note": "Enumerated from the arbour and three-doors passages while building the jasmine arbour and cataloguing Poliphilo’s utterances. Not a full chapter pass."
       },
-      "features": []
+      "features": [
+        {
+          "id": "jasmine-arbour",
+          "name": "The arbour of sweet jessamine, where he first sees Polia",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 200",
+          "status": "built",
+          "built_as": "HPWorldScene._buildJasmineArbour",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Rebuilt 2026-09-07 as the tunnel the book describes -- \"lifting vppe and bending ouer ... and entring in vnder the same\" -- replacing four columns under a flat slab. The \"flowers of three sortes commixt\" are Rhizopoulou 2016’s three jasmines, red, yellow and white. One of only two things the Venice edition illustrates twice."
+        },
+        {
+          "id": "three-doors-choice",
+          "name": "The three doors, and his choice of the third",
+          "kind": "rite",
+          "plate": null,
+          "source": "Dallington pp. 189-197",
+          "status": "built",
+          "built_as": "HPWorldScene._buildDoorsWall",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "His recoil from Philtronia’s house of Voluptuousness, immediately after choosing it, is now in the Poliphilo layer (our p. 197)."
+        },
+        {
+          "id": "polia-recognition",
+          "name": "The doubt: is this nymph Polia?",
+          "kind": "rite",
+          "plate": null,
+          "source": "Dallington pp. 207-217",
+          "status": "partial",
+          "built_as": null,
+          "modes": [
+            "dream",
+            "tour"
+          ],
+          "note": "The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt."
+        }
+      ]
     },
     {
       "id": "XIV",

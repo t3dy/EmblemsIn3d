@@ -351,6 +351,20 @@
     #tour-panel .tp-editionlink:hover { color: #f5f0e8 !important; border-bottom-color: #f5f0e8; }
     #tour-panel .tp-quote { border-left: 2px solid #c8a040; padding: 0.3rem 0 0.3rem 0.9rem; margin: 0.15rem 0 0.1rem; font-style: italic; color: #e8dcc0; font-size: 0.86rem; line-height: 1.6; }
     #tour-panel .tp-quote cite { display: block; margin-top: 0.5rem; font-style: normal; font-size: 0.64rem; letter-spacing: 0.05em; color: #8a7a5a; }
+    /* Poliphilo's own voice. It is not commentary, so it does not look like
+       the commentary cards: the utterance is set larger and in the reading
+       face, with the occasion above it and the citation below. Used in the
+       tour panel and, with the same classes, in the free-walk notes. */
+    .tp-voice { border-left: 3px solid; padding: 0.5rem 0 0.55rem 0.85rem; margin: 0.15rem 0 0.55rem; background: rgba(224,184,119,0.045); }
+    .tp-voice-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.3rem; }
+    .tp-voice-occ { font-size: 0.72rem; color: #9a8a6c; line-height: 1.6; margin-bottom: 0.4rem; }
+    .tp-voice-said { font-size: 0.95rem; color: #f2e6c8; line-height: 1.75; font-style: italic; margin: 0; }
+    .tp-voice-said::before { content: '“'; font-style: normal; color: #b08a48; }
+    .tp-voice-said::after  { content: '”'; font-style: normal; color: #b08a48; }
+    .tp-voice-src { margin-top: 0.4rem; font-size: 0.62rem; letter-spacing: 0.05em; color: #8a7a5a; }
+    .tp-voice-gloss { margin-top: 0.45rem; font-size: 0.72rem; color: #a09070; line-height: 1.65; }
+    .tp-voice-silent { background: none; opacity: 0.85; }
+    .tp-voice-silent .tp-voice-occ { font-style: italic; }
     #tour-panel .tp-notes { display: flex; flex-direction: column; gap: 0.5rem; }
     #tour-panel .tp-note { border-left: 3px solid; padding: 0.4rem 0 0.4rem 0.8rem; background: rgba(255,255,255,0.018); }
     #tour-panel .tp-note-label { font-size: 0.56rem; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.2rem; }
@@ -783,6 +797,7 @@
     <button onclick="window.openGraphics()" title="Choose how each asset is drawn">Graphics</button>
     <a class="wn-link" href="../research/translation.html" title="The parallel Italian/English edition">Translation</a>
     <a class="wn-link" href="../research/lexicon.html" title="The book's own vocabulary, by topic">Lexicon</a>
+    <a class="wn-link" href="../research/poliphilo.html" title="Every utterance of Poliphilo, catalogued">Poliphilo</a>
   </div>
 
   <div id="ui">
@@ -972,6 +987,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=247"></script>
+  <script type="module" src="./main.js?v=255"></script>
 </body>
 </html>

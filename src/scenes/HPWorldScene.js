@@ -29,7 +29,7 @@ import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
-import { createMeadowField } from '../systems/Meadow.js?v=1';
+import { createMeadowField } from '../systems/Meadow.js?v=2';
 
 // pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
@@ -86,6 +86,13 @@ export const HP_STATIONS = [
   // wall and the cross-path to the courts.
   { key: 'horse',            name: 'The Winged Horse',       folio: 22,
     pos: [10.5, 22.5], look: [10.5, 16.5], radius: 6 },
+  // Second nature (GARDENS.md 2), built 2026-09-07: the worked countryside
+  // Poliphilo comes into after the vaults -- "a fayre and plentifull countrie,
+  // fruitefull fieldes, and fertile groundes" (Dallington p. 90). It lies west
+  // north-west of the dark wood, so that coming out of the wilderness you come
+  // into worked land: first nature into second, which is Hunt's whole point.
+  { key: 'fields',           name: 'The Fruitful Fields',    folio: 90,
+    pos: [-40, 41],  look: [-40, 53],  radius: 12 },
 ];
 
 const EYE = 1.7;
@@ -369,6 +376,7 @@ export class HPWorldScene {
     this._buildTrees();
     if (lit) this._buildMotes();
     if (lit) this._buildMeadow();
+    this._buildSecondNature();
 
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
@@ -2718,16 +2726,9 @@ export class HPWorldScene {
     const CX = 19, CZ = 20;
     this._m(new THREE.BoxGeometry(11, 0.22, 10), this._darkStoneMat, CX, 0.11, CZ, { cast: false });
 
-    // Pergola
-    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
-      const c = this.cast.props.column(1.7);
-      c.position.set(CX + sx * 2.4, 0, CZ + sz * 2.4);
-      this.scene.add(c);
-      this._circleCol(CX + sx * 2.4, CZ + sz * 2.4, 0.4);
-    }
-    for (const sz of [-1, 1]) this._m(new THREE.BoxGeometry(5.6, 0.22, 0.4), this._trunkMat, CX, 3.0, CZ + sz * 2.4);
-    for (const sx of [-1, 1]) this._m(new THREE.BoxGeometry(0.4, 0.22, 5.6), this._trunkMat, CX + sx * 2.4, 3.0, CZ);
-    this._m(new THREE.BoxGeometry(6.2, 0.14, 6.2), this._hedgeMat, CX, 3.2, CZ, { cast: false });
+    // The arbour of sweet jessamine, a tunnel he walks in under. Rebuilt
+    // 2026-09-07 from Dallington p. 200; see _buildJasmineArbour.
+    this._buildJasmineArbour(CX, CZ);
 
     // Polia and Poliphilo, and her torch
     const polia = this.cast.nymph({ name: 'Polia', h: 1.0, robe: 0xe8ddc0, pose: 'offer' });
@@ -2751,6 +2752,293 @@ export class HPWorldScene {
       this._m(new THREE.BoxGeometry(8, 0.8, 0.5), this._hedgeMat, CX, 0.4, CZ + sz * 4.6);
       this._wallCol(CX - 4, CX + 4, CZ + sz * 4.6 - 0.25, CZ + sz * 4.6 + 0.25);
     }
+  }
+
+  // ── The jasmine arbour where he first sees Polia (Dallington p. 200) ─────
+  //
+  // Rebuilt 2026-09-07. What stood here was four columns under a flat slab —
+  // a bus shelter. The book gives something quite different, and gives it in
+  // the one form Colonna almost never repeats: GARDENS.md §4 notes that the
+  // Venice text illustrates this arbour TWICE, which it does for hardly
+  // anything else.
+  //
+  //   "I behelde before mee, a fine Arbour of sweete Gessamine, somewhat high,
+  //    lifting vppe and bending ouer, all to bee painted and decked with the
+  //    pleasant and odoriferous flowers of three sortes commixt, and entring
+  //    in vnder the same."                              — Dallington p. 200
+  //
+  // Three things follow from that sentence and all three are built here.
+  // *Lifting up and bending over*: it is a barrel, not a lid — carpenter's
+  // ribs sprung from post to post. *Entering in under the same*: it is a
+  // tunnel he walks through, so it is open at both ends and the colliders run
+  // along its sides only. *Painted*: the frame is painted joinery, not bare
+  // timber — Segre notes the same construction surviving at Villa Medici in
+  // Fiesole and at Trebbio. The "three sortes commixt" are the three jasmines
+  // Rhizopoulou 2016 finds in the text — "jasmines with red, yellow and white
+  // flowers" (Table 1: g2′/i3/s7′/y1 jasmine, p5/g3 white, g3′ red, g3′
+  // yellow) — and she records that flowering jasmine is the book's symbol of
+  // divine love and happiness, which is what the arbour is for.
+  _buildJasmineArbour(CX, CZ) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const LEN = 11.0;          // runs north-south, entered from the walk
+    const HALF = 1.65;         // half the span: a tunnel two can pass in
+    const SPRING = 1.55;       // where the ribs leave the posts and bend over
+    const BAYS = 8;
+
+    // Painted carpenter's work: a soft lead-white green, the colour joinery
+    // was painted in these gardens, not the brown of a raw pole.
+    const paint = woodcut ? this._darkStoneMat
+      : S.mat({ color: 0xbfc4a8, roughness: 0.72, metalness: 0.0 });
+
+    const g = new THREE.Group();
+    g.position.set(CX, 0, CZ);
+    this.scene.add(g);
+
+    const ribGeo = new THREE.TorusGeometry(HALF, 0.055, 6, 20, Math.PI);
+    const postGeo = new THREE.CylinderGeometry(0.075, 0.09, SPRING, 8);
+
+    for (let b = 0; b <= BAYS; b++) {
+      const t = b / BAYS, z = -LEN / 2 + t * LEN;
+      for (const sx of [-1, 1]) {
+        this._m(postGeo, paint, sx * HALF, SPRING / 2, z, { parent: g });
+      }
+      // the bend: a half-torus sprung between the two posts
+      const rib = this._m(ribGeo, paint, 0, SPRING, z, { parent: g });
+      rib.rotation.y = Math.PI / 2;
+    }
+    // longitudinal stringers, three a side plus the crown, so the barrel reads
+    // as basketwork rather than as a row of separate hoops
+    for (const [ax, ay] of [[-HALF, 0.02], [-HALF * 0.71, HALF * 0.71], [0, HALF],
+                            [HALF * 0.71, HALF * 0.71], [HALF, 0.02]]) {
+      const s = this._m(new THREE.CylinderGeometry(0.035, 0.035, LEN, 6), paint,
+        ax, SPRING + ay, 0, { parent: g });
+      s.rotation.x = Math.PI / 2;
+    }
+    // and the two rails that keep the sides from being open air
+    for (const sx of [-1, 1]) for (const y of [0.55, 1.05]) {
+      const r = this._m(new THREE.CylinderGeometry(0.03, 0.03, LEN, 6), paint,
+        sx * HALF, y, 0, { parent: g });
+      r.rotation.x = Math.PI / 2;
+    }
+
+    // ── the growth ────────────────────────────────────────────────────────
+    // Jasmine is a twiner: it goes up the posts and along the ribs, and it is
+    // thickest at the crown. Leaves are cards (the same trick the trees use,
+    // for the same reason: a sphere of green reads as a blob), flowers are
+    // small and MANY, in the three colours.
+    const leafMat = woodcut ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
+      : new THREE.MeshStandardMaterial({
+          map: this._leafCardTexture('myrtle'),
+          transparent: true, alphaTest: 0.45, side: THREE.DoubleSide, roughness: 0.88 });
+    const leafGeo = new THREE.PlaneGeometry(0.62, 0.62);
+    // "flowers of three sortes commixt" — Rhizopoulou: red, yellow and white
+    const JASMINE = woodcut
+      ? [S.mat({ tone: -0.04 }), S.mat({ tone: -0.02 }), S.mat({ tone: 0.0 })]
+      : [S.mat({ color: 0xf6f0e2, roughness: 0.62 }),    // white
+         S.mat({ color: 0xe8c451, roughness: 0.62 }),    // yellow
+         S.mat({ color: 0xc4485a, roughness: 0.62 })];   // red
+    const flowerGeo = new THREE.SphereGeometry(0.032, 5, 4);
+
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 91.7 + k * 47.3 + CX * 3.1) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    let n = 0;
+    for (let i = 0; i < 560; i++) {
+      // parameterise the barrel: u along the tunnel, a around the arch
+      const u = rnd(i, 1), a = rnd(i, 2) * Math.PI;
+      const z = -LEN / 2 + u * LEN;
+      const x = Math.cos(a) * HALF, y = SPRING + Math.sin(a) * HALF;
+      // thicker at the crown, per "lifting uppe and bending ouer"
+      if (rnd(i, 3) > 0.52 + Math.sin(a) * 0.48) continue;
+      const jitter = 0.1;
+      const lx = x + (rnd(i, 4) - 0.5) * jitter, ly = y + (rnd(i, 5) - 0.5) * jitter;
+      const leaf = this._m(leafGeo, leafMat, lx, ly, z + (rnd(i, 6) - 0.5) * 0.3,
+        { parent: g, cast: false });
+      leaf.rotation.set(rnd(i, 7) * 1.2 - 0.6, rnd(i, 8) * Math.PI, rnd(i, 9) * Math.PI);
+      n++;
+      if (rnd(i, 10) < 0.34) {
+        const fx = lx + (rnd(i, 11) - 0.5) * 0.24, fy = ly - 0.08 - rnd(i, 12) * 0.16,
+              fz = z + (rnd(i, 13) - 0.5) * 0.3;
+        const jm = JASMINE[i % 3];
+        this._m(flowerGeo, jm, fx, fy, fz, { parent: g, cast: false });
+        this._m(flowerGeo, jm, fx + 0.055, fy - 0.045, fz + 0.03, { parent: g, cast: false });
+        this._m(flowerGeo, jm, fx - 0.04, fy - 0.06, fz - 0.03, { parent: g, cast: false });
+      }
+    }
+    // the stems themselves, wound up the outer posts
+    const stemMat = woodcut ? this._darkStoneMat : S.mat({ color: 0x4a3a22, roughness: 0.95 });
+    for (let b = 0; b <= BAYS; b++) {
+      const z = -LEN / 2 + (b / BAYS) * LEN;
+      for (const sx of [-1, 1]) {
+        const st = this._m(new THREE.CylinderGeometry(0.03, 0.045, SPRING * 1.02, 5),
+          stemMat, sx * (HALF + 0.06), SPRING / 2, z, { parent: g, cast: false });
+        st.rotation.z = sx * 0.05;
+      }
+    }
+
+    // Walls down the two sides; the ends stay open, because the book has him
+    // walk in under it.
+    this._wallCol(CX - HALF - 0.2, CX - HALF + 0.2, CZ - LEN / 2, CZ + LEN / 2);
+    this._wallCol(CX + HALF - 0.2, CX + HALF + 0.2, CZ - LEN / 2, CZ + LEN / 2);
+
+    this._plaque({ main: 'ARBOVR OF SWEETE GESSAMINE',
+      sub: 'LIFTING VPPE AND BENDING OVER · FLOVRES OF THREE SORTES COMMIXT · DALLINGTON P. 200' },
+      2.5, 0.34, CX, 0.5, CZ - LEN / 2 - 0.5, 0, true);
+    return { LEN, HALF };
+  }
+
+  // ── Second nature: the worked countryside (Dallington p. 90) ─────────────
+  //
+  // Built 2026-09-07 to close the gap GARDENS.md §2 names. Hunt reads the book
+  // through the humanist doctrine of the three natures — wilderness, the
+  // worked landscape, and garden art — and observes that Poliphilo compares
+  // them to each other the whole way through. This world had the first (the
+  // selva oscura) and the third (the courts and Cythera) and NOTHING between
+  // them, so the meadow was being asked to be wilderness-edge and garden at
+  // once and read as neither.
+  //
+  // The text is the country he comes into after the vaults:
+  //   "Nowe come to behoulde a fayre and plentifull countrie, fruitefull
+  //    fieldes, and fertile groundes."                     — Dallington p. 90
+  //
+  // Three kinds of worked ground, which is what second nature meant in the
+  // Veneto Colonna wrote in, and all three are named by the book itself:
+  //   * tilled strips — ploughland, laid in ridges, some in stubble;
+  //   * an orchard in quincunx — apple, pear and plum, the three fruits
+  //     Segre finds at Cythera, here in their ordinary agricultural use;
+  //   * the ARBUSTUM, vines married to elms. Chapter I names it in the wood's
+  //     own species list: "towgh Elmes beloued of the fruitfull vines"
+  //     (Dallington l. 625). Rhizopoulou 2016 reads the book's grapevines,
+  //     olives and fruit trees together as "an arboricultural economy".
+  //
+  // It lies west of the water-labyrinth basin, on the ground between the wood
+  // and the Queen's court, which is where his route crosses it.
+  _buildSecondNature() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    // The belt runs east-west across the open ground north-west of the dark
+    // wood, so that coming out of the wilderness you come into worked land --
+    // first nature into second, which is Hunt's whole point. It was first laid
+    // west of the water-labyrinth and had to move: the labyrinth basin is
+    // 9.8 m in radius about (-44, 34) and the fields were standing in it.
+    const X0 = -60, X1 = -20, Z0 = 46.5, Z1 = 61;
+    const CXm = (X0 + X1) / 2, CZm = (Z0 + Z1) / 2, WID = X1 - X0;
+
+    // ── the tilled strips ────────────────────────────────────────────────
+    // Strip fields: long, narrow, separately worked, and in different states
+    // in the same season, which is what tells you at a glance that land is
+    // farmed rather than merely open.
+    const soil = (base, dark, light) => {
+      const m = woodcut ? S.mat({ tone: 0.14 }) : S.mat({ color: 0xffffff, roughness: 0.98 });
+      if (!woodcut) this._dress(m, this._surfaceTexture({ base, dark, light, blobs: 40, speckle: 5200, courses: 26, repeat: 3 }), 0.28);
+      return m;
+    };
+    const fallow  = soil('#5e4c34', '#3e3020', '#7a6546');   // turned earth
+    const stubble = soil('#8a7f52', '#61562f', '#a89c6c');   // cut corn
+    const green   = soil('#455a26', '#2c3f18', '#617a38');   // young wheat
+    const STRIPS = 7, SD = (Z1 - Z0) / STRIPS;
+    // Ridge and furrow, built rather than drawn. Stripes painted on a flat
+    // plane read as a striped rug at grazing angles, and grazing angles are
+    // how you see a field you are standing in; the ridges need a section for
+    // the light to find. They are cheap -- long thin boxes, and
+    // _compileDrawCalls() merges the lot into one draw call.
+    const ridgeMat = woodcut ? S.mat({ tone: 0.12 })
+      : S.mat({ color: 0x6a5740, roughness: 0.99 });
+    for (let i = 0; i < STRIPS; i++) {
+      const mat = [fallow, green, stubble][i % 3];
+      const z = Z0 + (i + 0.5) * SD;
+      this._m(new THREE.PlaneGeometry(WID, SD * 0.94), mat, CXm, 0.045, z,
+        { rx: -Math.PI / 2, cast: false });
+      if (i % 3 === 0) {
+        const RIDGES = 7;
+        for (let r = 0; r < RIDGES; r++) {
+          const rz = z - SD * 0.42 + (r + 0.5) * (SD * 0.84 / RIDGES);
+          this._m(new THREE.BoxGeometry(WID * 0.98, 0.11, SD * 0.84 / RIDGES * 0.62),
+            ridgeMat, CXm, 0.10, rz, { cast: false });
+        }
+      }
+      // clods and field stones on the turned ground: a ploughed strip is not
+      // a smooth surface, and a handful of low lumps is enough to say so.
+      if (i % 3 === 0) {
+        const clodMat = woodcut ? S.mat({ tone: 0.10 })
+          : S.mat({ color: 0x6f5c44, roughness: 1.0 });
+        for (let c = 0; c < 26; c++) {
+          const v = Math.sin(c * 71.3 + i * 19.7) * 43758.5453;
+          const u = v - Math.floor(v);
+          const v2 = Math.sin(c * 33.9 + i * 51.1) * 24634.6345;
+          const u2 = v2 - Math.floor(v2);
+          const cl = this._m(new THREE.SphereGeometry(0.10 + u2 * 0.07, 5, 4), clodMat,
+            X0 + 0.6 + u * (WID - 1.2), 0.10, z + (u2 - 0.5) * SD * 0.7, { cast: false });
+          cl.scale.set(1, 0.55, 0.85);
+        }
+      }
+      // the baulk: a low grassy ridge between one man's strip and the next
+      if (i < STRIPS - 1) {
+        this._m(new THREE.BoxGeometry(WID, 0.16, 0.3), this._hedgeMat,
+          CXm, 0.08, Z0 + (i + 1) * SD, { cast: false });
+      }
+    }
+
+    // ── the orchard, in quincunx ─────────────────────────────────────────
+    // Rows offset by half a pitch, which is how fruit was set out and why an
+    // orchard looks unlike a wood from inside it: the eye finds a line
+    // whichever way it turns. Apple, pear and plum are the three Segre finds
+    // in the prati of Cythera (GARDENS.md 5), here in their ordinary use.
+    const FRUIT = ['apple', 'pear', 'plum'];
+    for (let r = 0; r < 3; r++) {
+      for (let c = 0; c < 9; c++) {
+        const x = X0 + 2.2 + c * 4.3 + (r % 2 ? 2.15 : 0);
+        const z = Z0 + 1.9 + r * 4.4;
+        if (x > X1 - 1.4) continue;
+        this._tree(x, z, 0.58, FRUIT[(r + c) % 3]);
+      }
+    }
+
+    // ── the arbustum: vines married to elms ──────────────────────────────
+    // Chapter I names it in the wood's own species list -- "towgh Elmes
+    // beloued of the fruitfull vines" (Dallington l. 625) -- and Rhizopoulou
+    // 2016 reads the book's grapevines, olives and fruit trees together as an
+    // arboricultural economy. Two rows along the southern edge, the vine
+    // swagged tree to tree in the festoons the Veneto calls a piantata.
+    const vineMat = woodcut ? S.mat({ tone: 0.05 })
+      : S.mat({ color: 0x4a5c28, roughness: 0.9 });
+    // A bunch is many small berries, not one plum. Built as a little cluster,
+    // because a single sphere at this size reads as a purple ball on a string.
+    const grapeMat = woodcut ? S.mat({ tone: -0.02 })
+      : S.mat({ color: 0x3d2447, roughness: 0.55 });
+    const berryGeo = new THREE.SphereGeometry(0.055, 5, 4);
+    const bunch = (bx, by, bz) => {
+      for (const [ox, oy, oz] of [[0, 0, 0], [0.075, -0.05, 0.02], [-0.07, -0.06, -0.03],
+                                  [0.01, -0.13, 0.05], [-0.03, -0.19, -0.02]]) {
+        this._m(berryGeo, grapeMat, bx + ox, by + oy, bz + oz, { cast: false });
+      }
+    };
+    const ELMS = 8, EX0 = X0 + 3, EXS = (WID - 6) / (ELMS - 1);
+    for (let row = 0; row < 2; row++) {
+      const ez = Z0 - 1.6 - row * 3.4;
+      for (let i = 0; i < ELMS; i++) {
+        const x = EX0 + i * EXS;
+        this._tree(x, ez, 1.05, 'elm');
+        if (i === 0) continue;
+        const x0 = EX0 + (i - 1) * EXS, SEG = 8;
+        for (let g = 0; g < SEG; g++) {
+          const t = (g + 0.5) / SEG, sag = Math.sin(t * Math.PI) * 0.6;
+          const xx = x0 + (x - x0) * t;
+          this._m(new THREE.SphereGeometry(0.11, 5, 4), vineMat, xx, 2.05 - sag, ez, { cast: false });
+          if (g % 2 === 1) bunch(xx, 1.86 - sag, ez + 0.1);
+        }
+      }
+    }
+
+    // ── the hedgerow that closes the belt ────────────────────────────────
+    // A field boundary, not a garden hedge: let grow, and only on the far side,
+    // so the belt is walked into from the wood rather than fenced off.
+    this._m(new THREE.BoxGeometry(WID, 0.95, 0.55), this._hedgeMat, CXm, 0.48, Z1 + 0.5, { cast: false });
+    this._wallCol(X0, X1, Z1 + 0.2, Z1 + 0.8);
+
+    this._plaque({ main: 'A FAYRE AND PLENTIFVLL COVNTRIE',
+      sub: 'FRVITEFVLL FIELDES AND FERTILE GROVNDES · DALLINGTON P. 90 · SECOND NATVRE, AFTER HVNT' },
+      3.2, 0.42, CXm + 9, 0.58, Z0 - 6.2, 0, true);
   }
 
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
@@ -8245,6 +8533,14 @@ export class HPWorldScene {
       citron:   { leaf: 'ovate',   crown: [1.15, 1.2, 1.15], trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x233f1a, light: 0x456a26, n: 26, top: 0.9, boughs: 3, fruit: 0xe8d24a, big: true },
       lemon:    { leaf: 'ovate',   crown: [1.05, 1.15, 1.05],trunk: [1.3, 0.10], bark: 0x5a4a34, dark: 0x1f3d16, light: 0x3f6a26, n: 24, top: 0.9, boughs: 3, fruit: 0xf0e060 },
       apple:    { leaf: 'ovate',   crown: [1.3, 1.1, 1.3],   trunk: [1.4, 0.11], bark: 0x5a4432, dark: 0x2a4a1c, light: 0x5a8a34, n: 26, top: 0.9, boughs: 4, fruit: 0xc83a3a },
+      // Pear and plum join apple 2026-09-07 for the orchard of second nature.
+      // Segre reads the three together at Cythera -- the prati carry apples in
+      // the first order, pears in the second, plums with pistachios in the
+      // third (GARDENS.md 5) -- so they belong in the worked country too. A
+      // pear stands taller and narrower than an apple and a plum lower and
+      // broader, which is the whole difference an orchard row needs.
+      pear:     { leaf: 'ovate',   crown: [1.05, 1.5, 1.05], trunk: [1.7, 0.10], bark: 0x54402e, dark: 0x27441a, light: 0x527f30, n: 26, top: 0.95, boughs: 4, fruit: 0xc0b055 },
+      plum:     { leaf: 'ovate',   crown: [1.4, 0.95, 1.4],  trunk: [1.2, 0.11], bark: 0x4e3b2c, dark: 0x25401c, light: 0x4c7a30, n: 26, top: 0.85, boughs: 4, fruit: 0x6a4a86 },
       olive:    { leaf: 'narrow',  crown: [1.35, 1.1, 1.35], trunk: [1.5, 0.16], bark: 0x6a5a48, dark: 0x4a5a3e, light: 0x8a9a74, n: 30, top: 0.9, boughs: 4, gnarled: true },
       plane:    { leaf: 'palmate', crown: [2.2, 1.9, 2.2],   trunk: [2.8, 0.17], bark: 0x9a8a6c, dark: 0x2c5a1c, light: 0x6a9a3a, n: 34, top: 0.95, boughs: 4, mottled: true },
       oak:      { leaf: 'lobed',   crown: [2.1, 1.8, 2.1],   trunk: [2.2, 0.20], bark: 0x3e2e1e, dark: 0x22421a, light: 0x4a7a2c, n: 34, top: 0.95, boughs: 5 },
@@ -8578,6 +8874,9 @@ export class HPWorldScene {
       rect(-14.5, 14.5, 10.6, 13.4),     // Three Doors wall
       rect(-19, 19, 24.2, 27.8),         // Great Portal piers
       rect(-35.5, 35.5, 31.5, 55),       // dark-wood duff
+      // Ploughed ground is ploughed: meadow grass must not grow out of the
+      // furrows of the strip fields, nor under the orchard and the arbustum.
+      rect(-61, -19, 41.5, 62),          // second nature -- the worked belt
       rect(-70, 70, -70, -33),           // sand strip and sea
       circle(30, -27, 9.3),              // the polyandrion's ruin floor
     );
@@ -8613,14 +8912,34 @@ export class HPWorldScene {
     const sun = new THREE.Vector3(16, 22, 10).normalize();   // the lit style's key
     const common = { clearance, sunDirection: sun, fogColor: 0xd0be9e, fogDensity: 0.0072 };
 
-    // The sward itself: clumped tufts, gold-green in the afternoon light
+    // The sward, rebuilt 2026-09-07. The first version read as cartoon: the
+    // blades were 10 cm across at the base, half a metre tall, and lime. Three
+    // changes, none of them expensive, because this is all one InstancedMesh:
+    //   * a blade is now 2 cm across and about a foot tall, which is what turf
+    //     is -- the eye reads grass by the count of edges, not by their size;
+    //   * there are more of them, and a low understorey under them, so the
+    //     ground between blades stops showing through as flat paint;
+    //   * the colours are greyer and cooler; the gold back-light that made the
+    //     whole field glow is now a pale straw.
     const grass = createMeadowField({
       ...common,
-      count: mobile ? 8000 : 22000,
+      count: mobile ? 11000 : 36000,
       seed: 7331,
-      blade: { height: 0.42, width: 0.05, segments: 3, planes: 3 },
-      colors: { root: 0x2e4a1e, tip: 0x7a9c42, rootB: 0x3c5a22, tipB: 0xa8b050, back: 0xd8c860 },
-      wind: { windStrength: 0.16, windSpeed: 1.15 },
+      blade: { height: 0.30, width: 0.019, segments: 3, planes: 3 },
+      colors: { root: 0x2b3f1c, tip: 0x5f7c37, rootB: 0x33501f, tipB: 0x7d904a, back: 0xb4b478 },
+      wind: { windStrength: 0.15, windSpeed: 1.1 },
+    });
+
+    // The understorey: short, dense, dark. It never reads as a blade of its
+    // own -- its whole job is to close the gaps so the ground is not seen as a
+    // painted plane between separate spikes.
+    const undergrass = createMeadowField({
+      ...common,
+      count: mobile ? 7000 : 22000,
+      seed: 2287,
+      blade: { height: 0.15, width: 0.016, segments: 2, planes: 3 },
+      colors: { root: 0x24361a, tip: 0x486327, rootB: 0x2a4020, tipB: 0x5a7434, back: 0x8c9c60 },
+      wind: { windStrength: 0.09, windSpeed: 1.0 },
     });
 
     // Wildflower drifts: cream-and-gold spikes gathered only where the clump
@@ -8630,8 +8949,8 @@ export class HPWorldScene {
       count: mobile ? 400 : 1000,
       seed: 4211,
       accept: (x, z, clump) => clump > 0.72,
-      blade: { height: 0.48, width: 0.04, segments: 3, planes: 2, flare: 1.4 },
-      colors: { root: 0x3a5423, tip: 0xdcc98e, rootB: 0x3a5423, tipB: 0xd8a850, back: 0xe8d090 },
+      blade: { height: 0.40, width: 0.018, segments: 3, planes: 2, flare: 1.9 },
+      colors: { root: 0x354c20, tip: 0xd8c48a, rootB: 0x354c20, tipB: 0xd0a44e, back: 0xdcc890 },
       wind: { windStrength: 0.2, windSpeed: 1.15 },
       scale: 0.85,
     });
@@ -8645,8 +8964,8 @@ export class HPWorldScene {
       count: mobile ? 600 : 1500,
       seed: 9042,
       accept: (x, z, clump) => roseBand(x, z) && clump > 0.3,
-      blade: { height: 0.5, width: 0.05, segments: 3, planes: 2, flare: 1.3 },
-      colors: { root: 0x2e4a1e, tip: 0xc84a5a, rootB: 0x35521f, tipB: 0xe07a8a, back: 0xe8a0a0 },
+      blade: { height: 0.42, width: 0.020, segments: 3, planes: 2, flare: 1.8 },
+      colors: { root: 0x2b3f1c, tip: 0xbc4655, rootB: 0x33501f, tipB: 0xd4737f, back: 0xdc9a9a },
       wind: { windStrength: 0.18, windSpeed: 1.1 },
       scale: 0.9,
     });
@@ -8656,12 +8975,21 @@ export class HPWorldScene {
     const isleClear = (x, z) => this._isleClearance(x, z);
     const isleGrass = createMeadowField({
       ...common, clearance: isleClear,
-      count: mobile ? 4000 : 12000,
+      count: mobile ? 6000 : 20000,
       seed: 5150,
       bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
-      blade: { height: 0.4, width: 0.05, segments: 3, planes: 3 },
-      colors: { root: 0x2e4a1e, tip: 0x7a9c42, rootB: 0x3c5a22, tipB: 0xa8b050, back: 0xd8c860 },
-      wind: { windStrength: 0.18, windSpeed: 1.2 },
+      blade: { height: 0.27, width: 0.018, segments: 3, planes: 3 },
+      colors: { root: 0x2b3f1c, tip: 0x62803a, rootB: 0x33501f, tipB: 0x82964e, back: 0xb8b87c },
+      wind: { windStrength: 0.16, windSpeed: 1.15 },
+    });
+    const isleUnder = createMeadowField({
+      ...common, clearance: isleClear,
+      count: mobile ? 4000 : 13000,
+      seed: 5151,
+      bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
+      blade: { height: 0.14, width: 0.015, segments: 2, planes: 3 },
+      colors: { root: 0x24361a, tip: 0x4a6629, rootB: 0x2a4020, tipB: 0x5c7636, back: 0x90a064 },
+      wind: { windStrength: 0.09, windSpeed: 1.0 },
     });
     const isleFlowers = createMeadowField({
       ...common, clearance: isleClear,
@@ -8669,8 +8997,8 @@ export class HPWorldScene {
       seed: 611,
       bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
       accept: (x, z, clump) => clump > 0.52,
-      blade: { height: 0.5, width: 0.045, segments: 3, planes: 2, flare: 1.45 },
-      colors: { root: 0x35521f, tip: 0xd86a7a, rootB: 0x3a5423, tipB: 0xe8c860, back: 0xf0d0a0 },
+      blade: { height: 0.42, width: 0.019, segments: 3, planes: 2, flare: 1.9 },
+      colors: { root: 0x314c1d, tip: 0xcc6472, rootB: 0x354c20, tipB: 0xd8bc5e, back: 0xe0c898 },
       wind: { windStrength: 0.2, windSpeed: 1.2 },
       scale: 0.9,
     });
@@ -8691,7 +9019,7 @@ export class HPWorldScene {
     const fieldDrift = (seed, thr, tip, tipB, back, scale) => createMeadowField({
       ...common, count: mobile ? 220 : 620, seed,
       accept: (x, z, clump) => palaceField(x, z) && clump > thr,
-      blade: { height: 0.46, width: 0.04, segments: 3, planes: 2, flare: 1.4 },
+      blade: { height: 0.38, width: 0.017, segments: 3, planes: 2, flare: 1.9 },
       colors: { root: 0x3a5423, tip, rootB: 0x35521f, tipB, back },
       wind: { windStrength: 0.2, windSpeed: 1.15 }, scale,
     });
@@ -8702,7 +9030,8 @@ export class HPWorldScene {
     this._plaque({ main: 'THE PLAINE FIELDES', sub: 'POWDERED WITH SVNDRIE SORTED COLOVRS · CROWFOOTE, OXEYE, CENTORIE, MELLILOT, COWSLOPS, EYEBRIGHT, MVSCARIOLI · DALLINGTON PP. 100–101' },
       2.4, 0.34, -6.4, 0.62, 6.2, Math.PI / 2, true);
 
-    for (const f of [grass, wildflowers, roses, isleGrass, isleFlowers, yellowDrift, blueDrift, whiteDrift, purpleDrift]) {
+    for (const f of [grass, undergrass, wildflowers, roses, isleGrass, isleUnder, isleFlowers,
+                     yellowDrift, blueDrift, whiteDrift, purpleDrift]) {
       this.scene.add(f.mesh);
       this._meadows.push(f);
     }
