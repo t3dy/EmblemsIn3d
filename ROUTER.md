@@ -190,10 +190,12 @@ scripts/                export_for_3d.py, build_translation_page.py, cut_figures
   world did until that date.
 - **An open-ended `CylinderGeometry` is invisible from inside** unless its material is
   `DoubleSide` — which is how the first Temple of Venus got a dome you could see sky through.
-- **Architecture is built of stones, not boxes.** `_column` makes drums and `_ashlar` makes
-  courses of ashlar, and both register a structure with `systems/Masonry.js` so Roll Up can
-  undermine them and bring them down. A new building modelled as one big `BoxGeometry` is
-  invisible to Roll Up (the census drops anything over 6 m) and cannot fall. Use `_ashlar`.
+- **Architecture is built of stones, not boxes.** `_column` makes drums, `_ashlar` makes
+  courses of ashlar and `_arch` makes voussoirs with a keystone; all three register a
+  structure with `systems/Masonry.js` so Roll Up can undermine them and bring them down. A
+  new building modelled as one big `BoxGeometry` — or a new arch modelled as one torus — is
+  invisible to Roll Up (the census drops anything over 6 m) and cannot fall. `scene._monoliths`
+  lists everything the census rejected for being too big, which is the ledger to check.
 - **An alpha-TESTED cutout must not be `transparent: true`.** `_mergeInto` skips transparent
   materials, so a leaf card or a lattice panel marked transparent is quietly exiled from the
   draw-call merge — and stays its own draw call, one per leaf. The foliage added on 2026-09-07/08

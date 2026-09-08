@@ -82,6 +82,10 @@ palace's roof are carried loads that come down with their supports (2026-09-08,
 object `_census` rejects for being over six metres — and it now holds nothing but
 sea, sky, ground discs, roads and terrace shells. What is left:
 
+- **The other arches.** `_arch` is used at Cythera's four chariot gates. The
+  bridge arches, the twenty Cythera fence gates and the Fountain of Venus's
+  arcade are still single tori. The fountain's are *segmental* (`scale.y = 0.62`)
+  so `_arch` would need a rise parameter separate from the span.
 - **The obelisk plinths, the bath, the Court screen, Book II's Treviso front.**
   `_ashlar(cx, cy, cz, w, h, d, mat, {course, block, ry, name})` does it in one
   call and registers the structure. The one care needed: a wall that also has a
@@ -96,9 +100,9 @@ sea, sky, ground discs, roads and terrace shells. What is left:
 - **Arches and vaults have no model at all.** An arch whose springing stone is
   eaten should fall; at present the voussoirs are one torus.
 - **Nothing falls on anything.** A toppled stone passes through the ball, through
-  people and through other stones, and lands on the ground plane rather than on
-  the rubble already there. Stacking rubble is the obvious next step and the
-  expensive one.
+  people and through other stones. It now lands on the WALKER'S FLOOR rather than
+  on y = 0 — so rubble on a terrace stays on the terrace — but not on the rubble
+  already there. Stacking rubble is the obvious next step and the expensive one.
 - **A stone thrown more than about 4 m from where it started can drift out of the
   roll-up's spatial grid**, which is keyed on its position at build time (cells
   of 4 m, searched ± 1). Toppling throws pieces 1–3 m so it does not bite today,

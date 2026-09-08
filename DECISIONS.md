@@ -83,9 +83,52 @@ player can walk up to, and those were:
   eight at the temple — asks `masonry.near(x, z, r)` by radius instead of an
   axis-aligned box, which was wrong for every bay off the cardinals.
 
+**Then the arches, which were the interesting case.** Every arch in the world was
+a single torus, and an arch is the one form that most deserved not to be: a ring
+of wedges each held in place by the thrust of the two beside it, and **the only
+common piece of masonry with no redundancy at all**. A wall can lose a course and
+stand on what is left. A column can lose a drum. An arch that loses *any* one
+voussoir — not only the keystone — comes down entire. That is why sappers went
+for arches, and it is now a flag: `masonry.structure({ brittle: true })`, and
+`_fail` topples the whole thing on the first course lost.
+
+`_arch(cx, cy, cz, span, depth, mat, {ry, n, thick, piers, name})` builds an odd
+number of wedges with radiating joints and a keystone standing proud at the
+crown, as every arch the 1499 plates draw has. Cythera's four chariot gates are
+the first users — posts of ashlar, arch of thirteen voussoirs, the AD CYTHERAM
+tablet carried on it. Verified live: eating **one ordinary voussoir**, not the
+keystone, brought the whole ring and its tablet down from 9.10 m to the terrace.
+
+Three things the arch forced out into the open, each a real bug:
+
+- **`Masonry.dependsOn(b, a)`.** A load can only be *carried*, because a mesh
+  belongs to exactly one course; but an arch stands on two piers, which are
+  structures, not loads. So structures can now lean on structures: bring a gate
+  post down and the arch on it follows, because an arch on one leg is not an arch.
+- **Rubble was landing at the springing level.** `rest` was `st.ground`, which for
+  an arch springing off a six-metre post is six metres in the air. The Masonry now
+  takes a `groundAt(x, z)` — the walker's own floor query — so a stone dropped on
+  Cythera's second terrace lands on the second terrace and a stone dropped off a
+  gate lands on the road.
+- **`resolve()` was running once per `_mergeInto`**, not once per build — and
+  `_mergeInto` is called for every float group, every billboard, the island and
+  the world. Every stone was being enrolled several times over. Harmless (the
+  duplicates are the same objects, so the "has every stone been eaten" test still
+  worked) but wrong, and it broke the *phantom* pass below. Moved to the end of
+  `_compileDrawCalls`.
+
+**Phantom pieces.** Not everything in a building reaches the census: a transparent
+material is skipped by the draw-call merge, so a plaque is never offered to
+`_census` at all — and AD CYTHERAM hung in the air over the wreck of its own gate.
+Course meshes with no census entry now get a phantom entry: moved like any other
+stone, never eatable, and not counted when asking whether a course has been eaten
+away.
+
 **What is still not done**: the Polyandrion (deliberately — it is a *ruin*, its
 columns are already broken on purpose), the Cythera terrace shells (they are
-ground, not walls), and arches, which have no voussoir model at all. The Three
+ground, not walls), and the small jewelled arcade of the Fountain of Venus, whose
+arches are segmental (`scale.y = 0.62`) and each cut from a different gemstone —
+`_arch` would need a rise parameter, and it is a reliquary, not masonry. The Three
 Doors wall is not a candidate either: the book insists it is "hewen ovt in the
 verie rocke", not built, and it is boulders on purpose.
 

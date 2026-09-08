@@ -42,7 +42,13 @@ const SETTLE = 2.6;         // m/s — a course dropping into the gap below it
 const TOPPLE_AT = 0.42;     // lose this fraction of your courses and you go over
 
 export class Masonry {
-  constructor() {
+  // `groundAt(x, z)` is where a falling stone comes to rest. It must be the
+  // GROUND, not the structure it fell off: an arch springs from the top of a
+  // six-metre post, and rubble that stops at the springing level is rubble
+  // hanging in the air. The scene passes the walker's own floor query, so a
+  // stone dropped on Cythera's second terrace lands on the second terrace.
+  constructor({ groundAt = null } = {}) {
+    this.groundAt = groundAt || (() => 0);
     this.structures = [];
     this.moving = [];                  // pieces in flight
     this._v = new THREE.Vector3();
@@ -58,10 +64,26 @@ export class Masonry {
   // ── declaring a building, at build time ────────────────────────────────
 
   // A vertical run of stones at one place on the ground.
-  structure({ x, z, r = 0.5, ground = 0, col = null, name = 'masonry' }) {
-    const st = { x, z, r, ground, col, name, courses: [], carried: [], gone: 0, dead: false };
+  // `brittle` is for the forms that have no redundancy. A wall or a column can
+  // lose a course and stand on what is left; an ARCH cannot. Every voussoir in a
+  // ring is holding every other one in compression, so removing any single wedge
+  // — not only the keystone — takes the whole arch down at once. That is why an
+  // arch is the thing medieval sappers went for, and it is why `_arch` sets this.
+  structure({ x, z, r = 0.5, ground = 0, col = null, name = 'masonry', brittle = false }) {
+    const st = { x, z, r, ground, col, name, brittle,
+                 courses: [], carried: [], dependents: [], gone: 0, dead: false };
     this.structures.push(st);
     return st;
+  }
+
+  // B stands on A: bring A down and B comes with it. Used where the relation is
+  // between two whole STRUCTURES rather than between a structure and a load —
+  // an arch on its two piers, a second storey on a first. (A load can only be
+  // carried, because a mesh belongs to exactly one course; a structure can lean
+  // on as many others as it likes.)
+  dependsOn(b, a) {
+    if (!a || !b || a === b || a.dependents.includes(b)) return;
+    a.dependents.push(b);
   }
 
   // One course of it: a drum, a plinth block, a capital, a ring of four ashlars.
@@ -111,12 +133,35 @@ export class Masonry {
   resolve(rollables) {
     let n = 0;
     for (const e of rollables) {
-      const src = e.src;
+      if (e.course) continue;      // _compileDrawCalls runs once per root, and
+      const src = e.src;           // this must not enrol the same stone twice
       const c = src && src.userData && src.userData.masonry;
       if (!c) continue;
       e.course = c;
       c.entries.push(e);
       n++;
+    }
+    // Not every piece of a building reaches the census. A transparent material
+    // is skipped by the draw-call merge (see ROUTER.md), so it is never offered
+    // to _census at all — and the lettering on a gate is a transparent plaque.
+    // Those pieces still belong to their course and must still move, or AD
+    // CYTHERAM hangs in the air over the wreck of its own gate, which is what
+    // happened on the first try. They get a PHANTOM entry: moved like any other
+    // stone, but never eatable, and not counted when asking whether a course has
+    // been eaten away.
+    for (const st of this.structures) {
+      for (const c of st.courses.concat(st.carried)) {
+        if (c.phantomed) continue;
+        c.phantomed = true;
+        for (const m of c.meshes) {
+          if (!m.parent) continue;                       // merged away: it has an entry
+          if (c.entries.some(e => e.src === m || e.mesh === m)) continue;
+          m.updateWorldMatrix(true, false);
+          const p = new THREE.Vector3().setFromMatrixPosition(m.matrixWorld);
+          c.entries.push({ phantom: true, taken: false, course: c, mesh: m, merged: null,
+                           start: 0, count: 0, r: 0.2, c: p, name: 'a phantom' });
+        }
+      }
     }
     return n;
   }
@@ -127,7 +172,7 @@ export class Masonry {
   take(entry) {
     const c = entry && entry.course;
     if (!c || c.gone) return;
-    for (const e of c.entries) if (!e.taken) return;    // the course still stands
+    for (const e of c.entries) if (!e.taken && !e.phantom) return;   // it still stands
     this._fail(c);
   }
 
@@ -136,6 +181,7 @@ export class Masonry {
     if (c.carried) return;              // eating the architrave holds nothing up
     const st = c.st;
     st.gone++;
+    if (st.brittle) { this.topple(st); return; }   // an arch loses one wedge and goes
     // Everything above drops into the gap — and so does everything held up.
     for (const up of st.courses) if (up.i > c.i && !up.gone) this._settle(up, c.h);
     for (const cc of st.carried) if (!cc.gone) this._settle(cc, c.h);
@@ -181,11 +227,12 @@ export class Masonry {
                     (dz / d) * push + (Math.random() - 0.5) * 0.7);
         rec.spin.set((Math.random() - 0.5) * 3.4, (Math.random() - 0.5) * 2.2,
                      (Math.random() - 0.5) * 3.4);
-        rec.rest = st.ground + Math.min(0.22, e.r);     // it lies where it lands
+        rec.rest = this.groundAt(e.c.x, e.c.z) + Math.min(0.22, e.r);   // it lies where it lands
       }
       c.gone = true;
     }
     st.courses.forEach(c => { c.gone = true; });
+    for (const d of st.dependents) this.topple(d);   // and whatever stood on it
     if (this.onTopple) this.onTopple(st);
   }
 

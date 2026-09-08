@@ -27,7 +27,7 @@ import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { RollUp } from '../systems/RollUp.js?v=5';
-import { Masonry } from '../systems/Masonry.js?v=3';
+import { Masonry } from '../systems/Masonry.js?v=7';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -278,7 +278,7 @@ export class HPWorldScene {
     // The buildings are made of stones, and the stones hold each other up.
     // See systems/Masonry.js: a column is a stack of drums, an entablature is a
     // load those stacks carry, and taking one out has consequences.
-    this.masonry = new Masonry();
+    this.masonry = new Masonry({ groundAt: (x, z) => this.walker.floorAt(x, z) });
     this._orbs = [];
     this._pulses = [];
     this._portals = [];
@@ -543,6 +543,16 @@ export class HPWorldScene {
     this._mergeInto(this._isleGroup, dyn);
     mark(this._isleGroup);
     this._mergeInto(this.scene, dyn);
+
+    // Every stone now knows which course of which building it belongs to. This
+    // must run AFTER the last _mergeInto, not inside it: _mergeInto is called
+    // once per float group, once per billboard, once for the island and once for
+    // the world, and resolving on each pass enrolled the same stone several
+    // times over and gave phantoms to pieces that had simply not been merged yet.
+    if (this._wantRoll) {
+      const n = this.masonry.resolve(this.rollables);
+      console.info('[masonry]', this.masonry.structures.length, 'structures,', n, 'stones');
+    }
   }
 
   _mergeInto(root, exclude) {
@@ -605,11 +615,6 @@ export class HPWorldScene {
       b.meshes.forEach((o, i) => this._census(o, mm, ranges[i][0], ranges[i][1]));
       for (const o of b.meshes) { o.removeFromParent(); this._trashGeo.add(o.geometry); }
       geos.forEach(g => g.dispose());
-    }
-    // Every stone now knows which course of which building it belongs to.
-    if (this._wantRoll) {
-      const n = this.masonry.resolve(this.rollables);
-      console.info('[masonry]', this.masonry.structures.length, 'structures,', n, 'stones');
     }
   }
 
@@ -4236,22 +4241,32 @@ export class HPWorldScene {
     const W = 4.4, H = 4.6;
     const tx = -Math.sin(a), tz = Math.cos(a);
     const x = CX + Math.cos(a) * r, z = CZ + Math.sin(a) * r;
+    // 2026-09-08: the posts are ashlar and the arch is voussoirs, so a gate can
+    // be brought down — by undermining a post, or by taking one wedge out of the
+    // ring, which is quicker and is how it is really done.
+    const posts = [];
     for (const sgn of [-1, 1]) {
       const px = x + tx * sgn * W / 2, pz = z + tz * sgn * W / 2;
-      this._m(new THREE.BoxGeometry(0.62, H, 0.62), stone, px, y + H / 2, pz, { ry: -a });
+      const col = this._circleCol(px, pz, 0.5);
+      const post = this._ashlar(px, y, pz, 0.62, H, 0.62, stone,
+        { ry: -a, course: 0.58, block: 0.62, name: 'a post of the chariot gate' });
+      post.col = col;
+      posts.push(post);
       this._m(new THREE.BoxGeometry(0.86, 0.18, 0.86), stone, px, y + H + 0.09, pz, { ry: -a, cast: false });
       // a gold ball on each, as the plates put on every gate-post they draw
       this._m(new THREE.SphereGeometry(0.24, 12, 10), gold, px, y + H + 0.32, pz, { outline: true });
-      this._circleCol(px, pz, 0.5);
     }
-    // the arch over, and the tablet on it
-    const arch = this._m(new THREE.TorusGeometry(W / 2, 0.24, 10, 24, Math.PI), stone,
-      x, y + H, z, { cast: false });
-    arch.rotation.y = -a + Math.PI / 2;
-    this._m(new THREE.BoxGeometry(W + 1.3, 0.42, 0.5), stone, x, y + H + W / 2 + 0.2, z,
+    // the arch over, and the tablet it carries
+    const arch = this._arch(x, y + H, z, W, 0.48, stone,
+      { ry: -a + Math.PI / 2, n: 13, thick: 0.4, name: 'the arch of the chariot gate',
+        piers: posts });
+    const tablet = this._m(new THREE.BoxGeometry(W + 1.3, 0.42, 0.5), stone, x, y + H + W / 2 + 0.2, z,
       { ry: -a, cast: false });
-    this._plaque({ main: 'AD CYTHERAM', sub: 'FOR THE PASSAGE OF THE TRIVMPHALL CHARIOTS' },
+    // the lettering goes down with the stone it is cut in, which it did not on
+    // the first try: AD CYTHERAM hung in the air over the wreck of its own gate
+    const legend = this._plaque({ main: 'AD CYTHERAM', sub: 'FOR THE PASSAGE OF THE TRIVMPHALL CHARIOTS' },
       2.4, 0.34, x, y + H + W / 2 + 0.2, z + 0.28 * Math.sign(Math.cos(a) || 1), -a + Math.PI / 2, true);
+    this.masonry.carry(arch, [tablet, legend]);
   }
 
   // ── The roll-up census ───────────────────────────────────────────────────
@@ -4317,7 +4332,11 @@ export class HPWorldScene {
   // the "of" clause.
   _rollName(mesh, r) {
     const m = mesh.material;
-    let base = (m && m.userData && m.userData.roll) || null;
+    // The MESH's own name wins where it has one: a voussoir and its keystone are
+    // cut from the same stone and share a material, so only the mesh can say
+    // which is which. Otherwise the material's name, set where the thing is made.
+    let base = (mesh.userData && mesh.userData.roll)
+      || (m && m.userData && m.userData.roll) || null;
     if (!base) {
       const t = mesh.geometry.type;
       if (t === 'SphereGeometry')      base = r < 0.07 ? 'a berry' : r < 0.2 ? 'a fruit' : r < 0.6 ? 'a ball of clipped box' : 'a mass of leaves';
@@ -5162,6 +5181,57 @@ export class HPWorldScene {
       }
       this.masonry.course(st, y, ch, stones);
     }
+    return st;
+  }
+
+  // A semicircular arch of VOUSSOIRS, with a keystone at the crown.
+  //
+  // 2026-09-08, continuing the masonry. Every arch in this world was a single
+  // torus, which is the one structural form that most deserved not to be: an
+  // arch is a ring of wedges each of which is held in place by the thrust of the
+  // two beside it, and it is the only common piece of masonry with NO
+  // redundancy. A wall can lose a course and stand on what is left. A column can
+  // lose a drum. An arch that loses any one voussoir — not only the keystone —
+  // comes down entire, which is why sappers went for arches, and why this one is
+  // registered `brittle` (see systems/Masonry.js).
+  //
+  // The joints radiate from the centre, which is the thing you actually see, so
+  // each wedge is a box turned to its own mid-angle and cut long enough at the
+  // extrados that the ring closes. The keystone stands a little proud, as it
+  // does on every arch the 1499 plates draw.
+  //
+  // `piers` are the structures it springs from: bring one down and the arch
+  // follows it, because an arch on one leg is not an arch.
+  _arch(cx, cy, cz, span, depth, mat, { ry = 0, n = 11, thick = null, parent = null,
+                                        name = 'an arch', piers = [] } = {}) {
+    const M = mat || this._stoneMat;
+    const R = span / 2;
+    const T = thick || Math.max(0.16, R * 0.16);
+    const N = n % 2 ? n : n + 1;                 // odd, so there IS a keystone
+    const dT = Math.PI / N;
+    const chord = 2 * (R + T / 2) * Math.tan(dT / 2) + 0.004;
+    const st = this.masonry.structure({ x: cx, z: cz, r: R, ground: cy,
+                                        name, brittle: true });
+    const key = Math.floor(N / 2);
+    const stones = [];
+    for (let i = 0; i < N; i++) {
+      const th = dT * (i + 0.5);                 // from one springing to the other
+      const kk = i === key;
+      const rr = R + T / 2 + (kk ? 0.03 : 0);
+      // local coordinates in the plane of the arch, then turned by ry
+      const lx = -Math.cos(th) * rr, ly = Math.sin(th) * rr;
+      const px = cx + Math.cos(ry) * lx, pz = cz - Math.sin(ry) * lx;
+      const v = this._m(new THREE.BoxGeometry(chord * (kk ? 1.06 : 1), T * (kk ? 1.22 : 1),
+                                              depth * (kk ? 1.08 : 1)),
+        M, px, cy + ly, pz, { parent, ry, cast: false, outline: kk });
+      // turn it to stand on its own radius: the joints must point at the centre
+      v.rotation.set(0, ry, th - Math.PI / 2);
+      v.userData.roll = kk ? 'the keystone of an arch' : 'a voussoir';
+      stones.push(v);
+      this.masonry.course(st, cy + ly, T, [v]);
+    }
+    for (const pr of piers) this.masonry.dependsOn(st, pr);
+    st.stones = stones;
     return st;
   }
 
