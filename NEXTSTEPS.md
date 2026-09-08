@@ -74,6 +74,30 @@ and **the hedges' silhouette** are all built. Still open:
   representations"* (p. 114). This needs no new geometry — it needs the carved nymphs of the
   frieze and the living nymphs in the water composed into **one view**, at one scale, in one
   light, or the sentence cannot happen. A camera study.
+### 0g. The rest of the world is still solid
+Columns are drums and the Great Portal's piers are ashlar (2026-09-08, `_ashlar`
++ `systems/Masonry.js`). Everything else that ought to be built of stones is
+still one box:
+
+- **The Temple of Venus**, the Queen's palace and court, the Polyandrion, the
+  amphitheatre's ring walls, the obelisk plinths. `_ashlar(cx, cy, cz, w, h, d,
+  mat, {course, block, ry, name})` does the job in one call and registers the
+  structure; the only care needed is that a wall which is also a `_wallCol`
+  should drop that collider when it topples (pass the collider in as `col`, the
+  way `_column` does).
+- **The Three Doors wall is not a candidate.** The book insists it is "hewen ovt
+  in the verie rocke" and it is boulders on purpose.
+- **Arches and vaults have no model at all.** An arch whose springing stone is
+  eaten should fall; at present the voussoirs are one torus.
+- **Nothing falls on anything.** A toppled stone passes through the ball, through
+  people and through other stones, and lands on the ground plane rather than on
+  the rubble already there. Stacking rubble is the obvious next step and the
+  expensive one.
+- **A stone thrown more than about 4 m from where it started can drift out of the
+  roll-up's spatial grid**, which is keyed on its position at build time (cells
+  of 4 m, searched ± 1). Toppling throws pieces 1–3 m so it does not bite today,
+  but a bigger collapse would need the grid re-keyed on landing.
+
 ### 0f. Roll Up — what is left
 Second pass done 2026-09-08. It now has an ending (the ladder of the seven metals to the
 chemical wedding, all of it out of `hp.db.alchemical_symbols`), it bumps on anything it cannot

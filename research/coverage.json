@@ -1,6 +1,6 @@
 {
   "$schema_note": "See HPTOTOURPIPELINE.md for the field meanings and the workflow.",
-  "generated": "2026-09-07",
+  "generated": "2026-09-08",
   "generator": "scripts/coverage_seed.py",
   "hand_edited_fields": [
     "chapters[].research",
@@ -207,6 +207,7 @@
       "Amphitheatre",
       "Artemisia",
       "Bath",
+      "Birds",
       "BookTwo",
       "Bridge",
       "ChessBallet",
@@ -224,6 +225,7 @@
       "Folio80Company",
       "Fortuna",
       "Fountain",
+      "Fumes",
       "Garden",
       "GracesFountain",
       "GreatPortal",
@@ -242,15 +244,19 @@
       "PriapusRite",
       "Quinta",
       "QuintaEssentia",
+      "Rills",
       "RiverPlants",
       "RuinWeeds",
       "SecondBridge",
       "SecondNature",
+      "ShadeMap",
+      "ShadedWalk",
       "Stream",
       "ThreeDoors",
       "Timeline",
       "Trees",
       "Triumphs",
+      "TurfSeats",
       "Venus",
       "VenusTemple",
       "WaterLabyrinth",
@@ -2430,26 +2436,203 @@
         379
       ],
       "text_source": {
-        "edition": "our translation (CC0)",
-        "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "edition": "this repo, CC0",
+        "file": "translation/en/page_369.md - page_379.md",
+        "note": "chapters XVII-XXXVIII are ours; page numbers are the 1499 leaves"
       },
       "plates": [],
       "plates_from": "page-range",
       "tour_stops": [
         {
-          "station": "cythera_theatre",
+          "station": "adonis",
           "title": "The Tomb of Adonis",
-          "notes": 5
+          "notes": 5,
+          "was": "cythera_theatre — retargeted 2026-09-08 when the station was built"
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "status": "enumerated",
+        "enumerated_by": "session of 2026-09-08",
+        "date": "2026-09-08",
+        "note": "Read end to end, pp. 369-379. The LAST chapter of Book I, eleven pages, and it carries NO WOODCUT — which is exactly why it went unbuilt: every coverage check this project ran before the ledger was driven by the plate catalogue, and the tour stop \"The Tomb of Adonis\" had been pointing at cythera_theatre's geometry since the commentary was written. The same shape as chapter V and the vaults. ROUTER.md rule 6."
       },
-      "features": []
+      "features": [
+        {
+          "id": "adonis-fountain",
+          "name": "The sacred fountain of Adonis, a hexagon of twelve paces",
+          "kind": "structure",
+          "plate": null,
+          "source": "ours p. 371 (and its banks, p. 370)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk",
+            "tour",
+            "rollup"
+          ],
+          "note": "\"shaped as a hexagon and twelve paces in its surrounding measure\"; banks \"hedged about and adorned with borders of Macedonian marble, not red, but of itself lustrous and veined\" (p. 370)."
+        },
+        {
+          "id": "adonis-serpent",
+          "name": "The golden serpent from the cleft of rock",
+          "kind": "ornament",
+          "plate": null,
+          "source": "ours p. 373",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "\"cast in a globed coil, to curb the force of the water — which, by a free and straight pipe, would have scattered beyond the limits of the fountain\": the book gives the hydraulics as design criticism, so the coil is built as three falling rings and the jet is short."
+        },
+        {
+          "id": "adonis-citrus-cloister",
+          "name": "The cloister of orange, lemon and citron, \"in an alternating marriage\"",
+          "kind": "planting",
+          "plate": null,
+          "source": "ours p. 371",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "four paces off the marble border; \"full of every singing bird — chiefly of nightingales, of thrushes, and of solitary blackbirds\", which are built as perching birds."
+        },
+        {
+          "id": "adonis-rose-lattice",
+          "name": "The foot-high lattice of red sandalwood, and the WHITE hundred-petalled roses",
+          "kind": "planting",
+          "plate": null,
+          "source": "ours p. 371, with the rite at pp. 375-376",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "The roses are white and that is the point of the whole station: they are not dyed purple until the liquor is drawn from the repository at the Ides, and Poliphilo sees them before the rite — \"all the whitest roses, AS AT PRESENT THEY APPEAR, are re-dyed in purple colour\"."
+        },
+        {
+          "id": "adonis-grove",
+          "name": "The grove of cornel-cherry, cypress, palm, poplar and pine",
+          "kind": "planting",
+          "plate": null,
+          "source": "ours p. 371",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk"
+          ],
+          "note": "trunks \"clear of a single obstructing branch, [so] the free air of the neighbouring parts could be beautifully seen through\". Cornel stands as plum and poplar as willow: the two species the SPECIES table does not carry."
+        },
+        {
+          "id": "adonis-thyme-pavement",
+          "name": "The tessellated pavement grassed with sheared thyme",
+          "kind": "surface",
+          "plate": null,
+          "source": "ours p. 371",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk",
+            "rollup"
+          ],
+          "note": "\"all tressed with tiniest fragrant thyme … with an even shearing\"."
+        },
+        {
+          "id": "adonis-rivulet",
+          "name": "The emissary rivulet under the manna-ashes",
+          "kind": "water",
+          "plate": null,
+          "source": "ours p. 370",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk"
+          ],
+          "note": "\"a most pleasing little rivulet carried off the liquid flowing waters … beneath the leaf-bearing manna-ashes with a soft and gentle murmur\". It is also the drain the stripped roses are thrown into at the Ides."
+        },
+        {
+          "id": "adonis-sepulchre",
+          "name": "The alabaster sepulchre of Adonis, five feet long",
+          "kind": "monument",
+          "plate": null,
+          "source": "ours pp. 372-374",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk",
+            "tour",
+            "rollup"
+          ],
+          "note": "socle, chest and cornice; the two carved long sides drawn as reliefs (see _adonisRelief)."
+        },
+        {
+          "id": "adonis-reliefs",
+          "name": "The two carved sides: Venus torn in the roses, and Adonis and the boar",
+          "kind": "relief",
+          "plate": null,
+          "source": "ours pp. 372-373",
+          "status": "built",
+          "built_as": "HPWorldScene._adonisRelief",
+          "modes": [
+            "walk"
+          ],
+          "note": "One side: Venus coming naked from the fountain, tearing her divine calf in the rose-bushes, and Cupid gathering the purple blood into an oyster-shell. The other: Adonis among shepherd-hunters, dogs and the dead boar, and Venus falling \"into the pitiful embraces of three half-swooning nymphs\"."
+        },
+        {
+          "id": "adonis-jacinth",
+          "name": "The jacinth stopping the repository, burning unsteadily",
+          "kind": "ornament",
+          "plate": null,
+          "source": "ours p. 373",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk"
+          ],
+          "note": "\"of a transparent vermilion colour, with great coruscation of flaming splendour, burning unsteadily by the light set opposite\" — so it is lit from behind, by a point light on the pulse list."
+        },
+        {
+          "id": "adonis-venus-effigy",
+          "name": "Venus in three-coloured sardonyx, in childbed, giving suck to Cupid",
+          "kind": "sculpture",
+          "plate": null,
+          "source": "ours p. 374",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis",
+          "modes": [
+            "walk"
+          ],
+          "note": "The stone is the conceit: the body cut from the milky vein of the onyx and the drapery from the red. Built recumbent, as a tomb effigy, and deliberately NOT as a painted cut-out — the book has stone here, not a painting. Her foot lies out over the rim for the nymphs to kneel and kiss, with the distich beneath it."
+        },
+        {
+          "id": "adonis-distich",
+          "name": "NON LAC SAEVE PVER, LACHRYMAS SED SVGIS AMARAS",
+          "kind": "inscription",
+          "plate": null,
+          "source": "ours p. 374",
+          "status": "built",
+          "built_as": "HPWorldScene._buildAdonis (plaque)",
+          "modes": [
+            "walk"
+          ],
+          "note": "the whole distich, with a plain English rendering under it."
+        },
+        {
+          "id": "adonis-rite",
+          "name": "The yearly rite of the Kalends of May, and the re-dyeing of the roses",
+          "kind": "rite",
+          "plate": null,
+          "source": "ours pp. 375-376",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [],
+          "note": "Named on a plaque at the station, but not enacted. It is a four-part ceremony with a calendar — stripping and heaping on the eve of the Kalends, the overnight reflowering to the same number, the scattering into the fountain and the rivulet on the Ides, the unsealing of the repository, the oyster-shell of divine gore, the purpling of the roses, and three lustrations. It wants the same treatment as the Triumphs: a timed sequence you can stand in."
+        }
+      ]
     },
     {
       "id": "XXV",

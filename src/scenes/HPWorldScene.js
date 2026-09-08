@@ -27,6 +27,7 @@ import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { RollUp } from '../systems/RollUp.js?v=5';
+import { Masonry } from '../systems/Masonry.js?v=1';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
@@ -77,6 +78,11 @@ export const HP_STATIONS = [
     pos: [0, -104], look: [0, -150], radius: 13 },
   { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358,
     pos: [0, -133.5], look: [0, -150], radius: 11, pitch: 0.05 },
+  // The last station of Book I (ch. XXIV, our pp. 370-379). It has no woodcut,
+  // which is why the tour's stop 25 pointed at the theatre's floor for months:
+  // every coverage check ran off the plate catalogue. See ROUTER.md rule 6.
+  { key: 'adonis',           name: 'The Fountain of Adonis', folio: 370,
+    pos: [20.34, -122.01], look: [24.69, -116.02], radius: 8 },
   // Appended after the island so the digit keys 1-9 keep their journey order.
   // The chess ballet is at signature g8r-h1r, facsimile pages 111-113 — the
   // Queen's entertainment after the banquet, and the last thing that happens
@@ -269,6 +275,10 @@ export class HPWorldScene {
     // picked up, with where it is, how big it is, what it is called, and how to
     // take it. Filled by _compileDrawCalls; see RollUp.js.
     this.rollables = [];
+    // The buildings are made of stones, and the stones hold each other up.
+    // See systems/Masonry.js: a column is a stack of drums, an entablature is a
+    // load those stacks carry, and taking one out has consequences.
+    this.masonry = new Masonry();
     this._orbs = [];
     this._pulses = [];
     this._portals = [];
@@ -596,6 +606,11 @@ export class HPWorldScene {
       for (const o of b.meshes) { o.removeFromParent(); this._trashGeo.add(o.geometry); }
       geos.forEach(g => g.dispose());
     }
+    // Every stone now knows which course of which building it belongs to.
+    if (this._wantRoll) {
+      const n = this.masonry.resolve(this.rollables);
+      console.info('[masonry]', this.masonry.structures.length, 'structures,', n, 'stones');
+    }
   }
 
   // ── Small helpers ─────────────────────────────────────────────────────────
@@ -743,7 +758,7 @@ export class HPWorldScene {
     return this._m(new THREE.PlaneGeometry(w, h), mat, x, y, z, { ry, cast: false, receive: false, parent });
   }
 
-  _circleCol(x, z, r) { this.walker.colliders.push({ x, z, r }); }
+  _circleCol(x, z, r) { const c = { x, z, r }; this.walker.colliders.push(c); return c; }
   _wallCol(x0, x1, z0, z1) { this.walker.walls.push({ x0, x1, z0, z1 }); }
 
   // Place a named NPC: registers for idle sway and the npcs registry
@@ -1758,15 +1773,23 @@ export class HPWorldScene {
   _buildGreatPortal() {
     const S = this.style;
     const Z = 26;
-    // Massive piers flanking a tall passage
+    // Massive piers flanking a tall passage — and massive is a hundred stones,
+    // not one box. Eight courses of twelve ashlars each, joints broken course by
+    // course, and the lintel above resting on both of them: undermine either
+    // pier in Roll Up and eighteen metres of architrave comes down. (2026-09-08;
+    // see _ashlar and systems/Masonry.js.)
+    const piers = [];
     for (const s of [-1, 1]) {
-      this._m(new THREE.BoxGeometry(7.2, 6.4, 2.2), this._stoneMat, s * 5.4, 3.2, Z, { outline: true });
+      piers.push(this._ashlar(s * 5.4, 0, Z, 7.2, 6.4, 2.2, this._stoneMat,
+        { name: 'a pier of the Great Portal' }));
       this._wallCol(s * 5.4 - 3.6, s * 5.4 + 3.6, Z - 1.1, Z + 1.1);
       // pier reliefs
       this._m(new THREE.BoxGeometry(0.5, 5.2, 0.3), this._darkStoneMat, s * 2.4, 2.6, Z + 1.15);
     }
-    // Lintel + frieze
-    this._m(new THREE.BoxGeometry(18, 1.4, 2.4), this._stoneMat, 0, 7.1, Z);
+    // Lintel + frieze — carried, and by both piers at once
+    const lintel = this._m(new THREE.BoxGeometry(18, 1.4, 2.4), this._stoneMat, 0, 7.1, Z);
+    const load = this.masonry.carry(piers[0], [lintel]);
+    this.masonry.alsoCarriedBy(load, piers[1]);
     // The lintel carries the Greek meander, with an egg-and-dart astragal
     // beneath it, when the carved-ornament variant is chosen.
     this._frieze(0, 7.35, Z + 1.22, 17.6, 0.72, 'meander');
@@ -3165,7 +3188,7 @@ export class HPWorldScene {
 
   _buildBirds() {
     if (this.style.key === 'woodcut') return;    // the plates cut their own birds
-    this._birds = [];
+    this._birds = this._birds || [];   // the Adonis grove may have perched some already
     const rnd = (i, k) => {
       const v = Math.sin(i * 53.7 + k * 197.3) * 43758.5453;
       return v - Math.floor(v);
@@ -4253,6 +4276,7 @@ export class HPWorldScene {
     const c = new THREE.Vector3().copy(bs.center).applyMatrix4(mesh.matrixWorld);
     this.rollables.push({
       name: this._rollName(mesh, r), r, c,
+      src: mesh,                                 // how Masonry.resolve finds it
       mesh: merged ? null : mesh, merged, start, count,
       mat: mesh.material, geo: merged ? null : null,
       taken: false,
@@ -4272,7 +4296,7 @@ export class HPWorldScene {
       if (t === 'SphereGeometry')      base = r < 0.07 ? 'a berry' : r < 0.2 ? 'a fruit' : r < 0.6 ? 'a ball of clipped box' : 'a mass of leaves';
       else if (t === 'PlaneGeometry')  base = r < 0.3 ? 'a leaf' : 'a painted panel';
       else if (t === 'CylinderGeometry') base = r < 0.15 ? 'a little baluster' : r < 0.8 ? 'a column drum' : 'a column';
-      else if (t === 'BoxGeometry')    base = r < 0.2 ? 'a tile' : r < 0.7 ? 'a brick' : 'a block of masonry';
+      else if (t === 'BoxGeometry')    base = r < 0.2 ? 'a tile' : r < 0.42 ? 'a brick' : 'a block of masonry';
       else if (t === 'ConeGeometry')   base = r < 0.4 ? 'a finial' : 'a spire';
       else if (t === 'TorusGeometry') {
         // it was calling every arch in the world a ring of gold
@@ -4306,6 +4330,9 @@ export class HPWorldScene {
   takeRollable(e) {
     if (e.taken) return null;
     e.taken = true;
+    // …and the building it was part of finds out. Everything above the stone
+    // settles into the gap; take enough and the whole thing comes down.
+    if (e.course) this.masonry.take(e);
     if (e.mesh) {
       e.mesh.removeFromParent();
       e.mesh.position.sub(e.c);        // re-centre on the thing itself
@@ -4877,40 +4904,94 @@ export class HPWorldScene {
   // its order. Each entablature gets architrave, frieze and a dentilled cornice.
 
   // A column of the given order, standing at (x, z) on the floor level `y0`.
+  // A column, built the way a column is built: out of stones.
+  //
+  // 2026-09-08, at Ted's asking. The shaft used to be one cylinder, which meant
+  // the roll-up saw a single 58 cm object and the world's architecture was a set
+  // of monoliths. It is now a stack of DRUMS — six or seven of them on a garden
+  // column, each about twenty centimetres by the eating measure — over the four
+  // stones of the attic base, under the necking and the capital. Twelve or more
+  // separate pieces, every one of them holding up everything above it.
+  //
+  // That is not a concession to the game. Classical columns really are stacked
+  // drums, dowelled at the centre, which is exactly why a ruined one lies on the
+  // ground in a row like fallen cheeses — and why, in Roll Up, one does too.
+  // See systems/Masonry.js for what happens when you take a drum out.
   _column(x, z, h, { order = 'ionic', r = null, parent = null, mat = null, flutes = 16 } = {}) {
     const M = mat || this._stoneMat;
     const rad = r || h * 0.055;
     const g = parent || this.scene;
     const at = (geo, yy, o = {}) => this._m(geo, M, x, yy, z, { parent: g, ...o });
+    // Where this column actually stands. The masonry reasons in world space, so
+    // an untilted parent group is just an offset and is folded in; a ROTATED one
+    // is not, and those columns get their stones but no structural bookkeeping —
+    // which is right, since a column on a moving triumphal car should not be
+    // able to collapse. (Folding the offset in also fixes a quiet old bug: the
+    // three-storey colonnade of the Area builds each column at a local (0,0)
+    // inside a placed group, so every one of them was pushing its collider onto
+    // the world origin, out in the middle of the piazza.)
+    const flat = !parent || (!parent.rotation.x && !parent.rotation.y && !parent.rotation.z);
+    const wx = flat && parent ? x + parent.position.x : x;
+    const wz = flat && parent ? z + parent.position.z : z;
+    const gy = flat && parent ? parent.position.y : 0;
+    const col = this._circleCol(wx, wz, rad * 1.6);
+    const st = flat
+      ? this.masonry.structure({ x: wx, z: wz, r: rad, ground: gy, col, name: 'a column' })
+      : null;
+    const course = (y, hh, ...meshes) => this.masonry.course(st, y + gy, hh, meshes);
 
-    // plinth, torus, scotia, torus — the attic base
-    at(new THREE.BoxGeometry(rad * 3.1, rad * 0.5, rad * 3.1), rad * 0.25);
-    at(new THREE.TorusGeometry(rad * 1.22, rad * 0.2, 6, 16), rad * 0.66, { rx: Math.PI / 2 });
-    at(new THREE.CylinderGeometry(rad * 1.1, rad * 1.25, rad * 0.3, 14), rad * 0.92);
-    at(new THREE.TorusGeometry(rad * 1.1, rad * 0.14, 6, 16), rad * 1.16, { rx: Math.PI / 2 });
+    // plinth, torus, scotia, torus — the attic base, four stones
+    course(0, rad * 0.5,
+      at(new THREE.BoxGeometry(rad * 3.1, rad * 0.5, rad * 3.1), rad * 0.25));
+    course(rad * 0.5, rad * 0.32,
+      at(new THREE.TorusGeometry(rad * 1.22, rad * 0.2, 6, 16), rad * 0.66, { rx: Math.PI / 2 }));
+    course(rad * 0.78, rad * 0.3,
+      at(new THREE.CylinderGeometry(rad * 1.1, rad * 1.25, rad * 0.3, 14), rad * 0.92));
+    course(rad * 1.02, rad * 0.28,
+      at(new THREE.TorusGeometry(rad * 1.1, rad * 0.14, 6, 16), rad * 1.16, { rx: Math.PI / 2 }));
 
-    // the shaft: entasis, and flutes cut as shallow ribs around it
+    // ── the shaft, in drums ──────────────────────────────────────────────
+    // The entasis is kept: the shaft still tapers from `rad` at the foot to
+    // 0.86 of it under the necking, only now the taper is shared out across the
+    // drums, each drum picking up exactly where the one below left off. Drum
+    // height is about two diameters, which is roughly what the quarries cut.
     const y0 = rad * 1.3, sh = h - y0 - rad * 1.5;
-    const shaft = at(new THREE.CylinderGeometry(rad * 0.86, rad, sh, 18), y0 + sh / 2, { outline: true });
-    if (flutes && this.style.key !== 'woodcut') {
-      for (let i = 0; i < flutes; i++) {
-        const a = (i / flutes) * Math.PI * 2;
-        const fr = rad * 0.93;
-        this._m(new THREE.CylinderGeometry(rad * 0.085, rad * 0.1, sh * 0.985, 5),
-          this._darkStoneMat, x + Math.cos(a) * fr, y0 + sh / 2, z + Math.sin(a) * fr,
-          { parent: g, cast: false, receive: false });
+    const nd = Math.max(3, Math.min(9, Math.round(sh / (rad * 2.2))));
+    const dh = sh / nd;
+    const rAt = (t) => rad * (1 - 0.14 * t);          // foot to necking
+    const cut = flutes && this.style.key !== 'woodcut';
+    for (let d = 0; d < nd; d++) {
+      const t0 = d / nd, t1 = (d + 1) / nd;
+      const yb = y0 + d * dh;
+      const stones = [
+        at(new THREE.CylinderGeometry(rAt(t1), rAt(t0), dh * 0.995, 18), yb + dh / 2,
+           { outline: d === nd - 1 }),
+      ];
+      // the flutes, cut drum by drum so a drum comes away with its own fluting
+      if (cut) {
+        for (let i = 0; i < flutes; i++) {
+          const a = (i / flutes) * Math.PI * 2;
+          const fr = rAt((t0 + t1) / 2) * 1.08;
+          stones.push(this._m(new THREE.CylinderGeometry(rad * 0.085, rad * 0.1, dh * 0.99, 5),
+            this._darkStoneMat, x + Math.cos(a) * fr, yb + dh / 2, z + Math.sin(a) * fr,
+            { parent: g, cast: false, receive: false }));
+        }
       }
+      course(yb, dh, ...stones);
     }
     // necking
-    at(new THREE.TorusGeometry(rad * 0.88, rad * 0.09, 6, 16), y0 + sh + rad * 0.05, { rx: Math.PI / 2 });
+    course(y0 + sh, rad * 0.2,
+      at(new THREE.TorusGeometry(rad * 0.88, rad * 0.09, 6, 16), y0 + sh + rad * 0.05, { rx: Math.PI / 2 }));
 
-    // capital
+    // ── the capital, and the abacus over it: two more courses ───────────
     const cy = y0 + sh + rad * 0.1;
     if (order === 'doric') {
-      at(new THREE.CylinderGeometry(rad * 1.25, rad * 0.9, rad * 0.45, 16), cy + rad * 0.22);
-      at(new THREE.BoxGeometry(rad * 2.7, rad * 0.28, rad * 2.7), cy + rad * 0.58);
+      course(cy, rad * 0.45,
+        at(new THREE.CylinderGeometry(rad * 1.25, rad * 0.9, rad * 0.45, 16), cy + rad * 0.22));
+      course(cy + rad * 0.45, rad * 0.28,
+        at(new THREE.BoxGeometry(rad * 2.7, rad * 0.28, rad * 2.7), cy + rad * 0.58));
     } else if (order === 'corinthian') {
-      at(new THREE.CylinderGeometry(rad * 1.25, rad * 0.88, rad * 1.15, 14), cy + rad * 0.58);
+      const bell = [at(new THREE.CylinderGeometry(rad * 1.25, rad * 0.88, rad * 1.15, 14), cy + rad * 0.58)];
       for (let k = 0; k < 8; k++) {                       // two tiers of acanthus
         const a = (k / 8) * Math.PI * 2;
         for (const [tier, rr, hh] of [[0, 1.02, 0.34], [1, 1.2, 0.78]]) {
@@ -4918,27 +4999,42 @@ export class HPWorldScene {
             x + Math.cos(a + tier * 0.4) * rad * rr, cy + rad * hh, z + Math.sin(a + tier * 0.4) * rad * rr,
             { parent: g, cast: false });
           lf.rotation.set(Math.sin(a) * 0.55, -a, -Math.cos(a) * 0.55);
+          bell.push(lf);
         }
       }
-      at(new THREE.BoxGeometry(rad * 2.9, rad * 0.3, rad * 2.9), cy + rad * 1.3);
+      course(cy, rad * 1.15, ...bell);
+      course(cy + rad * 1.15, rad * 0.3,
+        at(new THREE.BoxGeometry(rad * 2.9, rad * 0.3, rad * 2.9), cy + rad * 1.3));
     } else {                                              // ionic: a pair of volutes
-      at(new THREE.CylinderGeometry(rad * 1.1, rad * 0.9, rad * 0.3, 16), cy + rad * 0.15);
+      const vol = [at(new THREE.CylinderGeometry(rad * 1.1, rad * 0.9, rad * 0.3, 16), cy + rad * 0.15)];
       for (const sx of [-1, 1]) {
         const v = this._m(new THREE.TorusGeometry(rad * 0.42, rad * 0.17, 7, 16), M,
           x + sx * rad * 0.92, cy + rad * 0.5, z, { parent: g, ry: Math.PI / 2 });
         v.scale.set(1, 1, 0.62);
+        vol.push(v);
       }
-      at(new THREE.BoxGeometry(rad * 2.5, rad * 0.24, rad * 1.9), cy + rad * 0.82);
+      course(cy, rad * 0.7, ...vol);
+      course(cy + rad * 0.7, rad * 0.24,
+        at(new THREE.BoxGeometry(rad * 2.5, rad * 0.24, rad * 1.9), cy + rad * 0.82));
     }
-    this._circleCol(x, z, rad * 1.6);
-    return h;
+    return st || h;
   }
 
   // Architrave (three fasciae), frieze, and a cornice carrying dentils.
+  // Architrave (three fasciae), frieze, and a cornice carrying dentils — and it
+  // is HELD UP. Every column standing under this rectangle takes a share of the
+  // load, so shortening any one of them drops the whole entablature by that
+  // much, and bringing any one of them down brings the entablature down with it.
+  // A lintel bearing on four columns is only as sound as its weakest.
   _entablature(cx, cy, cz, w, d, { parent = null, ry = 0, dentils = true, mat = null } = {}) {
     const M = mat || this._stoneMat;
     const g = parent || this.scene;
-    const at = (geo, mm, yy, o = {}) => this._m(geo, mm, cx, yy, cz, { parent: g, ry, cast: false, ...o });
+    const load = [];
+    const at = (geo, mm, yy, o = {}) => {
+      const m = this._m(geo, mm, cx, yy, cz, { parent: g, ry, cast: false, ...o });
+      load.push(m);
+      return m;
+    };
     // architrave, stepped forward in three bands
     at(new THREE.BoxGeometry(w, 0.16, d), M, cy + 0.08);
     at(new THREE.BoxGeometry(w + 0.06, 0.14, d + 0.06), M, cy + 0.23);
@@ -4951,14 +5047,90 @@ export class HPWorldScene {
       for (let i = 0; i < n; i++) {
         const t = -w / 2 + (i + 0.5) * (w / n);
         const px = cx + Math.cos(ry) * t, pz = cz - Math.sin(ry) * t;
-        this._m(new THREE.BoxGeometry(w / n * 0.5, 0.14, d + 0.2), M, px, cy + 0.92, pz,
-          { parent: g, ry, cast: false });
+        load.push(this._m(new THREE.BoxGeometry(w / n * 0.5, 0.14, d + 0.2), M, px, cy + 0.92, pz,
+          { parent: g, ry, cast: false }));
       }
     }
     // cornice, and the corona that throws the shadow line
     at(new THREE.BoxGeometry(w + 0.34, 0.16, d + 0.34), M, cy + 1.07);
     at(new THREE.BoxGeometry(w + 0.44, 0.1, d + 0.44), M, cy + 1.2);
+
+    // …and now find out who is carrying it. Only when it sits in the world
+    // unrotated, for the same reason a column inside a moving group gets no
+    // bookkeeping: the masonry reasons in world space.
+    const flat = (!parent || (!parent.rotation.x && !parent.rotation.y && !parent.rotation.z)) && !ry;
+    if (flat) {
+      const ox = parent ? parent.position.x : 0, oz = parent ? parent.position.z : 0;
+      const oy = parent ? parent.position.y : 0;
+      const x0 = cx + ox, z0 = cz + oz;
+      // Only the columns whose tops are near this entablature's soffit: the Area
+      // stacks three orders one above another at the same x,z, and the second
+      // storey must not be found carrying the ground-floor architrave.
+      const props = this.masonry.under(x0 - w / 2 - 0.5, x0 + w / 2 + 0.5,
+                                       z0 - d / 2 - 0.5, z0 + d / 2 + 0.5)
+        .filter(st => Math.abs(st.ground - oy) < 1.2 || (st.courses.length
+                 && Math.abs(st.courses[st.courses.length - 1].y - (cy + oy)) < 1.2));
+      if (props.length) {
+        const c = this.masonry.carry(props[0], load);
+        for (let i = 1; i < props.length; i++) this.masonry.alsoCarriedBy(c, props[i]);
+      }
+    }
     return cy + 1.25;
+  }
+
+  // A wall or pier of ASHLAR — courses of dressed blocks with the joints broken,
+  // instead of one box pretending to be stone.
+  //
+  // 2026-09-08, at Ted's asking, and the same argument as the column drums: a
+  // building the roll-up can only see as one six-metre monolith is not a
+  // building, it is a prop. Courses about 80 cm high and blocks about 1.2 m
+  // long put every stone at roughly half a metre by the eating measure, which is
+  // a stone a grown ball can lift and a small one cannot — and alternate courses
+  // are offset by half a block, because a wall whose joints line up vertically
+  // is a wall that falls down, which masons have known for six thousand years.
+  //
+  // The whole pier is one structure (see systems/Masonry.js): a course only
+  // fails when every block in it has been eaten, so a pier twelve blocks to the
+  // course takes real work to undermine — and then everything above it, and
+  // everything it was carrying, comes down.
+  _ashlar(cx, cy, cz, w, h, d, mat, { course = 0.8, block = 1.2, jitter = 0.012,
+                                      name = 'a pier', ry = 0 } = {}) {
+    const M = mat || this._stoneMat;
+    const nc = Math.max(1, Math.round(h / course));
+    const ch = h / nc;
+    const nd = Math.max(1, Math.round(d / block));
+    const bd = d / nd;
+    const st = this.masonry.structure({ x: cx, z: cz, r: Math.max(w, d) / 2, ground: cy, col: null, name });
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 91.7 + k * 57.3 + cx * 3.1 + cz * 7.7) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    for (let c = 0; c < nc; c++) {
+      // half a block of offset on every other course: the joints must break
+      const stagger = (c % 2) ? 0.5 : 0;
+      const nw = Math.max(1, Math.round(w / block));
+      const bw = w / nw;
+      const y = cy + c * ch;
+      const stones = [];
+      for (let i = 0; i <= nw; i++) {
+        let x0 = -w / 2 + (i - stagger) * bw;
+        let x1 = x0 + bw;
+        if (x1 <= -w / 2 + 1e-6 || x0 >= w / 2 - 1e-6) continue;
+        x0 = Math.max(x0, -w / 2); x1 = Math.min(x1, w / 2);      // the end stones are short
+        const bwi = x1 - x0;
+        for (let k = 0; k < nd; k++) {
+          const z0 = -d / 2 + k * bd;
+          const j = jitter * (rnd(c * 37 + i, k) - 0.5);           // the face is not machined
+          const lx = (x0 + x1) / 2, lz = z0 + bd / 2;
+          const px = cx + Math.cos(ry) * lx + Math.sin(ry) * lz;
+          const pz = cz - Math.sin(ry) * lx + Math.cos(ry) * lz;
+          stones.push(this._m(new THREE.BoxGeometry(bwi - 0.02 + j, ch - 0.02, bd - 0.02),
+            M, px, y + ch / 2, pz, { ry, outline: c === nc - 1 }));
+        }
+      }
+      this.masonry.course(st, y, ch, stones);
+    }
+    return st;
   }
 
   // A flight of steps (a crepidoma) on the +z face of a platform.
@@ -8883,6 +9055,10 @@ export class HPWorldScene {
     // orders of meadow. Everything radial on this island is therefore twenty.
     const STEP = Math.PI / 10;                      // twenty radial roads
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    // The sacred fountain of Adonis (ch. XXIV) takes one bosco compartment, off
+    // a road that ends at its grove. Not a cardinal: the four cardinals are the
+    // chariot roads and run clear through.
+    const ADONIS_K = 3, ADONIS_A = ADONIS_K * STEP, ADONIS_R = 42;
 
     // Sand rim and sward
     const sandMat = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
@@ -8902,9 +9078,13 @@ export class HPWorldScene {
     // river); the other eight stop at the river's outer bank.
     const isleTrack = lit ? S.mat({ color: 0x6a5a40, roughness: 0.92 }) : S.mat({ tone: 0.03, rim: 0 });
     if (lit) this._dress(isleTrack, this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 }), 0.3);
+    // The road on the Adonis compartment stops at the sacred enclosure: the
+    // company comes to the fountain "by the paths or streets marked out among
+    // the plants of the fruit-bearing orchards" (p. 369) and the grove closes
+    // round it.
     for (let k = 0; k < 20; k++) {
       const a = k * STEP, cardinal = k % 5 === 0;
-      const r0 = cardinal ? 7.6 : 22.2, r1 = 49;
+      const r0 = cardinal ? 7.6 : 22.2, r1 = k === ADONIS_K ? ADONIS_R - 6.4 : 49;
       const [x, z] = pos(a, (r0 + r1) / 2);
       this._m(new THREE.PlaneGeometry(2.6, r1 - r0), isleTrack, x, 0.09, z,
         { rx: -Math.PI / 2, rz: -a - Math.PI / 2, cast: false });
@@ -8926,6 +9106,9 @@ export class HPWorldScene {
         const a = a0 + (0.14 + rnd(k * 7 + t, 1) * 0.72) * STEP;
         const r = 37 + rnd(k * 7 + t, 2) * 9.5;
         const [x, z] = pos(a, r);
+        // the sacred grove keeps its own clearing
+        const [ax, az] = pos(ADONIS_A, ADONIS_R);
+        if (Math.hypot(x - ax, z - az) < 7.4) continue;
         this._tree(x, z, 0.9 + rnd(k * 7 + t, 3) * 0.5, BOSCO[k]);
       }
       // the enclosure: a cypress at mid-wedge on the rim, myrtle beneath it
@@ -9193,6 +9376,9 @@ export class HPWorldScene {
     this._buildAmphitheatre(CX, CZ);
     this._buildCupidTriumph(CX, CZ + 23);
 
+    // ── The last station of Book I (ch. XXIV) ────────────────────────────
+    this._buildAdonis(CX, CZ, ADONIS_A, ADONIS_R);
+
     // ── The landing ───────────────────────────────────────────────────────
     for (let i = 0; i < 3; i++) {
       this._m(new THREE.BoxGeometry(2.2, 0.12, 1.5), this._trunkMat, 0, 0.2, -99.4 - i * 1.6);
@@ -9204,6 +9390,377 @@ export class HPWorldScene {
     this._floats.push({ g: skiff, wheels: [], phase: 2.4 });
     this._plaque({ main: 'CYTHERA', sub: 'THE ISLAND OF VENUS · PRESS 9 TO RETURN' },
       1.25, 0.32, -2.5, 1.1, -108, 0.35, true);
+  }
+
+
+  // ── The sacred fountain and the sepulchre of Adonis (ch. XXIV) ───────────
+  //
+  // Our pp. 370-379. The last chapter of Book I, eleven pages long, and with no
+  // woodcut at all -- which is why the tour has had a stop called "The Tomb of
+  // Adonis" pointing at the theatre's floor since the commentary was written.
+  // The coverage ledger found it; the plate-driven checks never could. See
+  // ROUTER.md rule 6.
+  //
+  // THE PLACE (p. 371). A fountain "shaped as a hexagon, and twelve paces in its
+  // surrounding measure", its banks "hedged about and adorned with borders of
+  // Macedonian marble" (p. 370). About it, at four paces from the border, a
+  // cloister of "orange, lemon and citron trees ... composedly matched in an
+  // alternating marriage", "full of every singing bird -- chiefly of
+  // nightingales, of thrushes, and of solitary blackbirds". At their trunks "a
+  // lattice-fence ... raised a foot high ... of red erythraean wood, of
+  // sandalwood", carrying rose-bushes "of the hundred-petalled kind". Outside
+  // that, a grove of cornel-cherry, cypress, palm, poplar and pine, trunks
+  // "clear of a single obstructing branch, [so] the free air of the neighbouring
+  // parts could be beautifully seen through". The floor is tessellated pavement
+  // grassed over, "all tressed with tiniest fragrant thyme ... with an even
+  // shearing", and a rivulet carries the water off "beneath the leaf-bearing
+  // manna-ashes with a soft and gentle murmur" (p. 370).
+  //
+  // THE SERPENT (p. 373). "A golden serpent, feigned to creep out from a hidden
+  // cleft of rock, which, with coiled windings of a fitting thickness, vomited
+  // abundantly into the sonorous fountain the clearest water" -- and it is cast
+  // "in a globed coil, to curb the force of the water, which by a free and
+  // straight pipe would have scattered beyond the limits of the fountain". A
+  // plumbing note delivered as a piece of design criticism, which is this book.
+  //
+  // THE SEPULCHRE (pp. 372-374). Five feet long, of alabaster, on a socle with a
+  // little cornice. One long side: Venus coming naked from the fountain and
+  // tearing her divine calf in the rose-bushes, and Cupid gathering the purple
+  // blood into an oyster-shell. The other: Adonis among shepherd-hunters, dogs
+  // and the dead boar, and Venus falling "into the pitiful embraces of three
+  // half-swooning nymphs". The front "hollowed out in a circle ... stopped up
+  // with the precious stone jacinth, of a transparent vermilion colour ...
+  // burning unsteadily by the light set opposite" -- so it is lit from behind,
+  // and it flickers. On the lid, Venus in three-coloured sardonyx, "carved as a
+  // woman in childbed", the body from the milky vein and the drapery from the
+  // red, giving suck to Cupid, her foot out over the edge for the nymphs to
+  // kneel and kiss, and the distich cut beneath it.
+  //
+  // THE ROSES ARE WHITE, and that is the whole point of the station. The rite of
+  // the Kalends of May (pp. 375-376): the bushes are stripped and the roses
+  // heaped over the tomb; next day they reflower to the same number; on the Ides
+  // they are swept into the fountain and away down the rivulet; the repository
+  // is unsealed, and "no sooner is the precious liquor drawn out than at once
+  // all the whitest roses, AS AT PRESENT THEY APPEAR, are re-dyed in purple
+  // colour". Poliphilo sees them before the rite. They are white here.
+  _buildAdonis(CX, CZ, ang, RAD) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const OX = CX + Math.cos(ang) * RAD, OZ = CZ + Math.sin(ang) * RAD;
+    const at = (a, r) => [OX + Math.cos(a) * r, OZ + Math.sin(a) * r];
+    const rnd = (i, k) => {
+      const v = Math.sin(i * 73.9 + k * 151.3 + 11.3) * 43758.5453;
+      return v - Math.floor(v);
+    };
+
+    const alab = woodcut ? this._stoneMat
+      : S.mat({ color: 0xefe6d2, roughness: 0.36, metalness: 0.03 });
+    alab.userData.roll = 'a piece of alabaster';
+    // "borders of Macedonian marble, not red, but of itself lustrous and veined"
+    const marble = woodcut ? this._stoneMat
+      : S.mat({ color: 0xe4dcc8, roughness: 0.45, metalness: 0.02 });
+    marble.userData.roll = 'a border of Macedonian marble';
+    const gold = woodcut ? this._darkStoneMat
+      : S.mat({ color: 0xc9a03c, roughness: 0.3, metalness: 0.75 });
+    gold.userData.roll = 'a coil of the golden serpent';
+
+    // ── the tessellated pavement, and the sheared thyme over it ──────────
+    const pave = woodcut ? S.mat({ tone: 0.06, rim: 0 })
+      : S.mat({ color: 0xffffff, roughness: 0.7 });
+    if (!woodcut) this._dress(pave, this._surfaceTexture({
+      base: '#b8ab8e', dark: '#6e6248', light: '#ded2b6', courses: 16, blobs: 30, speckle: 2400, repeat: 5,
+    }), 0.2);
+    pave.userData.roll = 'a tessera of the pavement';
+    this._m(new THREE.CircleGeometry(5.0, 40), pave, OX, 0.09, OZ, { rx: -Math.PI / 2, cast: false });
+    const turf = woodcut ? S.mat({ tone: 0.10, rim: 0 }) : S.mat({ color: 0x46632a, roughness: 0.98 });
+    turf.userData.roll = 'a turf of sheared thyme';
+    this._m(new THREE.CircleGeometry(4.7, 40), turf, OX, 0.10, OZ, { rx: -Math.PI / 2, cast: false });
+    for (let i = 0; i < 64; i++) {
+      const th = rnd(i, 1) * Math.PI * 2, rr = 1.9 + rnd(i, 2) * 2.7;
+      const [tx, tz] = at(th, rr);
+      this._tuft(tx, 0.11, tz, 'thyme', 0.13 + rnd(i, 3) * 0.05);
+    }
+
+    // ── the grove, in a circle, trunks clear of branches ─────────────────
+    // cornel-cherry stands as plum, the poplar as willow: the two the SPECIES
+    // table does not carry, matched by leaf and habit rather than invented.
+    const GROVE = ['plum', 'cypress', 'palm', 'willow', 'pine'];
+    for (let i = 0; i < 12; i++) {
+      const th = (i / 12) * Math.PI * 2 + 0.21;
+      const [tx, tz] = at(th, 5.7 + rnd(i, 4) * 0.7);
+      this._tree(tx, tz, 0.82 + rnd(i, 5) * 0.3, GROVE[i % GROVE.length]);
+    }
+
+    // ── the citrus cloister, "in an alternating marriage", and its birds ──
+    const CITRUS = ['orange', 'lemon', 'citron'];
+    for (let i = 0; i < 12; i++) {
+      const th = (i / 12) * Math.PI * 2 + 0.13;
+      const [tx, tz] = at(th, 3.6);
+      this._tree(tx, tz, 0.5, CITRUS[i % 3]);
+      if (i % 3 === 0) {
+        const b = this._bird(0.95 + rnd(i, 6) * 0.3);
+        b.position.set(tx + (rnd(i, 7) - 0.5) * 0.5, 1.9 + rnd(i, 8) * 0.4, tz + (rnd(i, 9) - 0.5) * 0.5);
+        b.rotation.y = rnd(i, 10) * Math.PI * 2;
+        this.scene.add(b);
+        // _buildBirds runs after the island, so the flock may not exist yet
+        this._birds = this._birds || [];
+        this._birds.push({ g: b, kind: 'perch', phase: rnd(i, 11) * Math.PI * 2,
+                           y: b.position.y, yaw0: b.rotation.y });
+      }
+    }
+
+    // ── the sandalwood lattice, a foot high, and the WHITE roses ─────────
+    const roseW = woodcut ? S.mat({ tone: -0.03 })
+      : S.mat({ color: 0xf6f2e8, roughness: 0.58 });
+    roseW.userData.roll = 'a white rose of the hundred leaves';
+    const roseLeaf = woodcut ? S.mat({ tone: 0.05, side: THREE.DoubleSide })
+      : this._climberLeafMat('myrtle');
+    const sandal = new THREE.MeshStandardMaterial({
+      map: this._latticeTexture(), color: 0x9c3f2e, alphaTest: 0.35,
+      side: THREE.DoubleSide, roughness: 0.6,
+    });
+    sandal.userData.roll = 'a lattice of red sandalwood';
+    this._disp.push(sandal);
+    const latGeo = new THREE.PlaneGeometry(0.66, 0.3);
+    const roseGeo = new THREE.SphereGeometry(0.055, 6, 5);
+    for (let i = 0; i < 34; i++) {
+      const th = (i / 34) * Math.PI * 2;
+      const [lx, lz] = at(th, 3.9);
+      this._m(latGeo, woodcut ? S.mat({ tone: 0.05, side: THREE.DoubleSide }) : sandal,
+        lx, 0.25, lz, { ry: -th, cast: false, receive: false });
+      for (let k = 0; k < 3; k++) {
+        const off = (rnd(i * 3 + k, 1) - 0.5) * 0.6;
+        const [rx2, rz2] = at(th + off / 3.9, 3.9);
+        const y = 0.14 + rnd(i * 3 + k, 2) * 0.3;
+        const lf = this._m(new THREE.PlaneGeometry(0.2, 0.2), roseLeaf, rx2, y, rz2,
+          { cast: false, receive: false });
+        lf.rotation.set(rnd(i + k, 3) * Math.PI, -th, rnd(i + k, 4) * Math.PI);
+        if (k === 0) this._m(roseGeo, roseW, rx2, y + 0.09, rz2, { cast: false });
+      }
+    }
+
+    // ── the fountain: a hexagon, twelve paces about ──────────────────────
+    const FR = 1.3;
+    this._m(new THREE.CylinderGeometry(FR + 0.28, FR + 0.32, 0.58, 6), marble, OX, 0.29, OZ, { outline: true });
+    this._m(new THREE.CylinderGeometry(FR, FR, 0.46, 6), this._darkStoneMat, OX, 0.34, OZ, { cast: false });
+    this._waters.push({
+      m: this._m(new THREE.CircleGeometry(FR - 0.06, 24), this._waterMat(), OX, 0.52, OZ,
+        { rx: -Math.PI / 2, cast: false }), rate: 0.05,
+    });
+    this._caustics(OX, 0.54, OZ, FR - 0.12, 0.05);
+    for (let i = 0; i < 6; i++) {                       // the six angles, kerbed
+      const th = i * Math.PI / 3 + Math.PI / 6;
+      const [kx, kz] = at(th, FR + 0.3);
+      this._m(new THREE.BoxGeometry(0.18, 0.15, 0.18), marble, kx, 0.63, kz, { ry: -th, cast: false });
+    }
+    this._circleCol(OX, OZ, FR + 0.55);
+
+    // ── the golden serpent, from a cleft of rock, coiled to curb the water ─
+    const [sx, sz] = at(ang + Math.PI, FR + 0.62);
+    const rock = this._m(this._indexed(new THREE.DodecahedronGeometry(0.78, 0)), this._darkStoneMat,
+      sx, 0.5, sz, { outline: true });
+    rock.scale.set(1, 1.25, 0.85);
+    rock.rotation.set(0.4, ang, 0.2);
+    this._circleCol(sx, sz, 0.8);
+    for (let i = 0; i < 3; i++) {                       // the globed coil
+      const t = i / 3;
+      const c = this._m(new THREE.TorusGeometry(0.32 - t * 0.09, 0.07, 8, 18), gold,
+        sx - Math.cos(ang) * (0.12 + t * 0.13), 1.28 - t * 0.2, sz - Math.sin(ang) * (0.12 + t * 0.13),
+        { cast: false });
+      c.rotation.set(Math.PI / 2 - 0.25 + t * 0.2, -ang, 0);
+    }
+    const hx = OX + Math.cos(ang + Math.PI) * (FR * 0.5), hz = OZ + Math.sin(ang + Math.PI) * (FR * 0.5);
+    const head = this._m(new THREE.SphereGeometry(0.12, 10, 8), gold, hx, 0.98, hz, { cast: false });
+    head.scale.set(1.5, 0.8, 0.9);
+    this._jet(hx, 0.94, hz, OX, 0.54, OZ, { apex: 0.3, r: 0.032, sparkle: 18 });
+
+    // ── the emissary rivulet, "beneath the leaf-bearing manna-ashes" ─────
+    const rill = this._waterMat();
+    for (let i = 0; i < 7; i++) {
+      const t = i / 7;
+      const [wx, wz] = at(ang, -(FR + 0.9) - i * 1.5);
+      this._waters.push({
+        m: this._m(new THREE.PlaneGeometry(0.62, 1.6), rill, wx, 0.055 - t * 0.004, wz,
+          { rx: -Math.PI / 2, rz: -ang - Math.PI / 2, cast: false }), rate: 0.09,
+      });
+      if (i % 2 === 0) {
+        const [ax2, az2] = at(ang + (i % 4 ? 0.22 : -0.22), -(FR + 1.4) - i * 1.5);
+        this._tree(ax2, az2, 0.7, 'ash');
+      }
+    }
+
+    // ── the sepulchre, five feet long, of alabaster ──────────────────────
+    const [px, pz] = at(ang, -2.55);
+    const TL = 1.5, TW = 0.84, TH = 0.58;
+    this._m(new THREE.BoxGeometry(TL + 0.28, 0.16, TW + 0.28), alab, px, 0.18, pz, { ry: -ang, outline: true });
+    this._m(new THREE.BoxGeometry(TL, TH, TW), alab, px, 0.26 + TH / 2, pz, { ry: -ang, outline: true });
+    this._m(new THREE.BoxGeometry(TL + 0.2, 0.09, TW + 0.2), alab, px, 0.26 + TH + 0.045, pz, { ry: -ang });
+    this._circleCol(px, pz, 0.95);
+
+    // the two long sides, carved (see _adonisRelief)
+    const nx = Math.sin(ang), nz = -Math.cos(ang);       // across the tomb
+    for (const [which, sgn, ry] of [['venus', 1, -ang], ['boar', -1, -ang + Math.PI]]) {
+      const m = woodcut ? S.mat({ tone: 0.04 })
+        : new THREE.MeshStandardMaterial({ map: this._adonisRelief(which), roughness: 0.5 });
+      if (!woodcut) this._disp.push(m);
+      m.userData.roll = 'a carved side of the sepulchre';
+      this._m(new THREE.PlaneGeometry(TL * 0.94, TH * 0.82), m,
+        px + nx * sgn * (TW / 2 + 0.012), 0.26 + TH / 2, pz + nz * sgn * (TW / 2 + 0.012),
+        { ry, cast: false });
+    }
+
+    // "hollowed out in a circle ... stopped up with the precious stone jacinth
+    //  ... burning unsteadily by the light set opposite"
+    const jac = woodcut ? S.mat({ tone: -0.06 })
+      : S.mat({ color: 0xd8301c, roughness: 0.12, metalness: 0.1,
+                emissive: 0xa01008, emissiveIntensity: 1.5 });
+    jac.userData.roll = 'the jacinth that stops the repository';
+    const jx = px + Math.cos(ang) * (TL / 2 + 0.014), jz = pz + Math.sin(ang) * (TL / 2 + 0.014);
+    this._m(new THREE.CircleGeometry(TH * 0.3, 24), jac, jx, 0.26 + TH / 2, jz,
+      { ry: -ang + Math.PI / 2, cast: false });
+    this._m(new THREE.TorusGeometry(TH * 0.32, 0.02, 8, 22), gold, jx, 0.26 + TH / 2, jz,
+      { ry: -ang + Math.PI / 2, cast: false });
+    if (S.pointLight) {
+      const jl = S.pointLight(0xff3018, 2.6, 4.0);
+      jl.position.set(jx + Math.cos(ang) * 0.34, 0.26 + TH / 2, jz + Math.sin(ang) * 0.34);
+      this.scene.add(jl);
+      this._pulses.push({ pl: jl, base: 2.6, phase: 1.7 });    // it burns unsteadily
+    }
+
+    // ── Venus on the lid, in three-coloured sardonyx, suckling Cupid ─────
+    // The stone is the conceit: the body cut from the milky vein and the
+    // drapery from the red, so the figure is two colours of one block.
+    const onyx = woodcut ? this._stoneMat
+      : S.mat({ color: 0xf2ece0, roughness: 0.28, metalness: 0.04 });
+    onyx.userData.roll = 'the milky vein of the onyx';
+    const sard = woodcut ? this._darkStoneMat
+      : S.mat({ color: 0xa8503a, roughness: 0.3, metalness: 0.04 });
+    sard.userData.roll = 'the reddening vein of the sardonyx';
+    const LY = 0.26 + TH + 0.09;
+    // She is RECUMBENT — a tomb effigy, "carved as a woman in childbed" — and
+    // she is a carving, so `robe: null` keeps both figures out of the painted
+    // cut-outs: a Botticelli card would stand two metres over a sarcophagus
+    // five feet long, and would be a painting where the book has stone.
+    // The red vein of the sardonyx runs under her as the drapery.
+    this._m(new THREE.BoxGeometry(TL * 0.62, 0.1, TW * 0.5), sard, px, LY + 0.05, pz, { ry: -ang });
+    const venus = this.cast.figure({ h: 0.6, skin: 0xf2ece0, robe: null, pose: 'recline' });
+    venus.position.set(px - Math.cos(ang) * 0.16, LY + 0.2, pz - Math.sin(ang) * 0.16);
+    venus.rotation.y = -ang;
+    this.scene.add(venus);
+    // and the child at the breast
+    const cupid = this.cast.figure({ h: 0.26, skin: 0xf2ece0, robe: null, pose: 'reach' });
+    cupid.position.set(px + nx * 0.17, LY + 0.12, pz + nz * 0.17);
+    cupid.rotation.y = -ang - Math.PI / 2;
+    this.scene.add(cupid);
+    // the foot out over the rim, which the nymphs kneel and kiss
+    const foot = this._m(new THREE.BoxGeometry(0.09, 0.06, 0.2), onyx,
+      px + Math.cos(ang) * 0.28, LY + 0.045, pz + Math.sin(ang) * 0.28, { ry: -ang, cast: false });
+    foot.material = onyx;
+
+    // the distich, cut beneath the foot
+    this._plaque({ main: 'NON LAC SAEVE PVER, LACHRYMAS SED SVGIS AMARAS',
+      sub: 'REDDENDAS MATRI, CARIQVE ADONIS AMORE \u00b7 NOT MILK, CRVEL BOY, BVT BITTER TEARS YOV SVCK, TO BE GIVEN BACK TO YOVR MOTHER, AND FOR THE LOVE OF DEAR ADONIS \u00b7 OVR P. 374' },
+      2.3, 0.3, px + Math.cos(ang) * 0.72, 0.4, pz + Math.sin(ang) * 0.72, -ang + Math.PI / 2, true);
+
+    // and the rite, which is what the whole place is for
+    this._plaque({ main: 'THE ROSES ARE WHITE VNTILL THE RITE',
+      sub: 'ON THE DAY BEFORE THE KALENDS OF MAY THE ROSES ARE STRIPPED AND HEAPED OVER THE TOMBE \u00b7 NEXT DAY THEY REFLOWER TO THE SAME NVMBER \u00b7 ON THE IDES THEY ARE SCATTERED IN THE FOVNTAINE, THE REPOSITORY IS VNSEALED, AND NO SOONER IS THE PRECIOVS LIQVOR DRAWN OVT THAN ALL THE WHITEST ROSES ARE RE-DYED IN PVRPLE COLOVR \u00b7 OVR PP. 375-376' },
+      3.6, 0.44, OX + Math.cos(ang + Math.PI) * 4.3, 0.62, OZ + Math.sin(ang + Math.PI) * 4.3,
+      -ang + Math.PI / 2, true);
+  }
+
+  // The two carved long sides of the sepulchre, drawn rather than modelled --
+  // the register this project uses for narrative relief. Both scenes are the
+  // book's, closely read: our pp. 372-373.
+  _adonisRelief(which) {
+    this._adonisTex = this._adonisTex || {};
+    if (this._adonisTex[which]) return this._adonisTex[which];
+    const W = 512, H = 256;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const STONE = '#e6dcc6', CUT = '#9a8e72', DEEP = '#6e6450';
+    x.fillStyle = STONE; x.fillRect(0, 0, W, H);
+    x.fillStyle = '#ded3ba'; x.fillRect(16, 14, W - 32, H - 28);      // the sunk field
+    x.strokeStyle = DEEP; x.lineWidth = 2; x.strokeRect(16, 14, W - 32, H - 28);
+
+    const figure = (fx, fy, s, pose, tone) => {
+      x.save(); x.translate(fx, fy); x.scale(s, s);
+      if (pose === 'lie') x.rotate(-Math.PI / 2);
+      x.fillStyle = tone; x.strokeStyle = tone; x.lineWidth = 5; x.lineCap = 'round';
+      x.beginPath(); x.arc(0, -46, 11, 0, 6.3); x.fill();              // head
+      x.beginPath(); x.moveTo(0, -35); x.lineTo(0, 0); x.stroke();     // trunk
+      if (pose === 'stand' || pose === 'lie') {
+        x.beginPath(); x.moveTo(0, -28); x.lineTo(-16, -6); x.moveTo(0, -28); x.lineTo(15, -10); x.stroke();
+        x.beginPath(); x.moveTo(0, 0); x.lineTo(-9, 30); x.moveTo(0, 0); x.lineTo(9, 30); x.stroke();
+      } else if (pose === 'kneel') {
+        x.beginPath(); x.moveTo(0, -28); x.lineTo(-15, -12); x.moveTo(0, -28); x.lineTo(14, -14); x.stroke();
+        x.beginPath(); x.moveTo(0, 0); x.lineTo(-14, 14); x.lineTo(-4, 26); x.moveTo(0, 0); x.lineTo(12, 20); x.stroke();
+      } else {                                                         // swoon
+        x.beginPath(); x.moveTo(0, -28); x.lineTo(-18, -22); x.moveTo(0, -28); x.lineTo(17, -20); x.stroke();
+        x.beginPath(); x.moveTo(0, 0); x.lineTo(-13, 26); x.moveTo(0, 0); x.lineTo(11, 27); x.stroke();
+      }
+      x.restore();
+    };
+
+    if (which === 'venus') {
+      // "the holy Venus, coming naked out of this fountain, tore in those
+      //  rose-bushes her divine calf ... and Cupid gathering the purple blood
+      //  into an oyster-shell"
+      x.strokeStyle = CUT; x.lineWidth = 3;
+      x.beginPath(); x.ellipse(74, 178, 44, 15, 0, 0, 6.3); x.stroke();
+      for (let i = 0; i < 5; i++) {
+        x.beginPath(); x.moveTo(56 + i * 10, 174); x.quadraticCurveTo(58 + i * 10, 150, 62 + i * 10, 134); x.stroke();
+      }
+      figure(122, 150, 1.05, 'stand', CUT);                            // Venus, come out
+      x.strokeStyle = DEEP; x.lineWidth = 2.5;
+      for (let i = 0; i < 9; i++) {                                    // the rose-bushes
+        const bx = 176 + i * 12;
+        x.beginPath(); x.moveTo(bx, 198); x.quadraticCurveTo(bx + 5, 170, bx + 2, 148); x.stroke();
+        x.beginPath(); x.arc(bx + 2, 143, 4.5, 0, 6.3); x.stroke();
+      }
+      figure(330, 170, 0.72, 'kneel', CUT);                            // Cupid, kneeling
+      x.strokeStyle = DEEP; x.lineWidth = 3;                           // the oyster-shell
+      x.beginPath(); x.arc(356, 158, 15, Math.PI * 0.15, Math.PI * 0.95); x.stroke();
+      for (let i = 0; i < 5; i++) {
+        x.beginPath(); x.moveTo(356, 158); x.lineTo(342 + i * 7, 172); x.stroke();
+      }
+      x.fillStyle = DEEP;                                              // and the drops
+      for (let i = 0; i < 4; i++) { x.beginPath(); x.arc(326 + i * 8, 130 + i * 6, 2.6, 0, 6.3); x.fill(); }
+      figure(444, 152, 0.9, 'stand', CUT);
+    } else {
+      // "Adonis, carved with some shepherd-hunters, among some little shrubs,
+      //  with dogs and the dead boar ... and Venus falling sorrowfully weeping
+      //  into the pitiful embraces of three half-swooning nymphs"
+      x.strokeStyle = DEEP; x.lineWidth = 2.5;
+      for (let i = 0; i < 7; i++) {                                    // the little shrubs
+        const bx = 32 + i * 15;
+        x.beginPath(); x.moveTo(bx, 208); x.lineTo(bx, 188); x.stroke();
+        x.beginPath(); x.arc(bx, 182, 7, 0, 6.3); x.stroke();
+      }
+      figure(100, 196, 0.85, 'lie', CUT);                              // Adonis, slain
+      x.fillStyle = CUT;                                               // the boar, dead
+      x.beginPath(); x.ellipse(186, 188, 30, 15, 0.15, 0, 6.3); x.fill();
+      x.beginPath(); x.ellipse(213, 178, 12, 9, 0.2, 0, 6.3); x.fill();
+      x.strokeStyle = STONE; x.lineWidth = 3;
+      x.beginPath(); x.moveTo(221, 174); x.lineTo(231, 166); x.stroke();          // the tusk
+      for (const [dx2, dy2] of [[254, 194], [288, 198]]) {             // two dogs
+        x.fillStyle = CUT;
+        x.beginPath(); x.ellipse(dx2, dy2, 15, 7, 0, 0, 6.3); x.fill();
+        x.beginPath(); x.arc(dx2 + 15, dy2 - 6, 6, 0, 6.3); x.fill();
+        x.strokeStyle = CUT; x.lineWidth = 3;
+        x.beginPath(); x.moveTo(dx2 - 8, dy2 + 5); x.lineTo(dx2 - 10, dy2 + 16);
+        x.moveTo(dx2 + 8, dy2 + 5); x.lineTo(dx2 + 10, dy2 + 16); x.stroke();
+      }
+      figure(348, 158, 1.0, 'swoon', CUT);                             // Venus falling
+      for (let i = 0; i < 3; i++) figure(392 + i * 30, 160, 0.84, 'stand', CUT);  // three nymphs
+      figure(480, 178, 0.62, 'kneel', CUT);                            // the son, with his roses
+    }
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    this._disp.push(t);
+    return (this._adonisTex[which] = t);
   }
 
   // ── Cythera's box-work ───────────────────────────────────
@@ -10582,6 +11139,7 @@ export class HPWorldScene {
     if (this.roll) {
       this.roll.update(dt);
       this.roll.applyTo(this.camera, dt);
+      this.masonry.update(dt);          // whatever the ball knocked out is falling
     } else if (this.flight) {
       this.flight.update(dt);
       this.flight.applyTo(this.camera, dt);

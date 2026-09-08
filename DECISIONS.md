@@ -2,6 +2,118 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — The buildings are made of stones, and taking one out has consequences
+
+Ted: *"we need to make sure that the buildings are made from blocks or other
+constituent parts that are small enough to eventually be rolled up, like having
+the columns be made up of individual blocks stacked on top of each other, and
+that the game physics accounts for all the possibilities of interaction and what
+happens when a block is rolled up out from underneath the structures it
+supports."*
+
+Two things were wrong, and only one of them was about the game.
+
+**The world was a set of monoliths.** A column was one cylinder. The Great
+Portal's piers were two boxes, 7.2 by 6.4 by 2.2 metres each. To the roll-up
+census those are single objects far past the six-metre cut-off, so the most
+important architecture in the world was not merely uneatable — it was invisible
+to the mode entirely. But it was also just *wrong*: a classical column is a stack
+of dowelled drums, which is exactly why a ruined one lies on the ground in a row
+like fallen cheeses, and a pier is courses of ashlar with the joints broken,
+because a wall whose joints line up vertically falls down.
+
+So:
+
+- **`_column` now builds drums.** Four stones of the attic base, then six or
+  seven drums sharing the entasis between them (each about 20 cm by the eating
+  measure), then the necking, then the capital and its abacus — fourteen courses,
+  a hundred-odd separate pieces with the flutes cut drum by drum. 179 columns in
+  the world, and the census now carries 23 661 stones that know which course of
+  which building they belong to.
+- **`_ashlar` builds walls and piers**, courses about 80 cm high in blocks about
+  1.2 m long, offset half a block on alternate courses. The Great Portal's two
+  piers are the first users: eight courses of twelve. **It looks better**, which
+  was not the point but is the best evidence that the point was right — the
+  coursing gives the portal a scale the flat box never had.
+
+**And the physics.** `src/systems/Masonry.js`, new. The scene declares a
+STRUCTURE (a vertical run at one x,z), fills it with COURSES, and hangs CARRIED
+loads on it — an entablature, a lintel, an architrave resting across four
+columns at once. Then:
+
+- a course fails only when **every** stone in it has been eaten, so a pier twelve
+  blocks to the course takes real work to undermine;
+- when it does fail, everything above **settles** by exactly that course's height,
+  and so does everything the structure carries;
+- a load carried by several structures answers to **whichever fails first** —
+  undermine one pier of the Great Portal and eighteen metres of lintel comes down;
+- and past 42 % of its courses a structure **topples**: the remaining stones let
+  go, fall under gravity, spin, land and lie there as rubble, which you can then
+  roll over (its collider is dropped) and eat.
+
+The trick that makes it cheap is the one `takeRollable` already found: nearly
+every stone is inside a merged draw-call buffer by then, so moving one means
+writing its vertex range in place — run forwards instead of collapsed to a point.
+A falling drum costs about a hundred vector transforms a frame and no draw calls
+at all. Verified on the running page: the Great Portal's left pier undermined
+course by course, the lintel tracking down 7.10 → 6.30 → 5.50 → 4.70 m as each
+course went, then the whole portal over and the lintel on the grass at 0.22 m.
+
+**What is not done**: the walls of the temple, the palace and the Polyandrion are
+still solid. `_ashlar` is the tool and they are a morning's work each; the Great
+Portal was done first because it is the world's signature building and the
+clearest case of a lintel on two supports. The Three Doors wall is deliberately
+NOT a candidate — the book insists it is "hewen ovt in the verie rocke", not
+built, and it is boulders on purpose.
+
+## 2026-09-08 — Chapter XXIV: the ledger found the last station of Book I
+
+The coverage pipeline was built to catch exactly this and this is the first time
+it has caught anything.
+
+Chapter XXIV is eleven pages (our pp. 369–379), it is **the last chapter of Book
+I**, and it has **no woodcut at all**. Its tour stop — stop 25, *"The Tomb of
+Adonis"* — pointed at `cythera_theatre`, which is to say at another station's
+geometry, and had done since the commentary was written. `grep -i adonis
+HPWorldScene.js` returned nothing. That is precisely the shape chapter V had
+while the vaults under the pyramid went unbuilt for months, and precisely the
+failure ROUTER.md rule 6 names: **the plates are an index, not an inventory.**
+Every check this project ran before the ledger was driven by the woodcut
+catalogue, and a chapter with no plate is invisible to all of them.
+
+The chapter turns out to be a complete, unbuilt station, and the best-described
+single garden in the book after the Cythera peristyle:
+
+- **the sacred fountain**, a hexagon twelve paces about, with borders of
+  Macedonian marble and a golden serpent creeping from a cleft of rock, coiled in
+  a globe *"to curb the force of the water — which, by a free and straight pipe,
+  would have scattered beyond the limits of the fountain"* (the book gives its
+  hydraulics as design criticism, which is very much this book);
+- a **cloister of orange, lemon and citron** *"composedly matched in an
+  alternating marriage"*, full of nightingales, thrushes and solitary blackbirds;
+- a **foot-high lattice of red erythraean sandalwood** carrying hundred-petalled
+  roses, a grove of cornel-cherry, cypress, palm, poplar and pine with trunks
+  clear of branches, and a pavement grassed all over with sheared thyme;
+- the **alabaster sepulchre**, five feet long: Venus tearing her calf in the
+  roses and Cupid catching the blood in an oyster-shell on one side, Adonis and
+  the boar on the other, a **jacinth** stopping the repository in front and
+  *"burning unsteadily by the light set opposite"*, and on the lid **Venus in
+  three-coloured sardonyx, carved as a woman in childbed, giving suck to Cupid**,
+  her foot out over the rim for the nymphs to kiss.
+
+**The roses are white, and that is the whole point of the station.** The rite of
+the Kalends of May (pp. 375–376) is the origin of the red rose: the bushes are
+stripped and heaped over the tomb, they reflower overnight to the same number, on
+the Ides they are swept into the fountain and down the rivulet, the repository is
+unsealed, and *"no sooner is the precious liquor drawn out than at once all the
+whitest roses, AS AT PRESENT THEY APPEAR, are re-dyed in purple colour."*
+Poliphilo sees them **before** the rite. So they are white in the world, and a
+plaque says why. The rite itself is enumerated in `research/coverage.json` as
+**unbuilt** — it wants what the Triumphs got, a timed sequence you can stand in.
+
+It takes one bosco compartment of Cythera, off a road that now ends at the sacred
+grove, and stop 25 points at its own station at last.
+
 ## 2026-09-08 — Roll Up gets an ending, and the ending was already in the database
 
 The mode was a toy: you rolled until you were bored. It needed a goal, and inventing one —
