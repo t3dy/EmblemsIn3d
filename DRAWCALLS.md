@@ -36,7 +36,7 @@ Two things follow immediately, and the second one matters more than the first.
 **The triangles are not the problem.** 2.9 million is unremarkable. If triangles were the
 cost, the wood would be fine.
 
-**Cost is a property of the view, not of the world.** The world holds 3 688 meshes; the
+**Cost is a property of the view, not of the world.** The world holds 3 788 meshes; the
 frustum culler throws away everything behind you and everything past the far plane before a
 single call is issued. On the plain almost nothing is in view and the frame costs 68 calls.
 In the wood you are standing inside a hundred and ninety trees, each with four opaque leaf
@@ -55,12 +55,17 @@ JavaScript object in memory.
 
 Ours share neither:
 
+*Re-measured 2026-09-09 after the Great Portal rescale. The earlier reading in this
+table was 3 688 meshes / 2 932 materials / 808 appearances; the hundred meshes since are the
+spacious plain and the dark wood, not the portal, whose new base storey is ashlar and merges.
+The proportion — which is the point of the table — did not move.*
+
 | | count |
 |---|---|
-| meshes | 3 688 |
-| unique geometries | 3 681 |
-| **material objects** | **2 932** |
-| **distinct material *appearances*** | **808** |
+| meshes | 3 788 |
+| unique geometries | 3 780 |
+| **material objects** | **2 943** |
+| **distinct material *appearances*** | **819** |
 | **duplicate materials** | **2 124 (72 %)** |
 
 The cause is one function, `HPStyles.mat()`:
@@ -148,8 +153,8 @@ not any renderer trick, is what would let both goals be met at once.
 None of these cost an object, so none of them conflict with the ball. In rough order of
 value:
 
-1. **Fewer shadow casters.** 1 194 of the 3 688 meshes cast shadows and each of those is
-   drawn a *second* time into the shadow map — that is 1 194 of the 3 124 calls, more than a
+1. **Fewer shadow casters.** 1 289 of the 3 788 meshes cast shadows and each of those is
+   drawn a *second* time into the shadow map — that is 1 289 of the 3 124 calls, more than a
    third of the frame, spent on shadows most of which are too small to resolve. Culling
    casters by size and distance is invisible and free. *The one exception: the dark wood's
    darkness IS cast shadow, so the wood must be re-checked by eye after any such cull.*

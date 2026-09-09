@@ -73,21 +73,87 @@ export const Portal = {
     this._m(new THREE.PlaneGeometry(1.78, 3.0), boardMat, bx, 2.32, bz + 0.18, { cast: false });
     this._wallCol(bx - 1.05, bx + 1.05, bz - 0.6, bz + 0.6);
 
-    // The stepped pyramid. The book gives it 1,410 courses rising off a plinth
-    // six furlongs square; at garden scale we read that as many shallow courses
-    // rather than four fat ones, so the mass tapers the way the plate draws it.
-    // (docs/HP_SOURCEBOOK.md §1.)
-    const COURSES = 26;
+    // ── THE BASE STOREY ──────────────────────────────────────────────────
+    //
+    // Added 2026-09-09 with the rescale (DECISIONS.md call 3). The book's
+    // portal is not an arch: it is a MASS that stops the valley wall to wall,
+    // with a porch cut through the middle of it —
+    //
+    //   "the foresaid valley there had an end, that no man could go further
+    //    forward or backe againe, but to enter in by this broade, large, and
+    //    wide open porche"                                   — Dallington p. 27
+    //
+    // and Colonna gives that mass its own dimensions, which the world had
+    // never built: a base storey a fifth of a stadium high (37 m) under a
+    // plinth of fourteen paces (20.7 m), the whole six stadia wide.
+    // (DIMENSIONS.md §2.) What stood here instead was two small curtain walls
+    // 7.4 m tall, added on 2026-09-08 to stop the walker going round the
+    // building on the grass — they did that job and nothing else.
+    //
+    // The stones are BIG here on purpose: `block: 2.0, course: 1.3` against the
+    // 1.2/0.8 the piers use. A wall of this size cut in pier-sized ashlar would
+    // be nine hundred stones a side and would read as brickwork.
+    const NECK = 24;                    // half-width of the valley at the portal
+    const PORCH = 9;                    // outer face of the piers
+    const BASE_TOP = 12;                // the pyramid springs from here
+    for (const s2 of [-1, 1]) {
+      const w = NECK - PORCH;
+      this._ashlar(s2 * (PORCH + w / 2), 0, Z, w, BASE_TOP, 3.2, this._stoneMat,
+        { course: 1.3, block: 2.0, name: 'the base storey of the Great Portal' });
+      // TWO colliders a side, and the shape of them matters.
+      //
+      // The wall's own FOOTPRINT, from the piers to its outer end. Stopping
+      // here was the first attempt and it left an open corridor between the end
+      // of the base storey and the rock: a walk test from x = +-28, z = 36 went
+      // through to z = 15 on one side and -10 on the other, round the building
+      // and into the garden. Dallington p. 27 is an absolute -- "no man could
+      // go further forward or backe againe" -- and building the base storey was
+      // meant to make it true.
+      this._wallCol(s2 > 0 ? PORCH - 0.4 : -(NECK + 2), s2 > 0 ? NECK + 2 : -(PORCH - 0.4),
+                    Z - 1.8, Z + 1.8);
+      // and the WEDGE of mountain beyond its end, up to where the cliffs' own
+      // colliders begin at z = 41.5. Filling the whole quarter instead would
+      // also have worked and is what the old curtain did -- but it walled off
+      // the ground in FRONT of the wall too, so the reader could never come up
+      // to the face and see that it is made of stones.
+      this._wallCol(s2 > 0 ? NECK : -200, s2 > 0 ? 200 : -NECK, Z + 1.8, 41.5);
+    }
+    // and the wall over the door, which ties the two halves into one mass
+    this._ashlar(0, 7.6, Z, PORCH * 2, BASE_TOP - 7.6, 3.2, this._stoneMat,
+      { course: 1.1, block: 2.0, name: 'the wall above the porch' });
+
+    // ── THE STEPPED PYRAMID ──────────────────────────────────────────────
+    //
+    // The book gives it 1,410 courses rising off a plinth six stadia square —
+    // 1,140 m wide and some 785 m tall, by Colonna's own setting-out. The world
+    // built it 17.5 m wide and 19 m to the cube, which is 1 : 65, and made the
+    // most stupendous object in the book a garden folly on a lawn. Ted,
+    // 2026-09-09, declined the 1 : 8 ground plan and approved rescaling the
+    // monuments where they stand, so this is 40 m wide and 26 m of pyramid on
+    // top of a 12 m base — about 1 : 28, and the first thing you see from the
+    // palm plain rather than the last.
+    //
+    // The DEPTH stays modest (4.5 m against a true 1,140) and that is a lie the
+    // plan forces: the three doors stand at z = 21 and the winged horse at
+    // 22.5, so a square pyramid of any size would swallow the piazza behind it.
+    // It is a gable, seen from the south as the plates draw it. Recorded rather
+    // than hidden.
+    const COURSES = 40, RISER = 0.66;
     for (let i = 0; i < COURSES; i++) {
       const t = i / COURSES;
-      const w = 17.5 * (1 - t * 0.86);
-      const d = 3.0 * (1 - t * 0.55);
-      this._m(new THREE.BoxGeometry(w, 0.42, d), this._stoneMat, 0, 8.3 + i * 0.42, Z, { cast: i % 4 === 0 });
+      const w = 40 * (1 - t * 0.86);
+      const d = 4.5 * (1 - t * 0.55);
+      this._m(new THREE.BoxGeometry(w, RISER, d), this._stoneMat, 0, BASE_TOP + i * RISER, Z, { cast: i % 4 === 0 });
     }
-    const TOP = 8.3 + COURSES * 0.42;
+    const TOP = BASE_TOP + COURSES * RISER;
+
+    // Everything above the pyramid is scaled with it. At the old size these were
+    // read from twenty metres away; on a 40 m pyramid seen from the palm plain
+    // a 1.9 m cube is a pebble on a hill.
+    const TS = 1.8;
 
     // "a huge Cube or foure square stone of forme like a dye" closes the pyramid
-    this._m(new THREE.BoxGeometry(1.9, 1.9, 1.9), this._stoneMat, 0, TOP + 0.95, Z, { outline: true });
+    this._m(new THREE.BoxGeometry(1.9 * TS, 1.9 * TS, 1.9 * TS), this._stoneMat, 0, TOP + 0.95 * TS, Z, { outline: true });
 
     // Four harpies of cast metal at the cube's corners, "their steales and clawes
     // armed," meeting over the diagonal to make the obelisk's socket
@@ -95,32 +161,34 @@ export const Portal = {
       ? S.mat({ tone: 0.2 })
       : S.mat({ color: 0x8a6a2a, metalness: 0.9, roughness: 0.35 });
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
-      const hx = sx * 0.72, hz = Z + sz * 0.72;
+      const hx = sx * 0.72 * TS, hz = Z + sz * 0.72 * TS;
       // clawed foot, body, and a swept wing leaning in toward the socket
-      this._m(new THREE.ConeGeometry(0.16, 0.34, 6), harpyMat, hx, TOP + 2.06, hz);
-      this._m(new THREE.CapsuleGeometry(0.1, 0.26, 4, 8), harpyMat, hx, TOP + 2.42, hz);
-      const wing = this._m(new THREE.ConeGeometry(0.1, 0.6, 4), harpyMat, hx * 0.55, TOP + 2.66, Z + sz * 0.4);
+      this._m(new THREE.ConeGeometry(0.16 * TS, 0.34 * TS, 6), harpyMat, hx, TOP + 2.06 * TS, hz);
+      this._m(new THREE.CapsuleGeometry(0.1 * TS, 0.26 * TS, 4, 8), harpyMat, hx, TOP + 2.42 * TS, hz);
+      const wing = this._m(new THREE.ConeGeometry(0.1 * TS, 0.6 * TS, 4), harpyMat, hx * 0.55, TOP + 2.66 * TS, Z + sz * 0.4 * TS);
       wing.rotation.z = -sx * 0.55; wing.rotation.x = -sz * 0.45;
     }
     // The socket the four of them make, dressed with cast leaves and fruit
-    this._m(new THREE.CylinderGeometry(0.42, 0.52, 0.3, 12), harpyMat, 0, TOP + 2.9, Z);
+    this._m(new THREE.CylinderGeometry(0.42 * TS, 0.52 * TS, 0.3 * TS, 12), harpyMat, 0, TOP + 2.9 * TS, Z);
 
     // The obelisk: two paces broad, seven high, of mirror-polished Theban stone
-    this._m(new THREE.CylinderGeometry(0.13, 0.42, 4.6, 4), this._stoneMat, 0, TOP + 5.35, Z, { outline: true });
+    this._m(new THREE.CylinderGeometry(0.13 * TS, 0.42 * TS, 4.6 * TS, 4), this._stoneMat, 0, TOP + 5.35 * TS, Z, { outline: true });
     // Its copper turning-base, and on it the winged Fortuna who spins in the wind
-    this._m(new THREE.CylinderGeometry(0.16, 0.16, 0.14, 10), harpyMat, 0, TOP + 7.72, Z);
-    this._buildFortuna(0, TOP + 7.85, Z, harpyMat);
+    this._m(new THREE.CylinderGeometry(0.16 * TS, 0.16 * TS, 0.14 * TS, 10), harpyMat, 0, TOP + 7.72 * TS, Z);
+    this._buildFortuna(0, TOP + 7.85 * TS, Z, harpyMat, TS);
 
     // The Medusa whose gaping mouth is the door to the spiral stair. The book
     // sets her "vpon the right hand as I went" — the dreamer walks south out of
     // the wood, so his right is +x.
     this._buildMedusaDoor(5.4, Z + 1.16);
 
-    // Flanking obelisks and hedge walls
+    // Flanking obelisks, moved OUT in front of the base storey on 2026-09-09.
+    // They used to stand at x = ±11.2 with hedge walls at ±17.8 closing the gap
+    // to the mountain; the base storey now fills that ground from the piers to
+    // the cliff, so the hedges are gone (they would be buried in a wall) and
+    // the obelisks stand clear of the face where they can still be seen.
     for (const s of [-1, 1]) {
-      this._obelisk(s * 11.2, Z, 1.3, 3.4);
-      this._hedge(s * 17.8, 0.55, Z, 9, 1.1, 0.7);
-      this._wallCol(s * 17.8 - 4.5, s * 17.8 + 4.5, Z - 0.35, Z + 0.35);
+      this._obelisk(s * 13.5, Z + 4.4, 1.6, 4.6);
     }
 
     // The dragon that drove Poliphilo through the vaults
@@ -132,7 +200,7 @@ export const Portal = {
   // two wings from the shoulder blades, face turned back toward them, her right
   // hand holding a cornucopia "stopped vp, and the mouth downewarde." She turns
   // with every gust — the whole point of her — so she is registered in _vanes.
-  _buildFortuna(x, y, z, metalMat) {
+  _buildFortuna(x, y, z, metalMat, scale = 1) {
     const g = new THREE.Group();
     const S = this.style;
     const skin = S.key === 'woodcut' ? S.mat({ tone: 0.02 }) : S.mat({ color: 0xc8a860, metalness: 0.75, roughness: 0.4 });

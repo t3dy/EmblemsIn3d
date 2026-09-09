@@ -643,12 +643,17 @@ export const Approach = {
     }
     const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 269.5) * 43758.5453; return v - Math.floor(v); };
 
-    // gap(z): half-width of the valley floor at z. 22 m at the portal (z = 40),
-    // opening to 75 m by the time the palm plain is reached.
-    const gap = (z) => 20 + Math.max(0, z - 40) * 0.46;
-    // how high the wall stands at z: modest by the portal so the building is
-    // not dwarfed at the moment of arrival, and mounting southward
-    const high = (z) => 26 + Math.max(0, z - 40) * 0.42;
+    // gap(z): half-width of the valley floor at z. Widened 2026-09-09 from 20 to
+    // 24 at the portal, because the building that has to fill it grew: the base
+    // storey now runs from the piers at x = ±9 out to the rock at ±24, and the
+    // pyramid above it is 40 m wide against the 17.5 it was. The southern end is
+    // unchanged, so the valley still opens out toward the palm plain.
+    const gap = (z) => 24 + Math.max(0, z - 40) * 0.42;
+    // How high the wall stands. It used to be 26 m at the portal, chosen "so the
+    // building is not dwarfed at the moment of arrival" — with a 38 m pyramid on
+    // a 12 m base there is no longer any danger of that, and a valley the book
+    // calls shut needs walls that look like they could shut it.
+    const high = (z) => 44 + Math.max(0, z - 40) * 0.30;
 
     let n = 0;
     for (const side of [-1, 1]) {
@@ -678,16 +683,20 @@ export const Approach = {
         }
       }
     }
-    // The curtain that carries the building to the mountain on either side.
-    // Without it the portal is a free-standing arch you walk round on the
-    // grass, which is exactly what Dallington p. 27 says you cannot do: the
-    // porch "was placed betwixt and continued in building from the one and the
-    // other of the mountaines". Ashlar, so Roll Up can bring it down.
-    for (const side of [-1, 1]) {
-      this._ashlar(side * 14.6, 0, 26, 11.2, 7.4, 2.2, this._stoneMat,
-        { name: 'the curtain from the Great Portal to the mountain' });
-      this._wallCol(side > 0 ? 8.8 : -24, side > 0 ? 24 : -8.8, 24.4, 41.5);
-    }
+    // The curtain that carried the building to the mountain used to be built
+    // here: two ashlar walls 11.2 m wide and 7.4 m tall, added 2026-09-08 so
+    // that the portal was not a free-standing arch you could walk round on the
+    // grass — which is exactly what Dallington p. 27 says you cannot do, the
+    // porch being "placed betwixt and continued in building from the one and
+    // the other of the mountaines".
+    //
+    // They are gone as of 2026-09-09, and their work is done properly: the
+    // Great Portal now has a BASE STOREY twelve metres tall running from the
+    // piers to the rock on both sides, which is what the book describes and
+    // what the curtains were standing in for. See portal.js, _buildGreatPortal.
+    // The collider that keeps the walker out of the mountain goes with it.
+    //
+    // The valley is still shut behind the walker at the south end, below.
 
     // The valley is shut behind the walker too, at the south end of the
     // approach: the mountains close the far side of the palm plain except for
