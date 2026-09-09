@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=252';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=254';
 import { VaultsScene } from './scenes/VaultsScene.js?v=10';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';

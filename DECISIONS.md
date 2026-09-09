@@ -169,11 +169,12 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*48 calls. Each links to its full text in the archive.*
+*49 calls. Each links to its full text in the archive.*
 
 
 **2026-09-09**
 
+- [The dream does not have to add up](decisions/2026-09.md#2026-09-09-later-still--the-dream-does-not-have-to-add-up)
 - [The Great Portal at scale, and the wall that was never there](decisions/2026-09.md#2026-09-09-later--the-great-portal-at-scale-and-the-wall-that-was-never-there)
 - [The reading mode, and the wolf changes hands](decisions/2026-09.md#2026-09-09--the-reading-mode-and-the-wolf-changes-hands)
 - [Version 5 shipped, and what it settled](decisions/2026-09.md#2026-09-09-version-5-shipped-and-what-it-settled)

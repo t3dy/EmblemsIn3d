@@ -41,10 +41,10 @@ import {
   CYTHERA_CLIMBERS, HERBS, SPECIES,
 } from './world/constants.js?v=3';
 import { Materials } from './world/materials.js?v=1';
-import { Nature } from './world/nature.js?v=3';
+import { Nature } from './world/nature.js?v=4';
 import { Approach } from './world/approach.js?v=5';
 import { Portal } from './world/portal.js?v=7';
-import { Palace } from './world/palace.js?v=3';
+import { Palace } from './world/palace.js?v=4';
 import { Triumphs } from './world/triumphs.js?v=3';
 import { Tombs } from './world/tombs.js?v=3';
 import { Temple } from './world/temple.js?v=1';
@@ -297,6 +297,14 @@ export class HPWorldScene {
     const bloom = this.composer.passes.find(p => p.constructor?.name === 'UnrealBloomPass');
     if (bloom) bloom.strength = S.bloom;
 
+    // Gather the court standing where Polia's arcade must stand, so the dream
+    // can fold it away while the dreamer is inside the garden. Must run after
+    // everything is built and before the draw calls are compiled, because the
+    // gathering is a reparenting and the compiler merges per group.
+    const folded = this._foldPoliaCourt(19, 20, 9, 42);
+    console.info("[dream fold]", folded, "objects fold for Polia's garden,",
+      this._poliaArcade ? this._poliaArcade.children.length : 0, "arcade pieces stand");
+
     this._compileDrawCalls();
 
     // The goddess the whole world walks toward: a real marble Venus (a CC0 scan
@@ -414,6 +422,14 @@ export class HPWorldScene {
       mark(f.g);
     }
 
+    // Polia's arcade, and the court it displaces, are each compiled INSIDE
+    // their own group and then fenced off — the same trick the island and the
+    // triumph floats use. That is what makes folding cheap: one `visible`
+    // flag moves a whole quarter of the world, and while the garden is open
+    // the frame is actually cheaper, not dearer.
+    if (this._poliaArcade) { this._mergeInto(this._poliaArcade, dyn); mark(this._poliaArcade); }
+    if (this._poliaCourt)  { this._mergeInto(this._poliaCourt,  dyn); mark(this._poliaCourt);  }
+
     this._mergeInto(this._isleGroup, dyn);
     mark(this._isleGroup);
     this._mergeInto(this.scene, dyn);
@@ -431,6 +447,89 @@ export class HPWorldScene {
       const sup = this._resolveSupports();
       console.info('[supports]', sup.stacked, 'things resting on', sup.supporters, 'others');
     }
+  }
+
+  // ── The dream folds ─────────────────────────────────────────────────────
+  //
+  // DECISIONS.md 2026-09-09, "The dream does not have to add up." Polia's
+  // arcade needs a ring 40 m out from her garden and the palace court is built
+  // on that ground. The court is finished work and the arcade is in the book,
+  // so neither gives way permanently: the court folds while the dreamer is
+  // inside the garden and unfolds when he leaves.
+  //
+  // This is not a trick for hiding a seam. The Hypnerotomachia is a dream —
+  // the strife of love in a dream — and its spaces do not add up; nothing in
+  // Colonna requires the court and the garden to be simultaneously true. What
+  // folds is ground between set-pieces. Nothing in the book's ORDER folds, and
+  // no event is skipped: see the decision, which is explicit about the limit.
+  _foldPoliaCourt(CX, CZ, innerR, outerR) {
+    const g = new THREE.Group();
+    this.scene.add(g);
+    // the named figures move whole, so they are groups rather than meshes, and
+    // a court whose architecture vanished while its people stayed would read as
+    // a bug rather than as a dream
+    const people = new Set(this._npcs.map(n => n.g));
+    // THE SET-PIECES DO NOT FOLD. The decision is explicit that what folds is
+    // ground between them, and the first attempt broke its own rule: a ring of
+    // 42 m round Polia swallowed ELEVEN stations — the Great Portal, the court,
+    // the three doors, the elephant, the palace, the Quinta Essentia, the
+    // fountain, the colossus, Priapus, Book II and the triumphs. That is not a
+    // dream folding, that is the book going out. So every station but Polia's
+    // own keeps a protected circle, and the arcade stands among them.
+    const keepOut = HP_STATIONS
+      .filter(st => st.key !== 'polia')
+      .map(st => ({ x: st.pos[0], z: st.pos[1], r: (st.radius || 8) + 3 }));
+    const guarded = (x, z) => keepOut.some(k => Math.hypot(x - k.x, z - k.z) < k.r);
+    const box = new THREE.Box3();
+    const take = [];
+    for (const child of this.scene.children) {
+      if (child === g || child === this._poliaArcade) continue;
+      if (!child.isMesh && !people.has(child)) continue;
+      box.setFromObject(child);
+      if (box.isEmpty()) continue;
+      // the ground, the sea and the sky dome are not court furniture
+      if ((box.max.x - box.min.x) > 60 || (box.max.z - box.min.z) > 60) continue;
+      const cx = (box.min.x + box.max.x) / 2, cz = (box.min.z + box.max.z) / 2;
+      const d = Math.hypot(cx - CX, cz - CZ);
+      if (d > innerR && d < outerR && !guarded(cx, cz)) take.push(child);
+    }
+    // attach(), not add(): the world transform has to survive the reparenting
+    for (const m of take) g.attach(m);
+    this._poliaCourt = g;
+    this._gardenFold = { x: CX, z: CZ, inner: innerR, outer: outerR,
+                         openAt: innerR, closeAt: outerR + 2 };
+    this._prepareGardenFold();
+    return take.length;
+  }
+
+  // Both collider sets are computed ONCE. Rebuilding them on every crossing was
+  // the obvious way and it is wrong: the walker is asked for a collision every
+  // frame, and a threshold you can walk back and forth across should not cost a
+  // filter over two thousand colliders each time.
+  _prepareGardenFold() {
+    const W = this.walker, F = this._gardenFold;
+    const inRing = (x, z) => {
+      const d = Math.hypot(x - F.x, z - F.z);
+      return d > F.inner && d < F.outer;
+    };
+    // folded — the ordinary world: the court stands, the arcade does not
+    F.colsFolded  = W.colliders.filter(c => !c.arcade);
+    F.wallsFolded = W.walls.slice();
+    // open — inside the garden: the arcade stands, the court in the ring does not
+    F.colsOpen  = W.colliders.filter(c => c.arcade || !inRing(c.x, c.z));
+    F.wallsOpen = W.walls.filter(w => !inRing((w.x0 + w.x1) / 2, (w.z0 + w.z1) / 2));
+    W.colliders = F.colsFolded;
+    W.walls     = F.wallsFolded;
+  }
+
+  _setGardenOpen(on) {
+    const F = this._gardenFold;
+    if (!F || on === this._gardenOpen) return;
+    this._gardenOpen = on;
+    if (this._poliaCourt)  this._poliaCourt.visible  = !on;
+    if (this._poliaArcade) this._poliaArcade.visible = on;
+    this.walker.colliders = on ? F.colsOpen  : F.colsFolded;
+    this.walker.walls     = on ? F.wallsOpen : F.wallsFolded;
   }
 
   _mergeInto(root, exclude) {
@@ -904,6 +1003,16 @@ export class HPWorldScene {
     } else {
       this.walker.update(dt);
       this.walker.applyTo(this.camera);
+    }
+
+    // Polia's garden opens as the dreamer comes to it and folds as he goes.
+    // Only on foot: the ball and the dragon see the world from outside, and a
+    // quarter of it vanishing under them would be a glitch, not a dream.
+    if (this._gardenFold && !this.roll && !this.flight) {
+      const gp = this.walker.player.pos, F = this._gardenFold;
+      const gd = Math.hypot(gp.x - F.x, gp.z - F.z);
+      if (!this._gardenOpen && gd < F.openAt) this._setGardenOpen(true);
+      else if (this._gardenOpen && gd > F.closeAt) this._setGardenOpen(false);
     }
 
     // The shadow box and the sky dome travel with the eye. Both used to be

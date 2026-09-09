@@ -434,6 +434,8 @@ export const Nature = {
       m.castShadow = false; m.receiveShadow = false;
       g.add(m);
     }
+
+    return g;          // so a caller can reparent it (Polia's arcade folds)
   },
 
   // A hedge, built and dressed in one call, so a new one is never a bare box

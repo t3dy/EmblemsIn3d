@@ -981,6 +981,63 @@ export const Palace = {
       this._hedge(CX, 0.4, CZ + sz * 4.6, 8, 0.8, 0.5);
       this._wallCol(CX - 4, CX + 4, CZ + sz * 4.6 - 0.25, CZ + sz * 4.6 + 0.25);
     }
+
+    this._buildPoliaArcade(CX, CZ);
+  },
+
+  // ── Polia's ivied arcade, and the dream that makes room for it ───────────
+  //
+  //   "an Arbour or Gallerie ... of fiue paces high and three broade, and of a
+  //    hundred arches round about the garden"          — Dallington p. 182
+  //
+  // A hundred arches three paces across is 300 paces of circumference, which is
+  // a garden about 141 m wide. This one has never been built at all, and the
+  // reason is that it does not fit: the garden stands at the most inland point
+  // of the island (shore radius 48 m) and there is no free ring around it at ANY
+  // radius -- 23 built objects within 5 m, 64 by 20, 271 by 30. The palace court
+  // is built on the ground the arcade needs.
+  //
+  // So it is built here at R = 40, the largest ring that keeps every arch on
+  // land, and the COURT FOLDS AWAY while the dreamer is inside. See
+  // HPWorldScene._foldPoliaCourt and DECISIONS.md 2026-09-09, "The dream does
+  // not have to add up": the Hypnerotomachia is a dream and its spaces do not
+  // add up, so the stations are no longer required to be simultaneously true.
+  //
+  // What is at true size is the thing you actually look at: each arch is 3 paces
+  // across and 5 high, exactly as Dallington gives it. What is reduced is the
+  // COUNT -- a ring of 40 m takes 56 arches of that width, not 100. An arch of
+  // the right size and the wrong number is a better lie than 100 arches
+  // squeezed to half scale, because the arch is what the eye measures itself
+  // against and the count is what nobody counts.
+  _buildPoliaArcade(CX, CZ) {
+    const R = 40;             // metres; the ring stays on land at 48 m of shore
+    const AW = 4.44;          // 3 paces  — the arch's span
+    const AH = 7.4;           // 5 paces  — its height to the crown
+    const N = Math.round((2 * Math.PI * R) / AW);      // 56
+    const g = new THREE.Group();
+    this.scene.add(g);
+    this._poliaArcade = g;
+    g.visible = false;        // folded until the dreamer enters the garden
+
+    const mat = this._stoneMat;
+    const spring = AH - AW / 2;                        // where the arch springs
+    for (let i = 0; i < N; i++) {
+      const a  = (i / N) * Math.PI * 2;                // this pier
+      const am = ((i + 0.5) / N) * Math.PI * 2;        // the arch to the next one
+      const px = CX + Math.sin(a) * R,  pz = CZ + Math.cos(a) * R;
+      const mx = CX + Math.sin(am) * R, mz = CZ + Math.cos(am) * R;
+      this._column(px, pz, spring, { order: 'doric', r: 0.34, parent: g, mat });
+      // the arch's plane is tangent to the ring, so ry is the ring angle
+      this._arch(mx, spring, mz, AW, 1.0, mat,
+        { ry: am, n: 9, parent: g, name: "an arch of Polia's arcade" });
+      const c = this._circleCol(px, pz, 0.55);
+      c.arcade = true;        // survives the fold; see _prepareGardenFold
+    }
+    // "all couered ouer with Iuie" — the ivy that gives it its name, laid along
+    // the crown of the whole ring
+    const ivy = this._hedgeFringeArc(CX, CZ, R, AH + 0.25, 1.1, 0, Math.PI * 2,
+      { density: 4, seed: 19 });
+    if (ivy) g.add(ivy);      // the arc group is already in world coordinates
   },
 
   // ── The jasmine arbour where he first sees Polia (Dallington p. 200) ─────
