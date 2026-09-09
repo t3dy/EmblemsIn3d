@@ -6,7 +6,7 @@
 
 ---
 
-**26 tickets** — 7 open, 3 declined, 16 done. By kind: 13 debt, 6 infra, 4 bug, 2 perf, 1 question.
+**28 tickets** — 9 open, 3 declined, 16 done. By kind: 14 debt, 7 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -42,6 +42,21 @@
 **Files.** `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json` · `src/data/tours.json`
 
 **See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
+
+
+### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour." The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08. PREREQUISITE MET 2026-09-09: the translation is complete -- 463 English pages plus 4 blank leaves, all 467, 249,936 words, live at t3dy.github.io/EmblemsIn3d/research/translation.html and as HPTranslation.txt. Nothing blocks this ticket now but building it.
+
+**Acceptance.** A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.
+
+**Files.** `src/main.js` · `translation/`
+
+**See.** NEXTSTEPS.md#0-A
 
 
 ### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
@@ -93,21 +108,6 @@
 **See.** ENGINEERING.md#2c
 
 
-### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Ted 2026-09-09: "an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour." The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08.
-
-**Acceptance.** A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.
-
-**Files.** `src/main.js` · `translation/`
-
-**See.** NEXTSTEPS.md#0-A
-
-
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
 
 **○ open** · debt · priority 3 · hp-builder
@@ -121,6 +121,34 @@
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLING.md#3
+
+
+### `tr-front-matter-review` — The ten front-matter pages have never been read by anyone but their translator
+
+**○ open** · debt · priority 3 · hp-researcher
+ · opened 2026-09-09
+
+
+**Evidence.** Pages 1-10 were translated 2026-09-09 from the Wikisource transcription of the 1499 Aldine. Four readings are marked [?...] and explained in the notes (Crasso's `quo nam pacto me tibi aperiam`, `audaculus`, the Bibbiena siege, and Marone's run-together `quid eritnoscetur`). The other six pages carry no flagged doubt, which under this project's definition makes them `verified` -- and that word means only 'no marker left', not 'checked against the facsimile by a second reader'.
+
+**Acceptance.** Someone other than the translator reads pages 1-10 against the facsimile and either clears the four marked readings or replaces them with better ones.
+
+**Files.** `translation/en/page_001.md` · `translation/en/page_002.md` · `translation/en/page_008.md`
+
+**See.** translation/NOTES.md
+
+
+### `tr-verified-overclaims` — "verified" in the translation manifest means less than it sounds
+
+**○ open** · infra · priority 3 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** translation_status.py sets status=verified for any page with no [?...] markers left. 450 of 463 pages carry that label. The legend in the script and the paragraph on the parallel-text page both define it correctly, but the word on the green badge does not, and the confidence census tells the real story: high 48, medium 232, low 3, UNSTATED 180.
+
+**Acceptance.** Either the badge is renamed to what it measures (`no queries`, say), or every page carries a stated confidence so the badge and the census cannot disagree.
+
+**Files.** `scripts/translation_status.py` · `scripts/build_translation_page.py`
 
 
 ---

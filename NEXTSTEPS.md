@@ -1,4 +1,4 @@
-<!-- tokens: ~9,984 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~10,030 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -45,9 +45,11 @@ with Hunt's objection in their lede (**built**). Everything below this line is s
 **Poliphilo acting out his reactions is built too** (later the same day) — see
 [`HUMANOIDS.md`](HUMANOIDS.md) §4.
 
-**Still owed from item 1 of 0-A: the full-text reading mode**, which is now the largest thing
-left on this list. Its prerequisite is the whole-book translation, in progress in another
-window; nothing here should touch `translation/` while that runs.
+**The translation is finished** (2026-09-09). All 467 pages: 463 englished plus four blank
+leaves, 249,936 words, live as a parallel text at `research/translation.html` and as
+`HPTranslation.txt`. The other window had taken it to 453 pages; the ten that remained were the
+front matter, and they are done. **The full-text reading mode is no longer blocked by anything
+but building it**, and is the largest thing left on this list.
 
 ### 0-A. Ted's open call, 2026-09-09: read the whole book while you walk it
 
