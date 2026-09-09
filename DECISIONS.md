@@ -1618,3 +1618,28 @@ before building or revising any visual asset.
   the woodcut render mode), Botticelli / High-Renaissance painting (lit-mode Venus, Polia,
   nymphs), Quattrocento sculpture & relief (Mantegna, della Robbia — architecture and the
   gods' statues), plus any relevant medieval or early-modern exemplars.
+
+## 2026-09-08 — The mode chooser could not be reached (bug fix, after v4)
+
+Found by opening the published page at 1440x900 and measuring the overlay, not by reading
+the diff. `#hp-mode` is a `position: fixed` flex box, `align-items: center`, with
+`overflow` left at `visible`. Its content had grown to **1351 px** with the sixth card, so
+in any window shorter than that the centred content overflowed **past the top edge** —
+where a scrollbar cannot reach it even if one existed. Measured: `Walk Freely` at
+`top: -42`, `Poliphilo's Dream` at `top: -46`, `The Novel` clipped at the bottom.
+
+**The two chief modes — the walking simulator and the story mode — could not be started
+at all.** Everything below the fold was fine, which is why it survived the v4 release: the
+modes that were exercised (Roll Up, Dream via keyboard) were the visible ones.
+
+- **The overlay scrolls, and centres only while it fits.** `overflow-y: auto` plus
+  `align-items: safe center` — `safe` degrades to plain `center` on engines that lack it,
+  so nothing regresses. Not `flex-start`: centring is right for the common case where the
+  cards do fit.
+- **The fix is enforced from `showHPMode()` as well as from the stylesheet**, because the
+  rule in `RECIPES/ship-a-release.md` says a CSS-only fix in `src/index.html` reappears
+  after deploy — that file is not cache-busted and Pages serves it `max-age=600`. This is
+  the first fix to actually follow that rule.
+- **Standing lesson: the chooser's height is a hard constraint.** A seventh mode card
+  overflows further. The scroll makes that safe, but check the chooser at 900 px whenever
+  a card is added.

@@ -1243,7 +1243,22 @@ window.hpVaultsExit = () => {
 
 function showHPMode(on) {
   const el = document.getElementById('hp-mode');
-  if (el) el.style.display = on ? 'flex' : 'none';
+  if (!el) return;
+  el.style.display = on ? 'flex' : 'none';
+  // The six cards run to 1351 px, taller than a 900 px window, and flex
+  // centring overflows past the TOP edge where no scrollbar reaches -- Walk
+  // Freely and Poliphilo's Dream were off the screen and could not be started.
+  // The CSS in src/index.html fixes it, but that file is not cache-busted and
+  // Pages serves it with max-age=600, so enforce it here as well (the standing
+  // rule in RECIPES/ship-a-release.md for a CSS-only fix).
+  if (on) {
+    el.style.overflowY = 'auto';
+    el.style.overscrollBehavior = 'contain';
+    el.style.alignItems = 'center';
+    el.style.alignItems = 'safe center';
+    const inner = el.querySelector('.hpm-inner');
+    if (inner) inner.style.padding = '2rem 1rem';
+  }
 }
 
 window.hpExplore = () => {

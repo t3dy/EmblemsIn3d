@@ -790,8 +790,15 @@
       display: none; position: fixed; inset: 0; z-index: 42;
       background: rgba(4,3,1,0.82); backdrop-filter: blur(3px);
       align-items: center; justify-content: center; pointer-events: all;
+      /* Six cards are taller than a 900 px window (1351 px of content). Centred
+         flex content overflows past the TOP edge, where no scrollbar can reach
+         it -- which put Walk Freely and Poliphilo's Dream off the screen and
+         made the two chief modes unstartable. So scroll, and centre only while
+         it fits: `safe` falls back to plain `center` on engines without it. */
+      overflow-y: auto; overscroll-behavior: contain;
+      align-items: safe center;
     }
-    #hp-mode .hpm-inner { text-align: center; max-width: 760px; padding: 1rem; }
+    #hp-mode .hpm-inner { text-align: center; max-width: 760px; padding: 2rem 1rem; }
     #hp-mode h2 { font-size: 1.5rem; font-weight: normal; letter-spacing: 0.14em; color: #e8c96a; }
     #hp-mode .hpm-sub { font-size: 0.82rem; color: #9a8a74; margin-top: 0.6rem; line-height: 1.7; }
     #hp-mode .hpm-cards { display: flex; gap: 1.2rem; margin-top: 1.8rem; justify-content: center; flex-wrap: wrap; }
@@ -1147,6 +1154,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=309"></script>
+  <script type="module" src="./main.js?v=310"></script>
 </body>
 </html>

@@ -31,6 +31,14 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
+### 0aa. Check the mode chooser at 900 px whenever a card is added — done 2026-09-08
+The chooser is a fixed, centred flex box; its content passed the height of a 900 px window
+at six cards and overflowed past the **top** edge, where nothing can scroll to it. `Walk
+Freely` and `Poliphilo's Dream` were unreachable and the two chief modes could not be
+started. Fixed (`overflow-y: auto` + `align-items: safe center`, enforced from
+`showHPMode()` too — see `DECISIONS.md` 2026-09-08). **A seventh card overflows further:
+the scroll makes that safe, but look at the chooser at 900 px before shipping one.**
+
 ### 0a. Ted's open call: close the stale Vercel mirror
 Added 2026-09-07. Vercel is retired and Pages is the only host, but
 `emblems-in-3d.vercel.app` is still up and frozen at `main.js?v=247`. Every push widens the
