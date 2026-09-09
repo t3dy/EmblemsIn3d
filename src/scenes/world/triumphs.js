@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS } from './constants.js?v=1';
+import { TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS } from './constants.js?v=3';
 
 export const Triumphs = {
   // ── The Four Triumphs of Jupiter — floats ringing the grove ──────────────

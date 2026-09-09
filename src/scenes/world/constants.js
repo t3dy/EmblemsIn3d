@@ -63,7 +63,11 @@ export const HP_STATIONS = [
   { key: 'labyrinth',        name: 'The Water Labyrinth',    folio: 177,
     pos: [-29.2, 34], look: [-44, 34], radius: 12 },   // outside the basin, beside the viewing mount
   { key: 'colossus',         name: 'The Colossus',           folio: 34,
-    pos: [30, 4],    look: [38, 4],    radius: 8 },
+    // moved back 2026-09-09 with the rescale: the head dome used to end at x 33.8
+    // and now ends at 32.6, and the old look-point [38, 4] is inside the skull.
+    // 26 was the first try and it stands inside a tree at (25.5, 3.4) -- measured,
+    // not guessed: walker.collide() displaces a probe placed there.
+    pos: [28.5, 4],  look: [34, 4],    radius: 10 },
   { key: 'priapus',          name: 'The Rite of Priapus',    folio: 185,
     pos: [44, -12],  look: [44, -6],   radius: 7 },
   { key: 'book_two',         name: "Book II — Treviso",      folio: 387,

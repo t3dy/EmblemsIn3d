@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { Walker } from '../../systems/Walker.js?v=6';
-import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=1';
+import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=3';
 
 export const Approach = {
   // ── Ground, paths ─────────────────────────────────────────────────────────

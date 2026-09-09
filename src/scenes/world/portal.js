@@ -13,7 +13,7 @@
 import * as THREE from 'three';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=8';
-import { DOORS, SIGNS } from './constants.js?v=1';
+import { DOORS, SIGNS } from './constants.js?v=3';
 
 export const Portal = {
   _buildGreatPortal() {
@@ -795,14 +795,34 @@ export const Portal = {
   // what this toolkit can do. So: a head that is a dome with a doorway for a
   // mouth, a chest that is a barrel-vaulted hall, and limbs that are low
   // vaults, all in verdigris bronze; and inside, the organs as labelled cells.
+  // RESCALED 2026-09-09 (feat-monuments-true-scale, the second of three). It was
+  // 17 m from crown to heel against Dallington p. 44's "three score paces" — 88.8 m
+  // — a ratio of 1 : 5.2, the worst in the world after the portal. It is now 28 m
+  // long and half again as thick: L stretches it along its own axis, G swells it.
+  //
+  // Why not 89 m: the mainland ground is 132 m across and the corridor this figure
+  // lies in is clear only from x = 36 to the eastern edge at 66. At 89 m the
+  // colossus IS the island. DECISIONS.md call 3 asked for the monuments to be
+  // brought TOWARD their stated size in the plan they already occupy, and 28 m is
+  // as far as that plan goes: 1 : 3.2, up from 1 : 5.2, and now by a long way the
+  // largest figure in the world.
+  //
+  // The gain that is not about ratios: at 1.0 the mouth was a hole 0.9 x 1.5 m and
+  // no one could have walked into it. At G = 1.55 it is 1.4 x 2.3 — a door. The
+  // book's colossus is entered through the mouth; until now ours could only be
+  // looked at, which made the object a sculpture and the whole point is that it is
+  // not one.
   _buildColossus(KX = 36, KZ = 4) {
+    const L = 1.65;   // along the axis: 17 m of figure becomes 28
+    const G = 1.55;   // girth and height, and with them the doorways
     const S = this.style;
     const lit = S.key !== 'woodcut';
     const bronze = lit ? S.mat({ color: 0x4f7a5a, metalness: 0.7, roughness: 0.55 }) : S.mat({ tone: 0.16 });
     const dark   = lit ? S.mat({ color: 0x2c3a30, metalness: 0.5, roughness: 0.7 }) : S.mat({ tone: 0.3 });
     const sand   = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
-    // The figure lies along +x with its head at KX and its feet at KX+17.
-    this._m(new THREE.CircleGeometry(12, 30), sand, KX + 8, 0.03, KZ, { rx: -Math.PI / 2, cast: false });
+    // The figure lies along +x with its head at KX and its feet at KX + 17L = 64,
+    // one clear pace short of the mainland's eastern edge.
+    this._m(new THREE.CircleGeometry(16, 30), sand, KX + 14, 0.03, KZ, { rx: -Math.PI / 2, cast: false });
     const half = (r, x, z, sx, sy, sz) => {
       const m = this._m(new THREE.SphereGeometry(r, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2), bronze, x, 0, z, { outline: true });
       m.scale.set(sx, sy, sz);
@@ -815,36 +835,41 @@ export const Portal = {
       return m;
     };
     // the head: a dome, the face toward the west, the mouth a doorway
-    half(2.2, KX, KZ, 1, 1.05, 1.1);
-    this._m(new THREE.BoxGeometry(0.9, 1.5, 0.5), dark, KX - 2.15, 0.75, KZ, { cast: false });     // the mouth
-    this._m(new THREE.BoxGeometry(0.7, 1.3, 0.3), S.mat(lit ? { color: 0x08080a } : { tone: 0.5 }), KX - 2.3, 0.7, KZ, { cast: false });
-    for (const sz of [-1, 1]) this._m(new THREE.SphereGeometry(0.26, 10, 8), dark, KX - 1.4, 1.75, KZ + sz * 0.8, { cast: false }); // the eyes
+    half(2.2 * G, KX, KZ, 1, 1.05, 1.1);
+    this._m(new THREE.BoxGeometry(0.9 * G, 1.5 * G, 0.5 * G), dark, KX - 2.15 * G, 0.75 * G, KZ, { cast: false });     // the mouth
+    this._m(new THREE.BoxGeometry(0.7 * G, 1.3 * G, 0.3 * G), S.mat(lit ? { color: 0x08080a } : { tone: 0.5 }), KX - 2.3 * G, 0.7 * G, KZ, { cast: false });
+    for (const sz of [-1, 1]) this._m(new THREE.SphereGeometry(0.26 * G, 10, 8), dark, KX - 1.4 * G, 1.75 * G, KZ + sz * 0.8 * G, { cast: false }); // the eyes
     // The mouth is a DOOR, so it gets a door's members: two columns, an
     // entablature, a threshold — the thing that makes a dome with a face read
     // as a building with a face, which is the whole claim of the object.
-    for (const sz of [-1, 1]) this._column(KX - 3.0, KZ + sz * 0.95, 1.9, { order: 'doric', r: 0.11, mat: bronze });
-    this._entablature(KX - 3.0, 1.9, KZ, 2.6, 0.6, { ry: Math.PI / 2, dentils: false, mat: bronze });
-    this._m(new THREE.BoxGeometry(0.9, 0.12, 2.6), dark, KX - 3.0, 0.06, KZ, { cast: false });
+    for (const sz of [-1, 1]) this._column(KX - 3.0 * G, KZ + sz * 0.95 * G, 1.9 * G, { order: 'doric', r: 0.11 * G, mat: bronze });
+    this._entablature(KX - 3.0 * G, 1.9 * G, KZ, 2.6 * G, 0.6 * G, { ry: Math.PI / 2, dentils: false, mat: bronze });
+    this._m(new THREE.BoxGeometry(0.9 * G, 0.12 * G, 2.6 * G), dark, KX - 3.0 * G, 0.06 * G, KZ, { cast: false });
     // ribs along the vaults, so the body reads as built and not as blown
-    for (const [x0, len, hh] of [[KX + 4.6, 5.4, 2.5], [KX + 9.0, 3.6, 1.8]]) {
-      for (let k = 0; k < Math.floor(len / 0.9); k++) {
-        const rib = this._m(new THREE.TorusGeometry(hh * 1.01, 0.06, 6, 20, Math.PI), dark, x0 - len / 2 + 0.45 + k * 0.9, 0, KZ, { cast: false });
+    for (const [x0, len, hh] of [[KX + 4.6 * L, 5.4 * L, 2.5 * G], [KX + 9.0 * L, 3.6 * L, 1.8 * G]]) {
+      const step = 0.9 * L;
+      for (let k = 0; k < Math.floor(len / step); k++) {
+        const rib = this._m(new THREE.TorusGeometry(hh * 1.01, 0.06 * G, 6, 20, Math.PI), dark, x0 - len / 2 + step / 2 + k * step, 0, KZ, { cast: false });
         rib.rotation.y = Math.PI / 2;
       }
     }
     // the chest: a barrel vault; the belly a lower one; the legs two long vaults
-    vault(KX + 4.6, KZ, 3.3, 2.5, 5.4);
-    vault(KX + 9.0, KZ, 2.6, 1.8, 3.6);
-    for (const sz of [-1, 1]) vault(KX + 14.0, KZ + sz * 1.3, 1.0, 0.95, 6.5);
+    vault(KX + 4.6 * L, KZ, 3.3 * G, 2.5 * G, 5.4 * L);
+    vault(KX + 9.0 * L, KZ, 2.6 * G, 1.8 * G, 3.6 * L);
+    for (const sz of [-1, 1]) vault(KX + 14.0 * L, KZ + sz * 1.3 * G, 1.0 * G, 0.95 * G, 6.5 * L);
     // the arms, laid along the sides
-    for (const sz of [-1, 1]) vault(KX + 5.5, KZ + sz * 3.9, 0.85, 0.8, 7.0);
+    for (const sz of [-1, 1]) vault(KX + 5.5 * L, KZ + sz * 3.9 * G, 0.85 * G, 0.8 * G, 7.0 * L);
     for (const dx of [2.5, 4.5, 6.5, 8.5, 10.5, 12.5]) {
-      for (const sz of [-1, 1]) this._wallCol(KX + dx - 1, KX + dx + 1, KZ + sz * 3.9 - 0.9, KZ + sz * 3.9 + 0.9);
+      for (const sz of [-1, 1]) this._wallCol(KX + dx * L - 1, KX + dx * L + 1, KZ + sz * 3.9 * G - 0.9, KZ + sz * 3.9 * G + 0.9);
     }
-    this._circleCol(KX, KZ, 2.4);
-    this._wallCol(KX + 2, KX + 17, KZ - 3.4, KZ + 3.4);
+    this._circleCol(KX, KZ, 2.4 * G);
+    this._wallCol(KX + 2 * L, KX + 17 * L, KZ - 3.4 * G, KZ + 3.4 * G);
     // the organs, as the book has them: a chamber each, its name above it and
-    // the sicknesses generated in it; the doors face the path down the side
+    // the sicknesses generated in it. The doors are on the south flank and are
+    // READ FROM A DISTANCE, not walked up to: the arm lies along that side, its
+    // colliders flush against the body, so the nearest a walker gets is beyond
+    // the arm. That was true before the rescale too and is not new -- measured
+    // with walker.collide(), not assumed. See ticket feat-colossus-interior.
     const ORGANS = [
       ['COR',      'THE HEART · WHERE LOVE IS BORN · THE CVRES WRITTEN IN CHALDEAN, NOT DIVVLGED', 3.6],
       ['PVLMONES', 'THE LVNGS · PLEVRISY · SHORTNESS OF BREATH', 5.2],
@@ -854,18 +879,22 @@ export const Portal = {
       ['RENES',    'THE KIDNEYS · THE STONE', 11.0],
     ];
     for (const [name, sick, dx] of ORGANS) {
-      this._m(new THREE.BoxGeometry(0.62, 1.0, 0.2), dark, KX + dx, 0.5, KZ - 3.05, { cast: false });
-      this._plaque({ main: name, sub: sick }, 1.3, 0.34, KX + dx, 1.35, KZ - 3.28, Math.PI, true);
+      this._m(new THREE.BoxGeometry(0.62 * G, 1.0 * G, 0.2 * G), dark, KX + dx * L, 0.5 * G, KZ - 3.05 * G, { cast: false });
+      this._plaque({ main: name, sub: sick }, 1.3 * G, 0.34 * G, KX + dx * L, 1.35 * G, KZ - 3.28 * G, Math.PI, true);
     }
     this._plaque({ main: 'COLOSSVS', sub: 'A SCVLPTVRE THAT IS A BVILDING · ENTERED BY THE MOVTH · LEFAIVRE PP. 52–53' },
-      2.4, 0.42, KX - 2.4, 2.6, KZ, -Math.PI / 2, true);
-    // the female colossus beside him, more buried, and with NO door
-    half(1.8, KX + 1.0, KZ - 9.0, 1, 0.55, 1.1).position.y = -0.3;
-    vault(KX + 5.2, KZ - 9.0, 2.6, 1.5, 5.0).position.y = -0.55;
-    vault(KX + 10.0, KZ - 9.0, 2.0, 1.1, 4.0).position.y = -0.5;
-    this._wallCol(KX - 1, KX + 12.5, KZ - 11.0, KZ - 7.0);
+      2.4 * G, 0.42 * G, KX - 2.4 * G, 2.6 * G, KZ, -Math.PI / 2, true);
+    // The female colossus beside him, more buried, and with NO door. She grows
+    // less than he does (FG, FL) because the book gives her less, and her whole
+    // body moves two metres south — the male's flank came out to meet her when he
+    // swelled, and the path the organ doors open onto would otherwise be 1 m wide.
+    const FL = 1.5, FG = 1.35, FZ = KZ - 11.0;
+    half(1.8 * FG, KX + 1.0 * FL, FZ, 1, 0.55, 1.1).position.y = -0.3 * FG;
+    vault(KX + 5.2 * FL, FZ, 2.6 * FG, 1.5 * FG, 5.0 * FL).position.y = -0.55 * FG;
+    vault(KX + 10.0 * FL, FZ, 2.0 * FG, 1.1 * FG, 4.0 * FL).position.y = -0.5 * FG;
+    this._wallCol(KX - 1 * FL, KX + 12.5 * FL, FZ - 2.0 * FG, FZ + 2.0 * FG);
     this._plaque({ main: 'ALTERA', sub: 'THE OTHER · HALF-HIDDEN · POLIPHILO REFVSES TO ENTER · PRIKI' },
-      1.8, 0.34, KX + 5.2, 1.3, KZ - 6.3, 0, true);
+      1.8 * FG, 0.34 * FG, KX + 5.2 * FL, 1.3 * FG, FZ + 2.7 * FG, 0, true);
   },
 
   // ── The Bridge into Eleuterylida's realm ─────────────────────────────────
