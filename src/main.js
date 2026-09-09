@@ -1209,7 +1209,7 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   } else if (chooser && !station && !spawn) {
     showHPMode(true);
   } else {
-    showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
+    showHint('W A S D / arrows walk · Shift run · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
   }
   refreshTouchControls();
   refreshLookCtl();
@@ -1382,7 +1382,7 @@ window.hpRoll = async () => {
     const f = document.getElementById('roll-foot');
     if (f) f.innerHTML = tank
       ? 'TWO-STICK: W A S D the left hand &middot; I J K L or arrows the right &middot; both forward rolls, one forward turns, both aside turns &middot; drag turns the ball &middot; C camera behind &middot; Space quick turn &middot; T single-stick &middot; Esc stop'
-      : 'W A S D roll &middot; Q E Z C the diagonals &middot; right button held rolls the way you look &middot; drag to look &middot; Space quick turn &middot; Shift dash &middot; T two-stick scheme &middot; Esc stop';
+      : 'W A S D roll &middot; Q E Z C the diagonals &middot; right button held rolls the way you look &middot; drag or &#9650;&#9660; to look &middot; Space quick turn &middot; Shift dash &middot; T two-stick scheme &middot; Esc stop';
     showHint(tank ? 'Two-stick: WASD is the left hand, IJKL the right. Both forward to roll; one forward to turn.' : 'Single-stick: roll the way the camera looks.');
   };
   sc.roll.onWedding = (r) => {
@@ -1447,7 +1447,7 @@ window.hpExplore = () => {
   showFlavorChooser({
     kicker: 'Walking the Dream Garden freely', begin: 'Start walking',
     onDone: () => {
-      showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
+      showHint('W A S D / arrows walk · Shift run · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
       refreshTouchControls();
       refreshLookCtl();
     },
@@ -1608,7 +1608,7 @@ window.hpFly = () => {
     onDone: () => {
       sc.onLand = () => {
         showFlightCards(false);
-        showHint('Landed. W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera');
+        showHint('Landed. W A S D / arrows walk · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
         refreshTouchControls();
         refreshLookCtl();
       };
@@ -1658,7 +1658,7 @@ const dreamUI = {
       setHPStyleBtn(true);
       showHint(finished
         ? 'The dream is over — the garden is yours. W A S D to walk · 1–9 the wonders · 0 sails to Cythera'
-        : 'W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera');
+        : 'W A S D / arrows walk · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
     }
   },
   showTravel({ index, total, title }) {
