@@ -16,7 +16,7 @@ first token of every session.
 
 ---
 
-## The six rules
+## The seven rules
 
 1. **Verify the live artifact before saying "done", "fixed", "working" or "deployed".**
    Load the real URL or running page and confirm *the specific thing that was asked for*.
@@ -42,6 +42,10 @@ first token of every session.
    coverage check was driven by the woodcut catalogue and the vaults have no woodcut.
    Coverage is tracked chapter by chapter in `research/coverage.json`, rendered as
    [`COVERAGE.md`](COVERAGE.md). → [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md)
+7. **Measure, don't estimate.** `await hpDiag()` on the running page. Over budget at
+   **1 500 draw calls** or **33 ms a frame**; take a reading before and after and put both
+   in the commit message. Defects and debt go in `research/tickets.json` (→ `TICKETS.md`),
+   each with an acceptance criterion a machine could check. → [`ENGINEERING.md`](ENGINEERING.md)
 
 ## Corpus in, game out
 

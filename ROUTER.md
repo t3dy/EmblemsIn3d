@@ -10,7 +10,7 @@ not read the whole table's worth of documents "for context."
 
 ---
 
-## The five rules that outrank everything else
+## The rules that outrank everything else
 
 These are not style preferences. Every one of them exists because it was violated and cost
 a session.
@@ -44,6 +44,11 @@ a session.
    tracked chapter by chapter in [`research/coverage.json`](research/coverage.json),
    rendered as [`COVERAGE.md`](COVERAGE.md). →
    [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md)
+7. **Measure, don't estimate.** `await hpDiag()` on the running page reports draw calls,
+   frame time and wasted materials. Every performance number written down here before
+   2026-09-08 was a guess, and the guess was wrong by a factor of two. A feature is over
+   budget at **1 500 draw calls** or **33 ms a frame**; take a reading before and after and
+   put both in the commit message. → [`ENGINEERING.md`](ENGINEERING.md) §1
 
 ---
 
@@ -51,6 +56,8 @@ a session.
 
 | If your task is… | Read | Recipe |
 |---|---|---|
+| **Fix a defect, pay down debt, or make the world faster** | `TICKETS.md` (generated — the queue), then `ENGINEERING.md` §1 for the budget | run `await hpDiag()` on the live page **before and after**, and put both readings in the commit message |
+| **Understand how this project works** (tickets, tests, budgets, context) | [`ENGINEERING.md`](ENGINEERING.md) — measurements first, proposals second | — |
 | **Decide what to build next** | `COVERAGE.md` (generated — the two queues) | [`RECIPES/audit-coverage.md`](RECIPES/audit-coverage.md) · `/audit-coverage` |
 | **Read a chapter against the world** (enumerate its features) | `HPTOTOURPIPELINE.md` §1–§3 | [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md) · `/research-chapter <numeral>` |
 | **Build a feature from the build queue** | its entry in `research/coverage.json`, then the passage it cites | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) · `/build-feature <id>` |

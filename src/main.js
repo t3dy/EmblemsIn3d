@@ -1706,6 +1706,115 @@ window.hpAir = (o) => {
 
 window._hp = { renderer, composer, state, clock, aerial };
 
+// ─── Diagnostics ──────────────────────────────────────────────────────────────
+//
+// `await hpDiag()` from the console, or from a headless driver. Added
+// 2026-09-08 because there was NO instrument at all: every performance number
+// this project has ever written down ("draw calls are ~1500 a frame", NEXTSTEPS
+// §0c) was an estimate, and an estimate cannot be regression-tested. The first
+// real reading was 3 124 draw calls and 2.92 M triangles at 25 fps. See
+// `ENGINEERING.md` §2.
+//
+// It samples real frames instead of reading a value once, because
+// `renderer.info` resets on every `render()` call and the composer renders
+// three or four times a frame. Reading it cold gives you the last fullscreen
+// quad — 1 call, 2 triangles — which looks wonderful and means nothing.
+//
+// The number to watch is `scene.wastedMaterials`: materials that are byte-for
+// byte identical to another and could be one shared instance. Three.js batches
+// nothing across distinct material objects, so every duplicate is a guaranteed
+// separate draw call and a guaranteed uniform upload.
+window.hpDiag = async function hpDiag(frames = 60) {
+  const sc = state.activeScene;
+  if (!sc || !sc.scene) return { error: 'no scene — enter a world first (hpExplore())' };
+
+  // ── Static census: what the scene IS, independent of where the camera looks
+  let meshes = 0, instanced = 0, verts = 0, casters = 0, tris = 0;
+  const mats = new Map(), geos = new Set(), sig = new Map();
+  sc.scene.traverse(o => {
+    if (o.isInstancedMesh) instanced++;
+    if (!o.isMesh) return;
+    meshes++;
+    if (o.castShadow) casters++;
+    const g = o.geometry;
+    if (g) {
+      geos.add(g.uuid);
+      const pos = g.attributes && g.attributes.position;
+      if (pos) { verts += pos.count; tris += (g.index ? g.index.count : pos.count) / 3; }
+    }
+    for (const m of (Array.isArray(o.material) ? o.material : [o.material])) {
+      if (!m) continue;
+      mats.set(m.uuid, (mats.get(m.uuid) || 0) + 1);
+      // The key a SHARED material would collapse on. Anything that changes how
+      // the mesh draws belongs in it; anything cosmetic-but-identical does not.
+      const k = [m.type, m.color ? m.color.getHexString() : '-', m.roughness, m.metalness,
+                 m.transparent, m.opacity, m.side, m.map ? m.map.uuid : '-',
+                 m.alphaTest, m.emissive ? m.emissive.getHexString() : '-'].join('|');
+      sig.set(k, (sig.get(k) || 0) + 1);
+    }
+  });
+
+  // ── Live census: what it COSTS. autoReset off so a whole frame's passes
+  // accumulate, reset at the top of the next frame.
+  const info = renderer.info, wasAuto = info.autoReset;
+  info.autoReset = false;
+  const calls = [], ms = [];
+  // A hidden or backgrounded tab stops servicing requestAnimationFrame, so the
+  // sampler must never be the only thing that can end this. It resolves with
+  // whatever it has after `frames` frames OR after a wall-clock deadline —
+  // otherwise a headless driver calling hpDiag() on an unfronted page hangs
+  // forever, which is exactly what happened the first time one did.
+  let stalled = false;
+  await new Promise(res => {
+    let last = performance.now(), n = 0, done = false;
+    const finish = (s) => { if (done) return; done = true; stalled = s; res(); };
+    const budget = setTimeout(() => finish(true), 250 + frames * 40);
+    const step = () => {
+      const now = performance.now();
+      if (n > 0) { calls.push(info.render.calls); ms.push(now - last); }
+      last = now; info.reset();
+      if (++n > frames || done) { clearTimeout(budget); finish(false); return; }
+      requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  });
+  info.autoReset = wasAuto;
+  const srt = a => [...a].sort((x, y) => x - y);
+  const med = a => (a.length ? srt(a)[a.length >> 1] : 0);
+  const p95 = a => (a.length ? srt(a)[Math.floor(a.length * 0.95)] : 0);
+
+  return {
+    frame: {
+      drawCalls: med(calls),
+      ms: +med(ms).toFixed(2),
+      p95ms: +p95(ms).toFixed(2),
+      fps: +(1000 / (med(ms) || 1)).toFixed(1),
+      sampled: ms.length,
+      // true = the page was not painting (hidden tab, throttled background).
+      // The scene census below is still exact; the frame numbers are not.
+      stalled,
+    },
+    scene: {
+      meshes, instanced, shadowCasters: casters,
+      triangles: Math.round(tris), vertices: verts,
+      geometries: geos.size,
+      materials: mats.size,
+      distinctMaterialSignatures: sig.size,
+      wastedMaterials: mats.size - sig.size,
+    },
+    gpu: {
+      textures: info.memory.textures,
+      geometryBuffers: info.memory.geometries,
+      programs: (info.programs || []).length,
+      pixelRatio: renderer.getPixelRatio(),
+      canvas: `${renderer.domElement.width}x${renderer.domElement.height}`,
+    },
+    // Worst first: what a shared-material pass would collapse, and by how much.
+    topSignatures: [...sig.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
+      .map(([signature, meshes]) => ({ meshes, signature })),
+  };
+};
+
 // ─── Audio ────────────────────────────────────────────────────────────────────
 // The site is silent by design (Ted, 2026-09-04): no music or ambient audio
 // anywhere — tours, dream, Atalanta, any page. So there is no gesture listener
