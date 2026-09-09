@@ -48,8 +48,17 @@ CHAPTER_STARTS = [
 FIRST_PAGE = 193   # where Dallington leaves off
 LAST_PAGE = 467
 
+# Ted, 2026-09-08: he wants a full English Hypnerotomachia to listen to, with no
+# apparatus and no seam between Dallington's 1592 and ours -- so the first half
+# has to be fetched and translated too. The defaults above are unchanged; pass
+# --first/--last to reach pages 1-192. Chapter labels for that half are not in
+# CHAPTER_STARTS and are resolved from the fetched text instead.
+BOOK_FIRST_PAGE = 1
+
 
 def chapter_for(page: int) -> str:
+    if page < CHAPTER_STARTS[0][1]:
+        return "I-XVI"          # refined from the text once fetched
     name = CHAPTER_STARTS[0][0]
     for chap, start in CHAPTER_STARTS:
         if page >= start:
@@ -153,6 +162,10 @@ def main():
     ap.add_argument("--refetch", action="store_true", help="re-download pages already on disk")
     ap.add_argument("--status", action="store_true", help="report progress and exit")
     ap.add_argument("--limit", type=int, default=0, help="stop after N pages (for testing)")
+    ap.add_argument("--first", type=int, default=FIRST_PAGE,
+                    help=f"first facsimile page (default {FIRST_PAGE}; the book starts at 1)")
+    ap.add_argument("--last", type=int, default=LAST_PAGE,
+                    help=f"last facsimile page (default {LAST_PAGE})")
     args = ap.parse_args()
 
     m = load_manifest()
@@ -161,7 +174,7 @@ def main():
         return 0
 
     SRC_DIR.mkdir(parents=True, exist_ok=True)
-    wanted = list(range(FIRST_PAGE, LAST_PAGE + 1))
+    wanted = list(range(max(BOOK_FIRST_PAGE, args.first), args.last + 1))
     if args.limit:
         wanted = wanted[: args.limit]
 
