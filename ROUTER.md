@@ -77,7 +77,10 @@ a session.
 | **Change how the world is *drawn*** (light, air, colour, register) | `RENDERING.md`, then `src/shaders/` | — |
 | **Work on UI, navigation, layout, typography** | `INTERFACECHOICES.md`, `TRANSLATIONDISPLAYCHOICES.md`, `DESIGN.md` | — |
 | **Work on the game loop / Dream mode** | `DESIGN.md`, `GAMIFYVRHP.md`, `src/systems/DreamMode.js` | — |
-| **Work on Roll Up** (the Katamari mode) | `src/systems/RollUp.js`, and `HPWorldScene._census` / `takeRollable` | — |
+| **Work on Roll Up** (the Katamari mode) | [`ROLLING.md`](ROLLING.md) — every variable and which one to turn; then `src/systems/RollUp.js` and `HPWorldScene._census` | — |
+| **Build or fix a human figure** | [`HUMANOIDS.md`](HUMANOIDS.md), then `NYMPHS.md` / `CHARACTERS.md` and the plate | — |
+| **Build or fix an animal** | [`ANIMALS.md`](ANIMALS.md) §4, then the plate | — |
+| **Understand why the world costs what it costs** | [`DRAWCALLS.md`](DRAWCALLS.md) — what a draw call is, what merging would buy, and why we are not doing it | `await hpDiag()` |
 | **Decide *whether* to do something** | `DESIGN.md`, `DECISIONS.md`, `NEXTSTEPS.md` | — |
 
 ### The subject briefs — one per class of thing in the world

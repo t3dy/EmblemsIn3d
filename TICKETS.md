@@ -6,7 +6,7 @@
 
 ---
 
-**16 tickets** — 11 open, 3 declined, 2 done. By kind: 6 debt, 5 infra, 2 perf, 2 bug, 1 question.
+**24 tickets** — 19 open, 3 declined, 2 done. By kind: 12 debt, 5 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -44,6 +44,21 @@
 **See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
 
 
+### `fig-contrapposto` — No figure in the world stands in contrapposto
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Cast.nymph() places every figure with hips level, shoulders level, spine vertical and head straight, so the hip line, shoulder line, spine axis and gaze are all parallel. There is no such figure in Renaissance art. Ted 2026-09-09: the figures "look like shit".
+
+**Acceptance.** The default stand pose has weight on one leg, a raised hip, counter-tilted shoulders, an S-curve spine and the head off the hip axis; no two of those four lines are parallel; chin at 7/8 of standing height.
+
+**Files.** `src/systems/Cast.js`
+
+**See.** HUMANOIDS.md#2a · HUMANOIDS.md#3
+
+
 ### `infra-split-worldscene` — HPWorldScene.js is one 197k-token file, so no two agents can ever work on the world at once
 
 **○ open** · debt · priority 1 · hp-builder
@@ -59,6 +74,36 @@
 **Files.** `src/scenes/HPWorldScene.js`
 
 **See.** ENGINEERING.md#2c · ORCHESTRATION.md
+
+
+### `roll-crust-never-absorbs` — Swallowed things sink flush and vanish; in Katamari they never do
+
+**○ open** · bug · priority 1 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** RollUp._crust: depth = min(1, age/T), seat = max(R*0.55, R - depth*size). At depth 1 a thing's outer edge is flush with the skin and it has disappeared into the ball. SINK_BIG 6s, SINK_SMALL 32s only choose how fast. Ted 2026-09-09: "the items being rolled up still don't remain visible and deforming the ball as they did in the katamari damacy games."
+
+**Acceptance.** After two minutes of rolling the ball's silhouette is visibly made of what it ate, and _bump never decays to zero. One line: cap depth below 1 (try 0.55).
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLING.md#3 · DECISIONS.md 2026-09-09 (later) call 3
+
+
+### `tour-woodcut-frame` — A toggleable second frame showing the plate for the moment you are standing in
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "I want another frame (like the frame that contains the text) to optionally pop up (toggleable on and off) that lets the user look at the woodcut." tours.json stops already carry a `wc` array of plate files and captions and the genuine 1499 cuts are in the repo at 800px; there is no second panel and no toggle, and plates are bound to a stop rather than to a point in the text.
+
+**Acceptance.** At every tour point that has a plate, a second frame can be toggled open beside the commentary showing that plate with its caption; the toggle persists across stops; a point with no plate offers no toggle.
+
+**Files.** `src/index.html` · `src/main.js` · `src/data/tours.json`
+
+**See.** NEXTSTEPS.md#0-A
 
 
 ### `bug-approach-stations-are-mute` — The three approach stations built on 2026-09-08 have no commentary at all
@@ -108,6 +153,36 @@
 **See.** DIRECTIONS.md#2 · NEXTSTEPS.md#0b
 
 
+### `fig-poliphilo-acts` — Poliphilo does not react to anything
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "seeing a Polyphilo figure acting out his reactions." NPCs have idle sway and an arm breathe and nothing else. poliphilo.json already catalogues 53 utterances with their occasions, so what he reacts to and where is already data.
+
+**Acceptance.** At the stops where poliphilo.json has an utterance, the figure takes a pose that matches its occasion, arriving with non-linear easing, and turns his gaze to what the commentary names.
+
+**Files.** `src/systems/Cast.js` · `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json`
+
+**See.** HUMANOIDS.md#4
+
+
+### `fig-species-proportions` — One proportion table serves every quadruped, so silhouette does not distinguish species
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** quadruped() derives wolf, lion, stag, bull, sow, goat, horse and unicorn from one barrel with a bulk parameter. Silhouette is species: a wolf's chest is deep and narrow with a sharp belly tuck, a lion's shoulders sit above its hips, a stag hangs from a long sloping neck. ANIMALS.md already recorded that the wolf "reads as a smooth quadruped rather than a wolf".
+
+**Acceptance.** Each species has its own chest depth, belly tuck, shoulder-to-hip height difference, leg length and head size; each stands asymmetrically; the wolf is recognisable as a wolf in silhouette against the sky.
+
+**Files.** `src/systems/Cast.js`
+
+**See.** ANIMALS.md#4 · HUMANOIDS.md
+
+
 ### `infra-agent-context-contracts` — The three agents have no bounded reading list; all inherit the same instructions
 
 **○ open** · infra · priority 2 · hp-builder
@@ -136,6 +211,53 @@
 **Files.** `DECISIONS.md` · `ROUTER.md`
 
 **See.** ENGINEERING.md#2c
+
+
+### `roll-everything-rollable` — Break the remaining monoliths into individual blocks
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** _census rejects anything over 6 m and logs it to scene._monoliths, which now holds only the sea, sky, ground discs, roads and terrace shells. NEXTSTEPS 0g names what is left: the bridge arches, the twenty Cythera fence gates, the Fountain of Venus's arcade, the obelisk plinths, the bath, the Court screen, Book II's Treviso front.
+
+**Acceptance.** scene._monoliths contains nothing but the ground, the sea, the sky and the roads. A katamari does not eat the floor.
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/systems/Masonry.js`
+
+**See.** ROLLING.md#2 · DRAWCALLS.md#4
+
+
+### `roll-growth-too-fast` — The ball grows too quickly and the metal ladder is spent in the first minutes
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Packing loss 0.42 (42% of every swallowed volume becomes ball); BITE 0.58 so a single big bite adds ~8% volume; METALS at 0/0.5/1/1.8/3/5/8 with WEDDING 12 and ceiling 14, so the endgame has 2 m of range. Ted 2026-09-09: "I feel like it grows too quickly."
+
+**Acceptance.** A full run to the wedding takes materially longer than it does today and the last metal stage is the longest, not the shortest.
+
+**Risk.** BITE and the packing loss compound. Change one at a time and roll two minutes after each, or it overshoots into sluggish.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLING.md#1
+
+
+### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour." The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08.
+
+**Acceptance.** A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.
+
+**Files.** `src/main.js` · `translation/`
+
+**See.** NEXTSTEPS.md#0-A
 
 
 ### `feat-artificial-gardens` — The three artificial gardens - glass, silk, and the counterfeit scent
@@ -218,7 +340,7 @@
 
 **Acceptance.** hpDiag().frame.drawCalls < 1500 at every station.
 
-**Resolution.** DECISIONS.md 2026-09-09 call 1. Declined: the merge would have cost Roll Up its vocabulary of named individual objects, and the speed it would buy is not wanted at that price.
+**Resolution.** DECISIONS.md 2026-09-09 call 1. Declined: the merge would have cost Roll Up its vocabulary of named individual objects, and the speed it would buy is not wanted at that price. Closed permanently 2026-09-09 (later): Ted, "I want everything in the world of our virtual dream garden to be roll up able. All of the architecture needs to be built out of individual objects." The object count is meant to go UP. See DRAWCALLS.md.
 
 **Files.** `src/scenes/HPWorldScene.js` · `src/systems/RollUp.js`
 

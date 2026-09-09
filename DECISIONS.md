@@ -2,6 +2,66 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-09 (later) — What this project is, and four things that follow
+
+Ted, unprompted and in one message. **The first paragraph outranks everything else in this
+file**, because it settles the class of argument that produced the 1 : 8 proposal, the
+renderer refactor and the pace change all in one day:
+
+> *"The primary goal for this project is not to create a commercial video game experience but
+> rather to create a **digital humanities product that has educational and meditative
+> purposes**. So I don't want to sacrifice space for speed just to get the player around in
+> the world faster. We can always give the player the ability to run or fly or teleport or
+> whatever if they're getting impatient and want a quick tour."*
+
+### 1. Space is never traded for speed. Impatience is answered with options, not compression.
+
+This **revises call 2 of this morning**. Pace is still bought with speed and never by
+reordering or shortening — but the speed is now an **option offered to the player**, not a
+global tuning of how fast everyone walks. Run, fly and teleport already exist; the answer to
+"this is taking too long" is to make those discoverable, not to shrink the world or hurry the
+walker. The 2026-09-09 change to `runSpeed` (10 → 16 open, 9 under the trees) stands, because
+it added an option and shrank nothing — but no further pace work may cost a metre of ground.
+
+### 2. Everything in the world must be roll-up-able.
+
+> *"I want everything in the world of our virtual dream garden to be roll up able. All of the
+> architecture needs to be built out of individual objects (blocks of marble, wooden beams, or
+> whatever is being used in Renaissance Architecture) that follows a katamari like logic."*
+
+**This closes the merge question permanently and in the opposite direction.** The object count
+is meant to go **up**, not down; `scene._monoliths` is the standing to-do list of everything
+not yet built out of pieces, and `systems/Masonry.js` is how it gets done. `DRAWCALLS.md`
+explains what this costs and why it is the right cost for this project. Ted has separately
+noted he *might* one day separate Roll mode from the virtual world — that split, and not any
+renderer trick, is the only way both goals are ever fully met, and it is his call to make.
+
+### 3. Roll Up is not enough like Katamari. Three faults, named.
+
+> *"I feel like it grows too quickly, and the items being rolled up still don't remain visible
+> and deforming the ball as they did in the katamari damacy games."*
+
+Diagnosed in full in [`ROLLING.md`](ROLLING.md). The structural one: **our crust absorbs.**
+Every swallowed thing sinks flush over 6–32 s and disappears inside the ball. In Katamari
+nothing ever sinks — the ball's silhouette *is* the objects, permanently. That single
+behaviour, not any tuning value, is why the mode does not feel right, and the fix is one line
+(`depth` capped below 1). Growth is a second, separate problem: the packing loss of 0.42 and
+`BITE` of 0.58 are both generous.
+
+### 4. The figures look wrong.
+
+> *"All the humanoid and animal figures you've created look like shit."*
+
+[`HUMANOIDS.md`](HUMANOIDS.md) and [`ANIMALS.md`](ANIMALS.md) §4 written the same day. The
+finding worth carrying: **the humans look wrong because they stand wrong, not because they
+are made of spheres** — there is no contrapposto anywhere in the world, and every figure has
+its hip line, shoulder line, spine and gaze all parallel, which is the definition of a
+mannequin and the opposite of every Renaissance figure. The animals fail differently: one
+proportion table serves every species, and silhouette *is* species.
+
+Both files also record that in the **woodcut register** primitive-built figures are not a
+failure but the idiom, so part of the complaint may only apply to the lit world.
+
 ## 2026-09-09 — Four calls: fidelity, pace, monument scale, and the artificial gardens
 
 Put to Ted with the performance measurements in hand (`ENGINEERING.md` §1). All four answered

@@ -79,7 +79,7 @@
         "ROLLMODE.md"
       ],
       "opened": "2026-09-08",
-      "resolution": "DECISIONS.md 2026-09-09 call 1. Declined: the merge would have cost Roll Up its vocabulary of named individual objects, and the speed it would buy is not wanted at that price.",
+      "resolution": "DECISIONS.md 2026-09-09 call 1. Declined: the merge would have cost Roll Up its vocabulary of named individual objects, and the speed it would buy is not wanted at that price. Closed permanently 2026-09-09 (later): Ted, \"I want everything in the world of our virtual dream garden to be roll up able. All of the architecture needs to be built out of individual objects.\" The object count is meant to go UP. See DRAWCALLS.md.",
       "closed": "2026-09-09"
     },
     {
@@ -324,6 +324,153 @@
         "GARDENS.md#3",
         "DIMENSIONS.md#3",
         "DECISIONS.md 2026-09-09 call 4"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "roll-crust-never-absorbs",
+      "title": "Swallowed things sink flush and vanish; in Katamari they never do",
+      "kind": "bug",
+      "status": "open",
+      "priority": 1,
+      "evidence": "RollUp._crust: depth = min(1, age/T), seat = max(R*0.55, R - depth*size). At depth 1 a thing's outer edge is flush with the skin and it has disappeared into the ball. SINK_BIG 6s, SINK_SMALL 32s only choose how fast. Ted 2026-09-09: \"the items being rolled up still don't remain visible and deforming the ball as they did in the katamari damacy games.\"",
+      "acceptance": "After two minutes of rolling the ball's silhouette is visibly made of what it ate, and _bump never decays to zero. One line: cap depth below 1 (try 0.55).",
+      "files": [
+        "src/systems/RollUp.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "ROLLING.md#3",
+        "DECISIONS.md 2026-09-09 (later) call 3"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "roll-growth-too-fast",
+      "title": "The ball grows too quickly and the metal ladder is spent in the first minutes",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Packing loss 0.42 (42% of every swallowed volume becomes ball); BITE 0.58 so a single big bite adds ~8% volume; METALS at 0/0.5/1/1.8/3/5/8 with WEDDING 12 and ceiling 14, so the endgame has 2 m of range. Ted 2026-09-09: \"I feel like it grows too quickly.\"",
+      "acceptance": "A full run to the wedding takes materially longer than it does today and the last metal stage is the longest, not the shortest.",
+      "risk": "BITE and the packing loss compound. Change one at a time and roll two minutes after each, or it overshoots into sluggish.",
+      "files": [
+        "src/systems/RollUp.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "ROLLING.md#1"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "roll-everything-rollable",
+      "title": "Break the remaining monoliths into individual blocks",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "_census rejects anything over 6 m and logs it to scene._monoliths, which now holds only the sea, sky, ground discs, roads and terrace shells. NEXTSTEPS 0g names what is left: the bridge arches, the twenty Cythera fence gates, the Fountain of Venus's arcade, the obelisk plinths, the bath, the Court screen, Book II's Treviso front.",
+      "acceptance": "scene._monoliths contains nothing but the ground, the sea, the sky and the roads. A katamari does not eat the floor.",
+      "files": [
+        "src/scenes/HPWorldScene.js",
+        "src/systems/Masonry.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "ROLLING.md#2",
+        "DRAWCALLS.md#4"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "fig-contrapposto",
+      "title": "No figure in the world stands in contrapposto",
+      "kind": "debt",
+      "status": "open",
+      "priority": 1,
+      "evidence": "Cast.nymph() places every figure with hips level, shoulders level, spine vertical and head straight, so the hip line, shoulder line, spine axis and gaze are all parallel. There is no such figure in Renaissance art. Ted 2026-09-09: the figures \"look like shit\".",
+      "acceptance": "The default stand pose has weight on one leg, a raised hip, counter-tilted shoulders, an S-curve spine and the head off the hip axis; no two of those four lines are parallel; chin at 7/8 of standing height.",
+      "files": [
+        "src/systems/Cast.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "HUMANOIDS.md#2a",
+        "HUMANOIDS.md#3"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "fig-species-proportions",
+      "title": "One proportion table serves every quadruped, so silhouette does not distinguish species",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "quadruped() derives wolf, lion, stag, bull, sow, goat, horse and unicorn from one barrel with a bulk parameter. Silhouette is species: a wolf's chest is deep and narrow with a sharp belly tuck, a lion's shoulders sit above its hips, a stag hangs from a long sloping neck. ANIMALS.md already recorded that the wolf \"reads as a smooth quadruped rather than a wolf\".",
+      "acceptance": "Each species has its own chest depth, belly tuck, shoulder-to-hip height difference, leg length and head size; each stands asymmetrically; the wolf is recognisable as a wolf in silhouette against the sky.",
+      "files": [
+        "src/systems/Cast.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "ANIMALS.md#4",
+        "HUMANOIDS.md"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "tour-woodcut-frame",
+      "title": "A toggleable second frame showing the plate for the moment you are standing in",
+      "kind": "debt",
+      "status": "open",
+      "priority": 1,
+      "evidence": "Ted 2026-09-09: \"I want another frame (like the frame that contains the text) to optionally pop up (toggleable on and off) that lets the user look at the woodcut.\" tours.json stops already carry a `wc` array of plate files and captions and the genuine 1499 cuts are in the repo at 800px; there is no second panel and no toggle, and plates are bound to a stop rather than to a point in the text.",
+      "acceptance": "At every tour point that has a plate, a second frame can be toggled open beside the commentary showing that plate with its caption; the toggle persists across stops; a point with no plate offers no toggle.",
+      "files": [
+        "src/index.html",
+        "src/main.js",
+        "src/data/tours.json"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "NEXTSTEPS.md#0-A"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "tour-full-text-mode",
+      "title": "A reading mode with the entire text of the HP, not summaries",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Ted 2026-09-09: \"an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour.\" The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08.",
+      "acceptance": "A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.",
+      "files": [
+        "src/main.js",
+        "translation/"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "NEXTSTEPS.md#0-A"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "fig-poliphilo-acts",
+      "title": "Poliphilo does not react to anything",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Ted 2026-09-09: \"seeing a Polyphilo figure acting out his reactions.\" NPCs have idle sway and an arm breathe and nothing else. poliphilo.json already catalogues 53 utterances with their occasions, so what he reacts to and where is already data.",
+      "acceptance": "At the stops where poliphilo.json has an utterance, the figure takes a pose that matches its occasion, arriving with non-linear easing, and turns his gaze to what the commentary names.",
+      "files": [
+        "src/systems/Cast.js",
+        "src/scenes/HPWorldScene.js",
+        "src/data/poliphilo.json"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "HUMANOIDS.md#4"
       ],
       "opened": "2026-09-09"
     }

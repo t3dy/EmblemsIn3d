@@ -31,6 +31,55 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
+### 0-A. Ted's open call, 2026-09-09: read the whole book while you walk it
+
+Three requests in one message, none of them started. Quoted, because the wording matters.
+
+**1. The full text, not just summaries.**
+
+> *"I want an option for a version where the player can read not just summaries and commentary
+> but **the full text of the entire HP** as part of the process of taking the tour, and looking
+> at modeled versions of everything described in the text, and seeing a Polyphilo figure acting
+> out his reactions."*
+
+Three separate builds inside one sentence:
+- **A full-text reading mode.** The parallel edition already exists (`translation/`,
+  Dallington for pp. 1–192 and ours from 193 on) and the tour already links to it per stop.
+  What is asked for is the reverse: the *text* as the spine, with the world alongside it.
+  Note that the whole-book translation pass committed on 2026-09-08 — 192 source pages
+  fetched, 20 englished — is the prerequisite, and it is 10 % done.
+- **A modelled version of everything the text describes.** That is `COVERAGE.md`'s build queue
+  and rule 6. Already the standing work.
+- **Poliphilo acting out his reactions.** Needs the pose library in
+  [`HUMANOIDS.md`](HUMANOIDS.md) §4 — authored poses, non-linear easing, and gaze. He is the
+  one figure in the world that must act, and the file argues he is the only one worth rigging.
+
+**2. The woodcut, at the moment the text reaches it.**
+
+> *"I also want the woodcuts to be viewable at every point in the tour where the user is
+> looking at our modeled version of what the woodcut brings up. As the text of the novel and
+> commentary gets to the point where the woodcut comes up, I want **another frame (like the
+> frame that contains the text) to optionally pop up (toggleable on and off)** that lets the
+> user look at the woodcut."*
+
+A second panel beside the commentary panel, toggleable, carrying the plate for the moment you
+are standing in. Most of the parts exist: `tours.json` stops already carry a `wc` array of
+plate files and captions, the genuine 1499 cuts are in the repo at 800 px, and `walk-notes`
+is the panel to model it on. What does not exist is the **toggle**, the **second frame**, and
+the binding of a plate to a *point in the text* rather than to a stop.
+
+**3. Everything roll-up-able** — see `DECISIONS.md` 2026-09-09 (later) call 2, and
+[`ROLLING.md`](ROLLING.md) §2. `scene._monoliths` is the list.
+
+### 0-B. Roll Up does not feel like Katamari — diagnosed, not yet fixed
+
+> *"I feel like it grows too quickly, and the items being rolled up still don't remain visible
+> and deforming the ball as they did in the katamari damacy games."*
+
+[`ROLLING.md`](ROLLING.md) is the full control panel. The order to work in is its §5, and the
+first item is one line: cap `depth` below 1 in `_crust()` so nothing is ever fully absorbed.
+That alone is most likely the whole of what he is describing.
+
 ### 0. Ted's open call: the world is too small — build the bigger dream
 
 Added 2026-09-08, in his words:
