@@ -97,7 +97,7 @@ function setProgress(pct, text) {
 // and stopped being fine the moment the reading mode fetched reading.json on
 // demand, hours after load. Hoisted so there is one number, not two that can
 // drift. CLAUDE.md: "Data files use the single const V in main.js loadData()."
-const DATA_V = '47';   // bump when data files are re-exported
+const DATA_V = '48';   // bump when data files are re-exported
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
@@ -745,6 +745,21 @@ window.walkPlateZoom = () => {
 };
 
 function walkPlates() {
+  // In the READING mode the plate belongs to the page, not to the station.
+  // Ted asked for it that way -- "as the text of the novel and commentary gets
+  // to the point where the woodcut comes up" -- and the station is far too
+  // coarse for that: a station covers twenty or thirty pages, so a
+  // station-bound plate hangs there for the whole of a chapter whether the cut
+  // has arrived or not.
+  //
+  // 162 of the 463 pages carry a woodcut, and they are the GENUINE 1499 cuts,
+  // named by page: images/woodcuts_1499/pNNN.jpg. So the frame opens on the leaf
+  // the cut is printed on and closes on the next page, exactly as turning the
+  // book would. scripts/fetch_1499_plates.py, and its note on the +8 offset.
+  if (state.reading) {
+    const p = readPage();
+    return (p && p.wc) ? [{ file: p.wc, caption: p.wcap || '' }] : [];
+  }
   const st = _walkStation;
   if (!st) return [];
   const stop = walkStopFor(st.key);
@@ -755,20 +770,25 @@ function renderWalkPlate() {
   const el = document.getElementById('walk-plate');
   if (!el) return;
   const plates = walkPlates();
-  if (!walkPlateOn() || !plates.length || state.commentsOff) { setHidden(el, true); return; }
+  // `commentsOff` silences the COMMENTARY; it should not silence the book's own
+  // illustrations while the reader is deliberately reading the book.
+  const muted = state.commentsOff && !state.reading;
+  if (!walkPlateOn() || !plates.length || muted) { setHidden(el, true); return; }
   if (_plateIx >= plates.length) _plateIx = 0;
   const wc = plates[_plateIx];
   const st = _walkStation;
   el.innerHTML = `
     <div class="wp-head">
-      <span>The 1499 plate</span>
+      <span>${state.reading ? 'The 1499 plate on this page' : 'The 1499 plate'}</span>
       <button class="wp-close" onclick="window.toggleWalkPlate()" title="Hide the plate">&#10005;</button>
     </div>
     <div class="wp-body">
       <img src="../images/${wc.file}" alt="${(wc.caption || '').replace(/"/g, '&quot;')}"
            onclick="window.walkPlateZoom()" title="Click to see it larger">
       <p class="wp-cap">${fmtProse(wc.caption || '')}</p>
-      ${st && st.folio ? `<p class="wp-folio">Folio ${st.folio}</p>` : ''}
+      ${state.reading
+        ? `<p class="wp-folio">Page ${(readPage() || {}).n}</p>`
+        : (st && st.folio ? `<p class="wp-folio">Folio ${st.folio}</p>` : '')}
       ${plates.length > 1 ? `<div class="wp-dots">${plates.map((_, i) =>
         `<button class="${i === _plateIx ? 'on' : ''}" onclick="window.walkPlateStep(${i})">${i + 1}</button>`
       ).join('')}</div>` : ''}
@@ -1456,6 +1476,7 @@ window.hpReadStep = (d) => {
   _read.i = Math.max(0, Math.min(_read.pages.length - 1, _read.i + d));
   renderRead();
   readSync();
+  renderWalkPlate();
 };
 
 window.hpReadGo = (n) => {
@@ -1472,11 +1493,13 @@ window.hpReadGo = (n) => {
   _read.i = best;
   renderRead();
   readSync();
+  renderWalkPlate();
 };
 
 window.hpReadExit = () => {
   setHidden(document.getElementById('read-panel'), true);
   state.reading = false;
+  renderWalkPlate();          // the frame goes back to the station's plate
 };
 
 window.hpRead = async () => {
@@ -1492,10 +1515,23 @@ window.hpRead = async () => {
     if (el) el.innerHTML = '<div class="rp-head"><span class="rp-where">The text would not load.</span></div>';
     return;
   }
+  // The plate frame is off by default in the walk, because there the world is
+  // the subject and the book's picture of it is the gloss. In the READING mode
+  // that is the wrong way round -- Ted asked for the woodcut to come up as the
+  // text reaches it -- so it is turned on the first time anyone reads, once,
+  // and respected thereafter if they turn it off. Same pattern as the
+  // `poliphilo` lens, which is added once and then left to the reader.
+  try {
+    if (!localStorage.getItem('hp_plate_read')) {
+      localStorage.setItem('hp_plate_read', '1');
+      localStorage.setItem('hp_plate', '1');
+    }
+  } catch (_) {}
   state.reading = true;
   _read.i = 0;
   renderRead();
   readSync();
+  renderWalkPlate();
   showHint('Reading the whole book · [ and ] turn the page · the world follows · Esc to stop reading');
 };
 

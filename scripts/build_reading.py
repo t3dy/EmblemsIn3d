@@ -38,7 +38,10 @@ ROOT = Path(__file__).resolve().parent.parent
 EN = ROOT / "translation" / "en"
 MANIFEST = ROOT / "translation" / "manifest.json"
 TOURS = ROOT / "src" / "data" / "tours.json"
+PLATES = ROOT / "images" / "woodcuts_1499"
 OUT = ROOT / "src" / "data" / "reading.json"
+HPDB = Path(r"C:\Dev\hypnerotomachia polyphili\db\hp.db")
+PAGE_OFFSET = 8      # db page_seq + 8 = this edition's page; see fetch_1499_plates.py
 
 DASH = re.compile(r"\s*[–—-]\s*")          # en dash, em dash, hyphen
 
@@ -82,8 +85,35 @@ def body_of(path):
     return paras, note
 
 
+def plate_titles():
+    """page -> the woodcut's title, from hp.db, for the plate frame's caption.
+
+    The IMAGE is found by filename (images/woodcuts_1499/pNNN.jpg), so the plates
+    work with or without the database; this only supplies the caption. The corpus
+    is a separate repository and is read-only from here.
+    """
+    try:
+        import sqlite3
+    except ImportError:
+        return {}
+    if not HPDB.exists():
+        return {}
+    out = {}
+    try:
+        db = sqlite3.connect(f"file:{HPDB}?mode=ro", uri=True)
+        for pg, title in db.execute(
+                "select page_1499, title from woodcuts where page_1499 is not null"):
+            out[int(pg) + PAGE_OFFSET] = title
+        db.close()
+    except Exception as e:                      # a caption is not worth failing over
+        print(f"  (no captions: {e})")
+    return out
+
+
 def main():
     man = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    titles = plate_titles()
+    have_plate = {int(f.stem[1:]) for f in PLATES.glob("p*.jpg")} if PLATES.is_dir() else set()
     ch2st = chapter_to_station()
     pages, last_station, missing = [], None, set()
 
@@ -109,6 +139,14 @@ def main():
         }
         if note:
             rec_out["note"] = note
+        # The plate that falls ON this leaf. Ted asked for the woodcut to come up
+        # "as the text of the novel and commentary gets to the point where the
+        # woodcut comes up" -- so it is bound to the PAGE, not, as the walking
+        # plate frame is, to the station.
+        if n in have_plate:
+            rec_out["wc"] = f"woodcuts_1499/p{n:03d}.jpg"
+            if titles.get(n):
+                rec_out["wcap"] = titles[n]
         pages.append(rec_out)
 
     data = {
@@ -127,6 +165,8 @@ def main():
     print(f"  words    {words:,}")
     print(f"  placed   {placed}/{len(pages)} pages have a station")
     print(f"  bytes    {OUT.stat().st_size:,}")
+    withplate = sum(1 for p in pages if p.get("wc"))
+    print(f"  plates   {withplate} pages carry their own 1499 woodcut")
     if textless:
         print(f"  no body text (full-page woodcuts, signature-only leaves): {textless}")
     if missing:

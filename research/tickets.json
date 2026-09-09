@@ -579,7 +579,7 @@
       "id": "read-bind-plate-to-text",
       "title": "The plate is bound to a station, not to the point in the text where it appears",
       "kind": "debt",
-      "status": "open",
+      "status": "done",
       "priority": 2,
       "evidence": "Ted's wording was 'as the text of the novel and commentary gets to the point where the woodcut comes up'. The plate frame keys off the station, so it opens for the whole of a station's pages rather than at the leaf the cut actually falls on. The data to do better now exists: hp.db.woodcut_catalog has a folio per plate, and reading.json has a page per screen.",
       "acceptance": "The plate frame opens on the page the woodcut actually falls on and closes after it, rather than staying open across a whole station.",
@@ -591,7 +591,9 @@
       "refs": [
         "NEXTSTEPS.md#0-A"
       ],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-09",
+      "resolution": "In the reading mode the plate frame is bound to the PAGE. 162 of the 463 pages carry a woodcut and they are the genuine 1499 cuts, brought in from the corpus by scripts/fetch_1499_plates.py at a uniform 800px (233 MB of source, 29 MB in the repo; 89 of the 162 were full-resolution 4659x7086 scans nothing on a web page can use). The filename IS the mapping. The page offset between the corpus's numbering and this edition's is +8, and it was MEASURED, not guessed: thirty-eight printed signatures in the transcribed pages themselves ('f ii' on our page 91 is f2r, which the database puts at 83) agree on it from quire f onward. Captions come from hp.db woodcuts.title. The frame opens on the leaf the cut is printed on and closes on the next page, and it defaults ON the first time anyone reads, because in that mode it is the point. In the WALK it still keys off the station, which is right there. Verified: p23 closed, p24 The Great Pyramid, p25 closed, p30 Horse and Rider, p31 Twin Inscribed Monuments."
     },
     {
       "id": "read-audit-turns-against-italian",

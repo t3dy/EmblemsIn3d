@@ -6,7 +6,7 @@
 
 ---
 
-**30 tickets** — 9 open, 3 declined, 18 done. By kind: 15 debt, 7 infra, 5 bug, 2 perf, 1 question.
+**30 tickets** — 8 open, 3 declined, 19 done. By kind: 15 debt, 7 infra, 5 bug, 2 perf, 1 question.
 
 ---
 
@@ -91,21 +91,6 @@
 **Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
-
-
-### `read-bind-plate-to-text` — The plate is bound to a station, not to the point in the text where it appears
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Ted's wording was 'as the text of the novel and commentary gets to the point where the woodcut comes up'. The plate frame keys off the station, so it opens for the whole of a station's pages rather than at the leaf the cut actually falls on. The data to do better now exists: hp.db.woodcut_catalog has a folio per plate, and reading.json has a page per screen.
-
-**Acceptance.** The plate frame opens on the page the woodcut actually falls on and closes after it, rather than staying open across a whole station.
-
-**Files.** `src/main.js` · `scripts/build_reading.py`
-
-**See.** NEXTSTEPS.md#0-A
 
 
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
@@ -439,6 +424,23 @@
 **Files.** `DECISIONS.md` · `ROUTER.md`
 
 **See.** ENGINEERING.md#2c
+
+
+### `read-bind-plate-to-text` — The plate is bound to a station, not to the point in the text where it appears
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Ted's wording was 'as the text of the novel and commentary gets to the point where the woodcut comes up'. The plate frame keys off the station, so it opens for the whole of a station's pages rather than at the leaf the cut actually falls on. The data to do better now exists: hp.db.woodcut_catalog has a folio per plate, and reading.json has a page per screen.
+
+**Acceptance.** The plate frame opens on the page the woodcut actually falls on and closes after it, rather than staying open across a whole station.
+
+**Resolution.** In the reading mode the plate frame is bound to the PAGE. 162 of the 463 pages carry a woodcut and they are the genuine 1499 cuts, brought in from the corpus by scripts/fetch_1499_plates.py at a uniform 800px (233 MB of source, 29 MB in the repo; 89 of the 162 were full-resolution 4659x7086 scans nothing on a web page can use). The filename IS the mapping. The page offset between the corpus's numbering and this edition's is +8, and it was MEASURED, not guessed: thirty-eight printed signatures in the transcribed pages themselves ('f ii' on our page 91 is f2r, which the database puts at 83) agree on it from quire f onward. Captions come from hp.db woodcuts.title. The frame opens on the leaf the cut is printed on and closes on the next page, and it defaults ON the first time anyone reads, because in that mode it is the point. In the WALK it still keys off the station, which is right there. Verified: p23 closed, p24 The Great Pyramid, p25 closed, p30 Horse and Rider, p31 Twin Inscribed Monuments.
+
+**Files.** `src/main.js` · `scripts/build_reading.py`
+
+**See.** NEXTSTEPS.md#0-A
 
 
 ### `roll-everything-rollable` — Break the remaining monoliths into individual blocks

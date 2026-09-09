@@ -1,4 +1,4 @@
-<!-- tokens: ~10,122 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~10,141 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -47,8 +47,9 @@ with Hunt's objection in their lede (**built**). Everything below this line is s
 
 **The reading mode is built** (2026-09-09) — `hpRead()`, the whole book with the world keeping
 pace. On its first day it caught the wolf standing on the wrong side of the valley; see
-`DECISIONS.md`. What it still owes is Ted's finer wording: the plate is bound to a *station*,
-not to the point in the *text* where the woodcut falls (`read-bind-plate-to-text`).
+`DECISIONS.md`. **And the plate is bound to the page** (later the same day): 162 of the 463 pages carry their
+own genuine 1499 woodcut, brought in at 800 px, opening on the leaf the cut is printed on. The
+whole of item 1 and item 2 of 0-A is now built.
 
 **The translation is finished** (2026-09-09). All 467 pages: 463 englished plus four blank
 leaves, 249,936 words, live as a parallel text at `research/translation.html` and as
