@@ -45,11 +45,17 @@ export const ASSETS = {
   },
   figure: {
     label: 'Nymphs & figures',
+    // Ted dislikes the flat cards (2026-09-09) and 'projected' is the answer,
+    // but making it the DEFAULT costs +48% meshes and +54% triangles over the
+    // card -- not the projection's fault (it is cheaper than 'painted', the
+    // other assembled rung) but the price of dimensional figures at all. Rule 7
+    // says stop and ask above 25%, so the default waits on Ted's call.
     def: 'card',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'A cone for the robe and capsules for the limbs — the founding manifesto look.' },
       { id: 'modelled',  label: 'Modelled', note: 'A turned gown falling in long folds, tapered legs with hips and feet, and a torso wider at the shoulder than the waist — so the figure has a silhouette, not a barrel.' },
       { id: 'painted',   label: 'Painterly (tempera)', note: 'The modelled build, but the drapery folds are painted into the cloth rather than lit into it, and the surface takes no specular — the Botticelli-panel register.' },
+      { id: 'projected', label: 'Painted on a body', note: 'The Botticelli figure PROJECTED onto the modelled build \u2014 real geometry that turns, occludes and casts a true shadow, wearing actual period pigment instead of procedural cloth. The paint gives the surface, the model gives the silhouette. See Cast.projectCutout.' },
       { id: 'card',      label: 'Painted panel', note: 'The figure PAINTED rather than assembled — drawn at eight heads on a card that turns to face you. Painting sidesteps fingers and anatomy, which is what kept the built figures reading as mannequins however well they were tuned.' },
 
     ],

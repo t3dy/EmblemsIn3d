@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { isVariant } from '../../systems/AssetVariants.js?v=8';
+import { isVariant } from '../../systems/AssetVariants.js?v=11';
 import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=5';
 import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=3';
 

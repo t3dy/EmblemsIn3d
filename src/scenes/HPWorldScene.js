@@ -24,12 +24,12 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
-import { makeCast } from '../systems/Cast.js?v=53';
+import { makeCast } from '../systems/Cast.js?v=56';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=10';
 import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=5';
-import { isVariant } from '../systems/AssetVariants.js?v=8';
+import { isVariant } from '../systems/AssetVariants.js?v=11';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=6';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
 import { createMeadowField, attachShade } from '../systems/Meadow.js?v=5';
@@ -40,10 +40,10 @@ import {
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
 } from './world/constants.js?v=3';
-import { Materials } from './world/materials.js?v=1';
-import { Nature } from './world/nature.js?v=4';
+import { Materials } from './world/materials.js?v=4';
+import { Nature } from './world/nature.js?v=7';
 import { Approach } from './world/approach.js?v=5';
-import { Portal } from './world/portal.js?v=7';
+import { Portal } from './world/portal.js?v=10';
 import { Palace } from './world/palace.js?v=4';
 import { Triumphs } from './world/triumphs.js?v=3';
 import { Tombs } from './world/tombs.js?v=3';

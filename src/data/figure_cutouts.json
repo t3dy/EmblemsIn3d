@@ -1,184 +1,226 @@
 [
- {
-  "id": "grace_1",
-  "label": "The first Grace",
-  "file": "cutouts/figures/grace_1.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   204,
-   252,
-   330,
-   798
-  ],
-  "luminance_cut": 60,
-  "sex": "f",
-  "source_px_h": 546,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 0.932
- },
- {
-  "id": "grace_2",
-  "label": "The second Grace",
-  "file": "cutouts/figures/grace_2.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   308,
-   270,
-   432,
-   798
-  ],
-  "luminance_cut": 60,
-  "sex": "f",
-  "source_px_h": 527,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 0.899
- },
- {
-  "id": "grace_3",
-  "label": "The third Grace",
-  "file": "cutouts/figures/grace_3.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   428,
-   252,
-   570,
-   798
-  ],
-  "luminance_cut": 60,
-  "sex": "f",
-  "source_px_h": 546,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 0.932
- },
- {
-  "id": "flora",
-  "label": "Flora",
-  "file": "cutouts/figures/flora.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   778,
-   242,
-   952,
-   828
-  ],
-  "luminance_cut": 54,
-  "sex": "f",
-  "source_px_h": 586,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 1.0
- },
- {
-  "id": "chloris",
-  "label": "Chloris",
-  "file": "cutouts/figures/chloris.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   908,
-   270,
-   1072,
-   810
-  ],
-  "luminance_cut": 62,
-  "sex": "f",
-  "source_px_h": 504,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 0.86
- },
- {
-  "id": "venus_bot",
-  "label": "Venus",
-  "file": "cutouts/figures/venus_bot.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   604,
-   162,
-   776,
-   698
-  ],
-  "luminance_cut": 48,
-  "sex": "f",
-  "source_px_h": 518,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 0.884
- },
- {
-  "id": "mercury",
-  "label": "Mercury",
-  "file": "cutouts/figures/mercury.png",
-  "source_file": "gallery/botticelli_primavera.jpg",
-  "artwork": "Primavera",
-  "artist": "Sandro Botticelli",
-  "date": "c. 1480",
-  "holding": "Galleria degli Uffizi, Florence",
-  "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
-  "crop": [
-   28,
-   246,
-   214,
-   800
-  ],
-  "luminance_cut": 52,
-  "sex": "m",
-  "source_px_h": 509,
-  "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
-  "px": [
-   448,
-   896
-  ],
-  "relative_height": 0.869
- }
+  {
+    "id": "grace_1",
+    "label": "The first Grace",
+    "file": "cutouts/figures/grace_1.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      204,
+      252,
+      330,
+      798
+    ],
+    "luminance_cut": 60,
+    "sex": "f",
+    "source_px_h": 546,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 0.932,
+    "card_uv": [
+      0.29018,
+      0.0,
+      0.70982,
+      0.91295
+    ]
+  },
+  {
+    "id": "grace_2",
+    "label": "The second Grace",
+    "file": "cutouts/figures/grace_2.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      308,
+      270,
+      432,
+      798
+    ],
+    "luminance_cut": 60,
+    "sex": "f",
+    "source_px_h": 527,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 0.899,
+    "card_uv": [
+      0.29241,
+      0.00335,
+      0.70536,
+      0.88058
+    ]
+  },
+  {
+    "id": "grace_3",
+    "label": "The third Grace",
+    "file": "cutouts/figures/grace_3.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      428,
+      252,
+      570,
+      798
+    ],
+    "luminance_cut": 60,
+    "sex": "f",
+    "source_px_h": 546,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 0.932,
+    "card_uv": [
+      0.26339,
+      0.0,
+      0.73661,
+      0.9096
+    ]
+  },
+  {
+    "id": "flora",
+    "label": "Flora",
+    "file": "cutouts/figures/flora.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      778,
+      242,
+      952,
+      828
+    ],
+    "luminance_cut": 54,
+    "sex": "f",
+    "source_px_h": 586,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 1.0,
+    "card_uv": [
+      0.20982,
+      0.0,
+      0.79018,
+      0.97991
+    ]
+  },
+  {
+    "id": "chloris",
+    "label": "Chloris",
+    "file": "cutouts/figures/chloris.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      908,
+      270,
+      1072,
+      810
+    ],
+    "luminance_cut": 62,
+    "sex": "f",
+    "source_px_h": 504,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 0.86,
+    "card_uv": [
+      0.22545,
+      0.00335,
+      0.77232,
+      0.84263
+    ]
+  },
+  {
+    "id": "venus_bot",
+    "label": "Venus",
+    "file": "cutouts/figures/venus_bot.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      604,
+      162,
+      776,
+      698
+    ],
+    "luminance_cut": 48,
+    "sex": "f",
+    "source_px_h": 518,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 0.884,
+    "card_uv": [
+      0.21205,
+      0.00335,
+      0.78571,
+      0.86272
+    ]
+  },
+  {
+    "id": "mercury",
+    "label": "Mercury",
+    "file": "cutouts/figures/mercury.png",
+    "source_file": "gallery/botticelli_primavera.jpg",
+    "artwork": "Primavera",
+    "artist": "Sandro Botticelli",
+    "date": "c. 1480",
+    "holding": "Galleria degli Uffizi, Florence",
+    "licence": "Public domain (artist died 1510); faithful photographic reproduction of a 2-D PD work.",
+    "crop": [
+      28,
+      246,
+      214,
+      800
+    ],
+    "luminance_cut": 52,
+    "sex": "m",
+    "source_px_h": 509,
+    "method": "Luminance mask, median-despeckled, largest connected region, dilated and gaussian-feathered; trimmed to bounds and centred on a 512x1024 card.",
+    "px": [
+      448,
+      896
+    ],
+    "relative_height": 0.869,
+    "card_uv": [
+      0.18973,
+      0.00335,
+      0.81027,
+      0.85045
+    ]
+  }
 ]
