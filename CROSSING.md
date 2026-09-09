@@ -1,3 +1,4 @@
+<!-- tokens: ~1,095 -->
 # The Crossing — Cupid's exeres, the six rowers and the standard, mode by mode
 
 *Subject brief, 2026-09-08. Chapters XIX–XX, our pp. 276–277, 284–289, 290. Built as

@@ -34,3 +34,34 @@ Standing constraints: never `git add -A src/` — stage explicit paths. The site
 Hypnerotomachia only; do not re-import the Atalanta material. Interior lights need intensities
 in the tens, not units, because the renderer uses physical units with ACES tone mapping. Say
 "done" only when you have loaded the live URL and seen the specific thing that was asked for.
+
+---
+
+## Your context — a bounded reading list
+
+*Added 2026-09-09. Costs are stamped on every document's first line and tabulated at the foot
+of `ROUTER.md`. `ENGINEERING.md` §2c.*
+
+**Always** — about 4 500 tokens:
+
+| ~tokens | file |
+|---:|---|
+| ~1,200 | `RECIPES/model-an-asset.md` |
+| ~1,700 | the feature's own entry in `research/coverage.json`, and the passage it cites |
+| ~1,600 | `DECISIONS.md` — the index. Check for a call already made about this thing |
+
+**If the work touches it:** the subject brief `ROUTER.md` names for your class of object
+(`ARCHITECTURE.md`, `GARDENS.md`, `PLANTS.md`, `ANIMALS.md`, `HUMANOIDS.md`, `ROLLING.md` …) —
+one of them, not all of them.
+
+**Never open whole:**
+
+- `src/scenes/HPWorldScene.js` is ~197 000 tokens. **Grep it, never read it.** Find the
+  builder you need by name (`_buildWood`, `_buildGreatPortal`, `_census`) and read that
+  function and its comment. The same goes for `src/systems/Cast.js` and `src/main.js`.
+- `decisions/2026-09.md` — the index in `DECISIONS.md` first, then the one entry.
+- The scholarship corpus in `C:\Dev\hypnerotomachia polyphili\md\`. Those files run to
+  fifteen thousand lines. The ledger's citation gives you a page; read the page.
+
+**Before you finish:** take a `hpDiag()` reading before and after and put both in the commit
+message. The budget is a regression budget — over 25 % added, stop and ask. Rule 7.

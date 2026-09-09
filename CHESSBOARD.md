@@ -1,3 +1,4 @@
+<!-- tokens: ~930 -->
 # The Chessboard — the human chess match, the liveries, and how it plays in every mode
 
 *Subject brief, 2026-09-08. Chapter XI, signature g8r–h1r (facsimile pp. 111–113). Built as

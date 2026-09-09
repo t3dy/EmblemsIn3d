@@ -1,3 +1,4 @@
+<!-- tokens: ~7,237 · read for: what each scholar will and will not support -->
 # The Fifteen — the scholars this world is built from
 
 *Companion to [SOURCES.md](SOURCES.md), which maps assets to sources. This file goes the

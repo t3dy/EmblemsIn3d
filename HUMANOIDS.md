@@ -1,3 +1,4 @@
+<!-- tokens: ~3,620 · read for: why the figures look wrong; poses, canon, registers -->
 # HUMANOIDS — why the figures look wrong, and the options for fixing them
 
 *Written 2026-09-09 from Ted: "all the humanoid and animal figures you've created look like

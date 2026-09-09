@@ -1,3 +1,4 @@
+<!-- tokens: ~708 -->
 # Credits and third-party material
 
 Per LICENSECHOICES.md item 4: catalogued, not relicensed.

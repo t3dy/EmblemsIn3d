@@ -1,3 +1,4 @@
+<!-- tokens: ~2,652 · read for: the bestiary, and §4 for why the beasts read badly -->
 # Animals and beasts
 
 *Which creatures the book puts in the world, what they are doing there, and how they are

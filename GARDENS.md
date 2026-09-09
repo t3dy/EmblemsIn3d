@@ -1,3 +1,4 @@
+<!-- tokens: ~4,501 · read for: the island's rings, terraces, parterres, topiary -->
 # Gardens — research pass
 
 > Read 2026-09-01 from `E:\pdf\hypnerotomachia polyphili`, chiefly John Dixon

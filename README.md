@@ -1,3 +1,4 @@
+<!-- tokens: ~3,723 -->
 # The Dream Garden of Poliphilo
 
 **The *Hypnerotomachia Poliphili* (Venice, Aldus Manutius, 1499) as a walkable 3-D world,

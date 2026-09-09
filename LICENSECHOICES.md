@@ -1,3 +1,4 @@
+<!-- tokens: ~1,315 -->
 # Licence choices
 
 > Decided 2026-08-31. This project mixes four kinds of material with four

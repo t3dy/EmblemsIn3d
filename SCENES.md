@@ -1,3 +1,4 @@
+<!-- tokens: ~3,897 -->
 # Scene Inventory: Locations & Spaces in the Hypnerotomachia
 
 ## Overview

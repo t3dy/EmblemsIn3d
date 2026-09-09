@@ -1,3 +1,4 @@
+<!-- tokens: ~4,544 · read for: how this project is built, measured and handed over -->
 # ENGINEERING — how this project is built, measured, and handed over
 
 *Opened 2026-09-08, from Ted's brief: get formal about systems engineering, test-based
@@ -193,7 +194,27 @@ its own token cost so an agent can budget.
    the scholarship corpus; `hp-verifier` opens neither and reads only the live page and the
    ledger. Today all three inherit the same workspace instructions and choose for themselves.
 
-**None of 1–5 is done.** They are tickets.
+**Four of the five were done on 2026-09-09**, and the fifth is the one that matters most.
+
+| | | |
+|---|---|---|
+| 1 | **`DECISIONS.md` split** | done — 33 500 → **4 500** tokens. Not by date: all 47 entries were written inside six days, so the volume is *pace*, not staleness. Split by **role** instead — the root is the newest three in full plus a one-line index of every call; `decisions/2026-09.md` holds the complete text. Verified lossless. |
+| 2 | **Split `HPWorldScene.js`** | **NOT DONE, and still the largest single problem here.** ~197 000 tokens in one file; no agent can read it, and under one-writer-per-file no two agents can work on the world at once. |
+| 3 | **Token headers** | done — `scripts/doc_costs.py` stamps every root `.md` and regenerates the cost table at the foot of `ROUTER.md`. |
+| 4 | **Atalanta docs off `main`** | done — ~14 900 tokens, already safe on `atalanta-archive`. |
+| 5 | **Agent context contracts** | done — each agent has an ALWAYS table with costs, an IF list, and a NEVER-OPEN list naming `HPWorldScene.js` with *grep it, never read it*. |
+
+### And a measurement that went the wrong way, which is the useful part
+
+The root was 62 files / ~206 000 tokens on the morning of 2026-09-09. After a day of writing —
+`ENGINEERING.md`, `DRAWCALLS.md`, `ROLLING.md`, `HUMANOIDS.md`, `TICKETS.md`, all of them
+asked for — it was **64 files / ~218 000**. The new prose outweighed everything archiving had
+saved. The `DECISIONS` split then brought it to **~192,903**.
+
+Net for a full day of deliberate context engineering: about **−14 000 tokens**, against
+**+12 000** of new writing in the same day. **Archiving has to run at the same cadence as
+writing or it does not keep up** — which is now a ticket (`infra-doc-growth`), and is why the
+cost table lives at the foot of the file everyone opens first.
 
 ---
 

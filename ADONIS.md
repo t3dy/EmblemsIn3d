@@ -1,3 +1,4 @@
+<!-- tokens: ~1,185 -->
 # Adonis — the sacred fountain and the sepulchre that close Book I, mode by mode
 
 *Subject brief, 2026-09-08. Chapter XXIV, our pp. 369–379 — the last chapter of Book I, and

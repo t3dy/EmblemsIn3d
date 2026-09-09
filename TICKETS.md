@@ -6,7 +6,7 @@
 
 ---
 
-**25 tickets** — 12 open, 3 declined, 10 done. By kind: 13 debt, 5 infra, 4 bug, 2 perf, 1 question.
+**26 tickets** — 9 open, 3 declined, 14 done. By kind: 13 debt, 6 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -93,32 +93,19 @@
 **See.** DIRECTIONS.md#2 · NEXTSTEPS.md#0b
 
 
-### `infra-agent-context-contracts` — The three agents have no bounded reading list; all inherit the same instructions
+### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
 
 **○ open** · infra · priority 2 · hp-builder
- · opened 2026-09-08
+ · opened 2026-09-09
 
 
-**Evidence.** hp-researcher, hp-builder and hp-verifier each choose their own context. Nothing stops the researcher opening HPWorldScene.js or the builder opening the scholarship corpus.
+**Evidence.** Measured across 2026-09-09. Root was 62 files / ~206k tokens in the morning. After a day of writing (ENGINEERING, DRAWCALLS, ROLLING, HUMANOIDS, TICKETS) it was 64 files / ~218k -- the new documents outweighed the 15k saved by archiving Atalanta. The DECISIONS split then took it to ~192k. Net for a full day of deliberate context work: -14k, against +12k of new prose in the same day.
 
-**Acceptance.** Each agent file in .claude/agents/ names a fixed reading list with a token cost per file and an explicit do-not-open list; a run that opens an unlisted file says so in its report.
+**Acceptance.** Root .md total is below 150k tokens, and `python scripts/doc_costs.py` shows no single file over 8k except the generated ledgers.
 
-**Files.** `.claude/agents/hp-researcher.md` · `.claude/agents/hp-builder.md` · `.claude/agents/hp-verifier.md`
+**Risk.** The honest reading is that this project writes a lot of prose and that the prose is load-bearing -- DRAWCALLS.md and ROLLING.md both exist because Ted asked to understand something. The fix is not to write less but to keep archiving on the same cadence as writing, and to keep the ROUTER cost table in front of whoever is about to add a file.
 
-**See.** ENGINEERING.md#2c
-
-
-### `infra-decisions-split` — DECISIONS.md is 31k tokens and grows monotonically
-
-**○ open** · infra · priority 2 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** Measured 2026-09-08: 124319 chars. Opening ROUTER + NEXTSTEPS + DECISIONS costs ~45k tokens before a line of code is read.
-
-**Acceptance.** Root DECISIONS.md under 8k tokens, holding the last ~30 days plus an index of every archived heading; older entries in decisions/ by year-quarter; ROUTER.md points at both.
-
-**Files.** `DECISIONS.md` · `ROUTER.md`
+**Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
 
@@ -151,36 +138,6 @@
 **Files.** `src/main.js` · `translation/`
 
 **See.** NEXTSTEPS.md#0-A
-
-
-### `infra-atalanta-docs` — Three Atalanta documents are still in the root, ~11k tokens, on a subject rule 4 forbids
-
-**○ open** · infra · priority 3 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** ATALANTA_ANIMATION_STRATEGIES.md (6416 tok), ATALANTA_INTEGRATION.md (4762 tok), ATALANTA_SUMMARY.md. The code went to the atalanta-archive branch on 2026-09-06; the docs were missed.
-
-**Acceptance.** The three files are on atalanta-archive and absent from main; ROUTER.md and INDEX.md no longer reference them.
-
-**Files.** `ATALANTA_ANIMATION_STRATEGIES.md` · `ATALANTA_INTEGRATION.md` · `ATALANTA_SUMMARY.md`
-
-**See.** CLAUDE.md rule 4 · ENGINEERING.md#2b
-
-
-### `infra-doc-token-headers` — No document states what it costs to read
-
-**○ open** · infra · priority 3 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** 62 root .md files, 206k tokens. ROUTER.md routes on subject only, so an agent cannot decline a file it cannot afford. ROUTER.md itself costs 5402 tokens.
-
-**Acceptance.** Every root .md carries a front-matter line `<!-- tokens: N - read for: ... -->`; a script regenerates the counts; ROUTER.md's task table shows the cost of each row.
-
-**Files.** `ROUTER.md`
-
-**See.** ENGINEERING.md#2c
 
 
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
@@ -401,6 +358,40 @@
 **See.** ANIMALS.md#4 · HUMANOIDS.md
 
 
+### `infra-agent-context-contracts` — The three agents have no bounded reading list; all inherit the same instructions
+
+**✅ done** · infra · priority 2 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** hp-researcher, hp-builder and hp-verifier each choose their own context. Nothing stops the researcher opening HPWorldScene.js or the builder opening the scholarship corpus.
+
+**Acceptance.** Each agent file in .claude/agents/ names a fixed reading list with a token cost per file and an explicit do-not-open list; a run that opens an unlisted file says so in its report.
+
+**Resolution.** Each of the three agents gained a bounded reading list: an ALWAYS table with token costs, an IF-the-work-needs-it list, and an explicit NEVER-OPEN list naming HPWorldScene.js (~197 000 tokens) with the instruction to grep it and never read it. Each is told to report anything it opened outside the list -- not as a reprimand but as how the list gets fixed. hp-verifier also gained the two-check deploy verification learned the same day.
+
+**Files.** `.claude/agents/hp-researcher.md` · `.claude/agents/hp-builder.md` · `.claude/agents/hp-verifier.md`
+
+**See.** ENGINEERING.md#2c
+
+
+### `infra-decisions-split` — DECISIONS.md is 31k tokens and grows monotonically
+
+**✅ done** · infra · priority 2 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** Measured 2026-09-08: 124319 chars. Opening ROUTER + NEXTSTEPS + DECISIONS costs ~45k tokens before a line of code is read.
+
+**Acceptance.** Root DECISIONS.md under 8k tokens, holding the last ~30 days plus an index of every archived heading; older entries in decisions/ by year-quarter; ROUTER.md points at both.
+
+**Resolution.** Split by ROLE rather than by date, because splitting by date was no help: all 47 entries were written inside six days, so the volume is pace and not staleness. DECISIONS.md is now the newest three entries in full plus a one-line index of every call, linking into decisions/2026-09.md which holds the complete text. 33 500 tokens -> 4 500, an 87% cut, under the 8k target. Verified lossless: 47 of 47 headings present in the archive and no body line dropped.
+
+**Files.** `DECISIONS.md` · `ROUTER.md`
+
+**See.** ENGINEERING.md#2c
+
+
 ### `roll-growth-too-fast` — The ball grows too quickly and the metal ladder is spent in the first minutes
 
 **✅ done** · bug · priority 2 · hp-builder
@@ -435,6 +426,40 @@
 **Files.** `src/scenes/HPWorldScene.js` · `src/data/tours.json`
 
 **See.** GARDENS.md#3 · DIMENSIONS.md#3 · DECISIONS.md 2026-09-09 call 4
+
+
+### `infra-atalanta-docs` — Three Atalanta documents are still in the root, ~11k tokens, on a subject rule 4 forbids
+
+**✅ done** · infra · priority 3 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** ATALANTA_ANIMATION_STRATEGIES.md (6416 tok), ATALANTA_INTEGRATION.md (4762 tok), ATALANTA_SUMMARY.md. The code went to the atalanta-archive branch on 2026-09-06; the docs were missed.
+
+**Acceptance.** The three files are on atalanta-archive and absent from main; ROUTER.md and INDEX.md no longer reference them.
+
+**Resolution.** Removed from main 2026-09-09. All three were already on atalanta-archive, so nothing was lost; they are also in main's history. ROUTER.md now says where they went and how to read them (git show atalanta-archive:FILE). COMPLETE_BRIEFING.md and TWO_WORLDS_FRAMEWORK.md still reference them by name and both gained a SUPERSEDED banner. Saved ~14 900 tokens.
+
+**Files.** `ATALANTA_ANIMATION_STRATEGIES.md` · `ATALANTA_INTEGRATION.md` · `ATALANTA_SUMMARY.md`
+
+**See.** CLAUDE.md rule 4 · ENGINEERING.md#2b
+
+
+### `infra-doc-token-headers` — No document states what it costs to read
+
+**✅ done** · infra · priority 3 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** 62 root .md files, 206k tokens. ROUTER.md routes on subject only, so an agent cannot decline a file it cannot afford. ROUTER.md itself costs 5402 tokens.
+
+**Acceptance.** Every root .md carries a front-matter line `<!-- tokens: N - read for: ... -->`; a script regenerates the counts; ROUTER.md's task table shows the cost of each row.
+
+**Resolution.** scripts/doc_costs.py stamps every root .md with `<!-- tokens: ~N - read for: ... -->` and regenerates a cost table at the foot of ROUTER.md between generated markers. 64 files, ~192 000 tokens, sorted worst first. The estimate is chars/4 on purpose: the number is for deciding whether to open a file, and being wrong by ten per cent never changes that.
+
+**Files.** `ROUTER.md`
+
+**See.** ENGINEERING.md#2c
 
 
 ---

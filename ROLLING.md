@@ -1,3 +1,4 @@
+<!-- tokens: ~3,996 · read for: every variable in Roll Up and which one to turn -->
 # ROLLING — every variable in Roll Up, what it does, and which one to turn
 
 *Written 2026-09-09 from Ted: the ball **grows too quickly**, and the things it eats **do not

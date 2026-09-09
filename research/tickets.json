@@ -86,7 +86,7 @@
       "id": "infra-decisions-split",
       "title": "DECISIONS.md is 31k tokens and grows monotonically",
       "kind": "infra",
-      "status": "open",
+      "status": "done",
       "priority": 2,
       "evidence": "Measured 2026-09-08: 124319 chars. Opening ROUTER + NEXTSTEPS + DECISIONS costs ~45k tokens before a line of code is read.",
       "acceptance": "Root DECISIONS.md under 8k tokens, holding the last ~30 days plus an index of every archived heading; older entries in decisions/ by year-quarter; ROUTER.md points at both.",
@@ -98,7 +98,9 @@
       "refs": [
         "ENGINEERING.md#2c"
       ],
-      "opened": "2026-09-08"
+      "opened": "2026-09-08",
+      "resolution": "Split by ROLE rather than by date, because splitting by date was no help: all 47 entries were written inside six days, so the volume is pace and not staleness. DECISIONS.md is now the newest three entries in full plus a one-line index of every call, linking into decisions/2026-09.md which holds the complete text. 33 500 tokens -> 4 500, an 87% cut, under the 8k target. Verified lossless: 47 of 47 headings present in the archive and no body line dropped.",
+      "closed": "2026-09-09"
     },
     {
       "id": "infra-split-worldscene",
@@ -123,7 +125,7 @@
       "id": "infra-atalanta-docs",
       "title": "Three Atalanta documents are still in the root, ~11k tokens, on a subject rule 4 forbids",
       "kind": "infra",
-      "status": "open",
+      "status": "done",
       "priority": 3,
       "evidence": "ATALANTA_ANIMATION_STRATEGIES.md (6416 tok), ATALANTA_INTEGRATION.md (4762 tok), ATALANTA_SUMMARY.md. The code went to the atalanta-archive branch on 2026-09-06; the docs were missed.",
       "acceptance": "The three files are on atalanta-archive and absent from main; ROUTER.md and INDEX.md no longer reference them.",
@@ -137,13 +139,15 @@
         "CLAUDE.md rule 4",
         "ENGINEERING.md#2b"
       ],
-      "opened": "2026-09-08"
+      "opened": "2026-09-08",
+      "resolution": "Removed from main 2026-09-09. All three were already on atalanta-archive, so nothing was lost; they are also in main's history. ROUTER.md now says where they went and how to read them (git show atalanta-archive:FILE). COMPLETE_BRIEFING.md and TWO_WORLDS_FRAMEWORK.md still reference them by name and both gained a SUPERSEDED banner. Saved ~14 900 tokens.",
+      "closed": "2026-09-09"
     },
     {
       "id": "infra-agent-context-contracts",
       "title": "The three agents have no bounded reading list; all inherit the same instructions",
       "kind": "infra",
-      "status": "open",
+      "status": "done",
       "priority": 2,
       "evidence": "hp-researcher, hp-builder and hp-verifier each choose their own context. Nothing stops the researcher opening HPWorldScene.js or the builder opening the scholarship corpus.",
       "acceptance": "Each agent file in .claude/agents/ names a fixed reading list with a token cost per file and an explicit do-not-open list; a run that opens an unlisted file says so in its report.",
@@ -156,13 +160,15 @@
       "refs": [
         "ENGINEERING.md#2c"
       ],
-      "opened": "2026-09-08"
+      "opened": "2026-09-08",
+      "resolution": "Each of the three agents gained a bounded reading list: an ALWAYS table with token costs, an IF-the-work-needs-it list, and an explicit NEVER-OPEN list naming HPWorldScene.js (~197 000 tokens) with the instruction to grep it and never read it. Each is told to report anything it opened outside the list -- not as a reprimand but as how the list gets fixed. hp-verifier also gained the two-check deploy verification learned the same day.",
+      "closed": "2026-09-09"
     },
     {
       "id": "infra-doc-token-headers",
       "title": "No document states what it costs to read",
       "kind": "infra",
-      "status": "open",
+      "status": "done",
       "priority": 3,
       "evidence": "62 root .md files, 206k tokens. ROUTER.md routes on subject only, so an agent cannot decline a file it cannot afford. ROUTER.md itself costs 5402 tokens.",
       "acceptance": "Every root .md carries a front-matter line `<!-- tokens: N - read for: ... -->`; a script regenerates the counts; ROUTER.md's task table shows the cost of each row.",
@@ -173,7 +179,9 @@
       "refs": [
         "ENGINEERING.md#2c"
       ],
-      "opened": "2026-09-08"
+      "opened": "2026-09-08",
+      "resolution": "scripts/doc_costs.py stamps every root .md with `<!-- tokens: ~N - read for: ... -->` and regenerates a cost table at the foot of ROUTER.md between generated markers. 64 files, ~192 000 tokens, sorted worst first. The estimate is chars/4 on purpose: the number is for deciding whether to open a file, and being wrong by ten per cent never changes that.",
+      "closed": "2026-09-09"
     },
     {
       "id": "bug-commit-is-not-deploy",
@@ -504,6 +512,25 @@
       "role": "hp-builder",
       "refs": [
         "ROLLING.md#3"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "infra-doc-growth",
+      "title": "Documentation is growing faster than the archiving is shrinking it",
+      "kind": "infra",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Measured across 2026-09-09. Root was 62 files / ~206k tokens in the morning. After a day of writing (ENGINEERING, DRAWCALLS, ROLLING, HUMANOIDS, TICKETS) it was 64 files / ~218k -- the new documents outweighed the 15k saved by archiving Atalanta. The DECISIONS split then took it to ~192k. Net for a full day of deliberate context work: -14k, against +12k of new prose in the same day.",
+      "acceptance": "Root .md total is below 150k tokens, and `python scripts/doc_costs.py` shows no single file over 8k except the generated ledgers.",
+      "risk": "The honest reading is that this project writes a lot of prose and that the prose is load-bearing -- DRAWCALLS.md and ROLLING.md both exist because Ted asked to understand something. The fix is not to write less but to keep archiving on the same cadence as writing, and to keep the ROUTER cost table in front of whoever is about to add a file.",
+      "files": [
+        "ROUTER.md",
+        "scripts/doc_costs.py"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "ENGINEERING.md#2c"
       ],
       "opened": "2026-09-09"
     }

@@ -1,3 +1,4 @@
+<!-- tokens: ~1,194 · read for: the five modes, and what every addition owes each -->
 # Modes — the five ways through the dream, and what every addition owes each of them
 
 *Standing rule, 2026-09-08: nothing goes into the world without being thought through in

@@ -1,3 +1,4 @@
+<!-- tokens: ~2,333 · read for: why the world costs what it costs, and the merge we declined -->
 # DRAWCALLS — what a draw call is, why merging helps, and what it would actually buy
 
 *Written 2026-09-09 at Ted's request: "I don't really understand the considerations about

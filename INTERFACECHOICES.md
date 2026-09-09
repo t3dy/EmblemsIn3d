@@ -1,3 +1,4 @@
+<!-- tokens: ~1,650 -->
 # Interface choices
 
 > Decided 2026-08-31. The world is now large enough that its interface problems

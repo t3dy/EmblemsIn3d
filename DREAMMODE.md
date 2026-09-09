@@ -1,3 +1,4 @@
+<!-- tokens: ~950 -->
 # Dream Mode — the game: thirteen stops, four moods, and what a stop owes
 
 *Subject brief, 2026-09-08. `src/systems/DreamMode.js`, scripted by `src/data/hp_dream.js`

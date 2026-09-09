@@ -1,3 +1,4 @@
+<!-- tokens: ~1,207 -->
 # How the translation is displayed
 
 > Decided 2026-08-31, as the project acquired a third voice. Until now the Dream

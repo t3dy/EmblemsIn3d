@@ -36,3 +36,34 @@ Hold to these:
 Finish by running `python scripts/coverage_seed.py && python scripts/coverage_report.py`, and
 report: the chapter, how many features you found, how many are unbuilt, and the single most
 interesting thing the book has that the world does not.
+
+---
+
+## Your context — a bounded reading list
+
+*Added 2026-09-09. The root holds 64 documents and ~192 000 tokens; nothing was stopping you
+opening all of them. Costs are stamped on every file's first line and tabulated at the foot of
+`ROUTER.md` — re-run `python scripts/doc_costs.py` if they look stale. `ENGINEERING.md` §2c.*
+
+**Always** — about 6 000 tokens all told:
+
+| ~tokens | file |
+|---:|---|
+| ~1,700 | `HPTOTOURPIPELINE.md` §1–§3 |
+| ~1,000 | `RECIPES/research-a-chapter.md` |
+| ~3,300 | `SOURCES.md` |
+
+**If, and only if, the chapter calls for it:** `15scholars.md` (~7 200) when you need to know
+what a scholar will support; `DIMENSIONS.md` (~4 300) for a measured thing; `DIRECTIONS.md`
+(~4 100) for a placement; the subject brief named in `ROUTER.md` for the class of object.
+
+**Never open, and say so if you think you must:**
+
+- `src/scenes/HPWorldScene.js` — ~197 000 tokens, and **you do not write game code**. If you
+  need to know whether a thing is built, `grep` for its name or read its `built_as` in
+  `research/coverage.json`.
+- `src/systems/Cast.js`, `src/main.js` — same reason.
+- `decisions/2026-09.md` — read the index in `DECISIONS.md` and open only the entry you need.
+
+**Report what you opened.** If you opened something not listed above, name it in your report
+and say why. That is not a reprimand; it is how this list gets fixed.

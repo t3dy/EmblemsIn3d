@@ -1,3 +1,4 @@
+<!-- tokens: ~3,279 -->
 # The woodcut register — what it is trying to do, why it looks wrong, how to fix it
 
 *Written 2026-09-07 at Ted's request: "The woodcut register doesn't really look right. I

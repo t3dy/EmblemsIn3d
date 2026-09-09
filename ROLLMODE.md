@@ -1,3 +1,4 @@
+<!-- tokens: ~1,615 · read for: the design brief behind Roll Up -->
 # Roll Mode — the hermaphrodite eats the garden, and what every part of the world owes it
 
 *Subject brief, 2026-09-08. `src/systems/RollUp.js`, with [`MASONRY.md`](MASONRY.md) and

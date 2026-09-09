@@ -1,3 +1,4 @@
+<!-- tokens: ~1,051 · read for: the 8 976 objects on the floors -->
 # Litter — the small Renaissance things on the floors, Roll Up only
 
 *Subject brief, 2026-09-08. `src/systems/Litter.js`. Ted: "tiny small and medium Renaissance

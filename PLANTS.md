@@ -1,3 +1,4 @@
+<!-- tokens: ~2,638 · read for: species, planting, the herb-set inscriptions -->
 # Plants and planting
 
 *What grows in the Dream Garden, why those species, and how they are built.*

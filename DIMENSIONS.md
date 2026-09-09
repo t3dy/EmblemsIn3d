@@ -1,3 +1,4 @@
+<!-- tokens: ~4,258 · read for: how big anything is, in metres, with sources -->
 # DIMENSIONS — every measured thing in the book, in metres
 
 *A research brief. **Nothing here is built yet.** This is the measurement half of the

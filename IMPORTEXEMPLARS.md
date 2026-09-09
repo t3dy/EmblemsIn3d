@@ -1,3 +1,4 @@
+<!-- tokens: ~1,866 -->
 # How importing works
 
 *Ted: "Make sure I understand how you are importing things." This is the plain-language

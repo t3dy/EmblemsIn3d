@@ -1,3 +1,4 @@
+<!-- tokens: ~894 -->
 # Musicians — everyone who plays or sings in the book, and how a silent site handles them
 
 *Subject brief, 2026-09-08. The site is silent by standing decision (DECISIONS

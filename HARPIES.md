@@ -1,3 +1,4 @@
+<!-- tokens: ~814 -->
 # Harpies — where the book puts them, where the world has them, and where it does not
 
 *Subject brief, 2026-09-08. A creature that the book uses as *furniture* — feet, corners,

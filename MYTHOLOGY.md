@@ -1,3 +1,4 @@
+<!-- tokens: ~1,044 -->
 # Mythology in the Dream Garden
 
 *Which gods and fables the book puts in the world, what they are doing there, and how they

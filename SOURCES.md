@@ -1,3 +1,4 @@
+<!-- tokens: ~3,313 · read for: the corpus map, and which scholar to read per asset -->
 # Sources & Scholarship — the research corpus behind HPin3D
 
 **Read this before describing or modelling anything in the Hypnerotomachia world.**

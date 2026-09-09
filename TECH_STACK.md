@@ -1,3 +1,4 @@
+<!-- tokens: ~1,621 -->
 # HPin3D Technical Stack
 
 ## Chosen Libraries & Rationale

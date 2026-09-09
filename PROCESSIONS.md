@@ -1,3 +1,4 @@
+<!-- tokens: ~2,975 · read for: the triumphs, cars, teams, liveries -->
 # Processions and pageantry — research pass
 
 > Read 2026-09-01 from `E:\pdf\hypnerotomachia polyphili` (Michael Leslie, "The

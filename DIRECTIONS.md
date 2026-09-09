@@ -1,3 +1,4 @@
+<!-- tokens: ~4,143 · read for: where things stand in relation to each other; the compass -->
 # DIRECTIONS — where everything stands in relation to everything else
 
 *A research brief. **Nothing here is built yet.** Written 2026-09-08 with

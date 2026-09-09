@@ -1,4 +1,14 @@
+<!-- tokens: ~4,008 · read for: SUPERSEDED — June 2026 two-world planning -->
 # HPin3D Complete Briefing: Two-World Mythoalchemical Universe
+
+> **Superseded, and kept only as a record.** This is the June 2026 planning framework for a
+> two-world project. Rule 4 (2026-09-05) made the site the *Hypnerotomachia* only, and the
+> Atalanta side was removed from `main` — code on 2026-09-06, documents on 2026-09-09. The
+> `ATALANTA_*.md` files this document lists by name are on the branch `atalanta-archive`
+> (`git show atalanta-archive:ATALANTA_INTEGRATION.md`). **Do not take a current status, a
+> phase number or a file layout from anything below.** For where the project actually is,
+> read `NEXTSTEPS.md`, `TICKETS.md` and `DECISIONS.md`.
+
 
 ## Session Complete: June 28, 2026
 

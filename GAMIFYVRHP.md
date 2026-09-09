@@ -1,3 +1,4 @@
+<!-- tokens: ~2,552 -->
 # Gamifying the Hypnerotomachia — design
 
 > Written 2026-09-01, after the research pass. A proposal for a third asset

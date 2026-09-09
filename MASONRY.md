@@ -1,3 +1,4 @@
+<!-- tokens: ~1,252 · read for: how a wall becomes stones -->
 # Masonry — the world made of stones, and what happens when you take one out
 
 *Subject brief, 2026-09-08. `src/systems/Masonry.js`; `_column`, `_ashlar`, `_arch` in

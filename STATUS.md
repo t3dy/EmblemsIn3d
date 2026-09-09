@@ -1,3 +1,4 @@
+<!-- tokens: ~2,057 -->
 # HPin3D Status & Progress
 
 > Created: 2026-06-28  

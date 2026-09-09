@@ -1,3 +1,4 @@
+<!-- tokens: ~3,899 -->
 # HPin3D Initial Planning: Complete Handoff
 
 ## What Has Been Created

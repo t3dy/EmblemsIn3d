@@ -1,3 +1,4 @@
+<!-- tokens: ~1,499 · read for: the seven rules (auto-loaded; you already have it) -->
 # HPin3D — project instructions (auto-loaded)
 
 *Emblems in 3D: interactive 3-D worlds, a guided tour, and a complete digital edition built

@@ -1,3 +1,4 @@
+<!-- tokens: ~9,984 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every

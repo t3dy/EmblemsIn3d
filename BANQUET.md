@@ -1,3 +1,4 @@
+<!-- tokens: ~1,541 -->
 # The Banquet — Queen Eleuterylida's supper, and how it plays in every mode
 
 *Subject brief, 2026-09-08. Chapter X, Dallington 1592 pp. 143–158 (corpus md ll. 5960–6640).

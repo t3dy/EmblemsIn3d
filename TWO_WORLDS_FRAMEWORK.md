@@ -1,3 +1,4 @@
+<!-- tokens: ~5,061 · read for: SUPERSEDED — June 2026 two-world planning -->
 # HPin3D Two-World Framework: Hypnerotomachia & Atalanta Animata
 
 ## The Complete Mythoalchemical Universe

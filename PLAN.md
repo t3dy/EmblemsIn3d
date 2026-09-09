@@ -1,3 +1,4 @@
+<!-- tokens: ~2,787 -->
 # HPin3D Implementation Plan
 
 ## Phase Structure

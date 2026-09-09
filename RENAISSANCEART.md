@@ -1,3 +1,4 @@
+<!-- tokens: ~2,877 -->
 # Renaissance art in a real-time garden
 
 *How this project translates medieval and Renaissance painting into a browser 3-D world —

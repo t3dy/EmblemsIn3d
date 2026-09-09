@@ -1,3 +1,4 @@
+<!-- tokens: ~3,928 -->
 # HPin3D Project Summary
 
 ## What We've Built in This Session

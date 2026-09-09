@@ -1,3 +1,4 @@
+<!-- tokens: ~4,694 · read for: what a Renaissance garden was for -->
 # Pleasures — what a Renaissance garden was *for*, and how Poliphilo tells us
 
 *A build brief in the book's own words. Every row starts from something Poliphilo says or

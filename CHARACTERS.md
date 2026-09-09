@@ -1,3 +1,4 @@
+<!-- tokens: ~1,935 · read for: the named cast -->
 # Character Module System
 
 ## How the Characters Work

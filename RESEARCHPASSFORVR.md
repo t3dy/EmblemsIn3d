@@ -1,3 +1,4 @@
+<!-- tokens: ~2,482 -->
 # Research pass for the virtual world
 
 > 2026-09-01. An audit of the Dream Garden against three things we did not have

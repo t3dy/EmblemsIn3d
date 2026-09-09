@@ -1,3 +1,4 @@
+<!-- tokens: ~1,433 -->
 # Ornament and wall decoration
 
 *The carved and lettered surfaces of the world — friezes, hieroglyph panels, inscriptions,

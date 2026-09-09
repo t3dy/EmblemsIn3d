@@ -1,3 +1,4 @@
+<!-- tokens: ~5,951 · read for: orders, members, the portal, the temples, the theatre -->
 # Architecture — research pass
 
 > Read 2026-09-01 from `E:\pdf\hypnerotomachia polyphili`: John Bury, "Chapter III

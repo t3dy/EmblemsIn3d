@@ -1,3 +1,4 @@
+<!-- tokens: ~1,592 · read for: who the figures are -->
 # Nymphs and figures
 
 *What the book and the scholarship require of the human figures in the Dream Garden, what

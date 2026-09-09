@@ -1,3 +1,4 @@
+<!-- tokens: ~3,886 · read for: the dark wood: species, density, light -->
 # WOODS — the three woods of the dream, and why the first one must be dark
 
 *A research brief. **Nothing here is built yet.** Written 2026-09-08 as part of the research

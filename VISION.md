@@ -1,3 +1,4 @@
+<!-- tokens: ~1,336 -->
 # HPin3D: The Hypnerotomachia Poliphili as Interactive Virtual World
 
 ## Core Vision

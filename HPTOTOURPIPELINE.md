@@ -1,3 +1,4 @@
+<!-- tokens: ~3,424 · read for: corpus in, game out: the research-to-build route -->
 # HP → TOUR PIPELINE — corpus in, game out
 
 *How a sentence in a 1499 book becomes a thing you can walk up to. Where every category of

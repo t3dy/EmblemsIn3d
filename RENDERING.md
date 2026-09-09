@@ -1,3 +1,4 @@
+<!-- tokens: ~2,197 · read for: how the world is drawn; aerial perspective, the 1499 palette -->
 # Rendering — how a 1499 book is drawn on a 2026 screen
 
 *What techniques exist for making a real-time 3-D world look like Renaissance picture-making,

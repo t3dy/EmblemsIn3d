@@ -1,3 +1,4 @@
+<!-- tokens: ~1,575 · read for: the host, the version chain, and the deploy gotchas -->
 # Deploy state — Emblems in 3D
 
 *Read this before touching deploy config.*

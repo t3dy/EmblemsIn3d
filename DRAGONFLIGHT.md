@@ -1,3 +1,4 @@
+<!-- tokens: ~688 -->
 # Dragon Flight — the dream from the air, and what the other modes look like from up there
 
 *Subject brief, 2026-09-08. `src/systems/DragonFlight.js`; entered from the *Fly as the

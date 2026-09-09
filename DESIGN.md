@@ -1,3 +1,4 @@
+<!-- tokens: ~1,820 · read for: the lens system and the game's shape -->
 # The Dream in Lenses — design vision
 
 *A living design articulation for the Hypnerotomachia world. Distilled from Ted's
