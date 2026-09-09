@@ -1,4 +1,4 @@
-<!-- tokens: ~4,544 · read for: how this project is built, measured and handed over -->
+<!-- tokens: ~5,401 · read for: how this project is built, measured and handed over -->
 # ENGINEERING — how this project is built, measured, and handed over
 
 *Opened 2026-09-08, from Ted's brief: get formal about systems engineering, test-based
@@ -199,7 +199,7 @@ its own token cost so an agent can budget.
 | | | |
 |---|---|---|
 | 1 | **`DECISIONS.md` split** | done — 33 500 → **4 500** tokens. Not by date: all 47 entries were written inside six days, so the volume is *pace*, not staleness. Split by **role** instead — the root is the newest three in full plus a one-line index of every call; `decisions/2026-09.md` holds the complete text. Verified lossless. |
-| 2 | **Split `HPWorldScene.js`** | **NOT DONE, and still the largest single problem here.** ~197 000 tokens in one file; no agent can read it, and under one-writer-per-file no two agents can work on the world at once. |
+| 2 | **Split `HPWorldScene.js`** | **done, 2026-09-09** — ~197 000 tokens → **~15 300**, in ten modules mixed onto the prototype plus a data module. Largest is `palace.js` at ~34 000. Verified by a census identical to the mesh. See §2d. |
 | 3 | **Token headers** | done — `scripts/doc_costs.py` stamps every root `.md` and regenerates the cost table at the foot of `ROUTER.md`. |
 | 4 | **Atalanta docs off `main`** | done — ~14 900 tokens, already safe on `atalanta-archive`. |
 | 5 | **Agent context contracts** | done — each agent has an ALWAYS table with costs, an IF list, and a NEVER-OPEN list naming `HPWorldScene.js` with *grep it, never read it*. |
@@ -305,3 +305,56 @@ the world rather than this file: follow the novel to the letter and buy pace wit
 rescale the monuments but not the ground plan; build the artificial gardens and let the
 commentary carry Hunt's objection.
 **Proposed, not decided:** §2c, §5. Both are in `TICKETS.md`.
+
+### 2d. How the world file was split, and what it cost to get right
+
+The class was 818 873 characters. It is 61 340 now, and the builders live in
+`src/scenes/world/`:
+
+| ~tokens | module | |
+|---:|---|---|
+| ~34 000 | `palace.js` | the court, the banquet, the chess ballet, the bath, the gardens |
+| ~28 300 | `cythera.js` | the island, its rings and terraces, the crossing, Adonis |
+| ~27 600 | `temple.js` | the Temple of Venus, the fountains, the rite of Priapus |
+| ~25 300 | `portal.js` | the pyramid-portal and the piazza, and the orders they are built in |
+| ~17 200 | `tombs.js` | the Polyandrion, the crypt, the epitaphs, Book II |
+| ~16 900 | `nature.js` | trees, herbs, hedges, birds, shade, smoke, the meadow |
+| ~15 000 | `approach.js` | chapters I–III: the plain, the wood, the valley, Poliphilo acting |
+| ~10 800 | `constants.js` | the shared tables. Data only; nothing here touches the scene |
+| ~9 100 | `triumphs.js` | the five triumphs: cars, teams, liveries, riders |
+| ~6 200 | `materials.js` | meshes, roofs, colliders, plaques, surfaces, water |
+| ~4 900 | `rollup.js` | the census: what is food, what it is called, how it is taken |
+| ~15 300 | `HPWorldScene.js` | the constructor, `build`, `update`, the modes, the mixins |
+
+**The method.** `Object.assign(HPWorldScene.prototype, Module)`. Class methods and
+object-literal methods have identical syntax, so every body was copied verbatim — a diff
+shows nothing but the move. Three things had to be true first, and all three were checked
+before a line was written: **no instance getters** (`Object.assign` would *invoke* a getter
+and copy its return value), **no private `#` fields**, **no superclass**.
+
+**Data first, on purpose.** The builder modules need `SPECIES`, `HERBS`, `WOOD` and the rest.
+Importing them back from `HPWorldScene.js` would have made a cycle — normally survivable,
+but every import in this repo carries a `?v=`, and two versions of one path are two modules
+with separate state. So the tables moved to `constants.js` first and nothing imports the
+class.
+
+**Three bugs, all caught, all worth keeping:**
+
+1. The regex rewriting a multi-line `static get` is lazy to the next `\n  }\n`, which for a
+   *one-line* getter is the **next member's** closing brace. Matching multi-line first
+   swallowed `WOOD_CLEARINGS` whole. One-liners are tried first now.
+2. A member owns the comment block above it, but the parser ended each member at the next
+   member's *declaration*, so the next member's comment sat at the tail of this one — the
+   trailing comma landed inside a comment and the comment was emitted twice. **`node --check`
+   accepted the result; the browser did not.**
+3. Re-running the extractor rewrote a module while leaving `?v=1`, so the browser went on
+   serving the broken first attempt. **The cache rule applies to a new module from its very
+   first version.**
+
+**And a verification trap worth more than the refactor.** `read_console_messages` accumulates
+across navigations *within a tab*, so a page that had been fixed still reported the old
+`SyntaxError`. **After any load-time error, only a fresh tab is an honest check.**
+
+**The acceptance test was a number, not an opinion:** `hpDiag().scene` before and after —
+3 788 meshes, 2 019 838 triangles, 2 460 982 vertices, 3 780 geometries, 2 943 materials.
+Identical to the mesh.

@@ -6,7 +6,7 @@
 
 ---
 
-**26 tickets** — 8 open, 3 declined, 15 done. By kind: 13 debt, 6 infra, 4 bug, 2 perf, 1 question.
+**26 tickets** — 7 open, 3 declined, 16 done. By kind: 13 debt, 6 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -42,23 +42,6 @@
 **Files.** `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json` · `src/data/tours.json`
 
 **See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
-
-
-### `infra-split-worldscene` — HPWorldScene.js is one 197k-token file, so no two agents can ever work on the world at once
-
-**○ open** · debt · priority 1 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** 786716 bytes, 12847 lines. No agent can read it; every builder works by grep, which is how features already built were twice reported missing (NEXTSTEPS.md). ORCHESTRATION.md's one-writer-per-file rule then serialises all world work.
-
-**Acceptance.** No world module over 40k tokens; the page boots with an empty console; hpDiag().scene.meshes is unchanged before and after the split.
-
-**Risk.** Highest-risk item in the queue. The seams already exist as comment banners (wood/approach, portal complex, gardens, Cythera, masonry, plant factories). Needs its own plan and a station-by-station screenshot diff.
-
-**Files.** `src/scenes/HPWorldScene.js`
-
-**See.** ENGINEERING.md#2c · ORCHESTRATION.md
 
 
 ### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
@@ -256,6 +239,25 @@
 **Files.** `src/main.js`
 
 **See.** ENGINEERING.md#1a
+
+
+### `infra-split-worldscene` — HPWorldScene.js is one 197k-token file, so no two agents can ever work on the world at once
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** 786716 bytes, 12847 lines. No agent can read it; every builder works by grep, which is how features already built were twice reported missing (NEXTSTEPS.md). ORCHESTRATION.md's one-writer-per-file rule then serialises all world work.
+
+**Acceptance.** No world module over 40k tokens; the page boots with an empty console; hpDiag().scene.meshes is unchanged before and after the split.
+
+**Risk.** Highest-risk item in the queue. The seams already exist as comment banners (wood/approach, portal complex, gardens, Cythera, masonry, plant factories). Needs its own plan and a station-by-station screenshot diff.
+
+**Resolution.** Done in two steps. Step 1 lifted the shared DATA into src/scenes/world/constants.js -- the module tables and the eight class statics, every one a pure `return <literal>` -- because the builder modules need them and importing them back from the class would make a cycle, which is fragile here in a way it is not elsewhere: every import carries a ?v= and two versions of a path are two modules with separate state. Step 2 lifted the builders into ten modules mixed onto the prototype with Object.assign. Bodies were copied VERBATIM -- class methods and object-literal methods have identical syntax -- and imports were computed by scanning the moved text, not guessed. 818 873 -> 61 340 chars: ~197 000 tokens to ~15 300. Largest module is palace.js at ~34 000; all are under the 40 000 target. VERIFIED: fresh tab, zero console errors, and the scene census identical to the mesh -- 3 788 meshes, 2 019 838 triangles, 2 460 982 vertices, 3 780 geometries, 2 943 materials. Spot-checked at the Great Portal, Cythera, the Temple of Venus and the Dark Wood, with the plate frame and the acting Poliphilo both working.
+
+**Files.** `src/scenes/HPWorldScene.js`
+
+**See.** ENGINEERING.md#2c · ORCHESTRATION.md
 
 
 ### `roll-crust-never-absorbs` — Swallowed things sink flush and vanish; in Katamari they never do
