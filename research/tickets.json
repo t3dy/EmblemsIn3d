@@ -597,7 +597,7 @@
       "id": "read-audit-turns-against-italian",
       "title": "Audit every directional claim in the world against the 1499, not Dallington",
       "kind": "bug",
-      "status": "open",
+      "status": "done",
       "priority": 1,
       "evidence": "The wolf stood on the wrong side of the valley for a day because DIRECTIONS.md section 4 sited it from Dallington's 'vpon my left hand' where the 1499 has 'alla parte dextra'. Three more explicit turns are listed in that section and all three were taken from Dallington: the Medusa door on the right hand (p. 31), the descending stair on the right (p. 32), and the divided stream at the bridge (1499 l. 2793 -- that one already cites the Italian). Dallington was wrong once; he may be wrong again, and now that every page is in English beside its Italian the check is cheap.",
       "acceptance": "Each of the four turns in DIRECTIONS.md section 4 cites the 1499 Italian phrase, not Dallington, and the world matches it.",
@@ -609,7 +609,9 @@
       "refs": [
         "DECISIONS.md 2026-09-09"
       ],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-09",
+      "resolution": "All four turns now cited from the 1499 in DIRECTIONS.md section 4, and all four are true in the world. Turn 1 (the wolf) was wrong and was fixed the same day: Dallington 'vpon my left hand' against the 1499 'alla parte dextra' (p. 21). Turn 2, the Medusa door: 'dalla dextera parte, al mio andare, del praefato Plintho' (p. 27) -- built at x = +5.4, east, correct. Turn 3, the stair up the pyramid: 'verso la parte dextera collaterale al monte delumbato' (p. 28) -- correct, and note the text has him CLIMBING it, not descending, which DIRECTIONS had slightly wrong in its wording. Turn 4, the divided stream, already cited from the Italian. Three from four for Dallington, which is a good hit rate for 1592 and not good enough to build a world on unchecked."
     }
   ]
 }

@@ -1,4 +1,4 @@
-<!-- tokens: ~4,291 · read for: where things stand in relation to each other; the compass -->
+<!-- tokens: ~4,545 · read for: where things stand in relation to each other; the compass -->
 # DIRECTIONS — where everything stands in relation to everything else
 
 *A research brief. **Nothing here is built yet.** Written 2026-09-08 with
@@ -109,33 +109,43 @@ Chapters and stations follow `src/data/tours.json` (the Novel tour) so the two a
 
 ---
 
-## 4. The four explicit turns
+## 4. The four explicit turns — audited against the 1499, 2026-09-09
 
-The book gives left/right at exactly four moments that matter for siting. All four should be
-true in the world, and two currently are not.
+The book gives left and right at exactly four moments that matter for siting. **All four are
+now cited from the 1499 Italian rather than from Dallington, and all four are true in the
+world.** The audit was forced by the first of them, which had been wrong for a day.
 
-1. **The wolf is on the RIGHT hand** — corrected 2026-09-09 — in the *second* dream's pleasant
-   valley, not in the dark wood. Dallington p. 23 has *"I soddainely espied vpon my **left**
-   hand"*, and that reading sited the animal to the west for a day. **The 1499 says the
-   opposite:** *"Ecco che uno affamato et carnivoro lupo **alla parte dextra**, cum la bucca
-   piena mi apparve"* (p. 21). `DIMENSIONS.md`'s standing rule is that where the two disagree
-   the Italian wins and the disagreement is noted. Walking north, the right hand is `+x`, so it
-   stands east, at `x = +21`.
+| # | the turn | the 1499 says | in the world |
+|---|---|---|---|
+| 1 | **the wolf**, in the second dream's pleasant valley | *"Ecco che uno affamato et carnivoro lupo **alla parte dextra**, cum la bucca piena mi apparve"* (p. 21) | `x = +21`, **east** ✓ *(corrected 2026-09-09; it stood west)* |
+| 2 | **the Medusa door**, in the pyramid's plinth | *"**dalla dextera parte, al mio andare**, del praefato Plintho"* (p. 27) | `x = +5.4`, east ✓ |
+| 3 | **the stair up the pyramid**, against the side mountain | *"verso la **parte dextera** collaterale al monte delumbato… intro excavata nel proprio saxo"* (p. 28) | ✓ |
+| 4 | **the divided stream** at the bridge beyond the vaults | one branch right, one left (1499 l. 2793) | ✓ *(already cited from the Italian)* |
 
-   *Found by reading the finished translation in the reading mode and noticing the panel and
-   the world disagree — the first thing having the whole book in English has caught.*
-2. **The Medusa door is on the right hand as he goes** (Dall. p. 31) — that is, on the east
-   side of the pyramid's façade under the frame adopted in §2.
-3. **The descending stair opens on the right hand**, against the side mountain (Dall. p. 32).
-4. **At the bridge beyond the vaults the water divides, one stream right and one left**
-   (1499, l. 2793).
+### Why this had to be done, and what it cost
+
+**Dallington was wrong about the wolf, and the world was built on Dallington.** His 1592 has
+*"I soddainely espied vpon my **left** hand, an hungrie and carniuorous Woolfe"*; the 1499 has
+*dextra*. `DIMENSIONS.md`'s standing rule — where the two disagree the Italian wins, and the
+disagreement is noted — settles it, and the animal crossed the valley.
+
+It was found by accident, on the day the translation was finished, by reading page 21 in the
+new **reading mode** while standing in the valley the page describes, and noticing that the
+panel said *right* and the world showed *left*. That is worth stating plainly:
+
+> **The world was built on the only English that existed, and that English is four centuries
+> old and sometimes wrong. Now that every page is in English beside its Italian, the two can
+> be read against each other on one screen — and the first time anyone did, it found a
+> mistake nobody was looking for.**
+
+Turns 2 and 3 were checked immediately afterwards and both hold: Dallington got those right.
+So the score is three from four, which is a good hit rate for 1592 and not good enough to
+build a world on without checking.
 
 And one that is not a turn but a rule: at the Three Doors, **Mater Amoris is the middle**
 (already correct in `HP_STATIONS`' door table), and Thelemia makes him see the *third* gate
 before he may settle (Dall. p. 195) — so the middle door is chosen after both flanks are
 tried, which means the doors need to be approachable in any order.
-
----
 
 ## 5. The shape of the dream: enclosures, not a corridor
 
