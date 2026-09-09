@@ -261,8 +261,8 @@
         "title": "The Palm and the Wolf",
         "chapter": "II",
         "half": "dallington",
-        "lede": "The second dream opens on a delicate valley with a low rise, scattered with trees *growing distantly one from another* — open, sunlit, and the exact opposite of the wood. Then a sandy, gravelly plain bespotted with green tufts, and one date palm standing alone on it. And then, on his left hand, a wolf.",
-        "quote": "Thus walking solitarily betwixt the trees, growing distantly one from another, I perswaded my selfe, that to this no earthly situation was comparable: in which thought I soddainely espied vpon my left hand, an hungrie and carniuorous Woolfe, gaping vpon me with open mouthe. At the sight whereof immediatly, my hayre stood right vp, and I would haue cryed out, but could not: and presently the Woolfe ranne away. — Dallington, pp. 23–24",
+        "lede": "The second dream opens on a delicate valley with a low rise, scattered with trees *growing distantly one from another* — open, sunlit, and the exact opposite of the wood. Then a sandy, gravelly plain bespotted with green tufts, and one date palm standing alone on it. And then, on his right hand, a wolf.",
+        "quote": "Thus walking solitarily betwixt the trees, growing distantly one from another, I perswaded my selfe, that to this no earthly situation was comparable: in which thought I soddainely espied vpon my left hand, an hungrie and carniuorous Woolfe, gaping vpon me with open mouthe. — Dallington, pp. 23–24 (the 1499 says the RIGHT hand: alla parte dextra)",
         "notes": [
           {
             "type": "literary",
@@ -270,7 +270,7 @@
           },
           {
             "type": "gloss",
-            "text": "*Upon my left hand.* The book gives left and right at only four moments in the whole dream, and this is one of them, so the wolf stands to the west here and not merely somewhere nearby. The world's compass is declared in the code for exactly this reason: **+z is south, −z north, +x east, −x west**, and Poliphilo walks north."
+            "text": "*Upon my left hand* — **except that the 1499 says the right.** Dallington has *vpon my left hand*; the Italian has *alla parte **dextra***. The book gives left and right at only four moments in the whole dream and this is one of them, so the difference is not decorative: it decides which side of the valley the animal stands on. The Italian wins, here and by standing rule, and the wolf was moved east on 2026-09-09. The world's compass is declared for exactly this reason: **+z is south, −z north, +x east, −x west**, and Poliphilo walks north — so the right hand is east."
           },
           {
             "type": "allegory",

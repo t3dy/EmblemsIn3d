@@ -288,16 +288,32 @@ export const Approach = {
     }
 
     // ── The wolf ──
-    // Moved here from the dark wood, where it had been standing beside a path
-    // since the world was built. Dallington p. 23 puts it in the SECOND dream's
-    // pleasant valley — and on the LEFT HAND: "I soddainely espied vpon my left
-    // hand, an hungrie and carniuorous Woolfe, gaping vpon me with open mouthe."
-    // Walking north (−z) the left hand is −x, so it stands to the west. The
-    // shock is that it appears in the pleasant place, not in the fearful one;
-    // Fabiani Giannetto notes Poliphilo never sees any of the beasts he dreaded
-    // in the wood itself. It runs away the moment he would cry out.
+    // Moved here from the dark wood on 2026-09-08, where it had been standing
+    // beside a path since the world was built: Dallington p. 23 puts it in the
+    // SECOND dream's pleasant valley. The shock is that it appears in the
+    // pleasant place and not in the fearful one; Fabiani Giannetto notes
+    // Poliphilo never sees any of the beasts he dreaded in the wood itself. It
+    // runs away the moment he would cry out.
+    //
+    // AND IT IS ON THE RIGHT HAND, not the left. Dallington has "I soddainely
+    // espied vpon my left hand, an hungrie and carniuorous Woolfe", and that
+    // sentence is what put this animal at x = −21 for a day. The 1499 says the
+    // opposite:
+    //
+    //   "Ecco che uno affamato et carnivoro lupo ALLA PARTE DEXTRA, cum la
+    //    bucca piena mi apparve."            — 1499, p. 21
+    //
+    // `dextra` is the right. DIMENSIONS.md's standing rule is that where
+    // Dallington and the 1499 disagree the Italian wins and the disagreement is
+    // noted, so the wolf crosses the valley. Walking north (−z) the right hand
+    // is +x, so it stands to the EAST.
+    //
+    // Found on 2026-09-09 by reading the finished translation in the reading
+    // mode and noticing that the panel and the world disagreed — which is worth
+    // recording as the first thing having the whole book in English actually
+    // caught. See DIRECTIONS.md §4.
     const wolf = this.cast.animals.wolf(1.15);
-    this._npc('wolf', wolf, -21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
+    this._npc('wolf', wolf, 21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
   },
 
   _buildWitness() {

@@ -42,7 +42,7 @@ import {
 } from './world/constants.js?v=1';
 import { Materials } from './world/materials.js?v=1';
 import { Nature } from './world/nature.js?v=1';
-import { Approach } from './world/approach.js?v=1';
+import { Approach } from './world/approach.js?v=2';
 import { Portal } from './world/portal.js?v=1';
 import { Palace } from './world/palace.js?v=1';
 import { Triumphs } from './world/triumphs.js?v=1';

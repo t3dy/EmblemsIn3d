@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=245';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=246';
 import { VaultsScene } from './scenes/VaultsScene.js?v=10';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';
@@ -92,9 +92,16 @@ function setProgress(pct, text) {
   if (text) document.getElementById('loading-sub').textContent = text;
 }
 
+// The data files' cache version. It used to live inside loadData() as a local
+// `const V`, which was fine while loadData was the only thing that fetched --
+// and stopped being fine the moment the reading mode fetched reading.json on
+// demand, hours after load. Hoisted so there is one number, not two that can
+// drift. CLAUDE.md: "Data files use the single const V in main.js loadData()."
+const DATA_V = '47';   // bump when data files are re-exported
+
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '45'; // bump when data files are re-exported
+  const V = DATA_V;
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   state.poliphilo   = await fetch(`./data/poliphilo.json?v=${V}`).then(r => r.json()).catch(() => null);
@@ -1364,6 +1371,134 @@ window.hpExplore = () => {
   });
 };
 
+// ─── Reading mode: the whole book, with the world keeping pace ───────────────
+//
+// Ted, 2026-09-09: "I want an option for a version where the player can read not
+// just summaries and commentary but the full text of the entire HP as part of
+// the process of taking the tour, and looking at modeled versions of everything
+// described in the text, and seeing a Polyphilo figure acting out his
+// reactions."
+//
+// So the BOOK is the spine here and the world follows it, which is the exact
+// inverse of every other mode: elsewhere you move and the commentary meets you,
+// and here you turn a page and the world goes to where that page happens.
+//
+// It rests on three things finished the same day. The translation was completed
+// (463 pages, the front matter last); `src/data/reading.json` joins each 1499
+// page to a station by way of its chapter, which was only possible once the
+// manifest's first-half chapters stopped being the placeholder "I-XVI"; and
+// Poliphilo already stands at each station in the attitude the book records,
+// so "seeing him act out his reactions" needed no further work here — turning
+// the page moves him, because moving the station moves him.
+//
+// The text is a megabyte, so it is fetched when the mode is entered and never
+// before. Nobody walking the garden should pay for a book they did not open.
+let _read = null;          // { pages, i } once loaded
+
+async function loadReading() {
+  if (_read) return _read;
+  const d = await fetch(`./data/reading.json?v=${DATA_V}`).then(r => r.json());
+  _read = { pages: d.pages, i: 0 };
+  return _read;
+}
+
+function readPage() { return _read && _read.pages[_read.i]; }
+
+// A paragraph the 1499 sets in capitals is an argument-heading, not prose; the
+// panel gives it small caps rather than shouting it.
+function readIsCaps(t) {
+  const letters = t.replace(/[^A-Za-z]/g, '');
+  return letters.length > 12 && letters === letters.toUpperCase();
+}
+
+function renderRead() {
+  const el = document.getElementById('read-panel');
+  const p = readPage();
+  if (!el || !p) return;
+  const total = _read.pages.length;
+  const where = p.st ? (HP_STATIONS.find(s => s.key === p.st) || {}).name : null;
+  el.innerHTML = `
+    <div class="rp-head">
+      <span class="rp-where">${where || 'Before the dream'}</span>
+      <span class="rp-folio">${p.ch ? p.ch + ' · ' : ''}p. ${p.n}</span>
+      <button class="rp-close" onclick="window.hpReadExit()" title="Leave the reading">&#10005;</button>
+    </div>
+    <div class="rp-body">
+      ${p.t.length
+        ? p.t.map(x => `<p class="${readIsCaps(x) ? 'caps' : ''}">${fmtProse(x)}</p>`).join('')
+        : `<p class="rp-none">${fmtProse(p.note || 'This leaf carries no text.')}</p>`}
+    </div>
+    <div class="rp-foot">
+      <button onclick="window.hpReadStep(-1)" ${_read.i === 0 ? 'disabled' : ''}>&#8249; Back</button>
+      <button onclick="window.hpReadStep(1)" ${_read.i >= total - 1 ? 'disabled' : ''}>Next &#8250;</button>
+      <span class="rp-spacer"></span>
+      <input class="rp-jump" id="rp-jump" type="number" min="1" max="467" value="${p.n}"
+             title="Go to a 1499 page" onchange="window.hpReadGo(this.value)">
+      <button onclick="window.hpReadGo(document.getElementById('rp-jump').value)">Go</button>
+    </div>`;
+  el.querySelector('.rp-body').scrollTop = 0;
+  setHidden(el, false, 'flex');
+}
+
+// Turning the page moves the world — but only when the station actually
+// changes. Teleporting on every page would make the reader seasick, and most
+// consecutive pages are the same place.
+function readSync() {
+  const p = readPage();
+  const sc = state.activeScene;
+  if (!p || !p.st || !sc || !sc.teleport) return;
+  if (sc._nearStation && sc._nearStation.key === p.st) return;
+  sc.teleport(p.st);
+}
+
+window.hpReadStep = (d) => {
+  if (!_read) return;
+  _read.i = Math.max(0, Math.min(_read.pages.length - 1, _read.i + d));
+  renderRead();
+  readSync();
+};
+
+window.hpReadGo = (n) => {
+  if (!_read) return;
+  const want = parseInt(n, 10);
+  if (!Number.isFinite(want)) return;
+  // the nearest page at or after the one asked for, since blank leaves and the
+  // four missing versos mean not every number exists
+  let best = 0, bestD = Infinity;
+  _read.pages.forEach((p, i) => {
+    const dd = Math.abs(p.n - want);
+    if (dd < bestD) { bestD = dd; best = i; }
+  });
+  _read.i = best;
+  renderRead();
+  readSync();
+};
+
+window.hpReadExit = () => {
+  setHidden(document.getElementById('read-panel'), true);
+  state.reading = false;
+};
+
+window.hpRead = async () => {
+  showHPMode(false);
+  const el = document.getElementById('read-panel');
+  if (el) {
+    el.innerHTML = '<div class="rp-head"><span class="rp-where">Fetching the book…</span></div>';
+    setHidden(el, false, 'flex');
+  }
+  try {
+    await loadReading();
+  } catch (e) {
+    if (el) el.innerHTML = '<div class="rp-head"><span class="rp-where">The text would not load.</span></div>';
+    return;
+  }
+  state.reading = true;
+  _read.i = 0;
+  renderRead();
+  readSync();
+  showHint('Reading the whole book · [ and ] turn the page · the world follows · Esc to stop reading');
+};
+
 const FLY_HINT = 'The dragon has you — the keys are on the Flight Controls and Camera Controls cards, toggled from the bar at the top.';
 window.hpFly = () => {
   showHPMode(false);
@@ -1655,6 +1790,19 @@ window.addEventListener('keydown', (e) => {
   if (state.vaults) {
     if (e.key === 'Escape') { e.preventDefault(); window.hpVaultsExit(); }
     return;
+  }
+  // Reading mode turns pages. Deliberately NOT the arrow keys: the walker uses
+  // left and right to turn on the spot, and a reader who wants to look around
+  // between pages should be able to. Brackets are next to each other, unused,
+  // and have meant "previous/next" in readers since before the web.
+  if (state.reading) {
+    const typing = document.activeElement && document.activeElement.tagName === 'INPUT';
+    if (!typing) {
+      if (e.key === ']')      { e.preventDefault(); window.hpReadStep(1);  return; }
+      if (e.key === '[')      { e.preventDefault(); window.hpReadStep(-1); return; }
+      if (e.key === 'Escape') { e.preventDefault(); window.hpReadExit();   return; }
+    }
+    // everything else falls through: you can still walk while the book is open
   }
   // A running tour captures the arrow keys for stop-to-stop navigation
   if (state.tour) {

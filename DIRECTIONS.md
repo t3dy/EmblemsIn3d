@@ -1,4 +1,4 @@
-<!-- tokens: ~4,143 · read for: where things stand in relation to each other; the compass -->
+<!-- tokens: ~4,291 · read for: where things stand in relation to each other; the compass -->
 # DIRECTIONS — where everything stands in relation to everything else
 
 *A research brief. **Nothing here is built yet.** Written 2026-09-08 with
@@ -114,8 +114,16 @@ Chapters and stations follow `src/data/tours.json` (the Novel tour) so the two a
 The book gives left/right at exactly four moments that matter for siting. All four should be
 true in the world, and two currently are not.
 
-1. **The wolf is on the left hand** (Dall. p. 23), in the *second* dream's pleasant valley —
-   not in the dark wood. In the world it stands at `x = +4.2` in the dark wood, on the path.
+1. **The wolf is on the RIGHT hand** — corrected 2026-09-09 — in the *second* dream's pleasant
+   valley, not in the dark wood. Dallington p. 23 has *"I soddainely espied vpon my **left**
+   hand"*, and that reading sited the animal to the west for a day. **The 1499 says the
+   opposite:** *"Ecco che uno affamato et carnivoro lupo **alla parte dextra**, cum la bucca
+   piena mi apparve"* (p. 21). `DIMENSIONS.md`'s standing rule is that where the two disagree
+   the Italian wins and the disagreement is noted. Walking north, the right hand is `+x`, so it
+   stands east, at `x = +21`.
+
+   *Found by reading the finished translation in the reading mode and noticing the panel and
+   the world disagree — the first thing having the whole book in English has caught.*
 2. **The Medusa door is on the right hand as he goes** (Dall. p. 31) — that is, on the east
    side of the pyramid's façade under the frame adopted in §2.
 3. **The descending stair opens on the right hand**, against the side mountain (Dall. p. 32).

@@ -582,6 +582,74 @@
        In free walk there are no stops to click, so the notes come to the
        reader: approaching a wonder raises its commentary, filtered by the
        same lenses the tour uses. Bottom-left, out of the path of the view. */
+    /* ── The reading panel ──────────────────────────────────────────────
+       The book, page by page, down the left of the screen, with the world
+       visible past it. Taller and narrower than the commentary panel because
+       it carries continuous prose and not notes: a measure of about 60
+       characters is what a page of the 1499 actually runs to. */
+    #read-panel {
+      position: fixed; left: 1.2rem; top: 4.2rem; bottom: 1.2rem; z-index: 31;
+      width: min(430px, 40vw);
+      display: flex; flex-direction: column;
+      background: linear-gradient(180deg, rgba(10,7,3,0.96), rgba(6,4,2,0.98));
+      border: 1px solid rgba(139,69,19,0.45); border-left: 2px solid #c8a040;
+      backdrop-filter: blur(3px); pointer-events: all;
+    }
+    #read-panel .rp-head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 0.5rem;
+      padding: 0.55rem 0.8rem; border-bottom: 1px solid rgba(139,69,19,0.25);
+    }
+    #read-panel .rp-where { font-size: 0.9rem; color: #d8a24a; letter-spacing: 0.03em; }
+    #read-panel .rp-folio {
+      font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: #7a6858;
+    }
+    #read-panel .rp-close {
+      background: none; border: none; color: #7a6858; cursor: pointer;
+      font-size: 0.9rem; line-height: 1; padding: 0.1rem 0.2rem;
+    }
+    #read-panel .rp-close:hover { color: #f0e8d8; }
+    #read-panel .rp-body { overflow-y: auto; padding: 0.9rem 1rem 1.2rem; flex: 1; }
+    #read-panel .rp-body::-webkit-scrollbar { width: 8px; }
+    #read-panel .rp-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.25); }
+    #read-panel .rp-body::-webkit-scrollbar-thumb { background: rgba(200,160,64,0.34); }
+    #read-panel .rp-body { scrollbar-width: thin; scrollbar-color: rgba(200,160,64,0.4) rgba(0,0,0,0.25); }
+    #read-panel .rp-body p {
+      font-size: 0.83rem; color: #e2d8c2; line-height: 1.72; margin: 0 0 0.85rem;
+      text-align: justify; hyphens: auto;
+    }
+    /* The 1499 opens a chapter with a great initial; these are the argument
+       headings, which the book sets in capitals. */
+    #read-panel .rp-body p.caps {
+      font-variant: small-caps; letter-spacing: 0.04em; color: #d8c8a4;
+      text-align: left; hyphens: none;
+    }
+    /* A page with no text of its own -- a full-page woodcut, or a leaf carrying
+       nothing but the printer's gathering-signature. The editor says why. */
+    #read-panel .rp-body p.rp-none {
+      font-style: italic; color: #9a8a70; text-align: left; hyphens: none;
+      border-left: 2px solid rgba(200,160,64,0.34); padding-left: 0.7rem;
+    }
+    #read-panel .rp-foot {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.5rem 0.7rem; border-top: 1px solid rgba(139,69,19,0.25);
+    }
+    #read-panel .rp-foot button {
+      background: rgba(0,0,0,0.3); border: 1px solid rgba(200,160,64,0.34);
+      color: #c8bca4; cursor: pointer; font-size: 0.72rem; padding: 0.22rem 0.6rem;
+      font-family: inherit;
+    }
+    #read-panel .rp-foot button:hover:not(:disabled) { border-color: #c8a040; color: #f0e8d8; }
+    #read-panel .rp-foot button:disabled { opacity: 0.35; cursor: default; }
+    #read-panel .rp-jump {
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(139,69,19,0.45);
+      color: #e8dcc0; width: 4.2rem; font-family: inherit; font-size: 0.72rem;
+      padding: 0.22rem 0.3rem; text-align: center;
+    }
+    #read-panel .rp-spacer { flex: 1; }
+    @media (max-width: 900px) {
+      #read-panel { width: min(430px, 92vw); top: 3.6rem; }
+    }
+
     /* ── The plate frame ────────────────────────────────────────────────
        Sits beside the commentary, same border, same ground, so the two read
        as a pair of frames rather than as a panel and a pop-up. It stacks
@@ -1008,6 +1076,8 @@
        (like the frame that contains the text) to optionally pop up (toggleable on and
        off) that lets the user look at the woodcut." -->
   <div id="walk-plate" hidden></div>
+  <!-- Reading mode: the book itself, with the world following it. -->
+  <div id="read-panel" hidden></div>
   <!-- Graphics menu: one dropdown per asset, reachable from every mode -->
   <div id="gfx-menu" hidden></div>
   <div id="woodcut-lightbox">
@@ -1073,6 +1143,11 @@
           <span class="hpm-kicker">Roll-up &middot; third person</span>
           <h3>Roll Up the Dream</h3>
           <p>You are a ball with the Sun on one face and the Moon on the other &mdash; which is to say you are the <em>hermaphrodite</em>, &ldquo;the product of the chemical wedding&rdquo;, and the garden is food. Start a walnut of Saturn&rsquo;s lead and roll up blades of grass, then leaves and pebbles and fruit, then tiles and balusters and nymphs, then trees, then whole wonders &mdash; climbing the ladder of the metals to tin, iron, copper, quicksilver, silver and gold, until the work is finished. The floors are littered for you, and only for you: nine thousand Renaissance things, every one of them a noun counted out of the book &mdash; combs and mirrors at the nymphs&rsquo; bath, platters and salt-cellars in the Queen&rsquo;s court, urns and grave-lamps in the Polyandrion, chisels and plumb-bobs at the Great Portal, beehives in the fields. You can tell where you are by what you are eating. Everything you eat comes with you, stuck to the outside and turning as you turn. W A S D to roll and Q E Z C for the diagonals, or hold the right mouse button to roll the way you look; drag to swing the view, wheel to pull back, Space to turn about, T for the two-stick scheme the real thing uses, Esc to stop.</p>
+        </button>
+        <button class="hpm-card" onclick="window.hpRead()">
+          <span class="hpm-kicker">Reading mode &middot; the book is the spine</span>
+          <h3>Read the Whole Book</h3>
+          <p>The entire <em>Hypnerotomachia</em> in English &mdash; all four hundred and sixty-three pages of it, from the title page and Leonardo Crasso&rsquo;s dedication to the errata leaf &mdash; read page by page as the 1499 has it, while the world moves to keep up. Turn a page and you are standing where that page happens: the plain, the wood, the great portal, the court, Cythera. Poliphilo is there too, taking the attitude the book records for the place. The 1499 woodcut can be opened beside the text wherever there is one. Robert Dallington&rsquo;s Elizabethan English stopped inside page 193 in 1592; everything after it is here in English for the first time.</p>
         </button>
         <button class="hpm-card" onclick="window.hpTour('novel')">
           <span class="hpm-kicker">Guided tour &middot; with the scholarship</span>
@@ -1203,6 +1278,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=340"></script>
+  <script type="module" src="./main.js?v=343"></script>
 </body>
 </html>
