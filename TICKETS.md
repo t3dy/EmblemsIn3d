@@ -6,7 +6,7 @@
 
 ---
 
-**28 tickets** — 9 open, 3 declined, 16 done. By kind: 14 debt, 7 infra, 4 bug, 2 perf, 1 question.
+**30 tickets** — 10 open, 3 declined, 17 done. By kind: 15 debt, 7 infra, 5 bug, 2 perf, 1 question.
 
 ---
 
@@ -44,19 +44,19 @@
 **See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
 
 
-### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
+### `read-audit-turns-against-italian` — Audit every directional claim in the world against the 1499, not Dallington
 
-**○ open** · debt · priority 1 · hp-builder
+**○ open** · bug · priority 1 · hp-researcher
  · opened 2026-09-09
 
 
-**Evidence.** Ted 2026-09-09: "an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour." The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08. PREREQUISITE MET 2026-09-09: the translation is complete -- 463 English pages plus 4 blank leaves, all 467, 249,936 words, live at t3dy.github.io/EmblemsIn3d/research/translation.html and as HPTranslation.txt. Nothing blocks this ticket now but building it.
+**Evidence.** The wolf stood on the wrong side of the valley for a day because DIRECTIONS.md section 4 sited it from Dallington's 'vpon my left hand' where the 1499 has 'alla parte dextra'. Three more explicit turns are listed in that section and all three were taken from Dallington: the Medusa door on the right hand (p. 31), the descending stair on the right (p. 32), and the divided stream at the bridge (1499 l. 2793 -- that one already cites the Italian). Dallington was wrong once; he may be wrong again, and now that every page is in English beside its Italian the check is cheap.
 
-**Acceptance.** A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.
+**Acceptance.** Each of the four turns in DIRECTIONS.md section 4 cites the 1499 Italian phrase, not Dallington, and the world matches it.
 
-**Files.** `src/main.js` · `translation/`
+**Files.** `DIRECTIONS.md` · `src/scenes/world/portal.js`
 
-**See.** NEXTSTEPS.md#0-A
+**See.** DECISIONS.md 2026-09-09
 
 
 ### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
@@ -106,6 +106,21 @@
 **Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
+
+
+### `read-bind-plate-to-text` — The plate is bound to a station, not to the point in the text where it appears
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Ted's wording was 'as the text of the novel and commentary gets to the point where the woodcut comes up'. The plate frame keys off the station, so it opens for the whole of a station's pages rather than at the leaf the cut actually falls on. The data to do better now exists: hp.db.woodcut_catalog has a folio per plate, and reading.json has a page per screen.
+
+**Acceptance.** The plate frame opens on the page the woodcut actually falls on and closes after it, rather than staying open across a whole station.
+
+**Files.** `src/main.js` · `scripts/build_reading.py`
+
+**See.** NEXTSTEPS.md#0-A
 
 
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
@@ -303,6 +318,23 @@
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLING.md#3 · DECISIONS.md 2026-09-09 (later) call 3
+
+
+### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour." The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08. PREREQUISITE MET 2026-09-09: the translation is complete -- 463 English pages plus 4 blank leaves, all 467, 249,936 words, live at t3dy.github.io/EmblemsIn3d/research/translation.html and as HPTranslation.txt. Nothing blocks this ticket now but building it.
+
+**Acceptance.** A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.
+
+**Resolution.** hpRead() plus scripts/build_reading.py -> src/data/reading.json. 463 pages, 174,547 words, 1.09 MB fetched only on entering the mode. Each page carries the station where it happens, joined page->chapter (manifest) then chapter->station (tours.json, ranged stops split); 453 of 463 resolve, the ten that do not being the front matter and errata, which precede and follow the dream. Turning a page teleports the world, which moves the commentary, the 1499 plate and the acting Poliphilo with it, so all three came free. [ and ] turn the page rather than the arrows, which the walker uses to turn on the spot. Verified live at v=343.
+
+**Files.** `src/main.js` · `translation/`
+
+**See.** NEXTSTEPS.md#0-A
 
 
 ### `tour-woodcut-frame` — A toggleable second frame showing the plate for the moment you are standing in

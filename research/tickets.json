@@ -467,7 +467,7 @@
       "id": "tour-full-text-mode",
       "title": "A reading mode with the entire text of the HP, not summaries",
       "kind": "debt",
-      "status": "open",
+      "status": "done",
       "priority": 1,
       "evidence": "Ted 2026-09-09: \"an option for a version where the player can read not just summaries and commentary but the full text of the entire HP as part of the process of taking the tour.\" The parallel edition exists and each stop links to it, but the text is the destination rather than the spine. Prerequisite: the whole-book translation pass, 20 of 192 pages englished as of 2026-09-08. PREREQUISITE MET 2026-09-09: the translation is complete -- 463 English pages plus 4 blank leaves, all 467, 249,936 words, live at t3dy.github.io/EmblemsIn3d/research/translation.html and as HPTranslation.txt. Nothing blocks this ticket now but building it.",
       "acceptance": "A mode in which the book's text runs continuously alongside the walk, the world keeps pace with the passage, and no passage is a summary.",
@@ -479,7 +479,9 @@
       "refs": [
         "NEXTSTEPS.md#0-A"
       ],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-09",
+      "resolution": "hpRead() plus scripts/build_reading.py -> src/data/reading.json. 463 pages, 174,547 words, 1.09 MB fetched only on entering the mode. Each page carries the station where it happens, joined page->chapter (manifest) then chapter->station (tours.json, ranged stops split); 453 of 463 resolve, the ten that do not being the front matter and errata, which precede and follow the dream. Turning a page teleports the world, which moves the commentary, the 1499 plate and the acting Poliphilo with it, so all three came free. [ and ] turn the page rather than the arrows, which the walker uses to turn on the spot. Verified live at v=343."
     },
     {
       "id": "fig-poliphilo-acts",
@@ -571,6 +573,42 @@
       ],
       "role": "hp-builder",
       "refs": [],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "read-bind-plate-to-text",
+      "title": "The plate is bound to a station, not to the point in the text where it appears",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Ted's wording was 'as the text of the novel and commentary gets to the point where the woodcut comes up'. The plate frame keys off the station, so it opens for the whole of a station's pages rather than at the leaf the cut actually falls on. The data to do better now exists: hp.db.woodcut_catalog has a folio per plate, and reading.json has a page per screen.",
+      "acceptance": "The plate frame opens on the page the woodcut actually falls on and closes after it, rather than staying open across a whole station.",
+      "files": [
+        "src/main.js",
+        "scripts/build_reading.py"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "NEXTSTEPS.md#0-A"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "read-audit-turns-against-italian",
+      "title": "Audit every directional claim in the world against the 1499, not Dallington",
+      "kind": "bug",
+      "status": "open",
+      "priority": 1,
+      "evidence": "The wolf stood on the wrong side of the valley for a day because DIRECTIONS.md section 4 sited it from Dallington's 'vpon my left hand' where the 1499 has 'alla parte dextra'. Three more explicit turns are listed in that section and all three were taken from Dallington: the Medusa door on the right hand (p. 31), the descending stair on the right (p. 32), and the divided stream at the bridge (1499 l. 2793 -- that one already cites the Italian). Dallington was wrong once; he may be wrong again, and now that every page is in English beside its Italian the check is cheap.",
+      "acceptance": "Each of the four turns in DIRECTIONS.md section 4 cites the 1499 Italian phrase, not Dallington, and the world matches it.",
+      "files": [
+        "DIRECTIONS.md",
+        "src/scenes/world/portal.js"
+      ],
+      "role": "hp-researcher",
+      "refs": [
+        "DECISIONS.md 2026-09-09"
+      ],
       "opened": "2026-09-09"
     }
   ]

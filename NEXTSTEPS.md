@@ -1,4 +1,4 @@
-<!-- tokens: ~10,030 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~10,122 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -44,6 +44,11 @@ with Hunt's objection in their lede (**built**). Everything below this line is s
 
 **Poliphilo acting out his reactions is built too** (later the same day) — see
 [`HUMANOIDS.md`](HUMANOIDS.md) §4.
+
+**The reading mode is built** (2026-09-09) — `hpRead()`, the whole book with the world keeping
+pace. On its first day it caught the wolf standing on the wrong side of the valley; see
+`DECISIONS.md`. What it still owes is Ted's finer wording: the plate is bound to a *station*,
+not to the point in the *text* where the woodcut falls (`read-bind-plate-to-text`).
 
 **The translation is finished** (2026-09-09). All 467 pages: 463 englished plus four blank
 leaves, 249,936 words, live as a parallel text at `research/translation.html` and as

@@ -1,4 +1,4 @@
-<!-- tokens: ~4,485 · read for: the index of every directional call -->
+<!-- tokens: ~4,517 · read for: the index of every directional call -->
 # Design decisions — Emblems in 3D
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
@@ -174,6 +174,7 @@ say plainly that both early editions withheld what you are looking at.
 
 **2026-09-09**
 
+- [The reading mode, and the wolf changes hands](decisions/2026-09.md#2026-09-09--the-reading-mode-and-the-wolf-changes-hands)
 - [Version 5 shipped, and what it settled](decisions/2026-09.md#2026-09-09-version-5-shipped-and-what-it-settled)
 - [What this project is, and four things that follow](decisions/2026-09.md#2026-09-09-later-what-this-project-is-and-four-things-that-follow)
 - [Four calls: fidelity, pace, monument scale, and the artificial gardens](decisions/2026-09.md#2026-09-09-four-calls-fidelity-pace-monument-scale-and-the-artificial-gardens)
