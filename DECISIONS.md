@@ -2,6 +2,93 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — Release Version 4
+
+Ted: *"commit and deploy our changes as v4."* Tagged `v4`; badge and README updated. There is
+no `/v4/` snapshot directory, and there will not be one: since 2026-09-06 past releases are
+git tags, and the `/v1/` `/v2/` links the README carried were dead on Pages. `RECIPES/ship-a-release.md`
+now says so.
+
+**What v4 contains**, all of it from 2026-09-08 and all of it verified on the live page:
+
+- **Roll Up the Dream**, a fifth mode — the hermaphrodite of `hp.db.alchemical_symbols`
+  eating the garden up the ladder of the metals to the chemical wedding; the crust that stays
+  on and lurches; two control schemes and a mouse-only one, from the PC ports' own.
+- **Masonry**: 179 columns of drums, the Great Portal's and the Temple of Venus's piers and
+  the palace wall in ashlar, Cythera's chariot gates in voussoirs; courses that settle, loads
+  carried, arches that are brittle, structures that topple onto the walker's floor; and
+  generic support for everything the registry never heard of — crowns on trunks, cups on
+  tables, coils on rocks.
+- **Litter**: 8 976 objects of 72 kinds, every one a noun counted out of the two
+  translations, zoned to the station it belongs to, Roll only.
+- **Three stations the coverage ledger found** — the first three things it ever found, and
+  each a whole station the world lacked: the sacred fountain and sepulchre of Adonis (ch.
+  XXIV, no woodcut), Cupid's *exeres* with its six named rowers and the AMOR VINCIT OMNIA
+  standard (ch. XX, no woodcut), and Eleuterylida's banquet laid as seven tables at seven
+  courses (ch. X, four plates attached). 13 of 38 chapters enumerated.
+- **The Dream ends Book I where Colonna did**: a thirteenth stop at the tomb, with a jump.
+- **Every mode written up**: `MODES.md` and eleven subject briefs with a "How it plays"
+  table, and the tour, Poliphilo's layer and the roll census brought up to what the world has.
+- **Fifty-odd commits behind it**, `main.js?v=288` → `v=309`, data `V=38` → `41`.
+
+## 2026-09-08 — Roll Up: the crust stays on, the ball lurches, two control schemes, and everything falls
+
+Ted: *"the items that you roll up disappear too quickly … the ball is being cluttered with all
+the items you pick up and is misshapen by picking up a column for a moment, like in katamari
+damacy. There should also be better controls like diagonal directional buttons. research how
+katamari style games can be controlled on a computer keyboard and mouse."* And then: *"the
+physics engine in roll mode doesn't have the objects that are stacked on top of objects fall
+when the base objects disappear from underneath them."*
+
+**Why things vanished.** Each swallowed thing was seated once, at 0.88 of the radius *at the
+moment it was eaten*, and never moved again — so the ball grew past its own crust and buried
+everything. Now every stuck thing keeps its direction and is **re-seated on the surface every
+frame**, sinking in with age: a big thing in about six seconds, a small one in half a minute.
+The largest thing still standing proud makes the ball **lurch once a revolution** — a katamari
+with a column through it does not roll smoothly. The cap rose to 650 and shedding takes the
+smallest of the oldest, never a big thing for a leaf.
+
+**The controls, from the research.** *Katamari Damacy REROLL*'s PC default is the console's
+two-stick tank scheme — WASD the left hand, IJKL the right; both forward rolls, one forward
+turns — with a "Simple" single-stick option, and keyboard play under either is widely called
+awkward. So the world offers both: **single-stick** stays the default (with **Q E Z C** and the
+numpad corners as explicit diagonals, which Ted asked for), **T** switches to the two-stick
+scheme with the camera following the ball's heading and a drag turning the ball, **Space** is
+the quick turn, and **holding the right mouse button rolls the way you look**, so the whole game
+can be played on the mouse.
+
+**What stands on what.** The masonry only knew the structures it was told about. A new pass,
+`_resolveSupports`, looks at everything in the census and finds, for each thing not on the
+ground, what its bottom rests on — any object whose top is within ten centimetres and whose
+footprint overlaps — by a cell grid sorted on tops. Eat the support and what rested on it
+falls to where the support stood, and what rested on *that* rides down the same distance;
+a thing held by two supports stays until both go. It is the generic version of the masonry's
+rule and it covers the crowns on trunks, the topiary on its stalks, the coils on the rock,
+the statues on their plinths.
+
+Sources: [Screen Rant on REROLL's control settings](https://screenrant.com/change-control-settings-katamari-damacy-reroll/);
+[Steam, "how are the controls?"](https://steamcommunity.com/app/848350/discussions/0/1742227898977511898/);
+[Steam, keyboard guide for We Love Katamari REROLL+](https://steamcommunity.com/app/1730700/discussions/0/3810656323978804319/).
+
+## 2026-09-08 — The Dream ends Book I where Colonna did: a thirteenth stop, and a jump
+
+The game had twelve stops and went from the shore of Cythera straight to the waking. Book I
+does not end at the shore; it ends at the sepulchre of Adonis, on the island, with a kiss
+and a question to Polia. Now that the station exists (found by the ledger, built on
+2026-09-08), the dream can end there too.
+
+Two things were needed. **A jump.** The dream walks its paths on the walker's own feet, and
+no path reaches the island from the shore — the sea is railed and the crossing is Cupid's.
+`DreamMode._nextStop` now honours `jump: [x, z]` on a stop: the dreamer is put down there
+first, and the path continues from it. The tomb jumps to the island road that ends at the
+grove; the waking jumps back to the shore. **And a reaction** whose canonical mood is
+*wonder*, because the book's own answer at the tomb is a kiss "with utmost religion".
+
+While there, the boat's reaction prompt was found saying "its sail lettered 'Love conquers
+all'" — wrong twice, no sail and no lettering — and fixed. The mode rule (previous entry) is
+doing what it was made for: every time a thing is written up mode by mode, one of the modes
+turns out to have been describing something the world does not have.
+
 ## 2026-09-08 — Every addition is thought through in all five modes, and written up
 
 Ted: *"think about how we need to update the writing and mechanics and other assets for each

@@ -1,4 +1,4 @@
-// hp_dream.js — the script of "Poliphilo's Dream": twelve stops that walk the
+// hp_dream.js — the script of "Poliphilo's Dream": thirteen stops that walk the
 // player through the plot of the Hypnerotomachia Poliphili (Venice, 1499).
 //
 // Four voices, and the player can always tell which is speaking.
@@ -196,8 +196,39 @@ export const DREAM_STOPS = [
     ],
   },
   {
+    // Book I's actual last scene, on the island (ch. XXIV, our pp. 369–379).
+    // Added 2026-09-08 when the coverage ledger found the chapter had no
+    // station: the dream used to jump from the shore straight to the waking,
+    // leaving out the tomb that Colonna chose to end his first book on. This
+    // stop JUMPS to Cythera -- the crossing is Cupid's, not the walker's --
+    // and comes up the road that ends at the sacred grove.
+    id: 'adonis',
+    title: 'The Sepulchre of Adonis',
+    jump: [14.1, -130.6],
+    path: [[17.0, -126.6], [19.4, -123.3], [20.3, -122.0]],
+    look: [24.7, -116.0],
+    pitch: -0.02,
+    guide: { name: 'Polia', sub: 'POLIA', robe: 0xe8ddc0 },
+    beats: [
+      { text: 'Out of the theatre, the whole company wanders the island — through the orchards, through box-walled enclosures and marble latticework wound with roses, gathering flowers as they go, until they come to a second sacred spring. It rises in a hexagon of Macedonian marble, twelve paces about, in a cloister of orange, lemon and citron full of nightingales; and its water is thrown by a golden serpent that creeps out of a cleft of rock.',
+        quote: '“A golden serpent, feigned to creep out from a hidden cleft of rock, which, with coiled windings of a fitting thickness, vomited abundantly into the sonorous fountain the clearest water … cast in a globed coil, to curb the force of the water — which, by a free and straight pipe, would have scattered beyond the limits of the fountain.”',
+        source: 'ch. XXIV — translated from the 1499 Aldine for this project',
+        voice: 'ours', page: 373, draft: true },
+      { text: 'Beside the spring stands the sepulchre of Adonis, of alabaster, five feet long. One side is carved with Venus coming naked from the fountain and tearing her calf in the rose-bushes, Cupid catching the blood in an oyster-shell; the other with the hunt, the dogs, the dead boar, and the goddess fainting into the arms of three nymphs. A jacinth stops the hollow in its front, lit from behind, burning unsteadily. On the lid, in three-coloured sardonyx, Venus lies as a woman in childbed, giving suck to Cupid — and the nymphs, and the dreamer with them, kneel and kiss her foot.',
+        quote: '“Which holy foot the nymphs, bowed and fallen kneeling, and we, kissed with utmost religion. Beneath which little foot … NON LAC SAEVE PVER, LACHRYMAS SED SVGIS AMARAS, REDDENDAS MATRI, CARIQVE ADONIS AMORE — Not milk, cruel boy, but bitter tears you suck, to be given back to your mother, for the love of dear Adonis.”',
+        source: 'ch. XXIV — translated from the 1499 Aldine for this project',
+        voice: 'ours', page: 374, draft: true },
+      { text: 'The roses here are white, and the nymphs explain why. On the eve of the Kalends of May the goddess comes; the roses are stripped and heaped over the tomb, and reflower overnight to the same number. On the Ides the heap is swept into the fountain; the repository is unsealed; Cupid carries the shell of his mother’s blood — and the moment the liquor is drawn, every white rose on the island turns purple. It is the origin of the red rose. Poliphilo sees them before the rite. Then the nymphs turn to Polia, and ask her to tell how she came to love: and Book I ends.',
+        quote: '“No sooner is the precious liquor drawn out than at once all the whitest roses, as at present they appear, are re-dyed in purple colour.”',
+        source: 'ch. XXIV — translated from the 1499 Aldine for this project',
+        voice: 'ours', page: 376, draft: true },
+    ],
+  },
+  {
     id: 'awakening',
     title: 'The Awakening',
+    // the dreamer is on the island now; the waking is back at the shore
+    jump: [0, -36],
     path: [[0, -41.5]],
     look: [0, -58],
     pitch: 0.06,

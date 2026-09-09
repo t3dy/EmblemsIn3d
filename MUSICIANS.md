@@ -32,7 +32,7 @@ that describes the counterpoint.
 | Mode | What the reader meets | What it owes / still owes |
 |---|---|---|
 | **Walk** | The fourteen at the court wall with their harps; Achoe; the six rowers. A plaque at the court: SEVEN VPON A SIDE … MVTE HERE. | The musicians hold harps whatever the course; the book changes their instruments seven times. A second instrument (a flute, a timbrel) for half of them is ten lines. |
-| **Tour** | Stop 21's *literary* note on the six-voice song; stop 9's *literary* note on the *copia* of the banquet. | A *gloss* on *Iasian* and *Lydian* (p. 289). |
+| **Tour** | Stop 21's *literary* note on the six-voice song and a *gloss* on *Iasian* and *Lydian* (Plato's banished modes, p. 289); stop 9's *literary* note on the *copia* of the banquet. | — |
 | **Dream** | The *court* beats mention the ballet "danced as a living game of chess"; the *cythera* beat says "the sirens sang and, for once, meant no harm by it." | — |
 | **Fly** | Nothing. | — |
 | **Roll** | Harps, lutes, flutes, sistra, timbrels and trumpets are litter kinds, each attested; the musicians are figures and do not react. | — |

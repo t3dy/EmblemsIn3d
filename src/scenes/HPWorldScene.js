@@ -26,8 +26,8 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=48';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
-import { RollUp } from '../systems/RollUp.js?v=5';
-import { Masonry } from '../systems/Masonry.js?v=7';
+import { RollUp } from '../systems/RollUp.js?v=6';
+import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=5';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
@@ -516,6 +516,120 @@ export class HPWorldScene {
   // their own group, so a six-elephant team is a handful of draws that still
   // processes; an NPC keeps its animated arm pivots unmerged and sways on.
 
+  // ── Generic support (2026-09-08) ──────────────────────────────────────
+  //
+  // Ted: "the physics engine in roll mode doesn't have the objects that are
+  // stacked on top of objects fall when the base objects disappear from
+  // underneath them." The masonry registry only knows the structures it was
+  // told about. This pass looks at EVERYTHING in the census and works out, for
+  // each thing not sitting on the ground, what it is sitting on: anything whose
+  // top is within a few centimetres of its bottom and whose footprint overlaps.
+  // A crown learns its trunk, a topiary ball its stalk, a statue its plinth,
+  // the serpent's coils the rock, a cup the table. Eat the support and what
+  // rested on it falls -- to wherever the support itself was standing -- and
+  // what rested on THAT rides down with it.
+  //
+  // Grouped objects (a table and its cloth and its dishes) are one thing here:
+  // they share one box and one list.
+  _resolveSupports() {
+    const floorAt = (x, z) => this.walker.floorAt(x, z);
+    const v = new THREE.Vector3();
+    const reps = [];
+  // one box per object (group representative), in world space
+    const boxOf = (e) => {
+      const parts = e.parts || [e];
+      let x0 = Infinity, y0 = Infinity, z0 = Infinity, x1 = -Infinity, y1 = -Infinity, z1 = -Infinity;
+      for (const q of parts) {
+        const src = q.src, g = src.geometry;
+        if (!g.boundingBox) g.computeBoundingBox();
+        const b = g.boundingBox;
+        for (let i = 0; i < 8; i++) {
+          v.set(i & 1 ? b.max.x : b.min.x, i & 2 ? b.max.y : b.min.y, i & 4 ? b.max.z : b.min.z).applyMatrix4(src.matrixWorld);
+          if (v.x < x0) x0 = v.x; if (v.x > x1) x1 = v.x;
+          if (v.y < y0) y0 = v.y; if (v.y > y1) y1 = v.y;
+          if (v.z < z0) z0 = v.z; if (v.z > z1) z1 = v.z;
+        }
+      }
+      return { x0, x1, y0, y1, z0, z1 };
+    };
+    for (const e of this.rollables) {
+      if (e.parts && e.parts[0] !== e) continue;         // one representative per group
+      e.box = boxOf(e);
+      reps.push(e);
+    }
+  // a grid of supporters by cell, each cell sorted by the top of the box
+    const CELL = 2.0;
+    const cells = new Map();
+    const key = (x, z) => (Math.floor(x / CELL) * 73856093) ^ (Math.floor(z / CELL) * 19349663);
+    for (const e of reps) {
+      // a thing spans every cell its footprint touches
+      const cx0 = Math.floor(e.box.x0 / CELL), cx1 = Math.floor(e.box.x1 / CELL);
+      const cz0 = Math.floor(e.box.z0 / CELL), cz1 = Math.floor(e.box.z1 / CELL);
+      if ((cx1 - cx0 + 1) * (cz1 - cz0 + 1) > 64) continue;     // the sea, the roads: not supports
+      for (let cx = cx0; cx <= cx1; cx++) for (let cz = cz0; cz <= cz1; cz++) {
+        const k = (cx * 73856093) ^ (cz * 19349663);
+        let b = cells.get(k);
+        if (!b) cells.set(k, b = []);
+        b.push(e);
+      }
+    }
+    for (const b of cells.values()) b.sort((a, c) => a.box.y1 - c.box.y1);
+    let stacked = 0; const supporters = new Set();
+    const GAP = 0.10;
+    for (const e of reps) {
+      const bx = e.box;
+      const cx = (bx.x0 + bx.x1) / 2, cz = (bx.z0 + bx.z1) / 2;
+      if (bx.y0 <= floorAt(cx, cz) + 0.05) continue;       // on the ground: the earth holds it
+      const b = cells.get(key(cx, cz));
+      if (!b) continue;
+      // binary search to the first top at or above (bottom - GAP)
+      let lo = 0, hi = b.length;
+      const want = bx.y0 - GAP;
+      while (lo < hi) { const m = (lo + hi) >> 1; if (b[m].box.y1 < want) lo = m + 1; else hi = m; }
+      for (let i = lo; i < b.length; i++) {
+        const s2 = b[i];
+        if (s2.box.y1 > bx.y0 + 0.06) break;                // tops now above our bottom: no longer "under"
+        if (s2 === e) continue;
+        if (s2.box.x1 < bx.x0 || s2.box.x0 > bx.x1 || s2.box.z1 < bx.z0 || s2.box.z0 > bx.z1) continue;
+        (e.restsOn = e.restsOn || []).push(s2);
+        (s2.supports = s2.supports || []).push(e);
+        supporters.add(s2);
+      }
+      if (e.restsOn) stacked++;
+    }
+    return { stacked, supporters: supporters.size };
+  }
+
+  // The thing `e` has just been eaten. Whatever rested on it -- and had no
+  // other support -- falls to where `e` itself was standing, and whatever
+  // rested on THAT rides down the same distance. Grouped objects act through
+  // their representative.
+  _dropDependents(e) {
+    const rep = e.parts ? e.parts[0] : e;
+    if (!rep.supports || !rep.box) return;
+  // where would the fallen things land? on the highest thing e itself rested on, else the floor
+    let landing = -Infinity;
+    for (const s2 of (rep.restsOn || [])) if (!s2.taken && s2.box.y1 > landing) landing = s2.box.y1;
+    if (landing === -Infinity) {
+      const cx = (rep.box.x0 + rep.box.x1) / 2, cz = (rep.box.z0 + rep.box.z1) / 2;
+      landing = this.walker.floorAt(cx, cz);
+    }
+    const dy = rep.box.y1 - landing;
+    if (dy <= 0.01) return;
+    const seen = new Set();
+    const drop = (d, dist) => {
+      if (seen.has(d) || d.taken) return;
+      seen.add(d);
+      // still held by something else that stands? then it stays
+      if (d.restsOn && d.restsOn.some(s2 => !s2.taken && s2 !== rep && !seen.has(s2))) return;
+      const parts = d.parts || [d];
+      for (const q of parts) if (!q.course) this.masonry.fall(q, dist);   // structures fall by their own rules
+      d.box.y0 -= dist; d.box.y1 -= dist;
+      for (const up of (d.supports || [])) drop(up, dist);
+    };
+    for (const up of rep.supports) drop(up, dy);
+  }
+
   _compileDrawCalls() {
     const dyn = new Set();
     const mark = (o) => { if (o && o.traverse) o.traverse(x => dyn.add(x)); };
@@ -567,7 +681,7 @@ export class HPWorldScene {
     mark(this._isleGroup);
     this._mergeInto(this.scene, dyn);
 
-    // Every stone now knows which course of which building it belongs to. This
+  // Every stone now knows which course of which building it belongs to. This
     // must run AFTER the last _mergeInto, not inside it: _mergeInto is called
     // once per float group, once per billboard, once for the island and once for
     // the world, and resolving on each pass enrolled the same stone several
@@ -577,6 +691,8 @@ export class HPWorldScene {
       console.info('[masonry]', this.masonry.structures.length, 'structures,', n, 'stones');
       const g = this._resolveRollGroups();
       if (g) console.info('[litter]', g, 'objects censused whole');
+      const sup = this._resolveSupports();
+      console.info('[supports]', sup.stacked, 'things resting on', sup.supporters, 'others');
     }
   }
 
@@ -4788,6 +4904,7 @@ export class HPWorldScene {
   // costs one small write into the buffer and no draw calls at all.
   takeRollable(e) {
     if (e.taken) return null;
+    let out = null;
     // A littered object comes off whole: its parts were censused together and
     // they leave together, in one holder, keeping the shape they had.
     if (e.parts && e.parts.length > 1) {
@@ -4798,10 +4915,14 @@ export class HPWorldScene {
         const piece = this._takeOne(q, e.c);
         if (piece) g.add(piece);
       }
-      return g.children.length ? g : null;
+      out = g.children.length ? g : null;
+    } else {
+      e.taken = true;
+      out = this._takeOne(e, e.c);
     }
-    e.taken = true;
-    return this._takeOne(e, e.c);
+    // …and whatever was standing on it finds out
+    this._dropDependents(e);
+    return out;
   }
 
   _takeOne(e, centre) {

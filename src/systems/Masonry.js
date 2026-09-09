@@ -236,6 +236,25 @@ export class Masonry {
     if (this.onTopple) this.onTopple(st);
   }
 
+  // Drop a thing straight down by `dy` under gravity -- what happens to a cup
+  // when the table is eaten out from under it. Not a settle (which is a
+  // course sliding into a gap) but a fall, with a little tumble, landing where
+  // whatever was beneath the thing it stood on would have caught it. Used by
+  // HPWorldScene._dropDependents for the GENERIC stacks the structure
+  // registry never heard of: a crown on a trunk, a statue on a plinth, a
+  // topiary ball on its stalk, litter on a table.
+  fall(e, dy) {
+    if (!e || e.taken || dy <= 0.005) return;
+    const rec = this._rec(e);
+    if (rec.free) { rec.rest = Math.min(rec.rest, rec.pos.y - dy); return; }
+    rec.free = true;
+    rec.done = false;
+    rec.drop = 0;
+    rec.vel.set((Math.random() - 0.5) * 0.15, 0, (Math.random() - 0.5) * 0.15);
+    rec.spin.set((Math.random() - 0.5) * 1.2, (Math.random() - 0.5) * 0.6, (Math.random() - 0.5) * 1.2);
+    rec.rest = rec.pos.y - dy;
+  }
+
   // A piece's flight record, made the first time it needs one. The original
   // vertices are copied out then, relative to the piece's own centre, so that
   // every later frame is one clean transform of the rest pose rather than a

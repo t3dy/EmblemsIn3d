@@ -74,6 +74,16 @@ export class DreamMode {
     if (this.i >= this.stops.length) { this._finish(); return; }
     const st = this.stops[this.i];
     const p = this.world.walker.player;
+    // A stop may JUMP before it walks (2026-09-08): the dream's own crossing to
+    // Cythera is Cupid's boat, and the thirteenth stop stands on the island,
+    // which no path from the shore can reach on foot. `jump: [x, z]` puts the
+    // dreamer down there first; the path then continues from it as usual.
+    if (Array.isArray(st.jump) && st.jump.length === 2) {
+      const [jx, jz] = st.jump;
+      const yaw = st.path && st.path.length ? this.world.walker.yawToward([jx, jz], st.path[0]) : p.yaw;
+      this.world.walker.teleportTo(jx, jz, yaw, -0.03, 0);
+      p.pos.set(jx, 0, jz);
+    }
     const pts = [[p.pos.x, p.pos.z], ...st.path]
       .map(([x, z]) => new THREE.Vector3(x, 0, z));
     this._curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.1);

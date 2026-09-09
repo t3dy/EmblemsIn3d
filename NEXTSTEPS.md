@@ -98,13 +98,11 @@ Roll Up only. Open:
 ### 0i. What the mode briefs say is still owed (2026-09-08)
 Gathered from the "How it plays" tables; each is small and each is named in its brief.
 
-- **Dream**: reaction prompts at the banquet (the *copia*, the cloth in the fire, the waiter
-  who moves like Polia) and at the standard (reading it, or hearing "perseverance alone wears
-  the victor's diadem" as a rebuke). A thirteenth stop for the tomb of Adonis, Book I's actual
-  last scene.
-- **Tour**: a stop of the banquet's own; an *architecture* note at the portal on drums and
-  dowels; a *gloss* on Iasian and Lydian; a *myth* note on the harpy as Virgil's snatcher made
-  a footstool.
+- **Dream**: ~~a thirteenth stop for the tomb of Adonis~~ done 2026-09-08, with a `jump`
+  in the engine. The banquet still has no moment of its own — the *court* reaction is the
+  nymphs' — and the engine allows one reaction per stop; a second reaction per stop, keyed by
+  beat, is the change that would let the supper and the cloth in the fire be chosen on.
+- **Tour**: a stop of the banquet's own. ~~Drums note, Iasian gloss, harpies myth~~ done.
 - **Fly**: a scripted circuit of Cythera at rim height; something that marks the
   water-labyrinth from the air, since the book itself shows it from a mount.
 - **Roll**: name the chessboard's squares and courses; a harpy's foot by name; the pomanders
@@ -158,6 +156,12 @@ still "a piece of the dream". Open:
   best joke. §2 of PLEASURES.md is the precedent for what to do instead: show it.
 - **The ball never gets stuck but it never struggles either.** There is no momentum and no
   friction — it moves at a speed and stops. A little inertia would make the big ball feel big.
+  (The lurch over a stuck column, 2026-09-08, is the first step toward a ball that feels its
+  own load.)
+- **The crust is still one draw call per stuck thing.** 650 of them. Baking the crust into
+  one merged geometry every few seconds would lift the cap to thousands.
+- **Generic support answers only to removal.** A statue on a column that *settles* stays in
+  the air; `Masonry._settle` should push the settled entry's `supports` down with it.
 - **Nothing carries between rounds.** A record of the fastest wedding, kept in `localStorage`
   beside the lens set, would cost ten lines.
 

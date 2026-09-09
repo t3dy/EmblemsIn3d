@@ -104,12 +104,21 @@ export const DREAM_REACTIONS = {
     ],
   },
   cythera: {
-    prompt: 'Cupid’s boat waits at the shore, its sail lettered “Love conquers all,” the nymphs at the oars. How do you embark?',
+    prompt: 'Cupid’s boat waits at the shore — no sail, only a cyan standard worked with three signs, and six nymphs at the oars. How do you embark?',
     options: [
       { mood: 'eros', canonical: true, text: 'I step aboard without a backward look; every mystery of love breathes in this boat, and I would cross any sea for her.' },
       { mood: 'wonder', text: 'I read the standard’s three signs before I board — a flaming vase, the globe, a binding withy: “Love conquers all.”' },
       { mood: 'melancholy', text: 'Islands of pleasure are the saddest places; I board knowing the far shore is where the dream must end.' },
       { mood: 'dread', text: 'A boat built prow-for-stern, that goes where it should not — I trust the god who steers it less than I ought.' },
+    ],
+  },
+  adonis: {
+    prompt: 'Venus lies in sardonyx on the alabaster tomb, her foot out over the rim; the nymphs kneel to kiss it, and the roses round you are all white. What do you do?',
+    options: [
+      { mood: 'wonder', canonical: true, text: 'I kneel with them and kiss the holy foot with utmost religion — this is antiquity itself, a rite still kept, and I am admitted to it.' },
+      { mood: 'melancholy', text: 'Love ends here, in a tomb by a spring; the roses stay white for me, and I already know what colour they will be.' },
+      { mood: 'eros', text: 'Even the goddess in her grief is nursing; every carved stone on this island turns me back to Polia beside me.' },
+      { mood: 'dread', text: 'Blood in an oyster-shell, a jacinth that burns without fire, a foot the living kiss — I keep my lips to myself.' },
     ],
   },
   awakening: {

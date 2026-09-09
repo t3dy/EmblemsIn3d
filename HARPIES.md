@@ -37,8 +37,8 @@ the wing-tips — a *carried* load in Masonry terms, so eating a harpy drops the
 | Mode | What the reader meets | What it owes / still owes |
 |---|---|---|
 | **Walk** | Three clawed feet under the perfuming vessel; carved harpies on the portal. | The angle-harpies of the great fountain; the harpies and griffins of folio 80's fountain. |
-| **Tour** | Stop 9's new *quotation* note names the harpies' feet. | A *myth* note: the harpy as the Virgilian snatcher (Aeneid III) made into a footstool — the book's habit of domesticating monsters. |
+| **Tour** | Stop 9's *quotation* note names the harpies' feet, and a *myth* note reads them: Virgil's snatchers (Aeneid III) made into a footstool. | — |
 | **Dream** | Nothing. | — |
 | **Fly** | Nothing; too small. | — |
 | **Roll** | The feet are "a piece of the Queen's gold plate" and go with the vessel as one object. | Name them ("a harpy's foot"). |
-| **Layers** | *From the book*. | *Mythological allusion* is silent on harpies everywhere; it should not be. |
+| **Layers** | *From the book*; *Mythological allusion*, at the court. | — |

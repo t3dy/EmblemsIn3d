@@ -47,9 +47,10 @@ This project does three things with it.
 
 | | Release | Where | What it is |
 |---|---|---|---|
-| **v3** | current | [`/`](https://t3dy.github.io/EmblemsIn3d/) | The *Hypnerotomachia* alone: the whole-book tour, the Graphics menu, commentary that meets you as you walk, a dream loop that cannot hang, and a silent site. |
-| **v2** | archived | [`/v2/`](https://t3dy.github.io/EmblemsIn3d/v2/) | The tour with its commentary lenses, the Gallery, Poliphilo's Dream as a game, mobile controls, and the first imported model. Also carried the *Atalanta Fugiens* worlds. |
-| **v1** | archived | [`/v1/`](https://t3dy.github.io/EmblemsIn3d/v1/) | The original release: the emblem worlds, the games, and the first walkable Dream Garden. |
+| **v4** | current | [`/`](https://t3dy.github.io/EmblemsIn3d/) | 8 September 2026. **Roll Up the Dream**, a fifth mode: a ball with Sol and Luna on its faces that eats the garden up the ladder of the metals, over floors littered with nine thousand objects the book names and buildings made of drums, ashlar and voussoirs that settle and topple when undermined. Three stations the coverage ledger found missing: Eleuterylida's banquet, Cupid's *exeres*, the sepulchre of Adonis. The Dream ends Book I where Colonna did. Every mode written up in its own brief (`MODES.md`). Tag `v4`. |
+| **v3** | superseded | tag `v3` | The *Hypnerotomachia* alone: the whole-book tour, the Graphics menu, commentary that meets you as you walk, a dream loop that cannot hang, and a silent site. No snapshot directory: since 2026-09-06 past releases are kept as git tags and on the `atalanta-archive` branch, not as `/vN/` copies. |
+| **v2** | archived | `atalanta-archive` branch | The tour with its commentary lenses, the Gallery, Poliphilo's Dream as a game, mobile controls, and the first imported model. Also carried the *Atalanta Fugiens* worlds. |
+| **v1** | archived | `atalanta-archive` branch | The original release: the emblem worlds, the games, and the first walkable Dream Garden. |
 
 **On 2026-09-05 the *Atalanta Fugiens* side was removed from the site** — its worlds, its
 four tours, its games and its cross-reference graph — so that everything here is the

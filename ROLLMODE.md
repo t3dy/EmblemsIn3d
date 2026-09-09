@@ -19,6 +19,45 @@ Everything it eats is **named** — the genre's whole charm — from the mesh's 
 first, then the material's, then the geometry and the nearest wonder ("a brick, from The Court
 of Queen Eleuterylida"). Bite: a thing must be under 0.58 of the ball's radius.
 
+## 1a. The controls, and where they come from
+
+Researched 2026-09-08 against the PC ports. *Katamari Damacy REROLL*'s default keyboard
+scheme is the console one: **two sticks, WASD for the left hand and IJKL for the right** —
+both forward rolls, one forward turns, opposite spins in place — and its settings offer a
+**"Simple"** scheme that moves and turns with one stick; players on Steam call keyboard play
+awkward under either ([Screen Rant](https://screenrant.com/change-control-settings-katamari-damacy-reroll/),
+[Steam: how are the controls?](https://steamcommunity.com/app/848350/discussions/0/1742227898977511898/),
+[We Love Katamari REROLL+ keyboard guide](https://steamcommunity.com/app/1730700/discussions/0/3810656323978804319/)).
+So the world offers both, and a third way for the mouse:
+
+| | |
+|---|---|
+| **Single-stick** (default) | W A S D roll in the camera's frame; **Q E Z C** and the numpad corners are the diagonals as keys of their own; Shift dashes; drag swings the camera; wheel pulls back |
+| **Two-stick** (T) | W A S D the left hand, **I J K L or the arrows** the right; both forward rolls, one forward turns, both aside turns; the camera follows the ball's own heading and a drag turns the ball; C puts the camera behind |
+| **Mouse** | hold the **right button** to roll the way you look, drag to steer — the whole game on one hand |
+| **Space** | the quick turn: the camera swings round behind the ball's other side |
+
+## 1b. The crust
+
+Everything eaten stays on the outside, **re-seated on the surface every frame** as the ball
+grows (the first build seated things once and grew past them, which is why they seemed to
+vanish). A thing sinks in with age — a big one (over a fifth of the ball) in about six
+seconds, a small one in half a minute — so a column stands proud for a moment and a coin
+rides the skin. The largest thing still proud sets the **bump**: the ball lurches once a
+revolution over it, fading as it is absorbed. The cap is 650 pieces; shedding takes the
+smallest of the oldest, never a big thing to make room for a leaf.
+
+## 1c. What stands on what
+
+Two systems decide what falls. **Masonry** (`MASONRY.md`) knows the structures it was told
+about — columns, piers, arches, and the loads they carry. **Generic support**
+(`_resolveSupports`) looks at everything else in the census and works out, for each thing not
+sitting on the ground, what its bottom rests on: any object whose top is within ten
+centimetres and whose footprint overlaps. A crown learns its trunk, a topiary ball its stalk,
+a statue its plinth, the serpent's coils their rock, a cup its table. Eat the support and
+what rested on it falls to where the support was standing, and what rested on *that* rides
+down the same distance. A thing held by two supports stays until both are gone.
+
 ## 2. The three courses of the meal
 
 1. **The sward** — blades of grass, grazed straight out of the instanced meadow.
@@ -43,7 +82,10 @@ of Queen Eleuterylida"). Bite: a thing must be under 0.58 of the ball's radius.
 
 The nymphs and Poliphilo do not react (Katamari's crowds run). No sound, and the site is
 silent by decision — §2 of `PLEASURES.md` is the precedent: show it instead. No inertia on the
-big ball. Nothing carries between rounds. Nothing falls *on* anything.
+big ball. Nothing carries between rounds. Nothing falls *on* anything: a fallen thing lands
+where its support stood, not on the rubble already there. A thing standing on a course that
+*settles* (rather than being eaten) stays where it was — generic support answers only to
+removal.
 
 ## 5. How the other modes look from here
 

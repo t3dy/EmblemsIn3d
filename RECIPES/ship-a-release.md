@@ -57,13 +57,17 @@ mirror and is not evidence of anything.
 
 ## Cutting a numbered version
 
-Past releases are kept as directories at the repo root and linked from the landing page —
-`/v1/`, `/v2/`. To add one:
+**Since 2026-09-06 there are no `/vN/` snapshot directories on `main`** — they were removed
+with the Atalanta archive (DECISIONS 2026-09-06), and `/v1/` and `/v2/` no longer resolve
+on Pages. A numbered version is now:
 
-1. copy the current `src/`, `images/`, `research/` into `vN/` (a frozen snapshot; it will
-   not be maintained)
-2. add the link to the landing page's version list in `src/index.html`
-3. note the release, its date and what it contains, in `README.md` and `DECISIONS.md`
+1. the `ver-badge` and its note in the landing page's version bar (`index.html`, not `src/`)
+2. a row in the Versions table of `README.md` — the new one `current`, the old one
+   `superseded` with its tag
+3. a `## Release Version N` entry in `DECISIONS.md` saying what it contains
+4. an annotated git tag, pushed: `git tag -a vN -m "Version N" && git push origin vN`
+
+Done that way for v4 on 2026-09-08.
 
 ## You are done when
 

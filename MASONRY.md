@@ -64,7 +64,7 @@ rubble landing on rubble; a stone thrown more than ~4 m drifting out of the roll
 | Mode | What the reader meets | What it owes / still owes |
 |---|---|---|
 | **Walk** | Coursed ashlar on the portal, the temple piers and the palace wall; real voussoir arches with keystones on the chariot gates. It looks better than the boxes did — the coursing gives the portal a scale it never had. Nothing falls: collapse needs the census, which only Roll builds. | — |
-| **Tour** | Nothing said. The tour is about the book, and the book's buildings do not fall down. | An *architecture* note at the portal on drums and dowels (Vitruvius, Alberti on the arch) would be honest and short. |
+| **Tour** | An *architecture* note at the portal (stop 6) on drums, dowels and broken joints, citing Alberti VI–VII. The book's buildings do not fall down and the tour does not say they can. | — |
 | **Dream** | Nothing — the dream's buildings are scenery. | — |
 | **Fly** | Coursing is invisible at height; arches read. | — |
 | **Roll** | The whole point. Drums at ~20 cm, ashlars at ~50 cm, voussoirs ~25 cm; the ball undermines what it is big enough to bite and watches the rest come down. Collapsed structures drop their colliders. | Nothing falls *on* the ball or on people. |

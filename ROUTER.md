@@ -98,6 +98,7 @@ Read the one that matches what you are building. Each is a research brief, not a
 | [`LITTER.md`](LITTER.md) | the seventy-two attested kinds of small thing on the floors, Roll only |
 | [`ROLLMODE.md`](ROLLMODE.md) | the hermaphrodite, the ladder of the metals, what every object owes the ball |
 | [`DRAGONFLIGHT.md`](DRAGONFLIGHT.md) | the dream from the air: controls, bounds, what reads from forty metres |
+| [`DREAMMODE.md`](DREAMMODE.md) | the game: thirteen stops, four moods, the jump, what a stop owes and what a reaction is for |
 | [`MUSICIANS.md`](MUSICIANS.md) | everyone who plays or sings, and how a silent site meets each |
 | [`HARPIES.md`](HARPIES.md) | the harpy as bracket: feet, angle-figures, tails turning to leaves |
 

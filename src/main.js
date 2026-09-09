@@ -3,11 +3,11 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=217';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=218';
 import { VaultsScene } from './scenes/VaultsScene.js?v=5';
-import { DreamMode } from './systems/DreamMode.js?v=7';
-import { DREAM_STOPS } from './data/hp_dream.js?v=3';
-import { DREAM_REACTIONS } from './data/hp_reactions.js?v=1';
+import { DreamMode } from './systems/DreamMode.js?v=8';
+import { DREAM_STOPS } from './data/hp_dream.js?v=4';
+import { DREAM_REACTIONS } from './data/hp_reactions.js?v=2';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=8';
 import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=8';
 
@@ -94,7 +94,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '40'; // bump when data files are re-exported
+  const V = '41'; // bump when data files are re-exported
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   state.poliphilo   = await fetch(`./data/poliphilo.json?v=${V}`).then(r => r.json()).catch(() => null);
@@ -1199,6 +1199,13 @@ window.hpRoll = async () => {
     if (el) el.innerHTML = `${m.sign} ${m.metal}`;
     showHint(`${m.sign}  ${m.name} — ${m.metal}.  ${m.note}`);
   };
+  sc.roll.onScheme = (tank) => {
+    const f = document.getElementById('roll-foot');
+    if (f) f.innerHTML = tank
+      ? 'TWO-STICK: W A S D the left hand &middot; I J K L or arrows the right &middot; both forward rolls, one forward turns, both aside turns &middot; drag turns the ball &middot; C camera behind &middot; Space quick turn &middot; T single-stick &middot; Esc stop'
+      : 'W A S D roll &middot; Q E Z C the diagonals &middot; right button held rolls the way you look &middot; drag to look &middot; Space quick turn &middot; Shift dash &middot; T two-stick scheme &middot; Esc stop';
+    showHint(tank ? 'Two-stick: WASD is the left hand, IJKL the right. Both forward to roll; one forward to turn.' : 'Single-stick: roll the way the camera looks.');
+  };
   sc.roll.onWedding = (r) => {
     const mm = Math.floor(r.seconds / 60), ss = Math.round(r.seconds % 60);
     const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
@@ -1278,7 +1285,7 @@ window.hpDream = () => {
   showHPMode(false);
   if (state.activeScene?.flight) window.hpLand();
   showFlavorChooser({
-    kicker: 'Poliphilo’s Dream · twelve scenes', begin: 'Begin the dream',
+    kicker: 'Poliphilo’s Dream · thirteen scenes', begin: 'Begin the dream',
     onDone: () => startDream(),
   });
 };

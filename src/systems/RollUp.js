@@ -42,10 +42,24 @@ const UP = new THREE.Vector3(0, 1, 0);
 const BITE = 0.58;
 
 // How many swallowed things stay on the outside. A full run eats ten thousand
-// objects and every one of them would be its own draw call; but as the ball
-// grows they are buried under later mouthfuls anyway, so the oldest are quietly
-// dropped. Four hundred is enough that the surface is always crusted.
-const CRUST = 400;
+// objects and every one of them is its own draw call, so there is a cap -- but
+// Ted, 2026-09-08: "the items that you roll up disappear too quickly. I'd like
+// them to stick around for a second or two longer so that the ball is being
+// cluttered with all the items you pick up and is misshapen by picking up a
+// column for a moment, like in katamari damacy."
+//
+// The first build stuck each thing at 0.88 of the radius AT THE MOMENT it was
+// eaten and never moved it again, so the ball simply grew past its own crust:
+// everything sank inside as the radius rose. Now every stuck thing keeps its
+// DIRECTION and is re-seated on the surface every frame, sinking in slowly with
+// age -- a column stands proud for a few seconds and is absorbed; a coin rides
+// the skin for half a minute -- and the largest thing standing proud makes the
+// ball BUMP as it rolls, because a katamari with a column in it does not roll
+// smoothly. The cap is by count still, but the shedding takes the smallest of
+// the oldest, so a big thing is never dropped to make room for a leaf.
+const CRUST = 650;
+const SINK_BIG = 6.0;     // seconds for a big thing (over a fifth of the ball) to be absorbed
+const SINK_SMALL = 32.0;  // seconds for a small one to sink flush
 
 // ── The ladder of the metals ────────────────────────────────────────────────
 //
@@ -111,7 +125,11 @@ export class RollUp {
     this.group.visible = false;
     scene.add(this.group);
 
-    this._stuck = [];                        // what is riding on the outside
+    this._stuck = [];                        // what is riding on the outside: {holder, dir, size, t0}
+    this._bump = 0;                          // how misshapen it is right now, in metres
+    this._rolled = 0;                        // distance rolled, for the bump's rhythm
+    this.tank = false;                       // the two-stick scheme, toggled with T
+    this.heading = 0;                        // the ball's own way, for the tank scheme
     this._rollables = null;                  // set by attach()
     this._grid = null;
     this.meadows = [];                       // fields whose blades are food
@@ -248,6 +266,14 @@ export class RollUp {
       if (!this.active) return;
       this._keys.add(e.code);
       if (e.code === 'Escape') this.onExit?.();
+      // T: the two-stick "tank" scheme of the real thing (see update)
+      if (e.code === 'KeyT' && !e.repeat) { this.tank = !this.tank; this.onScheme?.(this.tank); }
+      // Space: the quick turn -- the camera swings round behind the ball's
+      // other side, which is what the prince does when both sticks are pulled apart
+      if (e.code === 'Space' && !e.repeat) { this.cam.yaw += Math.PI; this.heading += Math.PI; }
+      // C: put the camera back behind the way we are going
+      if (e.code === 'KeyC' && !e.repeat && this.tank) this.cam.yaw = this.heading;
+      if (e.code === 'Space') e.preventDefault();
     };
     this._onKU = (e) => this._keys.delete(e.code);
     this._onWheel = (e) => {
@@ -255,20 +281,30 @@ export class RollUp {
       this.cam.dist = THREE.MathUtils.clamp(this.cam.dist + Math.sign(e.deltaY) * this.r * 0.4,
         this.r * 2.0, this.r * 14);
     };
-    this._onPD = (e) => { if (this.active) { this._look = { id: e.pointerId, x: e.clientX, y: e.clientY }; } };
+    this._onPD = (e) => {
+      if (!this.active) return;
+      // the right button ROLLS, the way the camera faces, so the whole game can
+      // be played on the mouse: steer by dragging, go by holding
+      if (e.button === 2) { this._mouseRoll = true; e.preventDefault(); return; }
+      this._look = { id: e.pointerId, x: e.clientX, y: e.clientY };
+    };
+    this._onCtx = (e) => { if (this.active) e.preventDefault(); };
     this._onPM = (e) => {
       if (!this.active || !this._look || e.pointerId !== this._look.id) return;
+      // in the tank scheme a drag turns the BALL, not just the camera
+      if (this.tank) this.heading -= (e.clientX - this._look.x) * 0.005;
       this.cam.yaw -= (e.clientX - this._look.x) * 0.005;
       this.cam.pitch = THREE.MathUtils.clamp(this.cam.pitch + (e.clientY - this._look.y) * 0.004, 0.05, 1.25);
       this._look.x = e.clientX; this._look.y = e.clientY;
     };
-    this._onPU = () => { this._look = null; };
+    this._onPU = (e) => { this._look = null; if (e && e.button === 2) this._mouseRoll = false; };
     window.addEventListener('keydown', this._onKD);
     window.addEventListener('keyup', this._onKU);
     window.addEventListener('wheel', this._onWheel, { passive: true });
     window.addEventListener('pointerdown', this._onPD);
     window.addEventListener('pointermove', this._onPM);
     window.addEventListener('pointerup', this._onPU);
+    window.addEventListener('contextmenu', this._onCtx);
   }
 
   dispose() {
@@ -278,6 +314,7 @@ export class RollUp {
     window.removeEventListener('pointerdown', this._onPD);
     window.removeEventListener('pointermove', this._onPM);
     window.removeEventListener('pointerup', this._onPU);
+    window.removeEventListener('contextmenu', this._onCtx);
     this.group.removeFromParent();
     this.ball.geometry.dispose();
     this.ball.material.map?.dispose();
@@ -297,6 +334,13 @@ export class RollUp {
 
   _sync() {
     this.group.position.copy(this.pos);
+    // A ball with a column stuck through it does not roll smoothly: it rises
+    // over the lump once a turn and drops off it. The lurch is the bump's
+    // height, once per revolution, fading as the thing is absorbed.
+    if (this._bump > 0.02) {
+      const phase = (this._rolled / this.r) % (Math.PI * 2);
+      this.group.position.y += this._bump * 0.55 * Math.max(0, Math.sin(phase)) ** 2;
+    }
     this.ball.scale.setScalar(this.r);
     this.spinner.quaternion.copy(this.spin);
   }
@@ -305,14 +349,38 @@ export class RollUp {
   update(dt) {
     if (!this.active) return;
     const K = this._keys;
-    // move in the camera's frame, as every game of this kind does
-    const f = new THREE.Vector3(-Math.sin(this.cam.yaw), 0, -Math.cos(this.cam.yaw));
-    const rt = new THREE.Vector3(Math.cos(this.cam.yaw), 0, -Math.sin(this.cam.yaw));
     const mv = new THREE.Vector3();
-    if (K.has('KeyW') || K.has('ArrowUp'))    mv.add(f);
-    if (K.has('KeyS') || K.has('ArrowDown'))  mv.sub(f);
-    if (K.has('KeyA') || K.has('ArrowLeft'))  mv.sub(rt);
-    if (K.has('KeyD') || K.has('ArrowRight')) mv.add(rt);
+    if (this.tank) {
+      // ── The two-stick scheme, which is how the real thing is played ──
+      // (Katamari Damacy REROLL on PC: WASD is the left hand, IJKL the right;
+      // both forward rolls, one forward turns, opposite spins in place. Its
+      // "Simple" option is the single-stick scheme below.) Here the arrows
+      // serve as the right hand too.
+      const L = { x: (K.has('KeyD') ? 1 : 0) - (K.has('KeyA') ? 1 : 0), y: (K.has('KeyW') ? 1 : 0) - (K.has('KeyS') ? 1 : 0) };
+      const R = { x: (K.has('KeyL') || K.has('ArrowRight') ? 1 : 0) - (K.has('KeyJ') || K.has('ArrowLeft') ? 1 : 0),
+                  y: (K.has('KeyI') || K.has('ArrowUp') ? 1 : 0) - (K.has('KeyK') || K.has('ArrowDown') ? 1 : 0) };
+      const fwd = (L.y + R.y) / 2;                      // both forward: roll
+      const turn = (L.y - R.y) * 1.6 + (L.x + R.x) * 0.9;   // one forward, or both aside: turn
+      this.heading -= turn * dt * 1.4;
+      this.cam.yaw += (this.heading - this.cam.yaw) * Math.min(1, dt * 2.2);   // the camera follows the ball's way
+      if (Math.abs(fwd) > 0.01) mv.set(-Math.sin(this.heading), 0, -Math.cos(this.heading)).multiplyScalar(fwd);
+    } else {
+      // ── The single-stick scheme: move in the camera's frame ──
+      const f = new THREE.Vector3(-Math.sin(this.cam.yaw), 0, -Math.cos(this.cam.yaw));
+      const rt = new THREE.Vector3(Math.cos(this.cam.yaw), 0, -Math.sin(this.cam.yaw));
+      if (K.has('KeyW') || K.has('ArrowUp') || K.has('Numpad8'))    mv.add(f);
+      if (K.has('KeyS') || K.has('ArrowDown') || K.has('Numpad2'))  mv.sub(f);
+      if (K.has('KeyA') || K.has('ArrowLeft') || K.has('Numpad4'))  mv.sub(rt);
+      if (K.has('KeyD') || K.has('ArrowRight') || K.has('Numpad6')) mv.add(rt);
+      // the diagonals, as keys of their own: Q E above, Z C below, and the
+      // numpad's corners
+      if (K.has('KeyQ') || K.has('Numpad7')) { mv.add(f); mv.sub(rt); }
+      if (K.has('KeyE') || K.has('Numpad9')) { mv.add(f); mv.add(rt); }
+      if (K.has('KeyZ') || K.has('Numpad1')) { mv.sub(f); mv.sub(rt); }
+      if (K.has('KeyC') || K.has('Numpad3')) { mv.sub(f); mv.add(rt); }
+      if (this._mouseRoll) mv.add(f);               // the right button held: go
+      this.heading = this.cam.yaw;
+    }
 
     if (mv.lengthSq() > 0) {
       mv.normalize();
@@ -320,6 +388,7 @@ export class RollUp {
       const v = this.speed * (0.7 + 0.5 * Math.sqrt(this.r)) * (K.has('ShiftLeft') ? 1.7 : 1);
       const step = v * dt;
       this.pos.addScaledVector(mv, step);
+      this._rolled += step;
       // it ROLLS: the rotation is the distance over the radius, about the axis
       // across the direction of travel
       const axis = new THREE.Vector3().crossVectors(UP, mv).normalize();
@@ -336,7 +405,27 @@ export class RollUp {
     this._graze(dt);
     this._transmute();
     this.t += dt;
+    this._crust();
     this._sync();
+  }
+
+  // Every stuck thing is re-seated on the ball's surface for its age: proud of
+  // the skin when new, sunk to its own depth when old. A big thing sinks in
+  // seconds, a small one in half a minute. The largest thing still standing
+  // proud sets the BUMP, which _sync turns into the roll's lurch.
+  _crust() {
+    const R = this.r;
+    let bump = 0;
+    for (const s of this._stuck) {
+      const age = this.t - s.t0;
+      const T = s.big ? SINK_BIG : SINK_SMALL;
+      const depth = Math.min(1, age / T);                 // 0 = centre on the skin
+      const seat = Math.max(R * 0.55, R - depth * s.size);
+      s.holder.position.copy(s.dir).multiplyScalar(seat);
+      const proud = seat + s.size - R;                    // how far it sticks out
+      if (proud > bump) bump = proud;
+    }
+    this._bump = Math.min(bump, R * 0.9);
   }
 
   // Has the work moved on? The ball wears its metal, so lead greys the sun and
@@ -431,17 +520,23 @@ export class RollUp {
     // which is why a swallowed column still points the way it pointed, and a
     // leaf still lies the way it lay.
     const holder = new THREE.Group();
-    holder.position.copy(dir).multiplyScalar(this.r * 0.88);
+    // the direction is kept in the SPINNER's frame, so it turns with the ball;
+    // the seat along it is recomputed every frame (see _crust)
+    const local = dir.clone().applyQuaternion(this.spin.clone().invert());
+    holder.position.copy(local).multiplyScalar(this.r);
     holder.quaternion.copy(this.spin).invert();
     took.position.set(0, 0, 0);
     holder.add(took);
     this.spinner.add(holder);
-    this._stuck.push(holder);
-    // shed the oldest: by now they are inside the ball, not on it
+    this._stuck.push({ holder, dir: local, size: e.r, t0: this.t, big: e.r > this.r * 0.2 });
+    // shed to the cap -- the smallest of the oldest, never a big thing for a leaf
     while (this._stuck.length > CRUST) {
-      const old = this._stuck.shift();
-      old.removeFromParent();
-      old.traverse(o => { if (o.isMesh && o.geometry) o.geometry.dispose(); });
+      const head = this._stuck.slice(0, 60);
+      let k = 0;
+      for (let i = 1; i < head.length; i++) if (head[i].size < head[k].size) k = i;
+      const [old] = this._stuck.splice(k, 1);
+      old.holder.removeFromParent();
+      old.holder.traverse(o => { if (o.isMesh && o.geometry) o.geometry.dispose(); });
     }
 
     // grow: volumes add, with a packing loss, so the curve stays gentle
