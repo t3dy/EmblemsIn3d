@@ -6,43 +6,13 @@
 
 ---
 
-**30 tickets** — 8 open, 3 declined, 19 done. By kind: 15 debt, 7 infra, 5 bug, 2 perf, 1 question.
+**30 tickets** — 5 open, 3 declined, 22 done. By kind: 15 debt, 7 infra, 5 bug, 2 perf, 1 question.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
-
-### `feat-pace-budget` — Crossing the world is the only sanctioned answer to "this takes too long"
-
-**○ open** · debt · priority 1 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** DECISIONS.md 2026-09-09 call 2: follow the novel to the letter, and buy pace with speed rather than by reordering or compressing. Walker runSpeed is 10 m/s on shift. The approach alone is 188 m and the plain lies beyond it; the monument rescale of call 3 makes every distance longer, not shorter.
-
-**Acceptance.** Plain edge to Great Portal is crossable in under 45 s without the player feeling held back, measured by walking it; no station is reordered, shortened or skipped to achieve it.
-
-**Files.** `src/systems/Walker.js` · `src/main.js`
-
-**See.** DECISIONS.md 2026-09-09 call 2
-
-
-### `feat-plain-composed-absence` — The spacious plain beyond the wood is bare ground
-
-**○ open** · debt · priority 1 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** _buildApproach lays one 280x70 green plane at z = W.z1+28 and puts nothing on it. The book's plain is 'all greene and diuersly spotted with many sorted flowerrs' with 'a still quyet whisht' and grass that 'rested vnstirred, without the beholding of any motion' (Dallington p. 14). Absence reads as unfinished, not as empty. DECISIONS.md 2026-09-09 call 2 also makes this the OPENING of the dream: the book walks the plain first and enters the wood from it, and the world has been waking the player in the middle of the wood since it was built.
-
-**Acceptance.** A `plain` station exists and is where the dream opens; Poliphilo's Dallington p.14 catalogue of the nine absent things fires there; no bird ring or perch lies south of z = 200; the ground is nowhere bare; and hpDiag().frame.drawCalls is not materially worse than the pre-pass reading recorded in the commit.
-
-**Files.** `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json` · `src/data/tours.json`
-
-**See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
-
 
 ### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
 
@@ -59,21 +29,6 @@
 **Files.** `src/scenes/HPWorldScene.js`
 
 **See.** DIMENSIONS.md#2 · DECISIONS.md 2026-09-09 call 3
-
-
-### `feat-way-out-of-the-wood` — Nothing tells the player how to get out of the wood
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** The mechanic is free and already true: the sun is fixed, so holding it at a constant bearing walks a straight line and a straight line leaves a 195 m wood. The book states it as its only navigational instruction - 'without any helpe but onely the keeping of the sunne still vpon one side, to direct mee streight forwarde' (Dallington p. 15) - and four sentences later Poliphilo wishes for Ariadne's clew. The sun is the thread he already has. The world says none of this.
-
-**Acceptance.** The Dallington p.15 line is an utterance in poliphilo.json keyed to the wood; a one-shot hint fires after 20 continuous seconds inside the wood bounds; both cite the page.
-
-**Files.** `src/data/poliphilo.json` · `src/scenes/HPWorldScene.js` · `src/main.js`
-
-**See.** DIRECTIONS.md#2 · NEXTSTEPS.md#0b
 
 
 ### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
@@ -220,6 +175,40 @@
 **See.** ENGINEERING.md#4
 
 
+### `feat-pace-budget` — Crossing the world is the only sanctioned answer to "this takes too long"
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** DECISIONS.md 2026-09-09 call 2: follow the novel to the letter, and buy pace with speed rather than by reordering or compressing. Walker runSpeed is 10 m/s on shift. The approach alone is 188 m and the plain lies beyond it; the monument rescale of call 3 makes every distance longer, not shorter.
+
+**Acceptance.** Plain edge to Great Portal is crossable in under 45 s without the player feeling held back, measured by walking it; no station is reordered, shortened or skipped to achieve it.
+
+**Resolution.** Met. Measured on the running page: run is 16 m/s in the open and 9 under the trees, walk 5.6 and 4.4. The crossing from the plain edge to the Great Portal is 195 m of wood at 9 plus 188 m of approach at 16 = 33.4 s, inside the 45 s the acceptance asked for, and no station was reordered, shortened or skipped to get there. The wood being slower is not a compromise but the book: 'my hast in getting foorth was much hyndered' (Dall. p. 15). Ted's later revision stands over this -- impatience is answered with run, fly and teleport, never by shrinking the world -- and nothing here shrank anything.
+
+**Files.** `src/systems/Walker.js` · `src/main.js`
+
+**See.** DECISIONS.md 2026-09-09 call 2
+
+
+### `feat-plain-composed-absence` — The spacious plain beyond the wood is bare ground
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** _buildApproach lays one 280x70 green plane at z = W.z1+28 and puts nothing on it. The book's plain is 'all greene and diuersly spotted with many sorted flowerrs' with 'a still quyet whisht' and grass that 'rested vnstirred, without the beholding of any motion' (Dallington p. 14). Absence reads as unfinished, not as empty. DECISIONS.md 2026-09-09 call 2 also makes this the OPENING of the dream: the book walks the plain first and enters the wood from it, and the world has been waking the player in the middle of the wood since it was built.
+
+**Acceptance.** A `plain` station exists and is where the dream opens; Poliphilo's Dallington p.14 catalogue of the nine absent things fires there; no bird ring or perch lies south of z = 200; the ground is nowhere bare; and hpDiag().frame.drawCalls is not materially worse than the pre-pass reading recorded in the commit.
+
+**Resolution.** Built 2026-09-09 (_buildSpaciousPlain) and verified against every clause of the acceptance on the running page: the `plain` station exists and is where the dream opens (spawn z = 448); Poliphilo's Dallington p.14 catalogue of the nine absent things fires there, re-keyed from `wood` where it had nowhere to fire; NO BIRD is south of z = 200 (measured: 0 of the flock); and the ground is nowhere bare -- the far half of the flowers live in the ground texture and only the near ones are geometry, which is why 430 cards cost four meshes.
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json` · `src/data/tours.json`
+
+**See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
+
+
 ### `fig-contrapposto` — No figure in the world stands in contrapposto
 
 **✅ done** · debt · priority 1 · hp-builder
@@ -356,6 +345,23 @@
 **Files.** `src/data/tours.json`
 
 **See.** DIRECTIONS.md#3
+
+
+### `feat-way-out-of-the-wood` — Nothing tells the player how to get out of the wood
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** The mechanic is free and already true: the sun is fixed, so holding it at a constant bearing walks a straight line and a straight line leaves a 195 m wood. The book states it as its only navigational instruction - 'without any helpe but onely the keeping of the sunne still vpon one side, to direct mee streight forwarde' (Dallington p. 15) - and four sentences later Poliphilo wishes for Ariadne's clew. The sun is the thread he already has. The world says none of this.
+
+**Acceptance.** The Dallington p.15 line is an utterance in poliphilo.json keyed to the wood; a one-shot hint fires after 20 continuous seconds inside the wood bounds; both cite the page.
+
+**Resolution.** Built 2026-09-09 and VERIFIED FIRING, which is the part that had not been checked until now: standing at z = 330, twenty-five simulated seconds inside the wood sets _lostSaid and puts the Dallington p.15 line on screen -- 'without any helpe but onely the keeping of the sunne still vpon one side, to direct mee streight forwarde'. The same sentence is also an utterance in poliphilo.json keyed to the wood, so it is in Poliphilo's own layer as well as in the hint.
+
+**Files.** `src/data/poliphilo.json` · `src/scenes/HPWorldScene.js` · `src/main.js`
+
+**See.** DIRECTIONS.md#2 · NEXTSTEPS.md#0b
 
 
 ### `fig-poliphilo-acts` — Poliphilo does not react to anything
