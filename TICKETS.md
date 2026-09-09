@@ -129,7 +129,7 @@
  · opened 2026-09-09
 
 
-**Evidence.** tune.crust is a flat 2000 whatever the ball's size. The honest rule is that a ball has 4*pi*R^2 of surface and only so many things fit on it, so a small ball should carry few and a huge one thousands -- which is the density curve Katamari's visuals actually follow.
+**Evidence.** tune.crust is a flat 2000 whatever the ball's size. The honest rule is that a ball has 4*pi*R^2 of surface and only so many things fit on it, so a small ball should carry few and a huge one thousands -- which is the density curve Katamari's visuals actually follow. Explained in full in CRUST.md. The arithmetic: a sphere's surface goes as R squared, so from 0.3 m to 12 m the radius grows 40-fold and the area 1600-fold, while the cap of 2000 THINGS does not move -- 2000 objects on 1810 square metres is bare. The ball therefore gets balder the bigger it gets, which is backwards. The replacement dial is `crustLayers`, how many layers deep the heap is, which is a number a person can picture.
 
 **Acceptance.** The crust sheds when the summed cross-section of what is stuck exceeds a multiple of 4*pi*R^2; a 0.5 m ball carries visibly fewer things than a 6 m one.
 

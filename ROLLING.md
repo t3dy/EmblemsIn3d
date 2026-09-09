@@ -1,4 +1,4 @@
-<!-- tokens: ~4,448 · read for: every variable in Roll Up and which one to turn -->
+<!-- tokens: ~4,487 · read for: every variable in Roll Up and which one to turn -->
 # ROLLING — every variable in Roll Up, what it does, and which one to turn
 
 *Written 2026-09-09 from Ted: the ball **grows too quickly**, and the things it eats **do not
@@ -255,7 +255,9 @@ skin, so the ball late in a run is mostly bare sphere. **Try 1 500–2 500** and
 `hpDiag()` reading; each stuck thing is roughly one draw call, so 2 000 in the crust puts the
 rolling frame in the same territory as the dark wood, which is already accepted as playable.
 
-**(c) Make it shed by geometry, not by count.** The shedding rule today takes the smallest of
+**(c) Make it shed by geometry, not by count.** *(Explained at length in
+[`CRUST.md`](CRUST.md), which is the page to read if "shedding the crust" means nothing to
+you — this paragraph is the summary.)* The shedding rule today takes the smallest of
 the sixty oldest, which is decent. But the honest rule is *the ball has a surface area of
 4πR², and only so many things fit on it*. Shedding when the crust's summed cross-section
 exceeds, say, 3 × 4πR² would let a small ball carry few things and a huge ball carry
