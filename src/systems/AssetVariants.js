@@ -45,12 +45,17 @@ export const ASSETS = {
   },
   figure: {
     label: 'Nymphs & figures',
-    // Ted dislikes the flat cards (2026-09-09) and 'projected' is the answer,
-    // but making it the DEFAULT costs +48% meshes and +54% triangles over the
-    // card -- not the projection's fault (it is cheaper than 'painted', the
-    // other assembled rung) but the price of dimensional figures at all. Rule 7
-    // says stop and ask above 25%, so the default waits on Ted's call.
-    def: 'card',
+    // 'card' until 2026-09-09. Ted: "I don't like using flat imagines cut from
+    // paintings for the nymphs", and then, on being shown that defaulting to the
+    // projection costs +48% meshes: "we have the different graphical options
+    // menu for a reason try them all out ... don't be silly. bling us out."
+    //
+    // Which is the right reading of rule 7's gate. The 25% rule is there to stop
+    // a regression being slipped in unnoticed; it is not a veto on a deliberate,
+    // measured, reversible choice with a menu behind it. The cost is the price
+    // of dimensional figures at all -- a card is one mesh, a figure is a dozen --
+    // and every earlier rung is still one click away.
+    def: 'projected',
     variants: [
       { id: 'primitive', label: 'Primitive', note: 'A cone for the robe and capsules for the limbs — the founding manifesto look.' },
       { id: 'modelled',  label: 'Modelled', note: 'A turned gown falling in long folds, tapered legs with hips and feet, and a torso wider at the shoulder than the waist — so the figure has a silhouette, not a barrel.' },

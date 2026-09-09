@@ -13,7 +13,7 @@
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { Masonry } from '../../systems/Masonry.js?v=8';
-import { isVariant } from '../../systems/AssetVariants.js?v=11';
+import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Materials = {
   _m(geo, mat, x = 0, y = 0, z = 0, o = {}) {

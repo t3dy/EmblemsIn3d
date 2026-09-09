@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { Masonry } from '../../systems/Masonry.js?v=8';
-import { isVariant } from '../../systems/AssetVariants.js?v=11';
+import { isVariant } from '../../systems/AssetVariants.js?v=12';
 import { DOORS, SIGNS } from './constants.js?v=3';
 
 export const Portal = {
