@@ -13,13 +13,25 @@
   "utterances": [
     {
       "stop": 0,
-      "station": "wood",
+      "station": "plain",
       "chapter": "I",
       "kind": "interior",
       "edition": "dallington",
       "source": "Dallington p. 14",
-      "occasion": "Alone on the empty plain at the very beginning of the dream, before the wood closes over him.",
-      "text": "Heere appeareth no humaine creature to my sight, nor sylvan beast, flying bird, countrey house, field tent, or shepheards cote: neyther vpon the gras could I perceiue feeding eyther flock of sheep, or heard of cattell, or rustike herdman with Oten pipe making pastorall melodie."
+      "occasion": "Alone on the spacious plain at the very beginning of the dream, before the wood closes over him. He counts what is not there.",
+      "text": "Heere appeareth no humaine creature to my sight, nor sylvan beast, flying bird, countrey house, field tent, or shepheards cote: neyther vpon the gras could I perceiue feeding eyther flock of sheep, or heard of cattell, or rustike herdman with Oten pipe making pastorall melodie.",
+      "note": "Nine absences in one breath -- no man, no beast, no bird, no house, no tent, no cote, no flock, no herd, no herdsman -- and they are the whole composition of the place. Re-keyed from `wood` to `plain` on 2026-09-09, when the plain was built and given a station: it had been firing in the wood, which is the one ground in the book it is not about."
+    },
+    {
+      "stop": 0,
+      "station": "wood",
+      "chapter": "I",
+      "kind": "interior",
+      "edition": "dallington",
+      "source": "Dallington p. 15",
+      "occasion": "Wandering right, left, forward and back among the boughs and thorns, with nothing to steer by but the sun.",
+      "text": "In this vnaccustomed labour: and without any helpe but onely the keeping of the sunne still vpon one side, to direct mee streight forwarde: I grewe extreamely hoate and faynte, not knowing what to doe.",
+      "note": "The only navigational instruction in the entire book, and it is the world's: the sun is fixed, so holding it at one shoulder walks a straight line, and a straight line leaves the wood. Four sentences later he is wishing Ariadne would give him her clew of thread to lead him out -- not seeing that the sun is the thread he already has. Poliphilo reads a hieroglyph once and never doubts it, and cannot read the sky he is standing under."
     },
     {
       "stop": 0,

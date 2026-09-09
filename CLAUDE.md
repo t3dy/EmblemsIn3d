@@ -42,10 +42,13 @@ first token of every session.
    coverage check was driven by the woodcut catalogue and the vaults have no woodcut.
    Coverage is tracked chapter by chapter in `research/coverage.json`, rendered as
    [`COVERAGE.md`](COVERAGE.md). → [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md)
-7. **Measure, don't estimate.** `await hpDiag()` on the running page. Over budget at
-   **1 500 draw calls** or **33 ms a frame**; take a reading before and after and put both
-   in the commit message. Defects and debt go in `research/tickets.json` (→ `TICKETS.md`),
-   each with an acceptance criterion a machine could check. → [`ENGINEERING.md`](ENGINEERING.md)
+7. **Measure, don't estimate.** `await hpDiag()` on the running page, **before your pass
+   and after it**, and put both readings in the commit message. The budget is a *regression*
+   budget, not an absolute one — the world runs at ~3 124 draw calls and ~26 fps by Ted's
+   explicit choice (2026-09-09), so the gate is *don't make it materially worse than you
+   found it*: over 25 % added, stop and ask. Defects and debt go in `research/tickets.json`
+   (→ `TICKETS.md`), each with an acceptance criterion a machine could check.
+   → [`ENGINEERING.md`](ENGINEERING.md)
 
 ## Corpus in, game out
 

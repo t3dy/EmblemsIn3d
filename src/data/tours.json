@@ -89,8 +89,42 @@
         }
       ]
     },
-    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world in order, one wonder at a time — the whole book, both of its parts: from the dark wood to the unveiling of Venus on Cythera, and then through Book II, in which Polia takes the telling away from Poliphilo and gives her own account of the same events. Halfway along, Dallington's 1592 English runs out mid-sentence — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
+    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world in order, one wonder at a time — the whole book, both of its parts: from the empty plain the dream opens on to the unveiling of Venus on Cythera, and then through Book II, in which Polia takes the telling away from Poliphilo and gives her own account of the same events. Halfway along, Dallington's 1592 English runs out mid-sentence — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
     "stops": [
+      {
+        "station": "plain",
+        "title": "The Spacious Plain",
+        "chapter": "I",
+        "half": "dallington",
+        "lede": "Before the wood there is a plain, and the book opens on it. Poliphilo has wept himself to sleep over Polia and the dream sets him down in a wide, level, flowered country in a mild air, where there is a *still quiet whisht* and his attentive ears hear no noise at all. He looks about him with what he calls a fearful admiration, and what he says is a list of everything that is not there. Then he walks north, because there is nothing else to do, and the wood takes him.",
+        "quote": "Me thought that I was in a large, plaine, and champion place, all greene and diuersly spotted with many sorted flowerrs, wherby it seemed passingly adorned. In which by reason of the milde and gentle ayre, there was a still quyet whisht… I directed my course still forward, regarding on eyther side the tender leaues and thick grasse, which rested vnstirred, without the beholding of any motion. — Dallington, p. 14",
+        "notes": [
+          {
+            "type": "literary",
+            "text": "**The place is described entirely by subtraction.** Nine things in one breath, and every one of them absent: *no humaine creature to my sight, nor sylvan beast, flying bird, countrey house, field tent, or shepheards cote: neyther vpon the gras could I perceiue feeding eyther flock of sheep, or heard of cattell, or rustike herdman with Oten pipe making pastorall melodie.* Each is a fixture of the pastoral landscape a 1499 reader expected, named in order and struck out. The plain is not empty because Colonna left it blank; it is empty because he emptied it, item by item, and the last thing he removes is the shepherd's song — that is, pastoral poetry itself."
+          },
+          {
+            "type": "allegory",
+            "text": "John Dixon Hunt reads the whole book through the humanist scheme of three natures: **first** nature the wild woods and mountains, **second** the agrarian land of ploughs and flocks, **third** the garden, where art and nature collaborate. Almost every landscape in the *Hypnerotomachia* is one of the three, and Poliphilo is forever comparing them. *This one is none of them* — it has no wildness, no husbandry and no art, only grass and flowers and silence. The dream begins outside the whole system it is about to spend thirty-eight chapters climbing. (**The scheme is Hunt's; the observation that the plain refuses all three of its terms is ours.**)"
+          },
+          {
+            "type": "context",
+            "text": "Dante's *Inferno* opens in the dark wood and Poliphilo's does not — he gets a plain first, and enters the wood off it, out of the light. The borrowing is certain and the departure is deliberate: the *selva oscura* is something that happens **to** this dreamer partway through a walk he was already taking, rather than the condition he wakes into. It is a fall, and you have to be somewhere to fall from."
+          },
+          {
+            "type": "gloss",
+            "text": "*Whisht* — silence; a hush. Dallington's 1592 word for Colonna's *silentio*, and it is onomatopoeic, the sound of shushing. *Champion*, in the same sentence, is the old word for open level country — French *champagne*, a field — and has nothing to do with victory."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "The soul at the outset of its ascent is conventionally shown as lost, and Colonna shows it as *alone in a pleasant place with nothing in it*, which is worse and stranger. Nothing here threatens him. What the plain withholds is not safety but company — and the book's whole engine is that Poliphilo cannot bear to be unaccompanied, which is why he walks into a wood he can see is dark."
+          }
+        ],
+        "see": [
+          "The Dark Wood",
+          "The Great Oak"
+        ]
+      },
       {
         "station": "wood",
         "title": "The Dark Wood",

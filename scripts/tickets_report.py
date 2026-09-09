@@ -22,8 +22,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LEDGER = os.path.join(ROOT, "research", "tickets.json")
 OUT = os.path.join(ROOT, "TICKETS.md")
 
-MARK = {"open": "○", "doing": "◐", "blocked": "▨", "question": "?", "done": "✅"}
-ORDER = ["open", "doing", "blocked", "question", "done"]
+MARK = {"open": "○", "doing": "◐", "blocked": "▨", "question": "?",
+        "declined": "—", "done": "✅"}
+ORDER = ["open", "doing", "blocked", "question", "declined", "done"]
 
 
 def render(t):
@@ -92,6 +93,10 @@ def main():
          "Doing these first would make the measured problem worse."),
         ("question", "## Questions for Ted",
          "Blocked on a directional call. **An agent must not decide these.**"),
+        ("declined", "## Declined — measured, put to Ted, and deliberately not done",
+         "**Do not re-propose these.** They are here so the next agent finds the answer "
+         "instead of re-deriving the question. A declined ticket keeps its evidence: the "
+         "measurement was right, the work was still not wanted."),
         ("done", "## Done — kept as regression tests",
          "An acceptance criterion that has been met once is the test for the next change."),
     ]

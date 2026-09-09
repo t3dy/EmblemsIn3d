@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=228';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=229';
 import { VaultsScene } from './scenes/VaultsScene.js?v=5';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';
@@ -94,7 +94,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '41'; // bump when data files are re-exported
+  const V = '42'; // bump when data files are re-exported
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   state.poliphilo   = await fetch(`./data/poliphilo.json?v=${V}`).then(r => r.json()).catch(() => null);
@@ -1018,6 +1018,15 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
     }
     setHPStyleBtn(true);
   };
+
+  // The way out of the dark wood, said once, after twenty seconds of being
+  // properly lost in it. The instruction is the book's own and the only one it
+  // gives; see HPWorldScene.update. Not a tooltip — a quotation, because the
+  // player is meant to recognise it later as the thing Poliphilo says he had.
+  scene.onLost = () => showHint(
+    '“…without any helpe but onely the keeping of the sunne still vpon one side, '
+    + 'to direct mee streight forwarde.” — Dallington, p. 15. '
+    + 'Hold the sun at one shoulder and walk straight.');
 
   await scene.build();
   composer.passes[0] = new RenderPass(scene.scene, scene.camera);

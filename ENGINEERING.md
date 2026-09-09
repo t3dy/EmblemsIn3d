@@ -64,9 +64,23 @@ The earlier investigation (`NEXTSTEPS.md` §0c) turned off every leaf-card shado
 saved 19 calls out of 1 539, concluded "whatever it is, it is somewhere else", and stopped.
 It was somewhere else: it is in the material factory, and it is 72 % waste.
 
-### 1c. The fix, in the order it must happen
+### 1c. The fix — **proposed, put to Ted, and DECLINED on 2026-09-09**
 
-**This is a proposal. It is not a one-liner and must not be applied as one.** Some call sites
+> **Read this box before reading the rest of §1c.** Ted was shown every number in §1a and
+> §1b and answered: *"actually just don't change any of that — it's not going so slow that I
+> want to do that."* 3 124 draw calls, ~26 fps and 2 124 wasted materials are **accepted
+> deliberately**, with the measurements in hand. `perf-material-dedup`,
+> `perf-shadow-casters` and `perf-merge-static` are declined, not deferred.
+> **Do not re-propose them.** (`DECISIONS.md` 2026-09-09 call 1.)
+>
+> The analysis below is kept because it is correct and because the next agent to notice the
+> frame rate should find the answer here rather than re-derive the question. The decisive
+> cost was Roll Up: merging static geometry would have taken away its vocabulary of named
+> individual objects, and that trade was not wanted at that price.
+
+What the fix *would* have been, in the order it would have had to happen:
+
+It was never a one-liner, and that is worth keeping on the record. Some call sites
 mutate the material *after* `S.mat()` returns — `_buildWood` does
 `duffMat.roughnessMap = null`, `_herbMat` does `m.userData.roll = ...` — and a naively
 memoised factory would leak those mutations across every mesh that shares the signature. That
@@ -83,20 +97,31 @@ is a silent, world-wide visual bug, which is exactly the kind this project canno
 patch: Roll Up eats *named individual objects*, and merging them into one buffer destroys
 that. The likely resolution is that Roll Up's candidates and the static-merge set are
 disjoint by construction — the world already keeps `scene._monoliths` as a ledger of what the
-census rejects, so the machinery for that split exists. **That is a decision for Ted**, and it
-is listed as such in `TICKETS.md`.
+census rejects, so the machinery for that split exists. **That was the decision put to Ted,
+and he declined the whole line of work rather than choose between its horns.** Roll Up keeps
+its vocabulary; the world keeps its 3 124 draw calls.
 
-### 1d. The budget, from now on
+### 1d. The budget, from now on — a **regression** budget, not an absolute one
 
-A frame is over budget when, standing at any station in the lit style at 1280 × 720:
+Revised 2026-09-09 by call 1 above. An absolute threshold is meaningless once the current
+figure has been looked at and accepted: a budget of 1 500 draw calls in a world that runs at
+3 124 by choice would fail on every commit and be ignored by the second one.
 
-- draw calls > **1 500**
-- frame time > **16.7 ms** (60 fps); hard fail at **33 ms** (30 fps)
-- `wastedMaterials` > **200**
+So the budget is differential. **Take a `hpDiag()` reading before your pass and after it, and
+put both in the commit message.** Then:
 
-`hpDiag()` reports all three. **No feature ships without a before/after reading**, and the
-reading goes in the commit message. That is the whole of test-based development for a
-renderer: the assertion is a number, and the number is now obtainable.
+| your pass adds | what to do |
+|---|---|
+| under **10 %** of draw calls or frame time | ship it, note the numbers |
+| **10 – 25 %** | ship it if the feature is worth it, and say in the commit why it is |
+| over **25 %** | stop and ask. Something is being built the expensive way |
+| over **100 %** | a defect, not a cost |
+
+The absolute figures are still worth knowing and `hpDiag()` still reports them — but they are
+now a description of the world, not a gate. **The gate is: don't make it materially worse than
+you found it.** That is the whole of test-based development for a renderer. The assertion is a
+number, the number is obtainable, and it is compared against the last known-good reading
+rather than against an ideal nobody has agreed to pay for.
 
 ---
 
@@ -244,7 +269,11 @@ Checking that one line would have caught it.
 
 ## Status of this file
 
-Measured and true: §1a, §1b, §2a, §2b, §4's live-deploy failure.
-Built: `hpDiag()`, `research/tickets.json`, `scripts/tickets_report.py`.
-Proposed, not decided: §1c, §2c, §5. All of it is in `TICKETS.md`; the ones that are Ted's
-call are marked `status: "question"`.
+**Measured and true:** §1a, §1b, §2a, §2b, §4's live-deploy failure.
+**Built:** `hpDiag()`, `research/tickets.json`, `scripts/tickets_report.py`.
+**Decided by Ted, 2026-09-09** (`DECISIONS.md`): §1c is **declined** — the renderer is not to
+be refactored; §1d is now a regression budget. Three further calls made the same day govern
+the world rather than this file: follow the novel to the letter and buy pace with speed;
+rescale the monuments but not the ground plan; build the artificial gardens and let the
+commentary carry Hunt's objection.
+**Proposed, not decided:** §2c, §5. Both are in `TICKETS.md`.

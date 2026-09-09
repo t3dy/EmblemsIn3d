@@ -46,9 +46,11 @@ a session.
    [`HPTOTOURPIPELINE.md`](HPTOTOURPIPELINE.md)
 7. **Measure, don't estimate.** `await hpDiag()` on the running page reports draw calls,
    frame time and wasted materials. Every performance number written down here before
-   2026-09-08 was a guess, and the guess was wrong by a factor of two. A feature is over
-   budget at **1 500 draw calls** or **33 ms a frame**; take a reading before and after and
-   put both in the commit message. → [`ENGINEERING.md`](ENGINEERING.md) §1
+   2026-09-08 was a guess, and the guess was wrong by a factor of two — the real figure is
+   **3 124**. Ted saw that and accepted it (`DECISIONS.md` 2026-09-09), so the budget is a
+   **regression** one: take a reading **before and after**, put both in the commit message,
+   and if your pass adds more than **25 %** stop and ask. Do not re-propose the renderer
+   refactor. → [`ENGINEERING.md`](ENGINEERING.md) §1
 
 ---
 

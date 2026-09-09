@@ -126,6 +126,25 @@ export const HP_STATIONS = [
     pos: [-6, 141],  look: [-9, 128],  radius: 13 },
   { key: 'valley',           name: 'The Valley of the Approach', folio: 24,
     pos: [0, 104],   look: [0, 60],    radius: 14, pitch: 0.04 },
+  // Where the dream opens (Dall. p. 14), and where the player now wakes —
+  // DECISIONS.md 2026-09-09 call 2: *"we need to be following the novel to the
+  // letter."* Chapter I walks the plain FIRST and enters the wood off it; the
+  // world had been waking the dreamer in the middle of the wood since it was
+  // built, which was the convenient order and not the book's. He looks north,
+  // the way he goes — *"I directed my course still forward"* — which is toward
+  // the wood. See _buildSpaciousPlain.
+  //
+  // APPENDED, like the three approach stations above it, so that the digit keys
+  // 1–9 keep the journey order they have always had. The first station in the
+  // BOOK is deliberately not the first entry in this array; `wood` stays at
+  // index 0 because `onDigit` maps HP_STATIONS[n-1] and a reader's muscle
+  // memory for "1 is the dark wood" outranks the ledger's tidiness.
+  //
+  // Radius 26 because there is no landmark to stand at. That is the point of
+  // the place: it is composed absence, and a 6 m trigger on an empty plain
+  // would simply never fire.
+  { key: 'plain',            name: 'The Spacious Plain',     folio: 14,
+    pos: [0, 448],   look: [0, 424],   radius: 26 },
 ];
 
 const EYE = 1.7;
@@ -295,7 +314,13 @@ export class HPWorldScene {
       this.walker.player.yaw = this.walker.yawToward(st.pos, st.look);
       this.walker.player.pitch = st.pitch ?? -0.04;
     } else {
-      this.walker.player.pos.set(0, 0, 340);  // wake in the dark wood, lost in it
+      // Wake on the spacious plain, facing north — the way chapter I opens, and
+      // the way he goes. Was (0, 0, 340), the middle of the dark wood: lost
+      // from the first frame, which is a good hook and the wrong chapter.
+      // DECISIONS.md 2026-09-09 call 2. The wood is 28 m ahead and you walk
+      // into it, which is what makes it a wood you enter rather than a wood you
+      // are simply in.
+      this.walker.player.pos.set(0, 0, 448);
       this.walker.player.yaw = 0;
       this.walker.player.pitch = -0.02;
     }
@@ -424,6 +449,7 @@ export class HPWorldScene {
     this._buildGround();
     this._buildWood();
     this._buildApproach();
+    this._buildSpaciousPlain();   // where the dream opens (DECISIONS 2026-09-09 call 2)
     this._buildGreatPortal();
     this._buildBridge();
     this._buildRiverPlants();
@@ -1123,7 +1149,13 @@ export class HPWorldScene {
   // clouded with tonal blobs, dusted with speckle, optionally cut by carved
   // veins and horizontal ashlar courses. Blobs are drawn wrapped (±size) so the
   // texture tiles seamlessly and can repeat across the colossal masonry.
-  _surfaceTexture({ base, dark, light, blobs = 60, speckle = 2400, veins = 0, courses = 0, repeat = 2 } = {}) {
+  // `flowers` (2026-09-09) scatters small coloured dots over the finished
+  // surface — the far half of the spacious plain's "many sorted flowerrs",
+  // where geometry would cost thousands of meshes to say what a texture says
+  // for nothing. Only the plain uses it; anything nearer than about 15 m wants
+  // real cards instead, because a painted flower has no silhouette.
+  _surfaceTexture({ base, dark, light, blobs = 60, speckle = 2400, veins = 0, courses = 0,
+                    repeat = 2, flowers = null, flowerCount = 600 } = {}) {
     const N = 256;
     const c = document.createElement('canvas');
     c.width = c.height = N;
@@ -1168,6 +1200,22 @@ export class HPWorldScene {
       const px = rnd(i, 5) * N, py = rnd(i, 6) * N, d = rnd(i, 7);
       x.fillStyle = d < 0.5 ? this._rgba(dark, (0.05 + d * 0.22).toFixed(3)) : this._rgba(light, (0.04 + (d - 0.5) * 0.18).toFixed(3));
       x.fillRect(px, py, 1, 1);
+    }
+
+    // Flowers, in sorts: each dot keeps one colour and neighbours cluster, so
+    // the surface reads as spotted rather than as evenly sprinkled.
+    if (flowers && flowers.length) {
+      for (let i = 0; i < flowerCount; i++) {
+        const cluster = Math.floor(rnd(i, 31) * 90);
+        const cxp = rnd(cluster, 32) * N, cyp = rnd(cluster, 33) * N;
+        const px = (cxp + (rnd(i, 34) - 0.5) * 34 + N) % N;
+        const py = (cyp + (rnd(i, 35) - 0.5) * 34 + N) % N;
+        const s = 1 + Math.floor(rnd(i, 36) * 2);
+        x.fillStyle = flowers[cluster % flowers.length];
+        x.globalAlpha = 0.55 + rnd(i, 37) * 0.35;
+        x.fillRect(px, py, s, s);
+      }
+      x.globalAlpha = 1;
     }
 
     // Carved veins / cracks
@@ -1920,6 +1968,105 @@ export class HPWorldScene {
     // in the wood itself. It runs away the moment he would cry out.
     const wolf = this.cast.animals.wolf(1.15);
     this._npc('wolf', wolf, -21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
+  }
+
+  // ── Chapter I: the spacious plain the dream opens on ─────────────────────
+  //
+  // Built 2026-09-09. The ground was already here — one green plane, 280 × 70,
+  // laid by _buildApproach — and nothing stood on it, which made it read as
+  // unfinished rather than as empty. The distinction is the whole point, because
+  // emptiness is the only thing this place is:
+  //
+  //   "Me thought that I was in a large, plaine, and champion place, ALL GREENE
+  //    AND DIUERSLY SPOTTED WITH MANY SORTED FLOWERRS, wherby it seemed
+  //    passingly adorned. In which by reason of the milde and gentle ayre, there
+  //    was A STILL QUYET WHISHT: Inso much that my attentiue eares did heare no
+  //    noyse… regarding on eyther side the tender leaues and thick grasse, WHICH
+  //    RESTED VNSTIRRED, WITHOUT THE BEHOLDING OF ANY MOTION."
+  //                                                        — Dallington p. 14
+  //
+  // Absence has to be composed or it is only bare ground, and Colonna composes
+  // it three ways. All three are built here:
+  //
+  //  1. THE GROUND IS FULL. "Diuersly spotted" is patchwork — not one meadow but
+  //     many sorts, each in its own spot. So the plain is crowded with growing
+  //     things, and that is exactly what makes the missing things missing.
+  //  2. NOTHING MOVES. The world's only moving furniture is the birds, and
+  //     _buildBirds calls them "the only moving things in the sky, which is the
+  //     point". None of them may cross into the plain — see the guard there.
+  //     This is a deletion, and it is the most faithful line in the passage.
+  //  3. THE MISSING ARE NAMED. Poliphilo says them one by one — no man, no
+  //     beast, no bird, no house, no tent, no cote, no flock, no herd, no
+  //     herdsman with oaten pipe. That utterance was keyed to `wood`, where it
+  //     had nowhere to fire; it is keyed to `plain` now (src/data/poliphilo.json).
+  //
+  // What is deliberately NOT here, and must not be added: no tree, no rock, no
+  // ruin, no path, no plaque, no marker of any kind. The station carries no
+  // plaque for the same reason every other station carries one.
+  //
+  // Cost: the flowers are drawn twice over. Distant sorts live in the ground
+  // TEXTURE (one material, one mesh) and only the near ones are geometry, and
+  // those are flat single cards rather than the usual three-card tuft. Standing
+  // at eye height on a 280 m plain you cannot tell, and it is the difference
+  // between ~440 meshes and ~3 700. See ENGINEERING.md §1d for why that matters
+  // now that the renderer is not going to be made faster.
+  _buildSpaciousPlain() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const W = HPWorldScene.WOOD;
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 233.9) * 43758.5453; return v - Math.floor(v); };
+
+    // The plain runs from the wood's southern edge to the far wall of the
+    // walkable box (Walker bounds maxZ = 462).
+    const Z0 = W.z1 + 2, Z1 = 458, HALF = 138;
+
+    // ── The ground: green, and spotted with many sorts ──
+    // Its own material rather than the shared meadow, because this is the one
+    // ground in the world whose flowers are the subject and not the dressing.
+    const plainMat = woodcut ? S.mat({ tone: 0.02, rim: 0 })
+      : S.mat({ color: 0x3c5a26, roughness: 1.0 });
+    if (!woodcut) {
+      this._dress(plainMat, this._surfaceTexture({
+        base: '#3e5a24', dark: '#223a14', light: '#688a3a', blobs: 90, speckle: 3600, repeat: 34,
+        // "many sorted": the sorts are not named in the book, so no species is
+        // invented — only the range of colour a flowered spring meadow has.
+        flowers: ['#e8e2c0', '#f0d84a', '#d88ab0', '#b070c0', '#f4f0f8', '#e0603a'],
+        flowerCount: 900,
+      }), 0.12);
+      // As everywhere else: _dress hands the albedo to roughnessMap too, which
+      // turns every dark speck glossy and hangs a headlamp on the grass.
+      plainMat.roughnessMap = null; plainMat.roughness = 1.0; plainMat.metalness = 0.0;
+    }
+    this._m(new THREE.PlaneGeometry(HALF * 2, Z1 - Z0 + 8), plainMat,
+      0, 0.006, (Z0 + Z1) / 2, { rx: -Math.PI / 2, cast: false });
+
+    // ── The near flowers, in sorts ──
+    // Concentrated on the corridor the walker actually crosses; the texture
+    // carries the rest. Each patch is ONE kind, because "diuersly spotted" is
+    // spots of different sorts and not a stirred mixture.
+    const SORTS = ['aster', 'marjoram', 'thyme', 'mint', 'goatsbeard', 'sowthistle',
+                   'rue', 'groundpine', 'thistle', 'southernwood', 'balm', 'pellitory'];
+    for (let p = 0; p < 46; p++) {
+      const kind = SORTS[p % SORTS.length];
+      const cx = -68 + rnd(p, 1) * 136;
+      const cz = Z0 + rnd(p, 2) * (Z1 - Z0);
+      const rad = 2.4 + rnd(p, 3) * 5.0;
+      const n = 5 + Math.floor(rnd(p, 4) * 4);
+      for (let i = 0; i < n; i++) {
+        const a = rnd(p * 31 + i, 5) * Math.PI * 2;
+        const r = Math.sqrt(rnd(p * 31 + i, 6)) * rad;
+        this._tuft(cx + Math.cos(a) * r, 0.02, cz + Math.sin(a) * r, kind,
+          0.34 + rnd(p * 31 + i, 7) * 0.3,
+          { flat: true, ry: rnd(p * 31 + i, 8) * Math.PI });
+      }
+    }
+
+    // ── "the tender leaues and thick grasse" ──
+    // Between the spots, so the ground is nowhere bare. Rush is the table's
+    // plain green blade: its flower is 3 px of brown and reads as grass.
+    for (let i = 0; i < 130; i++) {
+      this._tuft(-84 + rnd(i, 11) * 168, 0.02, Z0 + rnd(i, 12) * (Z1 - Z0),
+        'rush', 0.3 + rnd(i, 13) * 0.26, { flat: true, ry: rnd(i, 14) * Math.PI });
+    }
   }
 
   // The two "wooddie mountaines, which seemed to ioyne themselues together".
@@ -4267,8 +4414,18 @@ export class HPWorldScene {
       [26.5, -19.0, 2.7], [-33.0, -14.0, 2.5], [-46.0, 44.5, 2.6], [-30.0, 44.5, 2.4],
       [-52.0, 43.0, 2.5], [-24.0, 44.0, 2.7],
     ];
+    // No bird south of z = 200 — the wood and the plain beyond it. On the plain
+    // this is the book's own line and the most faithful thing on that ground:
+    // "Heere appeareth no humaine creature to my sight, nor sylvan beast,
+    // FLYING BIRD…" and the grass "rested vnstirred, WITHOUT THE BEHOLDING OF
+    // ANY MOTION" (Dall. p. 14). In the wood he hears falling timber and no
+    // song. None of today's perches or rings is down there, so this guard
+    // changes nothing now; it is here so that adding one later cannot silently
+    // undo _buildSpaciousPlain's whole subject. See that method's note 2.
+    const NO_BIRDS_SOUTH_OF = 200;
     for (let i = 0; i < PERCH.length; i++) {
       const [x, z, y] = PERCH[i];
+      if (z > NO_BIRDS_SOUTH_OF) continue;
       const g = this._bird(0.9 + rnd(i, 1) * 0.35);
       g.position.set(x + (rnd(i, 2) - 0.5) * 0.8, y, z + (rnd(i, 3) - 0.5) * 0.8);
       g.rotation.y = rnd(i, 4) * Math.PI * 2;
@@ -4287,6 +4444,7 @@ export class HPWorldScene {
     ];
     for (let r = 0; r < RINGS.length; r++) {
       const [cx, cz, rad, h] = RINGS[r];
+      if (cz - rad > NO_BIRDS_SOUTH_OF) continue;   // nothing wheels over the plain
       const n = 2 + Math.floor(rnd(r, 9) * 2);
       for (let i = 0; i < n; i++) {
         const g = this._bird(1.0 + rnd(r * 7 + i, 1) * 0.5, { flying: true });
@@ -12652,6 +12810,45 @@ export class HPWorldScene {
     const eye = this.camera.position;
     if (this._lights && this._lights.followShadow) this._lights.followShadow(eye.x, eye.z);
     if (this._sky) this._sky.position.set(eye.x, 0, eye.z);
+
+    // ── Pace, and the way out of the wood ────────────────────────────────
+    //
+    // DECISIONS.md 2026-09-09 call 2: follow the novel to the letter, and buy
+    // pace with SPEED — never by reordering, shortening or skipping a stage.
+    // The plain-to-portal walk is now 411 m and at the old 10 m/s run that is
+    // 41 seconds of holding a key.
+    //
+    // So running is faster in the open and slower under the trees, which is not
+    // a compromise but the book: "not knowing how to goe among the thicke
+    // bowghes and tearing thornes, bearing vpon my face: rending my clothes,
+    // and houlding me sometimes hanging in them, WHEREBY MY HAST IN GETTING
+    // FOORTH WAS MUCH HYNDERED" (Dall. p. 15). You feel the wood take your
+    // speed away as you enter it and give it back as you leave — which is also
+    // the dazzle of getting out, felt in the legs instead of the eyes.
+    if (this.walker && !this.flight && !this.roll) {
+      const W = HPWorldScene.WOOD, p = this.walker.player.pos;
+      const under = p.x > W.x0 - 10 && p.x < W.x1 + 10 && p.z > W.z0 - 6 && p.z < W.z1 + 6;
+      this.walker.runSpeed = under ? 9 : 16;
+      this.walker.speed = under ? 4.4 : 5.6;
+
+      // The way out. It is the only navigational instruction in the whole book
+      // and it is already true of this world — the sun is fixed at (16, 22, 10)
+      // so holding it at a constant bearing walks a straight line, and a
+      // straight line leaves a 195 m wood. But a mechanic nobody can discover
+      // is not a mechanic. Four sentences after the line below Poliphilo is
+      // wishing for Ariadne's clew to lead him out; the sun is the thread he
+      // already has, and nothing in the world said so.
+      //
+      // Twenty seconds, once per session, and only when he is properly inside:
+      // long enough that it arrives as an answer to a question he has started
+      // asking, not as a tooltip.
+      if (this.onLost && !this._lostSaid && !this.dream) {
+        const deep = p.x > W.x0 + 12 && p.x < W.x1 - 12
+                  && p.z > W.z0 + 16 && p.z < W.z1 - 16;
+        this._lostT = deep ? (this._lostT || 0) + dt : 0;
+        if (this._lostT > 20) { this._lostSaid = true; this.onLost(); }
+      }
+    }
 
     // Station proximity → HUD callback (throttled; quiet during the dream)
     this._stTimer += dt;

@@ -6,13 +6,43 @@
 
 ---
 
-**13 tickets** — 9 open, 1 blocked, 1 question, 2 done. By kind: 5 infra, 3 debt, 2 perf, 2 bug, 1 question.
+**16 tickets** — 11 open, 3 declined, 2 done. By kind: 6 debt, 5 infra, 2 perf, 2 bug, 1 question.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
+
+### `feat-pace-budget` — Crossing the world is the only sanctioned answer to "this takes too long"
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** DECISIONS.md 2026-09-09 call 2: follow the novel to the letter, and buy pace with speed rather than by reordering or compressing. Walker runSpeed is 10 m/s on shift. The approach alone is 188 m and the plain lies beyond it; the monument rescale of call 3 makes every distance longer, not shorter.
+
+**Acceptance.** Plain edge to Great Portal is crossable in under 45 s without the player feeling held back, measured by walking it; no station is reordered, shortened or skipped to achieve it.
+
+**Files.** `src/systems/Walker.js` · `src/main.js`
+
+**See.** DECISIONS.md 2026-09-09 call 2
+
+
+### `feat-plain-composed-absence` — The spacious plain beyond the wood is bare ground
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-08
+
+
+**Evidence.** _buildApproach lays one 280x70 green plane at z = W.z1+28 and puts nothing on it. The book's plain is 'all greene and diuersly spotted with many sorted flowerrs' with 'a still quyet whisht' and grass that 'rested vnstirred, without the beholding of any motion' (Dallington p. 14). Absence reads as unfinished, not as empty. DECISIONS.md 2026-09-09 call 2 also makes this the OPENING of the dream: the book walks the plain first and enters the wood from it, and the world has been waking the player in the middle of the wood since it was built.
+
+**Acceptance.** A `plain` station exists and is where the dream opens; Poliphilo's Dallington p.14 catalogue of the nine absent things fires there; no bird ring or perch lies south of z = 200; the ground is nowhere bare; and hpDiag().frame.drawCalls is not materially worse than the pre-pass reading recorded in the commit.
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json` · `src/data/tours.json`
+
+**See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
+
 
 ### `infra-split-worldscene` — HPWorldScene.js is one 197k-token file, so no two agents can ever work on the world at once
 
@@ -31,23 +61,6 @@
 **See.** ENGINEERING.md#2c · ORCHESTRATION.md
 
 
-### `perf-material-dedup` — S.mat() allocates a new material object on every call
-
-**○ open** · perf · priority 1 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** hpDiag() 2026-09-08, dark wood, 1280x720: 2932 material objects collapse to 808 distinct draw signatures. 2124 materials (72%) are exact duplicates. HPStyles.js:218 returns `new THREE.MeshStandardMaterial(...)` with no cache.
-
-**Acceptance.** hpDiag().scene.wastedMaterials < 200, and screenshots at wood / portal / court / cythera / vaults are visually unchanged.
-
-**Risk.** Some call sites mutate the returned material (_buildWood sets duffMat.roughnessMap = null; _herbMat sets userData.roll). A shared instance would leak those mutations world-wide. Add S.matShared() alongside mat() and migrate call sites one at a time; do NOT memoise mat() in place.
-
-**Files.** `src/shaders/HPStyles.js` · `src/scenes/HPWorldScene.js`
-
-**See.** ENGINEERING.md#1b · ENGINEERING.md#1c
-
-
 ### `bug-approach-stations-are-mute` — The three approach stations built on 2026-09-08 have no commentary at all
 
 **○ open** · bug · priority 2 · hp-researcher
@@ -61,6 +74,23 @@
 **Files.** `src/data/tours.json`
 
 **See.** DIRECTIONS.md#3
+
+
+### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** DIMENSIONS.md section 5: pyramid-portal 17.5 m against a stated 1140; recumbent colossus ~8 m against 89; Polia's garden ~14 m across against 141. The 1:8 ground plan was declined (DECISIONS.md 2026-09-09 call 3); the monuments were not.
+
+**Acceptance.** Each of the three is materially larger and still reachable, still enterable where it was enterable, and the valley remains closed - a player cannot walk round the portal.
+
+**Risk.** The valley cliffs converge to 44 m at the piers against a portal spanning 38. A wider pyramid needs the cliffs moved with it or Dallington p.27's absolute stops being true again.
+
+**Files.** `src/scenes/HPWorldScene.js`
+
+**See.** DIMENSIONS.md#2 · DECISIONS.md 2026-09-09 call 3
 
 
 ### `feat-way-out-of-the-wood` — Nothing tells the player how to get out of the wood
@@ -108,21 +138,19 @@
 **See.** ENGINEERING.md#2c
 
 
-### `perf-shadow-casters` — 1194 meshes cast shadows; most cannot resolve in the shadow map
+### `feat-artificial-gardens` — The three artificial gardens - glass, silk, and the counterfeit scent
 
-**○ open** · perf · priority 2 · hp-builder
- · opened 2026-09-08
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-09
 
 
-**Evidence.** hpDiag() 2026-09-08: shadowCasters 1194 of 3688 meshes. Draw calls decompose as ~1930 visible + 1194 shadow = 3124.
+**Evidence.** GARDENS.md section 3. Hunt argues that illustrating them damages them and that both the 1499 and the 1592 decline to for that reason. DECISIONS.md 2026-09-09 call 4: build them, and let the commentary carry Hunt's objection.
 
-**Acceptance.** hpDiag().frame.drawCalls falls by more than 800 with no visible loss of contact shadow at eye height at the portal, the court and the wood floor.
+**Acceptance.** All three are standing and reachable at the sizes DIMENSIONS.md section 3 gives (glass cypresses 2.96 m, box 1.48 m), AND a commentary note at that station names Hunt and states plainly that both early editions withheld what the player is looking at. The note is not optional.
 
-**Risk.** The wood's darkness IS cast shadow (DIRECTIONS.md section 6A). Cull by size and distance, never by whole categories, and re-check the wood first.
+**Files.** `src/scenes/HPWorldScene.js` · `src/data/tours.json`
 
-**Files.** `src/scenes/HPWorldScene.js` · `src/shaders/HPStyles.js`
-
-**See.** ENGINEERING.md#1c
+**See.** GARDENS.md#3 · DIMENSIONS.md#3 · DECISIONS.md 2026-09-09 call 4
 
 
 ### `infra-atalanta-docs` — Three Atalanta documents are still in the root, ~11k tokens, on a subject rule 4 forbids
@@ -157,48 +185,63 @@
 
 ---
 
-## Blocked on another ticket
+## Declined — measured, put to Ted, and deliberately not done
 
-*Doing these first would make the measured problem worse.*
+***Do not re-propose these.** They are here so the next agent finds the answer instead of re-deriving the question. A declined ticket keeps its evidence: the measurement was right, the work was still not wanted.*
 
-### `feat-plain-composed-absence` — The spacious plain beyond the wood is bare ground
+### `perf-material-dedup` — S.mat() allocates a new material object on every call
 
-**▨ blocked** · debt · priority 2 · hp-builder
- · opened 2026-09-08
-
-
-**Evidence.** _buildApproach lays one 280x70 green plane at z = W.z1+28 and puts nothing on it. The book's plain is 'all greene and diuersly spotted with many sorted flowerrs' with 'a still quyet whisht' and grass that 'rested vnstirred, without the beholding of any motion' (Dallington p. 14). Absence reads as unfinished, not as empty.
-
-**Acceptance.** A `plain` station exists; Poliphilo's Dallington p.14 catalogue of the nine absent things fires there; no bird ring or perch lies south of z = 200; the ground is nowhere bare.
-
-**Blocked on.** The design adds roughly 2000 flower and grass cards. At 3124 draw calls and 26 fps that is the wrong order of work: perf-material-dedup and perf-merge-static come first, or this makes the measured problem worse.
-
-**Files.** `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json` · `src/data/tours.json`
-
-**See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
+**— declined** · perf · priority 1 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
 
 
----
+**Evidence.** hpDiag() 2026-09-08, dark wood, 1280x720: 2932 material objects collapse to 808 distinct draw signatures. 2124 materials (72%) are exact duplicates. HPStyles.js:218 returns `new THREE.MeshStandardMaterial(...)` with no cache.
 
-## Questions for Ted
+**Acceptance.** hpDiag().scene.wastedMaterials < 200, and screenshots at wood / portal / court / cythera / vaults are visually unchanged.
 
-*Blocked on a directional call. **An agent must not decide these.***
+**Risk.** Some call sites mutate the returned material (_buildWood sets duffMat.roughnessMap = null; _herbMat sets userData.roll). A shared instance would leak those mutations world-wide. Add S.matShared() alongside mat() and migrate call sites one at a time; do NOT memoise mat() in place.
+
+**Resolution.** DECISIONS.md 2026-09-09 call 1. Ted, with the measurements in hand: "actually just don't change any of that it's not going so slow that I want to do that." 26 fps and 2124 wasted materials are accepted deliberately. Do not re-propose.
+
+**Files.** `src/shaders/HPStyles.js` · `src/scenes/HPWorldScene.js`
+
+**See.** ENGINEERING.md#1b · ENGINEERING.md#1c
+
 
 ### `perf-merge-static` — Merge static geometry per shared material
 
-**? question** · question · priority 1 · ted
- · opened 2026-09-08
+**— declined** · question · priority 1 · ted
+ · opened 2026-09-08, closed 2026-09-09
 
 
 **Evidence.** 3681 unique geometries for 3688 meshes: nothing is merged and only 11 meshes are instanced. Merging per material after perf-material-dedup would plausibly take draw calls from 3124 to about 600.
 
 **Acceptance.** hpDiag().frame.drawCalls < 1500 at every station.
 
-**Blocked on.** Roll Up eats NAMED INDIVIDUAL objects and merging destroys that. Either the merge set and the Roll Up candidate set are made disjoint by construction (scene._monoliths already proves the split is expressible), or Roll Up loses its vocabulary. This is a design call for Ted, not an agent.
+**Resolution.** DECISIONS.md 2026-09-09 call 1. Declined: the merge would have cost Roll Up its vocabulary of named individual objects, and the speed it would buy is not wanted at that price.
 
 **Files.** `src/scenes/HPWorldScene.js` · `src/systems/RollUp.js`
 
 **See.** ENGINEERING.md#1c · ROLLMODE.md
+
+
+### `perf-shadow-casters` — 1194 meshes cast shadows; most cannot resolve in the shadow map
+
+**— declined** · perf · priority 2 · hp-builder
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** hpDiag() 2026-09-08: shadowCasters 1194 of 3688 meshes. Draw calls decompose as ~1930 visible + 1194 shadow = 3124.
+
+**Acceptance.** hpDiag().frame.drawCalls falls by more than 800 with no visible loss of contact shadow at eye height at the portal, the court and the wood floor.
+
+**Risk.** The wood's darkness IS cast shadow (DIRECTIONS.md section 6A). Cull by size and distance, never by whole categories, and re-check the wood first.
+
+**Resolution.** DECISIONS.md 2026-09-09 call 1. Declined with perf-material-dedup.
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/shaders/HPStyles.js`
+
+**See.** ENGINEERING.md#1c
 
 
 ---
@@ -234,7 +277,7 @@
 
 **Acceptance.** await hpDiag() returns frame, scene and gpu censuses from the live page, and returns rather than hangs when the tab is not painting.
 
-**Resolution.** Added to src/main.js 2026-09-08. Samples real frames because renderer.info resets on every render() call and the composer renders three or four times a frame. Reports stalled:true instead of hanging on a hidden tab.
+**Resolution.** Added to src/main.js 2026-09-08. Samples real frames because renderer.info resets on every render() call and the composer renders three or four times a frame. Reports stalled:true instead of hanging on a hidden tab. Budget revised 2026-09-09 from an absolute threshold to a regression one: take a before/after reading and do not make the frame materially worse than you found it.
 
 **Files.** `src/main.js`
 

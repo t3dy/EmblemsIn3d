@@ -2,6 +2,75 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-09 — Four calls: fidelity, pace, monument scale, and the artificial gardens
+
+Put to Ted with the performance measurements in hand (`ENGINEERING.md` §1). All four answered
+the same day. **These outrank the recommendations they overrule**, including `DIMENSIONS.md`
+§5's 1 : 8 proposal and the whole of `ENGINEERING.md` §1c.
+
+### 1. The renderer is not to be refactored. *"Actually just don't change any of that — it's not going so slow that I want to do that."*
+
+3 124 draw calls, ~26 fps and 2 124 wasted materials are **accepted**, deliberately and with
+the numbers on the table. So:
+
+- `perf-material-dedup`, `perf-shadow-casters` and `perf-merge-static` are **declined**, not
+  deferred. Do not re-propose them. Roll Up keeps its vocabulary of named individual objects,
+  which is what the merge would have cost.
+- **`hpDiag()` stays**, and so does rule 7 — but the budget is no longer 1 500 calls and
+  16.7 ms. It is now a **regression** budget: *don't make it materially worse than the reading
+  you started from.* Take a before/after and put both in the commit. A pass that adds 15 % is
+  a conversation; a pass that adds 100 % is a defect.
+- This unblocks `feat-plain-composed-absence`, which was blocked only on the refactor. Build
+  it — cheaply, and with a reading.
+
+### 2. Follow the novel to the letter. Solve pace with speed, not with cutting.
+
+*"So the idea is that we are taking the player on a tour of the novel. We can speed up some of
+the walking to keep it from taking too long, but we need to be following the novel to the
+letter."*
+
+**This is the governing principle of the whole world and it settles a class of question, not
+one question.** Where the book's sequence and the player's convenience conflict, the sequence
+wins and the convenience is bought with **movement speed**. Never by reordering, never by
+compressing the plan, never by dropping a stage.
+
+Two immediate consequences:
+
+- **The dream opens on the spacious plain**, as chapter I does — green, flowered, silent,
+  empty of every living thing — and the wood is walked *into*. It has been opening in the
+  middle of the wood since the world was built. That was the convenient choice and it is now
+  the wrong one.
+- **Traverse gets faster.** Shift-to-run (10 m/s) already exists and is not enough for an
+  approach of 188 m and a plain beyond it. The pace budget is a design problem in its own
+  right, and it is the *only* sanctioned answer to "this takes too long".
+
+### 3. Scale: rescale the monuments where they stand. Leave the ground plan alone.
+
+`DIMENSIONS.md` §5 recommended one ground-plan scale of 1 : 8 — the mainland from 88 × 100 m
+to ~700 × 800 m. **Declined.** What is approved is the third option: bring the monuments that
+are most grotesquely undersized toward their stated size *in the plan they already occupy* —
+the pyramid-portal (17.5 m against a stated 1 140), the recumbent colossus (~8 m against 89),
+Polia's garden (14 m across against 141).
+
+The known cost, accepted: the walk between stations the book separates by four stadia stays
+short. Per call 2, that is a **speed** problem, not a plan problem.
+
+The known constraint, to be solved and not designed around: the valley cliffs converge to
+**44 m at the piers** against a portal spanning 38. Any pyramid materially wider than that
+needs the cliffs moved with it, or the book's own absolute — *"no man could go further forward
+or backe againe"* — quietly stops being true again.
+
+### 4. The three artificial gardens: build them, and let the commentary say Hunt disagreed.
+
+The glass, the silk and the counterfeit scent (`GARDENS.md` §3). Hunt argues that illustrating
+them damages them, and both the 1499 and the 1592 decline to. **Ted: build them anyway, and
+carry the argument in the notes.** The dimensions are in `DIMENSIONS.md` §3 — glass cypresses
+at 2 paces (2.96 m), the box at 1 pace (1.48 m).
+
+The note is not optional and it is not a hedge: it is the one place in this world where the
+commentary gets to argue with the geometry standing in front of it, and it must name Hunt and
+say plainly that both early editions withheld what you are looking at.
+
 ## 2026-09-08 — The wood and the approach, built
 
 Ted, on being handed the research pass and a menu: *"you know more than I do about rendering
