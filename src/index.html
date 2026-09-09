@@ -582,6 +582,29 @@
        In free walk there are no stops to click, so the notes come to the
        reader: approaching a wonder raises its commentary, filtered by the
        same lenses the tour uses. Bottom-left, out of the path of the view. */
+    /* ── Look up / look down ────────────────────────────────────────────
+       Bottom right, clear of the commentary and the plate on the left and of
+       the touch stick at the bottom left. Small, quiet, and always there while
+       there is a camera to move. */
+    #look-ctl {
+      position: fixed; right: 1.1rem; bottom: 3.4rem; z-index: 32;
+      display: flex; flex-direction: column; gap: 0.35rem; pointer-events: all;
+    }
+    #look-ctl button {
+      width: 2.5rem; height: 2.2rem; cursor: pointer; font-size: 0.8rem;
+      font-family: inherit; line-height: 1;
+      color: #c8bca4; background: rgba(10,7,3,0.82);
+      border: 1px solid rgba(139,69,19,0.5);
+      backdrop-filter: blur(3px);
+      touch-action: manipulation; user-select: none; -webkit-user-select: none;
+    }
+    #look-ctl button:hover  { border-color: #c8a040; color: #f0e8d8; }
+    #look-ctl button:active { background: rgba(200,160,64,0.22); }
+    @media (max-width: 640px) {
+      #look-ctl { right: 0.7rem; bottom: 5.2rem; }
+      #look-ctl button { width: 3rem; height: 2.6rem; }
+    }
+
     /* ── The reading panel ──────────────────────────────────────────────
        The book, page by page, down the left of the screen, with the world
        visible past it. Taller and narrower than the commentary panel because
@@ -1078,6 +1101,12 @@
   <div id="walk-plate" hidden></div>
   <!-- Reading mode: the book itself, with the world following it. -->
   <div id="read-panel" hidden></div>
+  <!-- Look up / look down. Ted, 2026-09-09: "a look up and a look down button
+       that moves the camera a little bit each time it is pressed." -->
+  <div id="look-ctl" hidden>
+    <button id="look-up" onclick="window.hpLook(1)" title="Look up">&#9650;</button>
+    <button id="look-dn" onclick="window.hpLook(-1)" title="Look down">&#9660;</button>
+  </div>
   <!-- Graphics menu: one dropdown per asset, reachable from every mode -->
   <div id="gfx-menu" hidden></div>
   <div id="woodcut-lightbox">
@@ -1278,6 +1307,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=344"></script>
+  <script type="module" src="./main.js?v=345"></script>
 </body>
 </html>

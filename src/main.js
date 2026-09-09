@@ -1006,6 +1006,66 @@ function closeWonderMenu() {
 
 // Show the thumb-stick only in a walkable world, on a touch device, when no
 // overlay / tour / dream is running. Cheap enough to call from the render loop.
+// ─── Look up, look down ───────────────────────────────────────────────────────
+//
+// Ted, 2026-09-09: "we need a look up and a look down button that moves the
+// camera a little bit each time it is pressed."
+//
+// Dragging to look has always been the only way to change the pitch, which is
+// fine with a mouse in your hand and no use at all if you are reading with one,
+// on a trackpad, or on a touch screen where the drag is also how you walk.
+//
+// THREE CAMERAS, THREE CONVENTIONS, and they do not agree — which is the whole
+// reason this is a function and not two lines:
+//
+//   the WALKER   `player.pitch`, +1.15 to -1.15, and POSITIVE IS UP: the camera
+//                rotates about its own X. Look up means pitch += step.
+//   ROLL and FLY `cam.pitch` is an ORBIT ELEVATION, not a gaze: it is how high
+//                the camera sits above the ball or the dragon. Raising it looks
+//                further DOWN. So look up means cam.pitch -= step, and the sign
+//                is inverted against the walker.
+//
+// A step of 0.09 rad is about five degrees — small enough that a press is a
+// nudge and not a lurch, and eleven presses take you from the horizon to the
+// clamp either way.
+const LOOK_STEP = 0.09;
+
+window.hpLook = (dir) => {
+  const sc = state.activeScene;
+  if (!sc) return;
+  const d = dir > 0 ? 1 : -1;
+  if (sc.roll) {
+    // orbit elevation: up is a LOWER camera
+    sc.roll.cam.pitch = clampNum(sc.roll.cam.pitch - d * LOOK_STEP, 0.05, 1.25);
+  } else if (sc.flight) {
+    sc.flight.cam.pitch = clampNum(sc.flight.cam.pitch - d * LOOK_STEP, -0.25, 1.25);
+  } else if (sc.walker) {
+    const p = sc.walker.player;
+    p.pitch = clampNum(p.pitch + d * LOOK_STEP, -1.15, 1.15);
+    // the walker only writes the camera when it moves or is dragged, so a press
+    // that changes nothing else would not be seen until the next footstep
+    sc.walker.applyTo(sc.camera);
+  }
+};
+
+function clampNum(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
+
+// Shown whenever there is a camera a press could move. Not during the Dream,
+// which is scripted and owns the frame, and not on the tour, where the stops
+// choose the view. Polled from the same tick as the touch controls.
+function refreshLookCtl() {
+  const el = document.getElementById('look-ctl');
+  if (!el) return;
+  const sc = state.activeScene;
+  // The Vaults are IN: they have a walker, and groping through a black maze
+  // looking for pits in the floor is the one place a look-down is most wanted.
+  // The Dream is out because it is scripted and owns the frame, and the tour is
+  // out because its stops choose the view.
+  const on = !!sc && !sc.dream && !state.tour
+    && !!(sc.walker || sc.roll || sc.flight);
+  setHidden(el, !on, 'flex');
+}
+
 function refreshTouchControls() {
   const el = document.getElementById('touch-controls');
   if (!el) return;
@@ -1152,6 +1212,7 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
     showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
   }
   refreshTouchControls();
+  refreshLookCtl();
 }
 
 
@@ -1264,6 +1325,7 @@ async function launchVaults({ depth = 1, lamps = 0, seed = null } = {}) {
   drawVaultMap(scene.mapState());
   showHint('W A S D to feel your way · Shift to run · find the lamps, then the little wicket · Esc to leave');
   refreshTouchControls();
+  refreshLookCtl();
 }
 
 window.hpVaults = () => { showHPMode(false); launchVaults({ depth: 1, lamps: 0 }); };
@@ -1387,6 +1449,7 @@ window.hpExplore = () => {
     onDone: () => {
       showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · 0 sails to Cythera');
       refreshTouchControls();
+      refreshLookCtl();
     },
   });
 };
@@ -1547,11 +1610,13 @@ window.hpFly = () => {
         showFlightCards(false);
         showHint('Landed. W A S D / arrows walk · drag to look · 1–9 the wonders · 0 sails to Cythera');
         refreshTouchControls();
+        refreshLookCtl();
       };
       sc.startFlight();
       showFlightCards(true);
       showHint(FLY_HINT);
       refreshTouchControls();
+      refreshLookCtl();
     },
   });
 };
@@ -1910,7 +1975,7 @@ function animate() {
   if (w !== _lastW) { _lastW = w; resizeAll(); }
 
   // Keep the mobile controls in sync with whatever world/mode is up
-  if (++_tcTick % 15 === 0) refreshTouchControls();
+  if (++_tcTick % 15 === 0) { refreshTouchControls(); refreshLookCtl(); }
 
   if (state.activeScene) {
     state.activeScene.update(dt);
