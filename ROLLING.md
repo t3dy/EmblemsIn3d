@@ -1,4 +1,4 @@
-<!-- tokens: ~3,996 · read for: every variable in Roll Up and which one to turn -->
+<!-- tokens: ~4,448 · read for: every variable in Roll Up and which one to turn -->
 # ROLLING — every variable in Roll Up, what it does, and which one to turn
 
 *Written 2026-09-09 from Ted: the ball **grows too quickly**, and the things it eats **do not
@@ -144,11 +144,19 @@ sphere. This is right and should not be changed: a leaf card is a 95 cm square o
 whose sphere radius is 67 cm, which would make a leaf harder to eat than a plum-sized pebble.
 The mean half-extent gives a leaf 32 cm, a cube half its side, a column 58 cm.
 
-**Anything over 6 m is not food.**
+**The threshold is DERIVED, and was wrong until 2026-09-09.**
 
 ```js
-const tooBig = r > 6 || bs.radius * sc > 14;   // long thin things are architecture too
+const tooBig = r > MAX_EDIBLE || bs.radius * sc > MAX_EDIBLE * 2.33;
 ```
+
+`MAX_EDIBLE` is exported from `RollUp.js` as `CEILING * BITE` — the largest thing the ball
+could ever reach. It used to be a hardcoded **6**, which was right when `CEILING` was 14 and
+`BITE` 0.58 (a true reach of 8.1 m). When the ceiling went to 22 the same day, the cut-off did
+not follow, and the gap was not small: **682 of the world's 931 rejected objects were inside
+the grown ball's real reach**, the wood's canopy shells chief among them. A katamari that
+cannot eat a tree is not a katamari. A number that has to agree with another number should
+never be typed twice.
 
 Rejected things are logged to `scene._monoliths`, which is the ledger of *everything in the
 world that is not built out of pieces*. Ted, 2026-09-09: *"I want everything in the world of
@@ -163,11 +171,30 @@ exists.** Read it in the console:
 window._hp.state.activeScene._monoliths
 ```
 
-It currently holds only the sea, the sky, the ground discs, the roads and the terrace shells
-— everything else has already been broken into ashlar by `systems/Masonry.js` (`_ashlar`,
-`_arch`). The remaining named targets are in `NEXTSTEPS.md` §0g: the bridge arches, the twenty
-Cythera fence gates, the Fountain of Venus's arcade, the obelisk plinths, the bath, the Court
-screen, and Book II's Treviso front.
+**Measured 2026-09-09, and the previous note here was simply false.** It claimed the list held
+"only the sea, the sky, the ground discs, the roads and the terrace shells". It held **931
+entries**. That number had been inherited from `NEXTSTEPS.md` §0g and repeated without anyone
+running the query — which is exactly the failure `hpDiag` was built to stop, in a different
+part of the code.
+
+After deriving the threshold it holds **249**, and they are now the right 249:
+
+| count | what | should it be food? |
+|---:|---|---|
+| 128 | `DodecahedronGeometry` — the valley cliffs and the mountain slopes | **no.** Terrain |
+| 109 | `SphereGeometry` — the sky dome, and the canopy shells of the tallest trees | the sky no; the giant canopies are a **judgement call**, see below |
+| 6 | `PlaneGeometry` — the ground planes, the plain, the valley floor | **no.** A katamari does not eat the floor |
+| 3 + 2 + 1 | ground discs, two tori, one shape | no |
+
+**On the giant canopies.** A 36 m oak carries shells of about 15 m, and the ball's absolute
+reach is 10.5 m, so the largest trees of the Hercynian stay uneatable while the rest of the
+wood goes down. That is a defensible line and arguably a good one — but if you want them,
+split `_forestTree`'s four shells into six or eight smaller ones and they fall under the
+threshold without touching the ball at all.
+
+The named targets still to be broken into stones are in `NEXTSTEPS.md` §0g: the bridge arches,
+the twenty Cythera fence gates, the Fountain of Venus's arcade, the obelisk plinths, the bath,
+the Court screen, and Book II's Treviso front.
 
 **The ground, the sea and the sky should stay monoliths.** A katamari does not eat the floor.
 

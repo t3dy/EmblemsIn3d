@@ -141,6 +141,17 @@ export const WEDDING = 18.0;
 // last stage had nowhere to happen. Raise the two together or not at all.
 export const CEILING = 22;
 
+// The largest thing the ball could EVER eat: its greatest radius times its bite.
+// `HPWorldScene._census` uses this to decide what counts as food and what is
+// architecture, and it must be derived rather than typed, because it has been
+// wrong before and silently. The census cut-off was a hardcoded 6 m, set when
+// CEILING was 14 and BITE 0.58 — a true reach of 8.1 m, so it was conservative
+// but defensible. On 2026-09-09 the ceiling went to 22 and the cut-off did not
+// follow, which left the ball able to reach 10.5 m and forbidden to touch
+// anything over 6: **682 of the world's 931 rejected objects were things a
+// full-grown ball could have swallowed**, tree canopies chief among them.
+export const MAX_EDIBLE = CEILING * BITE;
+
 export class RollUp {
   constructor(scene, camera, walker, {
     r0 = 0.22,

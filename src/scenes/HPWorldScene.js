@@ -26,7 +26,7 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=53';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
-import { RollUp } from '../systems/RollUp.js?v=9';
+import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=10';
 import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=5';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
@@ -5827,13 +5827,25 @@ export class HPWorldScene {
     // Anything bigger than this is architecture: the sea, the ground itself,
     // and whatever is still modelled as one block. You roll past those.
     //
-    // But keep a LIST of them (2026-09-08). A thing over six metres that is not
-    // the ground or the water is a monolith — a building that was not built out
-    // of stones — and this is the only place in the code that knows. It is how
-    // the ashlar work finds its next target instead of guessing: see
+    // The threshold is DERIVED from what the ball can actually reach
+    // (`MAX_EDIBLE` = CEILING x BITE), and that matters: it was a hardcoded 6 m,
+    // correct when the ball's ceiling was 14, and it did not move when the
+    // ceiling went to 22 on 2026-09-09. Measured that day, **682 of the 931
+    // rejected objects were inside the grown ball's real reach of 10.5 m** —
+    // most of them the wood's canopy shells, so a katamari could not eat a
+    // tree. Ted, the same day: "I want everything in the world of our virtual
+    // dream garden to be roll up able." A number that has to agree with another
+    // number should not be typed twice.
+    //
+    // Keep a LIST of the rest (2026-09-08). A thing past the threshold that is
+    // not the ground or the water is a monolith — a building that was not built
+    // out of stones — and this is the only place in the code that knows. It is
+    // how the ashlar work finds its next target instead of guessing: see
     // `window._hp.state.activeScene._monoliths` and NEXTSTEPS.md 0g.
     const c = new THREE.Vector3().copy(bs.center).applyMatrix4(mesh.matrixWorld);
-    const tooBig = r > 6 || bs.radius * sc > 14;   // long thin things are architecture too
+    // 2.33 is the ratio the hand-typed pair (6 and 14) used, kept: a long thin
+    // thing is architecture even when its mean half-extent is modest.
+    const tooBig = r > MAX_EDIBLE || bs.radius * sc > MAX_EDIBLE * 2.33;
     if (tooBig) {
       (this._monoliths = this._monoliths || []).push({
         r: +r.toFixed(2), span: +(bs.radius * sc).toFixed(1), type: g.type,

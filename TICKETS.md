@@ -6,7 +6,7 @@
 
 ---
 
-**26 tickets** — 9 open, 3 declined, 14 done. By kind: 13 debt, 6 infra, 4 bug, 2 perf, 1 question.
+**26 tickets** — 8 open, 3 declined, 15 done. By kind: 13 debt, 6 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -108,21 +108,6 @@
 **Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
-
-
-### `roll-everything-rollable` — Break the remaining monoliths into individual blocks
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** _census rejects anything over 6 m and logs it to scene._monoliths, which now holds only the sea, sky, ground discs, roads and terrace shells. NEXTSTEPS 0g names what is left: the bridge arches, the twenty Cythera fence gates, the Fountain of Venus's arcade, the obelisk plinths, the bath, the Court screen, Book II's Treviso front.
-
-**Acceptance.** scene._monoliths contains nothing but the ground, the sea, the sky and the roads. A katamari does not eat the floor.
-
-**Files.** `src/scenes/HPWorldScene.js` · `src/systems/Masonry.js`
-
-**See.** ROLLING.md#2 · DRAWCALLS.md#4
 
 
 ### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
@@ -390,6 +375,23 @@
 **Files.** `DECISIONS.md` · `ROUTER.md`
 
 **See.** ENGINEERING.md#2c
+
+
+### `roll-everything-rollable` — Break the remaining monoliths into individual blocks
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** _census rejects anything over 6 m and logs it to scene._monoliths, which now holds only the sea, sky, ground discs, roads and terrace shells. NEXTSTEPS 0g names what is left: the bridge arches, the twenty Cythera fence gates, the Fountain of Venus's arcade, the obelisk plinths, the bath, the Court screen, Book II's Treviso front.
+
+**Acceptance.** scene._monoliths contains nothing but the ground, the sea, the sky and the roads. A katamari does not eat the floor.
+
+**Resolution.** Not by breaking more architecture into stones -- by fixing the threshold that was rejecting it. _census used a hardcoded 6 m, correct when the ball's CEILING was 14 and BITE 0.58 (a true reach of 8.1 m) and never updated when the ceiling went to 22 the same day. It now derives from MAX_EDIBLE = CEILING * BITE, exported from RollUp.js. Measured: monoliths 931 -> 249, rollables 156 741, no console errors, a 16 000-step headless sim healthy at 0.22 ms per update. What remains rejected is now the right set: 128 cliff and slope dodecahedra, the sky dome, the ground planes, and the canopy shells of the tallest trees. ALSO CORRECTED: ROLLING.md claimed the monolith list held 'only the sea, the sky, the ground discs, the roads and the terrace shells'. It held 931 entries. The claim had been inherited from NEXTSTEPS 0g and repeated without anyone running the query.
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/systems/Masonry.js`
+
+**See.** ROLLING.md#2 · DRAWCALLS.md#4
 
 
 ### `roll-growth-too-fast` — The ball grows too quickly and the metal ladder is spent in the first minutes
