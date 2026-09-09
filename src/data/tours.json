@@ -871,6 +871,40 @@
         ]
       },
       {
+        "station": "artificial",
+        "title": "The Gardens of Glass and Silk",
+        "chapter": "XII–XIII",
+        "half": "dallington",
+        "lede": "After the banquet the queen's handmaids lead Poliphilo out to three gardens that are not gardens. The first is of **glass** — the ground strewn with great round balls like gunstones, shining like pearls, and every tree turned and blown out of glass. The second is of **silk**, trunks and branches and leaves and flowers all in fine silk sewn with pearls, with an arbour of gold wire overspread with gold roses that he thinks lovelier than growing ones. And the third garden is a **smell**: a sweet fragrance breathed off flowers that cannot breathe, put there by washing them with a scented oil. **Neither the 1499 nor the 1592 shows you any of this.** Both editions decline to illustrate these three gardens, and John Dixon Hunt argues that is deliberate and right — that picturing them makes them seem plausible and so destroys the extraordinariness that is their whole point. We have built them anyway. Hunt would say we were wrong; judge it yourself, which is what he says the omission was for.",
+        "quote": "Trunkes, branches, leaues and flowers, all of fine silke, wanting no store of Pearles to beautify the same… and from the flowers did breath a sweet fragrancie by some cleare washing with oyle for that purpose. — Dallington, chs. XII–XIII",
+        "notes": [
+          {
+            "type": "context",
+            "text": "**You are looking at something the book refuses to show you, and that is worth knowing before you judge it.** John Dixon Hunt points out that the 1499 Italian and the 1592 English *both* decline to illustrate these three gardens, and that when the French edition of 1546 finally did, it damaged them: drawing on familiar imagery, he writes, “inevitably mak[es] them seem more plausible,” and “the sense of exceptional and extraordinary artfulness is diminished.” The omission, he argues, “forces readers to adjudicate these designs for themselves.” **We built them anyway. Hunt would say we were wrong, and this note is here so that you can hold both at once.**"
+          },
+          {
+            "type": "allegory",
+            "text": "The whole garden sequence is a *paragone* — a formal contest between art and nature — and Colonna keeps nudging the reader to award the prize. These three are his most extreme case: not art *imitating* nature but art **counterfeiting** it, down to the smell. Poliphilo, who is never once sceptical, judges the gold roses more beautiful than real ones. Whether that is connoisseurship or a failure of discrimination is the question the chapter is actually asking."
+          },
+          {
+            "type": "architecture",
+            "text": "The sizes are Colonna's own and he gives them precisely, which is itself telling — he will not describe the colour of a rose but he will tell you a glass cypress stands **two paces** (2.96 m) and a glass box **one** (1.48 m). Artificial things get measured in this book. Living things get admired."
+          },
+          {
+            "type": "gloss",
+            "text": "*Gunne stones* — cannonballs. Dallington's word for the round glass balls strewn on the ground: stone shot, the ordinary ammunition of a sixteenth-century gun, here rendered in clear glass and scattered over a garden floor like pearls."
+          },
+          {
+            "type": "neoplatonic",
+            "text": "Set this beside the bath a few chapters earlier, where Poliphilo's eyes “would wander from the real and liuely shapes, to looke vpon those feyned representations.” He prefers the made thing to the living one there too. The dream is training him — or corrupting him — to love images, and by the end it is an image of Polia that he embraces and loses."
+          }
+        ],
+        "see": [
+          "The Court of Queen Eleuterylida",
+          "Polia's Garden"
+        ]
+      },
+      {
         "station": "quinta_essentia",
         "title": "Logistica and Thelemia",
         "chapter": "XI",

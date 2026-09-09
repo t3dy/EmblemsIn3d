@@ -6,7 +6,7 @@
 
 ---
 
-**25 tickets** — 14 open, 3 declined, 8 done. By kind: 13 debt, 5 infra, 4 bug, 2 perf, 1 question.
+**25 tickets** — 13 open, 3 declined, 9 done. By kind: 13 debt, 5 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -166,21 +166,6 @@
 **Files.** `src/main.js` · `translation/`
 
 **See.** NEXTSTEPS.md#0-A
-
-
-### `feat-artificial-gardens` — The three artificial gardens - glass, silk, and the counterfeit scent
-
-**○ open** · debt · priority 3 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** GARDENS.md section 3. Hunt argues that illustrating them damages them and that both the 1499 and the 1592 decline to for that reason. DECISIONS.md 2026-09-09 call 4: build them, and let the commentary carry Hunt's objection.
-
-**Acceptance.** All three are standing and reachable at the sizes DIMENSIONS.md section 3 gives (glass cypresses 2.96 m, box 1.48 m), AND a commentary note at that station names Hunt and states plainly that both early editions withheld what the player is looking at. The note is not optional.
-
-**Files.** `src/scenes/HPWorldScene.js` · `src/data/tours.json`
-
-**See.** GARDENS.md#3 · DIMENSIONS.md#3 · DECISIONS.md 2026-09-09 call 4
 
 
 ### `infra-atalanta-docs` — Three Atalanta documents are still in the root, ~11k tokens, on a subject rule 4 forbids
@@ -431,6 +416,23 @@
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLING.md#1
+
+
+### `feat-artificial-gardens` — The three artificial gardens - glass, silk, and the counterfeit scent
+
+**✅ done** · debt · priority 3 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** GARDENS.md section 3. Hunt argues that illustrating them damages them and that both the 1499 and the 1592 decline to for that reason. DECISIONS.md 2026-09-09 call 4: build them, and let the commentary carry Hunt's objection.
+
+**Acceptance.** All three are standing and reachable at the sizes DIMENSIONS.md section 3 gives (glass cypresses 2.96 m, box 1.48 m), AND a commentary note at that station names Hunt and states plainly that both early editions withheld what the player is looking at. The note is not optional.
+
+**Resolution.** _buildArtificialGardens at (-22, 52), north-west of the court: the glass garden with its turned cypresses at Colonna's 2 paces and box at 1, and the great round balls strewn on the ground; the silk garden with pearled silk trees and the gold-wire arbour of gold roses; and the counterfeit scent staged as fume rising off silk flowers that cannot smell. Station `artificial` and a tour stop between the chess ballet and the three doors. Hunt's objection is carried BOTH as a context note and IN THE LEDE, because context is a lens that is off by default and the decision says the objection is not optional - a reader on the default lens set would have seen the gardens and none of the argument against showing them. Cost: +83 meshes, +15680 triangles (+2.2%).
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/data/tours.json`
+
+**See.** GARDENS.md#3 · DIMENSIONS.md#3 · DECISIONS.md 2026-09-09 call 4
 
 
 ---

@@ -313,7 +313,7 @@
       "id": "feat-artificial-gardens",
       "title": "The three artificial gardens - glass, silk, and the counterfeit scent",
       "kind": "debt",
-      "status": "open",
+      "status": "done",
       "priority": 3,
       "evidence": "GARDENS.md section 3. Hunt argues that illustrating them damages them and that both the 1499 and the 1592 decline to for that reason. DECISIONS.md 2026-09-09 call 4: build them, and let the commentary carry Hunt's objection.",
       "acceptance": "All three are standing and reachable at the sizes DIMENSIONS.md section 3 gives (glass cypresses 2.96 m, box 1.48 m), AND a commentary note at that station names Hunt and states plainly that both early editions withheld what the player is looking at. The note is not optional.",
@@ -327,7 +327,9 @@
         "DIMENSIONS.md#3",
         "DECISIONS.md 2026-09-09 call 4"
       ],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-09",
+      "resolution": "_buildArtificialGardens at (-22, 52), north-west of the court: the glass garden with its turned cypresses at Colonna's 2 paces and box at 1, and the great round balls strewn on the ground; the silk garden with pearled silk trees and the gold-wire arbour of gold roses; and the counterfeit scent staged as fume rising off silk flowers that cannot smell. Station `artificial` and a tour stop between the chess ballet and the three doors. Hunt's objection is carried BOTH as a context note and IN THE LEDE, because context is a lens that is off by default and the decision says the objection is not optional - a reader on the default lens set would have seen the gardens and none of the argument against showing them. Cost: +83 meshes, +15680 triangles (+2.2%)."
     },
     {
       "id": "roll-crust-never-absorbs",

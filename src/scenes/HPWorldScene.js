@@ -145,6 +145,11 @@ export const HP_STATIONS = [
   // would simply never fire.
   { key: 'plain',            name: 'The Spacious Plain',     folio: 14,
     pos: [0, 448],   look: [0, 424],   radius: 26 },
+  // The gardens of glass and of silk (chs. XII–XIII), north-west of the court.
+  // Built 2026-09-09 AGAINST Hunt's argument that they should not be — see
+  // _buildArtificialGardens, and the note at this stop, which is not optional.
+  { key: 'artificial',       name: 'The Gardens of Glass and Silk', folio: 152,
+    pos: [-15.5, 52],  look: [-24, 52],  radius: 9 },
 ];
 
 const EYE = 1.7;
@@ -450,6 +455,7 @@ export class HPWorldScene {
     this._buildWood();
     this._buildApproach();
     this._buildSpaciousPlain();   // where the dream opens (DECISIONS 2026-09-09 call 2)
+    this._buildArtificialGardens();   // glass, silk and the faked scent (call 4)
     this._buildGreatPortal();
     this._buildBridge();
     this._buildRiverPlants();
@@ -1968,6 +1974,125 @@ export class HPWorldScene {
     // in the wood itself. It runs away the moment he would cry out.
     const wolf = this.cast.animals.wolf(1.15);
     this._npc('wolf', wolf, -21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
+  }
+
+  // ── The three artificial gardens ─────────────────────────────────────────
+  //
+  // Chapters XII–XIII, the gardens Eleuterylida's handmaids show after the
+  // banquet: one of glass, one of silk, and a counterfeit scent.
+  //
+  // THIS WAS A DECISION AND NOT A DEFAULT, and the argument against building it
+  // is worth having in front of you while you look at it. John Dixon Hunt notes
+  // that the 1499 Italian and the 1592 English BOTH decline to illustrate these
+  // three gardens, and that when the French edition of 1546 did illustrate them
+  // it damaged them: drawing on familiar imagery "inevitably mak[es] them seem
+  // more plausible", and "the sense of exceptional and extraordinary artfulness
+  // is diminished." The omission "forces readers to adjudicate these designs for
+  // themselves." GARDENS.md §3 called this the first case in the project where
+  // the right move might be to NOT build a thing.
+  //
+  // Ted, 2026-09-09, asked: build them, and let the commentary say Hunt
+  // disagreed. So they are here, and the note at this station names him and
+  // states plainly that both early editions withheld what you are looking at.
+  // **The note is not optional and it is not a hedge**: it is the one place in
+  // this world where the commentary argues with the geometry standing in front
+  // of it, and if it is ever lost the geometry becomes exactly the mistake Hunt
+  // describes. DECISIONS.md 2026-09-09 call 4.
+  //
+  // Sizes are Colonna's own (DIMENSIONS.md §3): the glass cypresses 2 paces —
+  // 2.96 m — and the box a single pace, 1.48 m.
+  _buildArtificialGardens() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const OX = -22, OZ = 52;            // north-west of the court, on the sward
+    const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 149.7) * 43758.5453; return v - Math.floor(v); };
+
+    // ── I. The garden of glass ──
+    // "great round balles of glasses lyke gunne stones… like pearles shining",
+    // and the trees turned out of glass. Nothing here is alive and nothing here
+    // is meant to look alive; the material is the whole subject.
+    const glassM = woodcut ? S.mat({ tone: 0.02, rim: 1 })
+      : S.mat({ color: 0xcfe4e8, roughness: 0.06, metalness: 0.1,
+                transparent: true, opacity: 0.42, side: THREE.DoubleSide });
+    const glassTrunk = woodcut ? S.mat({ tone: 0.05, rim: 1 })
+      : S.mat({ color: 0xbcd6dc, roughness: 0.08, metalness: 0.12,
+                transparent: true, opacity: 0.55 });
+    for (let i = 0; i < 7; i++) {
+      // the cypresses, 2 paces: a turned cone, because a glass tree is a
+      // glass-blower's shape and not a botanist's
+      const a = (i / 7) * Math.PI * 2, r = 3.4;
+      const x = OX + Math.cos(a) * r, z = OZ + Math.sin(a) * r;
+      this._m(new THREE.CylinderGeometry(0.05, 0.09, 0.5, 8), glassTrunk, x, 0.25, z);
+      this._m(new THREE.ConeGeometry(0.44, 2.46, 10), glassM, x, 1.73, z, { outline: true });
+    }
+    for (let i = 0; i < 9; i++) {       // the box, one pace
+      const a = (i / 9) * Math.PI * 2 + 0.3, r = 1.7;
+      this._m(new THREE.SphereGeometry(0.42, 12, 10), glassM,
+        OX + Math.cos(a) * r, 1.06, OZ + Math.sin(a) * r, { outline: true });
+      this._m(new THREE.CylinderGeometry(0.045, 0.06, 0.64, 7), glassTrunk,
+        OX + Math.cos(a) * r, 0.32, OZ + Math.sin(a) * r);
+    }
+    // "great round balles of glasses lyke gunne stones… like pearles shining",
+    // strewn on the ground, which is what the text actually specifies first
+    for (let i = 0; i < 46; i++) {
+      const a = rnd(i, 1) * Math.PI * 2, r = 0.8 + rnd(i, 2) * 4.6;
+      const rad = 0.055 + rnd(i, 3) * 0.075;
+      this._m(new THREE.SphereGeometry(rad, 9, 7), glassM,
+        OX + Math.cos(a) * r, rad, OZ + Math.sin(a) * r);
+    }
+
+    // ── II. The garden of silk ──
+    // "fine silk, wanting no store of Pearles to beautify the same", and a
+    // gold-wire arbour overspread with gold roses "more beautiful to the eye,
+    // then if they had been growing roses."
+    const SX = OX + 13, SZ = OZ;
+    const silkM = woodcut ? S.mat({ tone: 0.09, rim: 1 })
+      : S.mat({ color: 0xd8c8e0, roughness: 0.30, metalness: 0.06 });
+    const silkLeaf = woodcut ? S.mat({ tone: 0.13, rim: 1 })
+      : S.mat({ color: 0x8fae86, roughness: 0.26, metalness: 0.05, side: THREE.DoubleSide });
+    const pearlM = woodcut ? S.mat({ tone: 0.02, rim: 1 })
+      : S.mat({ color: 0xf4efe4, roughness: 0.18, metalness: 0.15 });
+    const goldWire = S.mat({ color: 0xd8b048, metalness: 0.92, roughness: 0.22 });
+
+    for (let t = 0; t < 5; t++) {
+      const a = (t / 5) * Math.PI * 2 + 0.6, r = 3.2;
+      const x = SX + Math.cos(a) * r, z = SZ + Math.sin(a) * r;
+      this._m(new THREE.CylinderGeometry(0.07, 0.11, 1.5, 8), silkM, x, 0.75, z);
+      for (let b = 0; b < 5; b++) {     // branches, and leaves as silk masses
+        const ba = (b / 5) * Math.PI * 2 + t, br = 0.5 + rnd(t * 9 + b, 4) * 0.4;
+        const bx = x + Math.cos(ba) * br, bz = z + Math.sin(ba) * br;
+        const by = 1.5 + rnd(t * 9 + b, 5) * 0.55;
+        this._m(new THREE.SphereGeometry(0.34, 10, 8), silkLeaf, bx, by, bz, { outline: true });
+        // the pearls, which the book insists on twice
+        this._m(new THREE.SphereGeometry(0.035, 7, 6), pearlM, bx + 0.16, by + 0.12, bz);
+        this._m(new THREE.SphereGeometry(0.030, 7, 6), pearlM, bx - 0.13, by - 0.09, bz + 0.1);
+      }
+    }
+    // the gold-wire arbour, with its gold roses over it
+    for (let i = 0; i <= 9; i++) {
+      const t = i / 9, a = Math.PI * t;
+      const hx = SX + Math.cos(a) * 2.1, hz = SZ - 3.6, hy = Math.sin(a) * 2.3;
+      this._m(new THREE.SphereGeometry(0.035, 6, 5), goldWire, hx, hy + 0.05, hz);
+      if (i % 2 === 0 && i > 0 && i < 9) {
+        this._m(new THREE.SphereGeometry(0.11, 8, 7), goldWire, hx, hy + 0.05, hz + 0.09, { outline: true });
+      }
+    }
+    for (const sx of [-2.1, 2.1]) {
+      this._m(new THREE.CylinderGeometry(0.04, 0.05, 0.35, 7), goldWire, SX + sx, 0.17, SZ - 3.6);
+    }
+
+    // ── III. The counterfeit scent ──
+    // The third garden is the one that cannot be modelled at all, and the book
+    // is precise about why: the fragrance is FAKED — "from the flowers did
+    // breath a sweet fragrancie by some cleare washing with oyle for that
+    // purpose." So it is staged with the world's own device for scent, the fume
+    // (PLEASURES.md §2, `_fume`) — and staged over the SILK flowers, which have
+    // no scent of their own. That is the counterfeit made visible: a smell
+    // rising off a thing that cannot smell.
+    this._fume(SX, 1.9, SZ, { rise: 2.0, drift: 0.4, count: 16, speed: 0.13 });
+
+    this._plaque({ main: 'THE GARDENS OF GLASSE AND OF SILKE',
+      sub: 'GREAT ROVND BALLES OF GLASSES LYKE PEARLES SHINING · TRVNKES BRANCHES LEAVES AND FLOWERS OF FINE SILK · A SWEET FRAGRANCIE BY SOME CLEARE WASHING WITH OYLE · CHAPTERS XII-XIII' },
+      4.2, 0.46, OX + 6.5, 0.6, OZ + 6.2, 0, true);
   }
 
   // ── Chapter I: the spacious plain the dream opens on ─────────────────────
