@@ -31,6 +31,51 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
+### 0. Ted's open call: the world is too small — build the bigger dream
+
+Added 2026-09-08, in his words:
+
+> *"the world of our virtual dream garden is too small. I imagine the dream garden to be much
+> bigger with all the elements further apart and the trees of the wood dark enough to tower
+> over our hero and cast enough shadows to make it dark. Read the novel more carefully to get
+> a sense of the layout. Pay attention to any directions we are given. Pay attention to the
+> dimensions of the buildings that are described, and any other information we have missed."*
+
+**The research pass is done** (2026-09-08) — [`DIMENSIONS.md`](DIMENSIONS.md),
+[`DIRECTIONS.md`](DIRECTIONS.md), [`WOODS.md`](WOODS.md),
+[`research/dimensions.json`](research/dimensions.json), and 17 new features in the ledger.
+
+**The first build pass is done too** (2026-09-08, same day), scoped by Ted to *the wood and
+the approach first*. Verified on the running page and deployed. See `DECISIONS.md`.
+
+- ✅ **The shadow box follows the walker** (`HPStyles.trackedSun`) — the prerequisite.
+- ✅ **The wood**, 200 × 195 m, trees of 24–36 m, canopy closed, floor dark, the 1499's own
+  species, no path, roots, brambles, thickets, five clearings.
+- ✅ **The approach** — 188 m from the wood's edge to the portal, the valley cliffs that make
+  the porch the only way through, the palm plain, the great oak, the wolf moved to its book
+  position, conifers moved to the mountain slopes.
+- ✅ Shift-to-run was already in `Walker` (`runSpeed = 10`) and is what Ted asked for.
+
+### 0b. What the scale work still owes
+
+1. **The rest of the plan is not rescaled.** Ted's call was to do the wood and the approach
+   first, so everything from the Great Portal southward — the court, the doors, Polia's
+   garden, the temple, Cythera — is still at the compressed spacing `DIMENSIONS.md` §5
+   measures. The recommendation on the table is a single **1 : 8** ground plan.
+2. **The pyramid is still 17.5 m wide** against the book's 1 140 m (ledger:
+   `pyramid-true-scale`). The approach now leads to it, which makes its size the next thing
+   you notice.
+3. **The cypress avenue** (4 stadia, the only stated inter-station distance in the book) —
+   ledger: `cypress-avenue`.
+4. **The three doors are still a free-standing wall**, not cut in rock — ledger:
+   `three-doors-rockface`.
+5. **Chapter VI's wooded country**: the bridge whose spring divides right and left, the ringed
+   mountain, the fountain-house glimpsed through the trees.
+6. **Nothing tells the player how to get out of the wood.** The mechanic works — hold the sun
+   at a constant bearing — but Poliphilo's layer or the station note has to say so.
+7. **The spacious plain beyond the wood is bare ground.** Its whole character in the book is
+   composed absence, and absence still has to be composed.
+
 ### 0aa. Check the mode chooser at 900 px whenever a card is added — done 2026-09-08
 The chooser is a fixed, centred flex box; its content passed the height of a 900 px window
 at six cards and overflowed past the **top** edge, where nothing can scroll to it. `Walk

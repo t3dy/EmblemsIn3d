@@ -30,15 +30,32 @@ import { RollUp } from '../systems/RollUp.js?v=6';
 import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=5';
 import { isVariant } from '../systems/AssetVariants.js?v=8';
-import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=4';
+import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=6';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
 import { createMeadowField, attachShade } from '../systems/Meadow.js?v=5';
 
 // pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
+//
+// ── THE COMPASS (declared 2026-09-08; DIRECTIONS.md §2) ────────────────────
+// The book gives no bearing for the itinerary, but it does give the sun: dawn
+// at the outset, "el meridionale aesto" in the wood, and a pyramid dedicated to
+// the Sun whose stair takes light from the "Orientall Meridionall and
+// Occidentall partes of the ayre". The world's key light has always sat at
+// (16, 22, 10) — high, to +x and +z — so:
+//
+//        +z is SOUTH        −z is NORTH        +x is EAST        −x is WEST
+//
+// Poliphilo therefore walks NORTHWARD out of the wood, with the sun behind his
+// right shoulder, and the Great Portal's façade faces south into it. His RIGHT
+// HAND is +x and his LEFT is −x, which is what puts the wolf at −x (Dall. p. 23)
+// and the Medusa door at +x (p. 31). This used to be implicit and every siting
+// argument in this table leaned on it unstated.
 export const HP_STATIONS = [
+  // Moved 2026-09-08 from [0, 45] — eight metres from the Great Portal — into
+  // the middle of the rebuilt wood, 190 m of Hercynian deep. See _buildWood.
   { key: 'wood',             name: 'The Dark Wood',          folio: 2,
-    pos: [0, 45],     look: [0, 38],   radius: 9 },
+    pos: [0, 340],    look: [0, 318],  radius: 16 },
   { key: 'portal',           name: 'The Great Portal',       folio: 13,
     pos: [0, 37],     look: [0, 26],   radius: 7, pitch: 0.2 },
   { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62,
@@ -101,6 +118,14 @@ export const HP_STATIONS = [
   // into worked land: first nature into second, which is Hunt's whole point.
   { key: 'fields',           name: 'The Fruitful Fields',    folio: 90,
     pos: [-40, 41],  look: [-40, 53],  radius: 12 },
+  // The southern approach, built 2026-09-08 (DIRECTIONS.md §3). Appended, so
+  // the digit keys 1–9 keep their journey order.
+  { key: 'great_oak',        name: 'The Great Oak',          folio: 20,
+    pos: [9, 178],   look: [9, 193],   radius: 14 },
+  { key: 'palm_plain',       name: 'The Palm and the Wolf',  folio: 23,
+    pos: [-6, 141],  look: [-9, 128],  radius: 13 },
+  { key: 'valley',           name: 'The Valley of the Approach', folio: 24,
+    pos: [0, 104],   look: [0, 60],    radius: 14, pitch: 0.04 },
 ];
 
 const EYE = 1.7;
@@ -238,7 +263,10 @@ export class HPWorldScene {
     this.styleKey = style;
     this.style    = createStyle(style);
     this.scene    = new THREE.Scene();
-    this.camera   = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 260);
+    // far was 260, which was a whole world's worth when the world was 100 m
+    // across. The approach of ch. II-III needs the pyramid visible from a
+    // quarter-kilometre away, "vnperfectlie appearing" (DIRECTIONS.md 3).
+    this.camera   = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 1400);
     this.camera.rotation.order = 'YXZ';
     this.onStation = null;         // callback(station | null) as the player nears a wonder
 
@@ -247,7 +275,10 @@ export class HPWorldScene {
       // Bounds now reach the island of Cythera (centre 0,-150, radius 50);
       // the open sea between shore and island is fenced by walls and a ring
       // of coast colliders, so the crossing is by boat (digit 0) only.
-      bounds: { minX: -58, maxX: 58, minZ: -206, maxZ: 50 },
+      // maxZ was 50 -- the far edge of the old dark wood. The wood now begins
+      // at z = 200 and the spacious plain the dream opens on runs to z = 470
+      // (DIRECTIONS.md 3), so the walkable box reaches it.
+      bounds: { minX: -140, maxX: 140, minZ: -206, maxZ: 462 },
       onDigit: (n) => {
         if (n === 0) { this.teleport('cythera_isle'); return; }   // Cupid ferries the willing
         const st = HP_STATIONS[n - 1];
@@ -264,7 +295,7 @@ export class HPWorldScene {
       this.walker.player.yaw = this.walker.yawToward(st.pos, st.look);
       this.walker.player.pitch = st.pitch ?? -0.04;
     } else {
-      this.walker.player.pos.set(0, 0, 44);   // wake in the dark wood
+      this.walker.player.pos.set(0, 0, 340);  // wake in the dark wood, lost in it
       this.walker.player.yaw = 0;
       this.walker.player.pitch = -0.02;
     }
@@ -328,8 +359,17 @@ export class HPWorldScene {
     // precisely the quattrocento landscape.
     // See src/shaders/AerialPerspective.js and RENDERING.md.
     this.AIR = 0xb0c4da;
+    // Density was 0.0082, tuned when nothing stood further off than 60 m. The
+    // aerial perspective is a RATIO of haze to distance, so in a world eight
+    // times longer the same picture needs a proportionally thinner air: at
+    // 0.0034 a thing 50 m off is barely veiled, one at 200 m is half drowned,
+    // and the pyramid at 350 m is the faint blue ghost the book describes --
+    // 0.0022 settled by eye from the palm plain, where the whole approach is
+    // in one frame: at 0.0034 the portal 130 m off was already white.
+    // "the forme of a tower of an incredible heygth, with a spyre vnperfectlie
+    // appearing" (Dall. p. 24). Leonardo's rule is unchanged; the world moved.
     this.scene.fog = lit
-      ? new THREE.FogExp2(this.AIR, 0.0082)
+      ? new THREE.FogExp2(this.AIR, 0.0022)
       : new THREE.FogExp2(S.fog.color, S.fog.density);
 
     this.renderer.shadowMap.enabled = true;
@@ -339,8 +379,11 @@ export class HPWorldScene {
       this.scene.environmentIntensity = 0.3;
     }
     this._lights = S.setupLights(this.scene);
-    if (lit) addSkyDome(this.scene, { top: 0x86a4cc, horizon: 0xf0d6a8, stars: 0 });
-    else if (S.sky) addSkyDome(this.scene, S.sky);
+    // The dome is 190 m of radius and the world is now 500 m long, so it has
+    // to travel with the eye or you walk out of the sky. It writes no depth and
+    // draws first, so distant geometry still paints over it.
+    if (lit) this._sky = addSkyDome(this.scene, { top: 0x86a4cc, horizon: 0xf0d6a8, stars: 0 });
+    else if (S.sky) this._sky = addSkyDome(this.scene, S.sky);
     // Lit garden: a bright afternoon key with enough fill to stay sunny, while
     // the raking sun still gives carved stone a lit side and a shadowed side.
     if (lit) this._tuneLitLighting();
@@ -380,6 +423,7 @@ export class HPWorldScene {
 
     this._buildGround();
     this._buildWood();
+    this._buildApproach();
     this._buildGreatPortal();
     this._buildBridge();
     this._buildRiverPlants();
@@ -1384,6 +1428,12 @@ export class HPWorldScene {
     if (S.key !== 'woodcut') {
       this._dress(groundMat, this._surfaceTexture({ base: '#3a5423', dark: '#1c3010', light: '#5c7e36', blobs: 80, speckle: 4200, repeat: 22 }), 0.15);
       this._dress(pathMat, this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 }), 0.3);
+      // _dress also hands the albedo to roughnessMap, which on ground is wrong
+      // in a way you cannot unsee once you have: every DARK speckle becomes a
+      // low-roughness (glossy) one, so the environment map puts a bright
+      // highlight on the grass and the gravel that slides along with the
+      // camera like a headlamp. Turf and gravel are matte. Keep the bump.
+      for (const m of [groundMat, pathMat]) { m.roughnessMap = null; m.roughness = 1.0; }
     }
 
     // The sward is a plane with two holes in it, both at the Polyandrion: the
@@ -1391,6 +1441,9 @@ export class HPWorldScene {
     // crypt is genuinely underground (ch. XIX, p. 247: "a blind, sloping little
     // stair descending"), so the ground has to open for it.
     this._m(this._holedGround(130, 130, 0, -2, [[30, -27, 0.8], [35.3, -28.0, 1.15, 0.52]]), groundMat, 0, 0, -2, { rx: -Math.PI / 2, cast: false });
+    // The approach's meadow takes the SAME material, or the two planes meet at
+    // z = 54 in a straight seam of two different greens.
+    this._groundMat = groundMat;
 
     // Main processional axis (wood → shore), two cross paths to the courts
     this._m(new THREE.PlaneGeometry(3.4, 86), pathMat, 0, 0.012, 7, { rx: -Math.PI / 2, cast: false });
@@ -1398,42 +1451,554 @@ export class HPWorldScene {
     this._m(new THREE.PlaneGeometry(38, 2.8), pathMat, 0, 0.012, 20, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(7, 40), pathMat, 0, 0.014, 0, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(8.5, 40), pathMat, 0, 0.014, -20, { rx: -Math.PI / 2, cast: false });
+
+    // The garden's sward is 130 m square and the walkable box is now 280 m
+    // wide, because the wood and the approach need the room. Two fences keep
+    // the walker on the ground he has: south of the Great Portal the world is
+    // the valley, and it is the cliffs that hold him; north of it, it is these.
+    this._wallCol(62, 150, -208, 44);
+    this._wallCol(-150, -62, -208, 44);
   }
 
-  // ── The Dark Wood (the selva oscura where the dream begins) ──────────────
+  // ── Chapter I: the dark wood, and chapter II's approach ──────────────────
+  //
+  // Rebuilt 2026-09-08 from the research pass (WOODS.md §1, DIRECTIONS.md §3),
+  // after Ted: *"the world of our virtual dream garden is too small … the trees
+  // of the wood dark enough to tower over our hero and cast enough shadows to
+  // make it dark."*
+  //
+  // What was here was a 70 × 22 m strip of 64 trees six to eleven metres tall,
+  // with a 5.4 m path cut through it. Three things were wrong, and all three
+  // are settled by the book's own words:
+  //
+  //   * THE SPECIES. The 1499 (ll. 555–563) names "el silvano fraxino ingrato
+  //     alle vipere, ulmi ruvidi alle foecunde vite grati, corticosi subderi
+  //     apto additamento muliebre, duri cerri, forti roburi et glandulose
+  //     querce et ilice" — ash, elm, cork oak, Turkey oak, durmast, acorn-oak,
+  //     holm oak. FIVE OF THE SEVEN ARE OAKS, and there is no beech and no fir.
+  //     Dallington's "soft Beeche" and "browne Hasils" render *querce* and
+  //     *ilice*; his "harde Ebony" renders *duri cerri*. The fir came from the
+  //     proem's WINTER SIMILE (l. 475 — the winds that bend the fir "sotto gli
+  //     corni di tauro lascivianti", under the horns of the wanton Bull, which
+  //     is the zodiac sign and dates the dream to late April) and never
+  //     belonged in the wood at all. Conifers are on the mountain slopes of
+  //     ch. VI, where Colonna actually puts them.
+  //   * THE CANOPY. "…che al roscido solo non permettevano gli radii del
+  //     gratioso sole integramente pervenire, ma, come da CAMURATO CULMO di
+  //     densante fronde coperto, non penetrava l'alma luce" — as if roofed by a
+  //     VAULT of thickening foliage, the kindly light did not get through.
+  //     Colonna uses the architectural word for a vault. So the crowns close
+  //     overhead and the floor is in shadow; and on coming out, Poliphilo's
+  //     eyes, "vsed to such obumbrated darkenes, could scarse abide to behould
+  //     the light" (Dall. p. 17). The dazzle on leaving is the proof.
+  //   * THE PATH. "could not finde any track or path, eyther to direct me
+  //     forward, or lead me back againe" (Dall. p. 15). There is none now. The
+  //     way out is the book's own instrument, the only navigational advice in
+  //     the whole text: "the keeping of the sunne still vpon one side, to
+  //     direct mee streight forwarde". The sun is at (16, 22, 10) — south-east
+  //     under the compass frame this world now declares — so its shafts fall
+  //     through the clearings toward the north-west, and a walker who keeps
+  //     them on one shoulder leaves by the north edge. See _woodClearings.
+  //
+  // Poliphilo names the place: he begins "ragionevolmente suspicare et
+  // crederme pervenuto nella VASTISSIMA HERCYNIA SILVA" (l. 563). Fabiani
+  // Giannetto (Word & Image 31.2, 2015, p. 4) notes the Hercynian forest was
+  // known to historians and geographers as "the largest and most impenetrable
+  // of all forests in Europe". It is 200 × 195 m here — a region to be lost
+  // inside, not a screen walked past.
 
-  _buildWood() {
-    const S = this.style;
-    // A darker floor under the wood
-    const duffMat = S.key === 'woodcut'
-      ? S.mat({ tone: 0.2, rim: 0 })
-      : S.mat({ color: 0x141c0c, roughness: 0.98 });
-    this._m(new THREE.PlaneGeometry(70, 22), duffMat, 0, 0.008, 43, { rx: -Math.PI / 2, cast: false });
+  // The wood's own extent, so the duff, the trees, the clearance map and the
+  // meadow all agree about where it is.
+  static get WOOD() { return { x0: -100, x1: 100, z0: 225, z1: 420 }; }
 
-    // Dense deterministic scatter of trees, keeping the path clear
-    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
-    for (let i = 0; i < 64; i++) {
-      const x = (rnd(i, 1) - 0.5) * (i % 3 ? 30 : 62);  // dense core, scattered fringe
-      const z = 34.5 + rnd(i, 2) * 16;
-      if (Math.abs(x) < 2.7) continue;                  // the path survives
-      const s = 0.9 + rnd(i, 3) * 0.8;
-      // the wood the book names (1592 l. 625): elms with their vines, oaks,
-      // beeches, and the fir whose boughs are hung on the horns of the
-      // sacrifice — no cypress, which belongs to the garden avenues
-      const WOOD = ['oak', 'oak', 'beech', 'elm', 'fir', 'oak', 'beech', 'fir'];
-      this._tree(x, z, s * 1.15, WOOD[Math.floor(rnd(i, 4) * WOOD.length) % WOOD.length]);
+  // Five clearings where the canopy opens and the sun reaches the floor. These
+  // are the wood's ONLY navigational information, and they are deliberate: with
+  // no path and no sightline, the shafts are how a walker recovers the sun's
+  // bearing and walks out of the Hercynian. Seeded, so the wood is the same
+  // wood every time and can be learned.
+  static get WOOD_CLEARINGS() {
+    return [[-58, 262, 13], [24, 296, 11], [-16, 340, 15], [62, 372, 12], [-44, 398, 10]];
+  }
+
+  _inClearing(x, z) {
+    for (const [cx, cz, r] of HPWorldScene.WOOD_CLEARINGS) {
+      const d = Math.hypot(x - cx, z - cz);
+      if (d < r) return 1 - d / r;
+    }
+    return 0;
+  }
+
+  // One tree of the dark wood. The garden's `_tree` is the wrong instrument
+  // here: its crown is closed with half-metre leaf cards at a coverage of
+  // ~8πr²/size², which for a fourteen-metre crown is five thousand cards, and
+  // for two hundred and forty trees is two million. A forest tree is read from
+  // underneath as a MASS — trunks, big limbs, and a dark ceiling with holes in
+  // it — so the crown here is three opaque leaf-mass shells (which are what
+  // actually casts the shade) with a dozen large sprays hung under and around
+  // them to break the silhouette and dapple the floor. Twenty-odd meshes a
+  // tree, all of which the draw-call compiler folds away.
+  // Bark, cached by species. `this.style.mat()` returns a NEW material every
+  // call, and the draw-call compiler buckets by material uuid — so a bark made
+  // inside the tree builder gives every one of the wood's seven hundred trunks
+  // and thickets its own bucket, which is seven hundred draw calls for wood
+  // that should be one. (2026-09-08. The garden's `_tree` predates this and
+  // gets away with it at forty trees.)
+  _barkMat(species) {
+    this._barkMats = this._barkMats || {};
+    if (this._barkMats[species]) return this._barkMats[species];
+    const SP = HPWorldScene.SPECIES[species] || HPWorldScene.SPECIES.oak;
+    const m = this.style.key === 'woodcut' ? this._trunkMat
+      : this.style.mat({ color: SP.bark, roughness: 0.96 });
+    m.userData.roll = m.userData.roll || `the bark of ${species}`;
+    this._barkMats[species] = m;
+    return m;
+  }
+
+  _forestTree(x, z, h, species, seed) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const SP = HPWorldScene.SPECIES[species] || HPWorldScene.SPECIES.oak;
+    const rnd = (k) => this._treeRand(seed, k);
+    const g = new THREE.Group();
+    g.position.set(x, 0, z);
+    g.rotation.y = rnd(11) * Math.PI * 2;
+    this.scene.add(g);
+
+    const bark = this._barkMat(species);
+    // A forest tree is drawn up by its neighbours: the crown starts high and
+    // the bole below it is clear, which is why a wood is a hall of columns.
+    const CB = h * (0.40 + rnd(3) * 0.10);           // crown base, 10–17 m up
+    const R = 0.30 + rnd(4) * 0.26 + h * 0.006;      // 0.45–0.78 m at the butt
+
+    // Root flare, and the roots that trip him: "spesse fiate negli RADICONI DA
+    // TERRA SCOPERTI cespitando" — often stumbling on the roots laid bare out
+    // of the ground (1499 l. 580).
+    this._m(new THREE.CylinderGeometry(R * 1.25, R * 2.2, 0.9, 8), bark, 0, 0.45, 0, { parent: g });
+    for (let i = 0; i < 3; i++) {
+      const a = rnd(20 + i) * Math.PI * 2, L = R * (3.0 + rnd(30 + i) * 2.4);
+      // A root laid along the ground, running out from the butt and sinking
+      // into it. Thin, and tilted down, or they read as logs propped on spokes.
+      const rt = this._m(new THREE.CylinderGeometry(R * 0.10, R * 0.34, L, 5), bark,
+        Math.cos(a) * L * 0.46, R * 0.16, Math.sin(a) * L * 0.46, { parent: g, cast: false });
+      rt.rotation.order = 'YXZ';
+      rt.rotation.set(Math.PI / 2 - 0.16, -a + Math.PI / 2, 0);
+    }
+    // The bole, then a thinner shaft on into the crown
+    this._m(new THREE.CylinderGeometry(R * 0.62, R, CB, 8), bark, 0, CB / 2, 0, { parent: g });
+    this._m(new THREE.CylinderGeometry(R * 0.2, R * 0.62, h * 0.34, 7), bark, 0, CB + h * 0.17, 0, { parent: g });
+
+    // Boughs out into the crown
+    const CY = CB + h * 0.22;                        // the crown's middle
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + rnd(5) * 3;
+      const reach = (SP.crown[0] || 2) * (h * 0.19);
+      this._limb(g, bark, 0, CB * 0.94, 0,
+        Math.cos(a) * reach, CY + (rnd(40 + i) - 0.4) * h * 0.09, Math.sin(a) * reach,
+        R * 0.5, R * 0.16);
     }
 
-    // The hungry wolf, watching the path
-    const wolf = this.cast.animals.wolf(1.15);
-    this._npc('wolf', wolf, 4.2, 40.5, -2.2, { label: 'The Wolf', labelY: 1.5, sway: 0.03 });
+    // The vault: opaque leaf-mass shells. These are what makes the floor dark,
+    // and they are the reason the crowns must overlap — a canopy with sky
+    // between the trees is not a canopy.
+    this._coreMat = this._coreMat || (woodcut ? this._leafMat
+      : this.style.mat({ color: 0x0f1d0a, roughness: 1, metalness: 0 }));
+    this._coreMat.userData.roll = this._coreMat.userData.roll || 'the shade inside a crown';
+    // A closed canopy is not a row of crowns that touch: it is crowns that
+    // INTERLOCK. At 14 m spacing the mass has to be about 24 m across, so the
+    // shells run to r = CR and CR is 0.42 h. The first pass used 0.62 CR and
+    // the wood had sky in it from every angle -- you could see the valley
+    // cliffs 130 m away straight through it, which is the opposite of the
+    // book's "non penetrava l'alma luce".
+    const CR = h * (0.38 + rnd(6) * 0.09);
+    const thin = this._inClearing(x, z) > 0 ? 0.4 : 1;
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + rnd(50 + i) * 2.2;
+      const rr = CR * (0.3 + rnd(60 + i) * 0.34);
+      const sh = this._m(new THREE.SphereGeometry(1, 10, 8), this._coreMat,
+        Math.cos(a) * rr, CY + (rnd(70 + i) - 0.5) * h * 0.15, Math.sin(a) * rr,
+        { parent: g, cast: true, receive: false });
+      const k = CR * (0.92 - i * 0.09) * thin;
+      sh.scale.set(k, k * 0.66, k);
+    }
+    // Sprays hung under and around the mass. A card is a branch here, not a
+    // leaf: three metres, from the same painted spray the garden trees use.
+    const mat = this._leafCardMat(species);
+    const geo = this._cardGeo = this._cardGeo || new THREE.PlaneGeometry(1, 1);
+    const NCARD = Math.round(20 * thin);
+    for (let i = 0; i < NCARD; i++) {
+      const th = rnd(i * 5 + 1) * Math.PI * 2;
+      const ph = Math.acos(2 * rnd(i * 5 + 2) - 1);
+      const rr = 0.7 + 0.3 * rnd(i * 5 + 3);
+      const m = new THREE.Mesh(geo, mat);
+      m.position.set(Math.sin(ph) * Math.cos(th) * CR * rr,
+                     CY + Math.cos(ph) * CR * 0.6 * rr,
+                     Math.sin(ph) * Math.sin(th) * CR * rr);
+      m.rotation.set(rnd(i * 5 + 4) * Math.PI, rnd(i * 5 + 5) * Math.PI, rnd(i * 7 + 9) * Math.PI);
+      const sc = CR * (0.24 + rnd(i * 3 + 11) * 0.16);
+      m.scale.set(sc, sc, 1);
+      m.castShadow = i < 9; m.receiveShadow = false;
+      g.add(m);
+    }
+    // The elm carries its vine — "ulmi ruvidi ALLE FOECUNDE VITE GRATI"
+    if (species === 'elm' && !woodcut) {
+      this._vineMat = this._vineMat || this.style.mat({ color: 0x4a6a2a, roughness: 0.9 });
+      const vine = this._vineMat;
+      for (let i = 0; i < 4; i++) {
+        this._m(new THREE.TorusGeometry(R * 1.2, R * 0.16, 5, 10, Math.PI * 1.4), vine,
+          0, CB * (0.18 + i * 0.2), 0, { parent: g, cast: false, rx: Math.PI / 2, ry: i * 1.4 });
+      }
+    }
+    this._circleCol(x, z, R * 2.1);
+    this._shadeSpots.push({ x, z, r: CR * 0.9, h: CY });
+    return g;
+  }
 
-    // A small spring (Poliphilo's thirst)
-    const spring = this.cast.props.pool(1.1);
-    spring.position.set(-3.6, 0, 37.5);
+  // A sapling or a bramble-brake: one dark core and a handful of big sprays.
+  // Cheap on purpose — see the note where it is called.
+  _thicket(x, z, h, species, seed) {
+    const rnd = (k) => this._treeRand(seed, k);
+    const g = new THREE.Group();
+    g.position.set(x, 0, z);
+    g.rotation.y = rnd(1) * Math.PI * 2;
+    this.scene.add(g);
+    const bark = this._barkMat('elm');
+    this._m(new THREE.CylinderGeometry(0.04 * h, 0.07 * h, h * 0.5, 6), bark, 0, h * 0.25, 0, { parent: g });
+    this._coreMat = this._coreMat || (this.style.key === 'woodcut' ? this._leafMat
+      : this.style.mat({ color: 0x0f1d0a, roughness: 1, metalness: 0 }));
+    const core = this._m(new THREE.SphereGeometry(1, 8, 6), this._coreMat, 0, h * 0.62, 0,
+      { parent: g, cast: true, receive: false });
+    core.scale.set(h * 0.34, h * 0.3, h * 0.34);
+    const mat = this._leafCardMat(species);
+    const geo = this._cardGeo = this._cardGeo || new THREE.PlaneGeometry(1, 1);
+    for (let i = 0; i < 8; i++) {
+      const th = rnd(i * 3 + 1) * Math.PI * 2, ph = Math.acos(2 * rnd(i * 3 + 2) - 1);
+      const m = new THREE.Mesh(geo, mat);
+      m.position.set(Math.sin(ph) * Math.cos(th) * h * 0.36,
+                     h * 0.6 + Math.cos(ph) * h * 0.26,
+                     Math.sin(ph) * Math.sin(th) * h * 0.36);
+      m.rotation.set(rnd(i * 3 + 4) * Math.PI, rnd(i * 3 + 5) * Math.PI, rnd(i * 3 + 6) * Math.PI);
+      const sc = h * (0.32 + rnd(i * 3 + 7) * 0.18);
+      m.scale.set(sc, sc, 1);
+      m.castShadow = i < 3; m.receiveShadow = false;
+      g.add(m);
+    }
+    this._circleCol(x, z, h * 0.14);
+    return g;
+  }
+
+  _buildWood() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const W = HPWorldScene.WOOD;
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+
+    // The floor: leaf litter, dark, and no grass grows in it. It runs a little
+    // wider than the trees so the wood has a fringe rather than a wall.
+    const duffMat = woodcut ? S.mat({ tone: 0.24, rim: 0 })
+      : S.mat({ color: 0x14160c, roughness: 1.0 });
+    if (!woodcut) {
+      // Leaf litter under a closed canopy is nearly black even at noon, and the
+      // albedo has to carry that: shadow alone cannot, because the hemisphere,
+      // the ambient and the environment all still reach the floor and none of
+      // them is occluded by geometry. The dark ground is half the effect and
+      // the cast shadow is the other half.
+      this._dress(duffMat, this._surfaceTexture({ base: '#1c1810', dark: '#0a0906', light: '#332a18', blobs: 120, speckle: 6000, repeat: 40 }), 0.35);
+      // _dress hands the texture to roughnessMap as well, which on a nearly
+      // black albedo turns every dark speckle glossy: the environment map then
+      // mirrors a bright blob on the floor that follows the camera like a
+      // headlamp. Leaf litter is the most matte surface in the world.
+      duffMat.roughnessMap = null; duffMat.roughness = 1.0; duffMat.metalness = 0.0;
+    }
+    const wW = (W.x1 - W.x0) + 40, wD = (W.z1 - W.z0) + 30;
+    this._m(new THREE.PlaneGeometry(wW, wD), duffMat,
+      (W.x0 + W.x1) / 2, 0.008, (W.z0 + W.z1) / 2, { rx: -Math.PI / 2, cast: false });
+    // A wood does not end on a ruled line. The duff spills out past both edges
+    // in irregular tongues, so that coming out of the Hercynian the ground goes
+    // from litter to grass the way it does -- patchily -- instead of stepping
+    // from black to green across a straight seam.
+    for (let i = 0; i < 54; i++) {
+      const north = i % 2 === 0;
+      const x = W.x0 - 14 + rnd(i, 71) * (W.x1 - W.x0 + 28);
+      const z = (north ? W.z0 - 8 : W.z1 + 8) + (rnd(i, 72) - 0.5) * 22;
+      const r = 4 + rnd(i, 73) * 11;
+      this._m(new THREE.CircleGeometry(r, 9), duffMat, x, 0.009, z,
+        { rx: -Math.PI / 2, cast: false });
+    }
+
+    // ── The trees ──
+    // A jittered grid at ~17 m, which with crowns of 9–16 m radius closes the
+    // canopy. The mix is the 1499's: five oaks to one ash to one elm, and the
+    // holm oak (`laurel`, the nearest evergreen the SPECIES table has) standing
+    // for `ilice`. Nothing is cleared for a path, because the book has none.
+    const MIX = ['oak', 'oak', 'oak', 'oak', 'elm', 'ash', 'oak', 'laurel', 'oak', 'elm'];
+    const STEP = 14;
+    let n = 0;
+    for (let gx = W.x0; gx <= W.x1; gx += STEP) {
+      for (let gz = W.z0; gz <= W.z1; gz += STEP) {
+        const i = n++;
+        const x = gx + (rnd(i, 1) - 0.5) * STEP * 0.85;
+        const z = gz + (rnd(i, 2) - 0.5) * STEP * 0.85;
+        // the clearings are clearings: no trunk stands in one
+        if (this._inClearing(x, z) > 0.12) continue;
+        // the north edge thins over the last 22 m, so leaving is a brightening
+        // and not a wall — this is the dazzle of Dall. p. 17
+        const edge = Math.min(1, (z - W.z0) / 22);
+        if (rnd(i, 8) > 0.25 + edge * 0.75) continue;
+        const h = 24 + rnd(i, 3) * 12;                    // 24–36 m, as they are
+        this._forestTree(x, z, h, MIX[Math.floor(rnd(i, 4) * MIX.length) % MIX.length], i * 7 + 3);
+      }
+    }
+
+    // ── The understorey ──
+    // "non densi virgulti, pongente vepretto" — dense saplings and pricking
+    // bramble-brake. He comes out of it "my clothes torne, my face and hands
+    // scratched and netteled" (Dall. p. 18), so there has to be something to
+    // tear them on.
+    const brambleMat = this._leafCardMat('ivy');
+    const bgeo = this._cardGeo = this._cardGeo || new THREE.PlaneGeometry(1, 1);
+    for (let i = 0; i < 1200; i++) {
+      const x = W.x0 + rnd(i, 11) * (W.x1 - W.x0);
+      const z = W.z0 + rnd(i, 12) * (W.z1 - W.z0);
+      if (this._inClearing(x, z) > 0.3) continue;
+      const m = new THREE.Mesh(bgeo, brambleMat);
+      const sc = 1.3 + rnd(i, 13) * 1.7;
+      m.position.set(x, sc * 0.3, z);
+      m.rotation.set((rnd(i, 16) - 0.5) * 0.7, rnd(i, 14) * Math.PI, (rnd(i, 17) - 0.5) * 0.5);
+      m.scale.set(sc, sc * 0.7, 1);
+      m.castShadow = false; m.receiveShadow = false;
+      this.scene.add(m);
+      if (rnd(i, 15) > 0.72) this._circleCol(x, z, sc * 0.32);
+    }
+    // The middle storey — "non densi virgulti", dense saplings. This is also
+    // what shuts the EYE-LEVEL sightlines: crowns close the sky, but a wood you
+    // can see a hundred metres through at head height is not one you can be
+    // lost in, and being lost is the whole of chapter I.
+    //
+    // Deliberately NOT _tree. A garden tree closes its crown with half-metre
+    // cards at a coverage of 8πr²/size² — about two hundred cards a bush — and
+    // two hundred and fifty bushes would be fifty thousand meshes. That is
+    // exactly the trap the foliage pass fell into on 2026-09-07/08 (see
+    // _mergeInto's note). A thicket is one dark core and eight big sprays.
+    for (let i = 0; i < 560; i++) {
+      const x = W.x0 + rnd(i, 21) * (W.x1 - W.x0);
+      const z = W.z0 + rnd(i, 22) * (W.z1 - W.z0);
+      if (this._inClearing(x, z) > 0.25) continue;
+      this._thicket(x, z, 1.8 + rnd(i, 23) * 3.4, i % 4 ? 'laurel' : 'oak', i * 17 + 55);
+    }
+    // fallen timber — "the fall of trees, through the force of a whyrlewinde,
+    // & noise of the broken bowghes" (Dall. p. 19)
+    for (let i = 0; i < 26; i++) {
+      const x = W.x0 + rnd(i, 31) * (W.x1 - W.x0);
+      const z = W.z0 + rnd(i, 32) * (W.z1 - W.z0);
+      const L = 7 + rnd(i, 33) * 12, r = 0.3 + rnd(i, 34) * 0.3;
+      const t = this._m(new THREE.CylinderGeometry(r * 0.7, r, L, 7), this._trunkMat, x, r * 0.9, z);
+      t.rotation.z = Math.PI / 2; t.rotation.y = rnd(i, 35) * Math.PI;
+      this._circleCol(x, z, r * 1.4);
+    }
+
+    // The spring and the river of ch. I, at the wood's northern edge — he
+    // finds them on getting OUT of the wood (Dall. p. 18), and then loses the
+    // river again chasing the song, which is why the great oak is a long way
+    // from the water. (_buildStream carries the same offset.)
+    const SP = [0, W.z0 - 7];
+    const spring = this.cast.props.pool(1.6);
+    spring.position.set(SP[0], 0, SP[1]);
     this.scene.add(spring);
-    this._circleCol(-3.6, 37.5, 0.9);
+    this._circleCol(SP[0], SP[1], 1.3);
     this._buildStream();
+  }
+
+  // ── Chapter II: the approach ─────────────────────────────────────────────
+  //
+  // Built 2026-09-08. This is the ground between the wood's north edge and the
+  // Great Portal, and it did not exist: the portal stood eight metres from the
+  // wood, so the book's own way of introducing a monument — see it far off and
+  // indistinct, and let it grow — had nowhere to happen.
+  //
+  // Colonna's sequence, in order, and it is all one continuous walk:
+  //
+  //   the spacious plain  →  the wood  →  the spring and the river  →
+  //   the great oak in the mead (he sleeps)  →  the delicate valley  →
+  //   the sandy plain and the palm  →  the wolf  →  the tower far off  →
+  //   the mountains growing  →  the portal, which stops the valley dead
+  //
+  //   "casting my eyes towards the wooddie mountaines, WHICH SEEMED TO IOYNE
+  //    THEMSELUES TOGETHER, beeing looked vnto a farre off, I sawe the forme of
+  //    a tower of an incredible heygth, with a spyre VNPERFECTLIE APPEARING…
+  //    And drawing neare vnto this building, I beheld the gratious mountaines
+  //    before a farre of seeming small, by comming neerer and neerer, BY LITTLE
+  //    AND LITTLE, TO LIFT VP THEMSELUES MORE AND MORE, at the first seeming to
+  //    mee that they had ioyned together with the building which was AN
+  //    INCLOSURE OR END OF THE VALLEY betwixt mountaine and mountaine"
+  //                                                        — Dallington p. 24
+  //
+  //   "the foresaid valley there had an end, that NO MAN COULD GO FURTHER
+  //    FORWARD OR BACKE AGAINE, but to enter in by this broade, large, and wide
+  //    open porche"                                        — Dallington p. 27
+  //
+  // That last sentence is an absolute, and until now the world quietly made it
+  // untrue: you could walk round the portal on the grass. The cliffs close it.
+  // They converge on the portal — 44 m apart at its piers, which span 38 —
+  // so the building genuinely fills the gap, and they open out southward to
+  // 150 m so that the valley reads as a valley and not a corridor.
+  //
+  // The pyramid itself is NOT yet at the size the book gives it (1 140 m wide;
+  // it is 17.5 here). That is a separate, larger job and stays in the ledger as
+  // `pyramid-true-scale`. What this pass buys is the approach: 188 m of walking
+  // with the thing in view the whole way, and a valley that is shut.
+
+  _buildApproach() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const W = HPWorldScene.WOOD;
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+
+    // ── The ground of the whole southern region ──
+    // Three surfaces, because the book names three: the green mead about the
+    // oak, the "sandie or grauelly plaine, yet bespotted with greene tuffes" of
+    // the palm, and the flowered plain the dream opens on.
+    const meadMat = this._groundMat;
+    const gravelMat = woodcut ? S.mat({ tone: 0.05, rim: 0 })
+      : S.mat({ color: 0x6e6248, roughness: 1.0 });
+    if (!woodcut) {
+      this._dress(gravelMat, this._surfaceTexture({ base: '#6e6446', dark: '#3e3826', light: '#8e8260', blobs: 60, speckle: 5200, repeat: 20 }), 0.3);
+      gravelMat.roughnessMap = null; gravelMat.roughness = 1.0;
+    }
+    // the valley floor and the mead, from the portal to the wood
+    this._m(new THREE.PlaneGeometry(300, 172), meadMat, 0, 0.004, 140, { rx: -Math.PI / 2, cast: false });
+    // the sandy plain of the palm, inside the valley mouth
+    this._m(new THREE.CircleGeometry(31, 26), gravelMat, -6, 0.010, 130, { rx: -Math.PI / 2, cast: false });
+    // the spacious plain the dream opens on, beyond the wood
+    this._m(new THREE.PlaneGeometry(280, 70), meadMat, 0, 0.004, W.z1 + 28, { rx: -Math.PI / 2, cast: false });
+
+    // ── The cliffs that close the valley ──
+    this._valleyCliffs();
+
+    // ── The great oak, in a spacious green mead (ch. I end) ──
+    // "vnder a broade and mightye Oke full of Acornes, standing in the middest
+    // of a spatious and large green meade, extending forth his thicke and
+    // leauie armes to make a coole shadowe" (Dall. p. 20). He lies down on his
+    // left side here and falls into the second dream. It is a long way from the
+    // river on purpose: he lost the water chasing the song.
+    this._forestTree(9, W.z0 - 32, 31, 'oak', 4242);
+    for (let i = 0; i < 5; i++) {                        // a few outliers, well apart
+      const a = rnd(i, 41) * Math.PI * 2, r = 26 + rnd(i, 42) * 30;
+      this._forestTree(9 + Math.cos(a) * r, W.z0 - 32 + Math.sin(a) * r * 0.7,
+        18 + rnd(i, 43) * 8, i % 2 ? 'ash' : 'oak', 900 + i * 31);
+    }
+
+    // ── The delicate valley of the second dream (ch. II) ──
+    // "a delicate valley, in the which did rise a small mounting of no great
+    // height, sprinkled heare and there with young Okes, Ashes, Palme trees
+    // broadleaued, Aesculies, Holme, Chestnut, Sugerchist, Poplars, wilde
+    // Oliue… Thus walking solitarily betwixt the trees, GROWING DISTANTLY ONE
+    // FROM ANOTHER" (Dall. p. 23). Open and sunlit — the exact opposite of the
+    // wood, and the contrast is the point.
+    const VALLEY = ['oak', 'ash', 'laurel', 'olive', 'plane', 'oak', 'olive', 'ash'];
+    for (let i = 0; i < 34; i++) {
+      const x = -78 + rnd(i, 51) * 156;
+      const z = 150 + rnd(i, 52) * 42;
+      if (Math.abs(x) < 12 && z < 168) continue;         // keep the sightline open
+      this._tree(x, z, 1.5 + rnd(i, 53) * 1.4, VALLEY[Math.floor(rnd(i, 54) * VALLEY.length) % VALLEY.length]);
+    }
+
+    // ── The sandy plain, and the palm ──
+    // "a faire Palme tree with his leaues like the Culter of a plowe, and
+    // abounding with sweet and pleasant fruite… an elect and chosen signe of
+    // victorie" (Dall. p. 23). One tree, alone on the gravel.
+    this._tree(-6, 128, 2.4, 'palm');
+    for (let i = 0; i < 150; i++) {                      // "bespotted with greene tuffes"
+      const a = rnd(i, 61) * Math.PI * 2, r = 2 + rnd(i, 62) * 28;
+      this._tuft(-6 + Math.cos(a) * r, 0.02, 130 + Math.sin(a) * r, 'mint', 0.55 + rnd(i, 63) * 0.4);
+    }
+
+    // ── The wolf ──
+    // Moved here from the dark wood, where it had been standing beside a path
+    // since the world was built. Dallington p. 23 puts it in the SECOND dream's
+    // pleasant valley — and on the LEFT HAND: "I soddainely espied vpon my left
+    // hand, an hungrie and carniuorous Woolfe, gaping vpon me with open mouthe."
+    // Walking north (−z) the left hand is −x, so it stands to the west. The
+    // shock is that it appears in the pleasant place, not in the fearful one;
+    // Fabiani Giannetto notes Poliphilo never sees any of the beasts he dreaded
+    // in the wood itself. It runs away the moment he would cry out.
+    const wolf = this.cast.animals.wolf(1.15);
+    this._npc('wolf', wolf, -21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
+  }
+
+  // The two "wooddie mountaines, which seemed to ioyne themselues together".
+  // Built as two ridges of low-poly rock that converge on the portal: at the
+  // piers the gap is 44 m against the portal's 38 m of lintel, so the building
+  // closes the valley; southward they fall back to a 150 m gap and drop away,
+  // so from the palm plain they read as two headlands with something between
+  // them. Wooded on their lower slopes with the conifers that belong to a
+  // mountain and NOT to the dark wood (1499 ll. 2800-2813).
+  _valleyCliffs() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const rockMat = woodcut ? S.mat({ tone: 0.16 })
+      : S.mat({ color: 0x5e5a50, roughness: 1.0 });
+    if (!woodcut) {
+      this._dress(rockMat, this._surfaceTexture({ base: '#6a6458', dark: '#2e2a22', light: '#948b7c', blobs: 70, speckle: 3000, repeat: 6 }), 0.5);
+      rockMat.roughnessMap = null; rockMat.roughness = 1.0;
+    }
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 269.5) * 43758.5453; return v - Math.floor(v); };
+
+    // gap(z): half-width of the valley floor at z. 22 m at the portal (z = 40),
+    // opening to 75 m by the time the palm plain is reached.
+    const gap = (z) => 20 + Math.max(0, z - 40) * 0.46;
+    // how high the wall stands at z: modest by the portal so the building is
+    // not dwarfed at the moment of arrival, and mounting southward
+    const high = (z) => 26 + Math.max(0, z - 40) * 0.42;
+
+    let n = 0;
+    for (const side of [-1, 1]) {
+      for (let z = 38; z <= 176; z += 7) {
+        const g0 = gap(z), h0 = high(z);
+        // the wall itself: a stack of two blocks, jittered, so the face breaks
+        for (let k = 0; k < 3; k++) {
+          const i = n++;
+          const w = 26 + rnd(i, 1) * 16;
+          const hh = h0 * (0.62 + k * 0.5) * (0.85 + rnd(i, 2) * 0.3);
+          const x = side * (g0 + w * 0.5 + k * 5 + rnd(i, 3) * 4);
+          const blk = this._m(this._indexed(new THREE.DodecahedronGeometry(1, 0)), rockMat,
+            x, hh * 0.42, z + (rnd(i, 4) - 0.5) * 5, { cast: true });
+          blk.scale.set(w * 0.5, hh * 0.62, 7 + rnd(i, 5) * 6);
+          blk.rotation.y = rnd(i, 6) * 0.6;
+          blk.rotation.x = (rnd(i, 7) - 0.5) * 0.12;
+        }
+        // and it is a WALL: you cannot walk through the mountain
+        this._wallCol(side > 0 ? gap(z) : -200, side > 0 ? 200 : -gap(z), z - 3.6, z + 3.6);
+        // conifers on the lower slope — fir, larch and silver fir are the
+        // mountain's trees (1499 l. 2813), not the dark wood's
+        for (let t = 0; t < 2; t++) {
+          const i = n++;
+          if (rnd(i, 9) > 0.62) continue;
+          this._tree(side * (gap(z) + 2 + rnd(i, 11) * 9), z + (rnd(i, 12) - 0.5) * 7,
+            1.5 + rnd(i, 13) * 1.7, rnd(i, 14) > 0.45 ? 'fir' : (rnd(i, 15) > 0.5 ? 'pine' : 'cypress'));
+        }
+      }
+    }
+    // The curtain that carries the building to the mountain on either side.
+    // Without it the portal is a free-standing arch you walk round on the
+    // grass, which is exactly what Dallington p. 27 says you cannot do: the
+    // porch "was placed betwixt and continued in building from the one and the
+    // other of the mountaines". Ashlar, so Roll Up can bring it down.
+    for (const side of [-1, 1]) {
+      this._ashlar(side * 14.6, 0, 26, 11.2, 7.4, 2.2, this._stoneMat,
+        { name: 'the curtain from the Great Portal to the mountain' });
+      this._wallCol(side > 0 ? 8.8 : -24, side > 0 ? 24 : -8.8, 24.4, 41.5);
+    }
+
+    // The valley is shut behind the walker too, at the south end of the
+    // approach: the mountains close the far side of the palm plain except for
+    // the way back to the mead. (Dall. p. 27: "no man could go further forward
+    // or backe againe" cuts both ways.)
+    for (const side of [-1, 1]) {
+      for (let z = 176; z <= 200; z += 8) {
+        const i = n++;
+        const blk = this._m(this._indexed(new THREE.DodecahedronGeometry(1, 0)), rockMat,
+          side * (86 + rnd(i, 21) * 10), 22 + rnd(i, 22) * 14, z, { cast: true });
+        blk.scale.set(16 + rnd(i, 23) * 10, 26 + rnd(i, 24) * 14, 9 + rnd(i, 25) * 6);
+        blk.rotation.y = rnd(i, 26) * 0.7;
+      }
+      this._wallCol(side > 0 ? 76 : -200, side > 0 ? 200 : -76, 172, 204);
+    }
   }
 
   // ── The Great Portal (the colossal pyramid-gate) ──────────────────────────
@@ -9410,16 +9975,23 @@ export class HPWorldScene {
   // The world had the spring as a round pool and no stream at all.
   _buildStream() {
     const S = this.style, woodcut = S.key === 'woodcut';
-    const pts = [[-3.6, 37.5], [-6.4, 39.2], [-9.8, 40.4], [-13.4, 42.6], [-17.6, 43.4], [-21.8, 45.6], [-26.4, 46.2], [-30.6, 48.0], [-35.4, 48.8], [-40.5, 50.6], [-44, 52]];
+    // Moved with the wood, 2026-09-08. The spring and the river are chapter I's
+    // and belong at the wood's northern edge, where Poliphilo finds them on
+    // getting OUT of it (Dall. p. 18) -- not beside the Great Portal, which is
+    // where they sat when the wood was eight metres from the pyramid. OX/OZ
+    // carries the whole watercourse, its stones, its reeds and its plaque.
+    const OX = 3.6, OZ = 180.5;
+    const off = ([x, z]) => [x + OX, z + OZ];
+    const pts = [[-3.6, 37.5], [-6.4, 39.2], [-9.8, 40.4], [-13.4, 42.6], [-17.6, 43.4], [-21.8, 45.6], [-26.4, 46.2], [-30.6, 48.0], [-35.4, 48.8], [-40.5, 50.6], [-44, 52]].map(off);
     const w = this._waterMat();
     // a pale gravel bed under the water, or the stream is invisible on the duff
     const bed = woodcut ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0xb8ad94, roughness: 0.95 });
     if (!woodcut) this._dress(bed, this._surfaceTexture({ base: '#b8ad94', dark: '#6a6050', light: '#e0d8c4', blobs: 40, speckle: 5000, repeat: 6 }), 0.25);
     this.scene.add(this._ribbon(pts.map(([x, z]) => new THREE.Vector3(x, 0.014, z)), 1.9, bed));
-    this.scene.add(this._ribbon([[-13.4, 42.6], [-14.8, 45.4], [-15.6, 48.6], [-16.2, 51.5]].map(([x, z]) => new THREE.Vector3(x, 0.013, z)), 1.2, bed));
+    this.scene.add(this._ribbon([[-13.4, 42.6], [-14.8, 45.4], [-15.6, 48.6], [-16.2, 51.5]].map(off).map(([x, z]) => new THREE.Vector3(x, 0.013, z)), 1.2, bed));
     const ribbon = this._ribbon(pts.map(([x, z]) => new THREE.Vector3(x, 0.025, z)), 1.3, w);
     this.scene.add(ribbon);
-    const branch = this._ribbon([[-13.4, 42.6], [-14.8, 45.4], [-15.6, 48.6], [-16.2, 51.5]].map(([x, z]) => new THREE.Vector3(x, 0.024, z)), 0.7, w);
+    const branch = this._ribbon([[-13.4, 42.6], [-14.8, 45.4], [-15.6, 48.6], [-16.2, 51.5]].map(off).map(([x, z]) => new THREE.Vector3(x, 0.024, z)), 0.7, w);
     this.scene.add(branch);
     const stone = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0x6a6660, roughness: 0.95 });
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
@@ -9429,24 +10001,23 @@ export class HPWorldScene {
       const x = pts[k][0] + (pts[k + 1][0] - pts[k][0]) * f + (rnd(i, 2) - 0.5) * 1.0, z = pts[k][1] + (pts[k + 1][1] - pts[k][1]) * f + (rnd(i, 3) - 0.5) * 1.0;
       this._m(this._indexed(new THREE.DodecahedronGeometry(0.12 + rnd(i, 4) * 0.18, 0)), stone, x, 0.06, z, { cast: false }).rotation.set(rnd(i, 5) * 3, rnd(i, 6) * 3, 0);
     }
-    for (const [x, z, ry] of [[-11.5, 41.4, 0.5], [-28.5, 47.0, -0.35]]) {
+    for (const [x, z, ry] of [[-11.5 + OX, 41.4 + OZ, 0.5], [-28.5 + OX, 47.0 + OZ, -0.35]]) {
       const trunk = this._m(new THREE.CylinderGeometry(0.16, 0.2, 3.0, 8), this._trunkMat, x, 0.2, z, { outline: true });
       trunk.rotation.z = Math.PI / 2; trunk.rotation.y = ry;
     }
     // the sweet herbs and water flowers about the spring
-    for (let k = 0; k < 10; k++) { const a = k * 0.63; this._tuft(-3.6 + Math.cos(a) * 1.25, 0.02, 37.5 + Math.sin(a) * 1.25, k % 2 ? 'waterflower' : 'mint', 0.3); }
+    for (let k = 0; k < 10; k++) { const a = k * 0.63; this._tuft(pts[0][0] + Math.cos(a) * 1.25, 0.02, pts[0][1] + Math.sin(a) * 1.25, k % 2 ? 'waterflower' : 'mint', 0.3); }
     // reeds and rushes on the banks, osiers leaning over the water
     for (let i = 0; i < 44; i++) {
       const t = 0.05 + rnd(i, 7) * 0.9, k = Math.floor(t * (pts.length - 1)), f = t * (pts.length - 1) - k;
       const dx = pts[k + 1][0] - pts[k][0], dz = pts[k + 1][1] - pts[k][1], L = Math.hypot(dx, dz);
       const nx = -dz / L, nz = dx / L, side = i % 2 ? 1 : -1, off = 0.85 + rnd(i, 8) * 0.5;
       const x = pts[k][0] + dx * f + nx * side * off, z = pts[k][1] + dz * f + nz * side * off;
-      if (Math.abs(x) < 2.7) continue;
       this._tuft(x, 0.02, z, i % 3 === 0 ? 'rush' : 'reed', 0.5 + rnd(i, 9) * 0.35);
     }
-    for (const [x, z] of [[-8.6, 41.9], [-19.2, 42.2], [-24.6, 47.9], [-33.2, 47.3]]) this._tree(x, z, 0.45, 'willow');
+    for (const [x, z] of [[-8.6, 41.9], [-19.2, 42.2], [-24.6, 47.9], [-33.2, 47.3]].map(off)) this._tree(x, z, 1.1, 'willow');
     this._plaque({ main: 'A PLEASANT SPRING OR HEAD OF WATER', sub: 'DIVERS SWEET HEARBES AND WATER FLOWERS · A CLEARE AND CHRYSTALLINE CVRRENT STREAME · DALLINGTON P. 18' },
-      2.4, 0.32, -3.6, 0.7, 35.9, 0, true);
+      2.4, 0.32, -3.6 + OX, 0.7, 35.9 + OZ, 0, true);
   }
 
   // A flat ribbon of water along a curve, for streams. Width in metres; UVs
@@ -11786,7 +12357,7 @@ export class HPWorldScene {
       circle(25.5, -3.4, 1.5), circle(25.5, 3.4, 1.5),
       rect(-14.5, 14.5, 10.6, 13.4),     // Three Doors wall
       rect(-19, 19, 24.2, 27.8),         // Great Portal piers
-      rect(-35.5, 35.5, 31.5, 55),       // dark-wood duff
+      rect(-120, 120, 210, 435),         // dark-wood duff (moved with the wood)
       // Ploughed ground is ploughed: meadow grass must not grow out of the
       // furrows of the strip fields, nor under the orchard and the arbustum.
       rect(-61, -19, 41.5, 62),          // second nature -- the worked belt
@@ -12073,6 +12644,14 @@ export class HPWorldScene {
       this.walker.update(dt);
       this.walker.applyTo(this.camera);
     }
+
+    // The shadow box and the sky dome travel with the eye. Both used to be
+    // nailed to the origin, which was invisible in a 100 m world and fatal in a
+    // 500 m one: outside a ±118 m box nothing casts, and outside a 190 m dome
+    // you are standing beyond the sky. (HPStyles.trackedSun, addSkyDome.)
+    const eye = this.camera.position;
+    if (this._lights && this._lights.followShadow) this._lights.followShadow(eye.x, eye.z);
+    if (this._sky) this._sky.position.set(eye.x, 0, eye.z);
 
     // Station proximity → HUD callback (throttled; quiet during the dream)
     this._stTimer += dt;

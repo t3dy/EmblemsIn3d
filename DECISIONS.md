@@ -2,6 +2,141 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-08 — The wood and the approach, built
+
+Ted, on being handed the research pass and a menu: *"you know more than I do about rendering
+and lighting figure it out yourself."* And, asked what to scope: **the wood and the approach
+first**; the wood should be one you can **genuinely get lost in, with a way out**; and for
+crossing the distance, *"user can hold shift to run if they are that bored by the distance."*
+
+So the render and lighting calls below are mine, taken rather than escalated. Everything here
+was verified on the running page before it was written down.
+
+**The prerequisite, done first.** `sun.shadow.camera` was a fixed ±58 m box at the origin with
+`far = 130`. Outside it nothing casts — invisible in a 100 m world, fatal in a 500 m one, and
+it would have silently eaten the very shadows Ted asked for. It now **follows the walker**
+(`HPStyles.trackedSun`), ±118 m, 4096 (2048 on mobile), `far = 700`, with the centre snapped
+to the shadow map's own texel grid *in light space* so the edges do not crawl as you walk.
+
+**The wood** (`_buildWood`, `_forestTree`, `_thicket`). 200 × 195 m of it, from z = 225 to 420,
+and you wake in the middle. About 190 canopy trees of **24–36 m** with the crown base at
+10–17 m, so you walk in a hall of trunks; 560 thickets and 1 200 bramble cards under them,
+which is what actually shuts the eye-level sightlines; roots laid bare across the floor;
+fallen timber; no path.
+
+- **The species are the 1499's** (ll. 555–563), not Dallington's: oak, holm oak, ash, and
+  elm-with-vine — five of the seven trees Colonna names are *Quercus*. **No beech and no fir.**
+- **The canopy is a vault**, as Colonna says (*camurato culmo*): four opaque leaf-mass shells a
+  tree at r = 0.42 h, interlocking at 14 m spacing. The first attempt used 0.62 CR and you
+  could see the valley cliffs 130 m away straight through the wood.
+- **The floor is dark in albedo as well as in shadow**, because the hemisphere, the ambient and
+  the environment light are not occluded by geometry and no amount of shadow can do it alone.
+- **Five clearings** let the sun's shafts reach the floor. They are the wood's only
+  navigational information, and they are the book's own instrument: *"the keeping of the sunne
+  still vpon one side, to direct mee streight forwarde."* Hold the sun on one shoulder and you
+  walk out. Nothing yet tells the player that — `NEXTSTEPS.md` 0b.6.
+
+**The approach** (`_buildApproach`, `_valleyCliffs`). 188 m from the wood's northern edge to
+the Great Portal, with the pyramid in view the whole way: the spring and river at the wood's
+edge, the great oak in its mead, the second dream's open valley of well-spaced trees, the
+gravel plain with its palm and its tufts, and the wolf — **moved from the dark wood to the
+gravel plain and to the left hand**, which is where Dallington p. 23 puts it and which is the
+whole point of it (the beast appears in the *pleasant* place). Two cliff ridges converge from
+a 150 m gap to 40 m at the piers, with ashlar curtain walls carrying the building out to the
+rock, so that Dall. p. 27's absolute — *"no man could go further forward or backe againe, but
+to enter in by this broade, large, and wide open porche"* — is now true. Conifers are on the
+cliffs' lower slopes, where 1499 l. 2813 actually puts them.
+
+**Four rendering calls, all mine, all settled by looking:**
+
+1. **Fog 0.0082 → 0.0022.** Leonardo's rule is a ratio of haze to distance; the world got eight
+   times longer, so the same picture needs a thinner air. Settled from the palm plain, where
+   the whole approach is in one frame: at 0.0034 the portal 130 m off was already white.
+   Camera far 260 → 1400.
+2. **The sky dome travels with the eye** and went from 24 × 12 segments to 48 × 24. At 190 m
+   of radius you used to be able to walk out of the sky; and the gradient is computed from an
+   interpolated vertex position, so the old dome banded visibly once the world opened out.
+3. **The ground and the path no longer mirror the environment.** `_dress` hands the albedo to
+   `roughnessMap` as well, which makes every *dark* speckle glossy — so a bright highlight slid
+   over the grass and the gravel with the camera, like a headlamp. Turf, gravel and leaf litter
+   are matte. The bump stays.
+4. **Bark materials are cached by species.** `style.mat()` returns a new material every call and
+   the draw-call compiler buckets by material uuid, so bark made inside the tree builder would
+   have given each of seven hundred trunks its own bucket. The garden's `_tree` predates this
+   and gets away with it at forty trees; the wood would not have.
+
+**One debug handle added**, in the family of `hpProspect`/`hpPigment`/`hpAir`:
+`hpGoTo('valley')` or `hpGoTo([x, z], yaw)`. With the wood 340 m from the portal and the digit
+keys only reaching the first nine stations, "walk there and look" had stopped being a way to
+check a change.
+
+**Three new stations**, appended so the digit row keeps its journey order: `great_oak`,
+`palm_plain`, `valley`. And **the compass is now declared** at the head of `HP_STATIONS` —
++z south, −z north, +x east, −x west — which is what the key light at (16, 22, 10) has always
+implied and what every siting argument in that table was already leaning on unstated.
+
+**What this pass did NOT do**, and is in `NEXTSTEPS.md` 0b: the rest of the world is not
+rescaled, and the pyramid is still 17.5 m wide against the book's 1 140. The approach now
+leads to it, which makes its size the next thing you notice.
+
+## 2026-09-08 — The world is too small: a research pass on scale, layout and the wood
+
+Ted: *"the world of our virtual dream garden is too small. I imagine the dream garden to be
+much bigger with all the elements further apart and the trees of the wood dark enough to tower
+over our hero and cast enough shadows to make it dark. Read the novel more carefully to get a
+sense of the layout. Pay attention to any directions we are given. Pay attention to the
+dimensions of the buildings that are described, and any other information we have missed. This
+should be using our research pipeline."*
+
+**Done as a research pass only.** Per `HPTOTOURPIPELINE.md` §3, research and build are
+separate; no geometry moved. What it produced:
+
+- **[`DIMENSIONS.md`](DIMENSIONS.md)** — every measurement the book states, in metres. The
+  pyramid-portal is **1 139.6 m wide and about 865 m to the nymph's feet**; the recumbent
+  colossus is **89 m** long; Polia's garden is **141 m** across; the cypress avenue to the
+  palace is **740 m**; Cythera is **1 400 m** across. The world builds the pyramid at 17.5 m
+  and puts the whole mainland inside 88 × 100 m.
+- **[`DIRECTIONS.md`](DIRECTIONS.md)** — the plan, the four explicit turns, the sun as the only
+  compass, and the finding that matters most: **the book's spatial device is enclosure, and the
+  world inverts it.** Nothing in the *Hypnerotomachia* is approached across open ground with
+  the destination in view; the world's flat plain shows all twenty-three stations at once.
+- **[`WOODS.md`](WOODS.md)** — there are **three** woods, and the world builds one of them at
+  the wrong species and the wrong light.
+- **[`research/dimensions.json`](research/dimensions.json)** — the numbers, machine-readable,
+  each with its citation.
+- **17 new features in `research/coverage.json`** across chapters I, II, III, VI, VIII, XIII.
+  Unbuilt features went **7 → 24**. That jump is the point: the gap was always there, and no
+  artifact recorded it, exactly as with the vaults (ROUTER.md rule 6).
+
+**Three binding calls made by the pass itself** (as against the recommendation below, which is
+Ted's to make):
+
+1. **Dallington's "furlong" is a Roman stadium of 185 m, not his own printed gloss of 256
+   feet.** His marginal note on p. 27 — *"A furlong is 16. pole euery pole being 16 foote"* —
+   is wrong by a factor of about 2.4. Bury 1998 converts it as a stadium throughout and so do
+   we. Anything sized off Dallington's gloss is 2.4× too small.
+2. **The dark wood has no beech and no fir.** The 1499 Italian (ll. 555–563) names ash, elm,
+   cork oak, Turkey oak, durmast, acorn-oak and holm oak — five of the seven are *Quercus*.
+   Dallington's "soft Beeche", "browne Hasils" and "harde Ebony" are his renderings of
+   *querce*, *ilice* and *duri cerri*. The fir in `_buildWood` comes from the proem's **winter
+   simile** (l. 475), and the code comment there ("the fir whose boughs are hung on the horns
+   of the sacrifice") misreads it: the Bull is the zodiac sign, and the sentence dates the
+   dream to the sun's passage through Taurus — **late April to mid-May**. Conifers belong on
+   the mountain slopes of the third wood (ll. 2800–2813), where Colonna actually puts them.
+3. **The compass frame is declared, not invented.** `HPStyles.setupLights` already puts the sun
+   at (16, 22, 10), so **`+z` is south, `−z` north, `+x` east, `−x` west** — the Great Portal's
+   façade faces south into the sun, which is the only orientation consistent with a
+   Sun-dedicated building. This costs nothing and unmoors nothing; it just stops the siting
+   arguments in `HP_STATIONS` from being unstated.
+
+**Recommended, and awaiting Ted:** a single ground-plan scale of **1 : 8**, the body and all
+human-scale furniture at 1 : 1, and the theatre exempt because at 47 m it is already nearly
+true to the book. **The prerequisite is the shadow frustum** — `sun.shadow.camera` is ±58 m
+with `far = 130` (`src/shaders/HPStyles.js:186`), so an enlarged world loses every shadow away
+from the origin, including the ones Ted asked the wood to cast. Fix that before anything grows.
+
+Godwin (1999) is in copyright, is not in the corpus, and was not used.
+
 ## 2026-09-08 — Release Version 4
 
 Ted: *"commit and deploy our changes as v4."* Tagged `v4`; badge and README updated. There is

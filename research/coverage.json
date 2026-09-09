@@ -149,6 +149,10 @@
       23,
       24,
       25,
+      28,
+      30,
+      31,
+      32,
       33,
       35,
       36,
@@ -204,8 +208,11 @@
       165
     ],
     "builders": [
+      "Adonis",
       "Amphitheatre",
+      "Approach",
       "Artemisia",
+      "Banquet",
       "Bath",
       "Birds",
       "BookTwo",
@@ -222,6 +229,7 @@
       "DoorsWall",
       "Elephant",
       "Epitaphs",
+      "Exeres",
       "Folio80Company",
       "Fortuna",
       "Fountain",
@@ -264,6 +272,7 @@
       "Wood"
     ],
     "stations": [
+      "adonis",
       "bacchus",
       "book_two",
       "chess",
@@ -277,9 +286,11 @@
       "europa",
       "fields",
       "fountain",
+      "great_oak",
       "horse",
       "labyrinth",
       "leda",
+      "palm_plain",
       "planetary_palace",
       "polia",
       "polyandrion",
@@ -288,6 +299,7 @@
       "quinta_essentia",
       "three_doors",
       "triumphs",
+      "valley",
       "venus_temple",
       "vertumnus",
       "wood"
@@ -457,9 +469,33 @@
       "section": "QUEEN_PALACE"
     },
     {
+      "plate": 28,
+      "description": "Richly ornamented tripod",
+      "page_1499": 93,
+      "section": "QUEEN_PALACE"
+    },
+    {
       "plate": 29,
       "description": "Golden basin upon wheels",
       "page_1499": 94,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 30,
+      "description": "Tripod with three naked boys on lion-footed pedestal",
+      "page_1499": 95,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 31,
+      "description": "Vessel surmounted by coral-tree",
+      "page_1499": 102,
+      "section": "QUEEN_PALACE"
+    },
+    {
+      "plate": 32,
+      "description": "Magnificent vessel with gold shrub, twice nymph height",
+      "page_1499": 105,
       "section": "QUEEN_PALACE"
     },
     {
@@ -720,8 +756,8 @@
       "research": {
         "status": "enumerated",
         "enumerated_by": "session of 2026-09-07",
-        "date": "2026-09-07",
-        "note": "Read against the world. Features below carry their citation and their build status."
+        "date": "2026-09-08",
+        "note": "Read against the world. Features below carry their citation and their build status. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
       },
       "features": [
         {
@@ -731,12 +767,12 @@
           "plate": null,
           "source": "Dallington p. 12–16 (corpus md ll. 600–700)",
           "status": "built",
-          "built_as": "HPWorldScene._buildWood",
+          "built_as": "HPWorldScene._buildWood / _forestTree",
           "modes": [
             "walk",
             "tour"
           ],
-          "note": "64 trees of oak, beech, elm and fir — the species the text names at l. 625. No cypress: a garden tree."
+          "note": "Rebuilt 2026-09-08 and verified on the running page. 200 x 195 m, ~190 canopy trees of 24-36 m with the crown base at 10-17 m, 560 thickets and 1 200 bramble cards under them. Species corrected to the 1499 (ll. 555-563): oak, holm oak, ash, elm-with-vine, and NO beech and NO fir. The path corridor is gone."
         },
         {
           "id": "wolf",
@@ -745,12 +781,12 @@
           "plate": null,
           "source": "Dallington p. 15 (\"inuading VVoolfe\")",
           "status": "built",
-          "built_as": "HPWorldScene._buildWood → cast.animals.wolf",
+          "built_as": "HPWorldScene._buildApproach",
           "modes": [
             "walk",
             "tour"
           ],
-          "note": ""
+          "note": "Moved 2026-09-08 to (-21, 132), on the gravel plain of the SECOND dream and on the left hand (-x under the declared compass), per Dall. p. 23. It was at (4.2, 40.5) in the dark wood beside the path."
         },
         {
           "id": "jupiter-prayer",
@@ -764,6 +800,66 @@
             "dream"
           ],
           "note": "The dream mode narrates it; nothing in the world marks the place."
+        },
+        {
+          "id": "spacious-plain",
+          "name": "The spacious plain the dream opens on",
+          "kind": "place",
+          "plate": null,
+          "source": "1499 l. 530-540 (\"una spatiosa planitie, tutta virente et di multiplici fiori\"); Dallington p. 14",
+          "status": "partial",
+          "built_as": "HPWorldScene._buildApproach (the ground)",
+          "modes": [
+            "walk",
+            "dream",
+            "tour"
+          ],
+          "note": "The ground is there beyond the wood (z 413-483) but nothing is staged on it. The book's plain is defined by ABSENCE -- no man, no beast, no bird, no house, no flock -- and absence still has to be composed: flowers, a level horizon, and the silence."
+        },
+        {
+          "id": "wood-closed-canopy",
+          "name": "The wood roofed like a vault, so the sun does not reach the ground",
+          "kind": "place",
+          "plate": null,
+          "source": "1499 ll. 555-563 (\"come da camurato culmo di densante fronde coperto, non penetrava l'alma luce\"); Dallington pp. 14-17",
+          "status": "built",
+          "built_as": "HPWorldScene._forestTree (the four leaf-mass shells)",
+          "modes": [
+            "walk",
+            "dream",
+            "tour",
+            "flight"
+          ],
+          "note": "Verified: the floor is in shadow and the sky is shut overhead. Built as four opaque leaf-mass shells a tree at r = 0.42 h, interlocking at 14 m spacing, plus twenty large sprays. The floor is separately dark in albedo because the hemisphere, ambient and environment light are not occluded by geometry and shadow alone cannot do it. Prerequisite delivered the same day: the sun's shadow box now follows the walker (HPStyles.trackedSun)."
+        },
+        {
+          "id": "wood-no-path",
+          "name": "The trackless wood, and the sun kept on one side",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 15 (\"could not finde any track or path\"; \"the keeping of the sunne still vpon one side, to direct mee streight forwarde\")",
+          "status": "partial",
+          "built_as": "HPWorldScene._buildWood, WOOD_CLEARINGS",
+          "modes": [
+            "walk",
+            "dream"
+          ],
+          "note": "The 5.4 m corridor is gone and the five clearings are in, so the sun's bearing can be recovered from the shafts and the book's \"keeping of the sunne still vpon one side\" works. What is missing: nothing tells the player that is the way out. Poliphilo's own layer or the station note should say it."
+        },
+        {
+          "id": "great-oak",
+          "name": "The broad mighty oak in a spacious green mead",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 20",
+          "status": "built",
+          "built_as": "HPWorldScene._buildApproach",
+          "modes": [
+            "walk",
+            "dream",
+            "tour"
+          ],
+          "note": "A 31 m oak at (9, 193) in an open mead with five outliers, a long way from the river because he lost the water chasing the song."
         }
       ]
     },
@@ -789,8 +885,8 @@
       "research": {
         "status": "enumerated",
         "enumerated_by": "session of 2026-09-07",
-        "date": "2026-09-07",
-        "note": "Read against the world. Features below carry their citation and their build status."
+        "date": "2026-09-08",
+        "note": "Read against the world. Features below carry their citation and their build status. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
       },
       "features": [
         {
@@ -833,6 +929,53 @@
             "dream"
           ],
           "note": "The site is silent by design (DECISIONS 2026-09-04), so this cannot be built as sound."
+        },
+        {
+          "id": "delicate-valley",
+          "name": "The delicate valley of the second dream, its trees standing apart",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 23",
+          "status": "built",
+          "built_as": "HPWorldScene._buildApproach",
+          "modes": [
+            "walk",
+            "dream",
+            "tour",
+            "flight"
+          ],
+          "note": "34 trees at 1.5-2.9 scale over z 150-192, standing well apart on open sunlit ground -- \"growing distantly one from another\" -- against the closed dark wood behind. The contrast reads."
+        },
+        {
+          "id": "palm-gravel-plain",
+          "name": "The sandy plain and the single date palm",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 23",
+          "status": "built",
+          "built_as": "HPWorldScene._buildApproach",
+          "modes": [
+            "walk",
+            "dream",
+            "tour"
+          ],
+          "note": "A 31 m gravel circle at (-6, 130) with 150 green tufts and one date palm. Verified from (0, 168)."
+        },
+        {
+          "id": "pyramid-approach",
+          "name": "The pyramid seen far off and indistinct, growing as it is approached",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 24",
+          "status": "built",
+          "built_as": "HPWorldScene._buildApproach / _valleyCliffs",
+          "modes": [
+            "walk",
+            "dream",
+            "tour",
+            "flight"
+          ],
+          "note": "188 m of approach from the wood edge to the portal, with the pyramid in view the whole way and the two cliffs converging on it. Fog density dropped 0.0082 -> 0.0022, settled by eye from the palm plain: at 0.0034 the portal 130 m off was already white. Camera far 260 -> 1400; the sky dome now travels with the eye and has 48x24 segments instead of 24x12, which had begun to band."
         }
       ]
     },
@@ -872,11 +1015,73 @@
       ],
       "research": {
         "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "enumerated_by": "session of 2026-09-08 (dimensional pass only)",
+        "date": "2026-09-08",
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
       },
-      "features": []
+      "features": [
+        {
+          "id": "pyramid-true-scale",
+          "name": "The pyramid-portal at the size the book gives it",
+          "kind": "building",
+          "plate": null,
+          "source": "Dallington pp. 26-31; 1499 l. 905; Bury 1998 Appendix (Word & Image 14.1-2, corpus md ll. 845-890)",
+          "status": "unbuilt",
+          "built_as": "HPWorldScene._buildPortal (at 1:65)",
+          "modes": [
+            "walk",
+            "tour",
+            "dream",
+            "flight"
+          ],
+          "note": "Base 6 stadia + 20 paces = 1 139.6 m wide; base storey 37 m; plinth 1 110 m wide and 20.7 m high; pyramid 1 110 m square and about 785 m tall by Colonna's own construction (edge = base side), 1 410 courses of 0.56 m; cube 5.9 m; obelisk 10.4 m. Total to the nymph about 865 m. Built today at 17.5 m wide and 21 m tall. Bury: the huge figures are deliberate, \"to sustain the romantic fiction that the ruin discovered by Poliphilus surpassed all the wonders of the ancient world\". Full table in DIMENSIONS.md 2."
+        },
+        {
+          "id": "closed-valley",
+          "name": "The valley walls the pyramid stops dead",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington p. 27 (\"the foresaid valley there had an end, that no man could go further forward or backe againe, but to enter in by this broade, large, and wide open porche\"); p. 31 (10 paces of clearance to the cliff each side)",
+          "status": "built",
+          "built_as": "HPWorldScene._valleyCliffs",
+          "modes": [
+            "walk",
+            "tour",
+            "dream",
+            "flight"
+          ],
+          "note": "Two ridges converging from a 150 m gap to 40 m at the piers, with ashlar curtain walls carrying the building out to the rock on both sides and wall colliders behind them. Dall. p. 27's \"no man could go further forward or backe againe\" is now true: the porch is the only way through. The cliffs' lower slopes carry the fir, pine and cypress that belong to a mountain."
+        },
+        {
+          "id": "colossus-scale",
+          "name": "The recumbent colossus, sixty paces long",
+          "kind": "object",
+          "plate": null,
+          "source": "Dallington p. 44 (\"his length was three score paces\")",
+          "status": "partial",
+          "built_as": "HPWorldScene._buildColossus",
+          "modes": [
+            "walk",
+            "tour",
+            "roll"
+          ],
+          "note": "88.8 m from head to foot, climbed by the beard to the breast and entered through the mouth and down the throat. Built, but at roughly a tenth of that, so the climb-in that the text describes does not read."
+        },
+        {
+          "id": "medusa-door-right",
+          "name": "The Medusa door and the descending stair, both on the right hand",
+          "kind": "building",
+          "plate": null,
+          "source": "Dallington pp. 31-32",
+          "status": "unknown",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "vaults"
+          ],
+          "note": "The Gorgon head is carved in the plinth \"vpon the right hand as I went\"; the stair down opens \"vpon my right hand against one of the collaterall and side-lying mountaines\". Nobody has checked which side the world puts them on. Under the compass frame proposed in DIRECTIONS.md 2 the right hand is east (+x)."
+        }
+      ]
     },
     {
       "id": "IV",
@@ -894,7 +1099,7 @@
         {
           "station": "portal",
           "title": "The Great Portal",
-          "notes": 11
+          "notes": 12
         }
       ],
       "research": {
@@ -1047,8 +1252,8 @@
       "research": {
         "status": "enumerated",
         "enumerated_by": "session of 2026-09-07",
-        "date": "2026-09-07",
-        "note": "Read against the world. Features below carry their citation and their build status."
+        "date": "2026-09-08",
+        "note": "Read against the world. Features below carry their citation and their build status. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
       },
       "features": [
         {
@@ -1092,6 +1297,51 @@
             "tour"
           ],
           "note": "Built 2026-09-07. Hunt reads the book through the three natures and the world had the first (the selva oscura) and the third (the courts) and nothing between them. Strip fields with real ridge-and-furrow, an orchard of apple/pear/plum in quincunx, and the arbustum -- vines married to elms, ch. I l. 625. Station key `fields`."
+        },
+        {
+          "id": "bridge-divided-stream",
+          "name": "The ancient bridge, and the spring that divides right and left",
+          "kind": "place",
+          "plate": null,
+          "source": "1499 ll. 2793-2800; Dallington pp. 90-92",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour",
+            "roll"
+          ],
+          "note": "\"scaturiva una larga vena di chiarissima aqua viva, la quale dividentese faceva dui correnti fluenticuli, uno alla dextra et alla sinistra l'altro\" — banks of stone and shade with the straddling roots laid bare, hung with maidenhair fern and cymbalaria. A legible piece of geography the fields station lacks."
+        },
+        {
+          "id": "ringing-wooded-mountain",
+          "name": "The wooded district ringed by a tree-bearing mountain, conifers on its slopes",
+          "kind": "place",
+          "plate": null,
+          "source": "1499 ll. 2800-2813",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "flight",
+            "tour"
+          ],
+          "note": "\"silvosa contrata circunclusa dall'arborifera montagna\": black and white poplars, riverside alder, manna-ash and flowering oleander on the water; tall single-stemmed fir, weeping larch and silver fir on the mountains. This is where the conifers belong — putting fir in the dark wood took them from the wrong passage entirely. See WOODS.md 3."
+        },
+        {
+          "id": "fountain-through-trees",
+          "name": "The octagonal fountain-house first glimpsed through the trees",
+          "kind": "building",
+          "plate": null,
+          "source": "1499 ll. 2813-2818 (\"mirai una fabrica marmorea tra gli arbori apparendo et sopra le tenelle cime il suo fastigio\")",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ],
+          "note": "A building seen through a wood before it is reached: the book's standard way of introducing a monument, and a sightline the world does not currently have anywhere."
         }
       ]
     },
@@ -1181,16 +1431,33 @@
         {
           "station": "court",
           "title": null,
-          "notes": 9
+          "notes": 13
         }
       ],
       "research": {
         "status": "partial",
         "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "date": "2026-09-08",
+        "note": "Tour notes exist, but nobody has enumerated this chapter's features. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
       },
-      "features": []
+      "features": [
+        {
+          "id": "cypress-avenue",
+          "name": "The cypress avenue, four stadia to the palace enclosure",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington pp. 123-124",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour",
+            "dream",
+            "flight"
+          ],
+          "note": "740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book."
+        }
+      ]
     },
     {
       "id": "IX",
@@ -1229,40 +1496,13 @@
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [
-        {
-          "plate": 28,
-          "description": "Richly ornamented tripod",
-          "page_1499": 93
-        },
-        {
-          "plate": 30,
-          "description": "Tripod with three naked boys on lion-footed pedestal",
-          "page_1499": 95
-        },
-        {
-          "plate": 31,
-          "description": "Vessel surmounted by coral-tree",
-          "page_1499": 102
-        },
-        {
-          "plate": 32,
-          "description": "Magnificent vessel with gold shrub, twice nymph height",
-          "page_1499": 105
-        }
-      ],
-      "plates_from": "attached 2026-09-08 from woodcut_catalog (QUEEN_PALACE, page_seq 93-105)",
+      "plates": [],
+      "plates_from": "not-yet-attached",
       "tour_stops": [
         {
           "station": "labyrinth",
           "title": "The Palace, the Water-Labyrinth and the Banquet",
           "notes": 9
-        },
-        {
-          "station": "court",
-          "title": "(the banquet is laid in the court)",
-          "notes": null,
-          "note": "built 2026-09-08 in the court, where the book puts it; the stop still points at the labyrinth"
         }
       ],
       "research": {
@@ -1544,8 +1784,8 @@
       "research": {
         "status": "enumerated",
         "enumerated_by": "session of 2026-09-07",
-        "date": "2026-09-07",
-        "note": "Enumerated from the arbour and three-doors passages while building the jasmine arbour and cataloguing Poliphilo’s utterances. Not a full chapter pass."
+        "date": "2026-09-08",
+        "note": "Enumerated from the arbour and three-doors passages while building the jasmine arbour and cataloguing Poliphilo’s utterances. Not a full chapter pass. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
       },
       "features": [
         {
@@ -1589,6 +1829,36 @@
             "tour"
           ],
           "note": "The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt."
+        },
+        {
+          "id": "three-doors-rockface",
+          "name": "The three doors hewn in the living rock",
+          "kind": "building",
+          "plate": null,
+          "source": "Dallington p. 192",
+          "status": "partial",
+          "built_as": "HPWorldScene, the Three Doors wall (see DOORS table, l. 124)",
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ],
+          "note": "The book cuts them \"in the verie rocke it selfe\" among \"abrupt and wilesome hilly places, full of broken and nybled stones, mounting vppe into the ayre, as high as a man might looke to, and without any greene grasse or hearbe... in a very displeasant seate\". The world builds a free-standing 29 m masonry wall on a garden axis, which is the wrong ground, the wrong material and the wrong mood — the harshness of the site is the point of the choice made there."
+        },
+        {
+          "id": "polia-garden-hundred-arches",
+          "name": "Polia's garden: a hundred ivied arches round it",
+          "kind": "place",
+          "plate": null,
+          "source": "Dallington pp. 182-183",
+          "status": "partial",
+          "built_as": "HPWorldScene, polia station",
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ],
+          "note": "An arcade 5 paces high and 3 across, \"and there were a hundred Arches to the compassing of this garden\" — 444 m of circumference, so 141 m across, with an altar of a cube, a red jasper disc and a black triangle at its centre. The station has a radius of 7. The clearest single measure of the compression the 2026-09-08 pass found."
         }
       ]
     },
@@ -2273,9 +2543,9 @@
         289
       ],
       "text_source": {
-        "edition": "this repo, CC0",
-        "file": "translation/en/page_284.md - page_289.md",
-        "note": "the boat itself is described at the end of XIX, pp. 276-277, and again at XXI p. 290-291"
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
       "plates": [],
       "plates_from": "page-range",
@@ -2283,7 +2553,7 @@
         {
           "station": "cythera",
           "title": null,
-          "notes": 6
+          "notes": 8
         }
       ],
       "research": {
@@ -2727,9 +2997,9 @@
         379
       ],
       "text_source": {
-        "edition": "this repo, CC0",
-        "file": "translation/en/page_369.md - page_379.md",
-        "note": "chapters XVII-XXXVIII are ours; page numbers are the 1499 leaves"
+        "edition": "our translation (CC0)",
+        "file": "translation/en/page_NNN.md",
+        "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
       "plates": [],
       "plates_from": "page-range",
@@ -2737,8 +3007,7 @@
         {
           "station": "adonis",
           "title": "The Tomb of Adonis",
-          "notes": 5,
-          "was": "cythera_theatre — retargeted 2026-09-08 when the station was built"
+          "notes": 7
         }
       ],
       "research": {

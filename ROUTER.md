@@ -56,6 +56,7 @@ a session.
 | **Build a feature from the build queue** | its entry in `research/coverage.json`, then the passage it cites | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) · `/build-feature <id>` |
 | **Add or edit a tour stop / commentary note** | `SOURCES.md`, `15scholars.md`, `DESIGN.md` | [`RECIPES/add-a-tour-stop.md`](RECIPES/add-a-tour-stop.md) |
 | **Make a place feel like a garden** (light, shade, sound, scent, rest) | `PLEASURES.md`, then `GARDENS.md` | — |
+| **Size or site anything** (how big, how far apart, which way round) | `DIMENSIONS.md`, `DIRECTIONS.md`, and `research/dimensions.json` for the numbers | — |
 | **Model or improve a 3-D asset** (figure, fountain, gate, tree, car) | `SOURCES.md` asset table → the named scholar in `15scholars.md`; then the brief for that class (below) | [`RECIPES/model-an-asset.md`](RECIPES/model-an-asset.md) |
 | **Add a swappable variant of an existing asset** | `src/systems/AssetVariants.js`, `IMPORTEXEMPLARS.md` | [`RECIPES/add-an-asset-variant.md`](RECIPES/add-an-asset-variant.md) |
 | **Import a scan, model or painting cut-out** | `IMPORTEXEMPLARS.md`, `RENAISSANCEART.md`, `LICENSECHOICES.md` | [`RECIPES/import-an-exemplar.md`](RECIPES/import-an-exemplar.md) |
@@ -101,6 +102,9 @@ Read the one that matches what you are building. Each is a research brief, not a
 | [`DREAMMODE.md`](DREAMMODE.md) | the game: thirteen stops, four moods, the jump, what a stop owes and what a reaction is for |
 | [`MUSICIANS.md`](MUSICIANS.md) | everyone who plays or sings, and how a silent site meets each |
 | [`HARPIES.md`](HARPIES.md) | the harpy as bracket: feet, angle-figures, tails turning to leaves |
+| [`DIMENSIONS.md`](DIMENSIONS.md) | **every measurement the book states, in metres** — the pyramid at 1 140 m, Cythera at 1 400 m — against what the world builds, and the units trap in Dallington's "furlong" |
+| [`DIRECTIONS.md`](DIRECTIONS.md) | the plan: the order of places, the four explicit turns, the sun as the only compass, the compass frame the world should declare, and why the dream is enclosures rather than a corridor |
+| [`WOODS.md`](WOODS.md) | the **three** woods — the Hercynian dark wood roofed like a vault, the open grove of the second dream, the wooded country beyond the vaults — their species out of the 1499 Italian, and what makes the first one dark |
 
 ### The standing documents
 

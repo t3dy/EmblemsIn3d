@@ -19,6 +19,68 @@ import * as THREE from 'three';
 export const PAPER = 0xf2e8d0;
 export const INK   = 0x241a10;
 
+// ── The shadow box, and why it follows the walker ────────────────────────────
+//
+// Until 2026-09-08 the sun's shadow camera was a fixed ±58 m frustum around
+// the origin with `far = 130`. That was correct for a world 100 m across and
+// silently wrong for anything larger: **outside the box nothing casts at all**.
+// The scale research pass (DIMENSIONS.md §5) named this as the blocker before
+// the world could grow — a dark wood 300 m long would have had no shadow in it,
+// which is the one thing Ted actually asked for.
+//
+// So the box now TRACKS the player. `followShadow(x, z)` re-centres it every
+// frame, and snaps the centre to the shadow map's own texel grid *in light
+// space* — without that snap the shadow edges crawl and shimmer as you walk,
+// which is worse than no shadow at all.
+//
+// The frustum stays modest (±118 m) precisely because it moves: a fixed box big
+// enough for an 800 m world would put a metre of world in every texel.
+const SHADOW_R = 118;
+const _wUp = new THREE.Vector3(0, 1, 0);
+
+function trackedSun(scene, { color, intensity, dir, bias, radius }) {
+  const SUN_DIR = new THREE.Vector3().fromArray(dir).normalize();
+  const mobile = typeof navigator !== 'undefined' && /Mobi|Android/i.test(navigator.userAgent);
+  const MAP = mobile ? 2048 : 4096;
+
+  const sun = new THREE.DirectionalLight(color, intensity);
+  sun.position.copy(SUN_DIR).multiplyScalar(300);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(MAP, MAP);
+  const c = sun.shadow.camera;
+  c.left = -SHADOW_R; c.right = SHADOW_R; c.top = SHADOW_R; c.bottom = -SHADOW_R;
+  c.near = 1; c.far = 700;
+  sun.shadow.bias = bias;
+  // A 35 m tree seen at a grazing angle self-shadows into acne without this;
+  // normalBias offsets along the surface normal, which is what long thin
+  // trunks and big leaf cards need and what a depth bias alone cannot give.
+  sun.shadow.normalBias = 0.045;
+  sun.shadow.radius = radius;
+  scene.add(sun);
+  scene.add(sun.target);
+
+  // light-space basis, for the texel snap
+  const lz = SUN_DIR.clone();
+  const lx = new THREE.Vector3().crossVectors(_wUp, lz).normalize();
+  const ly = new THREE.Vector3().crossVectors(lz, lx).normalize();
+  const texel = (SHADOW_R * 2) / MAP;
+  const _p = new THREE.Vector3(), _s = new THREE.Vector3();
+
+  const followShadow = (x, z) => {
+    _p.set(x, 0, z);
+    const a = Math.round(_p.dot(lx) / texel) * texel;
+    const b = Math.round(_p.dot(ly) / texel) * texel;
+    const d = _p.dot(lz);
+    _s.set(0, 0, 0).addScaledVector(lx, a).addScaledVector(ly, b).addScaledVector(lz, d);
+    sun.target.position.copy(_s);
+    sun.position.copy(_s).addScaledVector(SUN_DIR, 300);
+    sun.target.updateMatrixWorld();
+    sun.updateMatrixWorld();
+  };
+  followShadow(0, 0);
+  return { sun, followShadow };
+}
+
 // ── Woodcut hatching material ─────────────────────────────────────────────────
 // A white Lambert whose lit colour is remapped, just before output, into
 // paper-and-ink: luminance is cut into three hatch bands (single stroke set →
@@ -92,7 +154,10 @@ function lum(colorHex) {
 // A twilight dome: vertical gradient (horizon → zenith) plus a sprinkle of
 // stars, so the lit worlds read against a dream-sky instead of raw black.
 export function addSkyDome(scene, { top = 0x101a2e, horizon = 0x4a3826, stars = 320 } = {}) {
-  const geo = new THREE.SphereGeometry(190, 24, 12);
+  // 24x12 faceted into visible bands once the world opened out and the dome
+  // began travelling with the eye: the gradient is computed from the
+  // interpolated vertex position, so big triangles band. (2026-09-08)
+  const geo = new THREE.SphereGeometry(190, 48, 24);
   const mat = new THREE.ShaderMaterial({
     side: THREE.BackSide,
     depthWrite: false,
@@ -183,16 +248,14 @@ export function createLitStyle() {
     plaqueColors: { bg: 'rgba(12,9,5,0.9)', border: '#6a5a3a', text: '#ecdfc4', sub: '#9a875f', accent: null },
 
     setupLights(scene) {
-      const sun = new THREE.DirectionalLight(0xf5e8c0, 2.3);
-      sun.position.set(16, 22, 10);
-      sun.castShadow = true;
-      sun.shadow.mapSize.set(2048, 2048);
-      sun.shadow.camera.left = -58; sun.shadow.camera.right = 58;
-      sun.shadow.camera.top  =  58; sun.shadow.camera.bottom = -58;
-      sun.shadow.camera.near = 2;   sun.shadow.camera.far = 130;
-      sun.shadow.bias = -0.0008;
-      sun.shadow.radius = 2.5;
-      scene.add(sun);
+      // Direction unchanged (16, 22, 10): high, to +x and +z, about 49° up.
+      // That is the world's compass — +z south, +x east — now written down
+      // rather than left implicit (DIRECTIONS.md §2). The box that follows it
+      // is trackedSun's, at the head of this file.
+      const { sun, followShadow } = trackedSun(scene, {
+        color: 0xf5e8c0, intensity: 2.3, dir: [16, 22, 10],
+        bias: -0.0008, radius: 2.5,
+      });
 
       const sky = new THREE.DirectionalLight(0x8ab0d8, 0.45);
       sky.position.set(-10, 12, -8);
@@ -200,7 +263,7 @@ export function createLitStyle() {
 
       scene.add(new THREE.HemisphereLight(0xb8c8e8, 0x2a2410, 0.8));
       scene.add(new THREE.AmbientLight(0x3a3420, 0.8));
-      return { sun };
+      return { sun, followShadow };
     },
 
     tuneStream() {},
@@ -253,19 +316,13 @@ export function createWoodcutStyle() {
       // One raking key throws all the shadows (the papercraft trick) plus a
       // pale hemisphere so shadowed paper still reads — shadows are hatched,
       // never black.
-      const sun = new THREE.DirectionalLight(0xffffff, 2.6);
-      sun.position.set(-20, 28, 18);
-      sun.castShadow = true;
-      sun.shadow.mapSize.set(2048, 2048);
-      sun.shadow.camera.left = -58; sun.shadow.camera.right = 58;
-      sun.shadow.camera.top  =  58; sun.shadow.camera.bottom = -58;
-      sun.shadow.camera.near = 2;   sun.shadow.camera.far = 130;
-      sun.shadow.bias = -0.0006;
-      sun.shadow.radius = 3;
-      scene.add(sun);
+      const { sun, followShadow } = trackedSun(scene, {
+        color: 0xffffff, intensity: 2.6, dir: [-20, 28, 18],
+        bias: -0.0006, radius: 3,
+      });
 
       scene.add(new THREE.HemisphereLight(0xffffff, 0xcfc2a4, 0.85));
-      return { sun };
+      return { sun, followShadow };
     },
 
     tuneStream(stream) {

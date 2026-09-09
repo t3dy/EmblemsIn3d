@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=218';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=228';
 import { VaultsScene } from './scenes/VaultsScene.js?v=5';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';
@@ -1670,6 +1670,22 @@ window.hpProspect = (show) => {
   const on = show === undefined ? !el.classList.contains('on') : !!show;
   el.classList.toggle('on', on);
   return on;
+};
+
+// hpGoTo('valley') or hpGoTo([0, 141], yawRadians) -- put the walker somewhere
+// and face it somewhere. Added 2026-09-08 while building the southern approach:
+// the wood is 340 m from the Great Portal now, so "walk there and look" is no
+// longer a way to check a change, and the station digits only reach the first
+// nine. Same family as hpProspect/hpPigment/hpAir.
+window.hpGoTo = (where, yaw = null) => {
+  const sc = state.activeScene;
+  if (!sc || !sc.walker) return null;
+  if (typeof where === 'string') { sc.teleport(where); return where; }
+  const [x, z] = where;
+  sc.walker.player.pos.set(x, 0, z);
+  if (yaw != null) sc.walker.player.yaw = yaw;
+  sc.walker.floorY = sc.walker.floorAt(x, z);
+  return { x, z, yaw: sc.walker.player.yaw };
 };
 
 window.hpPigment = (x) => {

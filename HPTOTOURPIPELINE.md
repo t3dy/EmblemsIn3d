@@ -161,6 +161,16 @@ leaving them out.
 1. **the research queue** — chapters nobody has enumerated;
 2. **the build queue** — features the book has and the world does not.
 
+### 2.2b `research/dimensions.json` — the measurement table
+
+Added 2026-09-08. Not a fourth peer artifact: it is a **reference table subordinate to the
+ledger**, hand-written and never generated, holding every measurement the book states,
+converted to metres, with its citation. It exists because the scale research pass found the
+same numbers being re-derived from Dallington's pages every time somebody sized a building —
+and because Dallington's own gloss on "furlong" is wrong by a factor of 2.4, so the
+re-derivation was going wrong. Prose version and reasoning: [`DIMENSIONS.md`](DIMENSIONS.md);
+the plan it implies: [`DIRECTIONS.md`](DIRECTIONS.md).
+
 ### 2.3 The build brief
 
 A feature with `status: unbuilt` *is* the brief, if its `source` and `note` are good enough
