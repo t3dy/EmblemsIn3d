@@ -304,6 +304,7 @@ export function makeCast(S) {
       } else {
         const gown = add(g, mesh(gownGeometry(h), RobeM(robe), 0, 0));
         gown.scale.set(1.04, 0.92, 1.04);
+        parts.gown = gown;          // the spine contrapposto() shears; see below
       }
     } else if (prim) {
       for (const s of [-1, 1]) add(g, mesh(new THREE.CapsuleGeometry(0.065 * h, 0.55 * h, 4, 8), sm, s * 0.1 * h, 0.38 * h));
@@ -396,6 +397,19 @@ export function makeCast(S) {
         if (s < 0) parts.wingL = w; else parts.wingR = w;
       }
     }
+    // The same stance the nymphs get. `prim` is the founding cone-and-capsule
+    // look and is left alone on purpose: it is a deliberately naive register,
+    // and a naive figure standing in contrapposto is a confusion of two ideas.
+    // An unrobed figure has no single spine mesh -- it is legs, hips, chest and
+    // shoulders as separate pieces -- and that is fine: contrapposto's per-child
+    // pass shears each of them at its own height, which gives the same S.
+    //
+    // One known limit, accepted for now: the head TURN is applied to the skull
+    // only, so a jaw, beard or hat stays square to the chest. At the ten degrees
+    // this uses it does not read, and fixing it properly means parenting the
+    // head kit into a group -- worth doing when the figures next get a pass.
+    if (!prim) contrapposto(g, parts, { h, name, body: parts.gown || null, headY: 1.556 * h });
+
     if (pose === 'recline') { g.rotation.z = Math.PI / 2; g.position.y = 0.22 * h; }
     return g;
   }
@@ -1005,6 +1019,118 @@ export function makeCast(S) {
 
   // Shoulder → elbow → hand, so a pose bends where an arm bends and the hand
   // carries whatever she has been given.
+  let _figN = 0;   // build-order counter, so same-named figures stand differently
+
+  // ── CONTRAPPOSTO ───────────────────────────────────────────────────────────
+  //
+  // Written 2026-09-09, replacing a four-and-a-half-degree head tilt that had
+  // been calling itself contrapposto since the figures were built. It was not:
+  // the hips stayed level, the shoulders stayed level, the spine stayed
+  // vertical, and so the figure's four defining lines -- hips, shoulders,
+  // spine, gaze -- all stayed PARALLEL. Ted, 2026-09-09, on the figures: "they
+  // look like shit."
+  //
+  // Four parallel lines is the definition of a shop mannequin and the exact
+  // opposite of every Renaissance figure from Donatello's David onward. In
+  // contrapposto the weight goes onto one leg; THAT HIP RISES AND PUSHES OUT;
+  // the shoulders counter-tilt the other way; the spine makes a shallow S that
+  // carries the head back over the supporting foot; and the head turns off the
+  // axis of the hips. No two of those lines are parallel, ever.
+  //
+  // It is a POSE problem and not a modelling problem, which is why it fits in
+  // one function instead of a week of geometry: the gown is a lathe, so its
+  // vertices can be sheared along an S; everything mounted on the body follows
+  // by the same displacement at its own height; and the head gets a YAW, which
+  // no figure in this world had. See HUMANOIDS.md sections 2a and 3A.
+  //
+  //   g          the figure group
+  //   parts      g.userData -- armL, armR, head
+  //   body       the mesh whose vertices carry the spine (the gown), or null
+  //   headGroups anything that must turn WITH the head (hair, fillet, crown)
+  //   headY      the head's height, for the groups that sit at the origin
+  //
+  // Everything is seeded off the name, so a row of figures is a row of people
+  // rather than one person stamped eleven times -- and so it is stable across
+  // reloads, which matters because a figure that restands on every refresh
+  // reads as a glitch.
+  function contrapposto(g, parts, { h = 1, name = '', body = null,
+                                    headGroups = [], headY = 1.552 } = {}) {
+    // Seeded off the name AND a build-order counter. The name alone was not
+    // enough and the failure was visible the first time it ran: the six virgins
+    // of the court share a name, so all six took the weight on the same leg and
+    // stood in the identical attitude -- which is the stamped look this whole
+    // function exists to break. The counter is deterministic (build order never
+    // varies), so a figure does not restand on every reload, which would read
+    // as a glitch.
+    const seed = Array.from(name).reduce((a, c) => a + c.charCodeAt(0),
+                                         name.length + 7 + (_figN = (_figN + 1) | 0) * 13);
+    const side = (seed % 2) ? 1 : -1;                 // which leg takes the weight
+    const amt = 0.026 + ((seed >> 2) % 5) * 0.004;    // 2.6-4.2 % of height at the hip
+
+    // The S. Zero at the hem, greatest at the high waist (0.978 h -- the 1499
+    // cinch, and where a pelvis actually sits), reversing past it so the
+    // shoulders come back the other way and the head rides over the hem again.
+    const WAIST = 0.978, SHOULDER = 1.362;
+    const sway = (y) => {
+      const u = y / h;
+      const a = THREE.MathUtils.smoothstep(u, 0, WAIST);
+      const b = THREE.MathUtils.smoothstep(u, WAIST, SHOULDER);
+      return side * amt * h * (a - 1.35 * b);
+    };
+
+    // The body carries the spine, so it is sheared per vertex. Its geometry is
+    // cached and shared between every figure of this height, so it must be
+    // cloned first or one nymph's stance would become everyone's.
+    if (body && body.isMesh && body.geometry) {
+      const geo = body.geometry.clone();
+      const pos = geo.attributes.position;
+      for (let i = 0; i < pos.count; i++) pos.setX(i, pos.getX(i) + sway(pos.getY(i)));
+      pos.needsUpdate = true;
+      geo.computeVertexNormals();
+      geo.computeBoundingSphere(); geo.computeBoundingBox();
+      body.geometry = geo;
+    }
+
+    // Everything mounted on the body -- the bands, the neck, the head, a
+    // coronet, a wreath -- rides the same curve at its own height. Done as one
+    // pass over the children rather than part by part, so a livery added later
+    // is carried along without anyone having to remember to carry it.
+    const skip = new Set([body, ...headGroups]);
+    for (const c of g.children) {
+      if (skip.has(c)) continue;
+      if (c.position.y > 0.001) c.position.x += sway(c.position.y);
+    }
+    // Groups that sit at the origin with their contents at absolute heights
+    // take the head's displacement rather than their own.
+    for (const grp of headGroups) if (grp) grp.position.x += sway(headY);
+
+    // The shoulder line counter-tilts against the hips, and the arms hang
+    // ASYMMETRICALLY -- the arm on the weight side falls closer to the body,
+    // the free one swings a little away. Mirrored arms are the second-loudest
+    // "assembled from parts" cue after level hips.
+    const shoulderTilt = -side * amt * 1.1;
+    if (parts.armL) {
+      parts.armL.rotation.z += shoulderTilt + (side < 0 ? 0.05 : -0.03);
+      parts.armL.position.y += side * 0.006 * h;      // one shoulder genuinely higher
+    }
+    if (parts.armR) {
+      parts.armR.rotation.z += shoulderTilt + (side > 0 ? -0.05 : 0.03);
+      parts.armR.position.y -= side * 0.006 * h;
+    }
+
+    // The head: tilted back against the shoulders, and TURNED. The turn is the
+    // one thing no figure here had, and it is the cheapest life in the file --
+    // a face that is not square to its own chest is instantly a person.
+    const headTilt = side * amt * 1.4;
+    const headTurn = -side * (0.10 + ((seed >> 5) % 4) * 0.035);
+    for (const part of [parts.head, ...headGroups]) {
+      if (!part) continue;
+      part.rotation.z = headTilt;
+      part.rotation.y = headTurn;
+    }
+    parts.weightSide = side;      // so a later pose pass knows which leg is loaded
+  }
+
   function makeArm(sx, h, skinMat, robeMat) {
     const pivot = new THREE.Group();
     pivot.position.set(sx * 0.118 * h, 1.292 * h, 0);
@@ -1083,7 +1209,7 @@ export function makeCast(S) {
     const robeMat = RobeM(robe);
     const trimM = M(0xd8b048, { metalness: 0.75, roughness: 0.35 });
 
-    add(g, mesh(gownGeometry(h), robeMat, 0, 0, 0));
+    const gownMesh = add(g, mesh(gownGeometry(h), robeMat, 0, 0, 0));
     // gold trim at hem and neckline — the border every quattrocento painter
     // gives a gown — and the girdle at the high waist the woodcuts draw
     const hemBand = add(g, mesh(new THREE.TorusGeometry(0.244 * h, 0.010 * h, 6, 28), trimM, 0, 0.028 * h));
@@ -1282,16 +1408,7 @@ export function makeCast(S) {
       parts.attribute = item;
     }
 
-    // Contrapposto, cheaply: a Renaissance figure is never symmetrical about
-    // its own axis. Tilt the head (and counter-tilt the shoulders) by a small
-    // amount derived from the name, so each nymph stands a little differently
-    // and none of them looks stamped.
-    const seed = Array.from(name).reduce((a, c) => a + c.charCodeAt(0), name.length);
-    const tilt = ((seed % 7) - 3) * 0.026;
-    parts.head.rotation.z = tilt;
-    hairG.rotation.z = tilt; fillet.rotation.z = tilt;
-    parts.armL.rotation.z -= tilt * 0.5;
-    parts.armR.rotation.z -= tilt * 0.5;
+    contrapposto(g, parts, { h, name, body: gownMesh, headGroups: [hairG, fillet], headY: 1.552 * h });
 
     if (pose === 'recline') { g.rotation.z = Math.PI / 2; g.position.y = 0.22 * h; }
     parts.name = name;
@@ -1425,41 +1542,79 @@ export function makeCast(S) {
   // species pin horns, manes and antlers into it in local coordinates.
   // Front is −z, as before; overall silhouette heights match the old blob so
   // every placed animal keeps its ground.
+  // ── SPECIES SILHOUETTE ─────────────────────────────────────────────────────
+  //
+  // Added 2026-09-09. Every beast in the bestiary came out of this one function
+  // with nothing but `bulk` to tell them apart, so a wolf was a lion with
+  // different fur — and ANIMALS.md had already recorded, before Ted said the
+  // figures looked like shit, that "the wolf in particular reads as a smooth
+  // quadruped rather than a wolf."
+  //
+  // The thing that makes an animal recognisable is almost entirely its
+  // OUTLINE. A wolf's chest is deep and narrow and its belly tucks up sharply
+  // behind the ribs; a lion's barrel is level and its shoulders stand above its
+  // hips; a stag hangs from a long sloping neck on legs half again as long. Four
+  // numbers carry all of that:
+  //
+  //   chest    how deep the fore-body is, against the barrel
+  //   tuck     how far the belly rises behind the ribs (the waist)
+  //   rake     shoulder height minus hip height — a lion rakes down to the rear,
+  //            a bull rakes forward, a horse is level
+  //   legLen   leg length, which is most of what separates a stag from a sow
+  //
+  // ANIMALS.md §4.
   function quadruped({ s = 1, color = 0x8a7a64, bulk = 1, neck = 0.18, headR = 0.14,
-                       tail = 'down', earR = 0.32, dark = null } = {}) {
+                       tail = 'down', earR = 0.32, dark = null,
+                       chest = 1, tuck = 0, rake = 0, legLen = 1, stance = 0,
+                       croup = 1, muzzle = 1 } = {}) {
     const g = new THREE.Group();
     const bm = M(color, { roughness: 0.85 });
     const dm = M(dark ?? Math.max(0, color - 0x282018), { roughness: 0.9 });
 
-    // barrel + musculature
-    const barrel = add(g, mesh(new THREE.CapsuleGeometry(0.20 * s * (0.85 + 0.15 * bulk), 0.44 * s * bulk, 6, 12), bm, 0, 0.52 * s));
+    // barrel + musculature. The barrel is squeezed at the waist by `tuck` and
+    // the two masses are set at their own heights by `rake`, so the back line
+    // slopes instead of running dead level from shoulder to tail.
+    const barrel = add(g, mesh(new THREE.CapsuleGeometry(0.20 * s * (0.85 + 0.15 * bulk), 0.44 * s * bulk, 6, 12), bm, 0, (0.52 + rake * 0.25) * s));
     barrel.rotation.x = Math.PI / 2;
-    const chest = add(g, mesh(new THREE.SphereGeometry(0.225 * s, 12, 10), bm, 0, 0.53 * s, -0.24 * s * bulk));
-    chest.scale.set(0.95, 1.02, 1.0);
+    barrel.scale.set(1 - tuck * 0.34, 1 - tuck * 0.22, 1);
+    const chestM = add(g, mesh(new THREE.SphereGeometry(0.225 * s, 12, 10), bm, 0, (0.53 + rake) * s, -0.24 * s * bulk));
+    chestM.scale.set(0.95 * (1 - tuck * 0.16), 1.02 * chest, 1.0 * chest);
     const haunch = add(g, mesh(new THREE.SphereGeometry(0.235 * s, 12, 10), bm, 0, 0.54 * s, 0.26 * s * bulk));
-    haunch.scale.set(0.98, 1.05, 1.0);
+    // `croup` is the other half of the fore/aft balance. A wolf is chest-heavy
+    // and light behind; a sow and a bull are the reverse. Without it every
+    // beast came out rump-heavy, because the haunch sphere is the larger of the
+    // two masses by default and nothing ever said otherwise.
+    haunch.scale.set(0.98 * croup, 1.05 * croup, 1.0 * croup);
 
     // legs: shoulder/hip → knee/hock → foot, with the hind pair jointed
-    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+    // Legs. `legLen` stretches them, `rake` lifts the forequarters, and each of
+    // the four is nudged fore or aft by a per-species stance so that no animal
+    // stands with all four plumb — which no animal has ever done, and which is
+    // the quadruped's version of the contrapposto problem the figures had.
+    const L = legLen;
+    const STEP = [[-1, -1, 0.055], [1, -1, -0.035], [-1, 1, -0.045], [1, 1, 0.030]];
+    for (const [sx, sz, off] of STEP) {
       const hind = sz > 0;
       const leg = new THREE.Group();
-      leg.position.set(sx * 0.145 * s, 0.5 * s, sz * 0.27 * s * bulk);
-      const upper = mesh(new THREE.CylinderGeometry(0.042 * s, 0.058 * s, 0.26 * s, 8), bm, 0, -0.13 * s, 0);
+      const advance = off * (0.5 + stance) * s;
+      leg.position.set(sx * 0.145 * s, (0.5 + (hind ? 0 : rake)) * s,
+        sz * 0.27 * s * bulk + advance);
+      const upper = mesh(new THREE.CylinderGeometry(0.042 * s, 0.058 * s, 0.26 * s * L, 8), bm, 0, -0.13 * s * L, 0);
       upper.rotation.x = hind ? -0.3 : 0.1;
       upper.castShadow = true; leg.add(upper);
-      const lower = mesh(new THREE.CylinderGeometry(0.026 * s, 0.038 * s, 0.26 * s, 7), bm,
-        0, -0.36 * s, hind ? 0.045 * s : -0.012 * s);
+      const lower = mesh(new THREE.CylinderGeometry(0.026 * s, 0.038 * s, 0.26 * s * L, 7), bm,
+        0, -0.36 * s * L, hind ? 0.045 * s : -0.012 * s);
       lower.rotation.x = hind ? 0.14 : 0;
       lower.castShadow = true; leg.add(lower);
       const foot = mesh(new THREE.CylinderGeometry(0.045 * s, 0.05 * s, 0.055 * s, 8), dm,
-        0, -0.475 * s, hind ? 0.06 * s : -0.015 * s);
+        0, -0.475 * s * L, hind ? 0.06 * s : -0.015 * s);
       foot.castShadow = true; leg.add(foot);
       g.add(leg);
     }
 
     // neck, connecting shoulder to skull
-    const headY = (0.66 + neck) * s, headZ = -0.5 * s * bulk;
-    const nx = { y: 0.58 * s, z: -0.28 * s * bulk };
+    const headY = (0.66 + neck + rake) * s, headZ = -0.5 * s * bulk;
+    const nx = { y: (0.58 + rake) * s, z: -0.28 * s * bulk };
     const nLen = Math.hypot(headY - nx.y, headZ - nx.z) * 1.1;
     const neckM = add(g, mesh(new THREE.CylinderGeometry(0.068 * s, 0.105 * s, nLen, 9), bm,
       0, (headY + nx.y) / 2, (headZ + nx.z) / 2));
@@ -1468,12 +1623,20 @@ export function makeCast(S) {
     // the head: skull, muzzle, nose, ears, eyes — pinned as a group
     const head = new THREE.Group();
     head.position.set(0, headY, headZ);
+    // and it looks somewhere. A head square to its own chest is the single
+    // loudest "this is a model" cue in the bestiary; eight to fifteen degrees
+    // of yaw is enough and costs one line.
+    head.rotation.y = (stance % 2 ? 1 : -1) * (0.14 + (stance % 3) * 0.05);
     const skull = mesh(new THREE.SphereGeometry(headR * s, 12, 10), bm, 0, 0, 0);
     skull.scale.set(0.9, 0.95, 1.05); skull.castShadow = true; head.add(skull);
-    const muzzle = mesh(new THREE.CapsuleGeometry(headR * 0.52 * s, headR * 0.6 * s, 5, 8), bm,
-      0, -headR * 0.28 * s, -headR * 0.85 * s);
-    muzzle.rotation.x = Math.PI / 2 - 0.25; muzzle.castShadow = true; head.add(muzzle);
-    head.add(mesh(new THREE.SphereGeometry(headR * 0.16 * s, 6, 5), dm, 0, -headR * 0.1 * s, -headR * 1.42 * s));
+    // The muzzle is most of what says dog, wolf, horse or lion. `muzzle`
+    // lengthens and narrows it together, because a long muzzle is always a
+    // narrow one — a wolf at 1.55 and a lion at 0.75 are unmistakable from the
+    // same skull.
+    const snout = mesh(new THREE.CapsuleGeometry(headR * 0.52 * s / Math.sqrt(muzzle), headR * 0.6 * s * muzzle, 5, 8), bm,
+      0, -headR * 0.28 * s, -headR * 0.85 * s * muzzle);
+    snout.rotation.x = Math.PI / 2 - 0.25; snout.castShadow = true; head.add(snout);
+    head.add(mesh(new THREE.SphereGeometry(headR * 0.16 * s, 6, 5), dm, 0, -headR * 0.1 * s, -headR * 1.42 * s * muzzle));
     for (const sx of [-1, 1]) {
       const ear = mesh(new THREE.ConeGeometry(headR * earR * s, headR * 0.85 * s, 6), bm,
         sx * headR * 0.55 * s, headR * 0.85 * s, headR * 0.25 * s);
@@ -1514,7 +1677,10 @@ export function makeCast(S) {
 
   const animals = {
     wolf: (s = 1) => {
-      const g = quadruped({ s, color: 0x58514a, tail: 'brush', earR: 0.42, dark: 0x2e2a24 });
+      const g = quadruped({ s, color: 0x58514a, tail: 'brush', earR: 0.42, dark: 0x2e2a24,
+        // deep narrow chest, a hard tuck behind the ribs, long legs, big head
+        chest: 1.14, tuck: 0.36, rake: 0.025, legLen: 1.10, headR: 0.158, stance: 1,
+        croup: 0.86, muzzle: 1.55 });
       // the darker saddle along the back, and a grizzled throat
       const saddle = mesh(new THREE.SphereGeometry(0.2 * s, 10, 8), M(0x3c3831, { roughness: 0.95 }), 0, 0.66 * s, 0.04 * s);
       saddle.scale.set(0.95, 0.5, 1.7); g.add(saddle);
@@ -1523,7 +1689,8 @@ export function makeCast(S) {
       return g;
     },
     dog: (s = 1) => {
-      const g = quadruped({ s: s * 0.8, color: 0x9a8668, tail: 'up' });
+      const g = quadruped({ s: s * 0.8, color: 0x9a8668, tail: 'up',
+        chest: 1.02, tuck: 0.20, rake: 0.0, legLen: 0.95, stance: 2, croup: 0.94, muzzle: 1.15 });
       const hr = g.userData.headR, hd = g.userData.head;
       for (const sx of [-1, 1]) {   // floppy ears over the cone ones
         const e = mesh(new THREE.SphereGeometry(hr * 0.32, 6, 5), g.userData.mat, sx * hr * 0.68, hr * 0.35, hr * 0.15);
@@ -1532,7 +1699,10 @@ export function makeCast(S) {
       return g;
     },
     lion: (s = 1) => {
-      const g = quadruped({ s, color: 0xc09a4a, bulk: 1.15, tail: 'tuft', earR: 0.24, dark: 0x6a4a20 });
+      const g = quadruped({ s, color: 0xc09a4a, bulk: 1.15, tail: 'tuft', earR: 0.24, dark: 0x6a4a20,
+        // heavy forequarters carried above the hips; almost no waist
+        chest: 1.24, tuck: 0.10, rake: 0.055, legLen: 0.95, headR: 0.17, stance: 3,
+        croup: 0.88, muzzle: 0.72 });
       const hd = g.userData.head, hr = g.userData.headR;
       const mm = M(0x8a5c24, { roughness: 0.95 });
       // the mane: a wreath of overlapping locks around the skull
@@ -1546,7 +1716,10 @@ export function makeCast(S) {
       return g;
     },
     stag: (s = 1) => {
-      const g = quadruped({ s, color: 0xa08458, neck: 0.28, earR: 0.38 });
+      const g = quadruped({ s, color: 0xa08458, neck: 0.28, earR: 0.38,
+        // the whole body hangs from a long sloping neck, on legs half again as long
+        chest: 1.05, tuck: 0.30, rake: 0.06, legLen: 1.28, headR: 0.115, stance: 4,
+        croup: 0.92, muzzle: 1.45 });
       const hd = g.userData.head, hr = g.userData.headR;
       const am = M(0x8a7452, { roughness: 0.8 });
       for (const sx of [-1, 1]) {   // branched antlers: a beam and two tines
@@ -1561,14 +1734,19 @@ export function makeCast(S) {
       return g;
     },
     unicorn: (s = 1) => {
-      const g = quadruped({ s, color: 0xe8e2d4, neck: 0.28, tail: 'hair', dark: 0xcfc8b8 });
+      const g = quadruped({ s, color: 0xe8e2d4, neck: 0.28, tail: 'hair', dark: 0xcfc8b8,
+        chest: 1.12, tuck: 0.20, rake: 0.035, legLen: 1.24, headR: 0.128, stance: 5,
+        croup: 1.0, muzzle: 1.75 });
       const hd = g.userData.head, hr = g.userData.headR;
       const horn = mesh(new THREE.ConeGeometry(hr * 0.16, hr * 2.4, 6), M(0xf4eeda), 0, hr * 1.1, -hr * 0.55);
       horn.rotation.x = 0.5; hd.add(horn);
       return g;
     },
     bull: (s = 1) => {
-      const g = quadruped({ s, color: 0x6a5038, bulk: 1.25, earR: 0.26, dark: 0x3a2c1c });
+      const g = quadruped({ s, color: 0x6a5038, bulk: 1.25, earR: 0.26, dark: 0x3a2c1c,
+        // rakes forward into a heavy shoulder, on short legs; no waist at all
+        chest: 1.30, tuck: 0.04, rake: 0.09, legLen: 0.90, headR: 0.16, stance: 6,
+        croup: 1.02, muzzle: 0.95 });
       const hd = g.userData.head, hr = g.userData.headR;
       for (const sx of [-1, 1]) {   // horns curving out and up from the brow
         const hn = mesh(new THREE.ConeGeometry(hr * 0.16, hr * 1.3, 6), M(0xe4dcc4), sx * hr * 0.8, hr * 0.55, 0);
@@ -1580,14 +1758,17 @@ export function makeCast(S) {
       return g;
     },
     sow: (s = 1) => {
-      const g = quadruped({ s: s * 0.85, color: 0xc4a090, bulk: 1.3, neck: 0.02, headR: 0.12, earR: 0.5, tail: 'up' });
+      const g = quadruped({ s: s * 0.85, color: 0xc4a090, bulk: 1.3, neck: 0.02, headR: 0.12, earR: 0.5, tail: 'up',
+        // no waist, the belly hanging low, and the shortest legs in the bestiary
+        chest: 1.05, tuck: -0.06, rake: -0.03, legLen: 0.62, stance: 7, croup: 1.12, muzzle: 1.25 });
       const hd = g.userData.head, hr = g.userData.headR;
       hd.add(mesh(new THREE.CylinderGeometry(hr * 0.32, hr * 0.36, hr * 0.2, 8), M(0xb08878), 0, -hr * 0.15, -hr * 1.3))
         .rotation.x = Math.PI / 2;
       return g;
     },
     goat: (s = 1) => {
-      const g = quadruped({ s: s * 0.85, color: 0xb0a898, earR: 0.42, tail: 'up' });
+      const g = quadruped({ s: s * 0.85, color: 0xb0a898, earR: 0.42, tail: 'up',
+        chest: 0.95, tuck: 0.26, rake: 0.0, legLen: 1.02, stance: 8, croup: 0.96, muzzle: 1.20 });
       const hd = g.userData.head, hr = g.userData.headR;
       for (const sx of [-1, 1]) {
         const hn = mesh(new THREE.ConeGeometry(hr * 0.1, hr * 1.0, 5), M(0x8a8274), sx * hr * 0.4, hr * 0.7, hr * 0.35);
@@ -1597,7 +1778,9 @@ export function makeCast(S) {
       return g;
     },
     horse: (s = 1) => {
-      const g = quadruped({ s: s * 1.1, color: 0x7a5a3a, neck: 0.35, tail: 'hair', earR: 0.3, dark: 0x3c2a16 });
+      const g = quadruped({ s: s * 1.1, color: 0x7a5a3a, neck: 0.35, tail: 'hair', earR: 0.3, dark: 0x3c2a16,
+        chest: 1.16, tuck: 0.20, rake: 0.045, legLen: 1.30, headR: 0.130, stance: 9,
+        croup: 1.0, muzzle: 1.80 });
       // the mane: a crest of dark locks running down the neck
       const mm = M(0x40301c, { roughness: 0.95 });
       for (let i = 0; i < 5; i++) {

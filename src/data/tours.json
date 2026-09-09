@@ -193,6 +193,31 @@
         ]
       },
       {
+        "station": "great_oak",
+        "title": "The Great Oak",
+        "chapter": "I",
+        "half": "dallington",
+        "lede": "Out of the wood at last, he finds a spring and a clear river — and then hears a sweet music and follows it, and loses the water again. The chase brings him to a broad mighty oak full of acorns, standing in the middle of a spacious green mead, spreading its thick and leafy arms to make a cool shadow. He lies down on his left side under it, and falls asleep. **This is where the second dream begins.**",
+        "notes": [
+          {
+            "type": "literary",
+            "text": "The tree is not scenery. Falling asleep under an oak in an open mead is the oldest gate in the vision tradition — it is where the *Roman de la Rose* and half the dream-visions of the Middle Ages begin — and Colonna uses it to open a dream *inside* a dream, which is the book's strangest structural move."
+          },
+          {
+            "type": "allegory",
+            "text": "The oak is Jupiter's tree, and it is Jupiter he cried to in the wood a few pages earlier. He is delivered from the dark, follows a music he cannot identify, loses the water he was thirsty for, and sleeps under the god's own tree. Every stage of that is loss dressed as reward."
+          },
+          {
+            "type": "context",
+            "text": "Note how far the oak stands from the river here. That is not convenience: the book is explicit that he *lost* the water chasing the song, so the mead must be reached by a wandering. A world that put the tree beside the stream would make the chapter's whole point unreadable."
+          }
+        ],
+        "see": [
+          "The Dark Wood",
+          "The Palm and the Wolf"
+        ]
+      },
+      {
         "station": "wood",
         "title": "The Deeper Dream",
         "chapter": "II",
@@ -229,6 +254,58 @@
             "type": "alchemical",
             "text": "The annotators who read the book as a chemical allegory found their first operation here: the *solutio*, the dissolving of the fixed waking body into a fluid state before anything can be made of it. (Russell, 2014, on the alchemical annotators.)"
           }
+        ]
+      },
+      {
+        "station": "palm_plain",
+        "title": "The Palm and the Wolf",
+        "chapter": "II",
+        "half": "dallington",
+        "lede": "The second dream opens on a delicate valley with a low rise, scattered with trees *growing distantly one from another* — open, sunlit, and the exact opposite of the wood. Then a sandy, gravelly plain bespotted with green tufts, and one date palm standing alone on it. And then, on his left hand, a wolf.",
+        "quote": "Thus walking solitarily betwixt the trees, growing distantly one from another, I perswaded my selfe, that to this no earthly situation was comparable: in which thought I soddainely espied vpon my left hand, an hungrie and carniuorous Woolfe, gaping vpon me with open mouthe. At the sight whereof immediatly, my hayre stood right vp, and I would haue cryed out, but could not: and presently the Woolfe ranne away. — Dallington, pp. 23–24",
+        "notes": [
+          {
+            "type": "literary",
+            "text": "**The wolf appears in the pleasant place, not in the fearful one.** Poliphilo spent the whole of chapter I terrified of beasts in the dark wood and met none. He meets one here, in sunlight, in a valley he has just called incomparable — and it looks at him and runs off. Raffaella Fabiani Giannetto notes that he never sees any of the creatures he dreaded while he was actually in danger."
+          },
+          {
+            "type": "gloss",
+            "text": "*Upon my left hand.* The book gives left and right at only four moments in the whole dream, and this is one of them, so the wolf stands to the west here and not merely somewhere nearby. The world's compass is declared in the code for exactly this reason: **+z is south, −z north, +x east, −x west**, and Poliphilo walks north."
+          },
+          {
+            "type": "allegory",
+            "text": "The palm is *an elect and chosen signe of victorie* — the book says so outright. One tree, alone on gravel, promising a triumph, with a wolf beside it. The book's habit of putting the emblem of the reward and the emblem of the fear in the same frame starts here and never stops."
+          }
+        ],
+        "see": [
+          "The Great Oak",
+          "The Valley of the Approach"
+        ]
+      },
+      {
+        "station": "valley",
+        "title": "The Valley of the Approach",
+        "chapter": "II–III",
+        "half": "dallington",
+        "lede": "Looking toward the wooded mountains that seemed to join themselves together, he sees far off the form of a tower of an incredible height, its spire imperfectly appearing. He walks toward it, and the closer he comes the more the mountains lift themselves up, until he understands that the building is an enclosure or end of the valley — and that there is no way forward or back except through it.",
+        "quote": "And drawing neare vnto this building, I beheld the gratious mountaines before a farre of seeming small, by comming neerer and neerer, by little and little, to lift vp themselues more and more, at the first seeming to mee that they had ioyned together with the building which was an inclosure or end of the valley betwixt mountaine and mountaine. — Dallington, p. 24",
+        "notes": [
+          {
+            "type": "literary",
+            "text": "**This is Colonna's signature move and he does it here first: a thing seen far off and indistinct, resolved by walking.** Nothing in this book is approached across open ground with the destination in view. Every monument is either glimpsed at a great distance and made out slowly, or hidden until you are through a wall, or seen through trees. The approach *is* the description."
+          },
+          {
+            "type": "architecture",
+            "text": "The valley is stopped dead: *the foresaid valley there had an end, that no man could go further forward or backe againe, but to enter in by this broade, large, and wide open porche.* That is an absolute, and it is why the cliffs here converge until the building fills the gap between them. A pyramid standing free on a lawn, which you could simply walk around, would make the whole of chapters III–VI a folly."
+          },
+          {
+            "type": "context",
+            "text": "What you are walking toward is far smaller than the book says. Colonna gives the pyramid-portal a base **six stadia wide — about 1 140 metres — and some 850 metres tall**, with 1 410 steps. John Bury argues the enormous figures are deliberate: they exist to sustain the fiction that the ruin Poliphilo found surpassed every wonder of the ancient world. Ours is a fraction of that, and the gap is on the record."
+          }
+        ],
+        "see": [
+          "The Palm and the Wolf",
+          "The Great Portal"
         ]
       },
       {

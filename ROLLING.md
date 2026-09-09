@@ -16,12 +16,13 @@ never fades, never gets absorbed. The ball's silhouette *is* the objects: a kata
 traffic cone in it has a traffic cone sticking out of it until the level ends, and the
 lumpiness accumulates until the ball is a rolling heap of the world.
 
-**Ours absorbs them.** Every stuck thing sinks into the surface over 6 to 32 seconds and
-disappears inside. That was a deliberate choice for a reason that no longer holds — draw
-calls — and **it is the single reason the mode does not feel like Katamari.** Everything else
-in this file is a tuning value; this one is the design.
+**Ours absorbed them** until 2026-09-09: every stuck thing sank into the surface over 6 to 32
+seconds and disappeared inside. That was a deliberate choice for a reason that no longer holds
+— draw calls — and **it was the single reason the mode did not feel like Katamari.** Everything
+else in this file is a tuning value; this one was the design.
 
-See §3.
+**Fixed the same day.** `SINK_FLOOR = 0.55` caps how far anything may sink, so 45 % of every
+object stands proud of the ball for ever and `_bump` never decays to zero. See §3.
 
 ---
 
@@ -29,14 +30,19 @@ See §3.
 
 ### The variables
 
-| name | where | value | what it does |
-|---|---|---|---|
-| `r0` | constructor default | **0.22 m** | the starting radius |
-| packing loss | `_swallow` | **0.42** | how much of a swallowed thing's volume actually becomes ball |
-| ceiling | `_swallow`, `_swallowGrass` | **14 m** | the ball can never exceed this |
-| grass gain | `_swallowGrass` | **0.00016** per blade | a blade of grass is worth this much volume |
-| `WEDDING` | module | **12.0 m** | the radius at which the run ends |
-| `METALS[].at` | module | 0, 0.5, 1, 1.8, 3, 5, 8 | the radii at which the ball changes metal |
+*Values as they stand after the 2026-09-09 pass. Everything marked **live** is on
+`roll.tune` and can be changed from the console mid-roll — that is what makes §1's measuring
+loop possible.*
+
+| name | where | was | **now** | what it does |
+|---|---|---|---|---|
+| `r0` | constructor default | 0.22 m | 0.22 m | the starting radius |
+| `PACKING` | **live** `tune.packing` | 0.42 | **0.38** | how much of a swallowed volume becomes ball |
+| `BITE` | **live** `tune.bite` | 0.58 | **0.48** | largest thing edible, as a fraction of the radius |
+| `CEILING` | **live** `tune.ceiling` | 14 m | **22 m** | the ball can never exceed this |
+| grass gain | `_swallowGrass` | 0.00016 | 0.00016 | what one blade of grass is worth |
+| `WEDDING` | module | 12.0 m | **18.0 m** | the radius at which the run ends |
+| `METALS[].at` | module | 0, 0.5, 1, 1.8, 3, 5, 8 | **0, 0.6, 1.4, 2.6, 4.5, 7.5, 11** | where the ball changes metal |
 
 ### The formula
 
@@ -70,28 +76,61 @@ the longest and the gold is genuinely earned.
 **4. `BITE` interacts with growth and people always miss this.**
 
 ```js
-const BITE = 0.58;   // you may eat anything up to 58 % of your own radius
+const BITE = 0.58;   // you may eat anything up to 58 % of your own radius  (now 0.48)
 ```
 
-That is very permissive. Katamari sits nearer **0.30–0.40** of the diameter for the "it just
+That was very permissive. Katamari sits nearer **0.30–0.40** of the diameter for the "it just
 became possible" moment. At 0.58 the ball at 1 m can eat a 58 cm object — a big object — and
 one big object is worth `0.58³ = 0.195` of volume against your own `1.0`, so a *single* bite
 grows you by 8 %. **Lower `BITE` and growth slows even if you touch nothing else**, because
 the ball can only eat small things, and small things add small volumes. This is the second
 dial.
 
-### Recommended first pass
+### What was done, 2026-09-09 — and what it cost to learn
 
 ```
-packing loss   0.42  →  0.22
-BITE           0.58  →  0.38
+packing loss   0.42  →  0.38        (PACKING)
+BITE           0.58  →  0.48
 WEDDING        12.0  →  18.0
-ceiling        14    →  22
+ceiling        14    →  22          (CEILING)
 METALS .at     0, 0.5, 1, 1.8, 3, 5, 8  →  0, 0.6, 1.4, 2.6, 4.5, 7.5, 11
 ```
 
-Turn them one at a time and roll for two minutes after each. `BITE` and the packing loss
-compound, so changing both at once will overshoot and feel sluggish.
+**The first attempt cut the packing to 0.22 and `BITE` to 0.38 in the same pass — exactly what
+the paragraph above warns against — and it overshot badly.** A headless run showed the ball
+stalling: 0.66 m at 96 s, and still only **0.97 m after seven simulated minutes**. At a `BITE`
+of 0.38 a ball of 0.9 m can only eat things under 34 cm, it exhausts the small furniture around
+it, and nothing bigger ever becomes available. Too slow is not the opposite of too fast; it is
+a different failure, and a worse one.
+
+**So the values are now measured rather than judged.** The dials are live on the instance
+(`roll.tune`), which is what made the measuring possible at all — before this pass the only way
+to answer "does it still grow too quickly?" was to edit the file, reload, and roll for five
+minutes by hand.
+
+```js
+const r = window._hp.state.activeScene.roll;
+Object.assign(r.tune, { bite: 0.48, packing: 0.38 });
+r._keys.add('KeyW');
+for (let i = 0; i < 19000; i++) { if (i % 700 === 0) r.cam.yaw += 0.9; r.update(0.016); }
+({ r: r.r, eaten: r.count, stage: r.stage });
+```
+
+Five simulated minutes at the chosen values:
+
+| seconds | radius | eaten | metal |
+|---|---|---|---|
+| 0 | 0.22 | 0 | Saturn |
+| 48 | 0.50 | 566 | Saturn |
+| 96 | 0.84 | 1 175 | Jupiter |
+| 144 | 2.23 | 6 034 | Mars |
+| 192 | 2.40 | 6 565 | Mars |
+| 240 | 5.12 | 19 330 | Mercury |
+| 288 | 6.12 | 32 250 | Mercury |
+
+A slow start, then the cascade as the world becomes edible — which is the shape the genre has.
+**Tune it the same way: change one dial on `roll.tune`, run the loop, read the table.** Do not
+change two at once, and do not trust your judgement over the numbers.
 
 ---
 
@@ -141,9 +180,10 @@ This is the one that will change how the mode feels.
 
 | name | value | what it does |
 |---|---|---|
-| `CRUST` | **650** | how many swallowed things stay on the outside at once |
-| `SINK_BIG` | **6.0 s** | how long a big thing (over ⅕ of the ball) takes to be absorbed |
-| `SINK_SMALL` | **32.0 s** | how long a small thing takes to sink flush |
+| `CRUST` | 650 → **2 000** (live, `tune.crust`) | how many swallowed things stay on the outside at once |
+| `SINK_BIG` | **6.0 s** | how long a big thing (over ⅕ of the ball) takes to settle |
+| `SINK_SMALL` | **32.0 s** | how long a small thing takes to settle |
+| `SINK_FLOOR` | **0.55** (live, `tune.sinkFloor`) | **how far anything may sink. 1.0 = flush, gone. This is the one that mattered.** |
 
 ### The mechanism
 
@@ -194,8 +234,12 @@ exceeds, say, 3 × 4πR² would let a small ball carry few things and a huge bal
 thousands, automatically — which is exactly the growth curve Katamari's visual density
 follows.
 
-**Do (a) first, alone, and roll for two minutes.** It is very likely the whole of what Ted is
-describing.
+**Done 2026-09-09.** `SINK_FLOOR` is 0.55, so nothing ever sinks past 45 % of its own size and
+`_bump` never decays to zero; `CRUST` is 2 000, up from 650, because 650 was a draw-call budget
+and the draw-call budget is the thing that was looked at and declined (`DRAWCALLS.md`). A
+five-minute headless run ends with **2 000 things on the skin and a bump of 1.24 m** — the ball
+is permanently misshapen and made of what it ate, which is what was asked for. (c), the
+area-based shed, is still open and is still the honest rule.
 
 ---
 
@@ -224,19 +268,26 @@ slowly the bigger it is. Three additions, in order of how much they would be fel
 
 ---
 
-## 5. The order to change things in
+## 5. The order it was done in, and what is left
 
-1. **Cap `depth` at 0.55** (§3a). One line. Roll for two minutes. This is the Katamari feel.
-2. **Packing loss 0.42 → 0.22** (§1). Roll again. This is the growth rate.
-3. **`BITE` 0.58 → 0.38** (§1). Roll again. This is what "it just became possible" feels like.
-4. **Stretch the metal ladder and raise `WEDDING`** (§1), so the arc fits the new curve.
-5. **Raise `CRUST`** (§3b) and take a `hpDiag()` reading, per rule 7.
-6. **Acceleration and radius-scaled speed** (§4).
-7. **Keep breaking architecture into blocks** (§2) — `scene._monoliths` is the list, and it
-   is the one that never ends.
+**Done 2026-09-09**, in this order:
 
-Steps 1–4 are perhaps forty lines between them and would change the mode more than anything
-else on the queue.
+1. ~~**Cap `depth`**~~ — `SINK_FLOOR = 0.55` (§3a). The Katamari feel.
+2. ~~**Packing loss**~~ — 0.42 → 0.38, measured, not guessed (§1).
+3. ~~**`BITE`**~~ — 0.58 → 0.48, same sweep.
+4. ~~**Stretch the ladder, raise `WEDDING` and `CEILING`**~~ — 18 and 22 (§1).
+5. ~~**Raise `CRUST`**~~ — 650 → 2 000 (§3b).
+6. ~~**Acceleration and mass**~~ — the ball carries a velocity with a time constant that grows
+   with the radius: about ⅓ s to reach speed at the start, 1.5 s at the wedding (§4).
+
+**Still open:**
+
+7. **Shed by geometry rather than by count** (§3c) — the honest rule, and the one that would
+   let a small ball carry few things and a huge one carry thousands, automatically.
+8. **Speed that falls with radius** (§4.2) — a big ball should be majestic, not fast. The
+   current curve makes it *faster* as it grows, which is defensible but is not the genre's.
+9. **Keep breaking architecture into blocks** (§2) — `scene._monoliths` is the list, and it is
+   the one that never ends.
 
 ---
 

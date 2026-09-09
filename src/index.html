@@ -582,6 +582,51 @@
        In free walk there are no stops to click, so the notes come to the
        reader: approaching a wonder raises its commentary, filtered by the
        same lenses the tour uses. Bottom-left, out of the path of the view. */
+    /* ── The plate frame ────────────────────────────────────────────────
+       Sits beside the commentary, same border, same ground, so the two read
+       as a pair of frames rather than as a panel and a pop-up. It stacks
+       ABOVE the notes on a narrow window, where there is no room beside. */
+    #walk-plate {
+      position: fixed; z-index: 30;
+      left: calc(1.2rem + min(380px, 42vw) + 0.7rem); bottom: 1.2rem;
+      width: min(330px, 34vw); max-height: 56vh;
+      display: flex; flex-direction: column;
+      background: linear-gradient(180deg, rgba(10,7,3,0.93), rgba(6,4,2,0.97));
+      border: 1px solid rgba(139,69,19,0.45); border-left: 2px solid #c8a040;
+      backdrop-filter: blur(3px); pointer-events: all;
+    }
+    #walk-plate .wp-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+      padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(139,69,19,0.25);
+      font-size: 0.62rem; letter-spacing: 0.14em; text-transform: uppercase; color: #8a6a3a;
+    }
+    #walk-plate .wp-close {
+      background: none; border: none; color: #7a6858; cursor: pointer;
+      font-size: 0.9rem; line-height: 1; padding: 0.1rem 0.2rem;
+    }
+    #walk-plate .wp-close:hover { color: #f0e8d8; }
+    #walk-plate .wp-body { overflow-y: auto; padding: 0.6rem; }
+    /* The 1499 cuts are black ink on cream paper; on this ground they want a
+       little air round them and no filter of any kind. */
+    #walk-plate img {
+      display: block; width: 100%; height: auto; background: #efe6d2;
+      border: 1px solid rgba(139,69,19,0.35); cursor: zoom-in;
+    }
+    #walk-plate .wp-cap {
+      font-size: 0.7rem; color: #c8bca4; line-height: 1.5; margin-top: 0.45rem;
+    }
+    #walk-plate .wp-folio { font-size: 0.62rem; color: #7a6858; margin-top: 0.25rem; }
+    #walk-plate .wp-dots { display: flex; gap: 0.3rem; margin-top: 0.5rem; }
+    #walk-plate .wp-dots button {
+      background: none; border: 1px solid rgba(200,160,64,0.4); color: #8a7a5a;
+      font-size: 0.6rem; cursor: pointer; padding: 0.1rem 0.4rem;
+    }
+    #walk-plate .wp-dots button.on { border-color: #c8a040; color: #e8dcc0; }
+    @media (max-width: 1100px) {
+      /* No room beside the notes: stack above them instead. */
+      #walk-plate { left: 1.2rem; bottom: calc(56vh + 1.8rem); width: min(330px, 42vw); max-height: 30vh; }
+    }
+    @media (max-width: 640px) { #walk-plate { display: none !important; } }
     #walk-notes {
       position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 30;
       width: min(380px, 42vw); max-height: 56vh;
@@ -959,6 +1004,10 @@
   <div id="tour-flavor-chooser" hidden></div>
   <!-- Free-walk commentary: rises as the dreamer nears a wonder -->
   <div id="walk-notes" hidden></div>
+  <!-- The plate for the place you are standing in. Ted, 2026-09-09: "another frame
+       (like the frame that contains the text) to optionally pop up (toggleable on and
+       off) that lets the user look at the woodcut." -->
+  <div id="walk-plate" hidden></div>
   <!-- Graphics menu: one dropdown per asset, reachable from every mode -->
   <div id="gfx-menu" hidden></div>
   <div id="woodcut-lightbox">
@@ -1154,6 +1203,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=323"></script>
+  <script type="module" src="./main.js?v=328"></script>
 </body>
 </html>

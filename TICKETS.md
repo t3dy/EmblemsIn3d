@@ -6,7 +6,7 @@
 
 ---
 
-**24 tickets** — 19 open, 3 declined, 2 done. By kind: 12 debt, 5 infra, 4 bug, 2 perf, 1 question.
+**25 tickets** — 14 open, 3 declined, 8 done. By kind: 13 debt, 5 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -44,21 +44,6 @@
 **See.** NEXTSTEPS.md#0b · DIRECTIONS.md#3
 
 
-### `fig-contrapposto` — No figure in the world stands in contrapposto
-
-**○ open** · debt · priority 1 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Cast.nymph() places every figure with hips level, shoulders level, spine vertical and head straight, so the hip line, shoulder line, spine axis and gaze are all parallel. There is no such figure in Renaissance art. Ted 2026-09-09: the figures "look like shit".
-
-**Acceptance.** The default stand pose has weight on one leg, a raised hip, counter-tilted shoulders, an S-curve spine and the head off the hip axis; no two of those four lines are parallel; chin at 7/8 of standing height.
-
-**Files.** `src/systems/Cast.js`
-
-**See.** HUMANOIDS.md#2a · HUMANOIDS.md#3
-
-
 ### `infra-split-worldscene` — HPWorldScene.js is one 197k-token file, so no two agents can ever work on the world at once
 
 **○ open** · debt · priority 1 · hp-builder
@@ -74,51 +59,6 @@
 **Files.** `src/scenes/HPWorldScene.js`
 
 **See.** ENGINEERING.md#2c · ORCHESTRATION.md
-
-
-### `roll-crust-never-absorbs` — Swallowed things sink flush and vanish; in Katamari they never do
-
-**○ open** · bug · priority 1 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** RollUp._crust: depth = min(1, age/T), seat = max(R*0.55, R - depth*size). At depth 1 a thing's outer edge is flush with the skin and it has disappeared into the ball. SINK_BIG 6s, SINK_SMALL 32s only choose how fast. Ted 2026-09-09: "the items being rolled up still don't remain visible and deforming the ball as they did in the katamari damacy games."
-
-**Acceptance.** After two minutes of rolling the ball's silhouette is visibly made of what it ate, and _bump never decays to zero. One line: cap depth below 1 (try 0.55).
-
-**Files.** `src/systems/RollUp.js`
-
-**See.** ROLLING.md#3 · DECISIONS.md 2026-09-09 (later) call 3
-
-
-### `tour-woodcut-frame` — A toggleable second frame showing the plate for the moment you are standing in
-
-**○ open** · debt · priority 1 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Ted 2026-09-09: "I want another frame (like the frame that contains the text) to optionally pop up (toggleable on and off) that lets the user look at the woodcut." tours.json stops already carry a `wc` array of plate files and captions and the genuine 1499 cuts are in the repo at 800px; there is no second panel and no toggle, and plates are bound to a stop rather than to a point in the text.
-
-**Acceptance.** At every tour point that has a plate, a second frame can be toggled open beside the commentary showing that plate with its caption; the toggle persists across stops; a point with no plate offers no toggle.
-
-**Files.** `src/index.html` · `src/main.js` · `src/data/tours.json`
-
-**See.** NEXTSTEPS.md#0-A
-
-
-### `bug-approach-stations-are-mute` — The three approach stations built on 2026-09-08 have no commentary at all
-
-**○ open** · bug · priority 2 · hp-researcher
- · opened 2026-09-08
-
-
-**Evidence.** showWalkNotes calls walkStopFor(st.key), which looks the station key up in the novel tour's stops. great_oak, palm_plain and valley have no stop, so the panel hides. Three new stations announce a name and then say nothing.
-
-**Acceptance.** Walking into great_oak, palm_plain and valley each opens a commentary panel with at least a lede and one sourced note.
-
-**Files.** `src/data/tours.json`
-
-**See.** DIRECTIONS.md#3
 
 
 ### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
@@ -168,21 +108,6 @@
 **See.** HUMANOIDS.md#4
 
 
-### `fig-species-proportions` — One proportion table serves every quadruped, so silhouette does not distinguish species
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** quadruped() derives wolf, lion, stag, bull, sow, goat, horse and unicorn from one barrel with a bulk parameter. Silhouette is species: a wolf's chest is deep and narrow with a sharp belly tuck, a lion's shoulders sit above its hips, a stag hangs from a long sloping neck. ANIMALS.md already recorded that the wolf "reads as a smooth quadruped rather than a wolf".
-
-**Acceptance.** Each species has its own chest depth, belly tuck, shoulder-to-hip height difference, leg length and head size; each stands asymmetrically; the wolf is recognisable as a wolf in silhouette against the sky.
-
-**Files.** `src/systems/Cast.js`
-
-**See.** ANIMALS.md#4 · HUMANOIDS.md
-
-
 ### `infra-agent-context-contracts` — The three agents have no bounded reading list; all inherit the same instructions
 
 **○ open** · infra · priority 2 · hp-builder
@@ -226,23 +151,6 @@
 **Files.** `src/scenes/HPWorldScene.js` · `src/systems/Masonry.js`
 
 **See.** ROLLING.md#2 · DRAWCALLS.md#4
-
-
-### `roll-growth-too-fast` — The ball grows too quickly and the metal ladder is spent in the first minutes
-
-**○ open** · bug · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Packing loss 0.42 (42% of every swallowed volume becomes ball); BITE 0.58 so a single big bite adds ~8% volume; METALS at 0/0.5/1/1.8/3/5/8 with WEDDING 12 and ceiling 14, so the endgame has 2 m of range. Ted 2026-09-09: "I feel like it grows too quickly."
-
-**Acceptance.** A full run to the wedding takes materially longer than it does today and the last metal stage is the longest, not the shortest.
-
-**Risk.** BITE and the packing loss compound. Change one at a time and roll two minutes after each, or it overshoots into sluggish.
-
-**Files.** `src/systems/RollUp.js`
-
-**See.** ROLLING.md#1
 
 
 ### `tour-full-text-mode` — A reading mode with the entire text of the HP, not summaries
@@ -303,6 +211,21 @@
 **Files.** `ROUTER.md`
 
 **See.** ENGINEERING.md#2c
+
+
+### `roll-shed-by-area` — The crust sheds by count, not by surface area
+
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** tune.crust is a flat 2000 whatever the ball's size. The honest rule is that a ball has 4*pi*R^2 of surface and only so many things fit on it, so a small ball should carry few and a huge one thousands -- which is the density curve Katamari's visuals actually follow.
+
+**Acceptance.** The crust sheds when the summed cross-section of what is stuck exceeds a multiple of 4*pi*R^2; a 0.5 m ball carries visibly fewer things than a 6 m one.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLING.md#3
 
 
 ---
@@ -389,6 +312,23 @@
 **See.** ENGINEERING.md#4
 
 
+### `fig-contrapposto` — No figure in the world stands in contrapposto
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Cast.nymph() places every figure with hips level, shoulders level, spine vertical and head straight, so the hip line, shoulder line, spine axis and gaze are all parallel. There is no such figure in Renaissance art. Ted 2026-09-09: the figures "look like shit".
+
+**Acceptance.** The default stand pose has weight on one leg, a raised hip, counter-tilted shoulders, an S-curve spine and the head off the hip axis; no two of those four lines are parallel; chin at 7/8 of standing height.
+
+**Resolution.** contrapposto() in Cast.js, applied by both nymph() and figure(). The gown is a lathe so its vertices are sheared along an S peaking at the 1499 high waist; everything mounted on the body follows at its own height; the shoulder line counter-tilts; the arms hang asymmetrically with one shoulder genuinely higher; and the head is TILTED AND TURNED, which nothing in this world had. Seeded off the name AND a build-order counter -- the name alone was not enough, and the failure was visible at once: the six virgins of the court share a name and all stood identically.
+
+**Files.** `src/systems/Cast.js`
+
+**See.** HUMANOIDS.md#2a · HUMANOIDS.md#3
+
+
 ### `infra-hpdiag` — There was no instrument at all
 
 **✅ done** · infra · priority 1 · hp-builder
@@ -404,6 +344,93 @@
 **Files.** `src/main.js`
 
 **See.** ENGINEERING.md#1a
+
+
+### `roll-crust-never-absorbs` — Swallowed things sink flush and vanish; in Katamari they never do
+
+**✅ done** · bug · priority 1 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** RollUp._crust: depth = min(1, age/T), seat = max(R*0.55, R - depth*size). At depth 1 a thing's outer edge is flush with the skin and it has disappeared into the ball. SINK_BIG 6s, SINK_SMALL 32s only choose how fast. Ted 2026-09-09: "the items being rolled up still don't remain visible and deforming the ball as they did in the katamari damacy games."
+
+**Acceptance.** After two minutes of rolling the ball's silhouette is visibly made of what it ate, and _bump never decays to zero. One line: cap depth below 1 (try 0.55).
+
+**Resolution.** SINK_FLOOR = 0.55 caps how far anything may sink, so 45% of every object stands proud for ever and _bump never decays to zero. CRUST raised 650 -> 2000. A five-minute headless run ends with 2000 things on the skin and a bump of 1.24 m.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLING.md#3 · DECISIONS.md 2026-09-09 (later) call 3
+
+
+### `tour-woodcut-frame` — A toggleable second frame showing the plate for the moment you are standing in
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "I want another frame (like the frame that contains the text) to optionally pop up (toggleable on and off) that lets the user look at the woodcut." tours.json stops already carry a `wc` array of plate files and captions and the genuine 1499 cuts are in the repo at 800px; there is no second panel and no toggle, and plates are bound to a stop rather than to a point in the text.
+
+**Acceptance.** At every tour point that has a plate, a second frame can be toggled open beside the commentary showing that plate with its caption; the toggle persists across stops; a point with no plate offers no toggle.
+
+**Resolution.** #walk-plate, a second frame beside the commentary with the same border and ground so the two read as a pair. Off until asked for, remembered in localStorage, toggled from a button in the commentary footer that only appears where the stop has a plate. Clicking the plate opens the existing tour lightbox, which gives prev/next free at a station with more than one. Verified live in the dark wood: the modelled wood on screen with the 1499 cut of the same beside it, captioned, with its folio.
+
+**Files.** `src/index.html` · `src/main.js` · `src/data/tours.json`
+
+**See.** NEXTSTEPS.md#0-A
+
+
+### `bug-approach-stations-are-mute` — The three approach stations built on 2026-09-08 have no commentary at all
+
+**✅ done** · bug · priority 2 · hp-researcher
+ · opened 2026-09-08, closed 2026-09-09
+
+
+**Evidence.** showWalkNotes calls walkStopFor(st.key), which looks the station key up in the novel tour's stops. great_oak, palm_plain and valley have no stop, so the panel hides. Three new stations announce a name and then say nothing.
+
+**Acceptance.** Walking into great_oak, palm_plain and valley each opens a commentary panel with at least a lede and one sourced note.
+
+**Resolution.** great_oak, palm_plain and valley now have tour stops with ledes, sourced quotes and three notes each. The opening was also reordered to the book's own sequence: plain, wood, great oak, THE DEEPER DREAM (he sleeps under the oak and wakes into it), palm and wolf, valley. Verified live at the palm plain.
+
+**Files.** `src/data/tours.json`
+
+**See.** DIRECTIONS.md#3
+
+
+### `fig-species-proportions` — One proportion table serves every quadruped, so silhouette does not distinguish species
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** quadruped() derives wolf, lion, stag, bull, sow, goat, horse and unicorn from one barrel with a bulk parameter. Silhouette is species: a wolf's chest is deep and narrow with a sharp belly tuck, a lion's shoulders sit above its hips, a stag hangs from a long sloping neck. ANIMALS.md already recorded that the wolf "reads as a smooth quadruped rather than a wolf".
+
+**Acceptance.** Each species has its own chest depth, belly tuck, shoulder-to-hip height difference, leg length and head size; each stands asymmetrically; the wolf is recognisable as a wolf in silhouette against the sky.
+
+**Resolution.** quadruped() gained chest, tuck, rake, legLen, croup, muzzle and stance, and all nine species got their own table. The wolf now has a deep narrow chest, a hard tuck behind the ribs, a light croup, a muzzle at 1.55 and long legs; the lion carries heavy forequarters above its hips at a muzzle of 0.72; the sow has no waist and the shortest legs in the bestiary. No animal stands with four legs plumb any more, and every head is turned 8-15 degrees off the body axis. Verified by eye at the wolf: it reads as a canid rather than a smooth quadruped.
+
+**Files.** `src/systems/Cast.js`
+
+**See.** ANIMALS.md#4 · HUMANOIDS.md
+
+
+### `roll-growth-too-fast` — The ball grows too quickly and the metal ladder is spent in the first minutes
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Packing loss 0.42 (42% of every swallowed volume becomes ball); BITE 0.58 so a single big bite adds ~8% volume; METALS at 0/0.5/1/1.8/3/5/8 with WEDDING 12 and ceiling 14, so the endgame has 2 m of range. Ted 2026-09-09: "I feel like it grows too quickly."
+
+**Acceptance.** A full run to the wedding takes materially longer than it does today and the last metal stage is the longest, not the shortest.
+
+**Risk.** BITE and the packing loss compound. Change one at a time and roll two minutes after each, or it overshoots into sluggish.
+
+**Resolution.** BITE 0.58 -> 0.48 and PACKING 0.42 -> 0.38, ARRIVED AT BY MEASUREMENT. The first attempt cut both far harder (0.38 / 0.22) and the ball stalled at 0.97 m after seven simulated minutes -- exactly the compounding ROLLING.md warns about. The dials are now live on roll.tune so the curve can be swept headlessly; the chosen values walk 0.22 -> 0.50 -> 0.84 -> 2.23 -> 5.12 -> 6.12 m over five simulated minutes. Ladder stretched to 0/0.6/1.4/2.6/4.5/7.5/11, WEDDING 18, CEILING 22. The ball also has mass now: a velocity with a time constant that grows with the radius.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLING.md#1
 
 
 ---

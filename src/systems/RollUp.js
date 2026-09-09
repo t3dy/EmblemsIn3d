@@ -39,7 +39,31 @@ const UP = new THREE.Vector3(0, 1, 0);
 // What fraction of the ball's radius a thing may be and still be eaten. The
 // real game uses volume; a straight radius ratio is easier to reason about and
 // gives the same "it just became possible" moment.
-const BITE = 0.58;
+// Lowered from 0.58 on 2026-09-09. Ted: "I feel like it grows too quickly."
+// BITE is a growth control as much as a reach control, and that is the part
+// that is easy to miss: at 0.58 a ball of 1 m could swallow a 58 cm object, and
+// one such bite is 0.58³ = 0.195 of volume against your own 1.0 — an 8 % jump
+// from a single object. Lowering it means the ball can only eat small things,
+// and small things add small volumes, so the curve flattens without touching
+// the maths. It also sharpens the "it just became possible" moment, which is
+// the whole pleasure of the genre.
+//
+// 0.48 with PACKING at 0.38 was ARRIVED AT BY MEASUREMENT, not by judgement.
+// The first attempt cut this to 0.38 and the packing to 0.22 in the same pass,
+// which is exactly what ROLLING.md §1 warns against — they compound — and a
+// headless run showed the ball stalling at 0.97 m after seven simulated
+// minutes. The sweep that settled it is reproducible from the console:
+//
+//   const r = window._hp.state.activeScene.roll;
+//   Object.assign(r.tune, { bite: 0.48, packing: 0.38 });
+//   r._keys.add('KeyW');
+//   for (let i = 0; i < 19000; i++) { if (i % 700 === 0) r.cam.yaw += 0.9; r.update(0.016); }
+//   ({ r: r.r, eaten: r.count, stage: r.stage });
+//
+// which walks 0.22 → 0.50 → 0.84 → 2.23 → 5.12 → 6.12 m over five simulated
+// minutes: a slow start, then the cascade as the world becomes edible. That is
+// the shape the genre has. See ROLLING.md §1.
+const BITE = 0.48;
 
 // How many swallowed things stay on the outside. A full run eats ten thousand
 // objects and every one of them is its own draw call, so there is a cap -- but
@@ -57,9 +81,26 @@ const BITE = 0.58;
 // ball BUMP as it rolls, because a katamari with a column in it does not roll
 // smoothly. The cap is by count still, but the shedding takes the smallest of
 // the oldest, so a big thing is never dropped to make room for a leaf.
-const CRUST = 650;
-const SINK_BIG = 6.0;     // seconds for a big thing (over a fifth of the ball) to be absorbed
-const SINK_SMALL = 32.0;  // seconds for a small one to sink flush
+// Raised from 650 on 2026-09-09. 650 was a draw-call budget, and the draw-call
+// budget is the thing Ted looked at and declined to optimise for (DECISIONS.md
+// 2026-09-09 call 1; DRAWCALLS.md). A run eats ten thousand objects, so at 650
+// the ball late in a run was mostly bare sphere — the opposite of the intent.
+const CRUST = 2000;
+const SINK_BIG = 6.0;     // seconds for a big thing (over a fifth of the ball) to settle
+const SINK_SMALL = 32.0;  // seconds for a small one to settle
+
+// How far a thing is allowed to sink. 1.0 means flush with the skin — gone. In
+// Katamari nothing ever sinks at all; 0.55 leaves 45 % of every object standing
+// proud of the ball for ever, which is what makes the silhouette read as the
+// world stuck to a ball rather than as a sphere with a texture. See _crust.
+const SINK_FLOOR = 0.55;
+
+// How much of a swallowed thing's volume actually becomes ball. It was 0.42
+// until 2026-09-09. A katamari is not a densely packed solid -- it is a knobbly
+// heap with a great deal of air in it -- and the genre's feel comes from the
+// ball growing rather slower than the volume it has eaten. 0.22 with a BITE of
+// 0.38 was the first attempt and it stalled the ball dead; see `tune` below.
+const PACKING = 0.38;
 
 // ── The ladder of the metals ────────────────────────────────────────────────
 //
@@ -74,21 +115,31 @@ const SINK_SMALL = 32.0;  // seconds for a small one to sink flush
 export const METALS = [
   { at: 0.00, sign: '\u2644', name: 'Saturn',  metal: 'Lead',         tint: 0x6e7076,
     note: 'The base metal. The starting point of transmutation.' },
-  { at: 0.50, sign: '\u2643', name: 'Jupiter', metal: 'Tin',          tint: 0xb2bac2,
+  { at: 0.60, sign: '\u2643', name: 'Jupiter', metal: 'Tin',          tint: 0xb2bac2,
     note: 'Hand B maps the god\u2019s hierarchy to the tin\u2013gold sequence.' },
-  { at: 1.00, sign: '\u2642', name: 'Mars',    metal: 'Iron',         tint: 0x6b6560,
+  { at: 1.40, sign: '\u2642', name: 'Mars',    metal: 'Iron',         tint: 0x6b6560,
     note: 'The martial metal.' },
-  { at: 1.80, sign: '\u2640', name: 'Venus',   metal: 'Copper',       tint: 0xb87333,
+  { at: 2.60, sign: '\u2640', name: 'Venus',   metal: 'Copper',       tint: 0xb87333,
     note: 'Love, generation, and the feminine principle.' },
-  { at: 3.00, sign: '\u263f', name: 'Mercury', metal: 'Quicksilver',  tint: 0xc9cdd2,
+  { at: 4.50, sign: '\u263f', name: 'Mercury', metal: 'Quicksilver',  tint: 0xc9cdd2,
     note: 'Master Mercury: the catalytic agent uniting all elements.' },
-  { at: 5.00, sign: '\u263d', name: 'Luna',    metal: 'Silver',       tint: 0xe4e8ee,
+  { at: 7.50, sign: '\u263d', name: 'Luna',    metal: 'Silver',       tint: 0xe4e8ee,
     note: 'The queen of metals.' },
-  { at: 8.00, sign: '\u2609', name: 'Sol',     metal: 'Gold',         tint: 0xe0b74e,
+  { at: 11.00, sign: '\u2609', name: 'Sol',     metal: 'Gold',         tint: 0xe0b74e,
     note: 'The king of metals.' },
 ];
 // …and the work is finished at the wedding.
-export const WEDDING = 12.0;
+// Stretched 2026-09-09 with the growth curve. The ladder used to be spent in
+// the first minutes — Saturn, Jupiter and Mars all inside 1.8 m from a start of
+// 0.22 — so the transmutation, which is the mode's whole narrative arc, was over
+// before the garden had opened up. It now runs 0, 0.6, 1.4, 2.6, 4.5, 7.5, 11,
+// so each stage is longer than the last and the gold is genuinely earned.
+export const WEDDING = 18.0;
+
+// The ball can never exceed this. Raised with WEDDING: the endgame used to have
+// two metres of range between the wedding at 12 and the ceiling at 14, so the
+// last stage had nowhere to happen. Raise the two together or not at all.
+export const CEILING = 22;
 
 export class RollUp {
   constructor(scene, camera, walker, {
@@ -105,6 +156,30 @@ export class RollUp {
     this.count = 0;
     this.active = false;
     this.speed = 3.4;
+    this.vel = new THREE.Vector3();   // the ball has mass now; see update()
+
+    // ── The tuning dials, live ────────────────────────────────────────────
+    //
+    // These were module constants until 2026-09-09, which meant the only way to
+    // answer "does it still grow too quickly?" was to edit the file, reload,
+    // and roll for five minutes by hand. They are on the instance now, so a
+    // headless driver can run two hundred simulated seconds in a second and
+    // report the curve -- which is how the first attempt at this was caught:
+    // BITE and the packing loss were both cut at once, they compound, and the
+    // ball stalled at 0.97 m after seven minutes of rolling. ROLLING.md §1 says
+    // not to do that; the fix was to measure instead of guess.
+    //
+    //   window._hp.state.activeScene.roll.tune
+    //
+    // Every value here is read at its use site, so changing one mid-roll takes
+    // effect on the next bite.
+    this.tune = {
+      bite: BITE,             // largest thing you may eat, as a fraction of r
+      packing: PACKING,       // how much of a swallowed volume becomes ball
+      sinkFloor: SINK_FLOOR,  // 1 = things vanish into the ball; below 1 they stay proud
+      crust: CRUST,           // how many stay stuck on the outside
+      ceiling: CEILING,       // the ball can never exceed this
+    };
     this.spin = new THREE.Quaternion();      // the ball's accumulated rotation
 
     this.cam = { yaw: 0, pitch: 0.42, dist: 2.6 };
@@ -382,16 +457,42 @@ export class RollUp {
       this.heading = this.cam.yaw;
     }
 
+    // ── Mass (2026-09-09) ──────────────────────────────────────────────────
+    //
+    // Until now the ball moved at a speed and stopped. No acceleration, no
+    // drag: a ball of twelve metres got under way and halted exactly as
+    // briskly as one of twenty-two centimetres, and so never felt like it
+    // weighed anything. NEXTSTEPS §0f had it exactly: "the ball never gets
+    // stuck but it never struggles either."
+    //
+    // It now carries a velocity that chases what the keys are asking for, with
+    // a time constant that grows with the radius — about a third of a second
+    // to reach speed at the start and a second and a half at the wedding, and
+    // the same again to stop. That lag is where the sense of size actually
+    // comes from; the camera pulling back only tells you the ball is big,
+    // whereas taking a second to answer the stick makes you feel it.
+    // ROLLING.md §4.
+    const want = this._want || (this._want = new THREE.Vector3());
+    want.set(0, 0, 0);
     if (mv.lengthSq() > 0) {
       mv.normalize();
-      // a bigger ball is more ponderous, but not by much, or the late game drags
+      // a bigger ball covers more ground, or the late game drags
       const v = this.speed * (0.7 + 0.5 * Math.sqrt(this.r)) * (K.has('ShiftLeft') ? 1.7 : 1);
-      const step = v * dt;
-      this.pos.addScaledVector(mv, step);
+      want.copy(mv).multiplyScalar(v);
+    }
+    const tau = 0.30 + 0.075 * this.r;
+    this.vel.lerp(want, 1 - Math.exp(-dt / tau));
+    if (this.vel.lengthSq() < 1e-5) this.vel.set(0, 0, 0);
+
+    const step = this.vel.length() * dt;
+    if (step > 1e-7) {
+      const dir = this._dir || (this._dir = new THREE.Vector3());
+      dir.copy(this.vel).normalize();
+      this.pos.addScaledVector(dir, step);
       this._rolled += step;
       // it ROLLS: the rotation is the distance over the radius, about the axis
       // across the direction of travel
-      const axis = new THREE.Vector3().crossVectors(UP, mv).normalize();
+      const axis = new THREE.Vector3().crossVectors(UP, dir).normalize();
       const q = new THREE.Quaternion().setFromAxisAngle(axis, step / this.r);
       this.spin.premultiply(q);
     }
@@ -419,7 +520,22 @@ export class RollUp {
     for (const s of this._stuck) {
       const age = this.t - s.t0;
       const T = s.big ? SINK_BIG : SINK_SMALL;
-      const depth = Math.min(1, age / T);                 // 0 = centre on the skin
+      // NOTHING IS EVER FULLY ABSORBED (2026-09-09). This was `min(1, …)`, and
+      // at a depth of 1 a thing's outer edge is flush with the skin — it has
+      // disappeared inside the ball, and the ball is a smooth sphere again.
+      //
+      // In Katamari Damacy an object you pick up is stuck to the ball for ever.
+      // It never sinks and never fades: the silhouette IS the objects, and the
+      // lumpiness accumulates until the ball is a rolling heap of the world.
+      // Ted, 2026-09-09: "the items being rolled up still don't remain visible
+      // and deforming the ball as they did in the katamari damacy games."
+      //
+      // SINK_BIG and SINK_SMALL were only ever choosing how FAST things
+      // vanished, which is why lengthening them never fixed this. Capping the
+      // depth is the whole fix: a thing settles to 45 % of its own size still
+      // proud of the skin and stays there, so `_bump` never decays to zero and
+      // the ball never rolls smoothly again. See ROLLING.md §3.
+      const depth = Math.min(this.tune.sinkFloor, age / T);        // 0 = centre on the skin
       const seat = Math.max(R * 0.55, R - depth * s.size);
       s.holder.position.copy(s.dir).multiplyScalar(seat);
       const proud = seat + s.size - R;                    // how far it sticks out
@@ -482,7 +598,7 @@ export class RollUp {
     this.grass += n;
     // a blade is about a gram of the world; it takes a lot of them to grow, and
     // that is the point of the opening minutes
-    this.r = Math.min(14, Math.cbrt(this.r ** 3 + n * 0.00016));
+    this.r = Math.min(this.tune.ceiling, Math.cbrt(this.r ** 3 + n * 0.00016));
     this.count += n;
     this.onEat?.(n === 1 ? 'a blade of grass' : `${n} blades of grass`, this.count, this.r);
   }
@@ -498,7 +614,7 @@ export class RollUp {
         const b = this._grid.get(`${cx + i},${cz + j}`);
         if (!b) continue;
         for (const e of b) {
-          if (e.taken || e.r > this.r * BITE) continue;
+          if (e.taken || e.r > this.r * this.tune.bite) continue;
           const d = Math.hypot(e.c.x - this.pos.x, e.c.z - this.pos.z);
           if (d > reach + e.r) continue;
           if (Math.abs(e.c.y - this.pos.y) > this.r + e.r + 0.6) continue;
@@ -530,7 +646,7 @@ export class RollUp {
     this.spinner.add(holder);
     this._stuck.push({ holder, dir: local, size: e.r, t0: this.t, big: e.r > this.r * 0.2 });
     // shed to the cap -- the smallest of the oldest, never a big thing for a leaf
-    while (this._stuck.length > CRUST) {
+    while (this._stuck.length > this.tune.crust) {
       const head = this._stuck.slice(0, 60);
       let k = 0;
       for (let i = 1; i < head.length; i++) if (head[i].size < head[k].size) k = i;
@@ -539,9 +655,17 @@ export class RollUp {
       old.holder.traverse(o => { if (o.isMesh && o.geometry) o.geometry.dispose(); });
     }
 
-    // grow: volumes add, with a packing loss, so the curve stays gentle
-    const grown = Math.cbrt(this.r ** 3 + (e.r ** 3) * 0.42);
-    this.r = Math.min(grown, 14);
+    // Grow: volumes add, with a packing loss, so the curve stays gentle.
+    //
+    // The packing loss was 0.42 until 2026-09-09 — it said that 42 % of every
+    // swallowed thing becomes ball. A katamari is not a densely packed solid;
+    // it is a knobbly heap with a great deal of air in it, and the genre's feel
+    // comes from the ball growing rather SLOWER than the volume you have eaten.
+    // 0.22 with BITE at 0.38 (see above) is the pair that Ted's "it grows too
+    // quickly" asks for; they compound, so they were changed together and the
+    // ladder below was stretched to match. ROLLING.md §1.
+    const grown = Math.cbrt(this.r ** 3 + (e.r ** 3) * this.tune.packing);
+    this.r = Math.min(grown, this.tune.ceiling);
     this.count++;
     this.cam.dist = THREE.MathUtils.clamp(this.cam.dist, this.r * 2.4, this.r * 9);
     this.onEat?.(e.name, this.count, this.r);

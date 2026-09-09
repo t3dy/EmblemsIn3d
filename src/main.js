@@ -3,8 +3,8 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=229';
-import { VaultsScene } from './scenes/VaultsScene.js?v=5';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=234';
+import { VaultsScene } from './scenes/VaultsScene.js?v=9';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=2';
@@ -94,7 +94,7 @@ function setProgress(pct, text) {
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
-  const V = '42'; // bump when data files are re-exported
+  const V = '43'; // bump when data files are re-exported
   state.tours   = await fetch(`./data/tours.json?v=${V}`).then(r => r.json());
   state.gallery     = await fetch(`./data/gallery.json?v=${V}`).then(r => r.json()).catch(() => []);
   state.poliphilo   = await fetch(`./data/poliphilo.json?v=${V}`).then(r => r.json()).catch(() => null);
@@ -685,17 +685,98 @@ function renderWalkNotes() {
     </div>
     <div class="wn-foot">
       <button onclick="window.walkLenses()">Commentary lenses &hellip;</button>
+      ${(stop.wc && stop.wc.length)
+        ? `<button onclick="window.toggleWalkPlate()">${walkPlateOn() ? 'Hide the plate' : 'Show the plate'}</button>`
+        : ''}
     </div>`;
   setHidden(el, false, 'flex');
   el.querySelector('.wn-body').scrollTop = 0;
+  _plateIx = 0;
+  renderWalkPlate();
+}
+
+// ── The plate frame ────────────────────────────────────────────────────────
+//
+// Ted, 2026-09-09: "I also want the woodcuts to be viewable at every point in
+// the tour where the user is looking at our modeled version of what the woodcut
+// brings up… I want another frame (like the frame that contains the text) to
+// optionally pop up (toggleable on and off) that lets the user look at the
+// woodcut."
+//
+// A second frame beside the commentary, carrying the genuine 1499 cut for the
+// place you are standing in. The data was already there and unused in free
+// walk: every stop in tours.json carries a `wc` array of plate files and
+// captions, and the plates themselves have been in images/woodcuts since the
+// 2026-09-06 pass that put the real cuts in at 800 px. What did not exist was
+// the frame, the toggle, or any way to see a plate outside the guided tour.
+//
+// It is OFF until asked for and the choice is remembered, because the whole
+// argument of this world is that you should look at the thing itself first and
+// the book's picture of it second. Clicking the plate opens the existing
+// lightbox, so "look closer" costs nothing new.
+let _plateIx = 0;
+
+function walkPlateOn() {
+  try { return localStorage.getItem('hp_plate') === '1'; } catch (_) { return false; }
+}
+window.toggleWalkPlate = () => {
+  const on = !walkPlateOn();
+  try { localStorage.setItem('hp_plate', on ? '1' : '0'); } catch (_) {}
+  _plateIx = 0;
+  renderWalkPlate();
+  renderWalkNotes();                       // the button's own label changes
+};
+window.walkPlateStep = (i) => { _plateIx = i; renderWalkPlate(); };
+window.walkPlateZoom = () => {
+  // Reuse the guided tour's lightbox rather than building a second one. It
+  // reads `state._tourWoodcuts`, so handing it this station's plates gives the
+  // prev/next arrows for free at a station that has more than one.
+  const plates = walkPlates();
+  if (!plates.length) return;
+  state._tourWoodcuts = plates;
+  openTourWoodcut(_plateIx);
+};
+
+function walkPlates() {
+  const st = _walkStation;
+  if (!st) return [];
+  const stop = walkStopFor(st.key);
+  return (stop && Array.isArray(stop.wc)) ? stop.wc : [];
+}
+
+function renderWalkPlate() {
+  const el = document.getElementById('walk-plate');
+  if (!el) return;
+  const plates = walkPlates();
+  if (!walkPlateOn() || !plates.length || state.commentsOff) { setHidden(el, true); return; }
+  if (_plateIx >= plates.length) _plateIx = 0;
+  const wc = plates[_plateIx];
+  const st = _walkStation;
+  el.innerHTML = `
+    <div class="wp-head">
+      <span>The 1499 plate</span>
+      <button class="wp-close" onclick="window.toggleWalkPlate()" title="Hide the plate">&#10005;</button>
+    </div>
+    <div class="wp-body">
+      <img src="../images/${wc.file}" alt="${(wc.caption || '').replace(/"/g, '&quot;')}"
+           onclick="window.walkPlateZoom()" title="Click to see it larger">
+      <p class="wp-cap">${fmtProse(wc.caption || '')}</p>
+      ${st && st.folio ? `<p class="wp-folio">Folio ${st.folio}</p>` : ''}
+      ${plates.length > 1 ? `<div class="wp-dots">${plates.map((_, i) =>
+        `<button class="${i === _plateIx ? 'on' : ''}" onclick="window.walkPlateStep(${i})">${i + 1}</button>`
+      ).join('')}</div>` : ''}
+    </div>`;
+  setHidden(el, false, 'flex');
 }
 
 function hideWalkNotes() {                 // leaving a wonder: just put it away
   _walkStation = null;
   setHidden(document.getElementById('walk-notes'), true);
+  setHidden(document.getElementById('walk-plate'), true);
 }
 function dismissWalkNotes() {              // the reader closed it: keep it closed
   state.commentsOff = true;
+  setHidden(document.getElementById('walk-plate'), true);
   setNavToggle('btn-comments', false);
   hideWalkNotes();
 }
