@@ -2,6 +2,31 @@
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
 
+## 2026-09-09 — Version 5 shipped, and what it settled
+
+*Written after the fact, so the next reader does not have to reconstruct it from six commits.
+Live at https://t3dy.github.io/EmblemsIn3d/src/ at `main.js?v=330`, verified on the deployed
+page and not only on the origin — see the new gotcha in `DEPLOY_STATE.md`.*
+
+**Built and verified:** the dream now opens on the spacious plain as chapter I does; the wood
+takes your speed and gives it back; the way out of the wood is said in Poliphilo's own voice
+for the first time; the ball keeps what it eats and grows on a measured curve; the figures
+stand in contrapposto; the beasts have species silhouettes; the 1499 plate can be opened in a
+frame beside the commentary; the three mute approach stations speak; and the gardens of glass
+and silk are built with Hunt's objection to building them printed in their own lede.
+
+**Two things this pass settled that were not on anybody's list:**
+
+1. **Draw calls are a property of the VIEW, not of the world.** The dark wood is 3 124; the
+   spacious plain is 68. Every previous hunt for "the slow thing" was looking for one
+   expensive object; there is one expensive *place*. `ENGINEERING.md` §1a was corrected.
+2. **A tuning value you cannot measure is a tuning value you will get wrong.** The first
+   attempt at the roll-up growth curve cut `BITE` and the packing loss together — precisely
+   what `ROLLING.md` §1 warns against — and stalled the ball at 0.97 m after seven simulated
+   minutes. The dials are live on `roll.tune` now, the curve is swept headlessly in a second,
+   and the shipped values were read off a table rather than judged. **That pattern is the
+   one to copy**: if a number matters, make it observable before you argue about it.
+
 ## 2026-09-09 (later) — What this project is, and four things that follow
 
 Ted, unprompted and in one message. **The first paragraph outranks everything else in this

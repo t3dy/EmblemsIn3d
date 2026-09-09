@@ -14,7 +14,9 @@ it goes in here immediately, in his words, before the work starts.
 1. Add the ask here the moment it is made, quoting him where the wording matters.
 2. Work items top-down. Finish one before starting the next.
 3. Nothing moves to Done until it is verified against the running site and deployed to
-   **both** Vercel and GitHub Pages (see `DEPLOY_STATE.md`).
+   **GitHub Pages, the only host** (Vercel was retired 2026-09-07). And verifying live means
+   two checks, not one — the origin *and* the browser, which can hold a stale
+   `src/index.html`. See `DEPLOY_STATE.md`.
 4. When reporting, say what is still open from this list. Do not let Ted discover it.
 
 ---
@@ -30,6 +32,17 @@ which is a log, not a queue — the thing this file exists to prevent. Consolida
 grep the scene.** Two items below were once "missing" and turned out to be built.
 
 ---
+
+### 0-Z. Shipped 2026-09-09 (Version 5) — do not re-do these
+
+The plate frame (**built**, `#walk-plate`), the roll-up crust and growth curve (**built and
+measured**, `ROLLING.md` §1), contrapposto on every figure and species silhouettes on every
+beast (**built**), the dream opening on the plain (**built**), the way out of the wood
+(**built**), the three mute approach stations (**built**), and the gardens of glass and silk
+with Hunt's objection in their lede (**built**). Everything below this line is still open.
+
+**Still owed from item 1 of 0-A:** the full-text reading mode, and Poliphilo acting out his
+reactions. Both are the largest things left on this list.
 
 ### 0-A. Ted's open call, 2026-09-09: read the whole book while you walk it
 
@@ -62,23 +75,30 @@ Three separate builds inside one sentence:
 > frame that contains the text) to optionally pop up (toggleable on and off)** that lets the
 > user look at the woodcut."*
 
-A second panel beside the commentary panel, toggleable, carrying the plate for the moment you
-are standing in. Most of the parts exist: `tours.json` stops already carry a `wc` array of
-plate files and captions, the genuine 1499 cuts are in the repo at 800 px, and `walk-notes`
-is the panel to model it on. What does not exist is the **toggle**, the **second frame**, and
-the binding of a plate to a *point in the text* rather than to a stop.
+**BUILT 2026-09-09** — `#walk-plate`, a second frame beside the commentary with the same
+border and ground so the two read as a pair. Off until asked for, remembered in
+`localStorage`, and the toggle only appears where the stop has a plate. Clicking the plate
+opens the tour's own lightbox, which gives prev/next free at a station with more than one.
+
+**What is still owed on this one:** the plate is bound to a *station*, not to a **point in the
+text**. Ted's wording was *"as the text of the novel and commentary gets to the point where
+the woodcut comes up"* — that finer binding waits on the full-text reading mode above, since
+until the text is the spine there is no "point in the text" to bind to.
 
 **3. Everything roll-up-able** — see `DECISIONS.md` 2026-09-09 (later) call 2, and
 [`ROLLING.md`](ROLLING.md) §2. `scene._monoliths` is the list.
 
-### 0-B. Roll Up does not feel like Katamari — diagnosed, not yet fixed
+### 0-B. Roll Up did not feel like Katamari — FIXED 2026-09-09
 
 > *"I feel like it grows too quickly, and the items being rolled up still don't remain visible
 > and deforming the ball as they did in the katamari damacy games."*
 
-[`ROLLING.md`](ROLLING.md) is the full control panel. The order to work in is its §5, and the
-first item is one line: cap `depth` below 1 in `_crust()` so nothing is ever fully absorbed.
-That alone is most likely the whole of what he is describing.
+Both halves done. `SINK_FLOOR = 0.55` so nothing is ever fully absorbed and `_bump` never
+decays to zero; `CRUST` 650 → 2 000. `BITE` 0.58 → 0.48 and the packing 0.42 → 0.38, **arrived
+at by measurement after a first attempt overshot and stalled the ball at 0.97 m**. The ball
+also has mass now. [`ROLLING.md`](ROLLING.md) §1 carries the curve and the sweep that produced
+it; §5 lists what is left, of which the honest one is shedding the crust by surface area
+rather than by count.
 
 ### 0. Ted's open call: the world is too small — build the bigger dream
 

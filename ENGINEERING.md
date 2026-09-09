@@ -24,9 +24,16 @@ governs *how* work is done, not *what* is built.
 first instrumentation this project has ever had. Standing still in the dark wood, lit style,
 1280 × 720, `pixelRatio` 1:
 
-| | measured | note |
+**One correction, added 2026-09-09 and important enough to lead with:** these numbers are
+the DARK WOOD, which is the most expensive view in the world — you are standing inside a
+hundred and ninety trees with four leaf shells each and nothing culls. Standing on the
+spacious plain the same instrument reports **68 draw calls**. Cost here is a property of the
+view, not of the world, which is why earlier hunts for one expensive object found nothing.
+There is no expensive object. There is one expensive place. See `DRAWCALLS.md` §1.
+
+| | measured (dark wood) | note |
 |---|---|---|
-| **draw calls / frame** | **3 124** | previously believed to be ~1 500 |
+| **draw calls / frame** | **3 124** | previously believed to be ~1 500; the plain is 68 |
 | triangles / frame | 2 923 148 | includes the shadow pass |
 | frame time | **37 – 40 ms** | ⇒ **≈ 26 fps**, three clean samples |
 | meshes in scene | 3 688 | of which **11** are instanced |

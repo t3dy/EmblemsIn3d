@@ -85,6 +85,28 @@ design; see `DECISIONS.md`).
 
 ## Gotchas
 
+- **`src/index.html` is the one file no `?v=` covers, and a browser will hold a stale copy of
+  it long after the deploy has landed.** Hit on 2026-09-09: `curl` with a cache-buster
+  reported `main.js?v=330` from the origin while the browser tab, reloaded twice, was still
+  running `v=328` — and so a feature that *was* deployed looked like it had not been. The
+  module chain cannot save you here, because the version numbers that drive it are written
+  *inside* the file that is stale.
+
+  **So verifying live means two checks, not one:**
+
+  ```bash
+  curl -s "https://t3dy.github.io/EmblemsIn3d/src/?cb=$RANDOM" | grep -o 'main\.js?v=[0-9]*'
+  ```
+
+  proves the *origin* is updated, and then in the page itself:
+
+  ```js
+  [...document.querySelectorAll('script[src]')].map(s => s.getAttribute('src'))
+  ```
+
+  proves the *browser* is running it. If the two disagree, reload with a query string —
+  `…/src/index.html?cb=1` — which is a different URL and cannot be served from cache. The
+  same applies to every CSS change, since all the CSS is inline in that file.
 - `v1/` and `v2/` are archived snapshots of past releases, served at `/v1/` and `/v2/`.
   Leave them alone.
 - Never `git add -A src/` — stage explicit paths.
