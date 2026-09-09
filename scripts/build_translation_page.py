@@ -22,7 +22,16 @@ MANIFEST = ROOT / "translation" / "manifest.json"
 SUMMARIES = ROOT / "translation" / "summaries.json"
 OUT = ROOT / "research" / "translation.html"
 
+# The whole book, in order. This list began at XVII, because for as long as the
+# job was "finish what Dallington left" there was nothing before XVII to show.
+# The first half was drafted on 2026-09-08/09 and the front matter on 2026-09-09,
+# and until this list was widened the page silently DROPPED them while still
+# reporting 463 of 463 pages and 100 % of words — the count came from the
+# manifest and the rendering came from here, and nobody had made them agree.
 READING_ORDER = [
+    "Front matter",
+    "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+    "XI", "XII", "XIII", "XIV", "XV", "XVI",
     "XVII", "XVIII", "XIX", "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV",
     "XXVI", "XXVII", "XXVIII", "XXIX", "XXX", "XXXI", "XXXII", "XXXIII",
     "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "Epitaphium Poliae", "Errori",
@@ -231,7 +240,7 @@ def main():
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Finishing the Hypnerotomachia — a parallel text</title>
+<title>The whole Hypnerotomachia in English — a parallel text</title>
 <style>
   *{{margin:0;padding:0;box-sizing:border-box}}
   :root{{--gold:#c8a878;--gold-dk:#8b4513;--dim:#8a7358;--bg:#0b0805;--panel:#120d08;
@@ -356,12 +365,14 @@ def main():
 </nav>
 <div class="masthead">
   <div class="kicker">Emblems in 3D · a working edition</div>
-  <h1>Finishing the <em>Hypnerotomachia</em></h1>
-  <p class="lede">Robert Dallington's Elizabethan English stops partway through
-  chapter XVII, at the word <em>Mustulento</em> — facsimile page 193 of 467.
-  Everything after it has existed in English only under copyright. This is a new
-  translation of the remainder, made from the 1499 Aldine, set beside the Italian
-  it came from so that any sentence can be checked.</p>
+  <h1>The whole <em>Hypnerotomachia</em>, in English</h1>
+  <p class="lede">Robert Dallington's Elizabethan English of 1592 stops partway
+  through chapter XVII, at the word <em>Mustulento</em> — facsimile page 193 of
+  467 — and everything after it has existed in English only under copyright.
+  This edition renders <strong>every page of the book</strong>: the second half
+  into English for the first time, and the first half afresh beside Dallington's,
+  from the title page and Leonardo Crasso's dedication onward. Each page is set
+  beside the 1499 Italian it came from, so that any sentence can be checked.</p>
 </div>
 
 <div class="progress">

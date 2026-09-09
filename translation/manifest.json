@@ -3,9 +3,10 @@
   "source": "it.wikisource.org, Pagina:Hypnerotomachia Poliphili.djvu (MIT Press facsimile)",
   "rights": "1499 original is public domain; a faithful transcription carries no new copyright. Godwin 1999 is in copyright and is not consulted.",
   "range": {
-    "first_page": 193,
+    "first_page": 1,
     "last_page": 467,
-    "why": "Dallington's 1592 English stops at page 193, mid-chapter XVII."
+    "why": "Dallington's 1592 English stops at page 193, mid-chapter XVII.",
+    "note": "The whole book. Dallington's 1592 English covers pages 1-192 and breaks off inside page 193; this edition renders every page, so the first half exists here as a second, modern English beside his, and the second half exists in English for the first time. The front matter (pages 1-10) was added 2026-09-09. Pages 55, 90, 195 and 380 are blank leaves."
   },
   "status_values": [
     "unfetched",
@@ -2496,1192 +2497,1906 @@
       "confidence_note": "The final leaf of the 1499 edition: the printer's **errata** (a gathering-by-gathering list of"
     },
     "1": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 43,
-      "sha1": "7855a8a7cfdd"
+      "sha1": "7855a8a7cfdd",
+      "en_words": 326,
+      "confidence": "high",
+      "confidence_note": "Nine words of Latin and a printing privilege; nothing here is uncertain."
     },
     "2": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "drafted",
       "words": 428,
-      "sha1": "cbafa57247a5"
+      "sha1": "cbafa57247a5",
+      "en_words": 1151,
+      "confidence": "high",
+      "confidence_note": "for the sense; **medium** for a few clauses of the Latin, flagged below.",
+      "uncertain": 3
     },
     "3": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 226,
-      "sha1": "4fda1585cea0"
+      "sha1": "4fda1585cea0",
+      "en_words": 767,
+      "confidence": "high",
+      "confidence_note": "Verse is rendered line for line and plainly, without rhyme or metre:"
     },
     "4": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 239,
-      "sha1": "abc4422bf97a"
+      "sha1": "abc4422bf97a",
+      "en_words": 747,
+      "confidence": "high",
+      "confidence_note": "- **The last couplet is the best thing in the front matter**, and it is pure Aldine swagger:"
     },
     "5": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 497,
-      "sha1": "2b473d0c4565"
+      "sha1": "2b473d0c4565",
+      "en_words": 903,
+      "confidence": "high",
+      "confidence_note": "The Italian is uncharacteristically plain — this page is the one place in"
     },
     "6": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 255,
-      "sha1": "ece7cd432071"
+      "sha1": "ece7cd432071",
+      "en_words": 686,
+      "confidence": "high",
+      "confidence_note": "Rendered line for line without rhyme. Terza rima in English costs either"
     },
     "7": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 263,
-      "sha1": "fe55e9de51a1"
+      "sha1": "fe55e9de51a1",
+      "en_words": 656,
+      "confidence": "high",
+      "confidence_note": "- **\"Wretched little Venus.\"** *Venus mischinella* — a diminutive of pity, and the single warmest"
     },
     "8": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "drafted",
       "words": 83,
-      "sha1": "e80eb8629078"
+      "sha1": "e80eb8629078",
+      "en_words": 561,
+      "confidence": "high",
+      "confidence_note": "for the sense. The first epigram's syntax is compressed even by epigram",
+      "uncertain": 1
     },
     "9": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 27,
-      "sha1": "a45911ece9f4"
+      "sha1": "a45911ece9f4",
+      "en_words": 244,
+      "confidence": "high",
+      "confidence_note": "- **One word is different from page 1, and it is the verb.** The title page has *docet* — \"he"
     },
     "10": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "Front matter",
+      "status": "verified",
       "words": 227,
-      "sha1": "aff831f61272"
+      "sha1": "aff831f61272",
+      "en_words": 703,
+      "confidence": "high",
+      "confidence_note": "for the sense. The syntax is the book's own — subject and verb held apart"
     },
     "11": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "I",
+      "status": "verified",
       "words": 293,
       "sha1": "f4d129372e2f",
-      "english_words": 364
+      "english_words": 364,
+      "en_words": 364,
+      "confidence": "unstated"
     },
     "12": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "I",
+      "status": "verified",
       "words": 438,
       "sha1": "e875ca13a711",
-      "english_words": 508
+      "english_words": 508,
+      "en_words": 508,
+      "confidence": "unstated"
     },
     "13": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "I",
+      "status": "verified",
       "words": 320,
       "sha1": "51f1867825ad",
-      "english_words": 381
+      "english_words": 381,
+      "en_words": 381,
+      "confidence": "unstated"
     },
     "14": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "I",
+      "status": "verified",
       "words": 228,
       "sha1": "21b813430639",
-      "english_words": 301
+      "english_words": 301,
+      "en_words": 301,
+      "confidence": "unstated"
     },
     "15": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "I",
+      "status": "verified",
       "words": 322,
       "sha1": "515b98e81d4e",
       "english_words": 406,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 406,
+      "confidence": "unstated"
     },
     "16": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "II",
+      "status": "verified",
       "words": 428,
       "sha1": "b72aafd821bb",
       "english_words": 512,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 512,
+      "confidence": "unstated"
     },
     "17": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "II",
+      "status": "verified",
       "words": 343,
       "sha1": "58660f485689",
       "english_words": 432,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 432,
+      "confidence": "unstated"
     },
     "18": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "II",
+      "status": "verified",
       "words": 224,
       "sha1": "153a18f70bad",
       "english_words": 272,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 272,
+      "confidence": "unstated"
     },
     "19": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "II",
+      "status": "verified",
       "words": 371,
       "sha1": "02eb8d3ad3c8",
       "english_words": 456,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 456,
+      "confidence": "unstated"
     },
     "20": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 165,
       "sha1": "43eae6a7cbea",
       "english_words": 184,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 184,
+      "confidence": "unstated"
     },
     "21": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 196,
       "sha1": "781810ad045e",
       "english_words": 224,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 224,
+      "confidence": "unstated"
     },
     "22": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 395,
       "sha1": "d81c4a4fc63d",
       "english_words": 476,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 476,
+      "confidence": "unstated"
     },
     "23": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 431,
       "sha1": "2acd048f2fe2",
       "english_words": 476,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 476,
+      "confidence": "unstated"
     },
     "24": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 396,
       "sha1": "870458972394",
       "english_words": 474,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 474,
+      "confidence": "unstated"
     },
     "25": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 313,
       "sha1": "fa3f7644feb6",
       "english_words": 375,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 375,
+      "confidence": "unstated"
     },
     "26": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 2,
       "sha1": "bb813b9bd6ad",
       "english_words": 40,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 40,
+      "confidence": "unstated"
     },
     "27": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 409,
       "sha1": "60334452e304",
       "english_words": 480,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 480,
+      "confidence": "unstated"
     },
     "28": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 389,
       "sha1": "220b54d539e1",
       "english_words": 468,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 468,
+      "confidence": "unstated"
     },
     "29": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "III",
+      "status": "verified",
       "words": 436,
       "sha1": "a7ddd0718517",
       "english_words": 522,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 522,
+      "confidence": "unstated"
     },
     "30": {
-      "chapter": "I-XVI",
-      "status": "drafted",
+      "chapter": "IV",
+      "status": "verified",
       "words": 319,
       "sha1": "0e4a835b1976",
       "english_words": 372,
-      "pass": "listening translation (first half), 2026-09-08"
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 372,
+      "confidence": "unstated"
     },
     "31": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 430,
-      "sha1": "3ad9db486656"
+      "sha1": "3ad9db486656",
+      "english_words": 503,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 503,
+      "confidence": "unstated"
     },
     "32": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 235,
-      "sha1": "20de0bf1de21"
+      "sha1": "20de0bf1de21",
+      "english_words": 292,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 292,
+      "confidence": "unstated"
     },
     "33": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 260,
-      "sha1": "5a3723f2384c"
+      "sha1": "5a3723f2384c",
+      "english_words": 342,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 342,
+      "confidence": "unstated"
     },
     "34": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 189,
-      "sha1": "42be206eb78f"
+      "sha1": "42be206eb78f",
+      "english_words": 223,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 223,
+      "confidence": "unstated"
     },
     "35": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 239,
-      "sha1": "f4f1278e5c9b"
+      "sha1": "f4f1278e5c9b",
+      "english_words": 299,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 299,
+      "confidence": "unstated"
     },
     "36": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 466,
-      "sha1": "4cd11384707b"
+      "sha1": "4cd11384707b",
+      "english_words": 548,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 548,
+      "confidence": "unstated"
     },
     "37": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 335,
-      "sha1": "f1079234589a"
+      "sha1": "f1079234589a",
+      "english_words": 391,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 391,
+      "confidence": "unstated"
     },
     "38": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 6,
-      "sha1": "20d0fc104a8c"
+      "sha1": "20d0fc104a8c",
+      "english_words": 13,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 13,
+      "confidence": "unstated"
     },
     "39": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 262,
-      "sha1": "68ee0234cb48"
+      "sha1": "68ee0234cb48",
+      "english_words": 289,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 289,
+      "confidence": "unstated"
     },
     "40": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 267,
-      "sha1": "8a0a201316c5"
+      "sha1": "8a0a201316c5",
+      "english_words": 301,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 301,
+      "confidence": "unstated"
     },
     "41": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 155,
-      "sha1": "955e746f4c8d"
+      "sha1": "955e746f4c8d",
+      "english_words": 196,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 196,
+      "confidence": "unstated"
     },
     "42": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 406,
-      "sha1": "95821b990bc5"
+      "sha1": "95821b990bc5",
+      "english_words": 480,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 480,
+      "confidence": "unstated"
     },
     "43": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 433,
-      "sha1": "49c8ca1653ba"
+      "sha1": "49c8ca1653ba",
+      "english_words": 514,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 514,
+      "confidence": "unstated"
     },
     "44": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 418,
-      "sha1": "9b47344425c1"
+      "sha1": "9b47344425c1",
+      "english_words": 492,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 492,
+      "confidence": "unstated"
     },
     "45": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 408,
-      "sha1": "afb73a83b1f4"
+      "sha1": "afb73a83b1f4",
+      "english_words": 479,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 479,
+      "confidence": "unstated"
     },
     "46": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IV",
+      "status": "verified",
       "words": 385,
-      "sha1": "50d25a8a5f10"
+      "sha1": "50d25a8a5f10",
+      "english_words": 457,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 457,
+      "confidence": "unstated"
     },
     "47": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 335,
-      "sha1": "1efedbbbcd7c"
+      "sha1": "1efedbbbcd7c",
+      "english_words": 399,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 399,
+      "confidence": "unstated"
     },
     "48": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 426,
-      "sha1": "84dae161c4c6"
+      "sha1": "84dae161c4c6",
+      "english_words": 479,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 479,
+      "confidence": "unstated"
     },
     "49": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 426,
-      "sha1": "248266ca0b82"
+      "sha1": "248266ca0b82",
+      "english_words": 490,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 490,
+      "confidence": "unstated"
     },
     "50": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 394,
-      "sha1": "d38a490b97a6"
+      "sha1": "d38a490b97a6",
+      "english_words": 469,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 469,
+      "confidence": "unstated"
     },
     "51": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 366,
-      "sha1": "084e1f517b56"
+      "sha1": "084e1f517b56",
+      "english_words": 454,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 454,
+      "confidence": "unstated"
     },
     "52": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 348,
-      "sha1": "3b539066fa28"
+      "sha1": "3b539066fa28",
+      "english_words": 397,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 397,
+      "confidence": "unstated"
     },
     "53": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 387,
-      "sha1": "9e4689176d5f"
+      "sha1": "9e4689176d5f",
+      "english_words": 466,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 466,
+      "confidence": "unstated"
     },
     "54": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 399,
-      "sha1": "aac5e3d7cb0d"
+      "sha1": "aac5e3d7cb0d",
+      "english_words": 472,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 472,
+      "confidence": "unstated"
     },
     "55": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "blank",
       "words": 0,
-      "sha1": "da39a3ee5e6b"
+      "sha1": "da39a3ee5e6b",
+      "confidence_note": "Source page is empty (0 bytes). A blank leaf in the facsimile; nothing to translate."
     },
     "56": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 403,
-      "sha1": "9f399a0ce630"
+      "sha1": "9f399a0ce630",
+      "english_words": 454,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 454,
+      "confidence": "unstated"
     },
     "57": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "V",
+      "status": "verified",
       "words": 436,
-      "sha1": "cbffb9d56759"
+      "sha1": "cbffb9d56759",
+      "english_words": 493,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 493,
+      "confidence": "unstated"
     },
     "58": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 325,
-      "sha1": "0a8aff82262d"
+      "sha1": "0a8aff82262d",
+      "english_words": 389,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 389,
+      "confidence": "unstated"
     },
     "59": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 429,
-      "sha1": "cd6720830663"
+      "sha1": "cd6720830663",
+      "english_words": 496,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 496,
+      "confidence": "unstated"
     },
     "60": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 407,
-      "sha1": "d89d822f30ba"
+      "sha1": "d89d822f30ba",
+      "english_words": 478,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 478,
+      "confidence": "unstated"
     },
     "61": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 445,
-      "sha1": "8a291d5d0595"
+      "sha1": "8a291d5d0595",
+      "english_words": 514,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 514,
+      "confidence": "unstated"
     },
     "62": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 217,
-      "sha1": "9c830e9091dc"
+      "sha1": "9c830e9091dc",
+      "english_words": 241,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 241,
+      "confidence": "unstated"
     },
     "63": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 451,
-      "sha1": "ad45b66ddbf7"
+      "sha1": "ad45b66ddbf7",
+      "english_words": 511,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 511,
+      "confidence": "unstated"
     },
     "64": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 455,
-      "sha1": "e6e52b0a6b17"
+      "sha1": "e6e52b0a6b17",
+      "english_words": 523,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 523,
+      "confidence": "unstated"
     },
     "65": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 432,
-      "sha1": "23fc94ae4403"
+      "sha1": "23fc94ae4403",
+      "english_words": 481,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 481,
+      "confidence": "unstated"
     },
     "66": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 398,
-      "sha1": "72b1b813bec0"
+      "sha1": "72b1b813bec0",
+      "english_words": 487,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 487,
+      "confidence": "unstated"
     },
     "67": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VI",
+      "status": "verified",
       "words": 433,
-      "sha1": "19921a1b69c4"
+      "sha1": "19921a1b69c4",
+      "english_words": 508,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 508,
+      "confidence": "unstated"
     },
     "68": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 360,
-      "sha1": "eba5cb9ac547"
+      "sha1": "eba5cb9ac547",
+      "english_words": 418,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 418,
+      "confidence": "unstated"
     },
     "69": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 283,
-      "sha1": "7f423589f7ac"
+      "sha1": "7f423589f7ac",
+      "english_words": 326,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 326,
+      "confidence": "unstated"
     },
     "70": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 418,
-      "sha1": "d3b6309fe1df"
+      "sha1": "d3b6309fe1df",
+      "english_words": 472,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 472,
+      "confidence": "unstated"
     },
     "71": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 421,
-      "sha1": "bfd1b4388da7"
+      "sha1": "bfd1b4388da7",
+      "english_words": 493,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 493,
+      "confidence": "unstated"
     },
     "72": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 249,
-      "sha1": "7ed6a9e90edc"
+      "sha1": "7ed6a9e90edc",
+      "english_words": 297,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 297,
+      "confidence": "unstated"
     },
     "73": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 85,
-      "sha1": "d2d32eed3f9e"
+      "sha1": "d2d32eed3f9e",
+      "english_words": 104,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 104,
+      "confidence": "unstated"
     },
     "74": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 429,
-      "sha1": "2242b38dc126"
+      "sha1": "2242b38dc126",
+      "english_words": 520,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 520,
+      "confidence": "unstated"
     },
     "75": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 451,
-      "sha1": "5e55b1f1226d"
+      "sha1": "5e55b1f1226d",
+      "english_words": 512,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 512,
+      "confidence": "unstated"
     },
     "76": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 228,
-      "sha1": "265d4c9bb30e"
+      "sha1": "265d4c9bb30e",
+      "english_words": 264,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 264,
+      "confidence": "unstated"
     },
     "77": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 496,
-      "sha1": "a40402c54ee9"
+      "sha1": "a40402c54ee9",
+      "english_words": 583,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 583,
+      "confidence": "unstated"
     },
     "78": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VII",
+      "status": "verified",
       "words": 425,
-      "sha1": "313767c8525d"
+      "sha1": "313767c8525d",
+      "english_words": 494,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 494,
+      "confidence": "unstated"
     },
     "79": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 363,
-      "sha1": "4b01125f6795"
+      "sha1": "4b01125f6795",
+      "english_words": 438,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 438,
+      "confidence": "unstated"
     },
     "80": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 403,
-      "sha1": "8afa274237fc"
+      "sha1": "8afa274237fc",
+      "english_words": 473,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 473,
+      "confidence": "unstated"
     },
     "81": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 262,
-      "sha1": "e07f2346ebc1"
+      "sha1": "e07f2346ebc1",
+      "english_words": 323,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 323,
+      "confidence": "unstated"
     },
     "82": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 393,
-      "sha1": "c9f89a22d64b"
+      "sha1": "c9f89a22d64b",
+      "english_words": 454,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 454,
+      "confidence": "unstated"
     },
     "83": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 457,
-      "sha1": "9ace9ebee72a"
+      "sha1": "9ace9ebee72a",
+      "english_words": 538,
+      "pass": "listening translation (first half), 2026-09-08",
+      "en_words": 538,
+      "confidence": "unstated"
     },
     "84": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 502,
-      "sha1": "4bd5ae454f8c"
+      "sha1": "4bd5ae454f8c",
+      "english_words": 620,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 620,
+      "confidence": "unstated"
     },
     "85": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 109,
-      "sha1": "2ca7df21f183"
+      "sha1": "2ca7df21f183",
+      "english_words": 128,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 128,
+      "confidence": "unstated"
     },
     "86": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 422,
-      "sha1": "6021e3aa3f4e"
+      "sha1": "6021e3aa3f4e",
+      "english_words": 511,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 511,
+      "confidence": "unstated"
     },
     "87": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 448,
-      "sha1": "8f62f1cfa2cc"
+      "sha1": "8f62f1cfa2cc",
+      "english_words": 514,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 514,
+      "confidence": "unstated"
     },
     "88": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 404,
-      "sha1": "8da3bb05608f"
+      "sha1": "8da3bb05608f",
+      "english_words": 477,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 477,
+      "confidence": "unstated"
     },
     "89": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 417,
-      "sha1": "fb00ac898505"
+      "sha1": "fb00ac898505",
+      "english_words": 489,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 489,
+      "confidence": "unstated"
     },
     "90": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "blank",
       "words": 0,
-      "sha1": "da39a3ee5e6b"
+      "sha1": "da39a3ee5e6b",
+      "confidence_note": "Source page is empty (0 bytes). A blank leaf in the facsimile; nothing to translate."
     },
     "91": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 413,
-      "sha1": "ff8d2162b2c8"
+      "sha1": "ff8d2162b2c8",
+      "english_words": 510,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 510,
+      "confidence": "unstated"
     },
     "92": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 381,
-      "sha1": "9af97ff262c2"
+      "sha1": "9af97ff262c2",
+      "english_words": 446,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 446,
+      "confidence": "unstated"
     },
     "93": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "VIII",
+      "status": "verified",
       "words": 397,
-      "sha1": "2df137903959"
+      "sha1": "2df137903959",
+      "english_words": 460,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 460,
+      "confidence": "unstated"
     },
     "94": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 315,
-      "sha1": "192e092f5d84"
+      "sha1": "192e092f5d84",
+      "english_words": 370,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 370,
+      "confidence": "unstated"
     },
     "95": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 407,
-      "sha1": "eeb9e69d3ecb"
+      "sha1": "eeb9e69d3ecb",
+      "english_words": 490,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 490,
+      "confidence": "unstated"
     },
     "96": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 414,
-      "sha1": "1866c4c2e407"
+      "sha1": "1866c4c2e407",
+      "english_words": 489,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 489,
+      "confidence": "unstated"
     },
     "97": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 283,
-      "sha1": "fc2c6fd71aba"
+      "sha1": "fc2c6fd71aba",
+      "english_words": 341,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 341,
+      "confidence": "unstated"
     },
     "98": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 214,
-      "sha1": "db8b8de8d778"
+      "sha1": "db8b8de8d778",
+      "english_words": 249,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 249,
+      "confidence": "unstated"
     },
     "99": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 440,
-      "sha1": "4d52bb5b747d"
+      "sha1": "4d52bb5b747d",
+      "english_words": 531,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 531,
+      "confidence": "unstated"
     },
     "100": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 183,
-      "sha1": "ed76499e1ee5"
+      "sha1": "ed76499e1ee5",
+      "english_words": 216,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 216,
+      "confidence": "unstated"
     },
     "101": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 416,
-      "sha1": "7923ed823bbb"
+      "sha1": "7923ed823bbb",
+      "english_words": 504,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 504,
+      "confidence": "unstated"
     },
     "102": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 358,
-      "sha1": "d195f95a0bc7"
+      "sha1": "d195f95a0bc7",
+      "english_words": 409,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 409,
+      "confidence": "unstated"
     },
     "103": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 332,
-      "sha1": "4d0a38856558"
+      "sha1": "4d0a38856558",
+      "english_words": 387,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 387,
+      "confidence": "unstated"
     },
     "104": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 334,
-      "sha1": "50e7720ff4c7"
+      "sha1": "50e7720ff4c7",
+      "english_words": 405,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 405,
+      "confidence": "unstated"
     },
     "105": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 343,
-      "sha1": "767733482521"
+      "sha1": "767733482521",
+      "english_words": 404,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 404,
+      "confidence": "unstated"
     },
     "106": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 420,
-      "sha1": "0de53b70cd19"
+      "sha1": "0de53b70cd19",
+      "english_words": 430,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 430,
+      "confidence": "unstated"
     },
     "107": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 376,
-      "sha1": "e83294d5654c"
+      "sha1": "e83294d5654c",
+      "english_words": 437,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 437,
+      "confidence": "unstated"
     },
     "108": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 419,
-      "sha1": "96fa6f09b213"
+      "sha1": "96fa6f09b213",
+      "english_words": 477,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 477,
+      "confidence": "unstated"
     },
     "109": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 375,
-      "sha1": "8df21cb1706f"
+      "sha1": "8df21cb1706f",
+      "english_words": 424,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 424,
+      "confidence": "unstated"
     },
     "110": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 380,
-      "sha1": "0bbe21ab0f93"
+      "sha1": "0bbe21ab0f93",
+      "english_words": 458,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 458,
+      "confidence": "unstated"
     },
     "111": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 407,
-      "sha1": "98e29767d0a5"
+      "sha1": "98e29767d0a5",
+      "english_words": 480,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 480,
+      "confidence": "unstated"
     },
     "112": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 238,
-      "sha1": "73c633878ef4"
+      "sha1": "73c633878ef4",
+      "english_words": 303,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 303,
+      "confidence": "unstated"
     },
     "113": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 373,
-      "sha1": "f769c8897cfd"
+      "sha1": "f769c8897cfd",
+      "english_words": 458,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 458,
+      "confidence": "unstated"
     },
     "114": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 234,
-      "sha1": "d9a5abe18358"
+      "sha1": "d9a5abe18358",
+      "english_words": 278,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 278,
+      "confidence": "unstated"
     },
     "115": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 78,
-      "sha1": "c0f2b14da253"
+      "sha1": "c0f2b14da253",
+      "english_words": 94,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 94,
+      "confidence": "unstated"
     },
     "116": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "IX",
+      "status": "verified",
       "words": 376,
-      "sha1": "c49e622b108a"
+      "sha1": "c49e622b108a",
+      "english_words": 443,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 443,
+      "confidence": "unstated"
     },
     "117": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 294,
-      "sha1": "24568c7e14c1"
+      "sha1": "24568c7e14c1",
+      "english_words": 350,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 350,
+      "confidence": "unstated"
     },
     "118": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 386,
-      "sha1": "7383542772a8"
+      "sha1": "7383542772a8",
+      "english_words": 464,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 464,
+      "confidence": "unstated"
     },
     "119": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 428,
-      "sha1": "fba1cb3d061f"
+      "sha1": "fba1cb3d061f",
+      "english_words": 496,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 496,
+      "confidence": "unstated"
     },
     "120": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 431,
-      "sha1": "b56471b91ac6"
+      "sha1": "b56471b91ac6",
+      "english_words": 503,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 503,
+      "confidence": "unstated"
     },
     "121": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 426,
-      "sha1": "1e69c785e777"
+      "sha1": "1e69c785e777",
+      "english_words": 524,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 524,
+      "confidence": "unstated"
     },
     "122": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 445,
-      "sha1": "40084c52246e"
+      "sha1": "40084c52246e",
+      "english_words": 515,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 515,
+      "confidence": "unstated"
     },
     "123": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 412,
-      "sha1": "6549415f1945"
+      "sha1": "6549415f1945",
+      "english_words": 496,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 496,
+      "confidence": "unstated"
     },
     "124": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 398,
-      "sha1": "56d62fe8c33e"
+      "sha1": "56d62fe8c33e",
+      "english_words": 488,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 488,
+      "confidence": "unstated"
     },
     "125": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 453,
-      "sha1": "3f79a585a30a"
+      "sha1": "3f79a585a30a",
+      "english_words": 541,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 541,
+      "confidence": "unstated"
     },
     "126": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 449,
-      "sha1": "38fa70235faa"
+      "sha1": "38fa70235faa",
+      "english_words": 550,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 550,
+      "confidence": "unstated"
     },
     "127": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 417,
-      "sha1": "1a3e03b80e36"
+      "sha1": "1a3e03b80e36",
+      "english_words": 520,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 520,
+      "confidence": "unstated"
     },
     "128": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 414,
-      "sha1": "4c437fff8c72"
+      "sha1": "4c437fff8c72",
+      "english_words": 522,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 522,
+      "confidence": "unstated"
     },
     "129": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 258,
-      "sha1": "58ed69f76d98"
+      "sha1": "58ed69f76d98",
+      "english_words": 304,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 304,
+      "confidence": "unstated"
     },
     "130": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 416,
-      "sha1": "005b6223ae7c"
+      "sha1": "005b6223ae7c",
+      "english_words": 484,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 484,
+      "confidence": "unstated"
     },
     "131": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 417,
-      "sha1": "20ab8427c8d6"
+      "sha1": "20ab8427c8d6",
+      "english_words": 515,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 515,
+      "confidence": "unstated"
     },
     "132": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 385,
-      "sha1": "86800d3d27d1"
+      "sha1": "86800d3d27d1",
+      "english_words": 445,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 445,
+      "confidence": "unstated"
     },
     "133": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 308,
-      "sha1": "c3aa6e84e661"
+      "sha1": "c3aa6e84e661",
+      "english_words": 373,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 373,
+      "confidence": "unstated"
     },
     "134": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 220,
-      "sha1": "0cf716cb65fe"
+      "sha1": "0cf716cb65fe",
+      "english_words": 257,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 257,
+      "confidence": "unstated"
     },
     "135": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 103,
-      "sha1": "f752bc3b046a"
+      "sha1": "f752bc3b046a",
+      "english_words": 78,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 78,
+      "confidence": "unstated"
     },
     "136": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 219,
-      "sha1": "3249d550732b"
+      "sha1": "3249d550732b",
+      "english_words": 258,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 258,
+      "confidence": "unstated"
     },
     "137": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 229,
-      "sha1": "22e7dba900c9"
+      "sha1": "22e7dba900c9",
+      "english_words": 281,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 281,
+      "confidence": "unstated"
     },
     "138": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 430,
-      "sha1": "9b316f7d7e13"
+      "sha1": "9b316f7d7e13",
+      "english_words": 506,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 506,
+      "confidence": "unstated"
     },
     "139": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 161,
-      "sha1": "e91ffb021590"
+      "sha1": "e91ffb021590",
+      "english_words": 179,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 179,
+      "confidence": "unstated"
     },
     "140": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "X",
+      "status": "verified",
       "words": 146,
-      "sha1": "11f97f1306e1"
+      "sha1": "11f97f1306e1",
+      "english_words": 179,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 179,
+      "confidence": "unstated"
     },
     "141": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XI",
+      "status": "verified",
       "words": 340,
-      "sha1": "17b916dac893"
+      "sha1": "17b916dac893",
+      "english_words": 389,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 389,
+      "confidence": "unstated"
     },
     "142": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XI",
+      "status": "verified",
       "words": 170,
-      "sha1": "a27a7d9bff61"
+      "sha1": "a27a7d9bff61",
+      "english_words": 199,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 199,
+      "confidence": "unstated"
     },
     "143": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XI",
+      "status": "verified",
       "words": 390,
-      "sha1": "4e62635d59f6"
+      "sha1": "4e62635d59f6",
+      "english_words": 446,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 446,
+      "confidence": "unstated"
     },
     "144": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XI",
+      "status": "verified",
       "words": 389,
-      "sha1": "298e7ea1748c"
+      "sha1": "298e7ea1748c",
+      "english_words": 440,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 440,
+      "confidence": "unstated"
     },
     "145": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XI",
+      "status": "verified",
       "words": 375,
-      "sha1": "daedcd2d676f"
+      "sha1": "daedcd2d676f",
+      "english_words": 450,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 450,
+      "confidence": "unstated"
     },
     "146": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XI",
+      "status": "verified",
       "words": 401,
-      "sha1": "c8815c65131a"
+      "sha1": "c8815c65131a",
+      "english_words": 460,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 460,
+      "confidence": "unstated"
     },
     "147": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XII",
+      "status": "verified",
       "words": 313,
-      "sha1": "4c918d016a01"
+      "sha1": "4c918d016a01",
+      "english_words": 386,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 386,
+      "confidence": "unstated"
     },
     "148": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XII",
+      "status": "verified",
       "words": 373,
-      "sha1": "853f6f186f1d"
+      "sha1": "853f6f186f1d",
+      "english_words": 433,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 433,
+      "confidence": "unstated"
     },
     "149": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XII",
+      "status": "verified",
       "words": 187,
-      "sha1": "1167b22040df"
+      "sha1": "1167b22040df",
+      "english_words": 231,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 231,
+      "confidence": "unstated"
     },
     "150": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XII",
+      "status": "verified",
       "words": 415,
-      "sha1": "44a71916774a"
+      "sha1": "44a71916774a",
+      "english_words": 504,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 504,
+      "confidence": "unstated"
     },
     "151": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XII",
+      "status": "verified",
       "words": 434,
-      "sha1": "639f46357646"
+      "sha1": "639f46357646",
+      "english_words": 497,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 497,
+      "confidence": "unstated"
     },
     "152": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XII",
+      "status": "verified",
       "words": 407,
-      "sha1": "7b393ecbfa18"
+      "sha1": "7b393ecbfa18",
+      "english_words": 486,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 486,
+      "confidence": "unstated"
     },
     "153": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIII",
+      "status": "verified",
       "words": 310,
-      "sha1": "19885893f75f"
+      "sha1": "19885893f75f",
+      "english_words": 370,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 370,
+      "confidence": "unstated"
     },
     "154": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIII",
+      "status": "verified",
       "words": 413,
-      "sha1": "7545d711ef08"
+      "sha1": "7545d711ef08",
+      "english_words": 456,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 456,
+      "confidence": "unstated"
     },
     "155": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIII",
+      "status": "verified",
       "words": 412,
-      "sha1": "fefdb5edd6b4"
+      "sha1": "fefdb5edd6b4",
+      "english_words": 486,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 486,
+      "confidence": "unstated"
     },
     "156": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIII",
+      "status": "verified",
       "words": 385,
-      "sha1": "33279594761f"
+      "sha1": "33279594761f",
+      "english_words": 466,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 466,
+      "confidence": "unstated"
     },
     "157": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIII",
+      "status": "verified",
       "words": 408,
-      "sha1": "fcbe59b5d587"
+      "sha1": "fcbe59b5d587",
+      "english_words": 459,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 459,
+      "confidence": "unstated"
     },
     "158": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 298,
-      "sha1": "3ed7ecfa2851"
+      "sha1": "3ed7ecfa2851",
+      "english_words": 373,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 373,
+      "confidence": "unstated"
     },
     "159": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 95,
-      "sha1": "57cde1ee7d89"
+      "sha1": "57cde1ee7d89",
+      "english_words": 105,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 105,
+      "confidence": "unstated"
     },
     "160": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 288,
-      "sha1": "a8abf1462a71"
+      "sha1": "a8abf1462a71",
+      "english_words": 333,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 333,
+      "confidence": "unstated"
     },
     "161": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 378,
-      "sha1": "e72d540110a9"
+      "sha1": "e72d540110a9",
+      "english_words": 450,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 450,
+      "confidence": "unstated"
     },
     "162": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 121,
-      "sha1": "f1ce4e14a6f2"
+      "sha1": "f1ce4e14a6f2",
+      "english_words": 150,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 150,
+      "confidence": "unstated"
     },
     "163": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 130,
-      "sha1": "1dd9f7d71ff2"
+      "sha1": "1dd9f7d71ff2",
+      "english_words": 160,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 160,
+      "confidence": "unstated"
     },
     "164": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 119,
-      "sha1": "bc52899df7cc"
+      "sha1": "bc52899df7cc",
+      "english_words": 149,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 149,
+      "confidence": "unstated"
     },
     "165": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 241,
-      "sha1": "526e2cb18236"
+      "sha1": "526e2cb18236",
+      "english_words": 280,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 280,
+      "confidence": "unstated"
     },
     "166": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 140,
-      "sha1": "7dd0006a1f37"
+      "sha1": "7dd0006a1f37",
+      "english_words": 165,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 165,
+      "confidence": "unstated"
     },
     "167": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 153,
-      "sha1": "15e07c8d1770"
+      "sha1": "15e07c8d1770",
+      "english_words": 186,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 186,
+      "confidence": "unstated"
     },
     "168": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 125,
-      "sha1": "42ae11c0fa78"
+      "sha1": "42ae11c0fa78",
+      "english_words": 144,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 144,
+      "confidence": "unstated"
     },
     "169": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 311,
-      "sha1": "ff1ff6bee898"
+      "sha1": "ff1ff6bee898",
+      "english_words": 359,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 359,
+      "confidence": "unstated"
     },
     "170": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 108,
-      "sha1": "4b85311595f3"
+      "sha1": "4b85311595f3",
+      "english_words": 124,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 124,
+      "confidence": "unstated"
     },
     "171": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 91,
-      "sha1": "312d1ea78049"
+      "sha1": "312d1ea78049",
+      "english_words": 113,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 113,
+      "confidence": "unstated"
     },
     "172": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 325,
-      "sha1": "e41839038a7f"
+      "sha1": "e41839038a7f",
+      "english_words": 377,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 377,
+      "confidence": "unstated"
     },
     "173": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 490,
-      "sha1": "27cb8fd56a51"
+      "sha1": "27cb8fd56a51",
+      "english_words": 564,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 564,
+      "confidence": "unstated"
     },
     "174": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 319,
-      "sha1": "3106fa76acfc"
+      "sha1": "3106fa76acfc",
+      "english_words": 387,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 387,
+      "confidence": "unstated"
     },
     "175": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 289,
-      "sha1": "f58b5351a773"
+      "sha1": "f58b5351a773",
+      "english_words": 339,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 339,
+      "confidence": "unstated"
     },
     "176": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XIV",
+      "status": "verified",
       "words": 234,
-      "sha1": "ab88112a00a7"
+      "sha1": "ab88112a00a7",
+      "english_words": 282,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 282,
+      "confidence": "unstated"
     },
     "177": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XV",
+      "status": "verified",
       "words": 156,
-      "sha1": "76feb4a24ea0"
+      "sha1": "76feb4a24ea0",
+      "english_words": 185,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 185,
+      "confidence": "unstated"
     },
     "178": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XV",
+      "status": "verified",
       "words": 432,
-      "sha1": "8a1e9120983c"
+      "sha1": "8a1e9120983c",
+      "english_words": 490,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 490,
+      "confidence": "unstated"
     },
     "179": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XV",
+      "status": "verified",
       "words": 439,
-      "sha1": "81d4f8a186a7"
+      "sha1": "81d4f8a186a7",
+      "english_words": 512,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 512,
+      "confidence": "unstated"
     },
     "180": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XV",
+      "status": "verified",
       "words": 418,
-      "sha1": "9627c8bd817e"
+      "sha1": "9627c8bd817e",
+      "english_words": 482,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 482,
+      "confidence": "unstated"
     },
     "181": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 278,
-      "sha1": "291963e9cd97"
+      "sha1": "291963e9cd97",
+      "english_words": 321,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 321,
+      "confidence": "unstated"
     },
     "182": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 421,
-      "sha1": "aff24e2c3648"
+      "sha1": "aff24e2c3648",
+      "english_words": 463,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 463,
+      "confidence": "unstated"
     },
     "183": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 420,
-      "sha1": "51a0860cd0a1"
+      "sha1": "51a0860cd0a1",
+      "english_words": 464,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 464,
+      "confidence": "unstated"
     },
     "184": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 419,
-      "sha1": "be2cf170f679"
+      "sha1": "be2cf170f679",
+      "english_words": 504,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 504,
+      "confidence": "unstated"
     },
     "185": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 417,
-      "sha1": "9f6b2cba41b1"
+      "sha1": "9f6b2cba41b1",
+      "english_words": 487,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 487,
+      "confidence": "unstated"
     },
     "186": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 481,
-      "sha1": "c8d26b2e5aff"
+      "sha1": "c8d26b2e5aff",
+      "english_words": 548,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 548,
+      "confidence": "unstated"
     },
     "187": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 452,
-      "sha1": "506f3d15a85b"
+      "sha1": "506f3d15a85b",
+      "english_words": 521,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 521,
+      "confidence": "unstated"
     },
     "188": {
-      "chapter": "I-XVI",
-      "status": "fetched",
+      "chapter": "XVI",
+      "status": "verified",
       "words": 434,
-      "sha1": "07e96079feb2"
+      "sha1": "07e96079feb2",
+      "english_words": 496,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 496,
+      "confidence": "unstated"
     },
     "189": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 314,
-      "sha1": "81c25900c60a"
+      "sha1": "81c25900c60a",
+      "english_words": 359,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 359,
+      "confidence": "unstated"
     },
     "190": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 428,
-      "sha1": "7cf06429bfc4"
+      "sha1": "7cf06429bfc4",
+      "english_words": 487,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 487,
+      "confidence": "unstated"
     },
     "191": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 160,
-      "sha1": "9e71d278537e"
+      "sha1": "9e71d278537e",
+      "english_words": 197,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 197,
+      "confidence": "unstated"
     },
     "192": {
       "chapter": "XVII",
-      "status": "fetched",
+      "status": "verified",
       "words": 157,
-      "sha1": "b04656955153"
+      "sha1": "b04656955153",
+      "english_words": 193,
+      "pass": "listening translation (first half), 2026-09-09",
+      "en_words": 193,
+      "confidence": "unstated"
     }
   }
 }

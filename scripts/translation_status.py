@@ -94,8 +94,14 @@ def report(man, next_n=0):
     done_words = sum(r.get("words", 0) for r in pages.values()
                      if r["status"] in ("drafted", "verified"))
 
-    print(f"HYPNEROTOMACHIA — finishing what Dallington left, from page "
-          f"{man['range']['first_page']} to {man['range']['last_page']}")
+    # The headline said "finishing what Dallington left, from page 193 to 467"
+    # for as long as that was the job. On 2026-09-09 the front matter went in and
+    # the range became the whole book, so it says so.
+    first, last = man["range"]["first_page"], man["range"]["last_page"]
+    whole = first <= 1 and last >= 467
+    print("HYPNEROTOMACHIA — the whole book in English, pages "
+          f"{first} to {last}" if whole else
+          f"HYPNEROTOMACHIA — finishing what Dallington left, from page {first} to {last}")
     print()
     print(f"  pages   {done:4d} / {total:<4d} ({done / total * 100:5.1f}%)")
     print(f"  words   {done_words:,} / {src_words:,} source words "
