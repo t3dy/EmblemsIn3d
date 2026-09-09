@@ -180,6 +180,24 @@ half the complaint may evaporate under the right lens.
 
 ## 4. Making them move: what "acting out his reactions" needs
 
+> **BUILT 2026-09-09** — `HPWorldScene._buildWitness`. Items 1, 2 and 5 below, and no rig:
+> eleven authored poses mapped to seventeen stations off the *occasion* each utterance
+> records, an ease-out-back over nine tenths of a second, a head turn, and a slow breath so
+> he is never quite still. He stands where the plates put him — at the edge of the scene,
+> three-quarter to the viewer, looking at the wonder rather than at you.
+>
+> **The two things that had to be fixed for him to exist**, both worth knowing before you
+> animate anything else here: `figure()` returns a painted **card** by default, and a card is
+> a flat quad with no arms and no head to turn — so `built: true` was added for him alone.
+> And the draw-call compiler **merges** everything it is not told to leave alone, which bakes
+> a figure at the origin in world space; unmerged, he moved, merged he was invisible
+> everywhere and present nowhere. Anything that must move must be marked in
+> `_compileDrawCalls`.
+>
+> Items 3 (secondary motion) and 4 (IK) are still open, and item 4 is the one that would let
+> him actually take the rose.
+
+
 Ted wants Poliphilo to react visibly as the text reaches each moment. The standard toolkit,
 cheapest first:
 

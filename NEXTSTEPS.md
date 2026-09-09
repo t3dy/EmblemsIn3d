@@ -41,8 +41,12 @@ beast (**built**), the dream opening on the plain (**built**), the way out of th
 (**built**), the three mute approach stations (**built**), and the gardens of glass and silk
 with Hunt's objection in their lede (**built**). Everything below this line is still open.
 
-**Still owed from item 1 of 0-A:** the full-text reading mode, and Poliphilo acting out his
-reactions. Both are the largest things left on this list.
+**Poliphilo acting out his reactions is built too** (later the same day) — see
+[`HUMANOIDS.md`](HUMANOIDS.md) §4.
+
+**Still owed from item 1 of 0-A: the full-text reading mode**, which is now the largest thing
+left on this list. Its prerequisite is the whole-book translation, in progress in another
+window; nothing here should touch `translation/` while that runs.
 
 ### 0-A. Ted's open call, 2026-09-09: read the whole book while you walk it
 

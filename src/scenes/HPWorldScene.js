@@ -24,7 +24,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
-import { makeCast } from '../systems/Cast.js?v=52';
+import { makeCast } from '../systems/Cast.js?v=53';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
 import { RollUp } from '../systems/RollUp.js?v=9';
 import { Masonry } from '../systems/Masonry.js?v=8';
@@ -153,6 +153,15 @@ export const HP_STATIONS = [
 ];
 
 const EYE = 1.7;
+
+// Is `o` inside `root`? Used to keep the acting Poliphilo out of the roll-up
+// census: he animates, so he is never merged, and a ball that swallowed him
+// would be slicing vertices out of a lump he was never folded into.
+function isDescendantOf(o, root) {
+  for (let p = o; p; p = p.parent) if (p === root) return true;
+  return false;
+}
+
 
 const METALS = [
   { name: 'Saturn',  metal: 'Lead',        glyph: '♄', color: 0x55555e, emissive: 0x111114, metalness: 0.5,  rough: 0.6 },
@@ -456,6 +465,7 @@ export class HPWorldScene {
     this._buildApproach();
     this._buildSpaciousPlain();   // where the dream opens (DECISIONS 2026-09-09 call 2)
     this._buildArtificialGardens();   // glass, silk and the faked scent (call 4)
+    this._buildWitness();             // Poliphilo, acting out his reactions
     this._buildGreatPortal();
     this._buildBridge();
     this._buildRiverPlants();
@@ -721,6 +731,12 @@ export class HPWorldScene {
     // The birds fly and hop, so they must not be baked into the static merge --
     // a merged bird is a bird nailed to the sky.
     for (const b of (this._birds || [])) mark(b.g);
+    // Poliphilo walks from station to station and changes his attitude at each,
+    // so he must stay his own draw for the same reason. Merged, he was baked at
+    // the origin: `_witnessTo` moved a group whose geometry had already been
+    // folded into a static lump in world space, so he was invisible everywhere
+    // and present nowhere. See _buildWitness.
+    if (this._witness) mark(this._witness.g);
     for (const h of this._hovers) mark(h.g);
     if (this._quinta) { mark(this._quinta.dod); if (this._quinta.rays) mark(this._quinta.rays); }
     if (this._torch) mark(this._torch);
@@ -1974,6 +1990,185 @@ export class HPWorldScene {
     // in the wood itself. It runs away the moment he would cry out.
     const wolf = this.cast.animals.wolf(1.15);
     this._npc('wolf', wolf, -21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
+  }
+
+  // ── POLIPHILO, ACTING ─────────────────────────────────────────────────────
+  //
+  // Ted, 2026-09-09: he wants the reader "looking at modeled versions of
+  // everything described in the text, and seeing a Polyphilo figure acting out
+  // his reactions."
+  //
+  // WHY A SECOND POLIPHILO IS NOT ODD. In free walk you are Poliphilo, so a
+  // Poliphilo standing in front of you looks at first like a duplication. It is
+  // the book's own convention: **the 1499 cuts draw Poliphilo inside almost
+  // every scene**, usually at the edge, usually smaller than the wonder, always
+  // looking at it. The plates do not show you what he saw; they show you him
+  // seeing it. A figure at the edge of each station, posed to what he says
+  // there, is the woodcut's staging and not a mistake.
+  //
+  // WHAT HE DOES. `src/data/poliphilo.json` already catalogues every utterance
+  // in the book with its station, its kind, and — the useful part — its
+  // OCCASION, the sentence saying what he was doing when he said it. Seventeen
+  // stations have one. So the data for "what does he react to, and how" was
+  // written months ago and has been sitting unused: this reads it and stands him
+  // accordingly.
+  //
+  // HOW IT IS DONE, per HUMANOIDS.md §4: authored poses, non-linear easing, and
+  // gaze — in that order of value, and no rig. A rig would let him move; what
+  // makes a still figure read as alive is that its face is not square to its own
+  // chest and that it arrives at a pose rather than snapping to it.
+  //
+  // He is deliberately absent from Roll Up (you are a ball), from Fly (you are a
+  // dragon) and from the Dream (you are him, and the mode says so).
+
+  // Each pose is: the two arm pivots as [rotation.z, rotation.x], then the lean
+  // of the whole body, the head's tilt and its turn. Arms are mirrored in sign,
+  // so a positive z on the left and a negative on the right both mean "away
+  // from the body" — which is why every entry below looks asymmetrical and is
+  // not. The asymmetry that matters is in `head` and `lean`.
+  static get WITNESS_POSES() {
+    return {
+      // Standing in the open with nothing in it, counting what is not there.
+      lost:      { L: [0.34, 0.10], R: [-0.28, 0.05], lean: -0.03, tilt: 0.05, turn: 0.55 },
+      // "my hast in getting foorth was much hyndered": one arm up against the
+      // boughs, the other pushing them aside.
+      warding:   { L: [1.95, -0.75], R: [-0.95, -0.35], lean: 0.10, tilt: -0.16, turn: -0.30 },
+      // His own sigh comes back off the stone and he stops to hear it.
+      listening: { L: [0.30, 0.06], R: [-1.62, -0.55], lean: -0.05, tilt: 0.14, turn: 0.42 },
+      // Reading something written high up, or very small, or in Chaldean.
+      reading:   { L: [0.55, -0.30], R: [-0.50, -0.28], lean: -0.14, tilt: -0.34, turn: 0.10 },
+      // The four wonders of the piazza, all at once.
+      wonder:    { L: [2.05, -0.35], R: [-2.05, -0.35], lean: -0.11, tilt: -0.26, turn: 0.18 },
+      // Asking, with the palm open. He asks a great many questions.
+      asking:    { L: [0.30, 0.05], R: [-1.05, -0.85], lean: 0.02, tilt: 0.03, turn: -0.36 },
+      // Walking away and looking back, unable to stay and look any longer.
+      reluctant: { L: [0.40, 0.12], R: [-0.30, 0.08], lean: 0.04, tilt: 0.10, turn: -1.15 },
+      // Toward her, before he has recognised her.
+      reaching:  { L: [1.30, -1.15], R: [-1.45, -1.25], lean: -0.13, tilt: -0.10, turn: 0.06 },
+      // Castigating himself for wanting what he wants; and grief among tombs.
+      shame:     { L: [0.14, 0.22], R: [-0.12, 0.20], lean: 0.16, tilt: 0.40, turn: -0.22 },
+      // In the boat, to a god.
+      prayer:    { L: [2.45, -0.95], R: [-2.45, -0.95], lean: -0.20, tilt: -0.42, turn: 0.0 },
+      // Speaking to someone present.
+      speaking:  { L: [0.32, 0.08], R: [-0.85, -0.55], lean: 0.0, tilt: 0.02, turn: -0.28 },
+    };
+  }
+
+  // Which pose belongs to which station, read off the OCCASION recorded in
+  // poliphilo.json rather than invented here. The comment on each line is the
+  // occasion it answers, abbreviated; the full sentence is in the data.
+  static get WITNESS_AT() {
+    return {
+      plain:           'lost',       // alone on the plain, before the wood closes over him
+      wood:            'warding',    // among the boughs and thorns, his haste much hindered
+      horse:           'listening',  // his own sigh comes back to him as an echo off the stone
+      colossus:        'reading',    // the anatomy written over the giant in three tongues
+      elephant:        'asking',     // he asks Logistica what the inscription meant
+      portal:          'wonder',     // having now seen all four wonders of the piazza
+      fountain:        'wonder',     // first sight of the pleasant country beyond the pyramid
+      quinta_essentia: 'reluctant',  // leaving, unable to stay and look any longer
+      three_doors:     'asking',     // emboldened by two answers, he asks leave for a third
+      polia:           'reaching',   // in the green arbour, before he has recognised her
+      triumphs:        'wonder',     // among the cars, wishing he could stay in the dream
+      priapus:         'speaking',   // the last thing he says before the 1592 breaks off
+      venus_temple:    'shame',      // castigating himself for wanting what he wants
+      polyandrion:     'shame',      // alone in the ruin, reading the tombs of those dead for love
+      cythera:         'prayer',     // in the boat, with Cupid at the helm
+      court:           'shame',      // Book II: dying at her feet in the temple of Diana
+      book_two:        'reaching',   // the first thing he says on coming back to life
+    };
+  }
+
+  _buildWitness() {
+    if (this.style.key === 'woodcut') return;   // the plates draw their own
+    // `built: true` keeps him out of the painted-card register. A card is a
+    // flat quad and has no arms to move; see the note at Cast.figure.
+    // `hat: 'cap'` is the nearest thing this builder has to hair — a brown
+    // half-sphere over the crown. Without it he is bald, and a bald Poliphilo
+    // is nobody. In the 1499 cuts he wears a long gown and a full head of hair;
+    // this is the gown and half the hair.
+    const g = this.cast.figure({ name: 'Poliphilo the dreamer', h: 1.0,
+                                 robe: 0x3f4470, pose: 'stand', built: true,
+                                 hat: 'cap' });
+    g.visible = false;
+    this.scene.add(g);
+    this._witness = {
+      g,
+      parts: g.userData,
+      // where the pose is now, and where it is going. Everything is eased
+      // toward `to`; nothing is ever set directly, which is the whole trick.
+      now: { lz: 0.25, lx: 0, rz: -0.25, rx: 0, lean: 0, tilt: 0, turn: 0 },
+      to:  { lz: 0.25, lx: 0, rz: -0.25, rx: 0, lean: 0, tilt: 0, turn: 0 },
+      at: null,      // the station key he is standing at
+      t: 0,          // seconds since the pose changed, for the easing
+    };
+  }
+
+  // Move him to a station and set the pose it calls for. Called when the
+  // walker's nearest station changes.
+  _witnessTo(st) {
+    const w = this._witness;
+    if (!w) return;
+    const key = st && st.key;
+    if (key === w.at) return;
+    w.at = key;
+    const poseName = key && HPWorldScene.WITNESS_AT[key];
+    if (!poseName) { w.g.visible = false; return; }
+
+    // Where he stands: sixty per cent of the way from the station to whatever
+    // it looks at, and two metres to one side — the plates put him at the edge
+    // of the scene, not in the middle of it, and never between you and the
+    // wonder.
+    const [sx, sz] = st.pos, [lx, lz] = st.look;
+    const dx = lx - sx, dz = lz - sz, len = Math.hypot(dx, dz) || 1;
+    const nx = -dz / len, nz = dx / len;                 // the perpendicular
+    const side = (key.charCodeAt(0) % 2) ? 1 : -1;
+    const px = sx + dx * 0.6 + nx * side * 2.1;
+    const pz = sz + dz * 0.6 + nz * side * 2.1;
+    w.g.position.set(px, this.walker ? this.walker.floorAt(px, pz) : 0, pz);
+    // He faces what the station looks at — that is what he is reacting to — but
+    // turned back about thirty degrees toward where you arrive, so you see him
+    // in THREE-QUARTER and not from behind. Aimed dead at the wonder he was a
+    // back and a pair of shoulders, which is the one view of a figure that
+    // tells you nothing. The plates almost never draw him from behind either:
+    // they want his face and the wonder in the same picture, which is the whole
+    // difficulty of composing them and the reason he is usually at the edge.
+    w.g.rotation.y = Math.atan2(lx - px, lz - pz) - side * 0.55;
+    w.g.visible = true;
+
+    const p = HPWorldScene.WITNESS_POSES[poseName];
+    w.to = { lz: p.L[0], lx: p.L[1], rz: p.R[0], rx: p.R[1],
+             lean: p.lean, tilt: p.tilt, turn: p.turn };
+    w.t = 0;
+  }
+
+  // Ease toward the pose. HUMANOIDS.md §4.2: "easing that is not linear" does
+  // more for perceived life than any amount of extra geometry. This is an
+  // ease-out with a small overshoot — he arrives, settles back, and stops —
+  // over about nine tenths of a second, which is roughly how long a person
+  // takes to compose a gesture.
+  _updateWitness(dt) {
+    const w = this._witness;
+    if (!w || !w.g.visible) return;
+    w.t += dt;
+    const T = 0.9;
+    const u = Math.min(1, w.t / T);
+    // ease-out-back: 1 - (1-u)^3, with a decaying overshoot on top
+    const e = 1 - Math.pow(1 - u, 3) + Math.sin(u * Math.PI) * 0.10 * (1 - u);
+    const k = Math.min(1, dt * 9);
+    for (const key of ['lz', 'lx', 'rz', 'rx', 'lean', 'tilt', 'turn']) {
+      const target = w.now[key] + (w.to[key] - w.now[key]) * e;
+      w.now[key] += (target - w.now[key]) * k;
+    }
+    const n = w.now, P = w.parts;
+    if (P.armL) { P.armL.rotation.z = n.lz; P.armL.rotation.x = n.lx; }
+    if (P.armR) { P.armR.rotation.z = n.rz; P.armR.rotation.x = n.rx; }
+    w.g.rotation.x = n.lean;
+    if (P.head) {
+      // Breath, so he is never quite still, and the gaze on top of it.
+      P.head.rotation.z = n.tilt;
+      P.head.rotation.y = n.turn + Math.sin(this._t * 0.7) * 0.02;
+    }
   }
 
   // ── The three artificial gardens ─────────────────────────────────────────
@@ -5610,6 +5805,9 @@ export class HPWorldScene {
   // census is a few thousand objects and the walk has no use for it.
   _census(mesh, merged, start, count) {
     if (!this._wantRoll) return;
+    // The witness is not food. He is not merged either -- he animates --
+    // so a census entry for him would hand the ball a mesh it cannot slice.
+    if (this._witness && mesh && this._witness.g && isDescendantOf(mesh, this._witness.g)) return;
     const g = mesh.geometry;
     if (!g || !g.attributes || !g.attributes.position) return;
     if (!g.boundingSphere) g.computeBoundingSphere();
@@ -12990,10 +13188,14 @@ export class HPWorldScene {
       if (near !== this._nearStation) {
         this._nearStation = near;
         this.onStation?.(near);
+        // Poliphilo takes the attitude the book records for this place. He is
+        // absent while you are a ball, a dragon, or him.
+        if (this._witness && !this.roll && !this.flight && !this.dream) this._witnessTo(near);
       }
     }
 
     // Living world
+    this._updateWitness(dt);
     this._streams.forEach(s => s.update(this._t));
     this._updateBirds(this._t);
 

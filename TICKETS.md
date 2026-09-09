@@ -6,7 +6,7 @@
 
 ---
 
-**25 tickets** — 13 open, 3 declined, 9 done. By kind: 13 debt, 5 infra, 4 bug, 2 perf, 1 question.
+**25 tickets** — 12 open, 3 declined, 10 done. By kind: 13 debt, 5 infra, 4 bug, 2 perf, 1 question.
 
 ---
 
@@ -91,21 +91,6 @@
 **Files.** `src/data/poliphilo.json` · `src/scenes/HPWorldScene.js` · `src/main.js`
 
 **See.** DIRECTIONS.md#2 · NEXTSTEPS.md#0b
-
-
-### `fig-poliphilo-acts` — Poliphilo does not react to anything
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Ted 2026-09-09: "seeing a Polyphilo figure acting out his reactions." NPCs have idle sway and an arm breathe and nothing else. poliphilo.json already catalogues 53 utterances with their occasions, so what he reacts to and where is already data.
-
-**Acceptance.** At the stops where poliphilo.json has an utterance, the figure takes a pose that matches its occasion, arriving with non-linear easing, and turns his gaze to what the commentary names.
-
-**Files.** `src/systems/Cast.js` · `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json`
-
-**See.** HUMANOIDS.md#4
 
 
 ### `infra-agent-context-contracts` — The three agents have no bounded reading list; all inherit the same instructions
@@ -380,6 +365,23 @@
 **Files.** `src/data/tours.json`
 
 **See.** DIRECTIONS.md#3
+
+
+### `fig-poliphilo-acts` — Poliphilo does not react to anything
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Ted 2026-09-09: "seeing a Polyphilo figure acting out his reactions." NPCs have idle sway and an arm breathe and nothing else. poliphilo.json already catalogues 53 utterances with their occasions, so what he reacts to and where is already data.
+
+**Acceptance.** At the stops where poliphilo.json has an utterance, the figure takes a pose that matches its occasion, arriving with non-linear easing, and turns his gaze to what the commentary names.
+
+**Resolution.** _buildWitness / _witnessTo / _updateWitness in HPWorldScene. One Poliphilo who moves to whichever station you are nearest and takes the attitude poliphilo.json records for it: eleven authored poses (lost, warding, listening, reading, wonder, asking, reluctant, reaching, shame, prayer, speaking) mapped to seventeen stations from each utterance's OCCASION, eased over 0.9 s with an ease-out-back so he arrives and settles rather than snapping, plus a head turn and a slow breath. He stands 60% of the way from the station to what it looks at, two metres to one side, turned about thirty degrees back toward you so you see him three-quarter rather than from behind. Absent from Roll, Fly and Dream. TWO THINGS HAD TO BE FIXED FOR HIM TO EXIST AT ALL: figure() gained `built: true`, because the default variant is `card` and a painted card is a flat quad with no arms to move; and he had to be excluded from _compileDrawCalls, because a merged figure is baked at the origin in world space, so he was invisible everywhere and present nowhere.
+
+**Files.** `src/systems/Cast.js` · `src/scenes/HPWorldScene.js` · `src/data/poliphilo.json`
+
+**See.** HUMANOIDS.md#4
 
 
 ### `fig-species-proportions` — One proportion table serves every quadruped, so silhouette does not distinguish species

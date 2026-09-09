@@ -282,11 +282,22 @@ export function makeCast(S) {
   }
 
   function figure({ name = '', h = 1, skin = SKIN, robe = null, pose = 'stand', crowned = false,
-                    winged = false, twoHeaded = false, hat = null, beard = false } = {}) {
+                    winged = false, twoHeaded = false, hat = null, beard = false,
+                    built = false } = {}) {
     // Only robed figures become painted cards; the winged, two-headed and
     // gilded ones are doing something the flat painting cannot, and keep their
     // built bodies.
-    if (lit && figVariant() === 'card' && robe != null && !winged && !twoHeaded) {
+    //
+    // `built` (2026-09-09) is a fourth way out, and there is exactly one caller:
+    // the acting Poliphilo of HPWorldScene._buildWitness. A painted card is a
+    // flat quad with a painting on it — it has no arms and no head to turn, so
+    // a figure that must take a different attitude at every station cannot be
+    // one. This is a real cost and worth naming: HUMANOIDS.md §3D argues the
+    // cut-out register is the more defensible one for a digital edition,
+    // because it puts genuine period images in front of the reader instead of
+    // our guess at a period body. We give that up for him alone, because Ted
+    // asked to see him ACT, and acting is motion.
+    if (lit && !built && figVariant() === 'card' && robe != null && !winged && !twoHeaded) {
       return paintedFigure({ h, robe, cutout: pickCutout(name, true) });
     }
     const g = new THREE.Group();
