@@ -272,6 +272,67 @@ export const Portal = {
 
   // ── The Three Doors (f.119) — a wall you actually walk through ───────────
 
+  // ── The right-hand stylobate, and the forge cut on it ────────────────────
+  //
+  // Dallington pp. 58-60. Below on the right hand, under the bases of the
+  // columns, a square stone like an altar, with a fitting cornice above and the
+  // same below, wrought about its sides with leaves and hollowed under, the
+  // leaf-work hemming in a smooth face of shining white alabaster. On that face
+  // is cut the most fully described picture in the chapter.
+  //
+  // WHICH IS THE RIGHT HAND, derived the same way as the dividing spring, since
+  // the book is directional and this project has been caught by that before.
+  // Poliphilo comes down the approach from the north and faces the porch, so he
+  // faces -z; in a right-handed Y-up frame right is forward x up, and
+  // (0,0,-1) x (0,1,0) = (1,0,0). His right hand is +x, so the pedestal stands
+  // against the porch's eastern jamb, and its carved face looks back up the
+  // approach at him.
+  //
+  // WHAT IS CUT ON IT: a middle-aged smith of churlish countenance in a knotted
+  // goatskin apron, at an anvil fixed on a knotty stump, his hammer up over a
+  // burning brigandine; before him a winged goddess holding her naked infant on
+  // her thighs, her foot on a stone beside a furnace sunk in a hollow; a knight
+  // in brass armour with the Medusa head on his breastplate, a half-pike raised
+  // and a high-crested helmet; and behind the smith a young man in silk, seen
+  // only from the breast up over the smith's bowed head. Vulcan, Venus, Cupid
+  // and Mars -- which is to say the quarrel the whole book is about, cut on the
+  // gate you go in by. Chapter IV had no ledger entries at all before today.
+  _buildPorchStylobate() {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const Z = 26, PORCH = 9;
+    const PX = PORCH - 1.4, PZ = Z + 1.9;      // against the eastern jamb, on the approach side
+    const W = 1.5, H = 1.5, CORN = 0.17;
+
+    const alabaster = woodcut ? S.mat({ tone: 0.02 })
+                              : S.mat({ color: 0xece5d6, roughness: 0.72 });
+    const leaf = woodcut ? S.mat({ tone: 0.22 })
+                         : S.mat({ color: 0x9a8f78, roughness: 0.9 });
+
+    // cornice below, the body, cornice above -- "no broder then long, but a
+    // right quadrangule"
+    this._m(new THREE.BoxGeometry(W + 0.24, CORN, W + 0.24), leaf, PX, CORN / 2, PZ, { cast: false });
+    this._m(new THREE.BoxGeometry(W, H, W), alabaster, PX, CORN + H / 2, PZ, { outline: true });
+    this._m(new THREE.BoxGeometry(W + 0.24, CORN, W + 0.24), leaf, PX, CORN + H + CORN / 2, PZ, { outline: true });
+    // the leaf-work hemming the smooth face, and the gulaterie hollowed under
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.07, H * 0.9, 0.07), leaf, PX + sx * (W / 2 - 0.05), CORN + H / 2, PZ + W / 2 - 0.05, { cast: false });
+    }
+    this._m(new THREE.BoxGeometry(W * 0.92, 0.06, 0.06), leaf, PX, CORN + 0.09, PZ + W / 2 + 0.005, { cast: false });
+
+    // the forge, cut on the face that looks back up the approach
+    const tex = this._reliefTexture('the forge of Vulcan, Venus, Cupid and Mars');
+    const relM = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0xffffff, roughness: 0.86 });
+    if (!relM.map) relM.map = tex;
+    this._m(new THREE.PlaneGeometry(W * 0.86, H * 0.62), relM, PX, CORN + H * 0.54, PZ + W / 2 + 0.012, { cast: false });
+
+    this._plaque({ main: 'VVLCANVS · VENVS · MARS',
+                   sub: 'THE FORGE CVT ON THE RIGHT-HAND STYLOPODE OF THE PORCH · DALL. PP. 58-60' },
+      1.35, 0.22, PX, CORN + H + CORN + 0.16, PZ + W / 2 - 0.02, 0, true);
+
+    this._circleCol(PX, PZ, W * 0.78);
+  },
+
   _buildDoorsWall() {
     const S = this.style;
     const Z = 12, WALL_H = 4.8;

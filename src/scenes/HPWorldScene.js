@@ -43,7 +43,7 @@ import {
 import { Materials } from './world/materials.js?v=5';
 import { Nature } from './world/nature.js?v=10';
 import { Approach } from './world/approach.js?v=6';
-import { Portal } from './world/portal.js?v=16';
+import { Portal } from './world/portal.js?v=17';
 import { Palace } from './world/palace.js?v=7';
 import { Triumphs } from './world/triumphs.js?v=4';
 import { Tombs } from './world/tombs.js?v=4';
@@ -236,6 +236,9 @@ export class HPWorldScene {
     this._buildArtificialGardens();   // glass, silk and the faked scent (call 4)
     this._buildWitness();             // Poliphilo, acting out his reactions
     this._buildGreatPortal();
+    // ch. IV: the altar-like pedestal on the porch's right hand, and the forge
+    // of Vulcan cut on its alabaster face. See world/portal.js.
+    this._buildPorchStylobate();
     this._buildBridge();
     this._buildRiverPlants();
     this._buildRills();
