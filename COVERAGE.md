@@ -8,12 +8,12 @@ Ledger generated **2026-09-09**. 38 chapters · 165 plates attached to a chapter
 
 | | |
 |---|---|
-| Chapters **enumerated** (a feature list exists) | **15 of 38** |
-| Chapters **partial** (tour notes only, no feature list) | 23 |
+| Chapters **enumerated** (a feature list exists) | **16 of 38** |
+| Chapters **partial** (tour notes only, no feature list) | 22 |
 | Chapters **unread** | 0 |
-| Features **built** | 77 |
+| Features **built** | 78 |
 | Features **partial** | 10 |
-| Features **unbuilt** | **19** |
+| Features **unbuilt** | **22** |
 | Features **declined** (on purpose, with a reason) | 5 |
 
 > The first row is the one that matters. A chapter that is not enumerated cannot have a gap, because nobody has looked. That is exactly how the vaults under the pyramid stayed unbuilt: they have **no woodcut**, so every plate-driven check passed them, and no one had read chapter V against the world.
@@ -24,7 +24,6 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 
 | Ch. | Book | 1499 pages | Plates | Tour stops | Read it in |
 |---|---|---|---|---|---|
-| **VIII** | 1 | 79–93 | 6 | court | Dallington 1592 |
 | **IX** | 1 | 92–116 | 4 | labyrinth | Dallington 1592 |
 | **XI** | 1 | 141–146 | 0 | chess, quinta_essentia | Dallington 1592 |
 | **XII** | 1 | 147–152 | 6 | artificial, three_doors | Dallington 1592 |
@@ -70,7 +69,12 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | VI | **The ancient bridge, and the spring that divides right and left** | place | ○ unbuilt | 1499 ll. 2793-2800; Dallington pp. 90-92 | "scaturiva una larga vena di chiarissima aqua viva, la quale dividentese faceva dui correnti fluenticuli, uno alla dextra et alla sinistra l'altro" — banks of stone and shade with the straddling roots laid bare, hung with maidenhair fern and cymbalaria. A legible piece of geography the fields station lacks. |
 | VI | **The wooded district ringed by a tree-bearing mountain, conifers on its slopes** | place | ○ unbuilt | 1499 ll. 2800-2813 | "silvosa contrata circunclusa dall'arborifera montagna": black and white poplars, riverside alder, manna-ash and flowering oleander on the water; tall single-stemmed fir, weeping larch and silver fir on the mountains. This is where the conifers belong — putting fir in the dark wood took them from the wrong passage entirely. See WOODS.md 3. |
 | VI | **The octagonal fountain-house first glimpsed through the trees** | building | ○ unbuilt | 1499 ll. 2813-2818 ("mirai una fabrica marmorea tra gli arbori apparendo et sopra le tenelle cime il suo fastigio") | A building seen through a wood before it is reached: the book's standard way of introducing a monument, and a sightline the world does not currently have anywhere. |
-| VIII | **The cypress avenue, four stadia to the palace enclosure** | place | ○ unbuilt | Dallington pp. 123-124 | 740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book. |
+| VIII | **The cypress avenue, four stadia to the palace enclosure** | place | ○ unbuilt | Dallington pp. 123-124 | 740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book.
+
+Re-read 2026-09-09. The avenue is not bare: the level ground under it is covered over with periwinkle -- green Vinca pervinca, or laureole and chamme, Daphne -- and full of its azure flowers, and the cypresses carry their corner-clefted cones and are as thick with leaves as their nature allows. The world's nearest thing is the shaded walk, whose own comment in palace.js distinguishes it: a walk of laced trees throws continuous shade, and 'that is what makes it a walk and not an avenue'. So this is confirmed absent rather than merely unlocated. |
+| VIII | **The green enclosure: three fences of citron, orange and lemon, six foot thick** | place | ○ unbuilt | Dallington 1592 pp. 123-124 | The avenue leads into an equilateral enclosure walled on three sides by a fence as high as the cypresses, made altogether of citrons, oranges and lemons whose leaves bush one within another, knit and twisted artificially together, about six foot thick, with a gate in the middle made of the same trees. White flowers show abundantly between the twistings and the fruit is nowhere wanting. The world has citron and lemon in its species table and plants exactly two of them, at nature.js 987; the enclosure itself is absent. |
+| VIII | **Windows made in the hedge, where the boughs are left bare** | building | ○ unbuilt | Dallington 1592 p. 123 | Above, in convenient places, windows are made in the living fence, so that the boughs there are to be seen bare but for their green leaves. A window cut in a hedge is the kind of detail that decides whether a garden reads as ARCHITECTURE made of plants, which is this book's whole proposition about gardens. |
+| VIII | **The thickness you can climb inside, unseen** | place | ○ unbuilt | Dallington 1592 p. 124 | In the interstitious thickness the boughs are so twisted and grown together that you may ascend up by them and be seen neither in them nor on the way you went. A hedge with a hidden stair inside its own six feet. Nothing in the world does anything like it, and it is the most striking single image in the chapter. |
 | X | **The pierced gold balls stuffed with amber paste, given to every guest** | object | ○ unbuilt | Dallington p. 150 | "to the ende their hands, eyes, and sences should not be idle" -- a pomander. Ten lines; it belongs on the litter list for the court as much as on a table. |
 | XIII | **The doubt: is this nymph Polia?** | rite | ◐ partial | Dallington pp. 207-217 | The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt. |
 | XIII | **Polia's garden: a hundred ivied arches round it** | place | ◐ partial | Dallington pp. 182-183 | An arcade 5 paces high and 3 across, "and there were a hundred Arches to the compassing of this garden" — 444 m of circumference, so 141 m across, with an altar of a cube, a red jasper disc and a black triangle at its centre. The station has a radius of 7. The clearest single measure of the compression the 2026-09-08 pass found. |
@@ -221,14 +225,26 @@ The register is carved silhouette -- each shape drawn twice, dark below and ligh
 
 ### Chapter VIII  · Book 1 · 1499 pp. 79–93
 
-*Research: **partial**. Tour notes exist, but nobody has enumerated this chapter's features. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory.*  
+*Research: **enumerated**. Had one feature and a research block admitting the 2026-09-08 pass read it for measurements only. Read from the nymphs' flight through Geussia's remedy, the cypress avenue and its periwinkle floor, to the green enclosure and the hedge you can climb inside. Adds 8, one of which -- Geussia's three plants -- turned out to be BUILT already and unrecorded. The chapter's centre is a piece of living architecture: a wall of citron, orange and lemon six foot thick, with a gate of the same trees, windows cut in it, and a climbable stair inside its own thickness.*  
 *Text: Dallington 1592 — `C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md`*  
 *Tour: None (court, 13 notes)*  
 *Plates: #23, #24, #25, #26, #27, #28*  
 
 | | Feature | Kind | Built as | Source |
 |---|---|---|---|---|
-| ○ | The cypress avenue, four stadia to the palace enclosure<br>*740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book.* | place | — | Dallington pp. 123-124 |
+| ○ | The cypress avenue, four stadia to the palace enclosure<br>*740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book.
+
+Re-read 2026-09-09. The avenue is not bare: the level ground under it is covered over with periwinkle -- green Vinca pervinca, or laureole and chamme, Daphne -- and full of its azure flowers, and the cypresses carry their corner-clefted cones and are as thick with leaves as their nature allows. The world's nearest thing is the shaded walk, whose own comment in palace.js distinguishes it: a walk of laced trees throws continuous shade, and 'that is what makes it a walk and not an avenue'. So this is confirmed absent rather than merely unlocated.* | place | — | Dallington pp. 123-124 |
+| ? | The nymphs run, and leave their golden pantofles and veils behind<br>*He makes as if to do what he dare not, and the five run off laughing and calling each other for help, leaving golden pantofles and veils here and there to be carried about by the wind and their vessels neglected in the grass; he chases, and afterwards goes back to gather up what they scattered. It is the moment that sets up Geussia's remedy, and it is scatterable litter -- the world already has a litter system. Marked unknown: not yet read against the court's own build.* | rite | — | Dallington 1592 p. 122 |
+| ✅ | What Geussia gathers at the fresh cool river, and the choice he makes<br>*Bowing to the water among bending bulrush and water spike, Geussia -- who is TASTE -- pulls up the Heraclea Nympha (water lily, nenuphar), the root of Aron (wake robin, Pes vituli, Serpentaria minor), and Amella (balm gentle), and offers them. He refuses the nenuphar, rejects the dracuncle for its heat, and takes the amella, and his intemperate desire leaves him.
+
+ALREADY BUILT and found so by this pass: approach.js carries all three at the bridge's watercourse, with a plaque citing p. 122. Recorded because the ledger did not know it -- the chapter had one feature before today.* | plant | `world/approach.js, the bridge's watercourse planting` | Dallington 1592 p. 122 |
+| ○ | The green enclosure: three fences of citron, orange and lemon, six foot thick<br>*The avenue leads into an equilateral enclosure walled on three sides by a fence as high as the cypresses, made altogether of citrons, oranges and lemons whose leaves bush one within another, knit and twisted artificially together, about six foot thick, with a gate in the middle made of the same trees. White flowers show abundantly between the twistings and the fruit is nowhere wanting. The world has citron and lemon in its species table and plants exactly two of them, at nature.js 987; the enclosure itself is absent.* | place | — | Dallington 1592 pp. 123-124 |
+| ○ | Windows made in the hedge, where the boughs are left bare<br>*Above, in convenient places, windows are made in the living fence, so that the boughs there are to be seen bare but for their green leaves. A window cut in a hedge is the kind of detail that decides whether a garden reads as ARCHITECTURE made of plants, which is this book's whole proposition about gardens.* | building | — | Dallington 1592 p. 123 |
+| ○ | The thickness you can climb inside, unseen<br>*In the interstitious thickness the boughs are so twisted and grown together that you may ascend up by them and be seen neither in them nor on the way you went. A hedge with a hidden stair inside its own six feet. Nothing in the world does anything like it, and it is the most striking single image in the chapter.* | place | — | Dallington 1592 p. 124 |
+| ? | The third fountain, with Graces, harpies and griffins<br>*Attached to this chapter in the plate index; not yet read against the world.* | object | — | 1499 plate #23 (p. 80) |
+| ? | A frieze of genii, dolphins and a bull's skull<br>*Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.* | picture | — | 1499 plate #24 (p. 84) |
+| ? | The panelled wall in the Queen's palace with the planetary names<br>*Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.* | inscription | — | 1499 plate #25 (p. 88) |
 
 ### Chapter IX  · Book 1 · 1499 pp. 92–116
 
@@ -266,7 +282,9 @@ Built to Dallington pp. 158-159: an immoveable axle-tree with two wheels turning
 
 PLACED OUTSIDE THE COURT, and the reason is measured. Surface clearance across the whole court slab peaks at 0.40 m -- the banquet's seven tables, the throne, the chess pavement and the bath fill it. The first placement came off a probe that measured distance to object CENTRES rather than surfaces and put the fountain inside a wall at clearance 0.00. It now stands at (-24, 33) where there is 7.4 m, which suits the object: it is founded on an axle-tree with wheels, so it is furniture wheeled in with a course, and standing by the door waiting is what it is for.
 
-Still imperfect, recorded rather than hidden: at (-24, 33) it is nearer the Water Labyrinth station at (-29.2, 34) than the court door, so it reads as the labyrinth's furniture rather than the banquet's. Cost: +13 meshes, +3 796 triangles.* | object | `world/palace.js _buildWheeledFountain` | Dallington pp. 158-160 |
+Still imperfect, recorded rather than hidden: at (-24, 33) it is nearer the Water Labyrinth station at (-29.2, 34) than the court door, so it reads as the labyrinth's furniture rather than the banquet's. Cost: +13 meshes, +3 796 triangles.
+
+The triumph on its long sides is now a DRAWN scene rather than a seeded crowd (2026-09-09, main.js?v=369): trophies of arms hung on poles under crested helmets at either end, and between them satyrs -- horned, shaggy from the waist down, one piping on a double pipe and one holding up a branch -- with nymphs striding between, hair blown back and an arm thrown to a neighbour. Dallington p. 158 gives the panel as a triumph of satyrs and nymphs with trophies, carved in half bodies. Costs nothing: it is a texture.* | object | `world/palace.js _buildWheeledFountain` | Dallington pp. 158-160 |
 | — | Trumpets and cornets at every change, and the singers "that would haue caused the Syrens to sleepe"<br>*The site is silent by standing decision.* | rite | — | Dallington p. 151 |
 
 ### Chapter XI  · Book 1 · 1499 pp. 141–146

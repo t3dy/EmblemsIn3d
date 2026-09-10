@@ -578,8 +578,101 @@ export const Triumphs = {
   // the gate you go in by. It is the most fully described picture in chapters
   // III-IV and it was standing in for a seeded crowd until now.
   _reliefScene(x, W, H, carve, scene) {
-    if (!/forge of Vulcan/i.test(scene)) return false;
     const GY = H - 30;                       // the ground the figures stand on
+
+    // ── The triumph of satyrs and nymphs, with trophies ───────────────────
+    // Dallington p. 158: on the middle panel of each long side of the wheeled
+    // fountain, between the falls of the water, a triumph of satyrs and nymphs
+    // carved in half bodies, with trophies. Built 2026-09-09 on the fountain of
+    // plate #32, where it had been standing in as a seeded crowd since the
+    // fountain shipped an hour before.
+    if (/triumph of satyrs and nymphs/i.test(scene)) {
+      carve(() => {
+        x.lineCap = 'round'; x.lineJoin = 'round';
+
+        // a trophy: arms hung on a pole, a helmet on the top of it
+        const trophy = (tx) => {
+          x.lineWidth = 6;
+          x.beginPath(); x.moveTo(tx, GY + 2); x.lineTo(tx, GY - 92); x.stroke();
+          x.beginPath();                                   // the helmet, crested
+          x.arc(tx, GY - 100, 11, Math.PI, 0); x.fill();
+          x.beginPath();
+          x.moveTo(tx - 9, GY - 104);
+          x.quadraticCurveTo(tx, GY - 126, tx + 11, GY - 106);
+          x.quadraticCurveTo(tx + 2, GY - 106, tx, GY - 102);
+          x.closePath(); x.fill();
+          x.beginPath();                                   // the cuirass hung on it
+          x.moveTo(tx - 15, GY - 84);
+          x.quadraticCurveTo(tx - 18, GY - 58, tx - 12, GY - 44);
+          x.lineTo(tx + 12, GY - 44);
+          x.quadraticCurveTo(tx + 18, GY - 58, tx + 15, GY - 84);
+          x.closePath(); x.fill();
+          x.lineWidth = 5;                                 // a spear across, and a round shield
+          x.beginPath(); x.moveTo(tx - 22, GY - 30); x.lineTo(tx + 22, GY - 40); x.stroke();
+          x.beginPath(); x.arc(tx - 20, GY - 20, 11, 0, 7); x.fill();
+        };
+
+        // a satyr: horned, shaggy from the waist down, piping
+        const satyr = (sx, piping) => {
+          x.beginPath(); x.arc(sx, GY - 74, 10, 0, 7); x.fill();
+          x.lineWidth = 4;                                  // the horns
+          x.beginPath(); x.moveTo(sx - 6, GY - 82); x.lineTo(sx - 12, GY - 94); x.stroke();
+          x.beginPath(); x.moveTo(sx + 6, GY - 82); x.lineTo(sx + 12, GY - 94); x.stroke();
+          x.beginPath();                                    // the torso
+          x.moveTo(sx - 11, GY - 34);
+          x.quadraticCurveTo(sx - 14, GY - 54, sx - 7, GY - 64);
+          x.lineTo(sx + 7, GY - 64);
+          x.quadraticCurveTo(sx + 14, GY - 54, sx + 11, GY - 34);
+          x.closePath(); x.fill();
+          x.beginPath();                                    // the shaggy haunches
+          x.moveTo(sx - 12, GY - 34);
+          x.quadraticCurveTo(sx - 15, GY - 12, sx - 8, GY + 2);
+          x.lineTo(sx + 8, GY + 2);
+          x.quadraticCurveTo(sx + 15, GY - 12, sx + 12, GY - 34);
+          x.closePath(); x.fill();
+          x.lineWidth = 6;
+          if (piping) {                                     // the double pipe at his mouth
+            x.beginPath(); x.moveTo(sx + 8, GY - 58); x.lineTo(sx + 4, GY - 72); x.stroke();
+            x.lineWidth = 4;
+            x.beginPath(); x.moveTo(sx + 2, GY - 76); x.lineTo(sx + 20, GY - 84); x.stroke();
+            x.beginPath(); x.moveTo(sx + 2, GY - 72); x.lineTo(sx + 20, GY - 76); x.stroke();
+          } else {                                          // or a branch held up
+            x.beginPath(); x.moveTo(sx + 9, GY - 56); x.lineTo(sx + 24, GY - 88); x.stroke();
+            x.beginPath(); x.arc(sx + 26, GY - 94, 7, 0, 7); x.fill();
+          }
+        };
+
+        // a nymph, in motion, one arm thrown to her neighbour
+        const nymph = (nx, reachRight) => {
+          x.beginPath(); x.arc(nx, GY - 78, 9.5, 0, 7); x.fill();
+          x.beginPath();                                    // hair, blown back
+          x.moveTo(nx - 9, GY - 84); x.quadraticCurveTo(nx - 22, GY - 92, nx - 14, GY - 70);
+          x.closePath(); x.fill();
+          x.beginPath();                                    // the gown, striding
+          x.moveTo(nx - 12, GY + 2);
+          x.quadraticCurveTo(nx - 13, GY - 44, nx - 7, GY - 68);
+          x.lineTo(nx + 7, GY - 68);
+          x.quadraticCurveTo(nx + 16, GY - 40, nx + 14, GY + 2);
+          x.closePath(); x.fill();
+          x.lineWidth = 6;
+          const d = reachRight ? 1 : -1;
+          x.beginPath();
+          x.moveTo(nx + d * 8, GY - 60);
+          x.lineTo(nx + d * 30, GY - 76);
+          x.stroke();
+        };
+
+        trophy(66);
+        satyr(132, true);
+        nymph(196, true);
+        nymph(254, false);
+        satyr(318, false);
+        trophy(404);
+      });
+      return true;
+    }
+
+    if (!/forge of Vulcan/i.test(scene)) return false;
 
     carve(() => {
       x.lineCap = 'round'; x.lineJoin = 'round';

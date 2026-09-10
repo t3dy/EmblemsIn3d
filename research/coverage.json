@@ -173,6 +173,7 @@
       "PlanetaryPalace",
       "PoliaGarden",
       "Polyandrion",
+      "PorchStylobate",
       "PriapusRite",
       "Quinta",
       "QuintaEssentia",
@@ -1366,10 +1367,10 @@
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": "2026-09-08",
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
+        "status": "enumerated",
+        "enumerated_by": "read against Dallington 1592, session of 2026-09-09",
+        "date": "2026-09-09",
+        "note": "Had one feature and a research block admitting the 2026-09-08 pass read it for measurements only. Read from the nymphs' flight through Geussia's remedy, the cypress avenue and its periwinkle floor, to the green enclosure and the hedge you can climb inside. Adds 8, one of which -- Geussia's three plants -- turned out to be BUILT already and unrecorded. The chapter's centre is a piece of living architecture: a wall of citron, orange and lemon six foot thick, with a gate of the same trees, windows cut in it, and a climbable stair inside its own thickness."
       },
       "features": [
         {
@@ -1386,7 +1387,112 @@
             "dream",
             "flight"
           ],
-          "note": "740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book."
+          "note": "740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book.\n\nRe-read 2026-09-09. The avenue is not bare: the level ground under it is covered over with periwinkle -- green Vinca pervinca, or laureole and chamme, Daphne -- and full of its azure flowers, and the cypresses carry their corner-clefted cones and are as thick with leaves as their nature allows. The world's nearest thing is the shaded walk, whose own comment in palace.js distinguishes it: a walk of laced trees throws continuous shade, and 'that is what makes it a walk and not an avenue'. So this is confirmed absent rather than merely unlocated."
+        },
+        {
+          "id": "nymph-flight-pantofles",
+          "kind": "rite",
+          "plate": null,
+          "name": "The nymphs run, and leave their golden pantofles and veils behind",
+          "source": "Dallington 1592 p. 122",
+          "status": "unknown",
+          "note": "He makes as if to do what he dare not, and the five run off laughing and calling each other for help, leaving golden pantofles and veils here and there to be carried about by the wind and their vessels neglected in the grass; he chases, and afterwards goes back to gather up what they scattered. It is the moment that sets up Geussia's remedy, and it is scatterable litter -- the world already has a litter system. Marked unknown: not yet read against the court's own build.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "geussia-herbs",
+          "kind": "plant",
+          "plate": null,
+          "name": "What Geussia gathers at the fresh cool river, and the choice he makes",
+          "source": "Dallington 1592 p. 122",
+          "status": "built",
+          "built_as": "world/approach.js, the bridge's watercourse planting",
+          "note": "Bowing to the water among bending bulrush and water spike, Geussia -- who is TASTE -- pulls up the Heraclea Nympha (water lily, nenuphar), the root of Aron (wake robin, Pes vituli, Serpentaria minor), and Amella (balm gentle), and offers them. He refuses the nenuphar, rejects the dracuncle for its heat, and takes the amella, and his intemperate desire leaves him.\n\nALREADY BUILT and found so by this pass: approach.js carries all three at the bridge's watercourse, with a plaque citing p. 122. Recorded because the ledger did not know it -- the chapter had one feature before today.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "green-enclosure-hedge",
+          "kind": "place",
+          "plate": null,
+          "name": "The green enclosure: three fences of citron, orange and lemon, six foot thick",
+          "source": "Dallington 1592 pp. 123-124",
+          "status": "unbuilt",
+          "note": "The avenue leads into an equilateral enclosure walled on three sides by a fence as high as the cypresses, made altogether of citrons, oranges and lemons whose leaves bush one within another, knit and twisted artificially together, about six foot thick, with a gate in the middle made of the same trees. White flowers show abundantly between the twistings and the fruit is nowhere wanting. The world has citron and lemon in its species table and plants exactly two of them, at nature.js 987; the enclosure itself is absent.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "hedge-windows",
+          "kind": "building",
+          "plate": null,
+          "name": "Windows made in the hedge, where the boughs are left bare",
+          "source": "Dallington 1592 p. 123",
+          "status": "unbuilt",
+          "note": "Above, in convenient places, windows are made in the living fence, so that the boughs there are to be seen bare but for their green leaves. A window cut in a hedge is the kind of detail that decides whether a garden reads as ARCHITECTURE made of plants, which is this book's whole proposition about gardens.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "hedge-climbable",
+          "kind": "place",
+          "plate": null,
+          "name": "The thickness you can climb inside, unseen",
+          "source": "Dallington 1592 p. 124",
+          "status": "unbuilt",
+          "note": "In the interstitious thickness the boughs are so twisted and grown together that you may ascend up by them and be seen neither in them nor on the way you went. A hedge with a hidden stair inside its own six feet. Nothing in the world does anything like it, and it is the most striking single image in the chapter.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "plate-23-third-fountain",
+          "kind": "object",
+          "plate": 23,
+          "name": "The third fountain, with Graces, harpies and griffins",
+          "source": "1499 plate #23 (p. 80)",
+          "status": "unknown",
+          "note": "Attached to this chapter in the plate index; not yet read against the world.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "plate-24-frieze-genii",
+          "kind": "picture",
+          "plate": 24,
+          "name": "A frieze of genii, dolphins and a bull's skull",
+          "source": "1499 plate #24 (p. 84)",
+          "status": "unknown",
+          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "plate-25-planetary-wall",
+          "kind": "inscription",
+          "plate": 25,
+          "name": "The panelled wall in the Queen's palace with the planetary names",
+          "source": "1499 plate #25 (p. 88)",
+          "status": "unknown",
+          "note": "Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
         }
       ]
     },
@@ -1697,7 +1803,7 @@
           "status": "built",
           "built_as": "world/palace.js _buildWheeledFountain",
           "modes": [],
-          "note": "Built and seen on the running page 2026-09-09 at main.js?v=366. The tour lede had promised it since the commentary was written and the world had never had it; the only trace was a line in a code comment above _buildBanquet naming the plate.\n\nBuilt to Dallington pp. 158-159: an immoveable axle-tree with two wheels turning on it; an unequal quadrature three feet by two by six, which at the Roman foot of 0.296 m is 0.89 x 0.59 x 1.78; a harpy at every angle with wings stretched up to the breadth of the vessel above and tails turning into leaves over the void between them; the middle panel of each long side a triumph of satyrs and nymphs in half-relief; the ends bent in and rounded rather than squared, with the little sacrifice at its altar; and from the centre three vessels rising one out of the other, the second wider than the first, the third ridged and set with a row of coloured stones, a monster's head either side, a ring at the lip and a garland hung from it thickening toward the middle.\n\nPLACED OUTSIDE THE COURT, and the reason is measured. Surface clearance across the whole court slab peaks at 0.40 m -- the banquet's seven tables, the throne, the chess pavement and the bath fill it. The first placement came off a probe that measured distance to object CENTRES rather than surfaces and put the fountain inside a wall at clearance 0.00. It now stands at (-24, 33) where there is 7.4 m, which suits the object: it is founded on an axle-tree with wheels, so it is furniture wheeled in with a course, and standing by the door waiting is what it is for.\n\nStill imperfect, recorded rather than hidden: at (-24, 33) it is nearer the Water Labyrinth station at (-29.2, 34) than the court door, so it reads as the labyrinth's furniture rather than the banquet's. Cost: +13 meshes, +3 796 triangles."
+          "note": "Built and seen on the running page 2026-09-09 at main.js?v=366. The tour lede had promised it since the commentary was written and the world had never had it; the only trace was a line in a code comment above _buildBanquet naming the plate.\n\nBuilt to Dallington pp. 158-159: an immoveable axle-tree with two wheels turning on it; an unequal quadrature three feet by two by six, which at the Roman foot of 0.296 m is 0.89 x 0.59 x 1.78; a harpy at every angle with wings stretched up to the breadth of the vessel above and tails turning into leaves over the void between them; the middle panel of each long side a triumph of satyrs and nymphs in half-relief; the ends bent in and rounded rather than squared, with the little sacrifice at its altar; and from the centre three vessels rising one out of the other, the second wider than the first, the third ridged and set with a row of coloured stones, a monster's head either side, a ring at the lip and a garland hung from it thickening toward the middle.\n\nPLACED OUTSIDE THE COURT, and the reason is measured. Surface clearance across the whole court slab peaks at 0.40 m -- the banquet's seven tables, the throne, the chess pavement and the bath fill it. The first placement came off a probe that measured distance to object CENTRES rather than surfaces and put the fountain inside a wall at clearance 0.00. It now stands at (-24, 33) where there is 7.4 m, which suits the object: it is founded on an axle-tree with wheels, so it is furniture wheeled in with a course, and standing by the door waiting is what it is for.\n\nStill imperfect, recorded rather than hidden: at (-24, 33) it is nearer the Water Labyrinth station at (-29.2, 34) than the court door, so it reads as the labyrinth's furniture rather than the banquet's. Cost: +13 meshes, +3 796 triangles.\n\nThe triumph on its long sides is now a DRAWN scene rather than a seeded crowd (2026-09-09, main.js?v=369): trophies of arms hung on poles under crested helmets at either end, and between them satyrs -- horned, shaggy from the waist down, one piping on a double pipe and one holding up a branch -- with nymphs striding between, hair blown back and an arm thrown to a neighbour. Dallington p. 158 gives the panel as a triumph of satyrs and nymphs with trophies, carved in half bodies. Costs nothing: it is a texture."
         },
         {
           "id": "banquet-music",
