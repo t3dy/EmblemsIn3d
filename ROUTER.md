@@ -80,6 +80,7 @@ a session.
 | **Work on the game loop / Dream mode** | `DESIGN.md`, `GAMIFYVRHP.md`, `src/systems/DreamMode.js` | — |
 | **Work on Roll Up** (the Katamari mode) | [`ROLLING.md`](ROLLING.md) — every variable and which one to turn; then `src/systems/RollUp.js` and `HPWorldScene._census` | — |
 | **Understand what is stuck to the ball** (the crust, and why it sheds) | [`CRUST.md`](CRUST.md) — one dial of Roll Up, in detail | — |
+| **Pick up where the last session left off** | [`HANDOVER.md`](HANDOVER.md) — state, the one decision waiting on Ted, open tickets, and the debugging traps that session paid for | — |
 | **Build or fix a human figure** | [`HUMANOIDS.md`](HUMANOIDS.md), then `NYMPHS.md` / `CHARACTERS.md` and the plate | — |
 | **Change how the figures are RENDERED** (the five rungs, the projection) | [`RENDERINGMODELSBLINGUSOUT.md`](RENDERINGMODELSBLINGUSOUT.md) — what each rung is, what each costs, and why the projected one is the default | `await hpDiag()` |
 | **Build or fix an animal** | [`ANIMALS.md`](ANIMALS.md) §4, then the plate | — |
