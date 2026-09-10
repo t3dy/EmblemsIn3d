@@ -13,7 +13,7 @@
 import * as THREE from 'three';
 import { MAX_EDIBLE } from '../../systems/RollUp.js?v=10';
 import { Masonry } from '../../systems/Masonry.js?v=8';
-import { HP_STATIONS, isDescendantOf } from './constants.js?v=4';
+import { HP_STATIONS, isDescendantOf } from './constants.js?v=6';
 
 export const Rollup = {
   // ── The roll-up census ───────────────────────────────────────────────────

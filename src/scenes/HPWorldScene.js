@@ -39,17 +39,17 @@ import {
   TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS, isDescendantOf,
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
-} from './world/constants.js?v=4';
+} from './world/constants.js?v=6';
 import { Materials } from './world/materials.js?v=5';
-import { Nature } from './world/nature.js?v=10';
-import { Approach } from './world/approach.js?v=6';
-import { Portal } from './world/portal.js?v=17';
-import { Palace } from './world/palace.js?v=8';
-import { Triumphs } from './world/triumphs.js?v=7';
-import { Tombs } from './world/tombs.js?v=4';
+import { Nature } from './world/nature.js?v=12';
+import { Approach } from './world/approach.js?v=8';
+import { Portal } from './world/portal.js?v=19';
+import { Palace } from './world/palace.js?v=10';
+import { Triumphs } from './world/triumphs.js?v=9';
+import { Tombs } from './world/tombs.js?v=6';
 import { Temple } from './world/temple.js?v=3';
-import { Cythera } from './world/cythera.js?v=4';
-import { Rollup } from './world/rollup.js?v=5';
+import { Cythera } from './world/cythera.js?v=6';
+import { Rollup } from './world/rollup.js?v=7';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };

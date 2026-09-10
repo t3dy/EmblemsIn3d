@@ -104,7 +104,19 @@ export const HP_STATIONS = [
   // north-west of the dark wood, so that coming out of the wilderness you come
   // into worked land: first nature into second, which is Hunt's whole point.
   { key: 'fields',           name: 'The Fruitful Fields',    folio: 90,
-    pos: [-40, 41],  look: [-40, 53],  radius: 12 },
+    // Moved 2026-09-09. It stood at (-40, 41) facing north, which put the flank
+    // of the valley mountain 2.4 m from the eye -- measured by raycast, after
+    // seven sweeps missed it because they all discarded meshes over 200 m wide
+    // and the mountain is 250. Half the view was dark rock.
+    // The eastern edge was tried first and was worse in a different way: 28.5 m
+    // of clear view, all of it the GLASS GARDEN, which overlaps the worked belt
+    // from x -41.2 to -17.6. The belt is pinched between the mountain on the
+    // west and the artificial garden on the east.
+    // So it now stands just NORTH of the belt and looks south along it, which
+    // is the only aspect where all three of south, south-west and south-east
+    // hit worked ground and neither rock nor glass. Modest rather than grand:
+    // about 7 m to the nearest furrow. See ticket bug-fields-dark-wedge.
+    pos: [-24, 64],  look: [-24, 52],  radius: 12 },
   // The southern approach, built 2026-09-08 (DIRECTIONS.md §3). Appended, so
   // the digit keys 1–9 keep their journey order.
   { key: 'great_oak',        name: 'The Great Oak',          folio: 20,

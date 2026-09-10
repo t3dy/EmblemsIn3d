@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { METALS, SENSE_NYMPHS } from './constants.js?v=4';
+import { METALS, SENSE_NYMPHS } from './constants.js?v=6';
 
 export const Palace = {
   // ── The Court of Queen Eleuterylida (free will) ───────────────────────────
