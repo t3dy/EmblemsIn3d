@@ -11,9 +11,9 @@ Ledger generated **2026-09-09**. 38 chapters · 165 plates attached to a chapter
 | Chapters **enumerated** (a feature list exists) | **14 of 38** |
 | Chapters **partial** (tour notes only, no feature list) | 24 |
 | Chapters **unread** | 0 |
-| Features **built** | 74 |
+| Features **built** | 75 |
 | Features **partial** | 9 |
-| Features **unbuilt** | **18** |
+| Features **unbuilt** | **17** |
 | Features **declined** (on purpose, with a reason) | 5 |
 
 > The first row is the one that matters. A chapter that is not enumerated cannot have a gap, because nobody has looked. That is exactly how the vaults under the pyramid stayed unbuilt: they have **no woodcut**, so every plate-driven check passed them, and no one had read chapter V against the world.
@@ -70,7 +70,6 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | VI | **The octagonal fountain-house first glimpsed through the trees** | building | ○ unbuilt | 1499 ll. 2813-2818 ("mirai una fabrica marmorea tra gli arbori apparendo et sopra le tenelle cime il suo fastigio") | A building seen through a wood before it is reached: the book's standard way of introducing a monument, and a sightline the world does not currently have anywhere. |
 | VIII | **The cypress avenue, four stadia to the palace enclosure** | place | ○ unbuilt | Dallington pp. 123-124 | 740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book. |
 | X | **The pierced gold balls stuffed with amber paste, given to every guest** | object | ○ unbuilt | Dallington p. 150 | "to the ende their hands, eyes, and sences should not be idle" -- a pomander. Ten lines; it belongs on the litter list for the court as much as on a table. |
-| X | **The perpetual fountain on an axle-tree with harpies at the angles (plate #32), "twice a nymph's height"** | object | ○ unbuilt | Dallington pp. 158-160 | The second wheeled fountain, after the coral tree: a quadrangle three by two by six feet with a harpy at each angle, satyr-and-nymph triumphs in half-relief, an antique vessel rising from the centre. Not built; the tour lede already promises it. |
 | XIII | **The doubt: is this nymph Polia?** | rite | ◐ partial | Dallington pp. 207-217 | The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt. |
 | XIII | **Polia's garden: a hundred ivied arches round it** | place | ◐ partial | Dallington pp. 182-183 | An arcade 5 paces high and 3 across, "and there were a hundred Arches to the compassing of this garden" — 444 m of circumference, so 141 m across, with an altar of a cube, a red jasper disc and a black triangle at its centre. The station has a radius of 7. The clearest single measure of the compression the 2026-09-08 pass found. |
 | XVIII | **The arcane characters signed in blood, and the sponge** | inscription | ◐ partial | our pp. 231–232 | The forms are NOT given in the book. Drawn as strokes, and the tour note says so. |
@@ -242,7 +241,13 @@ Found by reading chapter III end to end, hours after the interior was opened. Th
 | ✅ | The vessel of coals the cloths are thrown into and come out clean<br>*"the wonderfull straungest of all the rest." Asbestos cloth, which antiquity knew and Colonna treats as a marvel; the plaque keeps his wonder rather than explaining it away.* | object | `HPWorldScene._buildBanquet` | Dallington p. 155 |
 | ✅ | The chalice of gold with the coral tree on its cover, flowered with sapphire, jacinth and beryl<br>*Carried by "the middlemost" of five nymphs in blue silk and gold; "monstrous great pearle" on the twig-tips.* | object | `HPWorldScene._buildBanquet` | Dallington pp. 156-157 |
 | ○ | The pierced gold balls stuffed with amber paste, given to every guest<br>*"to the ende their hands, eyes, and sences should not be idle" -- a pomander. Ten lines; it belongs on the litter list for the court as much as on a table.* | object | — | Dallington p. 150 |
-| ○ | The perpetual fountain on an axle-tree with harpies at the angles (plate #32), "twice a nymph's height"<br>*The second wheeled fountain, after the coral tree: a quadrangle three by two by six feet with a harpy at each angle, satyr-and-nymph triumphs in half-relief, an antique vessel rising from the centre. Not built; the tour lede already promises it.* | object | — | Dallington pp. 158-160 |
+| ✅ | The perpetual fountain on an axle-tree with harpies at the angles (plate #32), "twice a nymph's height"<br>*Built and seen on the running page 2026-09-09 at main.js?v=366. The tour lede had promised it since the commentary was written and the world had never had it; the only trace was a line in a code comment above _buildBanquet naming the plate.
+
+Built to Dallington pp. 158-159: an immoveable axle-tree with two wheels turning on it; an unequal quadrature three feet by two by six, which at the Roman foot of 0.296 m is 0.89 x 0.59 x 1.78; a harpy at every angle with wings stretched up to the breadth of the vessel above and tails turning into leaves over the void between them; the middle panel of each long side a triumph of satyrs and nymphs in half-relief; the ends bent in and rounded rather than squared, with the little sacrifice at its altar; and from the centre three vessels rising one out of the other, the second wider than the first, the third ridged and set with a row of coloured stones, a monster's head either side, a ring at the lip and a garland hung from it thickening toward the middle.
+
+PLACED OUTSIDE THE COURT, and the reason is measured. Surface clearance across the whole court slab peaks at 0.40 m -- the banquet's seven tables, the throne, the chess pavement and the bath fill it. The first placement came off a probe that measured distance to object CENTRES rather than surfaces and put the fountain inside a wall at clearance 0.00. It now stands at (-24, 33) where there is 7.4 m, which suits the object: it is founded on an axle-tree with wheels, so it is furniture wheeled in with a course, and standing by the door waiting is what it is for.
+
+Still imperfect, recorded rather than hidden: at (-24, 33) it is nearer the Water Labyrinth station at (-29.2, 34) than the court door, so it reads as the labyrinth's furniture rather than the banquet's. Cost: +13 meshes, +3 796 triangles.* | object | `world/palace.js _buildWheeledFountain` | Dallington pp. 158-160 |
 | — | Trumpets and cornets at every change, and the singers "that would haue caused the Syrens to sleepe"<br>*The site is silent by standing decision.* | rite | — | Dallington p. 151 |
 
 ### Chapter XI  · Book 1 · 1499 pp. 141–146

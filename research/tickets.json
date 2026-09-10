@@ -664,6 +664,48 @@
         "DIRECTIONS.md"
       ],
       "opened": "2026-09-09"
+    },
+    {
+      "id": "bug-piazza-wrong-side-of-portal",
+      "title": "The horse, colossus and elephant sit past the portal; the book puts them before it",
+      "kind": "bug",
+      "status": "open",
+      "priority": 1,
+      "evidence": "Found by the chapter III research pass, 2026-09-09. Dallington pp. 37-46: Poliphilo is brought to a place of ancient works and FIRST sees a fair porch; then, before that porch and in the open air, a four-square court of thirty paces, and it is in that court that he finds the winged horse, then the elephant, then the colossus. Only afterwards (ch. IV) does he study the porch itself and pass it. One southward walk, in one order.\n\nTHE TOUR AGREES WITH THE BOOK. tours.json runs valley -> horse -> colossus -> elephant -> portal -> three_doors.\n\nTHE GROUND PLAN DOES NOT. Station z: valley 104, horse 22.5, colossus 4, elephant 6.5, portal 37, three_doors 21 -- and the portal's own geometry stands at z = 26. So walking the tour in its own order crosses the portal THREE times: south through it to the horse, north back through it to the portal stop, and south through it again to the doors. The book crosses once.\n\nNothing in DECISIONS.md or DIRECTIONS.md records this as a choice; greps for the forecourt, the piazza and 'thirtie paces' return nothing. It looks like the piazza was placed on the garden side because that is where there was room, and the tour order was written from the book afterwards, so the two have never been read against each other.",
+      "acceptance": "Walking the tour's own order is a single southward procession with one crossing of the Great Portal, and the horse, elephant and colossus are all met before it. The Great Portal still closes the valley (the walk tests of feat-monuments-true-scale still refuse every approach but the porch), and the colossus keeps its interior.",
+      "risk": "This is a ground-plan change, which DECISIONS.md call 3 of 2026-09-09 said to avoid, and it moves three built stations including the colossus, which was rescaled and hollowed the same day. Three ways, and the choice is Ted's: (a) move the piazza north into the approach, where there is empty ground between z 40 and 100 -- most faithful, most work, and the approach's own three stations would need re-spacing; (b) move the PORTAL south of them, which is cheaper but puts the valley's closure in the wrong place relative to the fields and the labyrinth; (c) leave the plan and record that the crossing is a deliberate compression, which is honest but is exactly the kind of quiet reordering Ted ruled out when he said we follow the novel to the letter (2026-09-09 call 2). The dream-fold decision of the same day may also bear on it: if the world may fold, the portal need not be passed three times in one walk.",
+      "files": [
+        "src/scenes/world/constants.js",
+        "src/data/tours.json",
+        "DIRECTIONS.md"
+      ],
+      "role": "hp-researcher",
+      "refs": [
+        "Dallington 1592 pp. 37-46",
+        "DECISIONS.md 2026-09-09 call 2",
+        "COVERAGE.md ch. III"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "bug-court-has-no-room-left",
+      "title": "The Court of Eleuterylida is full: nothing more of the banquet can be put in it",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Measured 2026-09-09 while placing the wheeled fountain of plate #32. Surface clearance -- distance to the nearest mesh BOX, not to object centres -- across the whole court slab (x -27.5..-12.5, z 14..26) peaks at 0.40 m. There is nowhere in the court with a metre of clear ground. The banquet's seven tables, the throne, the chess pavement, the five sense-nymphs and the eight-sided bath are already in it.\n\nThe consequence is immediate: the fountain the book puts AT the banquet had to be set outside the court's north wall, where there is 7.4 m, and it now reads as the Water Labyrinth's furniture rather than the banquet's.\n\nChapter X has more of the same still unbuilt -- the pierced gold balls stuffed with amber paste given to every guest, and the rest of the seven changes -- and none of it has anywhere to go.",
+      "acceptance": "A new piece of the banquet's furniture can be placed inside the court with at least a metre of clear ground around it, and the wheeled fountain of plate #32 stands at the banquet rather than beside the labyrinth.",
+      "risk": "The same shape of problem as Polia's garden, and the same three answers: displace what is there, extend the court, or let the world fold. The fold is now built (DECISIONS.md 2026-09-09, 'The dream does not have to add up') and the court is precisely the thing it already folds away for Polia's arcade -- so the machinery to make the court bigger while you are in it exists and has been verified once.",
+      "files": [
+        "src/scenes/world/palace.js",
+        "src/scenes/HPWorldScene.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "Dallington pp. 143-160",
+        "DECISIONS.md 2026-09-09 the dream does not have to add up"
+      ],
+      "opened": "2026-09-09"
     }
   ]
 }

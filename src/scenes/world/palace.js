@@ -157,6 +157,22 @@ export const Palace = {
     // The bath of the nymphs — the eight-sided bath-house of the book
     this._buildBath(CX + 3.5, CZ + 2.8);
 
+    // The second wheeled fountain of the banquet (plate #32), standing just
+    // OUTSIDE the court's north wall rather than in it.
+    //
+    // Not a fudge, and measured before it was moved. The court has no room at
+    // all: surface clearance across the whole slab peaks at 0.40 m, because the
+    // banquet's seven tables, the throne, the chess pavement and the bath are
+    // already in it. The first placement, chosen off a probe that measured
+    // distance to object CENTRES rather than to their surfaces, put the fountain
+    // inside a wall -- clearance 0.00.
+    //
+    // Outside, at (-24, 33), there is 7.4 m. And the object's own conceit makes
+    // that the right place: it is founded on an axle-tree with two wheels, which
+    // is banquet furniture WHEELED IN with a course. A wheeled fountain standing
+    // by the court door, waiting to be brought in, is what the thing is for.
+    this._buildWheeledFountain(CX - 5, CZ + 13);
+
     // Fountain jets over the bath (lit sparkle)
     const stream = new ParticleStream({
       count: 40, source: new THREE.Vector3(CX + 3.5, 1.6, CZ + 2.8),
@@ -1590,6 +1606,140 @@ export const Palace = {
     this._plaque({ main: 'A PLEASAVNT AND COOLE SHADE',
       sub: 'PLANE AND ASHE FOWLDED AND IMBRACED WITH HVNNISVCKLES, WOODBINES AND HOPPES · VMBRIPHILOVS HEARBES VNDER · DALLINGTON P. 92' },
       3.6, 0.42, X, 0.56, Z0 - 2.2, 0, true);
+  },
+
+  // ── The perpetual running fountain on an axle-tree (plate #32) ───────────
+  //
+  // Dallington pp. 158-159, the marvel that follows the coral tree at the
+  // banquet. The tour lede has promised it since the commentary was written and
+  // the world has never had it; the code comment above _buildBanquet lists the
+  // plate and stops there. Found unbuilt by the chapter III / X ledger pass.
+  //
+  // What the book specifies, and what is built here for each of it:
+  //   · founded on an IMMOVEABLE AXLE-TREE with two wheels turning on it -- so
+  //     it is a fountain that could be wheeled in with a course, which is the
+  //     whole conceit of the banquet's furniture
+  //   · above it an "vnequal quadrature", three feet long, two broad, six high.
+  //     A Roman foot is 0.296 m (DIMENSIONS.md 1), so 0.89 x 0.59 x 1.78
+  //   · a HARPY sitting at every angle, both wings stretched up to the breadth
+  //     of the higher vessel, their tails joining and turning into leaves to
+  //     cover what would otherwise be void
+  //   · each side in three, the middle panel between the falls of water carrying
+  //     a triumph of satyrs and nymphs in half-relief
+  //   · front and back bent in and rounded rather than squared, engraved with a
+  //     little sacrifice at an old altar
+  //   · from the median centre, three vessels rising one out of the other, the
+  //     second wider than the first, the third ridged and set with a row of
+  //     coloured stones, with a monster's head on either side, a ring at the lip
+  //     and a garland hung from it, thickening toward the middle
+  //
+  // Height: the plate is glossed in this file as "twice a nymph's height", and
+  // the world's nymphs stand about 1.6 m, so the whole reaches about 3.4.
+  _buildWheeledFountain(FX, FZ) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const FT = 0.296;                       // the Roman foot
+    const LONG = 3 * FT, BROAD = 2 * FT, HIGH = 6 * FT;
+    const gold = woodcut ? S.mat({ tone: 0.04 })
+                         : S.mat({ color: 0xd9b25a, metalness: 0.88, roughness: 0.26 });
+    const dark = woodcut ? S.mat({ tone: 0.24 })
+                         : S.mat({ color: 0x7a6230, metalness: 0.8, roughness: 0.45 });
+    const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 187.1) * 43758.5453; return v - Math.floor(v); };
+
+    // the axle-tree, and the two wheels that turn on it
+    const WR = 0.30, AY = WR;
+    const axle = this._m(new THREE.CylinderGeometry(0.045, 0.045, LONG + 0.34, 8), dark, FX, AY, FZ);
+    axle.rotation.z = Math.PI / 2;
+    for (const sx of [-1, 1]) {
+      const w = this._m(new THREE.TorusGeometry(WR, 0.05, 6, 16), gold, FX + sx * (LONG / 2 + 0.14), AY, FZ);
+      w.rotation.y = Math.PI / 2;
+      for (let k = 0; k < 6; k++) {
+        const sp = this._m(new THREE.BoxGeometry(0.03, WR * 1.9, 0.03), dark, FX + sx * (LONG / 2 + 0.14), AY, FZ, { cast: false });
+        sp.rotation.set(0, Math.PI / 2, k * Math.PI / 6);
+      }
+    }
+
+    // the quadrature: body, the channelled lower part, the cornice over
+    const BASE = AY + 0.16;
+    this._m(new THREE.BoxGeometry(LONG, HIGH, BROAD), gold, FX, BASE + HIGH / 2, FZ, { outline: true });
+    for (let i = 0; i < 7; i++) {
+      this._m(new THREE.BoxGeometry(0.022, HIGH * 0.44, 0.022), dark,
+        FX - LONG / 2 + 0.06 + i * (LONG - 0.12) / 6, BASE + HIGH * 0.22, FZ + BROAD / 2 + 0.012, { cast: false });
+    }
+    this._m(new THREE.BoxGeometry(LONG + 0.1, 0.07, BROAD + 0.1), gold, FX, BASE + HIGH + 0.035, FZ, { cast: false });
+
+    // the triumph of satyrs and nymphs, on the middle panel of each long side
+    const relief = this._reliefTexture('a triumph of satyrs and nymphs');
+    const relM = woodcut ? S.mat({ tone: 0.14 })
+                         : S.mat({ color: 0xffffff, roughness: 0.85, map: relief });
+    if (!woodcut && !relM.map) relM.map = relief;
+    for (const sz of [-1, 1]) {
+      const pan = this._m(new THREE.PlaneGeometry(LONG * 0.52, HIGH * 0.34), relM,
+        FX, BASE + HIGH * 0.62, FZ + sz * (BROAD / 2 + 0.014), { cast: false });
+      if (sz < 0) pan.rotation.y = Math.PI;
+    }
+    // and the ends bent in: a rounded face with the little sacrifice at its altar
+    for (const sx of [-1, 1]) {
+      const bow = this._m(new THREE.CylinderGeometry(BROAD * 0.5, BROAD * 0.5, HIGH * 0.9, 10, 1, false, -Math.PI / 2, Math.PI),
+        gold, FX + sx * (LONG / 2 - 0.01), BASE + HIGH * 0.5, FZ, { cast: false });
+      bow.rotation.y = sx > 0 ? 0 : Math.PI;
+      this._m(new THREE.BoxGeometry(0.02, 0.16, 0.11), dark, FX + sx * (LONG / 2 + BROAD * 0.5 - 0.02), BASE + HIGH * 0.55, FZ, { cast: false });
+    }
+
+    // a harpy at every angle, wings up to the breadth of the vessel above,
+    // their tails meeting in leaves over the void between them
+    const TOP = BASE + HIGH + 0.07;
+    for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
+      const hx = FX + sx * (LONG / 2 - 0.08), hz = FZ + sz * (BROAD / 2 - 0.06);
+      this._m(new THREE.ConeGeometry(0.05, 0.10, 6), dark, hx, TOP + 0.05, hz, { cast: false });
+      this._m(new THREE.CapsuleGeometry(0.035, 0.10, 4, 7), gold, hx, TOP + 0.17, hz, { cast: false });
+      const wing = this._m(new THREE.ConeGeometry(0.035, 0.26, 4), gold, hx - sx * 0.03, TOP + 0.30, hz, { cast: false });
+      wing.rotation.z = sx * 0.42; wing.rotation.x = -sz * 0.3;
+      // the tail, turning into leaves toward its neighbour
+      const tail = this._m(new THREE.TorusGeometry(0.07, 0.014, 5, 8, Math.PI * 0.8), dark, hx - sx * 0.06, TOP + 0.06, hz - sz * 0.03, { cast: false });
+      tail.rotation.set(Math.PI / 2, 0, sx * sz > 0 ? 0.6 : -0.6);
+    }
+
+    // the three vessels, rising one out of the other
+    const v1 = TOP + 0.10;
+    this._m(new THREE.CylinderGeometry(BROAD * 0.30, BROAD * 0.22, 0.26, 12), gold, FX, v1 + 0.13, FZ, { outline: true });
+    const v2 = v1 + 0.26;
+    this._m(new THREE.CylinderGeometry(BROAD * 0.62, BROAD * 0.30, 0.20, 14), gold, FX, v2 + 0.10, FZ, { outline: true });
+    this._m(new THREE.TorusGeometry(BROAD * 0.62, 0.022, 6, 16), gold, FX, v2 + 0.20, FZ, { rx: Math.PI / 2, cast: false });
+    const v3 = v2 + 0.22;
+    this._m(new THREE.CylinderGeometry(BROAD * 0.40, BROAD * 0.24, 0.24, 12), gold, FX, v3 + 0.12, FZ, { outline: true });
+    // the row of coloured stones round the swelling ridges of the third
+    const GEMS = [0xd8443a, 0x3a6ad8, 0x3aa85a, 0xe0c840, 0xc85ad0, 0x40c8c0];
+    GEMS.forEach((c, i) => {
+      const a = (i / GEMS.length) * Math.PI * 2;
+      this._m(new THREE.SphereGeometry(0.022, 7, 6),
+        woodcut ? dark : S.mat({ color: c, roughness: 0.25, metalness: 0.1 }),
+        FX + Math.sin(a) * BROAD * 0.26, v3 + 0.06, FZ + Math.cos(a) * BROAD * 0.26, { cast: false });
+    });
+    // a monster's head either side, a ring at the lip, and the garland hung
+    // from it, growing bigger toward the middle
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.SphereGeometry(0.038, 8, 6), dark, FX + sx * BROAD * 0.40, v3 + 0.19, FZ, { cast: false });
+      this._m(new THREE.TorusGeometry(0.028, 0.008, 5, 10), gold, FX + sx * BROAD * 0.40, v3 + 0.24, FZ, { rx: Math.PI / 2, cast: false });
+    }
+    for (let i = 0; i < 7; i++) {
+      const t = (i + 0.5) / 7;
+      const sag = Math.sin(t * Math.PI);
+      const r = 0.016 + sag * 0.026;
+      this._m(new THREE.SphereGeometry(r, 7, 6), i % 3 ? dark : gold,
+        FX - BROAD * 0.40 + t * BROAD * 0.80, v3 + 0.22 - sag * 0.10, FZ + 0.012, { cast: false });
+    }
+
+    // and it runs: the book calls it a PERPETUAL running fountain
+    const water = this._waterMat();
+    this._waters.push({
+      m: this._m(new THREE.CircleGeometry(BROAD * 0.58, 12), water, FX, v2 + 0.185, FZ, { rx: -Math.PI / 2, cast: false }),
+      rate: 0.13,
+    });
+
+    this._plaque({ main: 'FONS PERPETVVS',
+                   sub: 'THE RVNNING FOVNTAINE ON AN AXLE-TREE · A HARPY AT EVERY ANGLE · DALL. PP. 158-159' },
+      1.05, 0.20, FX, BASE - 0.10, FZ + BROAD / 2 + 0.10, 0, true);
   },
 
   _buildBath(BX, BZ) {
