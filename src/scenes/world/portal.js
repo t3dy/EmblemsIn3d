@@ -953,6 +953,51 @@ export const Portal = {
       }
       this._plaque({ main: name, sub: sick }, 1.3 * G, 0.34 * G, ox, 1.35 * G, KZ - IN_W + 0.12, 0, true);
     }
+    // ── The loop-holes and wickets ──────────────────────────────────────
+    //
+    // Dallington p. 45: "small loope-holes and wickets in sundry places
+    // diuersly disposed, yeelding thorough them a sufficient light to beholde
+    // the seuerall partes of the artificiall anothomie".
+    //
+    // Found by the chapter III research pass on 2026-09-09, hours after the
+    // interior was opened, and it is the fixture that interior needed: the
+    // passage was a dark tube with labelled doors nobody could read. The book
+    // had the answer in it the whole time, which is the argument for reading a
+    // chapter end to end rather than for the thing you are currently building.
+    //
+    // Pierced through the CROWN of the vaults, where daylight would actually
+    // fall, and set alternately off the axis so the light rakes across the
+    // organ doors on the south wall instead of pooling down the middle. Their
+    // heights follow the vaults they pierce -- the chest's crown is 3.88 m
+    // inside and the belly's 2.79, measured off the vault radii (2.5 * G and
+    // 1.8 * G), so a wicket sits a little under each.
+    // `lit`, not `woodcut`: this builder names its register flag the other way
+    // round from its neighbours, and copying the neighbour's idiom cost a
+    // ReferenceError that node --check cannot see.
+    const wicketM = lit
+      ? S.mat({ color: 0xf6efdc, roughness: 1.0 })
+      : S.mat({ tone: 0.0 });
+    if (lit) {
+      wicketM.emissive = new THREE.Color(0xf2e6c2);
+      wicketM.emissiveIntensity = 0.95;
+    }
+    const WICKETS = [
+      [KX + 3.0 * L, 3.60, -0.55], [KX + 4.6 * L, 3.60, 0.55],
+      [KX + 6.2 * L, 3.60, -0.55], [KX + 7.6 * L, 3.60, 0.55],
+      [KX + 9.2 * L, 2.50, -0.45], [KX + 10.4 * L, 2.50, 0.45],
+    ];
+    WICKETS.forEach(([wx, wy, off], i) => {
+      this._m(new THREE.PlaneGeometry(0.46, 0.30), wicketM, wx, wy, KZ + off,
+        { rx: Math.PI / 2, cast: false });
+      // every other wicket carries a lamp; six point lights inside one figure
+      // would cost more than the light is worth, and the shafts read from the
+      // emissive alone
+      if (i % 2 === 0) {
+        const pl = S.pointLight(0xffe9c4, 1.15, 8);
+        if (pl) { pl.position.set(wx, wy - 0.7, KZ + off); this.scene.add(pl); }
+      }
+    });
+
     // Inside the heart, on the far wall. The book is emphatic that the cures
     // exist, are written, and are withheld, so the chamber says exactly that
     // and gives nothing -- the one place in the world where a plaque is a

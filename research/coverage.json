@@ -724,12 +724,13 @@
           "plate": null,
           "name": "The loop-holes and wickets that light the colossus within",
           "source": "Dallington 1592 p. 45",
-          "status": "unbuilt",
-          "note": "Small loop-holes and wickets, diversely disposed in sundry places, yielding light enough to see the whole artificial anatomy. THIS MATTERS NOW: the interior was opened on 2026-09-09 (feat-colossus-interior) and is lit by nothing at all -- the passage is a dark tube. The book supplies exactly the fixture that solves it, and grepping portal.js for wicket or loophole returns nothing.",
+          "status": "built",
+          "note": "Built and seen on the running page 2026-09-09 at main.js?v=364, standing inside the passage at (40.5, 4): two pierced openings show in the vault crown overhead, warm light falls across the belly vault ahead, and the organ plaques are readable where before the passage was a dark tube.\n\nSix wickets pierced through the crown of the vaults, set alternately off the axis so the light rakes across the organ doors on the south wall instead of pooling down the middle. Their heights follow the vaults they pierce -- the chest's crown is 3.88 m inside and the belly's 2.79, off the vault radii -- so each sits a little under. Every other one carries a point light; six inside one figure would cost more than the light is worth, and the shafts read from the emissive alone.\n\nFound by reading chapter III end to end, hours after the interior was opened. The book had the fixture the new interior needed, which is the argument for reading a chapter whole rather than for the thing you happen to be building. Cost: +2 meshes, +12 triangles.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/portal.js _buildColossus, the WICKETS table"
         },
         {
           "id": "colossus-three-tongues",
