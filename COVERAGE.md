@@ -11,9 +11,9 @@ Ledger generated **2026-09-09**. 38 chapters · 165 plates attached to a chapter
 | Chapters **enumerated** (a feature list exists) | **16 of 38** |
 | Chapters **partial** (tour notes only, no feature list) | 22 |
 | Chapters **unread** | 0 |
-| Features **built** | 79 |
+| Features **built** | 80 |
 | Features **partial** | 14 |
-| Features **unbuilt** | **24** |
+| Features **unbuilt** | **23** |
 | Features **declined** (on purpose, with a reason) | 5 |
 
 > The first row is the one that matters. A chapter that is not enumerated cannot have a gap, because nobody has looked. That is exactly how the vaults under the pyramid stayed unbuilt: they have **no woodcut**, so every plate-driven check passed them, and no one had read chapter V against the world.
@@ -87,9 +87,6 @@ Checked 2026-09-09 and absent: no pantofles and no scattered veils anywhere (the
 | VIII | **The green enclosure: three fences of citron, orange and lemon, six foot thick** | place | ○ unbuilt | Dallington 1592 pp. 123-124 | The avenue leads into an equilateral enclosure walled on three sides by a fence as high as the cypresses, made altogether of citrons, oranges and lemons whose leaves bush one within another, knit and twisted artificially together, about six foot thick, with a gate in the middle made of the same trees. White flowers show abundantly between the twistings and the fruit is nowhere wanting. The world has citron and lemon in its species table and plants exactly two of them, at nature.js 987; the enclosure itself is absent. |
 | VIII | **Windows made in the hedge, where the boughs are left bare** | building | ○ unbuilt | Dallington 1592 p. 123 | Above, in convenient places, windows are made in the living fence, so that the boughs there are to be seen bare but for their green leaves. A window cut in a hedge is the kind of detail that decides whether a garden reads as ARCHITECTURE made of plants, which is this book's whole proposition about gardens. |
 | VIII | **The thickness you can climb inside, unseen** | place | ○ unbuilt | Dallington 1592 p. 124 | In the interstitious thickness the boughs are so twisted and grown together that you may ascend up by them and be seen neither in them nor on the way you went. A hedge with a hidden stair inside its own six feet. Nothing in the world does anything like it, and it is the most striking single image in the chapter. |
-| VIII | **A frieze of genii, dolphins and a bull's skull** | picture | ○ unbuilt | 1499 plate #24 (p. 84) | Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.
-
-Checked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing. |
 | VIII | **The panelled wall in the Queen's palace with the planetary names** | inscription | ◐ partial | 1499 plate #25 (p. 88) | Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.
 
 Checked 2026-09-09. palace.js drives panelling off the METALS table and the tour lede describes walls panelled room by room with the names of the planets, and a census finds 32 meshes at the Planetary Palace station. So planetary panelling exists. Whether it matches THIS plate's panelled wall is unverified, so partial. |
@@ -271,9 +268,15 @@ ALREADY BUILT and found so by this pass: approach.js carries all three at the br
 | ✅ | The third fountain, with Graces, harpies and griffins<br>*Attached to this chapter in the plate index; not yet read against the world.
 
 BUILT, confirmed 2026-09-09. temple.js carries a dedicated `_buildGracesFountain` whose comments quote the passage -- the graces of fine gold, the water falling on the opened crown, every jet named in the text made a jet here -- and a mesh census on the running page finds 92 meshes within 6 m of its coordinates, topping 6.03 m. The evidence is the census and the named builder rather than a screenshot, which is worth saying plainly.* | object | `world/temple.js _buildGracesFountain` | 1499 plate #23 (p. 80) |
-| ○ | A frieze of genii, dolphins and a bull's skull<br>*Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.
+| ✅ | A frieze of genii, dolphins and a bull's skull<br>*Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.
 
-Checked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.* | picture | — | 1499 plate #24 (p. 84) |
+Checked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.
+
+BUILT 2026-09-09 at main.js?v=370 and seen on the running page from the palace's east front. A bucranium swagged between two dolphins with a winged genius at either end -- the commonest grammar of quattrocento ornament, and the world had no bull's skull anywhere until now.
+
+Set on the east front because that is the face the dreamer arrives at, and measured before placing, since two placements earlier in the session went into walls: the front is four meshes spanning z -6.68..6.69 with its face at x = -12.93, a top at 2.01 m, and 5.16 m of clear ground before it. The relief repeats five times along the band -- five tiles of 2.64 x 1.0 against a texture drawn 512 x 192 -- so each tile keeps very nearly the proportion it was drawn at rather than being smeared the length of the wall.
+
+Honest about what reads: the frieze GRAMMAR is legible at walking distance (genius, dolphin, centre, dolphin, genius) and the bucranium itself is small within its tile. Cost +2 meshes and +4 triangles.* | picture | `world/palace.js _buildPalaceFrieze, drawn by world/triumphs.js _reliefScene` | 1499 plate #24 (p. 84) |
 | ◐ | The panelled wall in the Queen's palace with the planetary names<br>*Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.
 
 Checked 2026-09-09. palace.js drives panelling off the METALS table and the tour lede describes walls panelled room by room with the names of the planets, and a census finds 32 meshes at the Planetary Palace station. So planetary panelling exists. Whether it matches THIS plate's panelled wall is unverified, so partial.* | inscription | `world/palace.js, the METALS panelling` | 1499 plate #25 (p. 88) |

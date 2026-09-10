@@ -672,6 +672,86 @@ export const Triumphs = {
       return true;
     }
 
+    // ── Genii, dolphins and a bull's skull (plate #24) ────────────────────
+    // The frieze ornament of 1499 p. 84, attached to chapter VIII. A bucranium
+    // swagged between two dolphins with a winged genius at either end: the
+    // commonest grammar of quattrocento ornament, and the world had no
+    // bucranium anywhere until now.
+    if (/genii, dolphins and a bull/i.test(scene)) {
+      carve(() => {
+        x.lineCap = 'round'; x.lineJoin = 'round';
+
+        // a winged genius at either end
+        const genius = (gx, face) => {
+          x.beginPath(); x.arc(gx, GY - 84, 9, 0, 7); x.fill();
+          x.beginPath();                                     // the little body
+          x.moveTo(gx - 9, GY - 30);
+          x.quadraticCurveTo(gx - 11, GY - 58, gx - 5, GY - 74);
+          x.lineTo(gx + 5, GY - 74);
+          x.quadraticCurveTo(gx + 11, GY - 58, gx + 9, GY - 30);
+          x.closePath(); x.fill();
+          x.beginPath();                                     // the wing behind
+          x.moveTo(gx - face * 6, GY - 70);
+          x.quadraticCurveTo(gx - face * 30, GY - 98, gx - face * 12, GY - 44);
+          x.closePath(); x.fill();
+          x.lineWidth = 5;                                   // an arm to the swag
+          x.beginPath();
+          x.moveTo(gx + face * 7, GY - 62);
+          x.lineTo(gx + face * 26, GY - 52);
+          x.stroke();
+        };
+
+        // a dolphin, head down, tail curled up
+        const dolphin = (dx, face) => {
+          x.beginPath();
+          x.moveTo(dx - face * 26, GY - 26);
+          x.quadraticCurveTo(dx, GY - 74, dx + face * 22, GY - 40);
+          x.quadraticCurveTo(dx + face * 6, GY - 40, dx - face * 26, GY - 26);
+          x.closePath(); x.fill();
+          x.beginPath();                                     // the fluked tail
+          x.moveTo(dx + face * 20, GY - 42);
+          x.lineTo(dx + face * 38, GY - 64);
+          x.lineTo(dx + face * 34, GY - 38);
+          x.closePath(); x.fill();
+          x.beginPath();                                     // the eye
+          x.arc(dx - face * 17, GY - 34, 2.6, 0, 7); x.fill();
+        };
+
+        // the bucranium: the skull, its horns, and the swags hung from them
+        const bx = W / 2;
+        x.beginPath();
+        x.moveTo(bx - 15, GY - 74);
+        x.quadraticCurveTo(bx - 19, GY - 46, bx, GY - 30);
+        x.quadraticCurveTo(bx + 19, GY - 46, bx + 15, GY - 74);
+        x.closePath(); x.fill();
+        x.lineWidth = 7;                                     // the horns
+        x.beginPath();
+        x.moveTo(bx - 13, GY - 72);
+        x.quadraticCurveTo(bx - 34, GY - 86, bx - 30, GY - 62);
+        x.stroke();
+        x.beginPath();
+        x.moveTo(bx + 13, GY - 72);
+        x.quadraticCurveTo(bx + 34, GY - 86, bx + 30, GY - 62);
+        x.stroke();
+        for (const e of [-1, 1]) {                           // the eye sockets
+          x.beginPath(); x.arc(bx + e * 7, GY - 62, 3.4, 0, 7); x.fill();
+        }
+        x.lineWidth = 6;                                     // the swags, sagging away
+        for (const e of [-1, 1]) {
+          x.beginPath();
+          x.moveTo(bx + e * 30, GY - 64);
+          x.quadraticCurveTo(bx + e * 66, GY - 34, bx + e * 96, GY - 54);
+          x.stroke();
+        }
+
+        genius(62, 1);
+        dolphin(168, 1);
+        dolphin(344, -1);
+        genius(450, -1);
+      });
+      return true;
+    }
+
     if (!/forge of Vulcan/i.test(scene)) return false;
 
     carve(() => {

@@ -1478,12 +1478,13 @@
           "plate": 24,
           "name": "A frieze of genii, dolphins and a bull's skull",
           "source": "1499 plate #24 (p. 84)",
-          "status": "unbuilt",
-          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.\n\nChecked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.",
+          "status": "built",
+          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.\n\nChecked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.\n\nBUILT 2026-09-09 at main.js?v=370 and seen on the running page from the palace's east front. A bucranium swagged between two dolphins with a winged genius at either end -- the commonest grammar of quattrocento ornament, and the world had no bull's skull anywhere until now.\n\nSet on the east front because that is the face the dreamer arrives at, and measured before placing, since two placements earlier in the session went into walls: the front is four meshes spanning z -6.68..6.69 with its face at x = -12.93, a top at 2.01 m, and 5.16 m of clear ground before it. The relief repeats five times along the band -- five tiles of 2.64 x 1.0 against a texture drawn 512 x 192 -- so each tile keeps very nearly the proportion it was drawn at rather than being smeared the length of the wall.\n\nHonest about what reads: the frieze GRAMMAR is legible at walking distance (genius, dolphin, centre, dolphin, genius) and the bucranium itself is small within its tile. Cost +2 meshes and +4 triangles.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/palace.js _buildPalaceFrieze, drawn by world/triumphs.js _reliefScene"
         },
         {
           "id": "plate-25-planetary-wall",

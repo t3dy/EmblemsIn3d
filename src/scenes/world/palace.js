@@ -855,9 +855,47 @@ export const Palace = {
     if (C.t > 0.7) nextMove();
   },
 
+  // ── The frieze on the palace front (plate #24) ───────────────────────────
+  //
+  // 1499 p. 84, attached to chapter VIII: a frieze ornament of genii, dolphins
+  // and a bull's skull. Found absent by the verification pass of 2026-09-09 --
+  // the only genii in the world hold the circle of plate #36, and there was no
+  // bucranium anywhere.
+  //
+  // Set on the palace's east front, which is the face the dreamer arrives at.
+  // Measured before placing, because two placements this session went into
+  // walls: the front is four meshes spanning z -6.68..6.69 with its face at
+  // x = -12.93 and a top at 2.01 m, and there is 5.16 m of clear ground in
+  // front of it. The band sits under that top with the relief repeating five
+  // times along it -- five tiles of 2.64 x 1.0 against a texture drawn 512 x
+  // 192, so each tile keeps very nearly the proportion it was drawn at instead
+  // of being smeared the length of the wall.
+  _buildPalaceFrieze() {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const FX = -12.90, W = 13.2, H = 1.0, Y = 1.32;
+
+    const tex = this._reliefTexture("genii, dolphins and a bull's skull");
+    // safe to set the wrap on the cached texture: this scene has one user
+    tex.wrapS = THREE.RepeatWrapping;
+    tex.wrapT = THREE.ClampToEdgeWrapping;
+    tex.repeat.set(5, 1);
+
+    const mat = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0xffffff, roughness: 0.88 });
+    if (!mat.map) mat.map = tex;
+
+    const band = this._m(new THREE.PlaneGeometry(W, H), mat, FX, Y, 0, { cast: false });
+    band.rotation.y = Math.PI / 2;          // the face looks east, up the approach
+
+    this._plaque({ main: 'GENII · DELPHINI · BVCRANIVM',
+                   sub: 'THE FRIEZE OF THE PALACE FRONT · 1499 PLATE 24, P. 84' },
+      1.5, 0.24, FX - 0.02, Y - 0.78, 3.4, Math.PI / 2, true);
+  },
+
   _buildPalace() {
     const S = this.style;
     const CX = -20.5;
+    this._buildPalaceFrieze();
 
     // A stepped platform, not a slab: stylobate over two courses, with a flight
     // up the east front where the dreamer arrives.
