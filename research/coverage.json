@@ -1627,12 +1627,13 @@
           "plate": null,
           "name": "The current turns against you, then hurries you in",
           "source": "Dallington 1592 pp. 179-180",
-          "status": "unbuilt",
-          "note": "Putting off from the second mount the water begins to run somewhat against them. Nearer the centre the revolutions grow shorter and shorter and the stream swifter into the devouring swallow, and they cannot turn their ship back, with a company still following close behind. One water surface is built here and it does not carry a direction, let alone a direction that changes with the ring. This is the single mechanic the allegory actually needs.",
+          "status": "built",
+          "note": "Putting off from the second mount the water begins to run somewhat against them. Nearer the centre the revolutions grow shorter and shorter and the stream swifter into the devouring swallow, and they cannot turn their ship back, with a company still following close behind. One water surface is built here and it does not carry a direction, let alone a direction that changes with the ring. This is the single mechanic the allegory actually needs.\n\nBUILT 2026-09-09 at main.js?v=371. The labyrinth had ONE still water disc with no rate on it, so seven channels held water that went nowhere. Each channel now carries its own rate and the SIGN CHANGES at the third ring: measured on the running page, the rings run +0.035, +0.05, then -0.06, -0.085, -0.11, -0.14, -0.18, with the swallow at the centre at -0.24. The outer two go with you and gently; everything from the third runs against you and faster the further in it lies.\n\nVerified by census rather than by screenshot, and deliberately: a still image cannot show a current. What a screenshot could confirm is that the rings disagree with each other, which is the thing Logistica points at from the mount. Cost +7 meshes, +544 triangles.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/temple.js _buildWaterLabyrinth, the FLOW table"
         },
         {
           "id": "labyrinth-centre-dragon",

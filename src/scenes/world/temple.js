@@ -1582,7 +1582,35 @@ export const Temple = {
 
     // the basin, and seven concentric channels with a hedge-bank between each
     this._m(new THREE.CylinderGeometry(R + 0.8, R + 0.8, 0.24, 40), dark, LX, 0.12, LZ, { cast: false });
-    this._waters.push({ m: this._m(new THREE.CircleGeometry(R, 40), water, LX, 0.26, LZ, { rx: -Math.PI / 2, cast: false }) });
+    // ── The current ──────────────────────────────────────────────────────
+    //
+    // This was one still disc with no rate on it, so the seven channels held
+    // water that did not go anywhere -- and the current is not decoration here,
+    // it is the allegory. Dallington pp. 178-180: through the first circuits
+    // they sail with a prosperous wind and great solace; putting off from the
+    // second mount the water begins to run somewhat against them; and nearer
+    // the centre the revolutions grow shorter and the stream swifter into the
+    // devouring swallow, with no turning the ship back.
+    //
+    // So each channel gets its own rate, and the SIGN CHANGES at the third:
+    // the outer two run with you and gently, the rest run against you and
+    // faster the further in they lie. Read from the viewing mount, the rings
+    // visibly disagree with each other, which is the thing Logistica is
+    // pointing at. Found missing by the chapter IX pass, 2026-09-09.
+    const FLOW = [0.035, 0.05, -0.06, -0.085, -0.11, -0.14, -0.18];
+    for (let i = 1; i <= 7; i++) {
+      const outer = R - (i - 1) * 1.15, inner = Math.max(0.35, R - i * 1.15);
+      this._waters.push({
+        m: this._m(new THREE.RingGeometry(inner, outer, 40), water, LX, 0.26, LZ,
+                   { rx: -Math.PI / 2, cast: false }),
+        rate: FLOW[i - 1],
+      });
+    }
+    // and the swallow at the centre, which runs fastest of all
+    this._waters.push({
+      m: this._m(new THREE.CircleGeometry(0.9, 24), water, LX, 0.25, LZ, { rx: -Math.PI / 2, cast: false }),
+      rate: -0.24,
+    });
     const hedge = lit ? this._hedgeMat : S.mat({ tone: 0.12 });
     for (let i = 1; i <= 7; i++) {
       const r = R - i * 1.15;
