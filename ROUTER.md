@@ -81,6 +81,7 @@ a session.
 | **Work on Roll Up** (the Katamari mode) | [`ROLLING.md`](ROLLING.md) — every variable and which one to turn; then `src/systems/RollUp.js` and `HPWorldScene._census` | — |
 | **Understand what is stuck to the ball** (the crust, and why it sheds) | [`CRUST.md`](CRUST.md) — one dial of Roll Up, in detail | — |
 | **Build or fix a human figure** | [`HUMANOIDS.md`](HUMANOIDS.md), then `NYMPHS.md` / `CHARACTERS.md` and the plate | — |
+| **Change how the figures are RENDERED** (the five rungs, the projection) | [`RENDERINGMODELSBLINGUSOUT.md`](RENDERINGMODELSBLINGUSOUT.md) — what each rung is, what each costs, and why the projected one is the default | `await hpDiag()` |
 | **Build or fix an animal** | [`ANIMALS.md`](ANIMALS.md) §4, then the plate | — |
 | **Understand why the world costs what it costs** | [`DRAWCALLS.md`](DRAWCALLS.md) — what a draw call is, what merging would buy, and why we are not doing it | `await hpDiag()` |
 | **Decide *whether* to do something** | `DESIGN.md`, `DECISIONS.md`, `NEXTSTEPS.md` | — |
@@ -348,6 +349,7 @@ If any answer is no, say so plainly in the report rather than rounding up to "do
 | ~3,886 | `WOODS.md` | the dark wood: species, density, light |
 | ~3,723 | `README.md` |  |
 | ~3,620 | `HUMANOIDS.md` | why the figures look wrong; poses, canon, registers |
+| ~4,100 | `RENDERINGMODELSBLINGUSOUT.md` | the five figure rungs, the Botticelli projection, and what each costs |
 | ~3,424 | `HPTOTOURPIPELINE.md` | corpus in, game out: the research-to-build route |
 | ~3,313 | `SOURCES.md` | the corpus map, and which scholar to read per asset |
 | ~3,279 | `WOODCUT.md` |  |
