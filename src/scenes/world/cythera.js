@@ -11,7 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { CYTHERA_CLIMBERS, SPECIES } from './constants.js?v=6';
+import { CYTHERA_CLIMBERS, SPECIES } from './constants.js?v=7';
 
 export const Cythera = {
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
@@ -803,8 +803,16 @@ export const Cythera = {
       { ry: -ang + Math.PI / 2, cast: false });
     this._m(new THREE.TorusGeometry(TH * 0.32, 0.02, 8, 22), gold, jx, 0.26 + TH / 2, jz,
       { ry: -ang + Math.PI / 2, cast: false });
-    if (S.pointLight) {
-      const jl = S.pointLight(0xff3018, 2.6, 4.0);
+    // `if (S.pointLight)` asks whether the STYLE HAS the method, which every
+    // style does. The woodcut register's implementation returns null -- it has
+    // no lights -- so the guard has to be on the RESULT, which is how the
+    // colossus's wickets do it. Without this, switching to the woodcut view
+    // threw inside _buildAdonis and left the whole page black: the exception
+    // came out of build(), so nothing after Adonis was ever added. Found
+    // 2026-09-09 while checking the piazza in both registers; the bug predates
+    // that work and is not caused by it. Ticket bug-woodcut-blanks-on-adonis.
+    const jl = S.pointLight ? S.pointLight(0xff3018, 2.6, 4.0) : null;
+    if (jl) {
       jl.position.set(jx + Math.cos(ang) * 0.34, 0.26 + TH / 2, jz + Math.sin(ang) * 0.34);
       this.scene.add(jl);
       this._pulses.push({ pl: jl, base: 2.6, phase: 1.7 });    // it burns unsteadily

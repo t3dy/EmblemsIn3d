@@ -671,7 +671,7 @@
       "id": "bug-piazza-wrong-side-of-portal",
       "title": "The horse, colossus and elephant sit past the portal; the book puts them before it",
       "kind": "bug",
-      "status": "open",
+      "status": "done",
       "priority": 1,
       "evidence": "Found by the chapter III research pass, 2026-09-09. Dallington pp. 37-46: Poliphilo is brought to a place of ancient works and FIRST sees a fair porch; then, before that porch and in the open air, a four-square court of thirty paces, and it is in that court that he finds the winged horse, then the elephant, then the colossus. Only afterwards (ch. IV) does he study the porch itself and pass it. One southward walk, in one order.\n\nTHE TOUR AGREES WITH THE BOOK. tours.json runs valley -> horse -> colossus -> elephant -> portal -> three_doors.\n\nTHE GROUND PLAN DOES NOT. Station z: valley 104, horse 22.5, colossus 4, elephant 6.5, portal 37, three_doors 21 -- and the portal's own geometry stands at z = 26. So walking the tour in its own order crosses the portal THREE times: south through it to the horse, north back through it to the portal stop, and south through it again to the doors. The book crosses once.\n\nNothing in DECISIONS.md or DIRECTIONS.md records this as a choice; greps for the forecourt, the piazza and 'thirtie paces' return nothing. It looks like the piazza was placed on the garden side because that is where there was room, and the tour order was written from the book afterwards, so the two have never been read against each other.",
       "acceptance": "Walking the tour's own order is a single southward procession with one crossing of the Great Portal, and the horse, elephant and colossus are all met before it. The Great Portal still closes the valley (the walk tests of feat-monuments-true-scale still refuse every approach but the porch), and the colossus keeps its interior.",
@@ -687,7 +687,9 @@
         "DECISIONS.md 2026-09-09 call 2",
         "COVERAGE.md ch. III"
       ],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-09",
+      "resolution": "Ted chose option (a) on 2026-09-09: move the piazza, do not move the portal and do not record the crossing as a compression. DECISIONS.md call 51.\n\nThe horse now stands at (7, 55.6) -- ten paces in from the piazza's start toward the gate, which the 1499 states outright at l. 1255 and which corrects DIMENSIONS.md, whose entry read those ten paces as measured from the porch. The elephant stands at (7, 42), straight forward of him (Dall. p. 46, the 1499's *ad libella*). The colossus was turned a quarter by the new _placeAt / _placeColossus and now lies ALONG the valley on the west side, feet at z 72 and head at z 44, so the dreamer meets the bare soles first and comes to the head from thence, as p. 44 has it.\n\nMEASURED, not asserted. Walking the tour's own station order -- valley 104, horse 62, colossus 35, elephant 49, portal 37, three_doors 21 -- crosses the portal plane z = 26 exactly ONCE (was three times). A walk-north probe at 23 values of x from -22 to +22, stepping 0.25 m through walker.collide(), gets past the gate at x = 0 and nowhere else, so the portal still closes the valley. A walk-south probe from (-19, 37) enters the colossus by the mouth and ends at (-19.4, 51.8), deep inside the body, so the interior survived the quarter turn.\n\nThe forecourt and the two colonnades this ticket was blocking were built in the same pass (coverage.json ch. III: porch-forecourt, porch-colonnades, colonnade-wildwood, all now built). Draw calls: valley 456 -> 465, portal 460 -> 393, both inside the regression budget."
     },
     {
       "id": "bug-court-has-no-room-left",
@@ -708,6 +710,45 @@
         "DECISIONS.md 2026-09-09 the dream does not have to add up"
       ],
       "opened": "2026-09-09"
+    },
+    {
+      "id": "bug-artificial-gardens-wrong-side-of-portal",
+      "title": "The gardens of glass and silk stand before the Great Portal; chapters XII-XIII put them past the Three Doors",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Found 2026-09-09 while siting the piazza, and it is the same error as bug-piazza-wrong-side-of-portal in the other direction. _buildArtificialGardens stood at (-22, 52) with the comment \"north-west of the court, on the sward\" -- but the court is at (-10.4, 23.8), PAST the portal at z 26, and (-22, 52) is 26 m BEFORE it, in the valley. The tour's own lede says so: \"After the banquet the queen's handmaids lead Poliphilo out to three gardens that are not gardens\" -- the banquet is Eleuterylida's, deep inside her realm.\n\nThey also stood exactly where the piazza had to go: the glass cypresses occupied the ground the colossus now lies on and the silk trees the ground the winged horse now stands on. So they were moved 30 m down the valley to (-28, 82), clear of the court's mouth at z 70.4 and of the colossus's feet at z 72, with the station following them to (-21.5, 82). That is a HOLDING position, not the right one.\n\nThe right one waits on room: a clash sweep over the whole palace side (x -46..34, z -16..20, stepping 2 m, testing a 24 x 13 m rectangle against walker.walls and walker.colliders) found exactly ONE placement with no wall and no collider, at x = -46, which is past the Temple of Venus and at the mainland's western edge. Every other candidate clashes. This is the same shortage bug-court-has-no-room-left reports, and it should be fixed after that one.",
+      "acceptance": "The gardens of glass and silk, and their tour station, stand on the palace side of the Great Portal -- station z < 26 -- within sight of Eleuterylida's court, and a clash sweep of their footprint against walker.walls and walker.colliders returns nothing.",
+      "files": [
+        "src/scenes/world/approach.js",
+        "src/scenes/world/constants.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "Dallington 1592 pp. 175-182",
+        "DECISIONS.md 2026-09-09 call 51",
+        "ticket bug-court-has-no-room-left"
+      ],
+      "opened": "2026-09-09"
+    },
+    {
+      "id": "bug-woodcut-blanks-on-adonis",
+      "title": "Switching to the woodcut register threw inside _buildAdonis and left the page black",
+      "kind": "bug",
+      "status": "done",
+      "priority": 1,
+      "evidence": "Found 2026-09-09 while checking the new piazza in both registers, and NOT caused by that work: cythera.js was untouched except its ?v= bump. _buildAdonis guarded the jacinth's point light with `if (S.pointLight)`, which asks whether the style HAS the method -- every style does. The woodcut style's implementation RETURNS NULL, because the woodcut register has no lights, so `jl.position.set(...)` threw. The exception came out of build(), so nothing after Adonis was ever added and the whole page went black with `Cannot read properties of null (reading 'position')`.\n\nEvery other point light in the world -- eleven of them, in palace.js, portal.js, temple.js and tombs.js -- guards the RESULT. Adonis was the only one that did not.",
+      "acceptance": "Toggling to the woodcut register from the walk builds the world with no uncaught exception and renders the scene.",
+      "resolution": "Guarded the result instead of the method. Verified on the running page: toggled to woodcut, styleKey === 'woodcut', zero entries in the unhandledrejection log, and the piazza, the horse, the colossus and the pyramid all drawn in ink.",
+      "files": [
+        "src/scenes/world/cythera.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "DECISIONS.md 2026-09-09 call 51"
+      ],
+      "opened": "2026-09-09",
+      "closed": "2026-09-09"
     }
   ]
 }

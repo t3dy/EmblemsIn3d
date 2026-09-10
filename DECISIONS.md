@@ -1,4 +1,4 @@
-<!-- tokens: ~4,517 · read for: the index of every directional call -->
+<!-- tokens: ~4,666 · read for: the index of every directional call -->
 # Design decisions — Emblems in 3D
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
@@ -169,11 +169,12 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*50 calls. Each links to its full text in the archive.*
+*51 calls. Each links to its full text in the archive.*
 
 
 **2026-09-09**
 
+- [The piazza moves. The monuments stand before the porch.](decisions/2026-09.md#2026-09-09-later-still--51-the-piazza-moves-the-monuments-stand-before-the-porch)
 - [The nymphs get bodies, and rule 7 gets a reading](decisions/2026-09.md#2026-09-09-later-still--the-nymphs-get-bodies-and-rule-7-gets-a-reading)
 - [The dream does not have to add up](decisions/2026-09.md#2026-09-09-later-still--the-dream-does-not-have-to-add-up)
 - [The Great Portal at scale, and the wall that was never there](decisions/2026-09.md#2026-09-09-later--the-great-portal-at-scale-and-the-wall-that-was-never-there)

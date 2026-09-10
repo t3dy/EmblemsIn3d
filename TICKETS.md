@@ -6,7 +6,7 @@
 
 ---
 
-**30 tickets** — 5 open, 3 declined, 22 done. By kind: 15 debt, 7 infra, 5 bug, 2 perf, 1 question.
+**36 tickets** — 6 open, 3 declined, 27 done. By kind: 16 debt, 9 bug, 7 infra, 2 perf, 1 question, 1 feat.
 
 ---
 
@@ -14,21 +14,44 @@
 
 *Nothing blocks these but doing them.*
 
-### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
+### `bug-artificial-gardens-wrong-side-of-portal` — The gardens of glass and silk stand before the Great Portal; chapters XII-XIII put them past the Three Doors
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Found 2026-09-09 while siting the piazza, and it is the same error as bug-piazza-wrong-side-of-portal in the other direction. _buildArtificialGardens stood at (-22, 52) with the comment "north-west of the court, on the sward" -- but the court is at (-10.4, 23.8), PAST the portal at z 26, and (-22, 52) is 26 m BEFORE it, in the valley. The tour's own lede says so: "After the banquet the queen's handmaids lead Poliphilo out to three gardens that are not gardens" -- the banquet is Eleuterylida's, deep inside her realm.
+
+They also stood exactly where the piazza had to go: the glass cypresses occupied the ground the colossus now lies on and the silk trees the ground the winged horse now stands on. So they were moved 30 m down the valley to (-28, 82), clear of the court's mouth at z 70.4 and of the colossus's feet at z 72, with the station following them to (-21.5, 82). That is a HOLDING position, not the right one.
+
+The right one waits on room: a clash sweep over the whole palace side (x -46..34, z -16..20, stepping 2 m, testing a 24 x 13 m rectangle against walker.walls and walker.colliders) found exactly ONE placement with no wall and no collider, at x = -46, which is past the Temple of Venus and at the mainland's western edge. Every other candidate clashes. This is the same shortage bug-court-has-no-room-left reports, and it should be fixed after that one.
+
+**Acceptance.** The gardens of glass and silk, and their tour station, stand on the palace side of the Great Portal -- station z < 26 -- within sight of Eleuterylida's court, and a clash sweep of their footprint against walker.walls and walker.colliders returns nothing.
+
+**Files.** `src/scenes/world/approach.js` · `src/scenes/world/constants.js`
+
+**See.** Dallington 1592 pp. 175-182 · DECISIONS.md 2026-09-09 call 51 · ticket bug-court-has-no-room-left
+
+
+### `bug-court-has-no-room-left` — The Court of Eleuterylida is full: nothing more of the banquet can be put in it
 
 **○ open** · debt · priority 2 · hp-builder
  · opened 2026-09-09
 
 
-**Evidence.** DIMENSIONS.md section 5: pyramid-portal 17.5 m against a stated 1140; recumbent colossus ~8 m against 89; Polia's garden ~14 m across against 141. The 1:8 ground plan was declined (DECISIONS.md 2026-09-09 call 3); the monuments were not.
+**Evidence.** Measured 2026-09-09 while placing the wheeled fountain of plate #32. Surface clearance -- distance to the nearest mesh BOX, not to object centres -- across the whole court slab (x -27.5..-12.5, z 14..26) peaks at 0.40 m. There is nowhere in the court with a metre of clear ground. The banquet's seven tables, the throne, the chess pavement, the five sense-nymphs and the eight-sided bath are already in it.
 
-**Acceptance.** Each of the three is materially larger and still reachable, still enterable where it was enterable, and the valley remains closed - a player cannot walk round the portal.
+The consequence is immediate: the fountain the book puts AT the banquet had to be set outside the court's north wall, where there is 7.4 m, and it now reads as the Water Labyrinth's furniture rather than the banquet's.
 
-**Risk.** The valley cliffs converge to 44 m at the piers against a portal spanning 38. A wider pyramid needs the cliffs moved with it or Dallington p.27's absolute stops being true again.
+Chapter X has more of the same still unbuilt -- the pierced gold balls stuffed with amber paste given to every guest, and the rest of the seven changes -- and none of it has anywhere to go.
 
-**Files.** `src/scenes/HPWorldScene.js`
+**Acceptance.** A new piece of the banquet's furniture can be placed inside the court with at least a metre of clear ground around it, and the wheeled fountain of plate #32 stands at the banquet rather than beside the labyrinth.
 
-**See.** DIMENSIONS.md#2 · DECISIONS.md 2026-09-09 call 3
+**Risk.** The same shape of problem as Polia's garden, and the same three answers: displace what is there, extend the court, or let the world fold. The fold is now built (DECISIONS.md 2026-09-09, 'The dream does not have to add up') and the court is precisely the thing it already folds away for Polia's arcade -- so the machinery to make the court bigger while you are in it exists and has been verified once.
+
+**Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js`
+
+**See.** Dallington pp. 143-160 · DECISIONS.md 2026-09-09 the dream does not have to add up
 
 
 ### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
@@ -173,6 +196,56 @@
 **Files.** `DEPLOY_STATE.md`
 
 **See.** ENGINEERING.md#4
+
+
+### `bug-piazza-wrong-side-of-portal` — The horse, colossus and elephant sit past the portal; the book puts them before it
+
+**✅ done** · bug · priority 1 · hp-researcher
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Found by the chapter III research pass, 2026-09-09. Dallington pp. 37-46: Poliphilo is brought to a place of ancient works and FIRST sees a fair porch; then, before that porch and in the open air, a four-square court of thirty paces, and it is in that court that he finds the winged horse, then the elephant, then the colossus. Only afterwards (ch. IV) does he study the porch itself and pass it. One southward walk, in one order.
+
+THE TOUR AGREES WITH THE BOOK. tours.json runs valley -> horse -> colossus -> elephant -> portal -> three_doors.
+
+THE GROUND PLAN DOES NOT. Station z: valley 104, horse 22.5, colossus 4, elephant 6.5, portal 37, three_doors 21 -- and the portal's own geometry stands at z = 26. So walking the tour in its own order crosses the portal THREE times: south through it to the horse, north back through it to the portal stop, and south through it again to the doors. The book crosses once.
+
+Nothing in DECISIONS.md or DIRECTIONS.md records this as a choice; greps for the forecourt, the piazza and 'thirtie paces' return nothing. It looks like the piazza was placed on the garden side because that is where there was room, and the tour order was written from the book afterwards, so the two have never been read against each other.
+
+**Acceptance.** Walking the tour's own order is a single southward procession with one crossing of the Great Portal, and the horse, elephant and colossus are all met before it. The Great Portal still closes the valley (the walk tests of feat-monuments-true-scale still refuse every approach but the porch), and the colossus keeps its interior.
+
+**Risk.** This is a ground-plan change, which DECISIONS.md call 3 of 2026-09-09 said to avoid, and it moves three built stations including the colossus, which was rescaled and hollowed the same day. Three ways, and the choice is Ted's: (a) move the piazza north into the approach, where there is empty ground between z 40 and 100 -- most faithful, most work, and the approach's own three stations would need re-spacing; (b) move the PORTAL south of them, which is cheaper but puts the valley's closure in the wrong place relative to the fields and the labyrinth; (c) leave the plan and record that the crossing is a deliberate compression, which is honest but is exactly the kind of quiet reordering Ted ruled out when he said we follow the novel to the letter (2026-09-09 call 2). The dream-fold decision of the same day may also bear on it: if the world may fold, the portal need not be passed three times in one walk.
+
+**Resolution.** Ted chose option (a) on 2026-09-09: move the piazza, do not move the portal and do not record the crossing as a compression. DECISIONS.md call 51.
+
+The horse now stands at (7, 55.6) -- ten paces in from the piazza's start toward the gate, which the 1499 states outright at l. 1255 and which corrects DIMENSIONS.md, whose entry read those ten paces as measured from the porch. The elephant stands at (7, 42), straight forward of him (Dall. p. 46, the 1499's *ad libella*). The colossus was turned a quarter by the new _placeAt / _placeColossus and now lies ALONG the valley on the west side, feet at z 72 and head at z 44, so the dreamer meets the bare soles first and comes to the head from thence, as p. 44 has it.
+
+MEASURED, not asserted. Walking the tour's own station order -- valley 104, horse 62, colossus 35, elephant 49, portal 37, three_doors 21 -- crosses the portal plane z = 26 exactly ONCE (was three times). A walk-north probe at 23 values of x from -22 to +22, stepping 0.25 m through walker.collide(), gets past the gate at x = 0 and nowhere else, so the portal still closes the valley. A walk-south probe from (-19, 37) enters the colossus by the mouth and ends at (-19.4, 51.8), deep inside the body, so the interior survived the quarter turn.
+
+The forecourt and the two colonnades this ticket was blocking were built in the same pass (coverage.json ch. III: porch-forecourt, porch-colonnades, colonnade-wildwood, all now built). Draw calls: valley 456 -> 465, portal 460 -> 393, both inside the regression budget.
+
+**Files.** `src/scenes/world/constants.js` · `src/data/tours.json` · `DIRECTIONS.md`
+
+**See.** Dallington 1592 pp. 37-46 · DECISIONS.md 2026-09-09 call 2 · COVERAGE.md ch. III
+
+
+### `bug-woodcut-blanks-on-adonis` — Switching to the woodcut register threw inside _buildAdonis and left the page black
+
+**✅ done** · bug · priority 1 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Found 2026-09-09 while checking the new piazza in both registers, and NOT caused by that work: cythera.js was untouched except its ?v= bump. _buildAdonis guarded the jacinth's point light with `if (S.pointLight)`, which asks whether the style HAS the method -- every style does. The woodcut style's implementation RETURNS NULL, because the woodcut register has no lights, so `jl.position.set(...)` threw. The exception came out of build(), so nothing after Adonis was ever added and the whole page went black with `Cannot read properties of null (reading 'position')`.
+
+Every other point light in the world -- eleven of them, in palace.js, portal.js, temple.js and tombs.js -- guards the RESULT. Adonis was the only one that did not.
+
+**Acceptance.** Toggling to the woodcut register from the walk builds the world with no uncaught exception and renders the scene.
+
+**Resolution.** Guarded the result instead of the method. Verified on the running page: toggled to woodcut, styleKey === 'woodcut', zero entries in the unhandledrejection log, and the piazza, the horse, the colossus and the pyramid all drawn in ink.
+
+**Files.** `src/scenes/world/cythera.js`
+
+**See.** DECISIONS.md 2026-09-09 call 51
 
 
 ### `feat-pace-budget` — Crossing the world is the only sanctioned answer to "this takes too long"
@@ -345,6 +418,114 @@
 **Files.** `src/data/tours.json`
 
 **See.** DIRECTIONS.md#3
+
+
+### `bug-fields-dark-wedge` — The fields station stands 2.4 m from the flank of the valley mountain
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** OBSERVED, and reproducible: from the fields station at (-40, 41), looking north as the station does, a hard-edged wedge of shade fills half the frame. It survives a proper teleport and 160 settle frames, so it is not the sky dome lagging a hand-placed camera, and it is bad enough that it cost a verification later the same day -- a screenshot of the water labyrinth's centre could not be got because the approach to it lies in the same dark.
+
+THE FIRST DIAGNOSIS IN THIS TICKET WAS WRONG AND IS RETRACTED. It said the shade follows from the portal rescale taking `high` from 26 to 44, because at z = 41 the west valley wall's inner face is at x = -24.4 and would stand 44.3 m and shade out to about x = -56. Every number there was derived from the `gap`/`high` formulas in approach.js rather than measured against the scene, and the scene disagrees.
+
+WHAT IS ACTUALLY THERE, measured 2026-09-09:
+  * West of the valley floor between z 30 and 75 there are ELEVEN looming meshes and the tallest is 17.8 m, at (-23, 56). There is no 44-50 m wall beside the fields. The `high()` formula returns 44-50 through that range and no geometry of that height exists there, which is a concrete lead: either that formula is not what builds these walls, or the walls it builds stand somewhere else, or they are scaled after the fact.
+  * Up-sun of the fields -- the sun is at (125.6, 227.7, 144.5), so light runs toward -x and -z and any caster must lie at greater x and z -- there are NINE shadow casters above 12 m. The nearest substantial one is at (50, 47), 30 m tall, whose shadow reaches about (28, 33) and never touches the fields. The three big ones at (6, 103), (-13, 84) and (-1, 95) are 111-180 m across but only 13-15 m tall, so they shade about 13 m and fall well short of z 41-62.
+  * The ground is fine: walker.floorAt is 0 across the whole region, and overhead clearance is open sky at every probe but one. Nothing is buried and nothing overhangs.
+
+SO THE CAUSE IS UNKNOWN, and this ticket now says so rather than pointing at a wall that is not there. Candidates not yet eliminated: the directional light's shadow camera, whose box is +/-118 m and whose target tracks the eye, so the fields may sit at the edge of the shadow map where it degenerates; the aerial-perspective pass; or a caster below the 12 m cut this probe used.
+
+SETTLED BY EXPERIMENT, 2026-09-09. The directional light's castShadow was set false at runtime, the player posed at the fields station facing its own look point, sixty frames stepped, and the view photographed. THE WEDGE IS STILL THERE, unchanged. It is not a cast shadow, so every cast-shadow hypothesis in this ticket is dead -- including the original one about the valley wall, and including the shadow-camera-edge theory the last revision proposed as the next thing to test.
+
+What it looks like once you stop reading it as shade: a large dark SURFACE with straight faceted edges converging to a point, filling the frame from centre to the right margin, while the left half shows the fields correctly lit with their trees, water and planting. The camera faces north (+z) there, and in this frame right is -x, so the mass lies WEST.
+
+One probe method that does NOT work here, recorded so it is not retried: sampling the canvas by drawImage into a 2-D context returns all zeros, because the WebGL context runs with preserveDrawingBuffer false and the read happens outside the render call. Luminance comparisons have to go through the screenshot path, which does work.
+
+TWO MORE ELIMINATED, 2026-09-09, both by direct experiment at the fields station:
+  * NOT THE SKY DOME. The dome is the one object at the right position and scale -- a 380-cube spanning y -190..190, centred on (-40, 41) because it travels with the eye. Hidden at runtime, the wedge is unchanged.
+  * NOT MISSING GROUND. The fields do not hang over the void: there are 141 ground planes and all nine test points across the belt, out to the far corner at (-61, 60), sit on one. Worth recording that walker.floorAt returns 0 both for flat ground AND for no ground, so a floorAt of 0 is not evidence of ground -- it was read that way earlier in this ticket.
+
+FIVE HYPOTHESES ARE NOW DEAD: the raised valley wall, the shadow-camera edge, cast shadow of any kind, the sky dome, and absent terrain. Everything eliminated was GEOMETRY or LIGHTING.
+
+LEADING CANDIDATE, untested: a post-processing pass. The scene renders through an EffectComposer with an AerialPass (depth-based aerial perspective, src/shaders/AerialPerspective.js) and an UnrealBloomPass. A screen-space effect is the only class left that would survive both hiding the geometry and turning the shadows off, and a depth-driven shader reading a bad or clipped depth value is exactly the kind of thing that produces a hard straight-edged wedge rather than a soft one.
+
+IDENTIFIED 2026-09-09, by raycasting from the camera through four points inside the dark region instead of guessing at candidates. All four hit the SAME object at 2.4-2.9 m: a mesh 249.9 x 178.5 x 187.1, centred (-3.2, 118.3), topping 154 m. That is the valley mountain mass, and its flank passes within two and a half metres of the fields station at (-40, 41). The wedge is not shade, not the dome, not a shader and not a tree. It is the mountain, seen from inside arm's reach, unlit because we are on its dark side.
+
+WHY SEVEN PROBES MISSED IT, which is the more useful half of this entry: every sweep I wrote opened with `if (sx > 200 || sz > 200) return`, to skip the sky dome and the world ground planes. The mountain is 250 m across. That guard excluded the answer from every search, and each time the search came back empty I concluded the object was not there rather than that my filter had removed it. The original diagnosis in this ticket -- that the fields sit against the valley wall -- was right in substance and I disproved it with probes that could not see walls.
+
+The lesson for the next person: a filter written to exclude the sky will also exclude a mountain, and RAYCASTING THROUGH THE PIXEL identifies an object in one call where seven hypothesis-by-hypothesis sweeps did not.
+
+**Acceptance.** From the fields station at (-40, 41), facing its own look point, the worked countryside is visible across the frame rather than half covered by the mountain's flank -- either because the station has moved out onto open ground, or because the mountain has. The Great Portal still closes the valley and the walk tests of feat-monuments-true-scale still refuse every approach but the porch.
+
+**Risk.** The fix is a placement, not a formula. Do NOT touch gap()/high() in approach.js: they describe an intended valley and demonstrably do not build this mass, and an earlier revision of this ticket proposed lowering high() -- which would have cost the valley's drama and fixed nothing. Move the station, or move the mountain, and measure the result by raycasting from the new eye position rather than by reasoning about coordinates.
+
+**Resolution.** Diagnosed and mitigated 2026-09-09. The station moved from (-40, 41) facing north to (-24, 64) facing south along the worked belt.
+
+THE CAUSE was the valley mountain: a mesh 249.9 x 178.5 x 187.1 centred (-3.2, 118.3) and topping 154 m, whose flank passed 2.4 m from the eye. Identified by raycasting from the camera through four points inside the dark region, after seven hypothesis-by-hypothesis sweeps missed it because every one of them discarded meshes over 200 m wide to skip the sky dome, and the mountain is 250.
+
+THE PLACEMENT IS A COMPROMISE and the reason is worth recording, because it is a ground-plan conflict rather than a bug. The worked belt (x -61..-19, z 41.5..62) is pinched between two neighbours: the mountain closes it on the west -- raycasts from eight positions across the belt hit rock at 0.2 to 2.1 m in nearly every direction -- and the GLASS GARDEN overlaps it on the east, spanning x -41.2 to -17.6 and z 43.3 to 57.2 against furrows spanning x -60 to -20. An earlier attempt at the belt's eastern edge gave 28.5 m of clear view and all of it was glass, which is worse than rock: a station captioned The Fruitful Fields showing an artificial garden.
+
+(-24, 64) is the only aspect found where south, south-west and south-east all hit worked ground and neither rock nor glass, at about 7 m to the nearest furrow. Verified by raycast from the new eye and by eye on the running page: furrows run away south, the orchard stands in them, the mountain is a backdrop at the upper left instead of half the frame, and the glass garden is visible to the right, which is truthful since they are neighbours.
+
+WHAT IS NOT FIXED: the belt still overlaps the mountain and the glass garden. Giving the fruitful fields a real vista needs one of the three to move, which is a ground-plan decision of the same class as bug-piazza-wrong-side-of-portal and belongs to Ted.
+
+**Files.** `src/scenes/world/approach.js` · `src/scenes/world/constants.js`
+
+**See.** DECISIONS.md 2026-09-09 the Great Portal at scale · DIRECTIONS.md
+
+
+### `feat-colossus-interior` — The colossus is entered through the mouth, and ours cannot be entered
+
+**✅ done** · feat · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Lefaivre pp. 52-53: the colossus is a hybrid sculpture/building, entered THROUGH THE MOUTH, its interior formed like the inside of a human body, every organ a chamber with its own door, its name above it and the sicknesses generated in it; in the heart the chamber where love is born, its cures written in Chaldean and not divulged. Ours is solid. Measured 2026-09-09 with walker.collide() along the axis at z = 4: a walker starting at the station (28.5, 4) and pressing forward stops at x = 31.8, at the mouth columns. There is an unreachable pocket of open space at x = 36 inside the head. The organ doors on the south flank are behind the arm, whose colliders lie flush against the body, so they are read from a distance. None of this is new -- the figure was never enterable -- but the 2026-09-09 rescale made the mouth 1.4 x 2.3 m, a doorway at human scale, which turns a representational door into one a player will now certainly try to walk through.
+
+**Acceptance.** A player can walk in at the mouth and along an interior passage, with the organ chambers opening off it, each labelled as it is now; the heart is a chamber you can stand in and its cures are conspicuously NOT given. The exterior silhouette does not change. The figure remains solid from outside -- no walking through a flank -- and the roll-up mode still sees the whole thing as blocks.
+
+**Risk.** The head is a hemisphere and the body a run of barrel vaults, all built as solid shells with a circle collider on the head and one wall collider over the body. Making it hollow means replacing those two colliders with an interior corridor's worth of wall segments, which is the part most likely to leak -- the same class of bug the Great Portal's base storey had, and it took three attempts there.
+
+**Resolution.** Done 2026-09-09. You now walk in through the mouth, down a passage 3.6 m across, past six labelled organ doors, and into the heart, which is a chamber you can stand in.
+
+NO GEOMETRY CHANGED, and that was not luck: the body was already built from half-cylinder vaults and a hemisphere dome, which are shells. Only the colliders were ever solid. So the ticket's clause about the exterior silhouette was free, and the whole job was deciding where the walls go. The head's single circle collider became two flanks with the mouth between them; the body's single wall became a wall down each side of the passage, plus a skin across the heart chamber's opening in the flank, plus the legs closing the far end.
+
+The passage stops at x = 53.5 because the LEG vaults are 1.47 m to the crown inside and begin at 53.7 -- measured, not guessed. The organ spacing was compressed from dx 3.6-11.0 to 3.4-9.9 so that all six land inside the passage; the book's ORDER is unchanged, only the intervals. The doors used to face the open field from the outside flank, behind the arm, where a walker could never get closer than the arm; they now face the passage.
+
+The heart alone is a doorway rather than a door, and inside it, on the far wall, a plaque that gives nothing: NON DIVVLGO -- the cures for the sicknesses of love, written here in Chaldean, and Poliphilo will not say them. The one plaque in the world that is a refusal rather than a gloss.
+
+VERIFIED, and against the risk clause, which named this as the same class of bug as the Great Portal's base storey. Fifteen walk tests driven headless against the real colliders: the run from the station at (28.5, 4) goes clean through to x = 53, 24.5 m inside the figure; all seven approaches from outside the flanks are refused, and so are the feet and the north-east diagonal. Three of the first tests looked like passes but were not -- they stopped at z = -10.1, which is the FEMALE colossus, so they never reached the male's south wall at all. Re-run from the gap between the two figures at z = -3.6, seven pushes north, every one refused. And a walker standing inside the heart chamber pushing south stops at z = -0.4: the skin holds, so the doorway in the flank is not a way out.
+
+hpDiag, card rung both sides so the figures are not confounded: 3819 -> 3820 meshes, 2 201 042 -> 2 201 032 triangles. One plaque added, the heart's door removed. The interior is free because the shell was always hollow.
+
+**Files.** `src/scenes/world/portal.js`
+
+**See.** ARCHITECTURE.md#the-colossus · DECISIONS.md 2026-09-09 call 3
+
+
+### `feat-monuments-true-scale` — Rescale the undersized monuments where they stand
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** DIMENSIONS.md section 5: pyramid-portal 17.5 m against a stated 1140; recumbent colossus ~8 m against 89; Polia's garden ~14 m across against 141. The 1:8 ground plan was declined (DECISIONS.md 2026-09-09 call 3); the monuments were not.
+
+**Acceptance.** Each of the three is materially larger and still reachable, still enterable where it was enterable, and the valley remains closed - a player cannot walk round the portal.
+
+**Risk.** The valley cliffs converge to 44 m at the piers against a portal spanning 38. A wider pyramid needs the cliffs moved with it or Dallington p.27's absolute stops being true again.
+
+**Resolution.** Done 2026-09-09, all three, though the third by a different route than the ticket imagined. The Great Portal went 17.5 -> 40 m wide and the valley moved with it. The colossus went 17 -> 35.5 m and its mouth became a doorway at human scale. Polia's garden was not rescaled at all, because it could not be: measured, there is no land east, it already stands at the most inland point of the island, and it has no free ring at any radius. What it got instead is the thing that made 141 m the number in the first place -- Dallington p. 182's IVIED ARCADE, which this world had never built. It stands at R = 40 (80 m across) with each arch at the book's true size, 3 paces across and 5 high; there are 56 of them rather than 100 because the ring is smaller, and an arch of the right size in the wrong number is a better lie than 100 arches at half scale, since the arch is what the eye measures itself against.
+
+It fits because the world now folds. Ted, 2026-09-09: 'remember that this is a dream garden.' The palace court is gathered into one group, merged inside it and fenced off, and hidden while the dreamer is inside the garden -- see DECISIONS.md, 'The dream does not have to add up', and HPWorldScene._foldPoliaCourt. Measured on the running page: standing at (19, 20) the court is hidden, the arcade stands, 2874 meshes draw; walking out to (19, -30) the court returns, the arcade goes, 3747 meshes draw. The open garden is CHEAPER than the ordinary world, not dearer.
+
+The first attempt at the fold broke the decision's own rule and was caught by measuring rather than by looking: a ring of 42 m swallowed ELEVEN stations -- the portal, the court, the three doors, the elephant, the palace, the Quinta Essentia, the fountain, the colossus, Priapus, Book II and the triumphs. Every station but Polia's now keeps a protected circle and the fold takes 845 objects instead of 4654. What folds is ground between set-pieces, which is exactly what the decision licenses and nothing more.
+
+**Files.** `src/scenes/HPWorldScene.js`
+
+**See.** DIMENSIONS.md#2 · DECISIONS.md 2026-09-09 call 3
 
 
 ### `feat-way-out-of-the-wood` — Nothing tells the player how to get out of the wood

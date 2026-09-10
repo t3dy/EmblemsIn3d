@@ -1,4 +1,4 @@
-<!-- tokens: ~4,258 · read for: how big anything is, in metres, with sources -->
+<!-- tokens: ~4,444 · read for: how big anything is, in metres, with sources -->
 # DIMENSIONS — every measured thing in the book, in metres
 
 *A research brief. **Nothing here is built yet.** This is the measurement half of the
@@ -85,11 +85,13 @@ for a figure 865 m up to subtend the angle a 1.7 m person subtends at 25 m, she 
 
 ### The rest of chapters III–VI
 
+> **Corrected 2026-09-09.** The horse's ten paces used to be read here as measured *from the porch*, which put him at the far end of the court from where the book puts him. Dallington's *“in the passage towardes the Porche, some tenne paces”* is ambiguous in English; the 1499 is not: *“Sopra di questa piacia, dal’initio intro verso la porta x passi, vidi uno prodigioso caballo”* (l. 1255) — upon this piazza, **from its beginning** inward toward the gate, ten paces. The court runs z 70.4 → 26, so he stands at z 55.6. This is the sort of thing only the Italian settles, and it is worth going to it whenever a Dallington measurement has to become a coordinate. See `DECISIONS.md` call 51.
+
 | thing | the book | **metres** |
 |---|---|---|
 | the four-square court before the porch | 30 paces by its diameter (Dall. p. 37) | **44.4** |
 | the colonnade's intercolumniation | 15 paces (Dall. p. 38) | **22.2** |
-| the winged horse, into the court from the porch | some 10 paces (Dall. p. 39) | 14.8 |
+| the winged horse, into the court **from its mouth, toward the gate** | some 10 paces (Dall. p. 39; 1499 l. 1255) | 14.8 |
 | the winged horse's base | 5 ft broad, 9 ft long (Dall. p. 39) | 1.48 × 2.66 |
 | **the recumbent colossus, length** | **three score paces** (Dall. p. 44) | **88.8** |
 | the elephant's base | 12 × 5 × 3 paces (Dall. p. 48) | **17.8 × 7.4 × 4.4** |

@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { Walker } from '../../systems/Walker.js?v=6';
-import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=6';
+import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=7';
 
 export const Approach = {
   // ── Ground, paths ─────────────────────────────────────────────────────────
@@ -435,7 +435,21 @@ export const Approach = {
   // 2.96 m — and the box a single pace, 1.48 m.
   _buildArtificialGardens() {
     const S = this.style, woodcut = S.key === 'woodcut';
-    const OX = -22, OZ = 52;            // north-west of the court, on the sward
+    // MOVED 2026-09-09 from (-22, 52), which is inside the piazza of chapter III
+    // -- the glass cypresses stood where the colossus lies and the silk trees
+    // where the winged horse stands. They are pushed 30 m down the valley, clear
+    // of the court's mouth at z 70.4 and of the colossus's feet at z 72.
+    //
+    // This is a HOLDING position, not the right one. Chapters XII-XIII happen
+    // inside Eleuterylida's realm, which is past the Three Doors, and these
+    // gardens have been on the WRONG SIDE OF THE PORTAL since they were built
+    // on 2026-09-09 -- the same error as the piazza's, in the other direction.
+    // The comment here used to say "north-west of the court", which is where
+    // they belong and is not where these coordinates are. The palace side has
+    // no 24 x 13 m of clear ground to take them (measured: the best free rect
+    // is at x -46, past the Temple of Venus), so it waits on
+    // bug-court-has-no-room-left. See research/tickets.json.
+    const OX = -28, OZ = 82;
     const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 149.7) * 43758.5453; return v - Math.floor(v); };
 
     // ── I. The garden of glass ──

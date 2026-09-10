@@ -1,4 +1,4 @@
-<!-- tokens: ~3,900 · read for: how the figures are rendered, the five rungs, and what each costs -->
+<!-- tokens: ~3,304 -->
 # RENDERING MODELS — how the nymphs got bodies
 
 *Written 2026-09-09 because Ted asked for it: "give me an output

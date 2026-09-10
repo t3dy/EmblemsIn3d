@@ -39,16 +39,16 @@ import {
   TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS, isDescendantOf,
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
-} from './world/constants.js?v=6';
-import { Materials } from './world/materials.js?v=5';
+} from './world/constants.js?v=7';
+import { Materials } from './world/materials.js?v=6';
 import { Nature } from './world/nature.js?v=12';
-import { Approach } from './world/approach.js?v=8';
-import { Portal } from './world/portal.js?v=19';
+import { Approach } from './world/approach.js?v=9';
+import { Portal } from './world/portal.js?v=21';
 import { Palace } from './world/palace.js?v=10';
 import { Triumphs } from './world/triumphs.js?v=9';
 import { Tombs } from './world/tombs.js?v=6';
 import { Temple } from './world/temple.js?v=3';
-import { Cythera } from './world/cythera.js?v=6';
+import { Cythera } from './world/cythera.js?v=7';
 import { Rollup } from './world/rollup.js?v=7';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
@@ -235,6 +235,11 @@ export class HPWorldScene {
     this._buildSpaciousPlain();   // where the dream opens (DECISIONS 2026-09-09 call 2)
     this._buildArtificialGardens();   // glass, silk and the faked scent (call 4)
     this._buildWitness();             // Poliphilo, acting out his reactions
+    // The four-square court of thirtie paces that stands BEFORE the porch
+    // (Dall. p. 37), with its two areostyle colonnades and the wildwood at
+    // their foot. Built before the portal so the pavement is laid before
+    // anything is set on it. DECISIONS.md 51.
+    this._buildPiazza();
     this._buildGreatPortal();
     // ch. IV: the altar-like pedestal on the porch's right hand, and the forge
     // of Vulcan cut on its alabaster face. See world/portal.js.
@@ -251,7 +256,11 @@ export class HPWorldScene {
     this._buildNymphFountain(19, 27.5, 0);
     this._buildDoorsWall();
     this._buildColossalHorse();
-    this._buildElephant();
+    // The elephant stands in the PIAZZA now, not at the world origin: the
+    // book's court before the porch, "not farre distant from the horse straight
+    // forward" (Dall. p. 46). _placeAt carries his plaques and his collider
+    // with him -- setting his group's position alone would not. DECISIONS.md 51.
+    this._placeAt(7, 42, 0, () => this._buildElephant());
     this._buildPalace();
     this._buildChessBallet();
     this._buildQuinta();
@@ -263,7 +272,10 @@ export class HPWorldScene {
     this._polyandrionMedallions();
     this._buildRuinWeeds();
     this._buildWaterLabyrinth();
-    this._buildColossus();
+    // Turned a quarter and laid along the valley's west side, feet toward the
+    // arriving dreamer, head toward the porch. He used to lie east-west at
+    // (36, 4), past the Great Portal. DECISIONS.md 51.
+    this._placeColossus(-19, 44);
     this._buildPriapusRite();
     this._buildBookTwo();
     this._buildCythera();

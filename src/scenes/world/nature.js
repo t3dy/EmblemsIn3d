@@ -14,7 +14,7 @@ import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=5';
-import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=6';
+import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=7';
 
 export const Nature = {
   // ── The pleasures of the garden (PLEASURES.md) ───────────────────────────

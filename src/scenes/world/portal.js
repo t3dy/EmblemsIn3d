@@ -13,7 +13,7 @@
 import * as THREE from 'three';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
-import { DOORS, SIGNS } from './constants.js?v=6';
+import { DOORS, SIGNS, PIAZZA } from './constants.js?v=7';
 
 export const Portal = {
   _buildGreatPortal() {
@@ -456,6 +456,202 @@ export const Portal = {
   // pure white, a Latin motto on the breast-strap and a Greek/Arabic frontlet
   // over the face. Seven steps climb the porphyry base, and a little door under
   // the saddle opens into the body. (Dallington 1592; docs/HP_SOURCEBOOK.md §2.)
+  // ══ THE PIAZZA ═════════════════════════════════════════════════════════
+  //
+  // Dallington pp. 37-39, the whole of it, and it is the largest single piece
+  // of architecture in chapter III:
+  //
+  //   "Before this gorgeous and glorious porche ... in the open ayre there was
+  //   a fowre square court of thirtie paces by his Diameter, paued with pure
+  //   fine marble, poynted fowre square, wrought checkerwise of diuers
+  //   fashions, and sundrie best fitting coulours: but in many places, by
+  //   meanes of the ruine of the auncient walke, and olde pillers, broken in
+  //   peeces and ouergrowne."
+  //
+  //   "And in the vtmost partes of the aforesaide court, to the right hand, and
+  //   the left, towards the mountaines, there was two straight rowes of pillars
+  //   ... beginning on both sides equall to the Lymbus or extreame part of the
+  //   fronte of the porche, the space betwixt pyllars and pillars XV. paces."
+  //
+  //   "Fast ioyning to which order or set rowes of pillars, there grew ould
+  //   plaine trees, wylde Oliues, Pine apple, and pricking brambles."
+  //
+  // Thirty paces is 44.4 m and fifteen is 22.2 (DIMENSIONS.md), so the court
+  // fills the valley neck exactly and each row carries THREE pillars: at the
+  // porch, at the middle, and at the mouth. Three is not a compression. It is
+  // what an areostyle intercolumniation of fifteen paces gives you in a court
+  // of thirty, and the book is emphatic about both numbers.
+  //
+  // WHY THE WEST ROW IS DOWN. The book says the pavement is broken "by meanes
+  // of the ruine of the auncient walke, and olde pillers", and that to reach
+  // the colossus Poliphilo forces himself "vp vppon a heape of ruinated, broken
+  // and downe-fallen marbles" (p. 44). The colossus lies along the west side.
+  // So the heap he climbs is this row, and the row is drawn fallen -- which
+  // also answers "many columnes widowed and depriued of their Capitels, buryed
+  // in ruine" (p. 38) with something a player can actually walk over.
+  _buildPiazza() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const z0 = PIAZZA.z0, z1 = PIAZZA.z1, halfX = PIAZZA.halfX, colX = PIAZZA.colX;
+    const cz = (z0 + z1) / 2;
+
+    // ── The pavement ──────────────────────────────────────────────────────
+    // One plane and one drawn texture. "Poynted fowre square" is paving laid on
+    // the diagonal -- lozenges, not squares to the walk -- and "checkerwise of
+    // diuers fashions, and sundrie best fitting coulours" is more than two
+    // colours, so it is drawn with four marbles rather than a chessboard. The
+    // breakage and the weeds go into the same texture: a ruined pavement made
+    // of geometry would cost hundreds of meshes for something the eye reads
+    // entirely as surface.
+    const paveMat = S.mat({ color: 0xffffff, roughness: 0.72 });
+    const tex = this._piazzaTexture(woodcut);
+    paveMat.map = tex;
+    if (!woodcut) { paveMat.bumpMap = tex; paveMat.bumpScale = 0.03; }
+    this._m(new THREE.PlaneGeometry(halfX * 2, z1 - z0), paveMat, 0, 0.035, cz,
+      { rx: -Math.PI / 2, cast: false });
+
+    // ── The two rows ──────────────────────────────────────────────────────
+    // Column height is ours: the book gives the spacing and the capitals but
+    // not the height. Nine metres carries an areostyle of 22 m without reading
+    // as a fence, and stands well under the porch at 40.
+    const H = 9, R = 0.62;
+    const zs = [z0, cz, z1];
+
+    // EAST -- still standing. "some and the greatest parte or number were
+    // whole", so the two ends keep their height and the middle one is widowed.
+    zs.forEach((z, i) => {
+      this._column(colX, z, i === 1 ? H * 0.82 : H,
+        { order: 'ionic', r: R, mat: this._stoneMat });
+    });
+    // The epistyle survives over the northern span only -- "wherevpon was
+    // placed the Epistile or streight beame, the greatest part decayed".
+    this._m(new THREE.BoxGeometry(1.5, 0.85, cz - z0), this._stoneMat,
+      colX, H + 0.42, (z0 + cz) / 2, { outline: true });
+    // and a carved band under it, for the "waued shell worke" of p. 38
+    this._frieze(colX, H - 0.34, z0 + 1.2, 1.7, 0.5, 'meander', { ry: Math.PI / 2, reps: 2 });
+
+    // WEST -- fallen. Three stumps, and their drums lying where they rolled,
+    // which is the heap the book has Poliphilo climb to reach the colossus.
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 37.3) * 43758.5453; return v - Math.floor(v); };
+    zs.forEach((z, i) => {
+      // the stump: base and one drum, "buryed in ruine both Astragals and shafts"
+      this._m(new THREE.BoxGeometry(R * 3.1, R * 0.5, R * 3.1), this._stoneMat, -colX, R * 0.25, z, { cast: false });
+      this._m(new THREE.CylinderGeometry(R * 0.95, R, 1.1 + rnd(i, 1) * 0.8, 12), this._stoneMat,
+        -colX, 0.8, z, { outline: true });
+      this._circleCol(-colX, z, R * 1.6);
+      // four drums off each column, rolled EASTWARD into the court, because
+      // that is the side the player comes at them from
+      for (let d = 0; d < 4; d++) {
+        const dx = -colX + 1.8 + rnd(i * 4 + d, 2) * 5.2;
+        const dz = z + (rnd(i * 4 + d, 3) - 0.5) * 5.0;
+        const drum = this._m(new THREE.CylinderGeometry(R * 0.94, R, 1.15, 12), this._stoneMat,
+          dx, R * 0.9, dz, { outline: true });
+        drum.rotation.z = Math.PI / 2;
+        drum.rotation.y = rnd(i * 4 + d, 4) * Math.PI;
+        this._circleCol(dx, dz, R * 1.1);
+      }
+    });
+    // two capitals on the ground among them -- the "curled locke of hayre" the
+    // book compares to the head of a bass viol, lying where it fell
+    for (const cap of [[-colX + 3.1, cz - 7.4], [-colX + 5.6, z1 - 6.2]]) {
+      const m = this._m(new THREE.CylinderGeometry(R * 1.9, R * 1.1, 0.9, 14), this._stoneMat,
+        cap[0], 0.5, cap[1], { outline: true });
+      m.rotation.x = Math.PI / 2 + 0.2;
+      this._circleCol(cap[0], cap[1], R * 1.7);
+    }
+
+    // ── The wildwood at their foot ────────────────────────────────────────
+    // "ould plaine trees, wylde Oliues, Pine apple, and pricking brambles" --
+    // the 1499 has *antichi platani et silvestrato laureto et coniferi cupressi,
+    // sentosi rubi* (l. 1248). Eight trees only: they are the most expensive
+    // objects in this build, and the row is a fringe and not a wood.
+    const WILD = [
+      [colX + 2.6, z0 + 4.5, 'plane'], [colX + 3.2, cz + 3.0, 'olive'],
+      [colX + 2.4, z1 - 3.6, 'pine'], [colX + 3.6, cz - 8.5, 'olive'],
+      [-colX - 2.4, z0 + 6.0, 'plane'], [-colX - 3.0, cz + 6.5, 'pine'],
+      [-colX - 2.6, z1 - 4.0, 'olive'], [-colX - 3.4, cz - 9.0, 'plane'],
+    ];
+    for (const t of WILD) this._tree(t[0], t[1], t[2] === 'plane' ? 1.15 : 0.95, t[2]);
+
+    // The brambles: a low tangle of arcs, at the foot of both rows. *Sentosi
+    // rubi* is the last thing in the 1499 list and the only one that is not a
+    // tree, and it is what makes a ruined colonnade unwalkable rather than
+    // merely ruined.
+    const bramM = woodcut ? S.mat({ tone: 0.24 }) : S.mat({ color: 0x3a4a26, roughness: 0.95 });
+    for (let i = 0; i < 10; i++) {
+      const side = i % 2 ? 1 : -1;
+      const bx = side * (colX + 1.2 + rnd(i, 5) * 2.2);
+      const bz = z0 + 2 + rnd(i, 6) * (z1 - z0 - 4);
+      for (let a = 0; a < 3; a++) {
+        const r = 0.55 + rnd(i * 3 + a, 7) * 0.5;
+        const arc = this._m(new THREE.TorusGeometry(r, 0.035, 4, 9, Math.PI * 1.3), bramM,
+          bx + (rnd(i * 3 + a, 8) - 0.5) * 0.9, r * 0.55, bz + (rnd(i * 3 + a, 9) - 0.5) * 0.9,
+          { cast: false });
+        arc.rotation.x = Math.PI / 2 + (rnd(i * 3 + a, 10) - 0.5) * 0.5;
+        arc.rotation.y = rnd(i * 3 + a, 11) * Math.PI;
+      }
+      this._circleCol(bx, bz, 0.9);
+    }
+
+    // ── What the court says about itself ──────────────────────────────────
+    this._plaque({ main: 'ATRIVM',
+      sub: 'A FOVRE SQVARE COVRT OF THIRTIE PACES BY HIS DIAMETER · PAVED CHECKERWISE · IN MANY PLACES BROKEN AND OVERGROWNE · DALL. P. 37' },
+      4.6, 0.5, 3.2, 0.62, z1 - 1.4, Math.PI, true);
+  },
+
+  // The pavement of the piazza, drawn rather than modelled: a diagonal checker
+  // ("poynted fowre square") in four marbles ("sundrie best fitting coulours"),
+  // broken and overgrown in patches. It tiles seamlessly because the lozenge
+  // lattice is a function of x+y and x-y, and both wrap at the canvas edge.
+  _piazzaTexture(woodcut) {
+    const N = 256, T = 32;
+    const c = document.createElement('canvas');
+    c.width = c.height = N;
+    const g = c.getContext('2d');
+    const rnd = (i, k) => { const v = Math.sin(i * 57.7 + k * 131.9) * 43758.5453; return v - Math.floor(v); };
+    // white, pavonazzetto, giallo antico, verde antico
+    const MARBLE = woodcut
+      ? ['#e8e4d8', '#cfc8ba', '#e0dacc', '#bdb6a6']
+      : ['#e9e4d4', '#b4a0aa', '#d8c184', '#8fa294'];
+    const RGB = MARBLE.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]);
+    const img = g.createImageData(N, N);
+    for (let y = 0; y < N; y++) {
+      for (let x = 0; x < N; x++) {
+        const u = Math.floor((x + y) / T), v = Math.floor((x - y + N * 4) / T);
+        // four colours in rotation rather than two, so it reads as "diuers
+        // fashions" and not as a chessboard
+        const k = ((u & 1) * 2 + (v & 1) + (((u + v) >> 1) & 1)) % 4;
+        const col = RGB[k], px = (y * N + x) * 4;
+        img.data[px] = col[0]; img.data[px + 1] = col[1]; img.data[px + 2] = col[2]; img.data[px + 3] = 255;
+      }
+    }
+    g.putImageData(img, 0, 0);
+    // the joints
+    g.globalAlpha = 0.5; g.strokeStyle = '#6a6355'; g.lineWidth = 1;
+    for (let d = -N; d < N * 2; d += T) {
+      g.beginPath(); g.moveTo(d, 0); g.lineTo(d + N, N); g.stroke();
+      g.beginPath(); g.moveTo(d, N); g.lineTo(d + N, 0); g.stroke();
+    }
+    // "in many places ... broken in peeces and ouergrowne"
+    g.globalAlpha = 1;
+    for (let i = 0; i < 26; i++) {
+      const px = rnd(i, 1) * N, py = rnd(i, 2) * N, r = 6 + rnd(i, 3) * 20;
+      const weed = rnd(i, 4) > 0.45;
+      for (const ox of [-N, 0, N]) {
+        for (const oy of [-N, 0, N]) {
+          const rg = g.createRadialGradient(px + ox, py + oy, 0, px + ox, py + oy, r);
+          rg.addColorStop(0, weed ? 'rgba(58,74,38,0.72)' : 'rgba(74,68,58,0.62)');
+          rg.addColorStop(1, 'rgba(74,68,58,0)');
+          g.fillStyle = rg; g.beginPath(); g.arc(px + ox, py + oy, r, 0, 7); g.fill();
+        }
+      }
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(8, 8);
+    t.colorSpace = THREE.SRGBColorSpace;
+    return t;
+  },
+
   // ══ The Colossal Horse ═════════════════════════════════════════════════
   //
   // Five of the book's woodcuts (catalog #6-#10, folios 22-25) and none of it
@@ -494,7 +690,15 @@ export const Portal = {
   _buildColossalHorse() {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
-    const HX = 10.5, HZ = 16.5;
+    // MOVED 2026-09-09 from (10.5, 16.5), which was PAST the Great Portal, into
+    // the piazza where chapter III puts him. The 1499 gives the distance and no
+    // guesswork is needed: *"Sopra di questa piacia, dal'initio intro verso la
+    // porta x passi, vidi uno prodigioso caballo"* (l. 1255) -- from the start
+    // of the piazza, inward toward the gate, ten paces. Ten paces is 14.8 m and
+    // the piazza's start is z 70.4, so he stands at z 55.6. The lateral offset
+    // is ours: the book gives none, and +7 puts him in the middle of the walk
+    // that is left once the colossus takes the west half.
+    const HX = 7, HZ = 55.6;
 
     const bronze = woodcut
       ? S.mat({ color: 0x14120e, tone: 0.28, roughness: 0.5 })
@@ -635,6 +839,14 @@ export const Portal = {
       eleMat.roughness = 0.42;
       eleMat.metalness = 0.3;
     }
+    // MOVED 2026-09-09 from the world origin, which was PAST the Great Portal,
+    // to (7, 42) in the piazza. Dallington p. 46 puts him "not farre distant
+    // from the horse straight forward" -- the 1499's *ad libella* (l. 1385), on
+    // the same line -- so he stands on the horse's own x, 13.6 m nearer the
+    // gate. The move is done by the CALLER through _placeAt, not by setting
+    // this group's position: the two Greek plaques, the obelisk's hieroglyph
+    // bands and the base's collider are all in world coordinates here and would
+    // have stayed behind at the origin. See DECISIONS.md 51.
     const g = new THREE.Group();
     g.rotation.y = Math.PI; // head toward the arriving dreamer (+z)
     this.scene.add(g);
@@ -891,6 +1103,27 @@ export const Portal = {
   // book's colossus is entered through the mouth; until now ours could only be
   // looked at, which made the object a sculpture and the whole point is that it is
   // not one.
+  // Lay the colossus ALONG the valley rather than across it.
+  //
+  // He is 32 m from crown to sole and 19 m across with the female beside him,
+  // and the valley's neck is 44 m wide -- the width of the piazza itself. Lying
+  // east-west he could only fit by crossing the whole floor; lying north-south
+  // he lies down one side of it, which is also what the book describes, since
+  // Poliphilo has to leave the paved court and climb "vppon a heape of
+  // ruinated, broken and downe-fallen marbles" to reach him (Dall. p. 44).
+  //
+  // The quarter turn also gets the APPROACH right, which the old east-west
+  // placement had backwards. The builder lays him out head-first along +x, so
+  // a three-quarter turn sends his feet to the south -- and the south is where
+  // the dreamer comes from. The book: "I came to a vast and wonderfull large
+  // Colose, THE FEETE THEREOF BARE, and their soles hollowe ... From thence
+  // with horror I came to looke vpon the head." Feet first, then the head.
+  //
+  // His mouth, which is the door, therefore opens northward, toward the porch.
+  _placeColossus(CX, CZ) {
+    return this._placeAt(CX, CZ, 3, () => this._buildColossus(0, 0));
+  },
+
   _buildColossus(KX = 36, KZ = 4) {
     const L = 1.65;   // along the axis: 17 m of figure becomes 28
     const G = 1.55;   // girth and height, and with them the doorways
@@ -899,8 +1132,9 @@ export const Portal = {
     const bronze = lit ? S.mat({ color: 0x4f7a5a, metalness: 0.7, roughness: 0.55 }) : S.mat({ tone: 0.16 });
     const dark   = lit ? S.mat({ color: 0x2c3a30, metalness: 0.5, roughness: 0.7 }) : S.mat({ tone: 0.3 });
     const sand   = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
-    // The figure lies along +x with its head at KX and its feet at KX + 17L = 64,
-    // one clear pace short of the mainland's eastern edge.
+    // The figure lies along +x with its head at KX and its feet at KX + 17L,
+    // 28 m away. Since 2026-09-09 it is built at the origin and placed by
+    // _placeColossus, which turns it a quarter so it lies ALONG the valley.
     this._m(new THREE.CircleGeometry(16, 30), sand, KX + 14, 0.03, KZ, { rx: -Math.PI / 2, cast: false });
     const half = (r, x, z, sx, sy, sz) => {
       const m = this._m(new THREE.SphereGeometry(r, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2), bronze, x, 0, z, { outline: true });
@@ -966,7 +1200,13 @@ export const Portal = {
     // inside -- you would be crawling -- and they begin at x = 53.7. Measured,
     // not guessed: leg vault h = 0.95 * G, centred x = KX + 14 * L, length
     // 6.5 * L.
-    const inX1 = 53.5;
+    // RELATIVE to KX since 2026-09-09, and it has to be: this was the bare
+    // absolute 53.5, which was right only while the head stood at KX = 36. When
+    // _placeColossus started calling this builder with KX = 0 the passage wall
+    // ran from the chest to z = 97.5 -- a fifty-metre invisible wall sticking
+    // twenty-five metres out of the soles into the open valley. Measured off
+    // walker.walls, not guessed.
+    const inX1 = KX + 17.5;
     const IN_W = 1.8;               // half-width of the passage: 3.6 m across
     const HGAP = 0.85;              // the throat is narrower than the chest
     const heartX = KX + 3.4 * L, CH = 1.6;

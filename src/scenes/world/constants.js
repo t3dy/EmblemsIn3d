@@ -45,8 +45,13 @@ export const HP_STATIONS = [
     pos: [-10.4, 23.8], look: [-23.5, 18.5], radius: 9 },
   { key: 'three_doors',      name: 'The Three Doors',        folio: 119,
     pos: [0, 21],     look: [0, 12],   radius: 6, pitch: 0.05 },
+  // MOVED 2026-09-09 (DECISIONS.md call 51) out of the garden and into the
+  // piazza, where chapter III puts it: *"non troppo distante dal magno caballo,
+  // ad libella"* (1499 l. 1385), which Dallington renders "not farre distant
+  // from the horse straight forward" (p. 46). It stood at [0, 6.5], PAST the
+  // Great Portal, so the tour's own order crossed the gate three times.
   { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,
-    pos: [0, 6.5],    look: [0, 0],    radius: 6 },
+    pos: [7, 49],     look: [7, 42],   radius: 6 },
   { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,
     pos: [-11.5, 0],  look: [-20, 0],  radius: 9 },
   { key: 'quinta_essentia',  name: 'The Obelisk of the Trinity', folio: 119,
@@ -62,12 +67,14 @@ export const HP_STATIONS = [
     pos: [-30, -12], look: [-30, -21], radius: 9 },
   { key: 'labyrinth',        name: 'The Water Labyrinth',    folio: 177,
     pos: [-29.2, 34], look: [-44, 34], radius: 12 },   // outside the basin, beside the viewing mount
+  // MOVED AND TURNED 2026-09-09 (DECISIONS.md call 51). He used to lie EAST-WEST
+  // at (36, 4), past the portal. He now lies ALONG the valley on the piazza's
+  // west side, feet at z 72 and head at z 44 -- which is the book's own approach,
+  // since Poliphilo meets "the feete thereof bare, and their soles hollowe" and
+  // only "from thence" comes to the head (Dall. p. 44). The mouth opens north,
+  // so the station stands between the porch and the mouth and looks back into it.
   { key: 'colossus',         name: 'The Colossus',           folio: 34,
-    // moved back 2026-09-09 with the rescale: the head dome used to end at x 33.8
-    // and now ends at 32.6, and the old look-point [38, 4] is inside the skull.
-    // 26 was the first try and it stands inside a tree at (25.5, 3.4) -- measured,
-    // not guessed: walker.collide() displaces a probe placed there.
-    pos: [28.5, 4],  look: [34, 4],    radius: 10 },
+    pos: [-19, 35],  look: [-19, 41],  radius: 10 },
   { key: 'priapus',          name: 'The Rite of Priapus',    folio: 185,
     pos: [44, -12],  look: [44, -6],   radius: 7 },
   { key: 'book_two',         name: "Book II — Treviso",      folio: 387,
@@ -94,10 +101,14 @@ export const HP_STATIONS = [
   // at her palace before Logistica and Thelemia lead the dreamer away.
   { key: 'chess',            name: 'The Human Chess Match',  folio: 111,
     pos: [-32.5, 6], look: [-40, 6], radius: 8 },
-  // The first monument of the piazza, east of the axis between the Three Doors
-  // wall and the cross-path to the courts.
+  // The first monument of the piazza. MOVED 2026-09-09 (DECISIONS.md call 51)
+  // from [10.5, 22.5], which was past the Great Portal. The 1499 sites him
+  // exactly: *"Sopra di questa piacia, dal'initio intro verso la porta x passi,
+  // vidi uno prodigioso caballo"* (l. 1255) -- upon this piazza, from its start
+  // inward toward the gate, ten paces. The piazza runs z 70.4 -> 26, so ten
+  // paces (14.8 m) in from its start is z 55.6.
   { key: 'horse',            name: 'The Winged Horse',       folio: 22,
-    pos: [10.5, 22.5], look: [10.5, 16.5], radius: 6 },
+    pos: [7, 62],      look: [7, 55.6],    radius: 6 },
   // Second nature (GARDENS.md 2), built 2026-09-07: the worked countryside
   // Poliphilo comes into after the vaults -- "a fayre and plentifull countrie,
   // fruitefull fieldes, and fertile groundes" (Dallington p. 90). It lies west
@@ -147,9 +158,34 @@ export const HP_STATIONS = [
   // The gardens of glass and of silk (chs. XII–XIII), north-west of the court.
   // Built 2026-09-09 AGAINST Hunt's argument that they should not be — see
   // _buildArtificialGardens, and the note at this stop, which is not optional.
+  // Moved with the gardens themselves on 2026-09-09: they stood inside the
+  // piazza of chapter III. See _buildArtificialGardens for why this is a
+  // holding position and not the right one.
   { key: 'artificial',       name: 'The Gardens of Glass and Silk', folio: 152,
-    pos: [-15.5, 52],  look: [-24, 52],  radius: 9 },
+    pos: [-21.5, 82],  look: [-30, 82],  radius: 9 },
 ];
+
+// ── THE PIAZZA (chapter III; built 2026-09-09) ───────────────────────────
+// Dallington p. 37: before the porch, "in the open ayre there was a fowre square
+// court of thirtie paces by his Diameter, paued with pure fine marble, poynted
+// fowre square, wrought checkerwise". Thirty paces is 44.4 m (DIMENSIONS.md),
+// which is almost exactly the width of the valley's neck -- so the court fills
+// the floor between the cliffs and stops dead against the porch at z = 26.
+//
+// Its outermost parts carry the two areostyle colonnades of Dall. p. 38,
+// "beginning on both sides equall to the Lymbus or extreame part of the fronte
+// of the porche" and running away toward the mountains, 15 paces (22.2 m)
+// between pillar and pillar. The EAST row still stands; the WEST row is the
+// "heape of ruinated, broken and downe-fallen marbles" Poliphilo climbs to
+// reach the colossus (p. 44), which is why its drums lie where they lie.
+export const PIAZZA = {
+  z0: 26,          // flush with the front of the porch
+  side: 44.4,      // thirty paces
+  get z1() { return this.z0 + this.side; },        // 70.4, the court's mouth
+  get halfX() { return this.side / 2; },           // 22.2
+  intercol: 22.2,  // fifteen paces
+  colX: 21,        // the rows, set just inside the outermost edge
+};
 
 export const EYE = 1.7;
 

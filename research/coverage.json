@@ -638,7 +638,7 @@
             "tour",
             "roll"
           ],
-          "note": "88.8 m from head to foot, climbed by the beard to the breast and entered through the mouth and down the throat. Built, but at roughly a tenth of that, so the climb-in that the text describes does not read."
+          "note": "88.8 m from head to foot, climbed by the beard to the breast and entered through the mouth and down the throat. Built, but at roughly a tenth of that, so the climb-in that the text describes does not read. SITING CORRECTED 2026-09-09: he lay east-west at (36, 4), PAST the Great Portal. He now lies along the valley on the piazza's west side, feet at z 72 and head at z 44, turned a quarter by _placeColossus so the dreamer meets the bare soles first and comes to the head from thence, as Dall. p. 44 has it. The interior survived the turn -- walk-tested. Scale is still about a tenth of the book's, so this stays PARTIAL."
         },
         {
           "id": "medusa-door-right",
@@ -660,12 +660,13 @@
           "plate": null,
           "name": "The four-square court before the porch, thirty paces across",
           "source": "Dallington 1592 pp. 37-38",
-          "status": "unknown",
-          "note": "A court of thirty paces by its diameter, paved in fine marble and worked chequerwise in several colours -- and broken and overgrown in many places by the ruin of the old walk and its pillars. The world has chequered pavements at the palace and in the bath, but nothing identified as the porch's own forecourt. Needs a look on the running page before this is called unbuilt.",
+          "status": "built",
+          "note": "Built 2026-09-09. The court is 44.4 m square (thirty paces), flush with the porch at z 26 and running out to z 70.4, which is almost exactly the width of the valley neck -- so it fills the floor between the cliffs, and that is why it fits without moving the mountains. Paved with one plane and one drawn texture: a DIAGONAL lozenge lattice (\"poynted fowre square\") in four marbles -- white, pavonazzetto, giallo antico, verde antico -- with the breakage and the weeds drawn into the same 256 px canvas rather than modelled. Verified on the running page in both registers.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildPiazza (world/portal.js)"
         },
         {
           "id": "porch-colonnades",
@@ -673,12 +674,13 @@
           "plate": null,
           "name": "Two areostyle colonnades, right and left toward the mountains",
           "source": "Dallington 1592 p. 38",
-          "status": "unbuilt",
-          "note": "Two straight rows of pillars running from the front of the porch toward the mountains on either hand, set areostyle with fifteen paces between pillar and pillar. Capitals of waved shell-work and drapery, the corners turned in like a curled lock of hair, and the capital three times the width of the column's foot. Most stand; many are widowed of their capitals, with astragals, shafts and bases buried in the ruin. Poliphilo guesses it was a riding-ring or a covered walk. Grepped for areostyle and for a colonnade at the porch: nothing.",
+          "status": "built",
+          "note": "Built 2026-09-09. Three pillars a side, at z 26, 48.2 and 70.4 -- which is what an areostyle of fifteen paces (22.2 m) gives in a court of thirty, not a compression. The rows begin level with the front of the porch, as p. 38 requires. EAST stands, 9 m Ionic built on _column so Roll Up can undermine it, with the epistyle surviving over the northern span only (\"the greatest part decayed\"). WEST is down: three stumps, twelve drums rolled eastward into the court and two capitals lying among them. That is the heap Poliphilo climbs to reach the colossus on p. 44, which is what makes the fallen row a source claim and not a licence. NOT DONE: the capitals are plain drums, not the waved shell-work with corners turned in like a curled lock of hair that p. 38 describes.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildPiazza (world/portal.js)"
         },
         {
           "id": "colonnade-wildwood",
@@ -686,12 +688,13 @@
           "plate": null,
           "name": "Plane trees, wild olives, pine and brambles at the colonnade's foot",
           "source": "Dallington 1592 p. 38",
-          "status": "unbuilt",
-          "note": "Old plane trees, wild olives, pine and pricking brambles growing hard against the rows of pillars. The detail that makes the colonnade a RUIN rather than a building: what has taken it is scrub, not weather.",
+          "status": "built",
+          "note": "Built 2026-09-09. Eight trees at the rows' feet -- three planes, three wild olives, two pines, from the SPECIES table -- plus ten bramble tangles of arced tubes with their own colliders, which is what makes the colonnade unwalkable rather than merely ruined. Held to eight trees deliberately: they are the most expensive objects in the build and this is a fringe, not a wood.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildPiazza (world/portal.js)"
         },
         {
           "id": "winged-horse-form",
@@ -700,7 +703,7 @@
           "name": "The winged vaulting horse, and the youths thrown from him",
           "source": "Dallington 1592 pp. 39-40",
           "status": "unknown",
-          "note": "Moulten brass, wings fanning out, standing on a smooth base five feet broad and nine long. Head free and unbridled; two small ears, one forward and one drawn back; a long waved mane falling from the crest on the contrary side. Youths try to ride and not one keeps his seat: some thrown flat, some grovelling, some headlong between the horse and the earth, some holding vainly by the mane, some climbing on, some struggling out from under his feet. Built as _buildColossalHorse; the RIDERS are what to check -- the passage is mostly about them, and the world may have the horse without them.",
+          "note": "Moulten brass, wings fanning out, standing on a smooth base five feet broad and nine long. Head free and unbridled; two small ears, one forward and one drawn back; a long waved mane falling from the crest on the contrary side. Youths try to ride and not one keeps his seat: some thrown flat, some grovelling, some headlong between the horse and the earth, some holding vainly by the mane, some climbing on, some struggling out from under his feet. Built as _buildColossalHorse; the RIDERS are what to check -- the passage is mostly about them, and the world may have the horse without them. SITING SETTLED 2026-09-09: he stands at z 55.6, ten paces in from the piazza's start toward the gate, which the 1499 states outright (l. 1255, \"dal'initio intro verso la porta x passi\").",
           "modes": [
             "walk",
             "tour"
@@ -811,7 +814,10 @@
             "tour"
           ]
         }
-      ]
+      ],
+      "build": {
+        "last_pass": "2026-09-09 piazza pass: the court, both colonnades, the wildwood, and the siting of all three monuments before the porch"
+      }
     },
     {
       "id": "IV",

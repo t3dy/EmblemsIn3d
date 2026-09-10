@@ -138,6 +138,55 @@ export const Materials = {
     return geo;
   },
 
+  // ── Building something somewhere else ────────────────────────────────────
+  //
+  // Several builders in this world were written with their coordinates baked
+  // in, and they cannot be moved by setting a group's position: _plaque,
+  // _frieze, _wallCol and _circleCol all speak WORLD coordinates, so only the
+  // meshes that happen to pass `parent` would follow and the lettering and the
+  // colliders would stay behind. The elephant's two Greek plaques and every one
+  // of the colossus's wall colliders are like this.
+  //
+  // So this reroutes `this.scene` -- the same trick _buildCytheraIsle already
+  // uses for the island -- and patches the two collider registrars so their
+  // rectangles are carried along with the geometry.
+  //
+  // `turn` is in QUARTER TURNS and must be a whole number. That is not a
+  // limitation to be fixed later: a right angle is the only rotation that maps
+  // an axis-aligned rectangle onto another axis-aligned rectangle, which is
+  // what keeps the AABB wall colliders exact. Any other angle would need a new
+  // collider kind, so it is refused here rather than silently approximated.
+  //
+  // Returns the group, so a caller can hide or fold it (DECISIONS.md 49).
+  _placeAt(cx, cz, turn, build) {
+    if (turn !== Math.round(turn)) throw new Error('_placeAt: turn must be a whole number of quarter turns');
+    const q = ((Math.round(turn) % 4) + 4) % 4;
+    const g = new THREE.Group();
+    g.position.set(cx, 0, cz);
+    g.rotation.y = q * Math.PI / 2;
+    this.scene.add(g);
+    // local -> world, one case per quarter turn (a Y rotation by t sends
+    // (x, z) to (x cos t + z sin t, -x sin t + z cos t))
+    const map = (x, z) => (q === 0 ? [cx + x, cz + z]
+                         : q === 1 ? [cx + z, cz - x]
+                         : q === 2 ? [cx - x, cz - z]
+                                   : [cx - z, cz + x]);
+    const realScene = this.scene, realWall = this._wallCol, realCirc = this._circleCol;
+    this.scene = g;
+    this._wallCol = (x0, x1, z0, z1) => {
+      const a = map(x0, z0), b = map(x1, z1);
+      realWall.call(this, Math.min(a[0], b[0]), Math.max(a[0], b[0]),
+                          Math.min(a[1], b[1]), Math.max(a[1], b[1]));
+    };
+    this._circleCol = (x, z, r) => { const w = map(x, z); return realCirc.call(this, w[0], w[1], r); };
+    try { build(); } finally {
+      this.scene = realScene;
+      delete this._wallCol;
+      delete this._circleCol;
+    }
+    return g;
+  },
+
   _circleCol(x, z, r) { const c = { x, z, r }; this.walker.colliders.push(c); return c; },
 
   _wallCol(x0, x1, z0, z1) { this.walker.walls.push({ x0, x1, z0, z1 }); },
