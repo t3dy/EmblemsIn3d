@@ -951,7 +951,11 @@ export const Nature = {
       rect(7.9, 13.1, 14.6, 18.4),       // the colossal horse and its pedestal
       circle(21.5, 0, 6.2),              // Quinta Essentia round
       circle(25.5, -3.4, 1.5), circle(25.5, 3.4, 1.5),
-      rect(-14.5, 14.5, 10.6, 13.4),     // Three Doors wall
+      // The three doors are cut in a rocky place "without any greene grasse or
+      // hearbe" (Dall. p. 192), and the seat is the point of the choice made
+      // there. This was a 2.8 m strip at the foot of the rock, so grass grew
+      // over the whole approach the reader actually walks.
+      rect(-15.5, 15.5, 5.5, 19.5),      // Three Doors: the whole stony seat
       rect(-19, 19, 24.2, 27.8),         // Great Portal piers
       rect(-120, 120, 210, 435),         // dark-wood duff (moved with the wood)
       // Ploughed ground is ploughed: meadow grass must not grow out of the

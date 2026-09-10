@@ -11,8 +11,8 @@ Ledger generated **2026-09-08**. 38 chapters · 97 plates attached to a chapter 
 | Chapters **enumerated** (a feature list exists) | **13 of 38** |
 | Chapters **partial** (tour notes only, no feature list) | 25 |
 | Chapters **unread** | 0 |
-| Features **built** | 70 |
-| Features **partial** | 7 |
+| Features **built** | 71 |
+| Features **partial** | 6 |
 | Features **unbuilt** | **16** |
 | Features **declined** (on purpose, with a reason) | 3 |
 
@@ -68,7 +68,6 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | X | **The pierced gold balls stuffed with amber paste, given to every guest** | object | ○ unbuilt | Dallington p. 150 | "to the ende their hands, eyes, and sences should not be idle" -- a pomander. Ten lines; it belongs on the litter list for the court as much as on a table. |
 | X | **The perpetual fountain on an axle-tree with harpies at the angles (plate #32), "twice a nymph's height"** | object | ○ unbuilt | Dallington pp. 158-160 | The second wheeled fountain, after the coral tree: a quadrangle three by two by six feet with a harpy at each angle, satyr-and-nymph triumphs in half-relief, an antique vessel rising from the centre. Not built; the tour lede already promises it. |
 | XIII | **The doubt: is this nymph Polia?** | rite | ◐ partial | Dallington pp. 207-217 | The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt. |
-| XIII | **The three doors hewn in the living rock** | building | ◐ partial | Dallington p. 192 | The book cuts them "in the verie rocke it selfe" among "abrupt and wilesome hilly places, full of broken and nybled stones, mounting vppe into the ayre, as high as a man might looke to, and without any greene grasse or hearbe... in a very displeasant seate". The world builds a free-standing 29 m masonry wall on a garden axis, which is the wrong ground, the wrong material and the wrong mood — the harshness of the site is the point of the choice made there. |
 | XIII | **Polia's garden: a hundred ivied arches round it** | place | ◐ partial | Dallington pp. 182-183 | An arcade 5 paces high and 3 across, "and there were a hundred Arches to the compassing of this garden" — 444 m of circumference, so 141 m across, with an altar of a cube, a red jasper disc and a black triangle at its centre. The station has a radius of 7. The clearest single measure of the compression the 2026-09-08 pass found. |
 | XVIII | **The arcane characters signed in blood, and the sponge** | inscription | ◐ partial | our pp. 231–232 | The forms are NOT given in the book. Drawn as strokes, and the tour note says so. |
 | XVIII | **The three fruits taken and tasted** | rite | ○ unbuilt | our pp. 233–234 (plate #85) | The bush is built; the giving of the three fruits is not staged. |
@@ -243,7 +242,15 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 | ✅ | The arbour of sweet jessamine, where he first sees Polia<br>*Rebuilt 2026-09-07 as the tunnel the book describes -- "lifting vppe and bending ouer ... and entring in vnder the same" -- replacing four columns under a flat slab. The "flowers of three sortes commixt" are Rhizopoulou 2016’s three jasmines, red, yellow and white. One of only two things the Venice edition illustrates twice.* | place | `HPWorldScene._buildJasmineArbour` | Dallington p. 200 |
 | ✅ | The three doors, and his choice of the third<br>*His recoil from Philtronia’s house of Voluptuousness, immediately after choosing it, is now in the Poliphilo layer (our p. 197).* | rite | `HPWorldScene._buildDoorsWall` | Dallington pp. 189-197 |
 | ◐ | The doubt: is this nymph Polia?<br>*The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt.* | rite | — | Dallington pp. 207-217 |
-| ◐ | The three doors hewn in the living rock<br>*The book cuts them "in the verie rocke it selfe" among "abrupt and wilesome hilly places, full of broken and nybled stones, mounting vppe into the ayre, as high as a man might looke to, and without any greene grasse or hearbe... in a very displeasant seate". The world builds a free-standing 29 m masonry wall on a garden axis, which is the wrong ground, the wrong material and the wrong mood — the harshness of the site is the point of the choice made there.* | building | `HPWorldScene, the Three Doors wall (see DOORS table, l. 124)` | Dallington p. 192 |
+| ✅ | The three doors hewn in the living rock<br>*Built and verified on the running page 2026-09-09 at main.js?v=361, standing at the station (0, 21) looking north to the gates at z = 12.
+
+The note this replaces described a build that no longer exists: "a free-standing 29 m masonry wall on a garden axis, the wrong ground, the wrong material and the wrong mood". The wall with its entablature and Corinthian columns — the opposite of "as plaine as might be" — had already been replaced by rock: a bank of boulders rising behind and above the gates, a straight-cut rock face with the three openings hewn from it, rough reveals, and the green moss the book gives the right-hand gate's leaves. So the material and the mood were right and the ledger had simply not been told.
+
+What was still wrong was the GROUND, which is the third of the three faults and the one the book is most insistent about: "without any greene grasse or hearbe". The meadow was excluded from a strip only 2.8 m deep at the foot of the rock, so grass grew over the whole approach a reader actually crosses, and the stony ground stopped short of it. Now the exclusion covers the seat (x -15.5..15.5, z 5.5..19.5), the stone apron runs back to z = 19 to meet it, and 54 broken stones are strewn across it for "full of broken and nybled stones" — small, flat and un-collided, since the book's complaint is that the place is harsh underfoot, not that it is hard to cross.
+
+Cost, measured: 5 621 -> 5 625 meshes and 3 101 652 -> 3 103 586 triangles. The 54 stones merge to about four draws because they share a material.
+
+Still short of the book in one respect, recorded rather than hidden: the crags rise "as high as a man might looke to" and ours are a bank of boulders a few metres tall. The mountains behind are not built.* | building | `world/portal.js _buildDoorsWall; the meadow exclusion in world/nature.js` | Dallington p. 192 |
 | ◐ | Polia's garden: a hundred ivied arches round it<br>*An arcade 5 paces high and 3 across, "and there were a hundred Arches to the compassing of this garden" — 444 m of circumference, so 141 m across, with an altar of a cube, a red jasper disc and a black triangle at its centre. The station has a radius of 7. The clearest single measure of the compression the 2026-09-08 pass found.* | place | `HPWorldScene, polia station` | Dallington pp. 182-183 |
 
 ### Chapter XIV  · Book 1 · page range not yet fixed

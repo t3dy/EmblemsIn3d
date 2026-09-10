@@ -1836,14 +1836,14 @@
           "kind": "building",
           "plate": null,
           "source": "Dallington p. 192",
-          "status": "partial",
-          "built_as": "HPWorldScene, the Three Doors wall (see DOORS table, l. 124)",
+          "status": "built",
+          "built_as": "world/portal.js _buildDoorsWall; the meadow exclusion in world/nature.js",
           "modes": [
             "walk",
             "tour",
             "dream"
           ],
-          "note": "The book cuts them \"in the verie rocke it selfe\" among \"abrupt and wilesome hilly places, full of broken and nybled stones, mounting vppe into the ayre, as high as a man might looke to, and without any greene grasse or hearbe... in a very displeasant seate\". The world builds a free-standing 29 m masonry wall on a garden axis, which is the wrong ground, the wrong material and the wrong mood — the harshness of the site is the point of the choice made there."
+          "note": "Built and verified on the running page 2026-09-09 at main.js?v=361, standing at the station (0, 21) looking north to the gates at z = 12.\n\nThe note this replaces described a build that no longer exists: \"a free-standing 29 m masonry wall on a garden axis, the wrong ground, the wrong material and the wrong mood\". The wall with its entablature and Corinthian columns — the opposite of \"as plaine as might be\" — had already been replaced by rock: a bank of boulders rising behind and above the gates, a straight-cut rock face with the three openings hewn from it, rough reveals, and the green moss the book gives the right-hand gate's leaves. So the material and the mood were right and the ledger had simply not been told.\n\nWhat was still wrong was the GROUND, which is the third of the three faults and the one the book is most insistent about: \"without any greene grasse or hearbe\". The meadow was excluded from a strip only 2.8 m deep at the foot of the rock, so grass grew over the whole approach a reader actually crosses, and the stony ground stopped short of it. Now the exclusion covers the seat (x -15.5..15.5, z 5.5..19.5), the stone apron runs back to z = 19 to meet it, and 54 broken stones are strewn across it for \"full of broken and nybled stones\" — small, flat and un-collided, since the book's complaint is that the place is harsh underfoot, not that it is hard to cross.\n\nCost, measured: 5 621 -> 5 625 meshes and 3 101 652 -> 3 103 586 triangles. The 54 stones merge to about four draws because they share a material.\n\nStill short of the book in one respect, recorded rather than hidden: the crags rise \"as high as a man might looke to\" and ours are a bank of boulders a few metres tall. The mountains behind are not built."
         },
         {
           "id": "polia-garden-hundred-arches",

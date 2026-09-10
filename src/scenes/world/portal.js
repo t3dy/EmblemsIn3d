@@ -298,7 +298,25 @@ export const Portal = {
     // the mountain: a bank of boulders along the line, rising behind and above
     // the gates to "as high as a man might looke to", bare of any green
     const gateGap = (x) => DOORS.some(d => Math.abs(x - d.x) < d.w / 2 + 0.9);
-    this._m(new THREE.BoxGeometry(30, 0.08, 9), rockDk, 0, 0.04, Z - 1.5, { cast: false });   // the stony ground
+    // The stony ground. Was 9 m deep, which covered the rock's own footing and
+    // stopped short of the ground the reader crosses to reach it -- so the book's
+    // "without any greene grasse or hearbe" held at the threshold and nowhere
+    // else. It now runs back to z = 19, meeting the meadow's exclusion.
+    this._m(new THREE.BoxGeometry(31, 0.08, 13.5), rockDk, 0, 0.04, Z + 0.75, { cast: false });
+    // "full of broken and nybled stones": the rubble the seat is named for,
+    // strewn over the approach. Small, flat and un-collided -- they are ground
+    // texture you walk across, not obstacles, and the book's complaint is that
+    // the place is harsh underfoot rather than that it is hard to cross.
+    for (let i = 0; i < 54; i++) {
+      const x = -15 + rnd(i, 20) * 30;
+      const z = Z - 4.5 + rnd(i, 21) * 12.5;
+      const r = 0.14 + rnd(i, 22) * 0.42;
+      const cg = new THREE.DodecahedronGeometry(r, 0);
+      cg.setIndex(Array.from({ length: cg.attributes.position.count }, (_, k) => k));
+      const c = this._m(cg, i % 2 ? rock : rockDk, x, r * 0.34, z, { cast: false });
+      c.rotation.set(rnd(i, 23) * 3, rnd(i, 24) * 3, rnd(i, 25) * 3);
+      c.scale.set(1 + rnd(i, 26) * 0.7, 0.34 + rnd(i, 27) * 0.3, 1 + rnd(i, 28) * 0.7);
+    }
     for (let i = 0; i < 70; i++) {
       const x = -15 + rnd(i, 1) * 30;
       const depth = rnd(i, 2);                          // 0 = the face, 1 = the back
