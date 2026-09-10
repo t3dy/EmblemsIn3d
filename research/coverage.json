@@ -1,6 +1,6 @@
 {
   "$schema_note": "See HPTOTOURPIPELINE.md for the field meanings and the workflow.",
-  "generated": "2026-09-08",
+  "generated": "2026-09-09",
   "generator": "scripts/coverage_seed.py",
   "hand_edited_fields": [
     "chapters[].research",
@@ -140,112 +140,36 @@
   ],
   "build_evidence": {
     "plates_cited_in_source": [
-      6,
-      7,
-      10,
       18,
       19,
-      22,
-      23,
       24,
-      25,
-      28,
-      30,
-      31,
-      32,
-      33,
-      35,
-      36,
-      37,
-      44,
-      47,
-      49,
-      52,
-      54,
-      57,
-      58,
-      59,
-      60,
-      64,
-      65,
-      66,
-      67,
-      71,
-      79,
-      80,
-      83,
-      84,
-      85,
-      86,
-      87,
-      88,
-      92,
-      93,
-      94,
-      95,
-      96,
-      105,
-      106,
-      108,
-      110,
-      112,
-      116,
-      117,
-      120,
-      121,
-      125,
-      127,
-      130,
-      136,
-      143,
-      144,
-      147,
-      152,
-      153,
-      159,
-      160,
-      163,
-      165
+      87
     ],
     "builders": [
-      "Adonis",
-      "Amphitheatre",
       "Approach",
-      "Artemisia",
-      "Banquet",
-      "Bath",
+      "ArtificialGardens",
       "Birds",
       "BookTwo",
       "Bridge",
       "ChessBallet",
-      "Ciborium",
       "ColossalHorse",
       "Colossus",
       "Court",
-      "Crypt",
-      "CupidTriumph",
       "Cythera",
       "CytheraIsle",
+      "DividingSpring",
       "DoorsWall",
       "Elephant",
-      "Epitaphs",
-      "Exeres",
-      "Folio80Company",
-      "Fortuna",
       "Fountain",
       "Fumes",
       "Garden",
       "GracesFountain",
       "GreatPortal",
       "Ground",
-      "HellTribune",
-      "JasmineArbour",
       "Meadow",
-      "MedusaDoor",
       "Motes",
       "NymphFountain",
       "Palace",
-      "Parterres",
       "PlanetaryPalace",
       "PoliaGarden",
       "Polyandrion",
@@ -259,7 +183,7 @@
       "SecondNature",
       "ShadeMap",
       "ShadedWalk",
-      "Stream",
+      "SpaciousPlain",
       "ThreeDoors",
       "Timeline",
       "Trees",
@@ -269,41 +193,10 @@
       "VenusTemple",
       "WaterLabyrinth",
       "WaterParticles",
+      "Witness",
       "Wood"
     ],
-    "stations": [
-      "adonis",
-      "bacchus",
-      "book_two",
-      "chess",
-      "colossus",
-      "court",
-      "cythera",
-      "cythera_isle",
-      "cythera_theatre",
-      "danae",
-      "elephant",
-      "europa",
-      "fields",
-      "fountain",
-      "great_oak",
-      "horse",
-      "labyrinth",
-      "leda",
-      "palm_plain",
-      "planetary_palace",
-      "polia",
-      "polyandrion",
-      "portal",
-      "priapus",
-      "quinta_essentia",
-      "three_doors",
-      "triumphs",
-      "valley",
-      "venus_temple",
-      "vertumnus",
-      "wood"
-    ]
+    "stations": []
   },
   "plates_not_attached_to_a_chapter": [
     {
@@ -323,414 +216,6 @@
       "description": "Poliphilus sleeping under a tree (dream within dream)",
       "page_1499": 10,
       "section": "DARK_FOREST"
-    },
-    {
-      "plate": 4,
-      "description": "Poliphilus among classical ruins with wolf",
-      "page_1499": 11,
-      "section": "DARK_FOREST"
-    },
-    {
-      "plate": 5,
-      "description": "The great pyramidic temple with obelisk",
-      "page_1499": 16,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 6,
-      "description": "Colossal bronze horse on pedestal with genii",
-      "page_1499": 22,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 7,
-      "description": "Pedestal end: garland of marjoram and ferns (D.AMBIG.D.D.)",
-      "page_1499": 23,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 8,
-      "description": "Pedestal end: garland of orpine (Equus infalicitatis)",
-      "page_1499": 23,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 9,
-      "description": "Pedestal side: two-faced youths and nymphs dancing",
-      "page_1499": 24,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 10,
-      "description": "Pedestal side: youth distributing flowers",
-      "page_1499": 25,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 11,
-      "description": "Elephant saddle-cloth with Greek and Arabic inscription",
-      "page_1499": 27,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 12,
-      "description": "Colossal elephant of black stone bearing obelisk",
-      "page_1499": 28,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 13,
-      "description": "Sarcophagus with nude King figure",
-      "page_1499": 29,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 14,
-      "description": "Sarcophagus with nude Queen figure",
-      "page_1499": 30,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 15,
-      "description": "Hieroglyphic devices with decorated casket",
-      "page_1499": 31,
-      "section": "PYRAMID_RUINS"
-    },
-    {
-      "plate": 16,
-      "description": "Ancient gate with medallion busts",
-      "page_1499": 38,
-      "section": "DRAGON_PORTAL"
-    },
-    {
-      "plate": 17,
-      "description": "Poliphilus fleeing the dragon",
-      "page_1499": 52,
-      "section": "DRAGON_PORTAL"
-    },
-    {
-      "plate": 18,
-      "description": "Emblematic devices (PATIENTIA / Anchor-Dolphin)",
-      "page_1499": 59,
-      "section": "DRAGON_PORTAL"
-    },
-    {
-      "plate": 19,
-      "description": "Sleeping nymph fountain with satyrs",
-      "page_1499": 63,
-      "section": "FIVE_SENSES"
-    },
-    {
-      "plate": 20,
-      "description": "Poliphilus meeting five nymphs",
-      "page_1499": 66,
-      "section": "FIVE_SENSES"
-    },
-    {
-      "plate": 21,
-      "description": "Weather-cock with genius blowing trumpet",
-      "page_1499": 71,
-      "section": "FIVE_SENSES"
-    },
-    {
-      "plate": 22,
-      "description": "Part of second fountain",
-      "page_1499": 75,
-      "section": "FIVE_SENSES"
-    },
-    {
-      "plate": 23,
-      "description": "Third fountain with Graces, harpies, griffins",
-      "page_1499": 80,
-      "section": "FIVE_SENSES"
-    },
-    {
-      "plate": 24,
-      "description": "Frieze ornament with genii, dolphins, bull skull",
-      "page_1499": 84,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 25,
-      "description": "Panelled wall in Queen's palace with planetary names",
-      "page_1499": 88,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 26,
-      "description": "Poliphilus before Queen Eleuterylida enthroned",
-      "page_1499": 90,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 27,
-      "description": "Medallion in canopy: youth with nimbus and eagle",
-      "page_1499": 92,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 28,
-      "description": "Richly ornamented tripod",
-      "page_1499": 93,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 29,
-      "description": "Golden basin upon wheels",
-      "page_1499": 94,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 30,
-      "description": "Tripod with three naked boys on lion-footed pedestal",
-      "page_1499": 95,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 31,
-      "description": "Vessel surmounted by coral-tree",
-      "page_1499": 102,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 32,
-      "description": "Magnificent vessel with gold shrub, twice nymph height",
-      "page_1499": 105,
-      "section": "QUEEN_PALACE"
-    },
-    {
-      "plate": 33,
-      "description": "Triangular obelisk of mystic Trinity with sphinxes",
-      "page_1499": 119,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 34,
-      "description": "Cameo: Jupiter with cornucopia and vanquished giants",
-      "page_1499": 122,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 35,
-      "description": "Woman with tortoise and wings (Velocitatem sedendo)",
-      "page_1499": 123,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 36,
-      "description": "Circular bas-relief: two genii holding apple (Medium tenuere beati)",
-      "page_1499": 124,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 37,
-      "description": "Poliphilus at three gates: GLORIA DEI, MATER AMORIS, GLORIA MUNDI",
-      "page_1499": 125,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 38,
-      "description": "Poliphilus meets venerable matron with six attendants",
-      "page_1499": 126,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 39,
-      "description": "Poliphilus receives crown and palm-branch on sword",
-      "page_1499": 127,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 40,
-      "description": "Poliphilus among nymphs; flight of Logistica",
-      "page_1499": 129,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 41,
-      "description": "Poliphilus embraced by the nymph",
-      "page_1499": 130,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 42,
-      "description": "Poliphilus looking through bower as Polia approaches",
-      "page_1499": 132,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 43,
-      "description": "Poliphilus and Polia retreating from bower",
-      "page_1499": 139,
-      "section": "JOURNEY_DOORS"
-    },
-    {
-      "plate": 44,
-      "description": "Triumphal car with Europa reliefs",
-      "page_1499": 149,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 45,
-      "description": "Relief: Rape of Europa",
-      "page_1499": 149,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 46,
-      "description": "Reliefs: Cupid shooting stars; Jupiter and Mars",
-      "page_1499": 150,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 47,
-      "description": "First Triumph of Europa: centaurs, nymphs, musicians (left)",
-      "page_1499": 151,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 48,
-      "description": "First Triumph of Europa (right continuation)",
-      "page_1499": 151,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 49,
-      "description": "Triumph of Leda reliefs: Leda lying-in, eggs presented",
-      "page_1499": 152,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 50,
-      "description": "Relief: King offering eggs at Temple of Apollo",
-      "page_1499": 153,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 51,
-      "description": "Reliefs: Cupid tracing figures; Judgment of Paris",
-      "page_1499": 154,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 52,
-      "description": "Second Triumph of Leda: elephants, swan (left)",
-      "page_1499": 155,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 53,
-      "description": "Second Triumph of Leda (right continuation)",
-      "page_1499": 155,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 54,
-      "description": "Triumph of Danae reliefs: Acrisius, tower construction",
-      "page_1499": 156,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 55,
-      "description": "Perseus with mirror and Medusa head; Pegasus",
-      "page_1499": 156,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 56,
-      "description": "Reliefs: Venus and Mars freed; Jupiter comforts Cupid",
-      "page_1499": 158,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 57,
-      "description": "Third Triumph of Danae: unicorns (left)",
-      "page_1499": 159,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 58,
-      "description": "Festival of Bacchus reliefs: Jupiter and Semele",
-      "page_1499": 160,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 59,
-      "description": "Third Triumph of Danae (right continuation)",
-      "page_1499": 159,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 60,
-      "description": "Jupiter commits infant Bacchus to Mercury",
-      "page_1499": 160,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 61,
-      "description": "Venus and Cupid before Jupiter; Psyche with lamp",
-      "page_1499": 161,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 62,
-      "description": "Vase relief: Jupiter and the Heliades",
-      "page_1499": 161,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 63,
-      "description": "Vintage scene with genii and young Bacchus",
-      "page_1499": 164,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 64,
-      "description": "Fourth Triumph: Festival of Bacchus, panthers (left)",
-      "page_1499": 165,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 65,
-      "description": "Festival of Bacchus with Silenus on ass (right)",
-      "page_1499": 165,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 66,
-      "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
-      "page_1499": 166,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 67,
-      "description": "Four Seasons relief: Spring (Venus and Cupid)",
-      "page_1499": 167,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 68,
-      "description": "Four Seasons: Summer (Ceres with boy)",
-      "page_1499": 167,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 69,
-      "description": "Four Seasons: Autumn (Wine God with ram)",
-      "page_1499": 167,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 70,
-      "description": "Four Seasons: Winter (Jupiter Pluvius)",
-      "page_1499": 167,
-      "section": "PROCESSION"
-    },
-    {
-      "plate": 71,
-      "description": "Worship of Priapus with nineteen female and five male figures",
-      "page_1499": 185,
-      "section": "VENUS_TEMPLE"
     }
   ],
   "chapters": [
@@ -738,19 +223,38 @@
       "id": "I",
       "n": 1,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        11,
+        15
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 4,
+          "description": "Poliphilus among classical ruins with wolf",
+          "page_1499": 11
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
+        {
+          "station": "plain",
+          "title": "The Spacious Plain",
+          "notes": 5
+        },
         {
           "station": "wood",
           "title": "The Dark Wood",
           "notes": 12
+        },
+        {
+          "station": "great_oak",
+          "title": "The Great Oak",
+          "notes": 3
         }
       ],
       "research": {
@@ -867,19 +371,38 @@
       "id": "II",
       "n": 2,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        16,
+        19
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 5,
+          "description": "The great pyramidic temple with obelisk",
+          "page_1499": 16
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "wood",
           "title": "The Deeper Dream",
           "notes": 6
+        },
+        {
+          "station": "palm_plain",
+          "title": "The Palm and the Wolf",
+          "notes": 3
+        },
+        {
+          "station": "valley",
+          "title": "The Valley of the Approach",
+          "notes": 3
         }
       ],
       "research": {
@@ -983,15 +506,64 @@
       "id": "III",
       "n": 3,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        20,
+        29
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 6,
+          "description": "Colossal bronze horse on pedestal with genii",
+          "page_1499": 22
+        },
+        {
+          "plate": 7,
+          "description": "Pedestal end: garland of marjoram and ferns (D.AMBIG.D.D.)",
+          "page_1499": 23
+        },
+        {
+          "plate": 8,
+          "description": "Pedestal end: garland of orpine (Equus infalicitatis)",
+          "page_1499": 23
+        },
+        {
+          "plate": 9,
+          "description": "Pedestal side: two-faced youths and nymphs dancing",
+          "page_1499": 24
+        },
+        {
+          "plate": 10,
+          "description": "Pedestal side: youth distributing flowers",
+          "page_1499": 25
+        },
+        {
+          "plate": 11,
+          "description": "Elephant saddle-cloth with Greek and Arabic inscription",
+          "page_1499": 27
+        },
+        {
+          "plate": 12,
+          "description": "Colossal elephant of black stone bearing obelisk",
+          "page_1499": 28
+        },
+        {
+          "plate": 13,
+          "description": "Sarcophagus with nude King figure",
+          "page_1499": 29
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
+        {
+          "station": "valley",
+          "title": "The Valley of the Approach",
+          "notes": 3
+        },
         {
           "station": "horse",
           "title": "The Winged Horse of Unhappiness",
@@ -1014,10 +586,10 @@
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": "session of 2026-09-08 (dimensional pass only)",
-        "date": "2026-09-08",
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features. Dimensional and topographical pass of 2026-09-08 (the scale research: DIMENSIONS.md, DIRECTIONS.md, WOODS.md). This pass read the chapter for measurements, orientation and ground, not for its whole inventory."
+        "status": "enumerated",
+        "enumerated_by": "read end to end against Dallington 1592, session of 2026-09-09",
+        "date": "2026-09-09",
+        "note": "Read from the chapter's own argument (the horse, the elephant, and the porch) through the forecourt, the colonnades, the horse and his base, the colossus inside and out, the woman's head, and the elephant's obelisk. The 2026-09-08 pass had read this chapter for measurements only and left 4 features; this pass adds 12. The largest finds are the porch's own thirty-pace forecourt and its two areostyle colonnades, which are a whole architectural setting the world does not have, and the loop-holes that light the colossus within -- which the interior opened the same day needs and has not got."
       },
       "features": [
         {
@@ -1080,6 +652,162 @@
             "vaults"
           ],
           "note": "The Gorgon head is carved in the plinth \"vpon the right hand as I went\"; the stair down opens \"vpon my right hand against one of the collaterall and side-lying mountaines\". Nobody has checked which side the world puts them on. Under the compass frame proposed in DIRECTIONS.md 2 the right hand is east (+x)."
+        },
+        {
+          "id": "porch-forecourt",
+          "kind": "place",
+          "plate": null,
+          "name": "The four-square court before the porch, thirty paces across",
+          "source": "Dallington 1592 pp. 37-38",
+          "status": "unknown",
+          "note": "A court of thirty paces by its diameter, paved in fine marble and worked chequerwise in several colours -- and broken and overgrown in many places by the ruin of the old walk and its pillars. The world has chequered pavements at the palace and in the bath, but nothing identified as the porch's own forecourt. Needs a look on the running page before this is called unbuilt.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "porch-colonnades",
+          "kind": "building",
+          "plate": null,
+          "name": "Two areostyle colonnades, right and left toward the mountains",
+          "source": "Dallington 1592 p. 38",
+          "status": "unbuilt",
+          "note": "Two straight rows of pillars running from the front of the porch toward the mountains on either hand, set areostyle with fifteen paces between pillar and pillar. Capitals of waved shell-work and drapery, the corners turned in like a curled lock of hair, and the capital three times the width of the column's foot. Most stand; many are widowed of their capitals, with astragals, shafts and bases buried in the ruin. Poliphilo guesses it was a riding-ring or a covered walk. Grepped for areostyle and for a colonnade at the porch: nothing.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "colonnade-wildwood",
+          "kind": "plant",
+          "plate": null,
+          "name": "Plane trees, wild olives, pine and brambles at the colonnade's foot",
+          "source": "Dallington 1592 p. 38",
+          "status": "unbuilt",
+          "note": "Old plane trees, wild olives, pine and pricking brambles growing hard against the rows of pillars. The detail that makes the colonnade a RUIN rather than a building: what has taken it is scrub, not weather.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "winged-horse-form",
+          "kind": "object",
+          "plate": null,
+          "name": "The winged vaulting horse, and the youths thrown from him",
+          "source": "Dallington 1592 pp. 39-40",
+          "status": "unknown",
+          "note": "Moulten brass, wings fanning out, standing on a smooth base five feet broad and nine long. Head free and unbridled; two small ears, one forward and one drawn back; a long waved mane falling from the crest on the contrary side. Youths try to ride and not one keeps his seat: some thrown flat, some grovelling, some headlong between the horse and the earth, some holding vainly by the mane, some climbing on, some struggling out from under his feet. Built as _buildColossalHorse; the RIDERS are what to check -- the passage is mostly about them, and the world may have the horse without them.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "horse-base-friezes",
+          "kind": "picture",
+          "plate": null,
+          "name": "The two dances on the base: TEMPVS and AMISSIO",
+          "source": "Dallington 1592 pp. 42-43",
+          "status": "built",
+          "note": "Built (world/portal.js, the TEMPVS AMISSIO horse, with Buffalo Hand E's note). Two companies in semicircles with a partition between, one inscribed TEMPVS; on the contrary side youths gathering flowers while nymphs snatch them away, inscribed AMISSIO.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "colossus-wickets",
+          "kind": "building",
+          "plate": null,
+          "name": "The loop-holes and wickets that light the colossus within",
+          "source": "Dallington 1592 p. 45",
+          "status": "unbuilt",
+          "note": "Small loop-holes and wickets, diversely disposed in sundry places, yielding light enough to see the whole artificial anatomy. THIS MATTERS NOW: the interior was opened on 2026-09-09 (feat-colossus-interior) and is lit by nothing at all -- the passage is a dark tube. The book supplies exactly the fixture that solves it, and grepping portal.js for wicket or loophole returns nothing.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "colossus-three-tongues",
+          "kind": "inscription",
+          "plate": null,
+          "name": "Every part named in three tongues, with its disease, cause and cure",
+          "source": "Dallington 1592 p. 45",
+          "status": "partial",
+          "note": "Each part of the body carries its own name in Chaldee, Greek and Latin -- entrails, sinews, bones, veins, muscles and flesh -- with the disease bred there, its cause, and its cure and remedy. The world labels six organs in Latin with an English gloss, so the THREE TONGUES are not there, and neither is the cause/cure structure. Note the tension to resolve: Dallington says the cures ARE written here, while the heart's are the ones Poliphilo does not divulge.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "colossus-entry-by-beard",
+          "kind": "rite",
+          "plate": null,
+          "name": "The climb in: by the beard to the breast, and down the throat",
+          "source": "Dallington 1592 p. 44",
+          "status": "partial",
+          "note": "You mount by the hairs of his beard to the breast, and by the torn pieces of it to the mouth, which stays open and empty; then down by degrees into the throat, to the stomach, and by secret ways to all the inward parts. Since 2026-09-09 the figure IS entered through the mouth and walked down the body -- but on the level, at ground height. The book's entry is a CLIMB, and the descent by degrees into the throat is a stair.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "colossus-groaning",
+          "kind": "rite",
+          "plate": null,
+          "name": "The groaning: air through the mouth and the pipes of the throat",
+          "source": "Dallington 1592 p. 44",
+          "status": "declined",
+          "note": "Air getting in and coming forth of the wide mouth and the hollow pipes of the throat makes a moderated, timed groaning like a sick man near death -- it is what draws Poliphilo to the figure at all, and he says his hair stood up. Declined as SOUND: the site is silent by design (DECISIONS.md 2026-09-04). Worth reopening as a visible or written cue, since without it nothing explains why he climbs in.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "colossus-resounds",
+          "kind": "rite",
+          "plate": null,
+          "name": "His sigh makes the whole brazen colossus resound",
+          "source": "Dallington 1592 p. 45",
+          "status": "declined",
+          "note": "At the heart he reads how love begets sorrow, calls out upon Polia, and the whole colossus of brass resounds and strikes him into a horrible fear. Declined as sound, per the same 2026-09-04 call. The echo at the horse (p. 37) is already carried as an utterance rather than as audio, which is the pattern to follow.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "female-colossus-buried",
+          "kind": "object",
+          "plate": null,
+          "name": "The woman's head, of like bigness, buried in the fallen stones",
+          "source": "Dallington 1592 pp. 45-46",
+          "status": "partial",
+          "note": "On the other side, of like bigness to the first, the upper part of a woman's head part bare and the rest buried in decayed ruin -- and heaps of disordered fallen stone FORBID him to view it, so he turns away. The world builds her as a half-buried figure with vaults; the book shows only the crown of a head and a refusal of access. The refusal is the point (Priki).",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "echo-of-the-sigh",
+          "kind": "rite",
+          "plate": null,
+          "name": "His sigh returns as an echo in the solitary place",
+          "source": "Dallington 1592 p. 37",
+          "status": "built",
+          "note": "His breathing, in the thick air of that solitary place, gives an echo and puts him in mind of Polia. Carried in the world as the horse station's attitude (constants.js: horse -> listening, his own sigh comes back off the stone).",
+          "modes": [
+            "walk",
+            "tour"
+          ]
         }
       ]
     },
@@ -1087,14 +815,33 @@
       "id": "IV",
       "n": 4,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        30,
+        46
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 14,
+          "description": "Sarcophagus with nude Queen figure",
+          "page_1499": 30
+        },
+        {
+          "plate": 15,
+          "description": "Hieroglyphic devices with decorated casket",
+          "page_1499": 31
+        },
+        {
+          "plate": 16,
+          "description": "Ancient gate with medallion busts",
+          "page_1499": 38
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "portal",
@@ -1114,14 +861,23 @@
       "id": "V",
       "n": 5,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        47,
+        57
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 17,
+          "description": "Poliphilus fleeing the dragon",
+          "page_1499": 52
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "portal",
@@ -1234,14 +990,33 @@
       "id": "VI",
       "n": 6,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        58,
+        67
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 18,
+          "description": "Emblematic devices (PATIENTIA / Anchor-Dolphin)",
+          "page_1499": 59
+        },
+        {
+          "plate": 19,
+          "description": "Sleeping nymph fountain with satyrs",
+          "page_1499": 63
+        },
+        {
+          "plate": 20,
+          "description": "Poliphilus meeting five nymphs",
+          "page_1499": 66
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "fountain",
@@ -1349,14 +1124,28 @@
       "id": "VII",
       "n": 7,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        68,
+        78
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 21,
+          "description": "Weather-cock with genius blowing trumpet",
+          "page_1499": 71
+        },
+        {
+          "plate": 22,
+          "description": "Part of second fountain",
+          "page_1499": 75
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "fountain",
@@ -1419,14 +1208,48 @@
       "id": "VIII",
       "n": 8,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        79,
+        93
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 23,
+          "description": "Third fountain with Graces, harpies, griffins",
+          "page_1499": 80
+        },
+        {
+          "plate": 24,
+          "description": "Frieze ornament with genii, dolphins, bull skull",
+          "page_1499": 84
+        },
+        {
+          "plate": 25,
+          "description": "Panelled wall in Queen's palace with planetary names",
+          "page_1499": 88
+        },
+        {
+          "plate": 26,
+          "description": "Poliphilus before Queen Eleuterylida enthroned",
+          "page_1499": 90
+        },
+        {
+          "plate": 27,
+          "description": "Medallion in canopy: youth with nimbus and eagle",
+          "page_1499": 92
+        },
+        {
+          "plate": 28,
+          "description": "Richly ornamented tripod",
+          "page_1499": 93
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "court",
@@ -1463,14 +1286,38 @@
       "id": "IX",
       "n": 9,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        92,
+        116
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 29,
+          "description": "Golden basin upon wheels",
+          "page_1499": 94
+        },
+        {
+          "plate": 30,
+          "description": "Tripod with three naked boys on lion-footed pedestal",
+          "page_1499": 95
+        },
+        {
+          "plate": 31,
+          "description": "Vessel surmounted by coral-tree",
+          "page_1499": 102
+        },
+        {
+          "plate": 32,
+          "description": "Magnificent vessel with gold shrub, twice nymph height",
+          "page_1499": 105
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "labyrinth",
@@ -1490,14 +1337,73 @@
       "id": "X",
       "n": 10,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        117,
+        140
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 33,
+          "description": "Triangular obelisk of mystic Trinity with sphinxes",
+          "page_1499": 119
+        },
+        {
+          "plate": 34,
+          "description": "Cameo: Jupiter with cornucopia and vanquished giants",
+          "page_1499": 122
+        },
+        {
+          "plate": 35,
+          "description": "Woman with tortoise and wings (Velocitatem sedendo)",
+          "page_1499": 123
+        },
+        {
+          "plate": 36,
+          "description": "Circular bas-relief: two genii holding apple (Medium tenuere beati)",
+          "page_1499": 124
+        },
+        {
+          "plate": 37,
+          "description": "Poliphilus at three gates: GLORIA DEI, MATER AMORIS, GLORIA MUNDI",
+          "page_1499": 125
+        },
+        {
+          "plate": 38,
+          "description": "Poliphilus meets venerable matron with six attendants",
+          "page_1499": 126
+        },
+        {
+          "plate": 39,
+          "description": "Poliphilus receives crown and palm-branch on sword",
+          "page_1499": 127
+        },
+        {
+          "plate": 40,
+          "description": "Poliphilus among nymphs; flight of Logistica",
+          "page_1499": 129
+        },
+        {
+          "plate": 41,
+          "description": "Poliphilus embraced by the nymph",
+          "page_1499": 130
+        },
+        {
+          "plate": 42,
+          "description": "Poliphilus looking through bower as Polia approaches",
+          "page_1499": 132
+        },
+        {
+          "plate": 43,
+          "description": "Poliphilus and Polia retreating from bower",
+          "page_1499": 139
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "labyrinth",
@@ -1702,14 +1608,17 @@
       "id": "XI",
       "n": 11,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        141,
+        146
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
       "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "chess",
@@ -1734,15 +1643,54 @@
       "id": "XII",
       "n": 12,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        147,
+        152
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 44,
+          "description": "Triumphal car with Europa reliefs",
+          "page_1499": 149
+        },
+        {
+          "plate": 45,
+          "description": "Relief: Rape of Europa",
+          "page_1499": 149
+        },
+        {
+          "plate": 46,
+          "description": "Reliefs: Cupid shooting stars; Jupiter and Mars",
+          "page_1499": 150
+        },
+        {
+          "plate": 47,
+          "description": "First Triumph of Europa: centaurs, nymphs, musicians (left)",
+          "page_1499": 151
+        },
+        {
+          "plate": 48,
+          "description": "First Triumph of Europa (right continuation)",
+          "page_1499": 151
+        },
+        {
+          "plate": 49,
+          "description": "Triumph of Leda reliefs: Leda lying-in, eggs presented",
+          "page_1499": 152
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
+        {
+          "station": "artificial",
+          "title": "The Gardens of Glass and Silk",
+          "notes": 5
+        },
         {
           "station": "three_doors",
           "title": null,
@@ -1761,15 +1709,54 @@
       "id": "XIII",
       "n": 13,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        153,
+        157
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 50,
+          "description": "Relief: King offering eggs at Temple of Apollo",
+          "page_1499": 153
+        },
+        {
+          "plate": 51,
+          "description": "Reliefs: Cupid tracing figures; Judgment of Paris",
+          "page_1499": 154
+        },
+        {
+          "plate": 52,
+          "description": "Second Triumph of Leda: elephants, swan (left)",
+          "page_1499": 155
+        },
+        {
+          "plate": 53,
+          "description": "Second Triumph of Leda (right continuation)",
+          "page_1499": 155
+        },
+        {
+          "plate": 54,
+          "description": "Triumph of Danae reliefs: Acrisius, tower construction",
+          "page_1499": 156
+        },
+        {
+          "plate": 55,
+          "description": "Perseus with mirror and Medusa head; Pegasus",
+          "page_1499": 156
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
+        {
+          "station": "artificial",
+          "title": "The Gardens of Glass and Silk",
+          "notes": 5
+        },
         {
           "station": "three_doors",
           "title": null,
@@ -1866,14 +1853,93 @@
       "id": "XIV",
       "n": 14,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        158,
+        176
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 56,
+          "description": "Reliefs: Venus and Mars freed; Jupiter comforts Cupid",
+          "page_1499": 158
+        },
+        {
+          "plate": 57,
+          "description": "Third Triumph of Danae: unicorns (left)",
+          "page_1499": 159
+        },
+        {
+          "plate": 58,
+          "description": "Festival of Bacchus reliefs: Jupiter and Semele",
+          "page_1499": 160
+        },
+        {
+          "plate": 59,
+          "description": "Third Triumph of Danae (right continuation)",
+          "page_1499": 159
+        },
+        {
+          "plate": 60,
+          "description": "Jupiter commits infant Bacchus to Mercury",
+          "page_1499": 160
+        },
+        {
+          "plate": 61,
+          "description": "Venus and Cupid before Jupiter; Psyche with lamp",
+          "page_1499": 161
+        },
+        {
+          "plate": 62,
+          "description": "Vase relief: Jupiter and the Heliades",
+          "page_1499": 161
+        },
+        {
+          "plate": 63,
+          "description": "Vintage scene with genii and young Bacchus",
+          "page_1499": 164
+        },
+        {
+          "plate": 64,
+          "description": "Fourth Triumph: Festival of Bacchus, panthers (left)",
+          "page_1499": 165
+        },
+        {
+          "plate": 65,
+          "description": "Festival of Bacchus with Silenus on ass (right)",
+          "page_1499": 165
+        },
+        {
+          "plate": 66,
+          "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
+          "page_1499": 166
+        },
+        {
+          "plate": 67,
+          "description": "Four Seasons relief: Spring (Venus and Cupid)",
+          "page_1499": 167
+        },
+        {
+          "plate": 68,
+          "description": "Four Seasons: Summer (Ceres with boy)",
+          "page_1499": 167
+        },
+        {
+          "plate": 69,
+          "description": "Four Seasons: Autumn (Wine God with ram)",
+          "page_1499": 167
+        },
+        {
+          "plate": 70,
+          "description": "Four Seasons: Winter (Jupiter Pluvius)",
+          "page_1499": 167
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "triumphs",
@@ -1893,14 +1959,17 @@
       "id": "XV",
       "n": 15,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        177,
+        180
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
       "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "triumphs",
@@ -1920,14 +1989,23 @@
       "id": "XVI",
       "n": 16,
       "book": 1,
-      "pages_1499": null,
+      "pages_1499": [
+        181,
+        188
+      ],
       "text_source": {
         "edition": "Dallington 1592",
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
-      "plates_from": "not-yet-attached",
+      "plates": [
+        {
+          "plate": 71,
+          "description": "Worship of Priapus with nineteen female and five male figures",
+          "page_1499": 185
+        }
+      ],
+      "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "priapus",
@@ -1948,7 +2026,7 @@
       "n": 17,
       "book": 1,
       "pages_1499": [
-        193,
+        189,
         224
       ],
       "text_source": {
