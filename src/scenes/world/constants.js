@@ -513,6 +513,12 @@ export const HERBS = {
   mint:         { form: 'serrated', green: '#2e5e2a', light: '#5a8e44', flower: '#c8a0d8', fsize: 5, stems: 7, h: 0.7 },
   waterflower:  { form: 'oval',     green: '#3c6a2c', light: '#6a9a4a', flower: '#f6f2d0', fsize: 7, stems: 6, h: 0.6, second: '#f0d040' },
   nettle:       { form: 'serrated', green: '#254a1c', light: '#3e6e2c', flower: '#8a9a6a', fsize: 3, stems: 6, h: 0.9 },
+  // The two the dividing spring's banks are hung with (1499 ll. 2793-2800).
+  // Both reuse forms the herb painter already draws, so they cost no new code:
+  // maidenhair is a fine fern, cymbalaria a creeping rosette with a small
+  // lilac flower -- ivy-leaved toadflax, the plant that grows out of wet wall.
+  maidenhair:   { form: 'fern',     green: '#2f5a2c', light: '#63a04a', flower: '#3a5a2e', fsize: 2, stems: 9, h: 0.42 },
+  cymbalaria:   { form: 'rosette',  green: '#33643a', light: '#5c9a5a', flower: '#b89ad0', fsize: 5, stems: 6, h: 0.3, second: '#e8e0f0' },
   thistle:      { form: 'spiky',    green: '#5a7a5a', light: '#8aa68a', flower: '#8a4aa8', fsize: 9, stems: 5, h: 0.95 },
   sowthistle:   { form: 'spiky',    green: '#3e6a30', light: '#6a9a4a', flower: '#f0d030', fsize: 7, stems: 5, h: 0.85 },
   goatsbeard:   { form: 'blade',    green: '#5a7a40', light: '#8aa860', flower: '#e8e2c0', fsize: 10, stems: 6, h: 0.9 },

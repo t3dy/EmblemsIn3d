@@ -14,7 +14,7 @@ import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=5';
-import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=3';
+import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=4';
 
 export const Nature = {
   // ── The pleasures of the garden (PLEASURES.md) ───────────────────────────
@@ -781,6 +781,91 @@ export const Nature = {
     }
   },
 
+  // ── The spring that divides right and left (ch. VI) ──────────────────────
+  //
+  // 1499 ll. 2793-2800: a broad vein of clear living water wells up and,
+  // dividing, makes two little running streams, one to the right hand and the
+  // other to the left; the banks are stone and shade, the straddling roots laid
+  // bare, and hung with maidenhair and cymbalaria. Dallington pp. 90-92 for the
+  // same ground, and for the umbriphilous herbs already built in the shaded
+  // walk next door.
+  //
+  // WHICH IS THE RIGHT HAND. The book is directional and this project has been
+  // caught by that before -- the wolf stood on the wrong side of the valley for
+  // months because DIRECTIONS.md took Dallington's "left hand" over the 1499's
+  // "alla parte dextra". So, derived rather than assumed: Poliphilo comes up
+  // from the fields station at (-40, 41) and faces NORTH, along +z. In a
+  // right-handed, Y-up frame the right hand is forward x up, and (0,0,1) x
+  // (0,1,0) = (-1,0,0). Facing north, his right is -x. The DEXTER stream is
+  // therefore the western one, and it is named so in the roll-up.
+  _buildDividingSpring() {
+    const SX = -40, SZ = 56;              // in view from the fields station
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 233.3) * 43758.5453; return v - Math.floor(v); };
+    const stone = woodcut ? S.mat({ tone: 0.16 }) : S.mat({ color: 0x8a8274, roughness: 0.95 });
+    const wet   = woodcut ? S.mat({ tone: 0.3 })  : S.mat({ color: 0x5c5a4a, roughness: 0.99 });
+
+    // the head: a low outcrop the water comes out of, and the basin it fills
+    for (let i = 0; i < 9; i++) {
+      const a = -0.9 + rnd(i, 1) * 3.4;
+      const r = 1.5 + rnd(i, 2) * 0.7;
+      const g = new THREE.DodecahedronGeometry(0.45 + rnd(i, 3) * 0.5, 0);
+      g.setIndex(Array.from({ length: g.attributes.position.count }, (_, k) => k));
+      const b = this._m(g, i % 2 ? stone : wet, SX + Math.sin(a) * r, 0.22 + rnd(i, 4) * 0.3, SZ + 0.9 + Math.cos(a) * r * 0.6, { outline: true });
+      b.rotation.set(rnd(i, 5) * 3, rnd(i, 6) * 3, rnd(i, 7) * 3);
+      b.scale.set(1, 0.6 + rnd(i, 8) * 0.4, 1);
+    }
+    const water = this._waterMat();
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(1.15, 14), water, SX, 0.09, SZ, { rx: -Math.PI / 2, cast: false }), rate: 0.10 });
+    this._caustics(SX, 0.09, SZ, 1.1, 0.07);
+
+    // the two streams. The geometry is rotated rather than the mesh, so the
+    // yaw is baked and nothing has to fight Euler order to lie flat.
+    const LEN = 15, WIDE = 1.7;
+    for (const side of [-1, 1]) {
+      const yaw = side * 0.62;                       // -x is dexter; see above
+      const g = new THREE.PlaneGeometry(WIDE, LEN);
+      g.rotateX(-Math.PI / 2); g.rotateY(yaw);
+      const cx = SX + Math.sin(yaw) * (LEN / 2) * -1;
+      const cz = SZ - Math.cos(yaw) * (LEN / 2);
+      const m = this._m(g, water, cx, 0.07, cz, { cast: false });
+      m.material.userData = m.material.userData || {};
+      this._waters.push({ m, rate: 0.07 });
+      // stone kerbs either bank, and the wet margin between kerb and water
+      for (const b of [-1, 1]) {
+        const kg = new THREE.BoxGeometry(0.34, 0.26, LEN);
+        kg.rotateY(yaw);
+        const ox = Math.cos(yaw) * b * (WIDE / 2 + 0.2);
+        const oz = Math.sin(yaw) * b * (WIDE / 2 + 0.2);
+        this._m(kg, stone, cx + ox, 0.13, cz + oz, { outline: true });
+      }
+      // maidenhair and cymbalaria along the banks, as the text hangs them
+      for (let i = 0; i < 11; i++) {
+        const t = (i + 0.5) / 11;
+        const along = (t - 0.5) * LEN;
+        const b = i % 2 ? 1 : -1;
+        const hx = cx + Math.sin(yaw) * -along + Math.cos(yaw) * b * (WIDE / 2 + 0.45);
+        const hz = cz + Math.cos(yaw) *  along + Math.sin(yaw) * b * (WIDE / 2 + 0.45);
+        const kind = i % 3 === 0 ? 'cymbalaria' : 'maidenhair';
+        const hh = kind === 'cymbalaria' ? 0.3 : 0.42;
+        const card = this._m(new THREE.PlaneGeometry(0.5, hh), this._herbMat(kind), hx, hh / 2, hz, { cast: false });
+        card.rotation.y = rnd(i, 9 + side) * 3.1;
+      }
+    }
+
+    // "the straddling roots laid bare": an alder over the head of the spring,
+    // with its roots arched clear of the scour the water has cut under them
+    this._tree(SX - 2.2, SZ + 2.6, 1.15, 'laurel');
+    for (let i = 0; i < 5; i++) {
+      const a = 0.5 + i * 0.5;
+      const rt = this._m(new THREE.TorusGeometry(0.55 + rnd(i, 12) * 0.3, 0.075, 5, 9, Math.PI), this._trunkMat,
+        SX - 2.2 + Math.cos(a) * 0.9, 0.04, SZ + 2.6 + Math.sin(a) * 0.9, { cast: false });
+      rt.rotation.set(0, a + 1.2, 0);
+      rt.scale.set(1, 0.55, 1);
+    }
+  },
+
   _tree(x, z, s = 1, species = null) {
     // The primitive variant is the founding manifesto look, kept selectable
     // (DECISIONS.md, 2026-09-05). It used to be the woodcut register's default;
@@ -956,6 +1041,9 @@ export const Nature = {
       // there. This was a 2.8 m strip at the foot of the rock, so grass grew
       // over the whole approach the reader actually walks.
       rect(-15.5, 15.5, 5.5, 19.5),      // Three Doors: the whole stony seat
+      // the dividing spring and its two channels: water, stone kerb and wet
+      // margin, so no meadow
+      rect(-49, -31, 47, 58),
       rect(-19, 19, 24.2, 27.8),         // Great Portal piers
       rect(-120, 120, 210, 435),         // dark-wood duff (moved with the wood)
       // Ploughed ground is ploughed: meadow grass must not grow out of the

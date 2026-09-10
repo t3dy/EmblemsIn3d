@@ -39,17 +39,17 @@ import {
   TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS, isDescendantOf,
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
-} from './world/constants.js?v=3';
+} from './world/constants.js?v=4';
 import { Materials } from './world/materials.js?v=5';
-import { Nature } from './world/nature.js?v=9';
-import { Approach } from './world/approach.js?v=5';
-import { Portal } from './world/portal.js?v=13';
-import { Palace } from './world/palace.js?v=4';
-import { Triumphs } from './world/triumphs.js?v=3';
-import { Tombs } from './world/tombs.js?v=3';
+import { Nature } from './world/nature.js?v=10';
+import { Approach } from './world/approach.js?v=6';
+import { Portal } from './world/portal.js?v=14';
+import { Palace } from './world/palace.js?v=5';
+import { Triumphs } from './world/triumphs.js?v=4';
+import { Tombs } from './world/tombs.js?v=4';
 import { Temple } from './world/temple.js?v=1';
-import { Cythera } from './world/cythera.js?v=3';
-import { Rollup } from './world/rollup.js?v=4';
+import { Cythera } from './world/cythera.js?v=4';
+import { Rollup } from './world/rollup.js?v=5';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
@@ -277,6 +277,9 @@ export class HPWorldScene {
     if (lit) this._buildMotes();
     if (lit) this._buildMeadow();
     this._buildSecondNature();
+    // ch. VI: the water that divides right and left, between the worked fields
+    // and the wood. See world/nature.js _buildDividingSpring.
+    this._buildDividingSpring();
     // The pleasures of the garden (PLEASURES.md), from what Poliphilo says when
     // he meets them: birds seen and not heard, seats of flowering turf, and the
     // fume that is the only way scent can reach a screen.
