@@ -558,6 +558,129 @@ export const Triumphs = {
   // Relief is drawn, not lit: each shape is painted once dark and offset down,
   // then once light and offset up, which is how a chiselled edge catches the
   // sun. The figures are silhouettes, because that is what low relief is.
+  // ── Named relief scenes ─────────────────────────────────────────────────
+  //
+  // Returns true if it drew, so _reliefTexture knows to skip its seeded crowd.
+  //
+  // THE FORGE (Dallington pp. 58-60), cut on the right-hand stylobate of the
+  // porch. The chapter describes it figure by figure: a middle-aged smith of
+  // churlish countenance with an unshapely beard, in a goatskin apron knotted
+  // behind and hanging between his legs, seated on a stone at an anvil fixed on
+  // a knotty stump, his hammer raised over a brigandine of burning metal;
+  // before him a winged goddess holding her naked infant on her thighs, her
+  // foot set on a stone beside a furnace sunk in a hollow with a fierce fire in
+  // it; beside them a knight in brass armour with the head of Medusa on the
+  // breastplate, a baldric across his chest, a half-pike raised and a
+  // high-crested helmet; and behind the smith a young man in silk, seen only
+  // from the breast up over the smith's bowed head.
+  //
+  // Vulcan, Venus, Cupid and Mars: the quarrel the whole book is about, cut on
+  // the gate you go in by. It is the most fully described picture in chapters
+  // III-IV and it was standing in for a seeded crowd until now.
+  _reliefScene(x, W, H, carve, scene) {
+    if (!/forge of Vulcan/i.test(scene)) return false;
+    const GY = H - 30;                       // the ground the figures stand on
+
+    carve(() => {
+      x.lineCap = 'round'; x.lineJoin = 'round';
+
+      // the young man in silk, behind, only from the breast up
+      x.beginPath(); x.arc(104, GY - 94, 8.5, 0, 7); x.fill();
+      x.beginPath();
+      x.moveTo(90, GY - 74); x.quadraticCurveTo(104, GY - 90, 118, GY - 74);
+      x.lineTo(118, GY - 64); x.lineTo(90, GY - 64); x.closePath(); x.fill();
+
+      // the smith: head, the beard turning into his chin, the bowed torso
+      x.beginPath(); x.arc(140, GY - 72, 11, 0, 7); x.fill();
+      x.beginPath();
+      x.moveTo(131, GY - 66); x.quadraticCurveTo(140, GY - 48, 149, GY - 66);
+      x.closePath(); x.fill();
+      x.beginPath();
+      x.moveTo(126, GY - 18);
+      x.quadraticCurveTo(121, GY - 48, 135, GY - 60);
+      x.lineTo(153, GY - 56);
+      x.quadraticCurveTo(160, GY - 38, 156, GY - 18);
+      x.closePath(); x.fill();
+      // the goatskin apron, hung down between his legs
+      x.beginPath();
+      x.moveTo(131, GY - 20); x.lineTo(153, GY - 20);
+      x.lineTo(149, GY + 4); x.lineTo(135, GY + 4); x.closePath(); x.fill();
+      x.fillRect(119, GY - 2, 36, 8);                    // the stone he sits on
+      // the arm, and the hammer held up as if striking
+      x.lineWidth = 7;
+      x.beginPath(); x.moveTo(152, GY - 50); x.lineTo(178, GY - 74); x.stroke();
+      x.lineWidth = 5;
+      x.beginPath(); x.moveTo(178, GY - 74); x.lineTo(198, GY - 82); x.stroke();
+      x.fillRect(194, GY - 92, 17, 12);                  // the hammer's head
+
+      // the anvil on its knotty stump, and the burning work on it
+      x.fillRect(168, GY - 32, 42, 9);
+      x.beginPath();
+      x.moveTo(179, GY - 23); x.lineTo(201, GY - 23);
+      x.lineTo(197, GY - 10); x.lineTo(183, GY - 10); x.closePath(); x.fill();
+      x.fillRect(176, GY - 10, 28, 12);                  // the stump
+      x.beginPath();                                      // a knot in it
+      x.arc(172, GY - 4, 5, 0, 7); x.fill();
+      x.fillRect(176, GY - 40, 26, 8);                   // the brigandine being beaten
+
+      // the winged goddess, seated, the infant on her thighs
+      x.beginPath();                                      // the wing
+      x.moveTo(238, GY - 60);
+      x.quadraticCurveTo(214, GY - 104, 240, GY - 112);
+      x.quadraticCurveTo(244, GY - 86, 252, GY - 62);
+      x.closePath(); x.fill();
+      x.beginPath(); x.arc(266, GY - 78, 10.5, 0, 7); x.fill();   // head
+      x.beginPath();                                       // the hair dressed high
+      x.moveTo(255, GY - 84); x.quadraticCurveTo(266, GY - 98, 277, GY - 84);
+      x.closePath(); x.fill();
+      x.beginPath();                                       // body and lap
+      x.moveTo(252, GY - 14);
+      x.quadraticCurveTo(250, GY - 48, 260, GY - 66);
+      x.lineTo(275, GY - 64);
+      x.quadraticCurveTo(285, GY - 44, 288, GY - 18);
+      x.closePath(); x.fill();
+      x.fillRect(276, GY - 18, 22, 7);                    // the thighs, and the stone under her foot
+      x.fillRect(296, GY - 8, 16, 10);
+      x.beginPath(); x.arc(283, GY - 40, 7, 0, 7); x.fill();      // the infant
+      x.beginPath();
+      x.moveTo(277, GY - 32); x.quadraticCurveTo(284, GY - 22, 291, GY - 32);
+      x.closePath(); x.fill();
+
+      // the furnace sunk in its hollow, and the fire in it
+      x.fillRect(316, GY - 6, 30, 10);
+      x.beginPath();
+      x.moveTo(322, GY - 6);
+      x.quadraticCurveTo(326, GY - 30, 331, GY - 14);
+      x.quadraticCurveTo(336, GY - 34, 340, GY - 6);
+      x.closePath(); x.fill();
+
+      // the knight: crested helmet, Medusa on the breast, baldric, half-pike
+      x.beginPath(); x.arc(400, GY - 82, 10.5, 0, 7); x.fill();
+      x.beginPath();                                       // the high crest
+      x.moveTo(391, GY - 90);
+      x.quadraticCurveTo(400, GY - 118, 412, GY - 96);
+      x.quadraticCurveTo(404, GY - 96, 400, GY - 90);
+      x.closePath(); x.fill();
+      x.beginPath();                                       // the cuirass
+      x.moveTo(386, GY - 6);
+      x.quadraticCurveTo(383, GY - 44, 392, GY - 70);
+      x.lineTo(410, GY - 70);
+      x.quadraticCurveTo(419, GY - 44, 416, GY - 6);
+      x.closePath(); x.fill();
+      x.lineWidth = 4;                                     // the baldric across the breast
+      x.beginPath(); x.moveTo(388, GY - 58); x.lineTo(416, GY - 34); x.stroke();
+      x.beginPath(); x.arc(401, GY - 48, 6.5, 0, 7); x.fill();    // the Medusa head
+      x.lineWidth = 6;                                     // the half-pike, point up
+      x.beginPath(); x.moveTo(430, GY + 2); x.lineTo(438, GY - 96); x.stroke();
+      x.beginPath();
+      x.moveTo(433, GY - 96); x.lineTo(438, GY - 116); x.lineTo(443, GY - 96);
+      x.closePath(); x.fill();
+      x.lineWidth = 6;                                     // the brawny arm holding it
+      x.beginPath(); x.moveTo(414, GY - 56); x.lineTo(432, GY - 44); x.stroke();
+    });
+    return true;
+  },
+
   _reliefTexture(scene, word) {
     this._reliefs = this._reliefs || {};
     const key = scene + '|' + (word || '');
@@ -584,10 +707,15 @@ export const Triumphs = {
       }
     });
 
+    // Where the book actually describes a picture, draw THAT picture. The seeded
+    // crowd below is the right answer for the scores of reliefs the text only
+    // gestures at, and the wrong one for the few it sets out figure by figure.
+    const drewNamed = this._reliefScene(x, W, H, carve, scene);
+
     // a rough seeded crowd of relief figures for the scene
     const rnd = (i, k) => { const v = Math.sin(i * 61.7 + k * 137.3 + scene.length * 7.1) * 43758.5453; return v - Math.floor(v); };
     const N = word ? 3 : 5;
-    carve(() => {
+    if (!drewNamed) carve(() => {
       for (let i = 0; i < N; i++) {
         const fx = 70 + i * ((W - 190) / Math.max(1, N - 1));
         const fh = 92 + rnd(i, 1) * 20;
