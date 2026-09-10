@@ -1,4 +1,4 @@
-<!-- tokens: ~3,304 -->
+<!-- tokens: ~3,325 · read for: the five figure rungs, the Botticelli projection, and what each costs -->
 # RENDERING MODELS — how the nymphs got bodies
 
 *Written 2026-09-09 because Ted asked for it: "give me an output

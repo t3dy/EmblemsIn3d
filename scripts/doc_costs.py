@@ -29,6 +29,12 @@ END = "<!-- END doc-costs -->"
 # short — they are a label, not a summary.
 READ_FOR = {
     "ROUTER.md":            "the task table; read this first, then two or three files",
+    # Added 2026-09-09. Both of these carried a hand-written hint in their header
+    # and this script kept silently deleting it on every run, because a file with
+    # no entry here gets the bare token count. If you write a "read for" line by
+    # hand, put it here instead -- the header is generated.
+    "HANDOVER.md":          "where this project stands and what to do next",
+    "RENDERINGMODELSBLINGUSOUT.md": "the five figure rungs, the Botticelli projection, and what each costs",
     "CLAUDE.md":            "the seven rules (auto-loaded; you already have it)",
     "ENGINEERING.md":       "how this project is built, measured and handed over",
     "TICKETS.md":           "the engineering queue (generated)",

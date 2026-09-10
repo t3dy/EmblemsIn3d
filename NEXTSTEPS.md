@@ -1,4 +1,4 @@
-<!-- tokens: ~10,141 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~10,510 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -56,6 +56,26 @@ leaves, 249,936 words, live as a parallel text at `research/translation.html` an
 `HPTranslation.txt`. The other window had taken it to 453 pages; the ten that remained were the
 front matter, and they are done. **The full-text reading mode is no longer blocked by anything
 but building it**, and is the largest thing left on this list.
+
+**The piazza is built and sited from the book** (2026-09-09, later still). Ted's call on
+`bug-piazza-wrong-side-of-portal` was *move the piazza*, and it is done and deployed at
+`main.js?v=377`: the winged horse, the elephant and the colossus all stand BEFORE the Great
+Portal now, the tour's own order crosses the gate once instead of three times, and the
+chapter III architecture that call was blocking is built with them — the four-square court of
+thirty paces, both areostyle colonnades (east standing, west fallen, because the fallen row is
+the heap Poliphilo climbs to reach the colossus), and the plane trees, wild olives, pines and
+brambles at their feet. `DECISIONS.md` call 51.
+
+Two things that came out of it and are NOT done:
+
+- **The gardens of glass and silk are on the wrong side of the gate**, the same error in the
+  other direction — chapters XII–XIII, standing 26 m before the portal. They were pushed 30 m
+  down the valley to clear the piazza, which is a holding position and not a fix. It waits on
+  room on the palace side: ticket `bug-artificial-gardens-wrong-side-of-portal`, which is now
+  the second thing blocked behind `bug-court-has-no-room-left`.
+- **The colonnade capitals are plain drums.** Dallington p. 38 gives them waved shell-work with
+  the corners turned in *"like a curled locke of hayre, or the vpper head of a base Viall"* —
+  an Ionic volute described by a man who had never been given the word for it.
 
 ### 0-A. Ted's open call, 2026-09-09: read the whole book while you walk it
 
