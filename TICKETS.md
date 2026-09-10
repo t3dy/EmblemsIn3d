@@ -6,7 +6,7 @@
 
 ---
 
-**36 tickets** — 6 open, 3 declined, 27 done. By kind: 16 debt, 9 bug, 7 infra, 2 perf, 1 question, 1 feat.
+**37 tickets** — 6 open, 3 declined, 28 done. By kind: 16 debt, 10 bug, 7 infra, 2 perf, 1 question, 1 feat.
 
 ---
 
@@ -418,6 +418,29 @@ Every other point light in the world -- eleven of them, in palace.js, portal.js,
 **Files.** `src/data/tours.json`
 
 **See.** DIRECTIONS.md#3
+
+
+### `bug-chapter-xi-tour-misattributed` — The chess match and Logistica and Thelemia were filed under chapter XI; both are chapter X
+
+**✅ done** · bug · priority 2 · hp-researcher
+ · opened 2026-09-09, closed 2026-09-09
+
+
+**Evidence.** Found 2026-09-09 by the chapter XI research pass, and it is the reason that chapter went unread for so long. tours.json tagged two stops -- The Human Chess Match and Logistica and Thelemia -- as chapter XI. Both are chapter X. The chess ballet is at 1499 p. 119 ("Through the way of the curtains there entered thirty-two young girls, of whom sixteen were clothed in cloth of gold") and page_119.md's own heading says Chapter X; the queen's dismissal and the appointment of the two handmaids follow it directly.
+
+Two consequences, and the first is the expensive one:
+
+1. coverage.json derives each chapter's tour_stops from those tags, so chapter XI's row showed TWO stops and eleven notes. It looked covered. It had never been read, has no plate of its own, and contains the meeting with the torch-bearing nymph and five pages of blazon -- one of the hinges of Book I. This is rule 6 in a new costume: not a plate-driven check this time but a TOUR-driven one, and the same blind spot.
+
+2. build_reading.py maps chapter -> station from the same tags, so a reader who opened the reading mode at 1499 pp. 141-146 was stood at the chess board while the text described Polia's hair.
+
+**Acceptance.** No tour stop claims a chapter whose 1499 pages it does not cover, and reading.json puts pages 141-146 at a station where the world actually stages that text.
+
+**Resolution.** Both stops retagged X. Chapter XI then had no stop at all, which build_reading reported as NO STATION -- honest, but it left those pages inheriting chapter X's. So the Polia's Garden stop, which is where the world does stage that meeting, was widened from XIII to XI-XIII; build_reading splits ranges on the dash and keeps the endpoints, so it claims XI and XIII and leaves XII to the artificial gardens' own stop. Verified in the regenerated reading.json: pp. 141-146 now resolve to `polia`, p. 147 to `artificial`. The chapter is enumerated (11 features) and five of them are built.
+
+**Files.** `src/data/tours.json` · `src/data/reading.json` · `research/coverage.json`
+
+**See.** our translation 1499 pp. 119, 141-146 · COVERAGE.md ch. X and XI · ROUTER.md rule 6
 
 
 ### `bug-fields-dark-wedge` — The fields station stands 2.4 m from the flank of the valley mountain

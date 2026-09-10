@@ -13,6 +13,7 @@
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { METALS, SENSE_NYMPHS } from './constants.js?v=7';
+import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Palace = {
   // ── The Court of Queen Eleuterylida (free will) ───────────────────────────
@@ -1005,6 +1006,147 @@ export const Palace = {
     }
   },
 
+  // ── Polia dressed as chapter XI dresses her ──────────────────────────────
+  //
+  // Enumerated 2026-09-09. The world had already built the right MOMENT and put
+  // the wrong clothes on it: constants.js describes this figure's pose as "in
+  // the green arbour, before he has recognised her", which is chapter XI word
+  // for word -- *"Whom at the first sight I suspected to be certainly Polia;
+  // but the condition of the unaccustomed dress and place dissuaded me"* (our
+  // p. 143). The unaccustomed dress is the reason he fails to know her, so the
+  // dress is not decoration here. It is the plot.
+  //
+  // Five pages of blazon, and everything below is stated, counted or named:
+  //
+  //   THE NECKLACE (p. 145), given stone by stone outward from the middle --
+  //   "in the middle between two great pearls, was threaded a flashing ruby,
+  //   most round; beyond the pearls on either side there followed two blazing
+  //   sapphires, and then again two eastern pearls ... two lightning emeralds,
+  //   and again two pearls, and then two most shining jacinths", all "of a
+  //   pill-like form, most just, and of the thickness of a berry". Thirteen
+  //   stones, symmetrical. This is the same kind of object as the hieroglyph
+  //   bands: a stated sequence, and seeding it would throw away the only thing
+  //   that makes it worth building at all.
+  //
+  //   THE GIRDLE OF CYTHEREA (p. 143) -- "this raised and tucked-up garment was
+  //   fastened at the first golden cord with the sacred girdle of holy
+  //   Cytherea". A SECOND band over the gold cord the figure already wears, not
+  //   a recolouring of it: the book is explicit that there are two.
+  //
+  //   THE THREE PEARL PINS (p. 144) -- the gown "unsewn, or cut apart, and
+  //   joined in three places by three little pins, which were three thickest
+  //   pearls braided with dark blue silk", on each side, "showing her shift
+  //   between the distance of one pearl and another". Counted, and with a
+  //   stated reason, which is what makes it drawable.
+  //
+  //   THE HAIR (p. 145) -- "spread out behind her sparkling neck ... restlessly
+  //   stretching over her shapely back beyond the turning of her knees". Length
+  //   is the claim, and it is what separates her silhouette from every other
+  //   nymph in this world, all of whom wear the chess dancers' tresses.
+  //
+  //   THE WREATH (p. 145) -- "a wreath of fragrant amethyst violets, hanging a
+  //   little above her festive forehead". Cast.GARLANDS.violet is the same
+  //   wreath and all thirty-two chess dancers wear it; the woman the book
+  //   actually puts it on did not.
+  //
+  // NOT passed as Cast.nymph's own `garland`, and that is deliberate: setting
+  // it there forces the built head and drops her off the PROJECTED rung, which
+  // is the default Ted chose (DECISIONS.md 50, "bling us out"). Drawn here as
+  // geometry instead, so she keeps her Botticelli surface and gains the book's
+  // wreath. Skipped entirely on the flat `card` rung, where solid jewellery
+  // would hang in the air in front of a painted panel.
+  _dressPoliaAsChapterXI(g, h) {
+    if (isVariant('figure', 'card', this.style.key)) return;
+    const S = this.style, lit = S.key !== 'woodcut';
+    const gem = (hex, rough, metal) => (lit
+      ? S.mat({ color: hex, roughness: rough, metalness: metal })
+      : S.mat({ tone: 0.12 }));
+    const RUBY = gem(0xb0142c, 0.16, 0.1), PEARL = gem(0xf2ece0, 0.28, 0.05),
+          SAPPH = gem(0x1f3f9a, 0.14, 0.1), EMER = gem(0x0f7a45, 0.15, 0.1),
+          JACIN = gem(0xd06a18, 0.18, 0.1);
+    const GOLD = lit ? S.mat({ color: 0xd8b048, metalness: 0.8, roughness: 0.3 }) : S.mat({ tone: 0.06 });
+    const HAIR = lit ? S.mat({ color: 0xc8a24a, roughness: 0.82 }) : S.mat({ tone: 0.22 });
+    const VIOLET = lit ? S.mat({ color: 0x6a4aa8, roughness: 0.85 }) : S.mat({ tone: 0.3 });
+
+    // The strand, outward from the ruby. One entry per stone, so the order in
+    // the code is the order in the book and a reader can check it.
+    const STRAND = [RUBY, PEARL, SAPPH, PEARL, EMER, PEARL, JACIN];
+    const NY = 1.30 * h, NR = 0.088 * h;           // throat height, and the arc it hangs on
+    for (let i = 0; i < STRAND.length; i++) {
+      for (const side of (i === 0 ? [0] : [-1, 1])) {
+        const a = side * i * 0.235;                 // spread along the front of the throat
+        // "of the thickness of a berry": the pearls a little the larger, as the
+        // book calls two of them GREAT and the eastern ones merely eastern
+        const r = (STRAND[i] === PEARL && i === 1) ? 0.017 * h : 0.014 * h;
+        this._m(new THREE.SphereGeometry(r, 8, 6), STRAND[i],
+          Math.sin(a) * NR, NY - Math.cos(a) * 0.012 * h, -Math.cos(a) * NR,
+          { parent: g, cast: false });
+      }
+    }
+
+    // The girdle of Cytherea, over the gold cord the figure already wears at
+    // 0.978h. Set below it, and wider, so both read.
+    const cest = this._m(new THREE.TorusGeometry(0.118 * h, 0.011 * h, 6, 22), GOLD,
+      0, 0.930 * h, 0, { parent: g, cast: false });
+    cest.rotation.x = Math.PI / 2;
+
+    // The three pearl pins a side, with the dark blue silk they are braided
+    // with, closing a gown that is cut apart from the girdle to the hem.
+    const SILK = lit ? S.mat({ color: 0x1e2a5a, roughness: 0.9 }) : S.mat({ tone: 0.34 });
+    for (const sx of [-1, 1]) {
+      for (const y of [0.86, 0.70, 0.54]) {
+        this._m(new THREE.SphereGeometry(0.016 * h, 8, 6), PEARL, sx * 0.132 * h, y * h, 0,
+          { parent: g, cast: false });
+        this._m(new THREE.BoxGeometry(0.010 * h, 0.12 * h, 0.006 * h), SILK,
+          sx * 0.133 * h, (y - 0.06) * h, 0, { parent: g, cast: false });
+      }
+    }
+
+    // The hair, poured down the back past the knees. The claim the book makes is
+    // LENGTH, so what matters is that it is seen to reach.
+    //
+    // Built as stacked segments that step OUTWARD as they descend, because the
+    // gown does. Cast.gownGeometry's profile runs r = 0.122h at the shoulder,
+    // pinches to 0.104h at the high waist and then flares to 0.184h at the
+    // knee -- so a fall hung straight down at a constant offset is inside the
+    // skirt for its whole lower half and invisible, which is exactly what the
+    // first attempt was: measured on the running page, not guessed. It also
+    // stands a little off the waist, which is what long hair actually does
+    // over a cinch.
+    // Starts BELOW the built chignon (which sits at 1.512h) and narrow, so it
+    // reads as hair coming off the nape rather than as a second head. The first
+    // version began at 1.30h and 0.100h wide, with an extra nape lobe on top of
+    // the chignon the figure already has, and from three-quarter front the two
+    // together were a brown mass wider than her face.
+    const FALL = [
+      [1.26, 0.132, 0.072], [1.12, 0.142, 0.098], [0.96, 0.152, 0.114],
+      [0.78, 0.168, 0.112], [0.60, 0.190, 0.096], [0.44, 0.206, 0.068],
+    ];
+    for (let i = 0; i < FALL.length; i++) {
+      const seg = FALL[i], nxt = FALL[i + 1] || [seg[0] - 0.16, seg[1] + 0.016, seg[2] * 0.7];
+      const m = this._m(new THREE.BoxGeometry(seg[2] * h, (seg[0] - nxt[0] + 0.02) * h, 0.042 * h),
+        HAIR, 0, (seg[0] + nxt[0]) / 2 * h, ((seg[1] + nxt[1]) / 2) * h,
+        { parent: g, cast: false });
+      m.rotation.x = Math.atan2(nxt[1] - seg[1], seg[0] - nxt[0]);
+    }
+    // No extra nape lobe: Cast.nymph already builds a chignon at 1.512h and a
+    // nape below it, and a third mass there was one too many.
+
+    // The wreath of amethyst violets on the brow, and the triangular parting it
+    // presses the crown into.
+    // Measured on the running page, not judged: at 1.596h and 0.013h the beads
+    // stood clear of the brow and read as a row of purple balls in the air. The
+    // head is a sphere of 0.100h scaled 0.94/1.08/0.96, so its surface at brow
+    // height is nearer 0.094h, and the projected Botticelli face sits a little
+    // lower on that sphere than a built face does.
+    for (let i = 0; i <= 15; i++) {
+      const a = Math.PI * (1.00 + (1.00 * i) / 15);
+      this._m(new THREE.SphereGeometry(0.0105 * h, 6, 5), VIOLET,
+        Math.cos(a) * 0.093 * h, (1.572 + Math.sin(a) * 0.004) * h, Math.sin(a) * 0.090 * h,
+        { parent: g, cast: false });
+    }
+  },
+
   _buildPoliaGarden() {
     const CX = 19, CZ = 20;
     this._m(new THREE.BoxGeometry(11, 0.22, 10), this._darkStoneMat, CX, 0.11, CZ, { cast: false });
@@ -1013,9 +1155,22 @@ export const Palace = {
     // 2026-09-07 from Dallington p. 200; see _buildJasmineArbour.
     this._buildJasmineArbour(CX, CZ);
 
-    // Polia and Poliphilo, and her torch
-    const polia = this.cast.nymph({ name: 'Polia', h: 1.0, robe: 0xe8ddc0, pose: 'offer' });
-    this._npc('polia', polia, CX + 0.9, CZ, Math.PI / 2, { label: 'Polia', sub: 'THE LONG-SOUGHT', labelY: 2.1, sway: 0.03 });
+    // Polia and Poliphilo, and her torch.
+    //
+    // THE GOWN IS THE BOOK'S, since 2026-09-09. Our p. 143: "a most fine cloth
+    // of green silk woven with a warp of gold (that most joyful colouring of
+    // the little feathers of a duck's neck)". She wore a cream, 0xe8ddc0,
+    // which is a colour nothing in the chapter supports; the gold trim the
+    // figure already carries at hem, neck and waist is the warp of gold.
+    // hair: the book is emphatic and repeats it -- "her most blonde head", the
+    // locks "seen no otherwise than as the finest threads of gold", "the
+    // remainder of her YELLOW hair" (our p. 145). Cast.nymph defaults to
+    // 0x4a3018, a dark brown, which is what she wore; and it also made the long
+    // fall added below the wrong colour for the head it comes out of.
+    const polia = this.cast.nymph({ name: 'Polia', h: 1.0, robe: 0x2f7050, pose: 'offer',
+      hair: 0xc8a24a });
+    this._dressPoliaAsChapterXI(polia, 1.0);
+    this._npc('polia', polia, CX + 0.9, CZ, Math.PI / 2, { label: 'Polia', sub: 'THE LONG-SOVGHT · NOT YET KNOWN', labelY: 2.1, sway: 0.03 });
     // named, so the card variant hands him Mercury — the one standing male
     // figure in the Primavera — rather than one of the Graces
     const poliphilo = this.cast.figure({ name: 'Poliphilo', h: 1.0, robe: 0x3a3a5a, pose: 'reach' });
@@ -1029,6 +1184,14 @@ export const Palace = {
     this._torch = flame;
     const tl = this.style.pointLight(0xff9040, 1.4, 6);
     if (tl) { tl.position.set(CX, 1.6, CZ - 0.8); this.scene.add(tl); this._pulses.push({ pl: tl, base: 1.4, phase: 0.8 }); }
+
+    // What this meeting is, said where it happens. Enumerated 2026-09-09: the
+    // world staged chapter XI's recognition scene in chapter XIV's arbour and
+    // never said so, so a reader had no way to tell which of the two meetings
+    // with a torch they were looking at.
+    this._plaque({ main: 'A NYMPH WITH A BVRNING TORCH',
+      sub: 'PARTING FROM THE FESTIVAL SHE CAME TOWARD HIM · WHOM AT THE FIRST SIGHT I SVSPECTED TO BE CERTAINLY POLIA · BVT THE CONDITION OF THE VNACCVSTOMED DRESS AND PLACE DISSVADED ME · CH. XI, OVR PP. 142-143' },
+      4.4, 0.46, CX, 0.6, CZ - 2.6, 0, true);
 
     // Rose hedges
     for (const sz of [-1, 1]) {

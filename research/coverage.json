@@ -153,7 +153,6 @@
       "Bridge",
       "ChessBallet",
       "ColossalHorse",
-      "Colossus",
       "Court",
       "Cythera",
       "CytheraIsle",
@@ -170,6 +169,7 @@
       "Motes",
       "NymphFountain",
       "Palace",
+      "Piazza",
       "PlanetaryPalace",
       "PoliaGarden",
       "Polyandrion",
@@ -568,7 +568,7 @@
         {
           "station": "horse",
           "title": "The Winged Horse of Unhappiness",
-          "notes": 11
+          "notes": 14
         },
         {
           "station": "colossus",
@@ -814,10 +814,7 @@
             "tour"
           ]
         }
-      ],
-      "build": {
-        "last_pass": "2026-09-09 piazza pass: the court, both colonnades, the wildwood, and the siting of all three monuments before the porch"
-      }
+      ]
     },
     {
       "id": "IV",
@@ -1762,6 +1759,16 @@
           "station": "labyrinth",
           "title": "The Palace, the Water-Labyrinth and the Banquet",
           "notes": 9
+        },
+        {
+          "station": "chess",
+          "title": "The Human Chess Match",
+          "notes": 11
+        },
+        {
+          "station": "quinta_essentia",
+          "title": "Logistica and Thelemia",
+          "notes": 8
         }
       ],
       "research": {
@@ -1972,25 +1979,166 @@
       },
       "plates": [],
       "plates_from": "page-range",
-      "tour_stops": [
+      "tour_stops": [],
+      "research": {
+        "status": "enumerated",
+        "enumerated_by": "read end to end against our own translation, session of 2026-09-09",
+        "date": "2026-09-09",
+        "note": "Chapter XI has NO PLATE of its own and, until this pass, no feature list -- and it looked covered, which is why it stayed unread. The reason it looked covered is a mistake in tours.json: the Human Chess Match and Logistica and Thelemia were both tagged chapter XI, so this chapter's row showed two tour stops. Both are chapter X. The chess ballet is at 1499 p. 119 -- \"Through the way of the curtains there entered thirty-two young girls, of whom sixteen were clothed in cloth of gold\" -- and page_119.md's own heading says Chapter X. Retagged in this pass; ticket bug-chapter-xi-tour-misattributed has the consequences.\n\nWhat the chapter actually contains is one of the hinges of Book I: the bath nymphs leave Poliphilo alone and kindled on a plain, he walks to the end of a flowery covering, an ample plain opens with a countless crowd of youth of BOTH KINDS keeping high festival, and out of that company a nymph comes to him with a BURNING TORCH in her hand. He suspects she is Polia and the strange dress and place talk him out of it. Then five pages of blazon -- gown, girdle, pearls, necklace stone by stone, wreath, hair, eyes -- and a closing quarrel between his eyes and his appetite.\n\nEleven features. The one that matters is xi-nymph-with-the-torch, and it is PARTIAL for an interesting reason: the world already builds a Polia holding a burning torch, and constants.js already describes her pose as \"in the green arbour, before he has recognised her\" -- which is this chapter's moment, word for word. She is simply sited three chapters later, in the jasmine arbour, with no festival behind her."
+      },
+      "features": [
         {
-          "station": "chess",
-          "title": "The Human Chess Match",
-          "notes": 11
+          "id": "xi-left-alone-on-the-plain",
+          "name": "The bath nymphs vanish and leave him alone in a most pleasant plain",
+          "kind": "place",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 141)",
+          "status": "unbuilt",
+          "note": "The chapter opens by emptying the stage. The wanton nymphs of the bath work him up -- \"my soul, being wholly inflamed with a new longing ... every headlong and slippery appetite of mine stirred to love\" -- and then, \"without my noticing, left me alone, so kindled, in a most pleasant plain.\" The abandonment is the point and it is composed, like the spacious plain of chapter I: a place defined by who has just gone out of it. The world has the bath (_buildBath) and it has plains, but nothing stages the vanishing.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
         },
         {
-          "station": "quinta_essentia",
-          "title": "Logistica and Thelemia",
-          "notes": 8
+          "id": "xi-flowery-covering",
+          "name": "The flowery covering he walks under, and comes to the end of",
+          "kind": "place",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 142)",
+          "status": "unbuilt",
+          "note": "He goes on sighing \"beneath that greenness\" and then \"without noticing, I came to the end of that flowery covering\" -- and the plain with the festival opens beyond it. A flowered tunnel that ENDS, and the ending is the reveal. The world has two arbours already (_buildJasmineArbour, _buildPoliaArcade) so the member is built and only the siting is missing. NB the 1499 draws this: woodcut_catalog #42, p. 132, \"Poliphilus looking through bower as Polia approaches\", which the plate index files under chapter X.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "xi-festival-on-the-plain",
+          "name": "A countless crowd of youth of both kinds keeping high festival",
+          "kind": "people",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 142)",
+          "status": "unbuilt",
+          "note": "\"A countless crowd of youth of both kinds keeping high festival, with sounding voices and with the melodies of various instruments, with comely and playful dancings and clappings, and with much and most joyful gladness, solacing themselves in troops upon a most ample plain.\" This is the company the torch-bearer parts from, so it is not scenery: it is what makes her singling him out mean anything. BOTH KINDS is the detail to keep -- it is the first mixed company in the book. Expensive: a crowd is figures, and figures are the most costly objects in this world. Read RENDERINGMODELSBLINGUSOUT.md before costing it.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "xi-nymph-with-the-torch",
+          "name": "The nymph who parts from the festival with a burning torch, and is Polia",
+          "kind": "person",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (pp. 142-143)",
+          "status": "partial",
+          "note": "\"And behold, a Nymph, as it were notable and festive, parting from those with her burning torch in her hand, was directing her maidenly steps towards me\" -- and, at p. 143, \"Whom at the first sight I suspected to be certainly Polia; but the condition of the unaccustomed dress and place dissuaded me.\" The whole chapter turns on that suspended recognition. PARTIAL, and the partiality is a siting problem, not a modelling one: a Polia with a burning torch DOES stand in the world, in _buildPoliaGarden, and constants.js even labels her pose \"in the green arbour, before he has recognised her\" -- which is this moment. But she is sited in chapter XIV's jasmine arbour, with no festival to have parted from and no note saying which meeting this is. DRESSED 2026-09-09: she now wears what chapter XI dresses her in -- the green gown, the girdle of Cytherea, the necklace stone by stone, the violet wreath and the hair below the knees -- and a plaque beside her quotes the recognition that fails, so a reader can tell which of the two meetings with a torch this is. Still PARTIAL, and for the same reason as before: the festival she parts from does not exist, and she stands in chapter XIV's arbour.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._buildPoliaGarden (world/palace.js) -- sited in ch. XIV"
+        },
+        {
+          "id": "xi-green-gold-gown",
+          "name": "The gown: green silk shot with gold, over a white crimped shift",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (pp. 143-144)",
+          "status": "partial",
+          "note": "The COLOUR is built (2026-09-09): she wore a cream, 0xe8ddc0, which nothing in the chapter supports, and now wears 0x2f7050 -- the duck's-neck green of p. 143 -- with the gold trim Cast.nymph already carries at hem, neck and waist standing for the warp of gold. PARTIAL because the colour is only visible on the MODELLED and PRIMITIVE rungs: on the default projected rung a Botticelli cut-out supplies the surface and paints over it. And the gown's cut is still Cast.nymph's, not the book's -- the raised and tucked-up overfold, the fringed hem at the ankle, the jewelled arm-holes and the gold-leaf darts are all unbuilt.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._dressPoliaAsChapterXI (world/palace.js)"
+        },
+        {
+          "id": "xi-girdle-of-cytherea",
+          "name": "The sacred girdle of holy Cytherea, over the golden cord",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 143)",
+          "status": "built",
+          "note": "Built 2026-09-09: a second gold band at 0.930h, below and wider than the gold cord Cast.nymph already gives every figure at 0.978h, because p. 143 is explicit that there are TWO -- the garment is \"fastened at the first golden cord with the sacred girdle of holy Cytherea\". Verified on the running page from three sides.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._dressPoliaAsChapterXI (world/palace.js)"
+        },
+        {
+          "id": "xi-three-pearl-pins",
+          "name": "The gown unsewn at both sides and joined by three pearls on dark blue silk",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 144)",
+          "status": "built",
+          "note": "Built 2026-09-09: three pearls a side at 0.86h, 0.70h and 0.54h, each on a short bar of dark blue silk, closing a gown the book says is cut apart from the girdle down. Counted as the book counts them.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._dressPoliaAsChapterXI (world/palace.js)"
+        },
+        {
+          "id": "xi-necklace-gem-by-gem",
+          "name": "The necklace, named stone by stone outward from a central ruby",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 145)",
+          "status": "built",
+          "note": "Built 2026-09-09, TRANSCRIBED and not seeded: thirteen stones in the book's own order, outward from the ruby -- ruby, pearl, sapphire, pearl, emerald, pearl, jacinth on each side -- on an arc at the throat, each a sphere of a berry's thickness with the two great pearls a little the larger, as the text distinguishes them. The STRAND array in the code is one entry per stone so a reader can check the order against p. 145 without running anything. Reads plainly on the modelled rung; on the default PROJECTED rung the Botticelli pigment is busy and the gems are quiet.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._dressPoliaAsChapterXI (world/palace.js)"
+        },
+        {
+          "id": "xi-violet-wreath",
+          "name": "The wreath of fragrant amethyst violets, and the triangular parting",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 145)",
+          "status": "built",
+          "note": "Built 2026-09-09 as GEOMETRY on the brow, sixteen violets on an arc at 1.572h, hugging a head whose sphere is scaled 0.94/1.08/0.96. NOT passed as Cast.nymph's own `garland`, deliberately: that path forces the built head and would drop her off the PROJECTED rung, which is the default Ted chose (DECISIONS.md 50). Drawn separately she keeps the Botticelli surface AND gains the book's wreath. First attempt sat at 1.596h and 0.013h and read as a row of purple balls in the air -- seen on the running page, then seated.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._dressPoliaAsChapterXI (world/palace.js)"
+        },
+        {
+          "id": "xi-hair-below-the-knees",
+          "name": "Her loose hair, poured out behind and reaching beyond the knees",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 145)",
+          "status": "built",
+          "note": "Built 2026-09-09, and it took two tries, both measured. The fall is six stacked segments that step OUTWARD as they descend, from z 0.132h at the nape to 0.206h at the tip, reaching y 0.44h -- below the knee. The first version hung straight at a constant offset and was invisible for its whole lower half, because Cast.gownGeometry's profile flares from r 0.104h at the waist to 0.184h at the knee and the hair was inside the skirt. The second version added a nape lobe on top of the chignon the figure already has, and from three-quarter front the two together read as a second head; dropped. Her hair is also BLONDE now (0xc8a24a, was Cast.nymph's default 0x4a3018), which p. 145 insists on three times -- \"her most blonde head\", locks like \"the finest threads of gold\", \"her yellow hair\" -- and which the fall had made an inconsistency as well as an error.",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "HPWorldScene._dressPoliaAsChapterXI (world/palace.js)"
+        },
+        {
+          "id": "xi-eyes-and-appetite",
+          "name": "The quarrel between his eyes and his appetite over which part of her is fairest",
+          "kind": "rite",
+          "plate": null,
+          "source": "our translation, 1499 pp. 141-146 (translation/en/page_14N.md; CC0) (p. 146)",
+          "status": "unbuilt",
+          "note": "The chapter ends not with her but with a fight inside him: \"there was straightway born a great sedition and a bitter contention ... For my various and thieving eyes commended one part as far fairer than the others. But the appetite, carried off to another part of that divine little body, argued and preferred that one to the rest.\" The two speak in turn and he loses his heart to the stubbornness of the eyes. This is the book handing us a scene that is ALREADY a non-branching reaction-choice, which is exactly the form DESIGN.md specifies -- two voices, no consequence, and the dreamer stuck between them.",
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ]
         }
-      ],
-      "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
-      },
-      "features": []
+      ]
     },
     {
       "id": "XII",
@@ -2118,7 +2266,7 @@
         {
           "station": "polia",
           "title": null,
-          "notes": 7
+          "notes": 10
         }
       ],
       "research": {
