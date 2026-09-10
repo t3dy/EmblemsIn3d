@@ -931,12 +931,13 @@
           "plate": 16,
           "name": "The ancient gate with medallion busts",
           "source": "1499 plate #16 (p. 38)",
-          "status": "unknown",
-          "note": "Attached to this chapter in the plate index. Grepping portal.js for medallion returns nothing, so the busts are probably absent, but the plate has not been read against the built gate and this is marked unknown rather than unbuilt on purpose -- the recipe's rule.",
+          "status": "partial",
+          "note": "Attached to this chapter in the plate index. Grepping portal.js for medallion returns nothing, so the busts are probably absent, but the plate has not been read against the built gate and this is marked unknown rather than unbuilt on purpose -- the recipe's rule.\n\nChecked 2026-09-09, and this one was nearer than expected: approach.js already builds a MEDALLION WALL, referred to twice by name, with planting in its cracks. So a wall of medallions on the approach exists. What is unverified is whether it carries BUSTS and whether it reads as the ancient gate this plate draws. Partial until somebody stands in front of it.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/approach.js, the medallion wall"
         },
         {
           "id": "porch-hieroglyph-casket",
@@ -944,12 +945,13 @@
           "plate": 15,
           "name": "Hieroglyphic devices with a decorated casket",
           "source": "1499 plate #15 (p. 31)",
-          "status": "unknown",
-          "note": "Attached to this chapter in the plate index and not yet read against the world. The world builds hieroglyphs elsewhere (_hiero, the ant and the elephant), so the vocabulary exists; whether THIS set is among them is unchecked.",
+          "status": "partial",
+          "note": "Attached to this chapter in the plate index and not yet read against the world. The world builds hieroglyphs elsewhere (_hiero, the ant and the elephant), so the vocabulary exists; whether THIS set is among them is unchecked.\n\nChecked 2026-09-09. The world does build hieroglyphs -- tombs.js keeps `_hiero` with the ant and the elephant -- so the vocabulary is there and the register is established. The plate's decorated casket among its devices is NOT there: the only casket in the world is Osfressia's attribute, the smell-nymph's, which is a different object doing a different job.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/tombs.js _hiero (the ant and the elephant)"
         },
         {
           "id": "porch-sarcophagus-queen",
@@ -957,12 +959,13 @@
           "plate": 14,
           "name": "A sarcophagus with a nude queen figure",
           "source": "1499 plate #14 (p. 30)",
-          "status": "unknown",
-          "note": "Attached to this chapter in the plate index, unread against the world. The tombs module builds sarcophagi; whether this one is among them is unchecked.",
+          "status": "partial",
+          "note": "Attached to this chapter in the plate index, unread against the world. The tombs module builds sarcophagi; whether this one is among them is unchecked.\n\nChecked 2026-09-09. tombs.js builds sarcophagi and an open grave among the half-buried colossus and the obelisk of Caesar, so the OBJECT TYPE is in the world. What is not matched is the plate's own subject -- a nude queen figure on the chest. Partial, not built: a sarcophagus existing is not this sarcophagus existing.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/tombs.js builds sarcophagi"
         }
       ]
     },
@@ -1395,8 +1398,8 @@
           "plate": null,
           "name": "The nymphs run, and leave their golden pantofles and veils behind",
           "source": "Dallington 1592 p. 122",
-          "status": "unknown",
-          "note": "He makes as if to do what he dare not, and the five run off laughing and calling each other for help, leaving golden pantofles and veils here and there to be carried about by the wind and their vessels neglected in the grass; he chases, and afterwards goes back to gather up what they scattered. It is the moment that sets up Geussia's remedy, and it is scatterable litter -- the world already has a litter system. Marked unknown: not yet read against the court's own build.",
+          "status": "unbuilt",
+          "note": "He makes as if to do what he dare not, and the five run off laughing and calling each other for help, leaving golden pantofles and veils here and there to be carried about by the wind and their vessels neglected in the grass; he chases, and afterwards goes back to gather up what they scattered. It is the moment that sets up Geussia's remedy, and it is scatterable litter -- the world already has a litter system. Marked unknown: not yet read against the court's own build.\n\nChecked 2026-09-09 and absent: no pantofles and no scattered veils anywhere (the veils in the world are the sphinxes' linen and the priestess's). The Litter system exists and is the natural carrier -- golden pantofles and veils left to be carried about by the wind, and vessels neglected in the grass, is litter with a reason for being where it is.",
           "modes": [
             "walk",
             "tour"
@@ -1461,12 +1464,13 @@
           "plate": 23,
           "name": "The third fountain, with Graces, harpies and griffins",
           "source": "1499 plate #23 (p. 80)",
-          "status": "unknown",
-          "note": "Attached to this chapter in the plate index; not yet read against the world.",
+          "status": "built",
+          "note": "Attached to this chapter in the plate index; not yet read against the world.\n\nBUILT, confirmed 2026-09-09. temple.js carries a dedicated `_buildGracesFountain` whose comments quote the passage -- the graces of fine gold, the water falling on the opened crown, every jet named in the text made a jet here -- and a mesh census on the running page finds 92 meshes within 6 m of its coordinates, topping 6.03 m. The evidence is the census and the named builder rather than a screenshot, which is worth saying plainly.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/temple.js _buildGracesFountain"
         },
         {
           "id": "plate-24-frieze-genii",
@@ -1474,8 +1478,8 @@
           "plate": 24,
           "name": "A frieze of genii, dolphins and a bull's skull",
           "source": "1499 plate #24 (p. 84)",
-          "status": "unknown",
-          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.",
+          "status": "unbuilt",
+          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.\n\nChecked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.",
           "modes": [
             "walk",
             "tour"
@@ -1487,12 +1491,13 @@
           "plate": 25,
           "name": "The panelled wall in the Queen's palace with the planetary names",
           "source": "1499 plate #25 (p. 88)",
-          "status": "unknown",
-          "note": "Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.",
+          "status": "partial",
+          "note": "Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.\n\nChecked 2026-09-09. palace.js drives panelling off the METALS table and the tour lede describes walls panelled room by room with the names of the planets, and a census finds 32 meshes at the Planetary Palace station. So planetary panelling exists. Whether it matches THIS plate's panelled wall is unverified, so partial.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/palace.js, the METALS panelling"
         }
       ]
     },
