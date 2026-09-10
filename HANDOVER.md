@@ -1,9 +1,14 @@
-<!-- tokens: ~2,303 · read for: where this project stands and what to do next -->
-# HANDOVER — session of 2026-09-09 (piazza + chapter XI)
+<!-- tokens: ~2,669 · read for: where this project stands and what to do next -->
+# HANDOVER — sessions of 2026-09-09/10 (piazza, chapter XI, Version 6)
 
 *Written at the end of the session so the next window does not have to reconstruct it.
-Live at `main.js?v=382`, commit `fad4e9f`, deployed and verified on
-https://t3dy.github.io/EmblemsIn3d/src/.*
+**Released as Version 6 on 2026-09-10** — `main.js?v=385`, commit `1cd6157`, tag `v6`,
+deployed and verified on https://t3dy.github.io/EmblemsIn3d/.*
+
+> **There was never a v5.** `DECISIONS.md` and `NEXTSTEPS.md` say "Version 5 shipped" on
+> 2026-09-09; nothing was cut — no badge, no README row, no tag — and the public site sat on
+> v4 from 8 September until v6. Its content shipped inside v6. Kept rather than renumbered, so
+> the two documents that name a v5 still make sense. See `DECISIONS.md`, Release Version 6.
 
 ---
 
@@ -11,9 +16,9 @@ https://t3dy.github.io/EmblemsIn3d/src/.*
 
 | | |
 |---|---|
-| Live version | `main.js?v=382` (GitHub Pages, `git push origin main` is the whole deploy) |
+| Live version | **v6** at `main.js?v=385` (GitHub Pages, `git push origin main` is the whole deploy) |
 | Coverage | **18 / 38 chapters enumerated**; 97 features built, 25 unbuilt, 14 partial |
-| Tickets | 28 done, 3 declined, **7 open** |
+| Tickets | 28 done, 3 declined, **8 open** |
 | World size | ~5 747 meshes, ~3.16 M triangles |
 | Draw calls | valley **465**, portal **393**, Polia **237** |
 
@@ -63,7 +68,19 @@ before he has recognised her"*, which is chapter XI word for word. She now wears
 green gown, the girdle of Cytherea, three pearl pins a side, the violet wreath, blonde hair
 below the knees, and the **necklace transcribed stone by stone** in the book's own order.
 
-### c. Two bugs fixed that were nobody's ticket
+### c. The finishing pass, 2026-09-10 (all of it found by looking at the deployed page)
+
+- **The piazza's ATRIVM plaque faced north, into the court**, so everyone entering from the
+  south saw its back. A `_plaque`'s face is +z and +z is south here. The mesh was in the scene
+  and nothing was on screen — the only way this announces itself.
+- **The pavement was glaring.** Roughness 0.72 → 0.88, the four marbles darkened and
+  desaturated off showroom brightness, and more and stronger breakage patches.
+- **Twenty-two plaque subtitles across the world were clipped at both ends** and nobody had
+  noticed, because the clipping is symmetrical and still looks like an inscription.
+  `_fitFont` shrinks to a 9 px floor and gives up. `_plaqueTexture` now breaks an over-long
+  subtitle onto two lines at the middot nearest the middle. 21 of the 22 now fit.
+
+### d. Two bugs fixed that were nobody's ticket
 
 1. **The woodcut register was blanking the whole page**, and had been. `_buildAdonis` guarded
    its point light with `if (S.pointLight)` — which asks whether the style *has* the method,
@@ -91,6 +108,7 @@ The one blocking question was answered and the work behind it is done and deploy
 | 3 | `roll-shed-by-area` | the crust sheds by count, not surface area |
 | 3 | `tr-front-matter-review` | pages 1–10 read by nobody but their translator |
 | 3 | `tr-verified-overclaims` | 450/463 pages marked "verified" against a much weaker census |
+| 3 | `debt-plaque-subtitles-too-long` | one 344-char subtitle still overflows; and all plaque lettering is stretched ~2.8x, which is Ted's call |
 
 The first two are **the same ticket in disguise**: a clash sweep of the whole palace side
 (x −46..34, z −16..20, 2 m steps, a 24 × 13 m rectangle against `walker.walls` and
