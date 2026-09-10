@@ -862,8 +862,51 @@ export const Portal = {
     for (const dx of [2.5, 4.5, 6.5, 8.5, 10.5, 12.5]) {
       for (const sz of [-1, 1]) this._wallCol(KX + dx * L - 1, KX + dx * L + 1, KZ + sz * 3.9 * G - 0.9, KZ + sz * 3.9 * G + 0.9);
     }
-    this._circleCol(KX, KZ, 2.4 * G);
-    this._wallCol(KX + 2 * L, KX + 17 * L, KZ - 3.4 * G, KZ + 3.4 * G);
+    // ── THE INTERIOR ────────────────────────────────────────────────────
+    //
+    // Lefaivre pp. 52-53: the colossus is entered THROUGH THE MOUTH and its
+    // interior is "formed exactly like the inside of a human body", every organ
+    // a chamber with its own door, its name above it and the sicknesses
+    // generated in it; and in the heart the chamber where love is born, whose
+    // cures are written in Chaldean and which Poliphilo does not divulge.
+    //
+    // Until now ours was solid: the head was one circle collider and the body
+    // one wall, so a walker coming up to the mouth stopped dead at x = 31.8 and
+    // the pocket of open space inside the skull could not be reached. The
+    // station note on screen said he walks in through its mouth while the world
+    // said otherwise (ticket feat-colossus-interior).
+    //
+    // NO GEOMETRY CHANGES HERE, and that is not luck: the body is already built
+    // from half-cylinder vaults and a hemisphere dome, which are shells. It was
+    // only ever the colliders that were solid. So the exterior silhouette is
+    // untouched, as the ticket requires, and this is entirely a matter of where
+    // the walls are.
+    const bodyZ0 = KZ - 3.4 * G, bodyZ1 = KZ + 3.4 * G;
+    const inX0 = KX + 2 * L;
+    // The passage stops before the LEGS. Their vaults are 1.47 m to the crown
+    // inside -- you would be crawling -- and they begin at x = 53.7. Measured,
+    // not guessed: leg vault h = 0.95 * G, centred x = KX + 14 * L, length
+    // 6.5 * L.
+    const inX1 = 53.5;
+    const IN_W = 1.8;               // half-width of the passage: 3.6 m across
+    const HGAP = 0.85;              // the throat is narrower than the chest
+    const heartX = KX + 3.4 * L, CH = 1.6;
+
+    // the head: two flanks with the mouth between them, instead of one circle
+    const headX0 = KX - 2.4 * G;
+    this._wallCol(headX0, inX0, KZ - 2.4 * G, KZ - HGAP);
+    this._wallCol(headX0, inX0, KZ + HGAP, KZ + 2.4 * G);
+
+    // the body: a wall down each side of the passage rather than one solid mass
+    this._wallCol(inX0, inX1, KZ + IN_W, bodyZ1);                  // north flank
+    this._wallCol(inX0, heartX - CH, bodyZ0, KZ - IN_W);           // south, before the heart
+    this._wallCol(heartX + CH, inX1, bodyZ0, KZ - IN_W);           // south, after it
+    // the heart chamber is a room you can stand in, so its own outer skin has to
+    // stop you -- without this the one doorway in the flank is a way OUT of the
+    // colossus, which would make the whole figure walk-through-able
+    this._wallCol(heartX - CH, heartX + CH, bodyZ0 - 0.4, bodyZ0 + 0.4);
+    // and the legs close the far end
+    this._wallCol(inX1, KX + 17 * L, bodyZ0, bodyZ1);
     // the organs, as the book has them: a chamber each, its name above it and
     // the sicknesses generated in it. The doors are on the south flank and are
     // READ FROM A DISTANCE, not walked up to: the arm lies along that side, its
@@ -871,17 +914,33 @@ export const Portal = {
     // the arm. That was true before the rescale too and is not new -- measured
     // with walker.collide(), not assumed. See ticket feat-colossus-interior.
     const ORGANS = [
-      ['COR',      'THE HEART · WHERE LOVE IS BORN · THE CVRES WRITTEN IN CHALDEAN, NOT DIVVLGED', 3.6],
-      ['PVLMONES', 'THE LVNGS · PLEVRISY · SHORTNESS OF BREATH', 5.2],
-      ['HEPAR',    'THE LIVER · CHOLER · THE IAVNDICE', 6.8],
-      ['LIEN',     'THE SPLEEN · MELANCHOLY', 8.2],
-      ['VENTER',   'THE BELLY · COLIC · DROPSY', 9.6],
-      ['RENES',    'THE KIDNEYS · THE STONE', 11.0],
+      // spacing compressed from 3.6-11.0 so that all six land INSIDE the
+      // passage, which ends at 53.5 where the legs begin. The order is the
+      // book's and is unchanged; only the intervals give way.
+      ['COR',      'THE HEART · WHERE LOVE IS BORN · THE CVRES WRITTEN IN CHALDEAN, NOT DIVVLGED', 3.4],
+      ['PVLMONES', 'THE LVNGS · PLEVRISY · SHORTNESS OF BREATH', 4.7],
+      ['HEPAR',    'THE LIVER · CHOLER · THE IAVNDICE', 6.0],
+      ['LIEN',     'THE SPLEEN · MELANCHOLY', 7.3],
+      ['VENTER',   'THE BELLY · COLIC · DROPSY', 8.6],
+      ['RENES',    'THE KIDNEYS · THE STONE', 9.9],
     ];
+    // The doors now face the PASSAGE, not the open field. They were on the
+    // outside flank, behind the arm, where the nearest a walker could get was
+    // beyond the arm -- readable at a distance and enterable never.
     for (const [name, sick, dx] of ORGANS) {
-      this._m(new THREE.BoxGeometry(0.62 * G, 1.0 * G, 0.2 * G), dark, KX + dx * L, 0.5 * G, KZ - 3.05 * G, { cast: false });
-      this._plaque({ main: name, sub: sick }, 1.3 * G, 0.34 * G, KX + dx * L, 1.35 * G, KZ - 3.28 * G, Math.PI, true);
+      const ox = KX + dx * L;
+      // the heart alone is not a door but a doorway: the wall is open there
+      if (name !== 'COR') {
+        this._m(new THREE.BoxGeometry(0.62 * G, 1.0 * G, 0.2 * G), dark, ox, 0.5 * G, KZ - IN_W + 0.11, { cast: false });
+      }
+      this._plaque({ main: name, sub: sick }, 1.3 * G, 0.34 * G, ox, 1.35 * G, KZ - IN_W + 0.12, 0, true);
     }
+    // Inside the heart, on the far wall. The book is emphatic that the cures
+    // exist, are written, and are withheld, so the chamber says exactly that
+    // and gives nothing -- the one place in the world where a plaque is a
+    // refusal rather than a gloss.
+    this._plaque({ main: 'NON DIVVLGO', sub: 'THE CVRES FOR THE SICKNESSES OF LOVE · WRITTEN HERE IN CHALDEAN · POLIPHILO WILL NOT SAY THEM' },
+      2.0 * G, 0.4 * G, heartX, 1.5 * G, bodyZ0 + 0.45, 0, true);
     this._plaque({ main: 'COLOSSVS', sub: 'A SCVLPTVRE THAT IS A BVILDING · ENTERED BY THE MOVTH · LEFAIVRE PP. 52–53' },
       2.4 * G, 0.42 * G, KX - 2.4 * G, 2.6 * G, KZ, -Math.PI / 2, true);
     // The female colossus beside him, more buried, and with NO door. She grows
