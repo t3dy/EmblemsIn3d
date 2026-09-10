@@ -8,12 +8,12 @@ Ledger generated **2026-09-09**. 38 chapters · 165 plates attached to a chapter
 
 | | |
 |---|---|
-| Chapters **enumerated** (a feature list exists) | **16 of 38** |
-| Chapters **partial** (tour notes only, no feature list) | 22 |
+| Chapters **enumerated** (a feature list exists) | **17 of 38** |
+| Chapters **partial** (tour notes only, no feature list) | 21 |
 | Chapters **unread** | 0 |
-| Features **built** | 80 |
+| Features **built** | 85 |
 | Features **partial** | 14 |
-| Features **unbuilt** | **23** |
+| Features **unbuilt** | **26** |
 | Features **declined** (on purpose, with a reason) | 5 |
 
 > The first row is the one that matters. A chapter that is not enumerated cannot have a gap, because nobody has looked. That is exactly how the vaults under the pyramid stayed unbuilt: they have **no woodcut**, so every plate-driven check passed them, and no one had read chapter V against the world.
@@ -24,7 +24,6 @@ Work these with [`RECIPES/research-a-chapter.md`](RECIPES/research-a-chapter.md)
 
 | Ch. | Book | 1499 pages | Plates | Tour stops | Read it in |
 |---|---|---|---|---|---|
-| **IX** | 1 | 92–116 | 4 | labyrinth | Dallington 1592 |
 | **XI** | 1 | 141–146 | 0 | chess, quinta_essentia | Dallington 1592 |
 | **XII** | 1 | 147–152 | 6 | artificial, three_doors | Dallington 1592 |
 | **XIV** | 1 | 158–176 | 15 | triumphs | Dallington 1592 |
@@ -90,6 +89,11 @@ Checked 2026-09-09 and absent: no pantofles and no scattered veils anywhere (the
 | VIII | **The panelled wall in the Queen's palace with the planetary names** | inscription | ◐ partial | 1499 plate #25 (p. 88) | Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.
 
 Checked 2026-09-09. palace.js drives panelling off the METALS table and the tour lede describes walls panelled room by room with the names of the planets, and a census finds 32 meshes at the Planetary Palace station. So planetary panelling exists. Whether it matches THIS plate's panelled wall is unverified, so partial. |
+| IX | **The women who read the honey, and the ones further in who are more voluptuous** | person | ○ unbuilt | Dallington 1592 pp. 178-179 | At the second mount, troops of young women of various conditions ask to see each entrant's honey; by sight they know its property and its goodness, and embrace him as their guest and go with him through the next seven revolutions. Further on are more voluptuous ones, and many forsake the first for them; and whoever goes on with his companion will never be abandoned by her.
+
+This is the machinery that makes the labyrinth a LIFE rather than a diagram -- the honey is a character read at a glance, and the choice repeats at every mount. The world has one figure here, the matron. The census finds no others. |
+| IX | **The current turns against you, then hurries you in** | rite | ○ unbuilt | Dallington 1592 pp. 179-180 | Putting off from the second mount the water begins to run somewhat against them. Nearer the centre the revolutions grow shorter and shorter and the stream swifter into the devouring swallow, and they cannot turn their ship back, with a company still following close behind. One water surface is built here and it does not carry a direction, let alone a direction that changes with the ring. This is the single mechanic the allegory actually needs. |
+| IX | **The severe judge over the devouring throat** | person | ○ unbuilt | Dallington 1592 p. 180 | Over the throat at the centre sits a severe judge, weighing every one's actions and helping whom he chooses; and over the median centre hangs a heavy sentence that makes the enterers curse the hour they came in. Logistica breaks off there because it would be tedious to tell it all -- the book declining to finish its own allegory is itself worth staging. Not built. |
 | X | **The pierced gold balls stuffed with amber paste, given to every guest** | object | ○ unbuilt | Dallington p. 150 | "to the ende their hands, eyes, and sences should not be idle" -- a pomander. Ten lines; it belongs on the litter list for the court as much as on a table. |
 | XIII | **The doubt: is this nymph Polia?** | rite | ◐ partial | Dallington pp. 207-217 | The book’s central crisis and its best-recorded speech (five utterances in the Poliphilo layer). The world stages the meeting but not the doubt. |
 | XIII | **Polia's garden: a hundred ivied arches round it** | place | ◐ partial | Dallington pp. 182-183 | An arcade 5 paces high and 3 across, "and there were a hundred Arches to the compassing of this garden" — 444 m of circumference, so 141 m across, with an altar of a cube, a red jasper disc and a black triangle at its centre. The station has a radius of 7. The clearest single measure of the compression the 2026-09-08 pass found. |
@@ -283,12 +287,30 @@ Checked 2026-09-09. palace.js drives panelling off the METALS table and the tour
 
 ### Chapter IX  · Book 1 · 1499 pp. 92–116
 
-*Research: **partial**. Tour notes exist, but nobody has enumerated this chapter's features.*  
+*Research: **enumerated**. Had zero features. Adds 9.
+
+A note on finding it, because the mistake is worth recording: the previous tick reported that Dallington's text does not yield the water labyrinth. That was wrong. I had assumed this chapter's 1499 page range (90-102) mapped onto Dallington's pagination and searched his pp. 126-144, which is the Graces fountain. The labyrinth is at his pp. 177-180, and the world's own tour note said so all along -- it carries the citation in its text. DALLINGTON'S PAGES ARE NOT THE 1499'S, which this file's own text_source block warns about, and I did not read my own ledger before doubting the source.
+
+Most of the chapter is built. What is missing is the part that makes it move: the current that turns against you and quickens toward the centre, the women at each mount who read your honey, and the judge over the throat.*  
 *Text: Dallington 1592 — `C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md`*  
 *Tour: The Palace, the Water-Labyrinth and the Banquet (labyrinth, 9 notes)*  
 *Plates: #29, #30, #31, #32*  
 
-*No features enumerated yet.*
+| | Feature | Kind | Built as | Source |
+|---|---|---|---|---|
+| ✅ | A labyrinth whose alleys are rivers, sailed and not trodden<br>*Logistica shows it from a mount: an intricate labyrinth whose ways are not to be trodden but sailed, rivers of water standing in for alleys, the ground about it fruitful and full of springs and flowers. Whoever enters cannot come back.
+
+BUILT, confirmed by census on the running page 2026-09-09: 112 meshes within 14 m of the station, topping 11.96 m, with a water surface and geometry at nine distinct radii -- concentric rings, which is the shape of the thing.* | place | `world/temple.js, the water labyrinth` | Dallington 1592 p. 177 |
+| ✅ | Seven circuits between seven mounts<br>*Seven circuits with mounts distributed round them, seven revolutions of sailing between one mount and the next. The census finds rings at nine radii, so the concentric structure is there; whether it reads as exactly seven circuits is a question for somebody standing on the viewing mount rather than for a census.* | place | `world/temple.js` | Dallington 1592 pp. 177-179 |
+| ✅ | On the first tower: worldly glory is a bubble<br>*The first mount carries the Greek title meaning that worldly glory is a bubble. temple.js carries it in the Greek. Those who enter there sail with a prosperous wind, fruits and flowers dropping on their decks, merrily through the first seven revolutions -- the whole allegory turns on how pleasant the beginning is.* | inscription | `world/temple.js` | Dallington 1592 p. 177 |
+| ✅ | The matron at the first mount, and the honey she gives every entrant<br>*A pitiful and bountiful matron stands always at the first mount with an ancient vessel called an Urna, marked with seven Greek letters, full of honey; she gives one to everyone who enters, courteously and without respect of state or condition, but according to their entrance. Built: the npc labyrinth_matron is in the world and the urn's inscription is in the source.* | person | `world/temple.js, npc labyrinth_matron` | Dallington 1592 p. 178 |
+| ○ | The women who read the honey, and the ones further in who are more voluptuous<br>*At the second mount, troops of young women of various conditions ask to see each entrant's honey; by sight they know its property and its goodness, and embrace him as their guest and go with him through the next seven revolutions. Further on are more voluptuous ones, and many forsake the first for them; and whoever goes on with his companion will never be abandoned by her.
+
+This is the machinery that makes the labyrinth a LIFE rather than a diagram -- the honey is a character read at a glance, and the choice repeats at every mount. The world has one figure here, the matron. The census finds no others.* | person | — | Dallington 1592 pp. 178-179 |
+| ○ | The current turns against you, then hurries you in<br>*Putting off from the second mount the water begins to run somewhat against them. Nearer the centre the revolutions grow shorter and shorter and the stream swifter into the devouring swallow, and they cannot turn their ship back, with a company still following close behind. One water surface is built here and it does not carry a direction, let alone a direction that changes with the ring. This is the single mechanic the allegory actually needs.* | rite | — | Dallington 1592 pp. 179-180 |
+| ? | The invisible dragon in the mouth of the middle mountain<br>*In the centre of the middle mountain, in its open mouth, an old devouring dragon lurks invisibly: he destroys some and only wounds others, cannot be seen and cannot be shunned, and leaves nobody unassaulted, taking them either at the entry or on the way. The world has dragons elsewhere (the vaults, the flight mode); whether the labyrinth's own centre has one is unchecked.* | creature | — | Dallington 1592 p. 177 |
+| ○ | The severe judge over the devouring throat<br>*Over the throat at the centre sits a severe judge, weighing every one's actions and helping whom he chooses; and over the median centre hangs a heavy sentence that makes the enterers curse the hour they came in. Logistica breaks off there because it would be tedious to tell it all -- the book declining to finish its own allegory is itself worth staging. Not built.* | person | — | Dallington 1592 p. 180 |
+| ✅ | The garden of silk, next to the garden of glass<br>*Thelemia takes them from the labyrinth to a second artificial garden beside the glass one: box and cypress whose trunks and greater branches are real and whose leaves, flowers and outer rind are fine silk sewn with pearls; walls crusted over with close-set pearl; ivy sprouting toward the top with veins of gold running between the pearls and berries of precious stones in its stalks; and silk ring-doves in the bushes as though feeding on the berries. Built in approach.js, which quotes the silk and the pearls in its own comments.* | place | `world/approach.js, the garden of silk` | Dallington 1592 pp. 180-181 |
 
 ### Chapter X  · Book 1 · 1499 pp. 117–140
 

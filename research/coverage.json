@@ -1546,12 +1546,135 @@
         }
       ],
       "research": {
-        "status": "partial",
-        "enumerated_by": null,
-        "date": null,
-        "note": "Tour notes exist, but nobody has enumerated this chapter's features."
+        "status": "enumerated",
+        "enumerated_by": "read against Dallington 1592 pp. 177-181, session of 2026-09-09",
+        "date": "2026-09-09",
+        "note": "Had zero features. Adds 9.\n\nA note on finding it, because the mistake is worth recording: the previous tick reported that Dallington's text does not yield the water labyrinth. That was wrong. I had assumed this chapter's 1499 page range (90-102) mapped onto Dallington's pagination and searched his pp. 126-144, which is the Graces fountain. The labyrinth is at his pp. 177-180, and the world's own tour note said so all along -- it carries the citation in its text. DALLINGTON'S PAGES ARE NOT THE 1499'S, which this file's own text_source block warns about, and I did not read my own ledger before doubting the source.\n\nMost of the chapter is built. What is missing is the part that makes it move: the current that turns against you and quickens toward the centre, the women at each mount who read your honey, and the judge over the throat."
       },
-      "features": []
+      "features": [
+        {
+          "id": "labyrinth-sailed-not-walked",
+          "kind": "place",
+          "plate": null,
+          "name": "A labyrinth whose alleys are rivers, sailed and not trodden",
+          "source": "Dallington 1592 p. 177",
+          "status": "built",
+          "built_as": "world/temple.js, the water labyrinth",
+          "note": "Logistica shows it from a mount: an intricate labyrinth whose ways are not to be trodden but sailed, rivers of water standing in for alleys, the ground about it fruitful and full of springs and flowers. Whoever enters cannot come back.\n\nBUILT, confirmed by census on the running page 2026-09-09: 112 meshes within 14 m of the station, topping 11.96 m, with a water surface and geometry at nine distinct radii -- concentric rings, which is the shape of the thing.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-seven-circuits",
+          "kind": "place",
+          "plate": null,
+          "name": "Seven circuits between seven mounts",
+          "source": "Dallington 1592 pp. 177-179",
+          "status": "built",
+          "built_as": "world/temple.js",
+          "note": "Seven circuits with mounts distributed round them, seven revolutions of sailing between one mount and the next. The census finds rings at nine radii, so the concentric structure is there; whether it reads as exactly seven circuits is a question for somebody standing on the viewing mount rather than for a census.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-first-tower-title",
+          "kind": "inscription",
+          "plate": null,
+          "name": "On the first tower: worldly glory is a bubble",
+          "source": "Dallington 1592 p. 177",
+          "status": "built",
+          "built_as": "world/temple.js",
+          "note": "The first mount carries the Greek title meaning that worldly glory is a bubble. temple.js carries it in the Greek. Those who enter there sail with a prosperous wind, fruits and flowers dropping on their decks, merrily through the first seven revolutions -- the whole allegory turns on how pleasant the beginning is.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-matron-urn",
+          "kind": "person",
+          "plate": null,
+          "name": "The matron at the first mount, and the honey she gives every entrant",
+          "source": "Dallington 1592 p. 178",
+          "status": "built",
+          "built_as": "world/temple.js, npc labyrinth_matron",
+          "note": "A pitiful and bountiful matron stands always at the first mount with an ancient vessel called an Urna, marked with seven Greek letters, full of honey; she gives one to everyone who enters, courteously and without respect of state or condition, but according to their entrance. Built: the npc labyrinth_matron is in the world and the urn's inscription is in the source.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-women-at-mounts",
+          "kind": "person",
+          "plate": null,
+          "name": "The women who read the honey, and the ones further in who are more voluptuous",
+          "source": "Dallington 1592 pp. 178-179",
+          "status": "unbuilt",
+          "note": "At the second mount, troops of young women of various conditions ask to see each entrant's honey; by sight they know its property and its goodness, and embrace him as their guest and go with him through the next seven revolutions. Further on are more voluptuous ones, and many forsake the first for them; and whoever goes on with his companion will never be abandoned by her.\n\nThis is the machinery that makes the labyrinth a LIFE rather than a diagram -- the honey is a character read at a glance, and the choice repeats at every mount. The world has one figure here, the matron. The census finds no others.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-current-quickens",
+          "kind": "rite",
+          "plate": null,
+          "name": "The current turns against you, then hurries you in",
+          "source": "Dallington 1592 pp. 179-180",
+          "status": "unbuilt",
+          "note": "Putting off from the second mount the water begins to run somewhat against them. Nearer the centre the revolutions grow shorter and shorter and the stream swifter into the devouring swallow, and they cannot turn their ship back, with a company still following close behind. One water surface is built here and it does not carry a direction, let alone a direction that changes with the ring. This is the single mechanic the allegory actually needs.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-centre-dragon",
+          "kind": "creature",
+          "plate": null,
+          "name": "The invisible dragon in the mouth of the middle mountain",
+          "source": "Dallington 1592 p. 177",
+          "status": "unknown",
+          "note": "In the centre of the middle mountain, in its open mouth, an old devouring dragon lurks invisibly: he destroys some and only wounds others, cannot be seen and cannot be shunned, and leaves nobody unassaulted, taking them either at the entry or on the way. The world has dragons elsewhere (the vaults, the flight mode); whether the labyrinth's own centre has one is unchecked.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "labyrinth-judge",
+          "kind": "person",
+          "plate": null,
+          "name": "The severe judge over the devouring throat",
+          "source": "Dallington 1592 p. 180",
+          "status": "unbuilt",
+          "note": "Over the throat at the centre sits a severe judge, weighing every one's actions and helping whom he chooses; and over the median centre hangs a heavy sentence that makes the enterers curse the hour they came in. Logistica breaks off there because it would be tedious to tell it all -- the book declining to finish its own allegory is itself worth staging. Not built.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        },
+        {
+          "id": "silk-garden",
+          "kind": "place",
+          "plate": null,
+          "name": "The garden of silk, next to the garden of glass",
+          "source": "Dallington 1592 pp. 180-181",
+          "status": "built",
+          "built_as": "world/approach.js, the garden of silk",
+          "note": "Thelemia takes them from the labyrinth to a second artificial garden beside the glass one: box and cypress whose trunks and greater branches are real and whose leaves, flowers and outer rind are fine silk sewn with pearls; walls crusted over with close-set pearl; ivy sprouting toward the top with veins of gold running between the pearls and berries of precious stones in its stalks; and silk ring-doves in the bushes as though feeding on the berries. Built in approach.js, which quotes the silk and the pearls in its own comments.",
+          "modes": [
+            "walk",
+            "tour"
+          ]
+        }
+      ]
     },
     {
       "id": "X",
