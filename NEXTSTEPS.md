@@ -1,4 +1,4 @@
-<!-- tokens: ~10,510 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~10,768 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -76,6 +76,21 @@ Two things that came out of it and are NOT done:
 - **The colonnade capitals are plain drums.** Dallington p. 38 gives them waved shell-work with
   the corners turned in *"like a curled locke of hayre, or the vpper head of a base Viall"* —
   an Ionic volute described by a man who had never been given the word for it.
+
+**Chapter XI is enumerated and Polia is dressed from it** (2026-09-09, later still). Eleven
+features, five built. The chapter had no plate AND no feature list and still looked covered,
+because two of chapter X's tour stops were filed under it -- the same blind spot as the
+plate-driven one, a level up. Left open out of it:
+
+- **The festival on the plain** (`xi-festival-on-the-plain`): the countless crowd of youth of
+  both kinds that Polia parts from with her torch. It is what makes her singling him out mean
+  anything, and it is the biggest unbuilt thing in the chapter. A crowd is figures, so cost it
+  against `RENDERINGMODELSBLINGUSOUT.md` before starting.
+- **The flowery covering** he walks under and comes to the END of, which is the reveal.
+- **The quarrel between his eyes and his appetite** over which part of her is fairest -- a
+  non-branching reaction-choice the book hands us ready made.
+- Polia's gown is the right COLOUR but not the right CUT, and the colour only shows on the
+  modelled rung.
 
 ### 0-A. Ted's open call, 2026-09-09: read the whole book while you walk it
 

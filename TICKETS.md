@@ -6,7 +6,7 @@
 
 ---
 
-**37 tickets** — 6 open, 3 declined, 28 done. By kind: 16 debt, 10 bug, 7 infra, 2 perf, 1 question, 1 feat.
+**38 tickets** — 7 open, 3 declined, 28 done. By kind: 17 debt, 10 bug, 7 infra, 2 perf, 1 question, 1 feat.
 
 ---
 
@@ -69,6 +69,25 @@ Chapter X has more of the same still unbuilt -- the pierced gold balls stuffed w
 **Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
+
+
+### `debt-reading-station-is-chapter-grained` — The reading mode places a page by its CHAPTER, so a long chapter strands the reader at one station
+
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Noticed 2026-09-09 while fixing bug-chapter-xi-tour-misattributed, and it is the same weakness one level down. build_reading.py's chapter_to_station() takes the FIRST stop of each chapter and every page of that chapter inherits it. Chapter X runs 1499 pp. 117-140 -- twenty-four pages -- and its first stop in the array is #14, "The Palace, the Water-Labyrinth and the Banquet", tagged IX-X. So the chess ballet at p. 119 puts the reader at the WATER LABYRINTH while the text describes thirty-two girls dancing on a chequered pavement, and the world has a Human Chess Match station (#15) standing built and unused for exactly that text.
+
+This is not a mis-tag -- both stops are correctly chapter X. It is that the page->station map has no resolution below a chapter, and the chapters in this book are long.
+
+Verified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 141 to `polia`.
+
+**Acceptance.** A tour stop can declare the 1499 PAGE RANGE it covers, and reading.json resolves each page to the narrowest stop that contains it, falling back to the chapter rule when no stop declares a range. Checked on p. 119, which must resolve to `chess`, and on p. 141, which must stay `polia`.
+
+**Files.** `scripts/build_reading.py` · `src/data/tours.json` · `src/data/reading.json`
+
+**See.** ticket bug-chapter-xi-tour-misattributed · COVERAGE.md ch. X
 
 
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
