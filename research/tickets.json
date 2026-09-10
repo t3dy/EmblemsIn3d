@@ -792,6 +792,27 @@
         "COVERAGE.md ch. X"
       ],
       "opened": "2026-09-09"
+    },
+    {
+      "id": "debt-plaque-subtitles-too-long",
+      "title": "Twenty-two plaque subtitles are longer than a stone can hold; two lines fixes 21 of them",
+      "kind": "debt",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Found 2026-09-10 while looking at the piazza's own ATRIVM plaque, which was running off both ends of the stone. _fitFont shrinks type to a 9 px floor and then stops, so any subtitle longer than about 95 characters was simply CLIPPED -- and nobody had noticed because the clipping happens at both ends symmetrically and still looks like an inscription.\n\nA scan of every `sub:` string under src/scenes/ finds 149 plaques, of which 22 are over 95 characters. The worst is 344 characters (cythera.js, the roses stripped on the day before the Kalends of May); then two at 175 (cythera.js and the glass gardens in approach.js), and a run of them between 115 and 151 in palace.js, temple.js and nature.js.\n\nFIXED IN PART, same day: _plaqueTexture now breaks an over-long subtitle onto TWO lines at the middot nearest the middle, which the inscriptions already carry. That brings 21 of the 22 inside the stone. The 344-character one still overflows, and a few of the 175s are tight. Verified on the running page at the piazza, at Polia's arbour and at the gardens of glass and silk, all three of which were clipped before and read now.\n\nSEPARATE OBSERVATION, not changed and left for Ted: the plaque canvas is 320x96 for a `wide` plaque and the plane it maps onto is typically 4.6 x 0.5, which is 9.2:1 against the canvas's 3.33:1 -- so ALL plaque lettering in this world is stretched horizontally by about 2.8x. Widening the canvas would unstretch it and fit more characters at once, but it changes the look of all 149 plaques, so it is a directional call and not a fix to make quietly.",
+      "acceptance": "No plaque subtitle is clipped at either end at the distance its station stands at: every `sub:` string under src/scenes/ either fits one line or splits into two that each fit. Check the 344-character Cythera rose plaque, which currently does not.",
+      "files": [
+        "src/scenes/world/cythera.js",
+        "src/scenes/world/palace.js",
+        "src/scenes/world/temple.js",
+        "src/scenes/world/nature.js",
+        "src/scenes/world/materials.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "DECISIONS.md 2026-09-10 Release Version 6"
+      ],
+      "opened": "2026-09-10"
     }
   ]
 }

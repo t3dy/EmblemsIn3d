@@ -1,4 +1,4 @@
-<!-- tokens: ~4,666 · read for: the index of every directional call -->
+<!-- tokens: ~4,697 · read for: the index of every directional call -->
 # Design decisions — Emblems in 3D
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.
@@ -169,8 +169,12 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*51 calls. Each links to its full text in the archive.*
+*52 calls. Each links to its full text in the archive.*
 
+
+**2026-09-10**
+
+- [Release Version 6](decisions/2026-09.md#2026-09-10--release-version-6) — and why there is no v5
 
 **2026-09-09**
 

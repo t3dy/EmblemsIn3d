@@ -5,7 +5,8 @@
       "name": "HPin3D",
       "runtimeExecutable": "python",
       "runtimeArgs": ["-m", "http.server", "3457"],
-      "port": 3457
+      "port": 3457,
+      "autoPort": true
     }
   ]
 }

@@ -502,7 +502,9 @@ export const Portal = {
     // breakage and the weeds go into the same texture: a ruined pavement made
     // of geometry would cost hundreds of meshes for something the eye reads
     // entirely as surface.
-    const paveMat = S.mat({ color: 0xffffff, roughness: 0.72 });
+    // roughness 0.88, not 0.72: at 0.72 the court took a sheen off the high sun
+    // and read as a polished modern floor rather than as weathered marble.
+    const paveMat = S.mat({ color: 0xffffff, roughness: 0.88 });
     const tex = this._piazzaTexture(woodcut);
     paveMat.map = tex;
     if (!woodcut) { paveMat.bumpMap = tex; paveMat.bumpScale = 0.03; }
@@ -594,8 +596,12 @@ export const Portal = {
 
     // ── What the court says about itself ──────────────────────────────────
     this._plaque({ main: 'ATRIVM',
-      sub: 'A FOVRE SQVARE COVRT OF THIRTIE PACES BY HIS DIAMETER · PAVED CHECKERWISE · IN MANY PLACES BROKEN AND OVERGROWNE · DALL. P. 37' },
-      4.6, 0.5, 3.2, 0.62, z1 - 1.4, Math.PI, true);
+      sub: 'A FOVRE SQVARE COVRT OF THIRTIE PACES · PAVED CHECKERWISE · BROKEN AND OVERGROWNE' },
+      // ry 0, not PI. A _plaque's face is +z, and +z is SOUTH here, which is the
+      // side the dreamer arrives from; at PI it faced north into the court and
+      // everyone entering saw its back. Seen on the running page, not reasoned:
+      // the mesh was there at (3.2, 0.62, 69) and nothing was on screen.
+      4.6, 0.5, 3.2, 0.62, z1 - 1.4, 0, true);
   },
 
   // The pavement of the piazza, drawn rather than modelled: a diagonal checker
@@ -609,9 +615,14 @@ export const Portal = {
     const g = c.getContext('2d');
     const rnd = (i, k) => { const v = Math.sin(i * 57.7 + k * 131.9) * 43758.5453; return v - Math.floor(v); };
     // white, pavonazzetto, giallo antico, verde antico
+    // Darkened and desaturated 2026-09-10 after looking at it from a metre and a
+    // half. The first values were the four marbles at their showroom
+    // brightness, and under this world's sun the court read as a bathroom
+    // floor -- the mint and the cream in particular. These are the same four
+    // stones weathered and in shadow, which is what a ruined pavement is.
     const MARBLE = woodcut
       ? ['#e8e4d8', '#cfc8ba', '#e0dacc', '#bdb6a6']
-      : ['#e9e4d4', '#b4a0aa', '#d8c184', '#8fa294'];
+      : ['#cfc6b0', '#9c8890', '#b8a068', '#78897c'];
     const RGB = MARBLE.map(h => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]);
     const img = g.createImageData(N, N);
     for (let y = 0; y < N; y++) {
@@ -633,13 +644,15 @@ export const Portal = {
     }
     // "in many places ... broken in peeces and ouergrowne"
     g.globalAlpha = 1;
-    for (let i = 0; i < 26; i++) {
-      const px = rnd(i, 1) * N, py = rnd(i, 2) * N, r = 6 + rnd(i, 3) * 20;
+    // 34 patches and stronger, because "in many places" is the book's phrase and
+    // at 26 faint ones the court read as new work rather than as a ruin.
+    for (let i = 0; i < 34; i++) {
+      const px = rnd(i, 1) * N, py = rnd(i, 2) * N, r = 7 + rnd(i, 3) * 22;
       const weed = rnd(i, 4) > 0.45;
       for (const ox of [-N, 0, N]) {
         for (const oy of [-N, 0, N]) {
           const rg = g.createRadialGradient(px + ox, py + oy, 0, px + ox, py + oy, r);
-          rg.addColorStop(0, weed ? 'rgba(58,74,38,0.72)' : 'rgba(74,68,58,0.62)');
+          rg.addColorStop(0, weed ? 'rgba(52,68,34,0.82)' : 'rgba(62,56,46,0.74)');
           rg.addColorStop(1, 'rgba(74,68,58,0)');
           g.fillStyle = rg; g.beginPath(); g.arc(px + ox, py + oy, r, 0, 7); g.fill();
         }

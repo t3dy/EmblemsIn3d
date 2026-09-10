@@ -225,6 +225,23 @@ export const Materials = {
     return px;
   },
 
+  // One line if it fits at the 9px floor, otherwise two, split at the middot
+  // nearest the middle. Returns [line] or [line, line].
+  _plaqueLines(x, sub, innerW) {
+    if (!sub) return [''];
+    x.font = '9px Georgia';
+    if (x.measureText(sub).width <= innerW) return [sub];
+    const parts = sub.split(' · ');
+    if (parts.length < 2) return [sub];          // nothing to break on; let it shrink
+    let best = 1, bestGap = Infinity;
+    for (let i = 1; i < parts.length; i++) {
+      const a = parts.slice(0, i).join(' · ').length;
+      const gap = Math.abs(a - (sub.length - a));
+      if (gap < bestGap) { bestGap = gap; best = i; }
+    }
+    return [parts.slice(0, best).join(' · '), parts.slice(best).join(' · ')];
+  },
+
   _plaqueTexture({ glyph = null, glyphColor = null, main, sub }, wide = false) {
     const P = this.style.plaqueColors;
     const c = document.createElement('canvas');
@@ -250,7 +267,19 @@ export const Materials = {
       x.fillStyle = accent;
       this._fitFont(x, main, innerW, 30);                 x.fillText(main, cx, 44);
       x.fillStyle = P.sub;
-      this._fitFont(x, sub || '', innerW, 14);            if (sub) x.fillText(sub, cx, 72);
+      // _fitFont stops shrinking at 9px, so a subtitle long enough still ran off
+      // both ends of the stone -- which is what the piazza's ATRIVM and Polia's
+      // torch plaque did on the day they were added. When one line will not fit
+      // even at the floor, break it in two at a middot near the middle. The
+      // inscriptions in this book are long and the interpuncts are already
+      // there; this uses them.
+      const lines = this._plaqueLines(x, sub || '', innerW);
+      if (lines.length === 1) {
+        this._fitFont(x, lines[0], innerW, 14);           if (sub) x.fillText(lines[0], cx, 72);
+      } else {
+        this._fitFont(x, lines[0], innerW, 13);           x.fillText(lines[0], cx, 66);
+        this._fitFont(x, lines[1], innerW, 13);           x.fillText(lines[1], cx, 82);
+      }
     }
     const t = new THREE.CanvasTexture(c);
     t.colorSpace = THREE.SRGBColorSpace;

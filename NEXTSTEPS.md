@@ -1,4 +1,4 @@
-<!-- tokens: ~10,768 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~11,002 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -34,7 +34,21 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
-### 0-Z. Shipped 2026-09-09 (Version 5) — do not re-do these
+### 0-Y. Released 2026-09-10 as **Version 6** — and there is no v5
+
+The badge, the README row and the tag say **v6**. "Version 5" below and in `DECISIONS.md` was
+declared on 2026-09-09 and never cut — no badge, no README row, no tag — so the public site
+sat on v4 from 8 September until v6. Its content shipped inside v6. Kept, rather than
+renumbered, so the two documents that name a v5 still make sense. See `DECISIONS.md`,
+Release Version 6.
+
+**Shipped in v6 on top of the v5 list below:** the piazza of chapter III (the four-square
+court, both areostyle colonnades, the wildwood) with the horse, the elephant and the colossus
+moved to the near side of the Great Portal; the colossus turned a quarter so his soles are met
+first; chapter XI enumerated and Polia dressed out of its blazon; the woodcut register
+un-blanked; and twenty-two clipped plaque subtitles broken onto two lines.
+
+### 0-Z. Shipped 2026-09-09 (declared "Version 5"; released inside v6) — do not re-do these
 
 The plate frame (**built**, `#walk-plate`), the roll-up crust and growth curve (**built and
 measured**, `ROLLING.md` §1), contrapposto on every figure and species silhouettes on every

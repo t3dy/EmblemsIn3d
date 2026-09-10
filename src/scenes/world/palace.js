@@ -1190,7 +1190,7 @@ export const Palace = {
     // never said so, so a reader had no way to tell which of the two meetings
     // with a torch they were looking at.
     this._plaque({ main: 'A NYMPH WITH A BVRNING TORCH',
-      sub: 'PARTING FROM THE FESTIVAL SHE CAME TOWARD HIM · WHOM AT THE FIRST SIGHT I SVSPECTED TO BE CERTAINLY POLIA · BVT THE CONDITION OF THE VNACCVSTOMED DRESS AND PLACE DISSVADED ME · CH. XI, OVR PP. 142-143' },
+      sub: 'I SVSPECTED HER TO BE CERTAINLY POLIA · BVT THE VNACCVSTOMED DRESS AND PLACE DISSVADED ME · CH. XI' },
       4.4, 0.46, CX, 0.6, CZ - 2.6, 0, true);
 
     // Rose hedges
