@@ -47,7 +47,7 @@ import { Portal } from './world/portal.js?v=17';
 import { Palace } from './world/palace.js?v=8';
 import { Triumphs } from './world/triumphs.js?v=7';
 import { Tombs } from './world/tombs.js?v=4';
-import { Temple } from './world/temple.js?v=2';
+import { Temple } from './world/temple.js?v=3';
 import { Cythera } from './world/cythera.js?v=4';
 import { Rollup } from './world/rollup.js?v=5';
 

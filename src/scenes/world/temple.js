@@ -1662,6 +1662,59 @@ export const Temple = {
     this._circleCol(LX, LZ, 1.6);
     this._plaque({ main: 'ΘΕΟΝ ΛΥΚΟΣ ΔΥΣΑΛΓΗΤΟΣ', sub: 'THE SENTENCE OVER THE MEDIAN CENTER · A SEVERE IVDGE SITS HERE' },
       2.2, 0.4, LX, 2.2, LZ + 1.2, 0, true);
+    // ── The judge, and the women at the mounts ───────────────────────────
+    //
+    // Both were ASSERTED here and not shown, which is the fault the colossus's
+    // mouth had: the plaque over the throat already said a severe judge sits
+    // here, and the fourth mount's plaque already said young women combatting,
+    // and neither was in the world. Found by the chapter IX pass, 2026-09-09.
+    //
+    // Dallington p. 180: over the devouring throat there sits a severe judge,
+    // balancing every one's actions and helping whom he will. So he is given a
+    // seat at the rim of the throat, raised, looking into it, with a balance --
+    // the beam is the whole of his description and the reason he is not simply
+    // another figure standing about.
+    const jx = LX + 1.95, jz = LZ;
+    this._m(new THREE.CylinderGeometry(0.55, 0.68, 0.85, 10), stone, jx, 0.42, jz, { outline: true });
+    const judge = this.cast.figure({ name: 'The Judge', h: 1.05, robe: 0x2f2a3c, pose: 'stand' });
+    this._npc('labyrinth_judge', judge, jx, jz, -Math.PI / 2,
+      { label: 'The Severe Judge', sub: 'HE BALANCETH EVERY ONES ACTIONS · AND HELPETH WHOM HE WILL', labelY: 2.2 });
+    judge.position.y = 0.85;
+    // the balance: a beam on a post, with a pan hanging at either end
+    this._m(new THREE.CylinderGeometry(0.03, 0.03, 0.9, 6), dark, jx - 0.42, 1.5, jz, { cast: false });
+    const beam = this._m(new THREE.BoxGeometry(0.86, 0.035, 0.035), dark, jx - 0.42, 1.92, jz, { cast: false });
+    beam.rotation.z = 0.06;                       // tipped: it is weighing something
+    for (const e of [-1, 1]) {
+      this._m(new THREE.CylinderGeometry(0.035, 0.035, 0.22, 4), dark, jx - 0.42 + e * 0.42, 1.81, jz, { cast: false });
+      this._m(new THREE.CylinderGeometry(0.13, 0.10, 0.05, 10), stone, jx - 0.42 + e * 0.42, 1.69, jz, { cast: false });
+    }
+
+    // Dallington pp. 178-179: at the second mount, troops of young women of
+    // several conditions ask to see the honey the matron gave, know its
+    // property and goodness by sight, take him as their guest and go with him
+    // through the next seven revolutions; further in are more voluptuous ones,
+    // and many forsake the first for them. The honey is a character read at a
+    // glance, and the choice repeats at every ring -- which is why they stand
+    // at three mounts and not at one.
+    const WOMEN = [
+      [2, 0x9a7ab0, 'They aske to see the honey'],
+      [2, 0xb08a9a, 'And know its goodnesse by sight'],
+      [3, 0xa87a6a, 'Here the water first runnes against'],
+      [3, 0xc09a70, 'They accompany him onward'],
+      [4, 0xc06a8a, 'Farre more pleasaunt voluptuous'],
+      [4, 0xd08a6a, 'And many refuse the first'],
+    ];
+    WOMEN.forEach(([mount, robe, sub], k) => {
+      const gap = mount * 0.9, rr = R - mount * 1.15 + 0.18;
+      const a = gap + (k % 2 ? 0.34 : -0.30);
+      const wx = LX + Math.cos(a) * (rr + 0.75), wz = LZ + Math.sin(a) * (rr + 0.75);
+      const w = this.cast.nymph({ name: 'mount' + mount + '_' + k, h: 0.92, robe, pose: 'stand' });
+      this._npc('labyrinth_woman_' + k, w, wx, wz, -a,
+        { label: 'At the ' + ['', 'first', 'second', 'third', 'fourth'][mount] + ' mount',
+          sub: sub.toUpperCase(), labelY: 1.85 });
+      this._circleCol(wx, wz, 0.34);
+    });
+
     // Logistica shows it from above: a viewing mount outside the ring
     // set off the axis, or it stands between the station and the labyrinth
     this._m(new THREE.CylinderGeometry(1.6, 2.0, 1.4, 12), stone, LX + R + 2.2, 0.7, LZ - 5.5, { outline: true });

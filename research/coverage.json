@@ -1614,12 +1614,13 @@
           "plate": null,
           "name": "The women who read the honey, and the ones further in who are more voluptuous",
           "source": "Dallington 1592 pp. 178-179",
-          "status": "unbuilt",
-          "note": "At the second mount, troops of young women of various conditions ask to see each entrant's honey; by sight they know its property and its goodness, and embrace him as their guest and go with him through the next seven revolutions. Further on are more voluptuous ones, and many forsake the first for them; and whoever goes on with his companion will never be abandoned by her.\n\nThis is the machinery that makes the labyrinth a LIFE rather than a diagram -- the honey is a character read at a glance, and the choice repeats at every mount. The world has one figure here, the matron. The census finds no others.",
+          "status": "built",
+          "note": "At the second mount, troops of young women of various conditions ask to see each entrant's honey; by sight they know its property and its goodness, and embrace him as their guest and go with him through the next seven revolutions. Further on are more voluptuous ones, and many forsake the first for them; and whoever goes on with his companion will never be abandoned by her.\n\nThis is the machinery that makes the labyrinth a LIFE rather than a diagram -- the honey is a character read at a glance, and the choice repeats at every mount. The world has one figure here, the matron. The census finds no others.\n\nBUILT 2026-09-09 at main.js?v=372, and the same fault as the judge: the fourth mount's plaque already read that young women combat here, with nobody there. Six now stand at the second, third and fourth mounts, two apiece, each labelled with what she does -- they ask to see the honey; they know its goodness by sight; they accompany him onward; and further in, the more voluptuous ones many forsake the first for. Two apiece at three mounts rather than a crowd at one, because the point is that the choice REPEATS every ring.\n\nVerified by census: the labyrinth now carries eight named figures -- the matron, the judge and the six women. Cost for the seven added: +59 meshes, +32 980 triangles.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/temple.js, npcs labyrinth_woman_0..5"
         },
         {
           "id": "labyrinth-current-quickens",
@@ -1641,12 +1642,13 @@
           "plate": null,
           "name": "The invisible dragon in the mouth of the middle mountain",
           "source": "Dallington 1592 p. 177",
-          "status": "unknown",
-          "note": "In the centre of the middle mountain, in its open mouth, an old devouring dragon lurks invisibly: he destroys some and only wounds others, cannot be seen and cannot be shunned, and leaves nobody unassaulted, taking them either at the entry or on the way. The world has dragons elsewhere (the vaults, the flight mode); whether the labyrinth's own centre has one is unchecked.",
+          "status": "built",
+          "note": "In the centre of the middle mountain, in its open mouth, an old devouring dragon lurks invisibly: he destroys some and only wounds others, cannot be seen and cannot be shunned, and leaves nobody unassaulted, taking them either at the entry or on the way. The world has dragons elsewhere (the vaults, the flight mode); whether the labyrinth's own centre has one is unchecked.\n\nRESOLVED 2026-09-09: BUILT, and it was built all along. The centre carries a dark disc for the throat, a dragon from the cast (with a lion as fallback if the dragon is unavailable), a collider, and the plaque bearing the sentence over the median centre. The unknown was mine for not reading the builder to its end before filing it.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/temple.js _buildWaterLabyrinth, the centre"
         },
         {
           "id": "labyrinth-judge",
@@ -1654,12 +1656,13 @@
           "plate": null,
           "name": "The severe judge over the devouring throat",
           "source": "Dallington 1592 p. 180",
-          "status": "unbuilt",
-          "note": "Over the throat at the centre sits a severe judge, weighing every one's actions and helping whom he chooses; and over the median centre hangs a heavy sentence that makes the enterers curse the hour they came in. Logistica breaks off there because it would be tedious to tell it all -- the book declining to finish its own allegory is itself worth staging. Not built.",
+          "status": "built",
+          "note": "Over the throat at the centre sits a severe judge, weighing every one's actions and helping whom he chooses; and over the median centre hangs a heavy sentence that makes the enterers curse the hour they came in. Logistica breaks off there because it would be tedious to tell it all -- the book declining to finish its own allegory is itself worth staging. Not built.\n\nBUILT 2026-09-09 at main.js?v=372. He was ASSERTED and not shown: the plaque over the throat already read that a severe judge sits here, and nobody did. Now he has a seat at the rim of the throat, raised on a plinth and turned to look into it, with a balance -- a beam on a post with a pan hanging at either end, tipped, because weighing every one's actions is the whole of his description and the reason he is not just another figure standing about.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/temple.js, npc labyrinth_judge"
         },
         {
           "id": "silk-garden",
