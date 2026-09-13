@@ -1,14 +1,38 @@
-<!-- tokens: ~2,669 · read for: where this project stands and what to do next -->
-# HANDOVER — sessions of 2026-09-09/10 (piazza, chapter XI, Version 6)
+<!-- tokens: ~3,117 · read for: where this project stands and what to do next -->
+# HANDOVER — session of 2026-09-13 (gardens beside the palace, Katamari creatures)
 
-*Written at the end of the session so the next window does not have to reconstruct it.
-**Released as Version 6 on 2026-09-10** — `main.js?v=385`, commit `1cd6157`, tag `v6`,
-deployed and verified on https://t3dy.github.io/EmblemsIn3d/.*
+*Live at `main.js?v=389`, commit `839eef8`, verified on https://t3dy.github.io/EmblemsIn3d/.
+Last numbered release is **v6** (tag `v6`, 2026-09-10); everything below is unreleased on top
+of it and deployed. There was never a v5 — see `DECISIONS.md`, Release Version 6.*
 
-> **There was never a v5.** `DECISIONS.md` and `NEXTSTEPS.md` say "Version 5 shipped" on
-> 2026-09-09; nothing was cut — no badge, no README row, no tag — and the public site sat on
-> v4 from 8 September until v6. Its content shipped inside v6. Kept rather than renumbered, so
-> the two documents that name a v5 still make sense. See `DECISIONS.md`, Release Version 6.
+## 0. What 2026-09-13 did — read this first
+
+1. **The gardens of glass and silk flank the Queen's palace** (DECISIONS.md 53) — glass on its
+   south wall, silk on its north, which is exactly what the book says once you read which way
+   Poliphilo is facing. Rebuilt to the book's layout (raised beds, box and cypress alternating,
+   the gold-rod dome of roses). At about half the book's compass: a top-down height render found
+   8 × 5.5 m of open ground on each flank and no more. Closed
+   `bug-artificial-gardens-wrong-side-of-portal`.
+2. **Chapter tags fixed**: the gardens and the three doors are chapter X by the translation's
+   own page headings, not XII–XIII; Polia's stop now claims XI–XII–XIII.
+3. **`bug-court-has-no-room-left` is really a scale bug**: the court is 15 m across and the book
+   gives it 41 (28 paces). Recorded on the ticket; not built.
+4. **Roll Up creatures** (Ted: people and animals should react like Katamari's) —
+   `systems/Creatures.js`, `ROLLING.md` §4b. 149 figures and animals are whole creatures: they
+   scatter from a ball big enough to eat them, bounce the ball and bolt or stagger when bumped by
+   one that is not, and roll up whole. Open: nobody chases a small ball yet; creatures skate over
+   terraces.
+5. **Latent cache bug fixed**: v6's constants bump changed eight modules' import lines without
+   bumping those modules. Every importer is bumped now. **When `constants.js` changes, bump
+   every module that imports it, not just the import line.**
+6. **Ted asked about GitHub limits and Blender/Unity** — answered in chat, not acted on (his
+   call). 59 MB checkout, ~150 MB history, largest file 2.5 MB: a tenth of the soft limits.
+
+New traps this session: `hpRoll()` rebuilds the world with the census and blocks the page for
+~20 s, so call it inside `setTimeout` or the tool call dies; a per-cell raycast grid over the
+whole scene wedged the tab (use an orthographic height render into a render target instead);
+test Roll Up by calling `roll.update(1/60)` in a loop — deterministic, and no dependence on the
+pane painting.
 
 ---
 
