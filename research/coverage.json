@@ -1,6 +1,6 @@
 {
   "$schema_note": "See HPTOTOURPIPELINE.md for the field meanings and the workflow.",
-  "generated": "2026-09-09",
+  "generated": "2026-09-13",
   "generator": "scripts/coverage_seed.py",
   "hand_edited_fields": [
     "chapters[].research",
@@ -1674,8 +1674,8 @@
           "name": "The garden of silk, next to the garden of glass",
           "source": "Dallington 1592 pp. 180-181",
           "status": "built",
-          "built_as": "world/approach.js, the garden of silk",
-          "note": "Thelemia takes them from the labyrinth to a second artificial garden beside the glass one: box and cypress whose trunks and greater branches are real and whose leaves, flowers and outer rind are fine silk sewn with pearls; walls crusted over with close-set pearl; ivy sprouting toward the top with veins of gold running between the pearls and berries of precious stones in its stalks; and silk ring-doves in the bushes as though feeding on the berries. Built in approach.js, which quotes the silk and the pearls in its own comments.",
+          "built_as": "world/approach.js _buildArtificialGardens, against the north wall of the Queen's palace",
+          "note": "Thelemia takes them from the labyrinth to a second artificial garden beside the glass one: box and cypress whose trunks and greater branches are real and whose leaves, flowers and outer rind are fine silk sewn with pearls; walls crusted over with close-set pearl; ivy sprouting toward the top with veins of gold running between the pearls and berries of precious stones in its stalks; and silk ring-doves in the bushes as though feeding on the berries. Built in approach.js, which quotes the silk and the pearls in its own comments. SITED 2026-09-13 against the Queen's palace, as the book requires: the silk garden on its north (right) wall, the glass garden on its south (left) wall, and both are CHAPTER X by our translation's page headings (1499 pp. 124-127), not the chapter this entry is filed under. Rebuilt to the book's layout -- raised beds cleaving to the wall with box and cypress alternating, the tapestry-faced beds, the green silk-pile ground, and the round enclosure in the middle with its dome of gold rods, roses, and ruddy jasper seats (p. 127). NOT BUILT: the pearl-crusted walls with gold-veined ivy, and the silk ring-doves. Each garden is about half the book's compass, because the palace flanks measured 8 x 5.5 m of open ground.",
           "modes": [
             "walk",
             "tour"
@@ -1766,9 +1766,19 @@
           "notes": 11
         },
         {
+          "station": "artificial",
+          "title": "The Gardens of Glass and Silk",
+          "notes": 5
+        },
+        {
           "station": "quinta_essentia",
           "title": "Logistica and Thelemia",
           "notes": 8
+        },
+        {
+          "station": "three_doors",
+          "title": null,
+          "notes": 7
         }
       ],
       "research": {
@@ -1979,7 +1989,13 @@
       },
       "plates": [],
       "plates_from": "page-range",
-      "tour_stops": [],
+      "tour_stops": [
+        {
+          "station": "polia",
+          "title": null,
+          "notes": 10
+        }
+      ],
       "research": {
         "status": "enumerated",
         "enumerated_by": "read end to end against our own translation, session of 2026-09-09",
@@ -2188,14 +2204,9 @@
       "plates_from": "page-range",
       "tour_stops": [
         {
-          "station": "artificial",
-          "title": "The Gardens of Glass and Silk",
-          "notes": 5
-        },
-        {
-          "station": "three_doors",
+          "station": "polia",
           "title": null,
-          "notes": 7
+          "notes": 10
         }
       ],
       "research": {
@@ -2253,16 +2264,6 @@
       ],
       "plates_from": "page-range",
       "tour_stops": [
-        {
-          "station": "artificial",
-          "title": "The Gardens of Glass and Silk",
-          "notes": 5
-        },
-        {
-          "station": "three_doors",
-          "title": null,
-          "notes": 7
-        },
         {
           "station": "polia",
           "title": null,

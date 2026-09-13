@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { Walker } from '../../systems/Walker.js?v=6';
-import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=7';
+import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=8';
 
 export const Approach = {
   // ── Ground, paths ─────────────────────────────────────────────────────────
@@ -410,8 +410,8 @@ export const Approach = {
 
   // ── The three artificial gardens ─────────────────────────────────────────
   //
-  // Chapters XII–XIII, the gardens Eleuterylida's handmaids show after the
-  // banquet: one of glass, one of silk, and a counterfeit scent.
+  // Chapter X (1499 pp. 124-127), the gardens Eleuterylida's handmaids show
+  // after the banquet: one of glass, one of silk, and a counterfeit scent.
   //
   // THIS WAS A DECISION AND NOT A DEFAULT, and the argument against building it
   // is worth having in front of you while you look at it. John Dixon Hunt notes
@@ -435,110 +435,155 @@ export const Approach = {
   // 2.96 m — and the box a single pace, 1.48 m.
   _buildArtificialGardens() {
     const S = this.style, woodcut = S.key === 'woodcut';
-    // MOVED 2026-09-09 from (-22, 52), which is inside the piazza of chapter III
-    // -- the glass cypresses stood where the colossus lies and the silk trees
-    // where the winged horse stands. They are pushed 30 m down the valley, clear
-    // of the court's mouth at z 70.4 and of the colossus's feet at z 72.
+    // ── Where they are, and why (2026-09-13) ─────────────────────────────────
     //
-    // This is a HOLDING position, not the right one. Chapters XII-XIII happen
-    // inside Eleuterylida's realm, which is past the Three Doors, and these
-    // gardens have been on the WRONG SIDE OF THE PORTAL since they were built
-    // on 2026-09-09 -- the same error as the piazza's, in the other direction.
-    // The comment here used to say "north-west of the court", which is where
-    // they belong and is not where these coordinates are. The palace side has
-    // no 24 x 13 m of clear ground to take them (measured: the best free rect
-    // is at x -46, past the Temple of Venus), so it waits on
-    // bug-court-has-no-room-left. See research/tickets.json.
-    const OX = -28, OZ = 82;
+    // Chapter X, not XII-XIII. Our translation: the glass garden is 1499 p. 124
+    // and the silk garden p. 127, and both pages are headed Chapter X. The tour
+    // had them tagged XII-XIII, which is the rest of Polia's blazon.
+    //
+    // They ADJOIN THE QUEEN'S PALACE, one against each side wall -- p. 127, the
+    // silk garden is "adjoining the right wall of the proud, great and royal
+    // palace", and Dallington p. 175 puts the glass one "vppon the lefte side of
+    // the incomparable pallace". Poliphilo has just "turned mee about towardes
+    // the conspicuous Poarch, to beholde diligently the artificious Pallaice"
+    // (p. 174), so he is FACING the palace's east front when left and right are
+    // named: left is south (+z) and right is north (-z). _buildPalace stands at
+    // (-20.5, 0) on a stylobate 16.2 x 12.2, front to the east.
+    //
+    // Their history: built at (-22, 52), in the valley, BEFORE the Great Portal;
+    // pushed to (-28, 82) on 2026-09-09 when the piazza needed that ground; and
+    // only now beside the palace, which is the ticket
+    // bug-artificial-gardens-wrong-side-of-portal.
+    //
+    // THE FOOTPRINT IS SMALLER THAN THE BOOK'S, and that is recorded, not hidden.
+    // p. 124 makes each garden "as great as that where the majestic residence
+    // stood" -- the palace plot, 16 x 12 here. A top-down height render of the
+    // palace side (2026-09-13) found open ground against each flank of about
+    // 8 x 5.5 m and no more: the doors wall and its tree canopy close the south
+    // strip at z 13, the Temple of Venus closes the north one at x -24. So each
+    // garden is its own flank's width and about half the book's compass. The
+    // RELATION the book states -- one garden against each side wall -- is kept
+    // exactly; the area is what gives.
+    //
+    // THE LAYOUT IS THE BOOK'S, where the old one was a pair of circles. p. 124:
+    // "round about, cleaving to the walls, there stretched fitted garden-boxes,
+    // in which, in place of greenery, every plant was of the purest glass --
+    // box-trees clipped ... with their stems of gold. Between the one and the
+    // other of which there alternated a cypress, its height not exceeding two
+    // paces, and of the box one." So: raised beds along the wall, box and cypress
+    // alternating in them. The silk garden is "of equal compass with the glass
+    // one, with a like disposition of raised beds" (p. 127), and "in the middle
+    // of the area there stood a round enclosure, with a raised dome of little
+    // rods of gold ... covered with manifold flower-bearing rose-trees."
     const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 149.7) * 43758.5453; return v - Math.floor(v); };
+    const gold = woodcut ? S.mat({ tone: 0.04, rim: 1 })
+      : S.mat({ color: 0xd8b048, metalness: 0.92, roughness: 0.22 });
 
-    // ── I. The garden of glass ──
-    // "great round balles of glasses lyke gunne stones… like pearles shining",
-    // and the trees turned out of glass. Nothing here is alive and nothing here
-    // is meant to look alive; the material is the whole subject.
+    // a raised bed with a gold lip, running along x
+    const bed = (x0, x1, z, faceM) => {
+      const L = x1 - x0, cx = (x0 + x1) / 2;
+      this._m(new THREE.BoxGeometry(L + 0.5, 0.34, 0.78), faceM, cx, 0.17, z, { cast: false });
+      for (const dz of [-0.4, 0.4]) {
+        this._m(new THREE.BoxGeometry(L + 0.56, 0.05, 0.06), gold, cx, 0.36, z + dz, { cast: false });
+      }
+      this._wallCol(x0 - 0.25, x1 + 0.25, z - 0.4, z + 0.4);
+    };
+
+    // ── I. The garden of glass, against the palace's SOUTH (left) wall ──────
+    const GX0 = -26.5, GX1 = -18.5, GA = 7.1, GB = 12.0;
     const glassM = woodcut ? S.mat({ tone: 0.02, rim: 1 })
       : S.mat({ color: 0xcfe4e8, roughness: 0.06, metalness: 0.1,
                 transparent: true, opacity: 0.42, side: THREE.DoubleSide });
-    const glassTrunk = woodcut ? S.mat({ tone: 0.05, rim: 1 })
-      : S.mat({ color: 0xbcd6dc, roughness: 0.08, metalness: 0.12,
-                transparent: true, opacity: 0.55 });
-    for (let i = 0; i < 7; i++) {
-      // the cypresses, 2 paces: a turned cone, because a glass tree is a
-      // glass-blower's shape and not a botanist's
-      const a = (i / 7) * Math.PI * 2, r = 3.4;
-      const x = OX + Math.cos(a) * r, z = OZ + Math.sin(a) * r;
-      this._m(new THREE.CylinderGeometry(0.05, 0.09, 0.5, 8), glassTrunk, x, 0.25, z);
-      this._m(new THREE.ConeGeometry(0.44, 2.46, 10), glassM, x, 1.73, z, { outline: true });
+    // "the faces of which, of glass plates gilded within, and with a wonderful
+    // graving of a most curious history" -- the beds' own faces
+    const giltGlass = woodcut ? S.mat({ tone: 0.08, rim: 1 })
+      : S.mat({ color: 0xd9c07a, roughness: 0.12, metalness: 0.55 });
+    for (const z of [GA, GB]) {
+      bed(GX0, GX1, z, giltGlass);
+      for (let i = 0; i <= 8; i++) {
+        const x = GX0 + i;
+        // the stems "of gold, such material being brought thither"
+        this._m(new THREE.CylinderGeometry(0.035, 0.05, 0.5, 6), gold, x, 0.6, z, { cast: false });
+        if (i % 2 === 0) {
+          // cypress, "not exceeding two paces": 2.96 m with its stem
+          this._m(new THREE.ConeGeometry(0.34, 2.46, 10), glassM, x, 1.58, z, { outline: true });
+        } else {
+          // box, one pace, "clipped": a ball
+          this._m(new THREE.SphereGeometry(0.38, 12, 10), glassM, x, 1.1, z, { outline: true });
+        }
+      }
     }
-    for (let i = 0; i < 9; i++) {       // the box, one pace
-      const a = (i / 9) * Math.PI * 2 + 0.3, r = 1.7;
-      this._m(new THREE.SphereGeometry(0.42, 12, 10), glassM,
-        OX + Math.cos(a) * r, 1.06, OZ + Math.sin(a) * r, { outline: true });
-      this._m(new THREE.CylinderGeometry(0.045, 0.06, 0.64, 7), glassTrunk,
-        OX + Math.cos(a) * r, 0.32, OZ + Math.sin(a) * r);
-    }
-    // "great round balles of glasses lyke gunne stones… like pearles shining",
-    // strewn on the ground, which is what the text actually specifies first
-    for (let i = 0; i < 46; i++) {
-      const a = rnd(i, 1) * Math.PI * 2, r = 0.8 + rnd(i, 2) * 4.6;
+    // "great round balles of glasses lyke gunne stones... lyke pearles shining",
+    // on the ground between the beds -- Dallington p. 176 names them first
+    for (let i = 0; i < 34; i++) {
       const rad = 0.055 + rnd(i, 3) * 0.075;
       this._m(new THREE.SphereGeometry(rad, 9, 7), glassM,
-        OX + Math.cos(a) * r, rad, OZ + Math.sin(a) * r);
+        GX0 + 0.2 + rnd(i, 1) * (GX1 - GX0 - 0.4), rad, GA + 0.7 + rnd(i, 2) * (GB - GA - 1.4));
     }
+    this._plaque({ main: 'THE GARDEN OF GLASSE',
+      sub: 'VPON THE LEFTE SIDE OF THE PALLACE · BOXE AND CYPRESSE OF GLASSE · ROVND BALLES LYKE PEARLES' },
+      3.0, 0.4, GX0 - 0.9, 0.5, (GA + GB) / 2, -Math.PI / 2, true);
 
-    // ── II. The garden of silk ──
-    // "fine silk, wanting no store of Pearles to beautify the same", and a
-    // gold-wire arbour overspread with gold roses "more beautiful to the eye,
-    // then if they had been growing roses."
-    const SX = OX + 13, SZ = OZ;
-    const silkM = woodcut ? S.mat({ tone: 0.09, rim: 1 })
-      : S.mat({ color: 0xd8c8e0, roughness: 0.30, metalness: 0.06 });
+    // ── II. The garden of silk, against the palace's NORTH (right) wall ─────
+    const SX0 = -23.5, SX1 = -15.5, SA = -7.1, SB = -12.6;
     const silkLeaf = woodcut ? S.mat({ tone: 0.13, rim: 1 })
       : S.mat({ color: 0x8fae86, roughness: 0.26, metalness: 0.05, side: THREE.DoubleSide });
     const pearlM = woodcut ? S.mat({ tone: 0.02, rim: 1 })
       : S.mat({ color: 0xf4efe4, roughness: 0.18, metalness: 0.15 });
-    const goldWire = S.mat({ color: 0xd8b048, metalness: 0.92, roughness: 0.22 });
+    // "the faces of the beds rewoven in tapestry stitch with little histories of
+    // love and of hunting, in threads of gold and silver and silk"
+    const tapestry = woodcut ? S.mat({ tone: 0.16, rim: 1 })
+      : S.mat({ color: 0x7a4a5e, roughness: 0.9 });
+    for (const z of [SA, SB]) {
+      bed(SX0, SX1, z, tapestry);
+      for (let i = 0; i <= 8; i++) {
+        const x = SX0 + i;
+        this._m(new THREE.CylinderGeometry(0.035, 0.05, 0.5, 6), gold, x, 0.6, z, { cast: false });
+        if (i % 2 === 0) {
+          this._m(new THREE.ConeGeometry(0.34, 2.46, 10), silkLeaf, x, 1.58, z, { outline: true });
+        } else {
+          this._m(new THREE.SphereGeometry(0.38, 12, 10), silkLeaf, x, 1.1, z, { outline: true });
+        }
+        // "not without a most apt sowing among them of gems" -- the pearls
+        this._m(new THREE.SphereGeometry(0.04, 7, 6), pearlM, x + 0.18, 1.2 + (i % 2) * 0.2, z - 0.12, { cast: false });
+      }
+    }
+    // the ground "of green silk pile, like a most notable meadow"
+    const pile = woodcut ? S.mat({ tone: 0.18 }) : S.mat({ color: 0x4f7a3e, roughness: 1.0 });
+    this._m(new THREE.PlaneGeometry(SX1 - SX0 + 0.6, Math.abs(SB - SA) - 0.9), pile,
+      (SX0 + SX1) / 2, 0.03, (SA + SB) / 2, { rx: -Math.PI / 2, cast: false });
 
-    for (let t = 0; t < 5; t++) {
-      const a = (t / 5) * Math.PI * 2 + 0.6, r = 3.2;
-      const x = SX + Math.cos(a) * r, z = SZ + Math.sin(a) * r;
-      this._m(new THREE.CylinderGeometry(0.07, 0.11, 1.5, 8), silkM, x, 0.75, z);
-      for (let b = 0; b < 5; b++) {     // branches, and leaves as silk masses
-        const ba = (b / 5) * Math.PI * 2 + t, br = 0.5 + rnd(t * 9 + b, 4) * 0.4;
-        const bx = x + Math.cos(ba) * br, bz = z + Math.sin(ba) * br;
-        const by = 1.5 + rnd(t * 9 + b, 5) * 0.55;
-        this._m(new THREE.SphereGeometry(0.34, 10, 8), silkLeaf, bx, by, bz, { outline: true });
-        // the pearls, which the book insists on twice
-        this._m(new THREE.SphereGeometry(0.035, 7, 6), pearlM, bx + 0.16, by + 0.12, bz);
-        this._m(new THREE.SphereGeometry(0.030, 7, 6), pearlM, bx - 0.13, by - 0.09, bz + 0.1);
-      }
+    // the round enclosure, "a raised dome of little rods of gold", with roses
+    const DX = (SX0 + SX1) / 2, DZ = (SA + SB) / 2, DR = 1.7;
+    for (let k = 0; k < 3; k++) {
+      const arc = this._m(new THREE.TorusGeometry(DR, 0.03, 5, 22, Math.PI), gold, DX, 0, DZ, { cast: false });
+      arc.rotation.y = (k / 3) * Math.PI;
     }
-    // the gold-wire arbour, with its gold roses over it
-    for (let i = 0; i <= 9; i++) {
-      const t = i / 9, a = Math.PI * t;
-      const hx = SX + Math.cos(a) * 2.1, hz = SZ - 3.6, hy = Math.sin(a) * 2.3;
-      this._m(new THREE.SphereGeometry(0.035, 6, 5), goldWire, hx, hy + 0.05, hz);
-      if (i % 2 === 0 && i > 0 && i < 9) {
-        this._m(new THREE.SphereGeometry(0.11, 8, 7), goldWire, hx, hy + 0.05, hz + 0.09, { outline: true });
-      }
+    const ring = this._m(new THREE.TorusGeometry(DR, 0.03, 5, 28), gold, DX, 0.9, DZ, { cast: false });
+    ring.rotation.x = Math.PI / 2;
+    const roseM = woodcut ? S.mat({ tone: 0.1 }) : S.mat({ color: 0xc8404e, roughness: 0.6 });
+    for (let i = 0; i < 10; i++) {
+      const a = (i / 10) * Math.PI * 2, t = 0.35 + (i % 3) * 0.2;
+      const r = DR * Math.cos(t * Math.PI / 2), y = DR * Math.sin(t * Math.PI / 2);
+      this._m(new THREE.SphereGeometry(0.1, 8, 7), roseM, DX + Math.cos(a) * r, y, DZ + Math.sin(a) * r, { outline: true });
     }
-    for (const sx of [-2.1, 2.1]) {
-      this._m(new THREE.CylinderGeometry(0.04, 0.05, 0.35, 7), goldWire, SX + sx, 0.17, SZ - 3.6);
-    }
+    // "beneath which roof, in the going-round form, were seats of ruddy jasper"
+    const jasper = woodcut ? S.mat({ tone: 0.14 }) : S.mat({ color: 0x9a3a2e, roughness: 0.45 });
+    const seat = this._m(new THREE.TorusGeometry(DR * 0.72, 0.16, 6, 24), jasper, DX, 0.36, DZ, { cast: false });
+    seat.rotation.x = Math.PI / 2;
+    this._circleCol(DX, DZ, DR * 0.9);
 
     // ── III. The counterfeit scent ──
-    // The third garden is the one that cannot be modelled at all, and the book
-    // is precise about why: the fragrance is FAKED — "from the flowers did
-    // breath a sweet fragrancie by some cleare washing with oyle for that
-    // purpose." So it is staged with the world's own device for scent, the fume
-    // (PLEASURES.md §2, `_fume`) — and staged over the SILK flowers, which have
-    // no scent of their own. That is the counterfeit made visible: a smell
-    // rising off a thing that cannot smell.
-    this._fume(SX, 1.9, SZ, { rise: 2.0, drift: 0.4, count: 16, speed: 0.13 });
+    // The third garden cannot be modelled, and the book is precise about why:
+    // the fragrance is FAKED -- "from the flowers did breath a sweet fragrancie by
+    // some cleare washing with oyle for that purpose." Staged with the world's
+    // own device for scent, the fume (PLEASURES.md §2), over the silk roses,
+    // which have no scent of their own.
+    this._fume(DX, 1.9, DZ, { rise: 2.0, drift: 0.4, count: 16, speed: 0.13 });
 
-    this._plaque({ main: 'THE GARDENS OF GLASSE AND OF SILKE',
-      sub: 'GREAT ROVND BALLES OF GLASSES LYKE PEARLES SHINING · TRVNKES BRANCHES LEAVES AND FLOWERS OF FINE SILK · A SWEET FRAGRANCIE BY SOME CLEARE WASHING WITH OYLE · CHAPTERS XII-XIII' },
-      4.2, 0.46, OX + 6.5, 0.6, OZ + 6.2, 0, true);
+    this._plaque({ main: 'THE GARDEN OF SILKE',
+      sub: 'ADJOINING THE RIGHT WALL OF THE PALLACE · A DOME OF RODDES OF GOLDE · A FRAGRANCIE WASHED ON WITH OYLE' },
+      3.0, 0.4, SX0 - 0.9, 0.5, DZ, -Math.PI / 2, true);
   },
 
   // ── Chapter I: the spacious plain the dream opens on ─────────────────────

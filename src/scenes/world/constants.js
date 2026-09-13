@@ -155,14 +155,14 @@ export const HP_STATIONS = [
   // would simply never fire.
   { key: 'plain',            name: 'The Spacious Plain',     folio: 14,
     pos: [0, 448],   look: [0, 424],   radius: 26 },
-  // The gardens of glass and of silk (chs. XII–XIII), north-west of the court.
-  // Built 2026-09-09 AGAINST Hunt's argument that they should not be — see
-  // _buildArtificialGardens, and the note at this stop, which is not optional.
-  // Moved with the gardens themselves on 2026-09-09: they stood inside the
-  // piazza of chapter III. See _buildArtificialGardens for why this is a
-  // holding position and not the right one.
-  { key: 'artificial',       name: 'The Gardens of Glass and Silk', folio: 152,
-    pos: [-21.5, 82],  look: [-30, 82],  radius: 9 },
+  // The gardens of glass and of silk -- chapter X, 1499 pp. 124-127, not XII-XIII
+  // as this comment used to say. Built 2026-09-09 AGAINST Hunt's argument that
+  // they should not be; see _buildArtificialGardens, and the note at this stop,
+  // which is not optional. Sited 2026-09-13 against the Queen's palace, glass on
+  // its south wall and silk on its north. The station stands at the west end of
+  // the glass garden and looks down its beds, box and cypress alternating.
+  { key: 'artificial',       name: 'The Gardens of Glass and Silk', folio: 124,
+    pos: [-30.2, 9.55], look: [-22.5, 9.55], radius: 9 },
 ];
 
 // ── THE PIAZZA (chapter III; built 2026-09-09) ───────────────────────────

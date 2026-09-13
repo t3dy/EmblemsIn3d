@@ -169,8 +169,12 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*52 calls. Each links to its full text in the archive.*
+*53 calls. Each links to its full text in the archive.*
 
+
+**2026-09-13**
+
+- [53. The gardens of glass and silk flank the Queen's palace, at half the book's compass](decisions/2026-09.md#2026-09-13--53-the-gardens-of-glass-and-silk-flank-the-queens-palace-at-half-the-books-compass)
 
 **2026-09-10**
 

@@ -885,7 +885,7 @@
       {
         "station": "artificial",
         "title": "The Gardens of Glass and Silk",
-        "chapter": "XII–XIII",
+        "chapter": "X",
         "half": "dallington",
         "lede": "After the banquet the queen's handmaids lead Poliphilo out to three gardens that are not gardens. The first is of **glass** — the ground strewn with great round balls like gunstones, shining like pearls, and every tree turned and blown out of glass. The second is of **silk**, trunks and branches and leaves and flowers all in fine silk sewn with pearls, with an arbour of gold wire overspread with gold roses that he thinks lovelier than growing ones. And the third garden is a **smell**: a sweet fragrance breathed off flowers that cannot breathe, put there by washing them with a scented oil. **Neither the 1499 nor the 1592 shows you any of this.** Both editions decline to illustrate these three gardens, and John Dixon Hunt argues that is deliberate and right — that picturing them makes them seem plausible and so destroys the extraordinariness that is their whole point. We have built them anyway. Hunt would say we were wrong; judge it yourself, which is what he says the omission was for.",
         "quote": "Trunkes, branches, leaues and flowers, all of fine silke, wanting no store of Pearles to beautify the same… and from the flowers did breath a sweet fragrancie by some cleare washing with oyle for that purpose. — Dallington, chs. XII–XIII",
@@ -960,11 +960,11 @@
       },
       {
         "station": "three_doors",
-        "chapter": "XII–XIII",
+        "chapter": "X",
         "half": "dallington",
         "lede": "The guides bring him to three doors, three whole lives to choose between, each titled in Greek, Latin, Hebrew and Arabic. Behind the first lies the steep glory of God; behind the third, the glory of the world; behind the middle door, the mother of Love. Poliphilo looks behind each, and chooses the middle — whereupon Logistica, Reason, breaks her lute and leaves him in sorrow, and a nymph he does not yet know to be Polia takes him in charge.",
         "quote": "ΘΕΟΔΟΞΙΑ · ΕΡΩΤΟΤΡΟΦΟΣ · ΚΟΣΜΟΔΟΞΙΑ",
-        "quoteAttr": "The three doors — the Glory of God, the Mother of Love, the Glory of the World (ch. XII)",
+        "quoteAttr": "The three doors — the Glory of God, the Mother of Love, the Glory of the World (ch. X)",
         "notes": [
           {
             "type": "quotation",
@@ -1004,7 +1004,7 @@
       },
       {
         "station": "polia",
-        "chapter": "XI–XIII",
+        "chapter": "XI–XII–XIII",
         "half": "dallington",
         "lede": "The unknown nymph becomes his companion, and though he does not yet recognise her, she is Polia herself. She leads him gently on through the gardens toward the triumphs and the temple, and the recognition — when it comes — will turn the whole book: the second half is her turn to tell, in her own voice, how the two of them came to this shore.",
         "notes": [
