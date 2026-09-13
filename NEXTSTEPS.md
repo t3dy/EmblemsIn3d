@@ -1,4 +1,4 @@
-<!-- tokens: ~11,002 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~11,293 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -33,6 +33,24 @@ which is a log, not a queue — the thing this file exists to prevent. Consolida
 grep the scene.** Two items below were once "missing" and turned out to be built.
 
 ---
+
+### 0-X. Ted, 2026-09-13: the people and animals should behave like Katamari's
+
+*"I'm not seeing the people or nymphs or dragon and other animals responding like the people
+and animals do in katamari. When you bump them but they are too big for you to roll up
+sometimes they panic and run away."* **Built the same day** — `systems/Creatures.js`,
+`ROLLING.md` §4b: 149 figures and animals are whole creatures that scatter from a ball big
+enough to eat them, bolt or stagger when bumped by one that is not, and roll up whole.
+
+Left open: nobody turns and **chases** a small ball yet (the portal dragon is the candidate);
+creatures run on the flat and skate over terraces; the riders of the cars and the boat are
+excluded.
+
+Also asked the same day, and answered in chat rather than acted on because it is his call:
+**GitHub limits** (59 MB checkout, ~150 MB history, largest file 2.5 MB — a tenth of the soft
+limits) and **Blender or Unity**. Blender as an asset tool exporting glTF into this engine is
+low-risk; a Unity port loses the no-build Pages deploy and agent-readable code, and its
+binaries are what would actually hit the limits.
 
 ### 0-Y. Released 2026-09-10 as **Version 6** — and there is no v5
 

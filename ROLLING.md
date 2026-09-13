@@ -1,4 +1,4 @@
-<!-- tokens: ~4,487 · read for: every variable in Roll Up and which one to turn -->
+<!-- tokens: ~5,438 · read for: every variable in Roll Up and which one to turn -->
 # ROLLING — every variable in Roll Up, what it does, and which one to turn
 
 *Written 2026-09-09 from Ted: the ball **grows too quickly**, and the things it eats **do not
@@ -297,6 +297,63 @@ slowly the bigger it is. Three additions, in order of how much they would be fel
    seen.
 
 ---
+
+## 4b. Creatures — the people and animals notice the ball
+
+*Added 2026-09-13 from Ted: "I'm not seeing the people or nymphs or dragon and other animals
+responding like the people and animals do in katamari. When you bump them but they are too big
+for you to roll up sometimes they panic and run away." `src/systems/Creatures.js`.*
+
+**Why they did not.** Every figure and animal is registered with `_npc` and then compiled by
+`_mergeInto` like any other group, and the census (§2) runs inside that compile. So a nymph
+became a head, a gown and two arms — separate census entries frozen at load time. The ball ate
+her a limb at a time, she never moved, and nothing noticed it.
+
+**What they do now.** At the start of a roll, every `_npc` standing still in world space (149 of
+them: the chess ballet, the court, the rites, Polia, the wolf, the portal dragon…) becomes ONE
+creature, sized by its meshes' bounding box with the name label left out. Its census slices —
+3 657 of them — are withdrawn from the grid, so the ball can no longer nibble anyone.
+
+| the creature is… | what happens |
+|---|---|
+| **small enough to eat** (`r ≤ ball.r × bite`) | inside `NOTICE + NOTICE_PER_R × ball.r` she turns and runs, weaving so a crowd scatters; caught, she goes onto the ball whole, in her pose, label stripped |
+| **too big to eat** | the ball is knocked back off her with a bounce — you cannot roll through a person — and if it was moving at her she jumps, then `BOLT_CHANCE` of the time bolts with her arms up for 2.5–5 s, otherwise staggers and stands |
+
+Anyone riding something that moves (Cupid's boat, the triumphal cars) is left out: an ancestor
+with a transform disqualifies a group, because running would tear them off the car.
+
+**The chess ballet** stops while any dancer is panicking (`_chess.frozen`), and a dancer eaten
+off the board is out of the dance for good (`piece.gone`). When the roll ends, every creature
+not eaten is sent home and the ballet resumes.
+
+### The dials
+
+| name | value | what it does |
+|---|---|---|
+| `PEOPLE_SPEED` | 3.0 m/s | a running figure |
+| `ANIMAL_SPEED` | 5.0 m/s | an animal outruns her (key matches `wolf|dragon|lion|…`) |
+| `NOTICE` | 3.0 m | how far a creature small enough to eat sees the ball coming… |
+| `NOTICE_PER_R` | 2.2 | …plus this many ball radii, so a big ball is seen from further off |
+| `BOLT_CHANCE` | 0.65 | of a bumped too-big creature, how many run rather than stagger |
+| `COOLDOWN` | 1.4 s | before the same creature can be startled again |
+
+**Measured, not assumed (2026-09-13).** A 22 cm ball driven at a chess queen: never inside her,
+bounced every time, and over 30 trials 21 bolted and 9 staggered. A 2.2 m ball stopped 6 m from
+the wolf: she saw it on the first frame, ran 3.4 m in half a second, and was caught whole after
+about two seconds of chase at 9 m/s. A 1.1 m ball set down on the board: sixteen dancers ran and
+the two it landed on were taken. Leaving the roll: everyone uneaten back on their square, the
+ballet running.
+
+### What it still does not do
+
+- **Nobody chases you.** In Katamari some creatures turn on a ball smaller than they are. The
+  portal dragon is the obvious candidate and the book gives it the temperament.
+- **No sound and no cry** — the site is silent by decision (DECISIONS.md). Katamari leans hard on
+  the scream; here the raised arms have to carry it.
+- **Statues do not react**, deliberately: the winged horse, the elephant and the colossus are
+  bronze and stone, not animals, and a statue that runs away would be a joke against the book.
+- **The figures run on the flat.** They use the walker's colliders but not its floors, so a
+  creature that runs up Cythera's terraces will skate at its starting height.
 
 ## 5. The order it was done in, and what is left
 

@@ -26,7 +26,8 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=57';
 import { DragonFlight } from '../systems/DragonFlight.js?v=2';
-import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=10';
+import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=11';
+import { Creatures } from '../systems/Creatures.js?v=3';
 import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=5';
 import { isVariant } from '../systems/AssetVariants.js?v=12';
@@ -44,12 +45,12 @@ import { Materials } from './world/materials.js?v=7';
 import { Nature } from './world/nature.js?v=13';
 import { Approach } from './world/approach.js?v=10';
 import { Portal } from './world/portal.js?v=24';
-import { Palace } from './world/palace.js?v=17';
+import { Palace } from './world/palace.js?v=19';
 import { Triumphs } from './world/triumphs.js?v=10';
 import { Tombs } from './world/tombs.js?v=7';
 import { Temple } from './world/temple.js?v=3';
 import { Cythera } from './world/cythera.js?v=8';
-import { Rollup } from './world/rollup.js?v=8';
+import { Rollup } from './world/rollup.js?v=9';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
@@ -963,7 +964,13 @@ export class HPWorldScene {
     this.roll = new RollUp(this.scene, this.camera, this.walker, opts);
     this.roll.onTake = (e) => this.takeRollable(e);
     this.roll.onExit = () => { this.endRoll(); this.onRollExit?.(); };
-    this.roll.attach(this.rollables);
+    // The people and animals are creatures, not scenery: each is ONE thing, it
+    // moves, and it notices the ball. Their census slices (a head, a gown, an
+    // arm) are withdrawn so the ball cannot eat a nymph a limb at a time.
+    // systems/Creatures.js; Ted, 2026-09-13.
+    this._creatures = new Creatures(this);
+    this.roll.creatures = this._creatures;
+    this.roll.attach(this.rollables.filter(e => !e.taken && !this._creatures.owns(e)));
     this.roll.meadows = this._meadows;          // the sward is the first course
     this.roll.colliders = this.walker.colliders; // and the rest is scenery until it isn't
     const p = this.walker.player;
@@ -978,6 +985,7 @@ export class HPWorldScene {
     p.pos.set(r.pos.x, 0, r.pos.z);
     this.walker.collide(p.pos);
     r.dispose();
+    if (this._creatures) { this._creatures.dispose(); this._creatures = null; }
     this.roll = null;
     this.walker.locked = false;
   }
@@ -1126,6 +1134,7 @@ export class HPWorldScene {
     // NPC idle sway + arm breathing (the poses live instead of freezing)
     for (const n of this._npcs) {
       if (n.g.userData && n.g.userData.billboard) continue;   // cards face the camera, not a fixed yaw
+      if (n.panic) continue;                                  // running from the ball: Creatures owns her
       n.g.rotation.y = n.baseY + Math.sin(this._t * 0.8 + n.phase) * n.sway;
       if (n.armL) {
         n.armL.rotation.z = n.aL + Math.sin(this._t * 0.9 + n.phase) * 0.05;

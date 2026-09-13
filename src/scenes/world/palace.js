@@ -755,6 +755,9 @@ export const Palace = {
       C.phase = 'move';
     };
 
+    // A ball loose on the board: the dance stops until the roll is over, and
+    // Creatures.dispose sends everyone back to their squares. (2026-09-13)
+    if (C.frozen) return;
     if (C.phase === 'pause') {
       if (C.t > 1.2) { C.t = 0; C.phase = 'move'; }
       return;
@@ -764,6 +767,7 @@ export const Palace = {
       if (C.t < 4.0) return;
       // the pieces walk back to their squares and the next round begins
       for (const p of C.pieces) {
+        if (p.gone) continue;                  // eaten in Roll Up: out of the dance
         p.alive = true; p.off = 0;
         p.f = p.home[0]; p.r = p.home[1];
         p.x = p.ox = sqx(p.f); p.z = p.oz = sqz(p.r);

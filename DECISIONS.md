@@ -1,4 +1,4 @@
-<!-- tokens: ~4,697 · read for: the index of every directional call -->
+<!-- tokens: ~4,754 · read for: the index of every directional call -->
 # Design decisions — Emblems in 3D
 
 Directional calls made mid-build, recorded so they don't get re-litigated. Newest first.

@@ -513,6 +513,9 @@ export class RollUp {
     this.pos.y += (fy + this.r - this.pos.y) * Math.min(1, dt * 8);
 
     this._block();
+    // the people and animals, who move, notice, bolt, and knock the ball back
+    // (systems/Creatures.js)
+    if (this.creatures) this.creatures.update(dt, this);
     this._eat();
     this._graze(dt);
     this._transmute();
@@ -633,10 +636,17 @@ export class RollUp {
         }
       }
     }
+    // A creature is caught whole, and she is not in the grid: she moves.
+    if (this.creatures) {
+      for (const c of this.creatures.catchable(this)) {
+        const { group, centre } = this.creatures.take(c);
+        this._swallow({ name: c.n.g.userData.rollName || c.key.replace(/_/g, ' '), r: c.r, c: centre }, group);
+      }
+    }
   }
 
-  _swallow(e) {
-    const took = this.onTake ? this.onTake(e) : null;
+  _swallow(e, pre = null) {
+    const took = pre || (this.onTake ? this.onTake(e) : null);
     if (!took) return;
     // stick it where it was met, just proud of the surface, and let it ride
     const dir = new THREE.Vector3(e.c.x - this.pos.x, e.c.y - this.pos.y, e.c.z - this.pos.z);
