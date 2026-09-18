@@ -1,0 +1,422 @@
+{
+  "note": "Stated sizes, distances, counts and bearings, chapter by chapter, as the researchers recorded them. The narrative half is DIMENSIONS.md; this is the half a script can read. Written by scripts/coverage_merge.py.",
+  "units": {
+    "foot": 0.296,
+    "palm": 0.074,
+    "cubit": 0.444,
+    "pace": 1.48,
+    "stadium": 185.0,
+    "mile": 1480.0
+  },
+  "chapters": {
+    "XII": [
+      {
+        "what": "which hand carries the torch, and which hand takes Poliphilo's",
+        "book_says": "The most fayre Nymph beeing come to Poliphilus, bearing a Torch in her left hand, with the other tooke him and inuited him to walke with her",
+        "metres": 0.0,
+        "source": "Dallington p. 206-207 (1499 p. 147) -- direction/handedness, not a distance; the only quantifiable or orientational detail anywhere in this chapter's six pages"
+      }
+    ],
+    "XIV": [
+      {
+        "what": "triumphal car body length, in plan (\"two perfect squares\")",
+        "book_says": "of two perfect squares in length, of six feet",
+        "metres": 1.776,
+        "source": "p. 160"
+      },
+      {
+        "what": "triumphal car body width and height",
+        "book_says": "three high and as much wide",
+        "metres": 0.888,
+        "source": "p. 160"
+      },
+      {
+        "what": "height of the flat deck above the plinth cornice",
+        "book_says": "from here upward, a foot and a half, there was a flat",
+        "metres": 0.444,
+        "source": "p. 160"
+      },
+      {
+        "what": "width of the flat deck (where the rider stands/sits)",
+        "book_says": "a flat two feet and a half wide",
+        "metres": 0.74,
+        "source": "p. 160"
+      },
+      {
+        "what": "length of the flat deck",
+        "book_says": "five and a half long, with a slope towards the cornice",
+        "metres": 1.628,
+        "source": "p. 160"
+      },
+      {
+        "what": "height of the topaz censer-vessels carried by the two riders nearest each car",
+        "book_says": "of two feet in height, without handles, of a wonderful artifice",
+        "metres": 0.592,
+        "source": "p. 161"
+      },
+      {
+        "what": "beasts drawing each of the four triumphal cars",
+        "book_says": "six wanton centaurs / six white elephants / six...unicorns / six spotted tigers",
+        "metres": 0.0,
+        "source": "pp. 161, 165, 169, 172"
+      },
+      {
+        "what": "nymph riders on each car -- but only three of the four cars",
+        "book_says": "Each was ridden by a notable Nymph (six per car, cars 1-3); the fourth car's team description has no rider sentence at all",
+        "metres": 0.0,
+        "source": "pp. 161, 165, 169 (contrast p. 172)"
+      },
+      {
+        "what": "orientation of the six riders on a car, left/right",
+        "book_says": "three with their notable faces turned to the right, and three to the left",
+        "metres": 0.0,
+        "source": "p. 161"
+      },
+      {
+        "what": "diameter and height of the urn's gold base",
+        "book_says": "a base of gold, of a lowest diameter of one foot and three palms, and of nearly the same height",
+        "metres": 0.518,
+        "source": "p. 172"
+      },
+      {
+        "what": "height of the main jacinth vessel",
+        "book_says": "In height it was two feet and a half",
+        "metres": 0.74,
+        "source": "p. 172"
+      },
+      {
+        "what": "diameter (thickness) of the main jacinth vessel",
+        "book_says": "The diameter of its thickness stood at a foot and a half",
+        "metres": 0.444,
+        "source": "p. 172"
+      },
+      {
+        "what": "circumference of the main jacinth vessel, as the book itself derives it",
+        "book_says": "the circumference was three diameters",
+        "metres": 1.332,
+        "source": "p. 172"
+      },
+      {
+        "what": "cumulative height from the base to where the ewer-shaped neck begins",
+        "book_says": "in all, as far as here, it is a foot and a half",
+        "metres": 0.444,
+        "source": "pp. 172-173"
+      },
+      {
+        "what": "thickness of the border at the base of the ewer-neck",
+        "book_says": "there was a border going round the last thickness of a palm... a palm",
+        "metres": 0.074,
+        "source": "p. 173"
+      },
+      {
+        "what": "further rise of the vessel's form above the border",
+        "book_says": "there grew a form of the vessel aforesaid, raised a foot",
+        "metres": 0.296,
+        "source": "p. 173"
+      },
+      {
+        "what": "further widening of the neck above that rise",
+        "book_says": "began to widen for a palm and a half",
+        "metres": 0.111,
+        "source": "p. 173"
+      },
+      {
+        "what": "diameter at the widened neck -- unit uncertain, see caveat",
+        "book_says": "The diameter two quarters and a half [CAVEAT: 'quarter' is not in DIMENSIONS.md's unit table; read here as a quarter of a Roman foot -- 4 palms to a foot, so 1 quarter = 1 palm = 0.074 m -- giving 2.5 x 0.074, an interpretation and not a settled conversion]",
+        "metres": 0.185,
+        "source": "p. 173"
+      },
+      {
+        "what": "rise from the widened neck to the vessel's mouth -- same uncertain unit",
+        "book_says": "Then it rose most beautifully to the mouth two quarters and a half",
+        "metres": 0.185,
+        "source": "p. 173"
+      },
+      {
+        "what": "the carved girding/leafy band around the vessel's waist",
+        "book_says": "a girding band of two feet",
+        "metres": 0.592,
+        "source": "p. 173"
+      },
+      {
+        "what": "the plain space to each side, beneath the girding band",
+        "book_says": "the space that stands a foot and a half to each side",
+        "metres": 0.444,
+        "source": "p. 173"
+      },
+      {
+        "what": "height of each of the four corner candelabra",
+        "book_says": "with a notable display, adorned with fine-wrought work, of a height of two feet",
+        "metres": 0.592,
+        "source": "p. 175"
+      },
+      {
+        "what": "number of candelabra, one to each corner of the car's flat",
+        "book_says": "At each corner of the flat of the triumphal car there shone widely, set there, a most skilfully made candelabrum",
+        "metres": 0.0,
+        "source": "p. 175"
+      }
+    ],
+    "XXII": [
+      {
+        "what": "Theatre Area, diameter",
+        "book_says": "32 paces (p. 351)",
+        "metres": 47.36,
+        "source": "p. 351"
+      },
+      {
+        "what": "Theatre's built ring (colonnade) around the Area, thickness",
+        "book_says": "8 paces (p. 351)",
+        "metres": 11.84,
+        "source": "p. 351"
+      },
+      {
+        "what": "Seat-box height",
+        "book_says": "6 palms (p. 353)",
+        "metres": 0.444,
+        "source": "p. 353"
+      },
+      {
+        "what": "Seat-box depth (opening)",
+        "book_says": "2 1/2 feet (p. 353)",
+        "metres": 0.74,
+        "source": "p. 353"
+      },
+      {
+        "what": "Walkway at each pergola tier",
+        "book_says": "5 feet wide (p. 353)",
+        "metres": 1.48,
+        "source": "p. 353"
+      },
+      {
+        "what": "Pergola height over each walkway",
+        "book_says": "1 1/2 pace high (p. 353)",
+        "metres": 2.22,
+        "source": "p. 353"
+      },
+      {
+        "what": "Spacing between paired crowning cypresses",
+        "book_says": "3 paces distant (p. 354)",
+        "metres": 4.44,
+        "source": "p. 354"
+      },
+      {
+        "what": "The clean band above the royal cornice (not yet in DIMENSIONS.md)",
+        "book_says": "a pace and a half high (p. 350)",
+        "metres": 2.22,
+        "source": "p. 350"
+      },
+      {
+        "what": "The trough within the topmost gallery wall, capacity at bottom and opening alike (not yet in DIMENSIONS.md)",
+        "book_says": "a pace and a half, inclusive (p. 354)",
+        "metres": 2.22,
+        "source": "p. 354"
+      },
+      {
+        "what": "The embroidered band round Cupid's triumphal car (not yet in DIMENSIONS.md; a 'dodrans' is not in DIMENSIONS.md section 1's unit table -- computed here as 3/4 Roman foot, the standard Latin sense of dodrans)",
+        "book_says": "a dodrans wide (p. 341)",
+        "metres": 0.222,
+        "source": "p. 341"
+      },
+      {
+        "what": "Psyche's shoulder-diamond, length -- UNIT WARNING: 'inch' and 'thumb' are not in DIMENSIONS.md section 1's table at all (only foot/palm/cubit/pace/stadium/mile are). Computed here as a rough guess at a Roman uncia (1/12 foot = 0.0247 m); not verified against any project reference and should not be trusted at the same confidence as the pace/foot/palm figures above",
+        "book_says": "an inch-and-a-half long lengthwise, a thumb in breadth (p. 341)",
+        "metres": 0.037,
+        "source": "p. 341"
+      },
+      {
+        "what": "Theatre's colonnade plan: quadrants x bays per quadrant (a count, not a length)",
+        "book_says": "quadrifariously divided [4 quarters], eight divisions [bays] apiece = 32 bays total (p. 351)",
+        "metres": 0,
+        "source": "p. 351"
+      },
+      {
+        "what": "Number of column orders, and the rule they break (a count/proportion, not a length)",
+        "book_says": "three orders, kept at one height, against the Vitruvian rule that each upper order be a quarter shorter (a fifth, for the third) (p. 350)",
+        "metres": 0,
+        "source": "p. 350"
+      },
+      {
+        "what": "Number of planted tiers in the cavea (a count, not a length)",
+        "book_says": "four hollow steps to an order, three orders = twelve planted tiers total (pp. 353-354)",
+        "metres": 0,
+        "source": "pp. 353-354"
+      },
+      {
+        "what": "The stair opposite the entrance door (a count and a direction)",
+        "book_says": "'in prospect of the door of our entrance' [i.e. directly opposite it], a stair of seven steps (p. 356)",
+        "metres": 0,
+        "source": "p. 356"
+      },
+      {
+        "what": "The two gem-vases flanking the golden gate (a count and a direction)",
+        "book_says": "'one to a side': one of sapphire, the other of emerald (p. 347)",
+        "metres": 0,
+        "source": "p. 347"
+      },
+      {
+        "what": "Greek letters impressed on Capnolina's smoking vase (a count)",
+        "book_says": "thirteen most-measured Greek letters -- ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ (13 characters) (p. 340)",
+        "metres": 0,
+        "source": "p. 340"
+      },
+      {
+        "what": "Named female figures individually described across the chapter's masque (a count)",
+        "book_says": "at least 19: Imeria, Erototimoris, Toxodora, Ennia, Phileda, Velode, Omonia, Diapraxe, Typhlote, Asynecha, Ardelia Comazista, Aschemosyne, Teleste, Vrachivia, Capnolina, Synesia, Plexaura, Ganoma, Psyche (pp. 338-344)",
+        "metres": 0,
+        "source": "pp. 338-344"
+      },
+      {
+        "what": "Named or individually-described trophies/standards preceding the car (a count)",
+        "book_says": "at least seven: the Mars/Pyroeis trophy, the Jupiter trophy, the Hercules trophy, QUIS EVADET, NEMO, the crescent-crown trophy, the DORYKTETOI lead standard -- plus 'many others, of prolix telling' left uncounted (pp. 326-330)",
+        "metres": 0,
+        "source": "pp. 326-330"
+      },
+      {
+        "what": "Aegipans in the rear file (a count)",
+        "book_says": "two aegipans, an unspecified further number of satyrs (p. 344)",
+        "metres": 0,
+        "source": "p. 344"
+      }
+    ],
+    "XXIII": [
+      {
+        "what": "height of the fountain's kerb (the 'little wall' at its centre)",
+        "book_says": "there rose at its centre a little wall a foot high",
+        "metres": 0.296,
+        "source": "p. 359"
+      },
+      {
+        "what": "height of the seven columns, from the golden bases to the architrave",
+        "book_says": "from the golden bases up to the architrave the height stood at seven feet",
+        "metres": 2.072,
+        "source": "p. 361"
+      },
+      {
+        "what": "length of each face of the heptagonal kerb/arcade (where the inscription is cut, three letters to a face)",
+        "book_says": "Each face was three feet",
+        "metres": 0.888,
+        "source": "p. 361"
+      },
+      {
+        "what": "depth/height of the cut Greek lettering on the columns",
+        "book_says": "letters of the most ancient Greek, the shaft being three-quarters of a foot",
+        "metres": 0.222,
+        "source": "p. 361 (translator flags this clause as compressed/uncertain -- may describe the letters' cutting depth rather than height; check against facsimile)"
+      },
+      {
+        "what": "height of each gold planetary figure on the crown",
+        "book_says": "an image of a planet with its proper attribute... its size exactly a third of the column below it",
+        "metres": 0.691,
+        "source": "p. 360 (derived: one third of the 7-foot/2.072 m column height given on p. 361)"
+      },
+      {
+        "what": "number of gem columns, and of the planetary figures above them",
+        "book_says": "seven of them in all, turned with the utmost exquisiteness",
+        "metres": 0.0,
+        "source": "p. 359 (count, not a linear measure)"
+      },
+      {
+        "what": "number of zodiac signs carved in the frieze beneath the planetary altars",
+        "book_says": "in the frieze running round... were to be seen the twelve signs of the zodiac",
+        "metres": 0.0,
+        "source": "p. 360 (count)"
+      },
+      {
+        "what": "number of steps down from the topmost step (where the columns stand) to the fountain's lip",
+        "book_says": "six little steps more went down to the lip of the fountain, of dark agate",
+        "metres": 0.0,
+        "source": "p. 363 (count)"
+      },
+      {
+        "what": "how high the fountain's water stands, relative to the six steps",
+        "book_says": "The fountain's water reached to the edge of the fourth step; the others stood clear of it",
+        "metres": 0.0,
+        "source": "p. 363 (relative level, not a stated absolute distance)"
+      },
+      {
+        "what": "number of nymphs Venus first assigns to attend Polia and Poliphilo at the rite",
+        "book_says": "she assigned three apiece to Polia and to him",
+        "metres": 0.0,
+        "source": "p. 358 (count: 3 + 3 = 6)"
+      },
+      {
+        "what": "number of nymphs Venus assigns afterward as lifelong companions",
+        "book_says": "I will give and consign to you four illustrious little maidens... likewise I present four other noble and most accomplished maidens into your unceasing company",
+        "metres": 0.0,
+        "source": "pp. 365-366 (count: 4 + 4 = 8)"
+      },
+      {
+        "what": "number of letters in the fountain's motto as Colonna states the layout",
+        "book_says": "On the front face only two letters were to be seen... and then following, on the other faces, three and three",
+        "metres": 0.0,
+        "source": "p. 361 (count: 2 + 3×6 = 20; the translator flags that the phrase ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ has more than 20 letters, so the arithmetic given does not close)"
+      },
+      {
+        "what": "which columns stand where relative to the entrance, and where the curtain hangs",
+        "book_says": "Two of these stood answering one another, equally, opposite the entrance... on the right hand [sapphire]... on the left [emerald]... between the sapphire and the emerald column, hung... the most beautiful little veiling curtain",
+        "metres": 0.0,
+        "source": "pp. 359, 361 (direction, not a distance)"
+      }
+    ],
+    "XXV": [
+      {
+        "what": "the children of Lelio Syliro and Trivisia Calardia Pia",
+        "book_says": "\"they had most-noble seed, and copious birth, taking up (bearing) more sons, male and female, alternately\" -- five sons named (Maurio, Halcyoneo, Tipula, Narbonio, Musilistre) and six daughters named (Murgania, Quintia, Septimia, Alimbrica, Astorgia, Melmia)",
+        "metres": 0.0,
+        "source": "p. 383",
+        "note": "A count (11 = 5 + 6), not a distance; included per the recipe's instruction to log stated counts. No unit conversion applies."
+      }
+    ],
+    "XV": [
+      {
+        "what": "height of the juniper-and-box hedge enclosing the square orchard where the Vertumnus/Pomona procession circles the altar",
+        "book_says": "a quick-set vpon either sides, in height one pace, of pricking iuniper thicke set togither, and mixt with box",
+        "metres": 1.48,
+        "source": "Dallington p. 253"
+      }
+    ],
+    "XXXIV": [
+      {
+        "what": "how many letters Poliphilo has now sent Polia",
+        "book_says": "the third epistle (\"the begun Agon\")",
+        "metres": null,
+        "source": "p. 449"
+      }
+    ],
+    "XXXV": [
+      {
+        "what": "presences Poliphilo beholds at the throne",
+        "book_says": "three presences -- two divine, the third a little less than celestial",
+        "metres": null,
+        "source": "pp. 458-459"
+      },
+      {
+        "what": "gods named as susceptible to Venus's voice",
+        "book_says": "Mars, Jove, Saturn, Phoebus, Mercury, Diana -- six named",
+        "metres": null,
+        "source": "p. 460"
+      },
+      {
+        "what": "zodiacal figures named as excluded from Venus's throne",
+        "book_says": "Virgin Astraea, Orion, the hirsute Ram -- three named",
+        "metres": null,
+        "source": "p. 456"
+      }
+    ],
+    "XXXVIII": [
+      {
+        "what": "the date of the dream, given by the closing colophon",
+        "book_says": "\"At Treviso, where wretched Poliphilo was held fast in the most comely little thongs of Polia's love. 1467, on the Kalends of May.\" -- i.e. Treviso, 1 May 1467.",
+        "metres": null,
+        "source": "p. 465"
+      },
+      {
+        "what": "the hour of the waking",
+        "book_says": "No clock hour is given. Poliphilo wakes \"into the small hours\" (\"sighing, risen and released from the sweet sleep, I woke of a sudden into the small hours\"), and Philomela is already singing \"before daybreak\" -- so the waking falls in the pre-dawn hours of 1 May, just before the sunrise the chapter goes on to describe.",
+        "metres": null,
+        "source": "p. 465"
+      }
+    ]
+  }
+}

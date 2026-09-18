@@ -1,0 +1,69 @@
+{
+  "id": "XXXVIII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher session, 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Read whole chapter (translation/en/page_465.md; CC0, our translation). One page, no plate (hp.db.woodcut_catalog has no row with page_seq 465; the last plate in the book, #168, sits well before this page). This is the epilogue: Poliphilo wakes, grieving; blames the jealous Sun for ending the night; wishes for Alcmena's long night or Psyche's drugged sleep; hears Philomela (the nightingale) singing out Tereus's rape before daybreak; wakes into the small hours saying 'Farewell then, Polia'; and the colophon dates and places the whole dream: Treviso, 1467, the Kalends of May. Four features. One measurement group: the dream's own stated date and hour, which the task asked for specifically."
+  },
+  "features": [
+    {
+      "id": "xxxviii-the-waking",
+      "name": "Poliphilo's waking grief, the dream broken and carried away, and his own farewell -- dated and placed by the colophon",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 465",
+      "status": "unknown",
+      "note": "'So unlooked-for a delight snatched away ... I ached all over from the hard clasping of that blessed image ... the mysterious apparition broken off, scattered, and carried away.' Then, waking, 'Sighing, risen and released from the sweet sleep, I woke of a sudden into the small hours, saying: Farewell then, Polia' -- followed by the colophon, 'At Treviso, where wretched Poliphilo was held fast in the most comely little thongs of Polia's love. 1467, on the Kalends of May.' Grepped src/data/hp_dream.js: the 'awakening' station's first two beats (lines 236-243) quote this passage and the colophon nearly verbatim, including the date, the place, and the farewell line. This is strong evidence of text-level coverage but I have not loaded the running page, so status is unknown rather than built, per the ledger's discipline.",
+      "built_as": "src/data/hp_dream.js 'awakening' stop, beats 1-2 (quotes the waking passage and the colophon verbatim) -- not verified live",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxviii-envious-sun",
+      "name": "The Sun, envious of the dream, rushes to end the night like an informer against the divine Mother",
+      "kind": "person",
+      "plate": null,
+      "source": "p. 465",
+      "status": "unknown",
+      "note": "'the Sun, stirred to envy by so blessed a dream, coming to plunder the glorious night like a public enemy and an informer against the divine Mother, came suddenly with his shining splendours and painted the whitening Dawn a rosy colour, the long night dispelled.' Grepped src/data/hp_dream.js: the 'awakening' stop paraphrases this ('The Sun comes up like an informer') and src/data/tours.json's 'wood' stop covers it thematically ('Poliphilo wakes to the nightingale ... and the risen sun'). Text-level coverage found; not verified live, so unknown rather than built. No distinct figure or personification of the Sun (as opposed to a generic sunrise) was found in either file.",
+      "built_as": "src/data/hp_dream.js 'awakening' stop (paraphrased, 'the Sun comes up like an informer') -- not verified live, and not modelled as a distinct personified figure",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxviii-alcmena-allusion",
+      "name": "Poliphilo wishes the Sun had granted him the long night of Alcmena, or the Stygian sleep out of Psyche's box",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 465",
+      "status": "partial",
+      "note": "'he who would not endure (because, I judge, with a goddess it is not permitted) to grant me the long night of Alcmena. Ah me, why did he not exchange a little of his swiftness for a little sloth ... And why was the Stygian sleep out of curious Psyche's box not laid upon me then?' Two paired classical allusions -- Jupiter doubling the night to beget Hercules on Alcmena, and the drugged sleep from Pandora's-box-like device in Apuleius. Grepped src/data/hp_dream.js and tours.json: the Psyche's-box half is quoted almost verbatim in hp_dream.js's 'awakening' stop ('Why was he not given the drugged sleep out of Psyche's box?'), but 'Alcmena' does not occur anywhere in either file -- the paired allusion is cut in half. The dropped half is the one that most directly compares Poliphilo's loss to a god's stolen night with a mortal woman.",
+      "built_as": "src/data/hp_dream.js 'awakening' stop (Psyche's box only; Alcmena entirely absent from the built text)",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxviii-philomela-tereus",
+      "name": "Philomela (the nightingale), hidden in the brambles before daybreak, singing out Tereus's rape",
+      "kind": "creature",
+      "plate": null,
+      "source": "p. 465",
+      "status": "partial",
+      "note": "'And there Philomela, weeping before daybreak, hidden among thorny brambles and in thickets close with the dark foliage of small oaks wound about with twining honeysuckle, was pouring out the violence of that adulterous and faithless Tereus, saying with tuneful chatter: Tereus, Tereus -- [?have I been wronged].' The page's own note flags the Greek (eme ebiasato, 'he forced/violated me') as corrupt and unverified against the facsimile. Grepped src/data/tours.json: the 'wood' waking stop names her generically -- 'He wakes to the nightingale -- Philomela, the bird of lament and of dawn -- the classical sign that the night of vision is over' -- but stops there. Grepped src/data/hp_dream.js: she is reduced further, to an unnamed 'nightingale ... singing in the thorns before daybreak'. Nowhere in the built world is Tereus named, the rape stated, the specific setting (brambles, small-oak thickets, honeysuckle) given, or the bird's own cry ('Tereus, Tereus') quoted. This is the most specific classical allusion on the book's last page and the least built of the four features here -- arguably the single most interesting thing this chapter has that the world does not (see report).",
+      "built_as": "src/data/tours.json 'wood' stop (names Philomela only, no myth content); src/data/hp_dream.js 'awakening' stop (an unnamed nightingale)",
+      "modes": ["walk", "dream", "tour"]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "the date of the dream, given by the closing colophon",
+      "book_says": "\"At Treviso, where wretched Poliphilo was held fast in the most comely little thongs of Polia's love. 1467, on the Kalends of May.\" -- i.e. Treviso, 1 May 1467.",
+      "metres": null,
+      "source": "p. 465"
+    },
+    {
+      "what": "the hour of the waking",
+      "book_says": "No clock hour is given. Poliphilo wakes \"into the small hours\" (\"sighing, risen and released from the sweet sleep, I woke of a sudden into the small hours\"), and Philomela is already singing \"before daybreak\" -- so the waking falls in the pre-dawn hours of 1 May, just before the sunrise the chapter goes on to describe.",
+      "metres": null,
+      "source": "p. 465"
+    }
+  ]
+}

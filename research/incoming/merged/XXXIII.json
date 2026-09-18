@@ -1,0 +1,89 @@
+{
+  "id": "XXXIII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher (chapter XXXIII pass)",
+    "date": "2026-09-17",
+    "note": "Read translation/en/page_444.md through page_448.md in full (text + Notes). Chapter XXXIII is entirely Poliphilo's two courtly love-letters to Polia, framed by two short bridging paragraphs (p. 444 sending the first, p. 446-447 sending the second after the first fails) and closing with the argument of chapter XXXIV (p. 448, which is not this chapter's content and is left for whoever researches XXXIV). IMPORTANT CORRECTION to the ledger's current plates[] for this chapter: hp.db.woodcut_catalog lists catalog_numbers 166-168 (page_seq 447, 448, 448; 'Poliphilus before Venus in clouds; Cupid listens', 'Cupid with bust of Polia and arrow', 'Cupid shoots arrow at bust of Polia') as falling in this chapter's page range by naive page-number matching. They do NOT belong here. I opened both scans directly: site/images/woodcuts_1499/hp1499_p447.jpg's printed text is our translation's p. 457 verbatim ('Audite benignamente le mie lamentabile querimonie... quella uera & diua effigie di Polia' = 'Having benignly heard my lamentable complaints... that true and divine effigy of Polia'), and hp1499_p448.jpg's is p. 458's ('Et poscia alla genitrice... Nel delicato pecto della ostensa imagine... sagitta'). Both are chapter XXXV (the vision at Venus's throne, where Cupid shoots Polia's effigy) -- SOURCES.md's own misfiled-woodcuts table already half-flagged this for plate #166 ('now shown at ch. XXXV') but the ledger's page-range seeding still pulls all three into XXXIII. The scan/catalog page_seq in this whole stretch of Book II runs a consistent ~10 pages behind the true 1499/our-translation page (433->443, 435/436->445/446, 447->457, 448->458 -- checked four independent points). So: chapter XXXIII, on its own real pages 444-448, has ONE plate, not three -- see xxxiii-letter-delivery-bedchamber below (catalog #165, recorded page_seq 435, true page 446) -- and it is currently misfiled under chapter XXXI by the same offset. Whoever next runs coverage_seed.py on this chapter should expect its derived plates[] to say 166-168 and should override that; the true single plate is #165. Godwin 1999 not consulted. No measurements stated anywhere in these five pages -- the whole chapter is direct address, no distances, sizes, or counts (see measurements: [])."
+  },
+  "features": [
+    {
+      "id": "xxxiii-first-letter",
+      "name": "Poliphilo's first letter to Polia (full text, pp. 444-446)",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 444-446",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "A complete formal epistola amatoria: avowal ('my incredible passion'), the heart torn out by 'the rapacious hooks of thy stelliferous eyes', a plea for 'not-doubtful faith', 'wholly in thee alive, and in me wholly dead', and the sign-off 'both alive and dead, thine I am. Farewell.' The tour station 'Poliphilo's Telling: the Love-Letters' (src/data/tours.json ~1821) already summarises and quotes from the letters in prose, but the letter as a readable in-world object/inscription (e.g. a plaque or a held sheet the player can read in full) does not exist. Grep of src/systems/Cast.js found a 'letter' prop, but it belongs to the chess-piece secretary figure from Book I's chess game (the rank that 'carries a sealed letter... NOT a mitre', ~line 810, 1501-1537) and is unrelated to this letter."
+    },
+    {
+      "id": "xxxiii-second-letter",
+      "name": "Poliphilo's second letter to Polia (full text, pp. 447-448)",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 447-448",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "More desperate than the first: Polia's 'crude savagery', her breast 'more frigorific than are Dirce and Nomè, founts, and more than the Salamander, cold', the 'amorous and solid chain' he cannot unbind, himself 'taken and captive in this amorous fish-trap (Nassa), like a little fly involved in the inextricable work of Arachne'; he worships her as 'a true simulacrum of a Goddess'. Already quoted in the tour ('like a fly in a spider's web') but not present as an in-world readable object. Unbuilt."
+    },
+    {
+      "id": "xxxiii-letter-delivery-bedchamber",
+      "name": "Polia's bed-chamber: the canopy bed, two framed landscape pictures on the wall, a small dog at the bedside, and a maidservant carrying a small box toward the bed",
+      "kind": "place",
+      "plate": 165,
+      "source": "p. 446; woodcut site/images/woodcuts_1499/hp1499_p436.jpg (hp.db.woodcut_catalog #165, recorded page_seq 435 -- no image exists at that scan number; the actual plate is filed at scan/page_seq 436, offset -- see research note; true page 446)",
+      "status": "unknown",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo, ~lines 769-803 ('Polia's bed-chamber, and the vision through its window')",
+      "modes": ["walk", "tour"],
+      "note": "Text: 'Believing, Sacred Matron, that the Damsel, to my amorous words somewhat duly commoved, would assent... but by no other mode I dispersed vainly my writing and speaking than to a marble-born statue' (p. 446) -- the first letter's failure, reported. The actual woodcut at this page (a real plate, oddly absent as its own row from hp.db.woodcut_catalog at the correct scan number, though catalog #165's description clearly matches it) shows a canopied four-post bed with a striped curtain and bolster, two framed landscape pictures hung on the chamber wall, a small dog/cat seated at the foot of the bed, and a standing maidservant carrying a small box or casket toward the bed -- almost certainly the letter's delivery, not 'Polia reading' it as the catalog caption has it. Grep of tombs.js found a bed-chamber ALREADY built here: a canopied bed, a reclining Polia figure holding a letter-page prop, a window with the Diana/Venus chariot vision beyond it -- built for and labelled around plate #160 (p. 415, the vision) and explicitly commented 'the bed, and Polia in it reading the letter (#165)' at line 780. So the room and a Polia-with-letter beat already exist in code (not verified live, hence 'unknown' not 'partial'/'built'), but the maidservant, the small dog, and the two framed landscape pictures the actual plate shows are not in that code. Cast.js has an unused 'dog' factory (~line 1831) that could supply the lapdog cheaply."
+    },
+    {
+      "id": "xxxiii-fish-trap-and-spiderweb",
+      "name": "The \"amorous fish-trap (Nassa)\" and Arachne's web -- Poliphilo caught the more he struggles",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 447",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "'Taken and captive in this amorous fish-trap (Nassa), like a little fly involved in the inextricable work of Arachne (a spider's web)... the more I re-kick, so much the more I implicate myself.' A concrete pair of objects (a wicker eel/fish-trap, a spider's web) used as the letter's governing image of inescapable love. Could furnish a small prop near the letter-delivery scene or the writing-desk chamber (ch. XXXII). Nothing built."
+    },
+    {
+      "id": "xxxiii-salamander-cold-heart",
+      "name": "Polia's heart \"more frigorific than... the Salamander, cold, which, with its contact, extinguishes the fire\"",
+      "kind": "creature",
+      "plate": null,
+      "source": "p. 447",
+      "status": "unknown",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "The second letter's central antithesis: his fire against her salamander-cold breast, 'more frigorific than are Dirce and Nomè, founts'. Grep of src/systems/Cast.js found animals.salamander (~line 2148) already modelled as a creature primitive -- but a further grep of src/scenes/ found no call to animals.salamander(...) anywhere: the model exists and is never placed in any built scene. Cheap to site here (or beside Polia generally) if this simile is ever staged; marked unknown rather than unbuilt because the geometry factory already exists, even though nothing instantiates it."
+    },
+    {
+      "id": "xxxiii-marble-statue-and-wind-eggs",
+      "name": "\"To a marble-born statue I spoke... wind-eggs\" -- Polia receives the first letter unmoved",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 446",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "Poliphilo's own verdict on the first letter's failure: he spoke 'to a marble-born statue', and his words bore fruit only 'as wind-eggs (unfertile eggs)'. Echoes and reinforces the porphyry/marble-heart motif tombs.js already labels on Polia at the Temple of Diana ('MORE FREEZING THAN PORPHYRY', ch. XXVI, line 759) -- the same characterisation restated from Poliphilo's side. Low priority to build separately given the motif is already present elsewhere in the world; kept here for completeness and as a possible inscription line to pair with the bed-chamber scene."
+    },
+    {
+      "id": "xxxiii-goddess-simulacrum",
+      "name": "\"O effigied and true simulacrum of a Goddess before my eyes\" -- Poliphilo worships Polia as a public idol",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 447",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "He addresses Polia as 'a true simulacrum of a Goddess before my eyes, and to my sight, publicly, so conspicuous and notable represented -- in which most-limpidly I see depicted all my health.' Companion piece to ch. XXXII's vow of exclusive worship (xxxii-poliphilo-vow-of-worship); the two together are the clearest statement in Book II of Poliphilo's love-as-idolatry theme. Same disposition as that feature: an inscription/plaque candidate, not a modelled object."
+    }
+  ],
+  "measurements": []
+}

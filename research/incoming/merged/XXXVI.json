@@ -1,0 +1,44 @@
+{
+  "id": "XXXVI",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher session, 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Read whole chapter (translation/en/page_461.md; CC0, our translation). One page, no plate (confirmed against hp.db.woodcut_catalog: no row has page_seq between 455 and 466). This is the last page of Polia's embedded narration: Poliphilo, revived in her arms, begs the priestess to bind the two of them permanently; the priestess blesses and unites them, warns whoever breaks the love be struck by Cupid's golden or leaded arrow; Polia closes her telling to the nymphs. Three features. No measurements stated on this page (no size, distance, count or direction) -- measurements is empty for this chapter."
+  },
+  "features": [
+    {
+      "id": "xxxvi-priestess-prayer-and-binding",
+      "name": "Poliphilo's prayer to the priestess, and her blessing that binds the lovers",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 461",
+      "status": "partial",
+      "note": "Poliphilo prays the priestess to 'make an indissoluble ensnaring, and, coupling, constrain our soul into one concord will'; she answers 'as it has pleased the immortal Gods, no otherwise be it', makes the two of them kiss, blesses them, names the temple 'your all refuge', and says they should 'migrate from the first state to a more laudable one'. PARTIAL, and for a siting reason like chapter XI's torch-nymph: the world already stages a priestess with kissing lovers before her -- src/scenes/world/tombs.js _buildBookTwo's 'Venus-priestess enthroned' group (labelled in its own code comment 'ENTHRONED . CH. XXXV', plate 163) -- but hp.db confirms plate 163 sits at page_seq 425, thirty-six pages earlier than this page: it depicts an EARLIER visit to the priestess, not this chapter's culminating vow-and-blessing. tours.json's 'book_two' tour stop ('The Binding, and the Dissolution', chapter XXXVI-XXXVII) paraphrases the prayer and blessing in its lede text, so the WORDS are covered there, but no beat or geometry stages the specific binding formula, the 'more laudable state' language, or the temple named as refuge.",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo (Venus-priestess group; stages an earlier moment, p. 425/plate 163, not this page's rite) -- and src/data/tours.json 'book_two' stop paraphrases the prayer/blessing in text only",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxvi-double-arrow-curse",
+      "name": "The priestess's double curse-and-blessing: Cupid's golden dart to love, leaden dart to spurn, guarding the bond",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 461",
+      "status": "unbuilt",
+      "note": "'whichever of you shall be cause of impeding this fatal love -- be persecuted by the noxious and fearful arrows and jaculable darts of Cupid; and wounded, the one, of the golden (arrow), and the other be fixed of the funereal leaden.' The classical Ovidian gold/lead arrow pair (Metamorphoses I: gold kindles love, lead repels it), here turned from the lovers' own torment into a standing curse that PROTECTS their union. Grepped src/data/tours.json and src/data/hp_dream.js: Cupid's golden arrow appears twice elsewhere in the built world (the fountain-unveiling at the theatre of Venus, ch. XI/XXXV-adjacent, and the vision at Venus's throne, ch. XXXV) but the LEADEN arrow never appears anywhere in the corpus of built text -- this is the one page in the whole book where the pair is named together, and it is entirely missing.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxvi-polias-narration-close",
+      "name": "Polia, weary of the long telling, brings her narration to the nymphs to an end",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 461 (continues into p. 462)",
+      "status": "partial",
+      "note": "'This, then, was the case and primordium of our falling-in-love ... And, in this saying, Polia -- almost weary of the prolix sermoning -- made an end.' PARTIAL: hp_dream.js's 'cythera' station already summarises the fact of the narration generally ('Polia tells her own side ... Two dreams, told toward each other -- that is the whole machine of the book') but does not stage this specific closing beat or her fatigue.",
+      "built_as": "src/data/hp_dream.js 'cythera' stop (general summary only, not this specific moment)",
+      "modes": ["dream", "tour"]
+    }
+  ],
+  "measurements": []
+}

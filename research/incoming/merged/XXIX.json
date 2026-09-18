@@ -1,0 +1,188 @@
+{
+  "id": "XXIX",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher (chapter XXIX pass)",
+    "date": "2026-09-17",
+    "note": "Read translation/en/page_418.md through page_427.md in full (all ten pages, plus the ready-made per-page Notes). Chapter XXIX is Polia's own narration: the flame of Love finally kindles in her (pp.418-419, against a catalogue of love's metamorphosed victims); she runs to the Temple of Diana, finds Poliphilo's corpse, laments over it like Laodamia, and revives him by touch and tears (pp.420-422); Diana's priestesses beat the lovers apart and banish Polia (pp.423-424); the two flee to the city (Treviso), exchange betrothal vows and part; Polia goes home transformed -- Diana's image gone from her mind, Poliphilo's installed -- and makes him love-tokens (pp.424-425); that night she sees a vision of Diana's ice-chariot routed by Venus's fire-chariot through her bed-chamber window (pp.425-426); she resolves to go to Venus's temple, confesses her whole cruelty to the priestess, and vows herself to Venus and to Poliphilo, whereupon the priestess calls him forward -- the exact seam into Book I's temple-rite (p.427). PLATE-OFFSET TRAP CONFIRMED, and it runs in BOTH directions across this chapter's boundaries: hp.db.woodcut_catalog's page_seq for the plates that actually illustrate chapter XXIX's own text (#157-160, catalogued at page_seq 411,412,413,415) is offset about -10 pages from the translation page the scene occurs on, so coverage_seed.py's naive page-range match currently files them under chapter XXVIII (pp.409-417) instead -- I opened the facsimile scans (hp1499_p411/412/413/415.jpg) and read the Italian directly against our translation to confirm: p411's image + caption text matches our p.420-421 (Polia's lament and the Argia simile just before the pulse revives); p412 matches our p.422 almost word for word ('Polia Signora mia dolce, perche cusi atorto me fai' = 'Polia, my sweet Lady, why so wrongfully dost thou make me suffer?'), including the Hermetic Caduceus line; p413 matches our p.423 (Medusa/Atalanta/Proetides fears, the beating); p415 matches our p.425 (the crimson-heart/hair-chaplet passage running straight into the ice-chariot vision). Conversely, plates #161-163 (page_seq 419,419,425), which coverage_seed.py's page-range match currently (wrongly) attaches to chapter XXIX because 419 and 425 fall inside its nominal 418-427 span, do NOT belong here: I opened hp1499_p419.jpg and hp1499_p425.jpg and their text is Poliphilo's petition to the priestess ('che ambi dui uno solo ligamine... inuinculare facesse') and the couple already kissing before her ('hora hauendo sol paceamente esso basiato') -- both belong to chapter XXX (pp.428-431), which is exactly what the tours.json 'Before the Priestess' note (chapter XXX-XXXI) already independently describes for woodcuts 161-163. Net effect: chapter XXIX's real plates are 157, 158, 159, 160 -- none of which the ledger currently lists for it. Whoever next refreshes chapter XXVIII or XXX should carry this correction; I did not touch either chapter's file. Cross-checked the world against src/scenes/world/tombs.js _buildBookTwo (read directly, not HPWorldScene.js/Cast.js) and src/data/tours.json's three 'book_two' stops for chapters XXVI/XXVII/XXIX; did not load the running page, so nothing below is marked built."
+  },
+  "features": [
+    {
+      "id": "xxix-lovers-catalogue",
+      "name": "Polia's private catalogue of love's metamorphosed victims",
+      "kind": "picture",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 418-419)",
+      "status": "unbuilt",
+      "note": "As the flame first catches, her memory throws up a roll-call to frighten her off it: Phyllis (turned to a tree), Dido, Stheneboea, Scylla (Nisus's daughter), two unnamed Egyptians, Echo, Byblis, Dryope, Myrrha, Nyctimene (turned owl), Menthe (turned mint), Smilax (turned bindweed), Canens, Acis (crushed by Polyphemus), and Helen. Fourteen names in two pages -- a purpose-built frieze or inscribed catalogue of exempla, the same register as the Polyandrion epitaphs and the punishment-visions of ch. XXVII, and nothing in the Temple of Diana precinct names it. No plate: pure text."
+    },
+    {
+      "id": "xxix-love-kindles",
+      "name": "The flame nests in her \"hard and torpid heart\"",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 418-419)",
+      "status": "unbuilt",
+      "note": "The turning-point of the whole book, told as physiology: Love finds \"a little entry,\" nests \"with its first sweet little torches\" in her heart, and \"dilates\" through her \"cordial parts\" -- then surges decisively \"as the Lernaean venom of the blood of the Centaur Nessus\" through Hercules. No plate; an interior event with no geometry of its own. If ever built, it precedes and motivates the revival (xxix-revival) rather than being a place in its own right -- e.g. a glow effect on the Polia figure, not a station."
+    },
+    {
+      "id": "xxix-poliphilo-corpse",
+      "name": "Poliphilo's body, \"colder and more congealed than a hard marble\"",
+      "kind": "person",
+      "plate": 157,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 420); woodcut #157 (catalogued page_seq 411, actually depicts this scene -- see research.note)",
+      "status": "unknown",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo (the prostrate 'pol' figure, DX+0.6, DZ+1.2)",
+      "note": "grep of src/scenes/world/tombs.js found a prostrate Poliphilo figure in the Temple of Diana, but the code comment attaches it to an EARLIER scene (plate #152, ch. XXVI, Poliphilo collapsing at the threshold while alive). It is not distinctly staged as THIS chapter's corpse -- pallid, bloodless, dragged there by Polia -- and I have not seen the running page to know how it actually reads."
+    },
+    {
+      "id": "xxix-polia-lament",
+      "name": "Polia's lament over the corpse: Laodamia, the Furies, the curse on herself",
+      "kind": "rite",
+      "plate": 157,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 420-421); woodcut #157 (see research.note on the page_seq offset)",
+      "status": "unbuilt",
+      "note": "She prostrates herself on the body \"like the unconsoled Laodamia... upon the dead Protesilaus,\" calls herself worse than Phaedra, and begs Death and Jove's lightning to end her. The Temple of Diana's plaque covers only 'THE PLAGVE, THE VOW, THE LOVERS DRIVEN OVT' -- this specific lament has no inscription or pose of its own."
+    },
+    {
+      "id": "xxix-revival",
+      "name": "The revival: the pulse re-boils, his spirits re-warm, he wakes",
+      "kind": "rite",
+      "plate": 158,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 421-422); woodcut #158 (catalogued page_seq 412, matched word-for-word against this page's text -- see research.note)",
+      "status": "unbuilt",
+      "note": "The book's one miracle worked by a human being: her hand on his cold breast feels \"a scanty and deafened pulse re-boil\"; her embrace re-warms his \"fugitive spirits\"; he opens his eyes and says \"Polia, my sweet Lady -- why so wrongfully dost thou make me suffer?\" No embrace pose exists in the world distinct from the reused prostrate figure (see xxix-poliphilo-corpse) -- this is the chapter's central event and currently has no geometry of its own."
+    },
+    {
+      "id": "xxix-caduceus-embrace",
+      "name": "The lovers entwined \"like the serpents of the Hermetic Caduceus\"",
+      "kind": "object",
+      "plate": 158,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 422)",
+      "status": "unbuilt",
+      "note": "Colonna's own simile for the reunion kiss: \"like, in the Hermetic Caduceus, the intricately convolved serpents, and like the involved staff of the divine Physician (Asclepius)\" -- an explicit healing/Hermetic image at the revival site. No caduceus or serpent-staff motif exists near the Temple of Diana or the revival spot; would be a small, cheap, and very on-theme sculptural or inscribed detail."
+    },
+    {
+      "id": "xxix-diana-eviction",
+      "name": "The priestesses beat the lovers apart with rods and oak-branches",
+      "kind": "rite",
+      "plate": 159,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 423-424); woodcut #159 (catalogued page_seq 413, matched against this page's text -- see research.note)",
+      "status": "unknown",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo (two generic 'priestess_i' NPCs, pose 'point')",
+      "note": "grep found two anonymous priestess NPCs standing at the temple steps with a plaque reading 'THE LOVERS DRIVEN OVT,' but the specific action -- 'some with rods, and others with branches of young-oak... beating -- dissociated our sweet embracing' -- is not staged (no weapons/branches, no beating pose, no dissociation of an embracing pair). Not verified live."
+    },
+    {
+      "id": "xxix-algerea",
+      "name": "Algerea, the fellow-priestess who seizes Polia by force",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 424)",
+      "status": "unbuilt",
+      "note": "Named specifically: \"by one of them (who, before, was a most-familiar fellow-servant in the sacred institutes, called Algerea), I was seized\" -- Polia breaks free, leaving her veils in Algerea's hands, but not without \"manifold flagellations... upon my delicate shoulders.\" The world's Diana priestesses are anonymous generic NPCs; Algerea is a named individual with a distinct action (seizing, then being fled from) and is not modelled as such."
+    },
+    {
+      "id": "xxix-metamorphosis-fear-diana",
+      "name": "Polia's fear of Medusa's, Atalanta and Hippomenes's, or the Proetides' fate",
+      "kind": "picture",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 423)",
+      "status": "unbuilt",
+      "note": "A second, smaller catalogue distinct from pp.418-419 (xxix-lovers-catalogue): as the priestesses close in, Polia fears becoming Medusa (punished by Minerva for lying with Neptune in her temple), or Atalanta and Hippomenes (turned to lions for profaning a shrine with love), or suffering the madness of the Proetides. Same register as xxix-lovers-catalogue -- an inscribed or pictured set of exempla -- but keyed specifically to temple-desecration, not to illicit love in general."
+    },
+    {
+      "id": "xxix-flight-to-city",
+      "name": "The lovers flee to the city of Treviso, vow themselves, and part",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 424)",
+      "status": "unbuilt",
+      "note": "\"Both of us fugitive... not magnifying such an hyperoria (banishment)... finally we came, adherent to the city\" -- Treviso is named directly in the book (and the station is literally titled 'Book II -- Treviso' in src/scenes/world/constants.js), yet grep of tombs.js found only three interior/temple sets in _buildBookTwo (Temple of Diana, Polia's bed-chamber, the Venus-priestess hall) -- no street, gate, or urban ground where the exhausted, beaten, unashamed lovers actually confer, exchange 'firm and faithful espousal,' kiss, and part (Poliphilo 'to his journey,' Polia to her 'desired palace'). Per Ted's 2026-09-17 decision that Book II is a real second place, this is exactly the kind of told street that should now be built as geometry, not left as narration."
+    },
+    {
+      "id": "xxix-chamber-image-swap",
+      "name": "Diana's image fades from Polia's mind; Poliphilo's replaces it",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 424)",
+      "status": "unbuilt",
+      "note": "Back in her own bedchamber, \"I saw no more the image of the Goddess Diana offer itself; and, in the imaginative (faculty), it began to vacate. And, introduced the benign effigy of my sweetest Poliphilo.\" An interior substitution -- the clearest single sentence of her conversion -- with no obvious geometry; if built, a small votive image/statuette that changes between scene-states would be the honest way to stage it rather than a literal object."
+    },
+    {
+      "id": "xxix-embroidered-heart",
+      "name": "The pearl-sewn crimson-silk heart, with their names in Greek letters",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 424-425)",
+      "status": "unbuilt",
+      "note": "\"I set myself, of crimson silk, to form a little Heart, wormwork-sewn... the border of the circumference... adorning with lucent pearls; and in the middle of which... his beautiful and most-pleasing (name), and my sealed and consigned name. This is the first Greek figures (letters)... joined, of millet-pearls.\" A concrete craft object, made in her bed-chamber, that could sit as a prop on the bed or a table there."
+    },
+    {
+      "id": "xxix-hair-chaplet",
+      "name": "The gold-and-green-silk chaplet woven with her own plucked hair",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 424-425)",
+      "status": "unbuilt",
+      "note": "\"A little torque (chaplet) of gold threads, and of green silk... with my longest hairs, plucked, in sign of perfect and fervid love; and that, at his neck, pendent, he should bear it, I sent it to him.\" Answers her earlier hair-tearing in grief (p. 404, per the page's own note) -- hair given in love rather than torn in despair. A second, distinct love-token prop from xxix-embroidered-heart."
+    },
+    {
+      "id": "xxix-diana-ice-chariot",
+      "name": "Diana's vehicle of crystalline ice, drawn by two horned stags",
+      "kind": "machine",
+      "plate": 160,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 425); woodcut #160 (catalogued page_seq 415, matched against this page's text -- see research.note)",
+      "status": "unknown",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo (the 'ice' THREE.Group with two stag meshes, bursting through the bed-chamber window)",
+      "note": "grep found a car-and-two-stags group positioned outside Polia's bed-chamber window and gently hovering. Not modelled from the code alone: the stags' \"little chains of livid lead,\" Diana's \"chaplet of Agnus-willow,\" her \"un-corded bow,\" and \"the inane (empty) quiver\" -- the text is specific about the un-strung bow and the empty quiver as signs of her defeat, which the car+stags alone don't convey. Not verified live."
+    },
+    {
+      "id": "xxix-venus-fire-chariot",
+      "name": "Venus's fire-chariot, drawn by two swans, with Cupid beside her",
+      "kind": "machine",
+      "plate": 160,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 425); woodcut #160 (see research.note)",
+      "status": "unknown",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo (the 'fire' THREE.Group with two swan meshes, a fire prop, and small red spheres)",
+      "note": "grep found the counterpart chariot (car, two swans, a flame prop, and eight small red spheres that read as roses) opposite the ice chariot. \"With her she had a feathered little boy (Cupid)\" -- no Cupid child figure appears among the group's contents in the code I read. Not verified live."
+    },
+    {
+      "id": "xxix-chariot-duel",
+      "name": "Cupid's torch routs Diana; her ice-car melts and both vanish",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 426)",
+      "status": "unbuilt",
+      "note": "The vision's resolution, not just its tableau: Cupid's \"flaming torch\" puts Diana's car to flight, Venus's fire pursues it \"into the air,\" and the ice car, \"by the fervour of the other all liquable, emptying itself out, both dissolved and disappeared.\" grep of tombs.js found only a static gentle up-down hover on both chariot groups (this._hovers), not a chase or a melt/dissolve. The two chariots (xxix-diana-ice-chariot, xxix-venus-fire-chariot) exist as objects; this is the missing action between them."
+    },
+    {
+      "id": "xxix-roses-myrtle-strewn",
+      "name": "The chamber floor left strewn with roses and myrtle, Venus's tokens",
+      "kind": "plant",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 426)",
+      "status": "unbuilt",
+      "note": "After the vision: \"I found all my bosom, and the floor of my cubicle, with scattered odorous roses, and with little branches of verdant and flowering Myrtle almost covered\" -- Polia reads this as Venus's protection. Myrtle exists widely as a tree species in the world's plant palette (constants.js, cythera.js, nature.js) but not as strewn cut petals/branches on a chamber floor; no rose petals scattered anywhere in the Temple of Diana / bed-chamber precinct per grep."
+    },
+    {
+      "id": "xxix-venus-temple-confession",
+      "name": "Polia's full confession before the enthroned Priestess of Venus",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 427) -- NOT woodcuts 161-163: those are catalogued at page_seq 419/419/425 and I confirmed by opening the scans that they depict Poliphilo's petition and the pledge-kiss, which is chapter XXX's content (pp. 428-431); see research.note",
+      "status": "unknown",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo (the 'IN CONSPECTV ANTISTITAE' set: enthroned priestess NPC + Poliphilo/Polia NPC pair)",
+      "note": "grep found the priestess-enthroned set built and captioned, but posed for the LATER kiss ('pose: offer' / 'reach', labelled 'THE LOVERS KISS IN HER PRESENCE') -- this chapter's actual content at the same location is Polia's confession, kneeling, naming herself \"more dire and savaging than a Tigress... more deaf... than a stopped Asp... of pity naked, of humanity austere,\" repenting, then vowing herself Venus's and Poliphilo's, before any kiss. Poliphilo is present \"praying\" to be restored, not yet embracing. The code's own comment mislabels this set 'CH. XXXV' as well, which is a different mismatch again. Not verified live."
+    },
+    {
+      "id": "xxix-poliphilo-arrow-gaze",
+      "name": "Poliphilo's loving gaze strikes Polia's heart like a drawn arrow",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 427)",
+      "status": "unbuilt",
+      "note": "\"The most-avid eyes opposite converting, suddenly the mordant gaze, perpetual, ran (such as a swift arrow, from a drawn bow directed) -- into my prepared and freely-disposed heart it fixed itself, so that... I felt (myself) crackle and up-boil.\" She now receives the wound she once dealt him (his letters call his own love an arrow-wound, chs. XXXII-XXXIII per the tour notes). A minor beat; no arrow/gaze effect exists at the Venus-priestess set."
+    }
+  ],
+  "measurements": []
+}

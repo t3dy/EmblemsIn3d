@@ -1,0 +1,633 @@
+{
+  "id": "XXII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against our own translation, session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "All 32 pages (326-357) read in translation/en/page_3NN.md. Two findings worth carrying forward. (1) hp.db.woodcut_catalog's page_seq for this chapter's plates runs a consistent ~9-10 pages BEHIND our translation's page numbering -- verified by opening the scans directly (RECIPES/research-a-chapter.md step 2): hp1499_p334.jpg, catalogued at page_seq 334 (#141 'terminal figure with three male heads', #142 'trophy with three heads of Cerberus and serpent'), actually shows the gilt three-headed ithyphallic herm-idol AND the Serapis (lion/dog/wolf, dragon-coiled) image that our translation describes in prose at p.344; hp1499_p341.jpg, catalogued at page_seq 341 (#147 'The Amphitheatre in island of Venus'), carries the printed line 'Area continua per diametro passi.xxxii' -- the Italian for the '32 paces' sentence that is our p.351. Both confirm offset +10. This means plate-to-page joins near a chapter boundary should be checked against the scan, not assumed from page_seq alone -- exactly the kind of thing the woodcut catalogue can get wrong even when a plate exists. (2) Plate #148 ('Ground-plan of fountain of Venus', page_seq 349) is catalogued inside this chapter's page range but, by the same +10 offset (349+10=359), its content is almost certainly the Fountain of Venus precinct that chapter XXIII's text describes starting our p.358 -- the heptagonal plan of seven gemstone columns I viewed at hp1499_p349.jpg matches nothing in chapter XXII's text but matches chapter XXIII's opening exactly. Flagged as xxii-plate-148-fountain-groundplan below and left declined-for-this-chapter; whoever enumerates XXIII should pick it up. (3) Checked every theatre figure found here (Area 32 paces/47.4m, ring 8 paces/11.8m, seats 6 palms/0.44m x 2.5ft/0.74m, top walkway 5ft/1.48m, pergola 1.5 pace/2.22m, crowning cypresses 3 paces/4.44m apart) against DIMENSIONS.md section 4 'The Theatre of Venus' -- all seven agree exactly, no discrepancy. Six new measurements not yet in DIMENSIONS.md are added below (the car's embroidered band, the cornice's clean band, the gallery trough, the plan's bay count, the planted-tier count, and the stair count). (4) The world's amphitheatre (src/scenes/world/cythera.js `_buildAmphitheatre`) and its Cupid-triumph car (src/scenes/world/triumphs.js `_buildCupidTriumph`) are both commented with citations to this exact chapter and this exact translation, and the numbers in those comments match what I independently read -- but per this session's instruction I have not loaded the live running page, so every feature below is `unknown`, not `built`, with the grep evidence named in its note. (5) Godwin 1999 was not consulted; all citations are our own CC0 translation or the 1499 scans."
+  },
+  "features": [
+    {
+      "id": "xxii-landing-embassy-of-nymphs",
+      "name": "Infinite gift-bearing nymphs come out to meet Cupid at the landing",
+      "kind": "people",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 326",
+      "status": "unbuilt",
+      "note": "The chapter opens with the boat reaching shore and a chosen troop of demigoddesses and nymphs coming out to meet the winged boy, dancing pyrrhic dances, ranked as pastophorae (shrine-bearers), pyrgophorae (tower-bearers) and antiludiae (fore-dancers) -- a religious-rite marshalling, not a military one. Grepped src/scenes/world/cythera.js and triumphs.js: no landing-reception scene distinct from the triumph car itself.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-trophy-of-mars",
+      "name": "The first trophy: the disarmed panoply of Mars (Pyroeis)",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 326",
+      "status": "unknown",
+      "note": "Cuirass of Pyroeis (one of the Sun's horses, martial ardour), bow hung crosswise retaining the cuirass, barbed quiver, axe, a spread net beneath, a winged boy's face and its twin, an apple transfixed through the middle, a starry helmet at the summit -- the arms Love has stripped from war itself. Grep of src/scenes/world/cythera.js `_cytheraTrophies` (lines 1198-1232) finds a built 'arms' trophy (ARMA, 'ROMAN ARMS - WINGED GENIUS': cuirass, round shield, crossed spears, a winged-genius head) sited on the north road with a plaque -- close to but not identical with the book's inventory (no bow/quiver/axe/net/apple named in the code). The code cites different plate numbers (#130-136, folios 317-321) than this chapter's own catalogue entries, consistent with the page_seq offset noted in the research block.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-trophy-of-jupiter",
+      "name": "The second trophy: the disarmed panoply of Jupiter",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 327",
+      "status": "unknown",
+      "note": "A band of laurel, a pair of outspread black-eagle wings, a noble boy's face, two thunderbolts bound crosswise in gold and silk, a sceptre holding a superb robe suspended -- sovereignty itself hung as spoil. Grep finds a built 'tunic' trophy (TVNICA, 'THE TUNIC, WITH LAUREL': a hung tunic-plane + laurel torus + winged-genius head) at `_cytheraTrophies` -- an approximate match (laurel and a hung garment are both there) but the thunderbolts, sceptre and eagle-wings specific to Jupiter are not represented.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-trophy-of-hercules",
+      "name": "The third trophy: the disarmed panoply of Hercules",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 327",
+      "status": "unknown",
+      "note": "A buffalo-headed helmet, an antique cuirass, two shields knotted at the arm-outlets, the Cleonean (Nemean) lion-skin hanging between them with the knobbed, sinewy club -- even the hero of the twelve labours disarmed by Love. Grep finds a built 'hide' trophy (EXVVIAE, \"TIGER-SKIN AND BULL'S HEAD\") at `_cytheraTrophies` using a striped tiger-pelt texture and a horned head -- the animal is wrong (tiger, not the Nemean lion) and the club/shields/cuirass are absent, but the pose (a flayed skin hung with a horned head above) is the right shape for this trophy.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-quis-evadet-nemo",
+      "name": "QUIS EVADET? -- NEMO: the paired mottoed trophies",
+      "kind": "inscription",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 328",
+      "status": "unknown",
+      "note": "Two trophies carried in sequence spell one sentence between them: 'Who shall escape?' -- 'No one.' One of the most-copied images from the 1499 woodcuts, restored here to its original context as a pair of triumph-standards. Grep finds both built exactly, by name, in `_cytheraTrophies` (kind 'quis'/'nemo', labels QVIS EVADET / NEMO, each with a lettered tablet using the plates' own words) -- and `src/data/tours.json` already quotes the pairing at two stops. Strong code match; still `unknown` because I have not loaded the live page this session.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-crescent-crown-trophy",
+      "name": "A winged crescent, a crown, an ewer and a gemmed egg -- an unnamed trophy",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 329",
+      "status": "unbuilt",
+      "note": "A sphere on a *pyrronium* between winged gold-leafed crescents; a crown held by a band with the spear passing through it; a basin, an ewer's foot on paired wings, an egg-shaped figure with a byssus-boss, and a melon-scored sphere. Colonna leaves this one's meaning to the emblem, unlike its neighbours. `_cytheraTrophies` has a 'ribbons' kind (gold wings + a floating cloth ribbon) that is a distant cousin in silhouette but does not carry the crown, ewer or egg, so this is not a real match.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-trophy-standards-materials",
+      "name": "The trophy-standards as goldsmith's objects: ebony, sandalwood, ivory, silk, gems",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 329",
+      "status": "unbuilt",
+      "note": "Colonna pauses the inventory to name the shafts' materials -- ebony, red/citrine/white sandalwood, ivory, gilt, silvered metal, green silk -- and the dancers' needle-worked, jewel-purse gloves. A material palette rather than a single object; no evidence any trophy-standard in the world varies its shaft material.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-doryktetoi-standard",
+      "name": "The lead standard: Cupid drawing the bow and treading the apple, lettered DORYKTETOI",
+      "kind": "inscription",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 330",
+      "status": "unknown",
+      "note": "The great celibar crowned with an unveiled, bow-drawing Cupid treading an apple underfoot, inscribed on both faces ΔΟΡΥΚΤΗΤΟΙ -- 'the spear-won' -- naming Poliphilo and Polia themselves as Love's captives-of-war. Grep finds a 'wreath' trophy at `_cytheraTrophies` (a laurel torus with a small Cupid figure inside it, labelled CVPIDO / 'THE LAUREL WREATH, GAINED BY SPEAR') that carries the 'gained by spear' idea but not the Greek inscription, the bow-drawing pose, or the apple.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-boat-standard",
+      "name": "The little boat's own standard, running ahead of the trophy-bearers",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 330",
+      "status": "unbuilt",
+      "note": "Before all the trophy-bearers, one standard-bearer runs out ahead specifically carrying the emblem of the boat's own crossing (cf. the standard described at p. 284, already textured in `_standardTexture`). No evidence this specific lead position in the procession is staged.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-psyche-and-companions-costume",
+      "name": "Psyche's queenly robe, and the companions' jewelled dress, hair and footwear",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 331-336",
+      "status": "unbuilt",
+      "note": "Six pages of the book's most concentrated costume-ekphrasis: Psyche in crimson-gold triple-twilled silk; companions in gold-scaled breastplate bodices, pearl-stuffed phrygium breast-bands, gems keyed to ground colour by a strict rule (emerald-on-green, ruby-on-leek-green, sapphire-on-saffron, diamond-on-crimson, pearl-on-amethyst), merlon-edged embroidered hems, slashed-and-pouffed sleeves with the cotton chemise puffing through, and footwear from barefoot vermilion silk sandals to gold-buckled satin crepidae with Armenian-laced toe-snares. The world's nymph NPCs (`Cast.js` `nymph()`) carry a generic robe colour and a garland option; none of this specific, rule-governed jewel/colour/textile programme is implemented. The most exhaustive single unbuilt costume-brief in the chapter.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-beauty-as-siege-engine",
+      "name": "Poliphilo's apostrophe: beauty as Love's siege-engine, and his charge to Polia",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 337",
+      "status": "declined",
+      "note": "Declined: this is Poliphilo's interior monologue -- the costume-catalogue turned into a moral argument that even the soundest heart cannot resist such contrived ornament, and his silent charge 'O my dear little beautiful Polia, guard your won prey!' There is no object or place here to model; it is a thought, not a thing. Best carried as tour commentary text at this station (it is not yet quoted in tours.json's cythera_theatre notes), not as geometry.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-polias-portrait",
+      "name": "Polia's portrait begins: brows, arrow-shooting eyes, unrouged cheeks",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 337-338",
+      "status": "unbuilt",
+      "note": "Silk-thread brows under amber lashes, star-bright 'arrow-shooting eyes', cheeks 'not rouged but with a most-pleasing and genuine redness' compared to autumn apples and the mystery-cult gods' radiance (Achaemenian Titan-Sun, Osiris/Isis/Serapis, Mithra). A generic named Polia NPC exists in the world (`Cast.js` nymph, `constants.js`), but no facial-portrait-level detail keyed to this specific blazon.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-psyche-crowns-cupid",
+      "name": "Psyche sets a votive crown, finer than Hiero's, on Cupid's head",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 338",
+      "status": "unbuilt",
+      "note": "The moment the procession pivots from anonymous trophies to named ceremony: Psyche crowns her husband with a crown surpassing the famous votive one of Hiero (II of Syracuse). No crowning gesture/animation evidenced in triumphs.js's Cupid-car build.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-imeria-erototimoris-receive-lovers",
+      "name": "Imeria receives Polia, Erototimoris takes Poliphilo by the hand",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 338",
+      "status": "unbuilt",
+      "note": "The two lovers are formally received into the procession by two named nymphs -- Imeria ('Longing') and Erototimoris ('Love-honouring') -- distinct from the later Synesia/Plexaura/Ganoma who bind and lead them at the car (p. 341, which IS built -- see xxii-synesia-plexaura-ganoma). Neither Imeria nor Erototimoris appears in grep of src/scenes or src/systems.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-masque-of-loves-aspects",
+      "name": "The masque of Love's aspects: thirteen named nymphs, each an attribute",
+      "kind": "people",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 338-340",
+      "status": "unbuilt",
+      "note": "A full personification-sequence, each Greek name glossed in the translation's own notes: Toxodora (bow-giver) offers the bow; Ennia scatters flowers from a viper-handled sapphire amphora (plate #138 per catalogue, likely this vase given the offset noted in the research block) and Phileda gathers them; Velode offers the quiver (see xxii-cupids-two-arrows); Omonia and Diapraxe play catch with a gold ball and a crystal ball that are never allowed to meet; Typhlote offers the blindfold (see xxii-blindfold-of-typhlote) flanked by wanton Asynecha and Ardelia Comazista; Aschemosyne presents herself nude with a golden sphere; Teleste gives a kindled torch; Vrachivia and Capnolina close the file with the spark-urn and smoke-vase (see xxii-vrachivias-spark-urn, xxii-panta-baia-biou-vase). None of these thirteen names appears anywhere in src/scenes or src/systems (grepped individually). A genuinely large gap: this is a designed allegorical psychology of Eros and the world currently only names the four figures at the car itself (Synesia, Plexaura, Ganoma, Psyche).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-cupids-two-arrows",
+      "name": "Velode's quiver: the silver arrow that kindles love, the leaden arrow that repels it",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 339",
+      "status": "unbuilt",
+      "note": "Ovid's pair from Metamorphoses I, staged as a triumph-gift: one shaft of pure silver, one of 'black, heavy, cold and inauspicious lead' -- desire and aversion as one god's twin instruments. Not evidenced anywhere in the Cupid-car build (`_buildCupidTriumph`), which gives Cupid no quiver at all.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-blindfold-of-typhlote",
+      "name": "Typhlote (Blindness) hands Cupid the veil -- the origin-rite of blind Cupid",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 339",
+      "status": "unbuilt",
+      "note": "Colonna stages the god's own blindfolding as a formal offering within the triumph, personified Blindness herself doing the binding. A striking, specific narrative beat with no analogue in the code (Cupid is built sighted throughout).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-panta-baia-biou-vase",
+      "name": "Capnolina's smoking vase, inscribed PANTA BAIA BIOU",
+      "kind": "inscription",
+      "plate": 140,
+      "source": "our translation (CC0), 1499 p. 340",
+      "status": "unbuilt",
+      "note": "An earthenware vase with a narrow orifice, thirteen Greek letters impressed round its dilation reading ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ -- 'all the things of life are trifling/brief' -- breathing fragrant smoke that 'resolves into nothing through the air'. The philosophical answer to QUIS EVADET/NEMO: none escapes Love, and none escapes transience. Plate #140 ('Earthenware amphora with odoriferous fumes') matches this vase closely by description; per the research block's offset finding, the scan for the paired spark-and-smoke vases (hp1499_p330.jpg) shows both this vase and Vrachivia's (xxii-vrachivias-spark-urn) on one leaf, with the Greek inscription legible. No inscribed smoking vase found in the world.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-vrachivias-spark-urn",
+      "name": "Vrachivia's emerald urn, throwing sparks that die to ash",
+      "kind": "object",
+      "plate": 139,
+      "source": "our translation (CC0), 1499 pp. 339-340",
+      "status": "unbuilt",
+      "note": "A celery-foliage-clad emerald urn from whose broad orifice sparks 'leapt out, running lucent through the air', then fell extinguished as ash -- paired with Capnolina's smoke-vase as a doubled vanitas image (spark and smoke, both vanishing). Plate #139 matches by description. Not built; would be a striking particle-effect object (the world already has `ParticleStream`, imported in triumphs.js, for exactly this kind of effect).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-golden-triumphal-car",
+      "name": "Cupid's golden triumphal car, gem-spoked wheels",
+      "kind": "object",
+      "plate": 143,
+      "source": "our translation (CC0), 1499 p. 341",
+      "status": "unknown",
+      "note": "An all-gold-plate car with a jewelled dodrans-wide embroidered band, two gold-rimmed wheels with balustered, colour-gemmed spokes. Grep finds `_buildCupidTriumph` in src/scenes/world/triumphs.js (lines 508-553), built with a gold box body, a meander frieze, two gold-rimmed torus wheels each with 8 coloured cylinder spokes, cited explicitly to this chapter and pp. 341, and matching plates #143-144. Strong code match; `unknown` per this session's live-verification rule.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-lovers-bound-in-roses",
+      "name": "Poliphilo and Polia, bound as captives behind the car, then freed at the theatre's centre",
+      "kind": "person",
+      "plate": 143,
+      "source": "our translation (CC0), 1499 pp. 341, 345, 357",
+      "status": "unknown",
+      "note": "Arms bound behind them with rose-garlands, led by Synesia, 'softly and willingly' -- Poliphilo trembles, Polia and the nymphs laugh, he is reassured (p. 341); the nymphs keep making 'amorous blandishments' along the rose-pergola road (p. 345); and at the very end, inside the theatre, they are unbound and Psyche restores Cupid's arrow (p. 357) -- captivity as ceremony, not cruelty. Grep of triumphs.js finds both lovers built as named NPCs ('Poliphilo', 'Polia') behind the car with sub-label 'CAPTIVE, BOVND IN ROSES' and a scattering of rose-coloured spheres between them (lines 533-538). The UNBINDING at p. 357 -- the release, the arrow restored -- is not evidenced anywhere; the built scene appears to be the bound state only, sited permanently on the road rather than resolving at the theatre.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-synesia-plexaura-ganoma",
+      "name": "Synesia leads the bound lovers; Plexaura and Ganoma bind them",
+      "kind": "person",
+      "plate": 143,
+      "source": "our translation (CC0), 1499 p. 341",
+      "status": "unknown",
+      "note": "Three named nymphs given a specific division of labour: Synesia ('Understanding') draws the captives, Plexaura and Ganoma do the binding at the imperial nod of Cupid. Grep finds all three named exactly in triumphs.js (line 539), each spawned as a robed nymph NPC with a labelled sub-caption quoting their office. Strong code match.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-psyches-diamond-cupid-self-wound",
+      "name": "The carved diamond on Psyche's chlamys: Cupid wounding himself, Psyche handling the arrow",
+      "kind": "picture",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 341-342",
+      "status": "unbuilt",
+      "note": "An inch-and-a-half diamond, cut (Colonna says) by no human hand, showing Cupid lancing himself while incautious Psyche handles the arrow -- the peripeteia of Apuleius's myth in miniature, worn as a shoulder-jewel and governing the whole triumph's meaning (Love wounded by his own weapon, watched by the Soul). Psyche is built as a named NPC (triumphs.js line 542, robed in gold) but carries no gem or picture-detail; this carved emblem is not represented.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-serpent-drawn-car",
+      "name": "Two winged skinks (serpent-lizards) draw the car, at ceremonial slowness",
+      "kind": "creature",
+      "plate": 144,
+      "source": "our translation (CC0), 1499 p. 342",
+      "status": "unknown",
+      "note": "\"Two scaly serpents, skinks, beyond their nature great in this place\" -- jewel-harnessed, drawing the car 'not swiftly, but with a temperament of triumphal procession.' Grep of triumphs.js line 528-531 finds the car drawn by `this.cast.animals.dragon` (falling back to a lion if no dragon model exists) -- a substitution the code comment itself flags ('drawn by the dragons the plate gives it'). Worth a note for a builder: the TEXT specifies skinks/serpent-lizards, not dragons; the plate the code cites (#143-144, 'nymphs, satyrs, dragons, captives') does show dragon-like beasts, so the substitution is plate-driven rather than invented, but the two sources disagree and only the plate's reading survives in the code.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-procession-ranks-and-orchestra",
+      "name": "The full marching order and the antique orchestra: eight instrument types, flower-crowned",
+      "kind": "people",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 342-343",
+      "status": "unbuilt",
+      "note": "Named liturgically: pastophorae, trophigerae, faceferariae, splendophorae, osmiferae, euosmiae, then musicians playing pierced tibia, twin tibiae, lyre, cithara, sistrum, steel triangle, hooked horn and trumpet -- eight distinct instrument-types -- the players wreathed in amethyst-violet, sky-blue, amaranth, everlasting, cyclamen and melilot garlands, singing in the Lydian mode, surpassing Apollo, the Muses and Arion. No instrument-bearing NPC rank or garland-recipe evidenced in the code; the built triumph has riders with censers/incense (per PROCESSIONS.md, from the earlier Four Triumphs) but not this specific eight-instrument orchestra.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-satyrs-aegipans-with-idols",
+      "name": "Aegipans and satyrs bear gilt ithyphallic herm-idols, orchid-crowned",
+      "kind": "creature",
+      "plate": 141,
+      "source": "our translation (CC0), 1499 p. 344",
+      "status": "unknown",
+      "note": "Goat-footed aegipans and satyrs crowned in satyrion, helenium and cynosorchis (aphrodisiac orchids) each carry a rudely-carved, gilt, human-effigied monster -- three heads to the diaphragm, a tapering square body with foliage and an apple at the breast, ithyphallic at the middle. Plate #141 ('terminal figure with three male heads') is, per the research block's offset finding, almost certainly the scan I opened at hp1499_p334.jpg, which shows exactly this tricephalic terminal herm with the apple and the ithyphallic sign. Grep of triumphs.js finds four generic satyr NPCs positioned near the car (lines 545-549) but carrying nothing -- no herm-idols, no aegipans distinct from satyrs, no orchid crowns.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-milk-libating-nymph",
+      "name": "A nymph libates milk from a nipple-shaped golden vase",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 344",
+      "status": "unbuilt",
+      "note": "Ivy-crowned, porphyry-cheeked, her segmented pall wind-lifted, she pours milk drop by drop from a breast-shaped vase -- a fertility/nurture rite opening the procession's rear file. No milk-libation object or gesture evidenced in the code.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-serapis-simulacrum",
+      "name": "The tricephalic Serapis idol -- lion, dog, wolf heads, coiled by a rayed dragon",
+      "kind": "picture",
+      "plate": 142,
+      "source": "our translation (CC0), 1499 p. 344",
+      "status": "unbuilt",
+      "note": "Carried with 'special honour and obstinate superstition': a lion head with a fawning dog's head to the right and a rapacious wolf's head to the left, the whole encoiled by a gilt, ray-emitting dragon -- Macrobius's exact Time-allegory (Saturnalia I.20): the three heads are present/past/future, the serpent is eternity. Sets Love's triumph under the sign of Time, the same memento as PANTA BAIA BIOU. Plate #142 ('trophy with three heads of Cerberus and serpent') matches this closely, catalogued at the same page_seq (334) as plate #141, and both are consistent with the single scan I opened at hp1499_p334.jpg showing the tricephalic idol. Not built anywhere in the code.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-rose-pergola-processional-way",
+      "name": "The roofed rose-pergola over a flower-strewn marble pavement, leading to the theatre",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 345",
+      "status": "unbuilt",
+      "note": "A tessellated-marble road, ankle-deep in strewn rose, orange-flower, violet, jasmine, lily and myrtle petals, roofed by an arched rose-pergola whistling in the breeze, birds tame on the branches. The world has a citrus pergola over the river (cythera.js line 379) but no rose-strewn processional road specifically leading up to the amphitheatre gate.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-misting-pipes-at-gate",
+      "name": "Golden pipes mist the procession with perfumed water at the theatre gate",
+      "kind": "machine",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 346",
+      "status": "unbuilt",
+      "note": "\"Through certain narrowest golden little pipes, irroring the processionaries with most-odorous little waters\" -- a scent-delivery machine at the threshold, recurring elsewhere on the island (the note cites p. 324 for an earlier instance). No misting/particle effect at the amphitheatre gate found in grep.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-litharmenon-gate",
+      "name": "The golden-flecked marble gate: alternating ophite/porphyry order, sapphire and emerald flanking vases",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 346-347",
+      "status": "unbuilt",
+      "note": "The gate itself, distinct from the amphitheatre's own colonnade: built of *litharmenon* (a gold-flecked oriental marble too hard for steel), its arch of ophite (green serpentine) with columns alternating ophite/porphyry (green/red) all the way to the capitals, bases and little altars, and one huge sapphire vase and one huge emerald vase flanking the threshold, 'one to a side' -- compared to the vases at the temple of Jove in Athens. `_buildAmphitheatre` gives the whole building alabaster and mirror-black materials uniformly; no distinct gate structure, no green/red alternation, no flanking gem-vases were found in grep. A specific, colour-coded architectural brief nobody has built.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-double-arcade-elevation",
+      "name": "The amphitheatre's double arcade: alabaster, gilt-bronze entablature, half-columns",
+      "kind": "building",
+      "plate": 147,
+      "source": "our translation (CC0), 1499 pp. 347-350",
+      "status": "unknown",
+      "note": "Two superposed orders of arches between striated half-columns, diaphanous alabaster walls, cast-bronze beams/friezes/cornices over-gilt with gold -- the standard Roman amphitheatre elevation (the Colosseum's) rendered in precious material, explicitly compared against Ephesus, the Colosseum and the Veronese theatre. Grep finds `_buildAmphitheatre` (cythera.js lines 1513-1567) built with exactly this: alabaster material, three stacked column orders in a quartered ring, mirror-black gallery walls behind alabaster piers-and-arches on the outer face, cited by comment to pp. 350-352 and to plate #147. Plate #147 itself, viewed directly (hp1499_p341.jpg per the offset finding), shows the identical two-tier arcade elevation. Strong code match; `unknown` per the live-verification rule.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-ram-skull-altar-reliefs",
+      "name": "Ram-skull-and-festoon altars under each half-column, each framing a tiny carved sacrifice-scene",
+      "kind": "picture",
+      "plate": 145,
+      "source": "our translation (CC0), 1499 p. 348",
+      "status": "unbuilt",
+      "note": "Every half-column stands on a little altar carved with a ram's-head bucranium and festoon, and within the festoon's frame a miniature narrative relief: a satyric sacrifice, two nude nymphs piping at a boiling tripod, two boys with vases, two lascivious satyrs, one stopping a leaky vase. Plate #145 ('column base with rams' heads and sacrifice medallion') matches exactly. `_buildAmphitheatre`'s comment mentions 'ram-skull altars with micro-reliefs' as an aspiration but no relief-carving geometry for this scene was found at that location in the code -- the comment describes the text, not a built feature.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-bull-frieze-relief",
+      "name": "The frieze over the theatre-door: a Bacchic bull-sacrifice relief",
+      "kind": "picture",
+      "plate": 146,
+      "source": "our translation (CC0), 1499 pp. 349-350",
+      "status": "unbuilt",
+      "note": "A dense figured panel above the entrance: prostrate bulls at a garlanded vase, a nude youth mounted and about to strike with raised rods, a nude girl seated back-to-back with a billowing veil, satyrs with a coiled serpent and festoons, the bulls' hindquarters dissolving at the panel-ends into acanthus scrollwork. Plate #146 matches. The engine already has a general `_reliefScene` system (triumphs.js line 580 onward, used for the forge and other narrative panels) capable of exactly this kind of carved scene, but this specific bull-relief was not found named or drawn anywhere in grep.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-equal-height-orders",
+      "name": "The theatre's three column-orders, kept at one height against the Vitruvian rule -- on purpose",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 350",
+      "status": "unknown",
+      "note": "Colonna names the Vitruvian rule (each upper order a quarter shorter, the third a fifth shorter) and states his theatre deliberately breaks it for 'elegant and symmetrical' effect. Grep of `_buildAmphitheatre` (cythera.js line 1522: `const RC = 7.15, H = 2.4, ORDERS = 3`, each order stacked at the identical height `o * (H + 0.5)`) shows exactly this rule-break implemented, and the code's own comment names Vitruvius. Strong, specific match.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-mortarless-alabaster",
+      "name": "The whole cavea built of mortarless, stain-proof Indian alabaster",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 350",
+      "status": "unbuilt",
+      "note": "Dry-jointed ('without lime paste or cement, but with stable cohesion'), and immune to smoke, oil or wine staining -- a seamless glowing shell. The world uses an alabaster-toned material generally (see xxii-double-arcade-elevation) but there is no jointless/self-cleaning rendering distinction; this is a material-property claim the geometry cannot really distinguish from an ordinary stone wall.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-theatre-plan-32x8-quartered",
+      "name": "The theatre's plan: 32-pace Area, 8-pace ring, quartered into 4 x 8 bays",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 351",
+      "status": "unknown",
+      "note": "The exact plan-geometry that fixes the whole building: Area diameter 32 paces (47.4 m), surrounding built ring 8 paces thick (11.8 m), the colonnade quartered over the circumference with 8 bays a quarter, radial and concentric columns carrying vaulted porticoes, and an opus-sectile pavement. Grep of `_buildAmphitheatre` shows the plaque text 'XXXII PACES ACROSS' and a `for (let q = 0; q < 4; q++) for (let b = 0; b <= 8; b++)` loop -- an exact plan match to the book's own numbers, though the world's actual radius (RC = 7.15 units) is not yet scaled to the book's 47.4 m (see DIMENSIONS.md's note that this is the one monument already close to true scale, at roughly 1:2).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-sectile-pavement-obsidian-mirror",
+      "name": "The opus-sectile floor, and at its centre a single slab of mirror-black obsidian",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 351-352",
+      "status": "unknown",
+      "note": "The upper and lower pavement of cut, colour-varied stone feigning one integrity; and, on stepping into the Area itself, a single slab of polished obsidian so lustrous that Poliphilo's first footfall feels like plunging into an abyss -- the sky and everything standing in the ring reflected in it. Grep of `_buildAmphitheatre` finds a mirror-black `CircleGeometry` at the Area's centre (line 1521) using a mirror-black material, plus a second dark-stone circle at the wider theatre floor (cythera.js line 557). No 'falling into an abyss' moment (a first-person camera effect on stepping onto it) was found -- the reflective floor exists as material, the vertigo-effect does not.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-mosaic-vaults-of-cupids-deeds",
+      "name": "The soffits historiated in mosaic with all the deeds of Cupid",
+      "kind": "picture",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 352",
+      "status": "unbuilt",
+      "note": "The vaulted ceilings over the ambulatory are mosaic-painted with a complete narrative programme, 'all the effects done by Cupid' -- a ready subject-list for a dome/vault decoration, and Colonna's own closing surpassing-topos names Ephesus, the Colosseum, Verona, Augustus's images and the four elephants of the temple of Concord, all exceeded. No vault mosaic evidenced in the code (the entablatures built are plain, per `_entablature`).",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-royal-gate-narrows-party-to-six",
+      "name": "The royal gate admits only six: the whole triumphal throng is left outside",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 352",
+      "status": "unbuilt",
+      "note": "Only Cupid, Psyche, Poliphilo, Polia and the two binding-nymphs (Plexaura, Ganoma) pass the middle Royal gate into the Area; 'all those officious Nymphs remained excluded.' A concrete narrative-gating device -- the revelation of Venus (ch. XXIII) is for the initiated few -- that the world could honour with an actual exclusion (an invisible wall stopping the crowd NPCs at the gate) but no such gating was found in grep; the amphitheatre's colonnade openings appear walkable by anyone.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-planted-cavea-flower-tiers",
+      "name": "The cavea is not stone seating but hollow, gold-rimmed jasper flower-boxes, tier by named tier",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 pp. 353-354, 357",
+      "status": "unknown",
+      "note": "A wholly original theatre-form: instead of stone benches, each of four hollow steps per order (three orders, twelve tiers total) is a planter of jasper edged in refined gold, filled with a NAMED flower scheme that runs the length of pp. 357 -- violets graded white then yellow then Ianthine, narcissus, then (beyond the first pergola) cyclamen, cornflower, purple chervil, melilot, then (beyond the second) tora, anemone, five-leaved chervil, and a topmost ring divided into ten parts of primrose, everlasting, amaranth, russet violet, Ianthine passerina, white bell, yellow pulliphura, lily-of-the-valley, mixed lilies, and columbine -- 'succumbing to no seasonal change ... ever in one vernal being.' The code comment at cythera.js line 1504 ('The terraces of flower-boxes already ring the theatre') asserts this is satisfied, but that comment is pointing at CYTHERA'S OWN outer garden terracing (the island's six terraces of seven steps, a separate structure at a much larger radius, described at our p. 315/DIMENSIONS.md's Cythera section) -- not planting inside `_buildAmphitheatre` itself, whose geometry (lines 1513-1567) is columns, entablature and mirror walls with no seat-tier or flower-box geometry at all. So the SPECIFIC, named, gold-and-jasper planted auditorium this chapter describes is not built; only an unrelated outer terracing exists, and a code comment conflates the two. Marked `unknown` rather than `unbuilt` because the comment claims coverage and I have not loaded the live page to settle it either way -- but the geometry evidence argues the claim is wrong.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-mirror-black-gallery-walls",
+      "name": "The three pergola-gallery walls, each a differently-named mirror-black stone",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 353",
+      "status": "unknown",
+      "note": "The lowest gallery's wall is *spartopolia*, the second *hieratites*, the third (supreme) *cepionis* -- three distinct named black polished stones, so lustrous they 'simulate an opening of serene air ... and not a closure.' Grep of `_buildAmphitheatre` (lines 1543-1549) finds a single generic mirror-black material used for all three gallery-wall rings, with a comment citing exactly this passage -- the illusion (mirror rather than closure) is built, but the three stones are not individually distinguished or named anywhere.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-crowning-cypress-arcade",
+      "name": "The living arcade crowning the theatre: paired cypresses trained to arch, box-spheres, junipers",
+      "kind": "plant",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 354",
+      "status": "unknown",
+      "note": "The topmost planted tier carries pairs of cypresses trained to lean and interlace into arches (each pair three paces apart), clipped box-spheres filling the gaps between arches, a topiary juniper sphere in the triangular voids, and aromatic herbs filling the rest -- echoing the stone arcades below in greenery. Colonna even remarks it 'appears designed at the top of the Theatre' (i.e. is shown in the woodcut). Grep of cythera.js lines 533-554 finds this built closely: 12 cypress-pairs around a ring radius (cardinal gaps left open for the crossroads), each pair joined by a torus 'arch' and topped with a sphere finial, cited explicitly to this page. Strong, specific match -- the closest 1:1 build in the whole chapter.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-three-perfumed-pergola-pavements",
+      "name": "Floors you can smell: the three pergola-galleries paved in perfumed paste, ground coral and powdered lapis",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 355",
+      "status": "unbuilt",
+      "note": "The most extravagant surfaces in the whole book: the lowest gallery floor is a hardened paste of ladanum, amber, musk, storax and benzoin, dusky-coloured and inlaid with pearls in an antique-foliage band with little animals and birds in the calyxes -- literally 'pressable by divine feet', unmatched (the text says) even by Zenodorus's bronze; the second is ground coral (kept its redness) inlaid with emerald fronds and sapphire flowers; the third is powdered lapis lazuli mixed with fragments of every jewel nature has produced, dotted with points of gold. Each pergola's front is carried on a ring of small gold columns and arches whose spandrels are flat-inlaid chalcedony, agate and jasper (see xxii-gold-peristyle-of-galleries). Nothing resembling this -- coloured, gem-dust, scent-releasing flooring -- was found anywhere in grep of src/scenes or src/systems. This is the single most interesting thing in the chapter that the world does not have: engaging smell is impossible in a 3-D scene, but even the visual idea (a floor literally made of ground coral and lapis, not merely coloured to look like it) is undocumented anywhere in the tour or the code.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-gold-peristyle-of-galleries",
+      "name": "The gold peristyle carrying each pergola, with gem-inlaid spandrels",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 355",
+      "status": "unbuilt",
+      "note": "Each of the three pergolas is fronted by a ring of small gold columns and arches, a jewelled miniature peristyle, with the triangular spandrels between arches flat-tabled in chalcedony, agate, jasper and other stones. Distinct from the crowning cypress-arcade (which is at the very top) -- this is the gold structural frame under all three myrtle pergolas. Not found in grep.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-choral-dance-of-nymphs",
+      "name": "Three choruses of nymphs dance rounds toward the fountain, doubled in the black-mirror walls",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 356",
+      "status": "unbuilt",
+      "note": "A choreographed three-part dance -- a middle chorus and two counter-rotating flanking choruses, all inclining reverently toward the central fountain -- synchronised to four gold trumpets and four ranged toned instruments (epiphonia/antiphonia/messophona/chamaephona, in sandalwood and ebony); nude dancers and byssus-robed dancers alike are doubled by their reflections in the mirror-black gallery walls, so the chorus appears twice, real and reflected. The world's `_npcs` sway/phase system (used generically for standing figures) is not a choreography; no chorus-dance mechanic was found in grep, and the mirror-wall material (xxii-mirror-black-gallery-walls) currently reflects nothing animated.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-seven-step-stair-and-passages",
+      "name": "A stair of seven steps opposite the gate, and gold doors into the theatre's backstage passages",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 356",
+      "status": "unbuilt",
+      "note": "Directly opposite the entrance door, a seven-step stair rises to the first gallery; a slender door built into the wall there, and further small gold doors under the other pergolas, lead through interstitial stairs and vaulted passages 'through all the building' -- a working backstage circulation system, not just a façade. No corresponding stair or interior-passage geometry found in `_buildAmphitheatre`.",
+      "modes": ["walk"]
+    },
+    {
+      "id": "xxii-unbinding-and-arrow-restored",
+      "name": "The lovers are untied, and Psyche restores Cupid's golden arrow",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), 1499 p. 357",
+      "status": "unbuilt",
+      "note": "The chapter's closing gesture: inside the theatre the two binding-nymphs unloose the rose-wreaths, and Psyche, laughing, hands Cupid back his golden arrow -- captivity was ceremonial, and ends here in release, not cruelty. See xxii-lovers-bound-in-roses: the world builds the BOUND state as a fixture on the road but has no corresponding unbinding event at the theatre's centre.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxii-plate-137-nymph-with-javelin",
+      "name": "Plate #137: a superb nymph figure with a javelin -- content uncertain",
+      "kind": "picture",
+      "plate": 137,
+      "source": "hp.db.woodcut_catalog #137, page_seq 327",
+      "status": "unknown",
+      "note": "Catalogued description is 'Superb nymph figure with javelin'. By the ~+10 page_seq offset noted in the research block this plate's leaf likely corresponds to content around our translation p. 337 (Poliphilo's monologue and the start of Polia's portrait), but I did not open the scan for this specific plate and neither of those passages mentions a javelin explicitly. Left unresolved rather than guessed at; flagged for whoever next opens hp1499_p327.jpg.",
+      "modes": ["tour"]
+    },
+    {
+      "id": "xxii-plate-148-fountain-groundplan",
+      "name": "Plate #148, the heptagonal ground-plan -- belongs to chapter XXIII, not this one",
+      "kind": "picture",
+      "plate": 148,
+      "source": "hp.db.woodcut_catalog #148, page_seq 349",
+      "status": "declined",
+      "note": "Declined for chapter XXII specifically: catalogued as 'Ground-plan of fountain of Venus' and cataloged inside this chapter's page range (349 falls between 326 and 357), but the scan (hp1499_p349.jpg, viewed directly) shows a heptagonal precinct plan with seven named gemstone columns (sapphire, emerald, turquoise, jasper, chalcedony, topaz, beryl) that matches nothing in chapter XXII's text -- it matches chapter XXIII's opening description of the Fountain of Venus precinct (our translation starts at p. 358), consistent with the +10 page_seq offset found elsewhere in this chapter's plates. Recorded here only so the offset and the cross-reference are not lost; whoever enumerates chapter XXIII (coverage.json 'XXIII', currently unenumerated, tour_stops also 'cythera_theatre') should treat this as their plate, not build against it here.",
+      "modes": ["tour"]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "Theatre Area, diameter",
+      "book_says": "32 paces (p. 351)",
+      "metres": 47.36,
+      "source": "p. 351"
+    },
+    {
+      "what": "Theatre's built ring (colonnade) around the Area, thickness",
+      "book_says": "8 paces (p. 351)",
+      "metres": 11.84,
+      "source": "p. 351"
+    },
+    {
+      "what": "Seat-box height",
+      "book_says": "6 palms (p. 353)",
+      "metres": 0.444,
+      "source": "p. 353"
+    },
+    {
+      "what": "Seat-box depth (opening)",
+      "book_says": "2 1/2 feet (p. 353)",
+      "metres": 0.74,
+      "source": "p. 353"
+    },
+    {
+      "what": "Walkway at each pergola tier",
+      "book_says": "5 feet wide (p. 353)",
+      "metres": 1.48,
+      "source": "p. 353"
+    },
+    {
+      "what": "Pergola height over each walkway",
+      "book_says": "1 1/2 pace high (p. 353)",
+      "metres": 2.22,
+      "source": "p. 353"
+    },
+    {
+      "what": "Spacing between paired crowning cypresses",
+      "book_says": "3 paces distant (p. 354)",
+      "metres": 4.44,
+      "source": "p. 354"
+    },
+    {
+      "what": "The clean band above the royal cornice (not yet in DIMENSIONS.md)",
+      "book_says": "a pace and a half high (p. 350)",
+      "metres": 2.22,
+      "source": "p. 350"
+    },
+    {
+      "what": "The trough within the topmost gallery wall, capacity at bottom and opening alike (not yet in DIMENSIONS.md)",
+      "book_says": "a pace and a half, inclusive (p. 354)",
+      "metres": 2.22,
+      "source": "p. 354"
+    },
+    {
+      "what": "The embroidered band round Cupid's triumphal car (not yet in DIMENSIONS.md; a 'dodrans' is not in DIMENSIONS.md section 1's unit table -- computed here as 3/4 Roman foot, the standard Latin sense of dodrans)",
+      "book_says": "a dodrans wide (p. 341)",
+      "metres": 0.222,
+      "source": "p. 341"
+    },
+    {
+      "what": "Psyche's shoulder-diamond, length -- UNIT WARNING: 'inch' and 'thumb' are not in DIMENSIONS.md section 1's table at all (only foot/palm/cubit/pace/stadium/mile are). Computed here as a rough guess at a Roman uncia (1/12 foot = 0.0247 m); not verified against any project reference and should not be trusted at the same confidence as the pace/foot/palm figures above",
+      "book_says": "an inch-and-a-half long lengthwise, a thumb in breadth (p. 341)",
+      "metres": 0.037,
+      "source": "p. 341"
+    },
+    {
+      "what": "Theatre's colonnade plan: quadrants x bays per quadrant (a count, not a length)",
+      "book_says": "quadrifariously divided [4 quarters], eight divisions [bays] apiece = 32 bays total (p. 351)",
+      "metres": 0,
+      "source": "p. 351"
+    },
+    {
+      "what": "Number of column orders, and the rule they break (a count/proportion, not a length)",
+      "book_says": "three orders, kept at one height, against the Vitruvian rule that each upper order be a quarter shorter (a fifth, for the third) (p. 350)",
+      "metres": 0,
+      "source": "p. 350"
+    },
+    {
+      "what": "Number of planted tiers in the cavea (a count, not a length)",
+      "book_says": "four hollow steps to an order, three orders = twelve planted tiers total (pp. 353-354)",
+      "metres": 0,
+      "source": "pp. 353-354"
+    },
+    {
+      "what": "The stair opposite the entrance door (a count and a direction)",
+      "book_says": "'in prospect of the door of our entrance' [i.e. directly opposite it], a stair of seven steps (p. 356)",
+      "metres": 0,
+      "source": "p. 356"
+    },
+    {
+      "what": "The two gem-vases flanking the golden gate (a count and a direction)",
+      "book_says": "'one to a side': one of sapphire, the other of emerald (p. 347)",
+      "metres": 0,
+      "source": "p. 347"
+    },
+    {
+      "what": "Greek letters impressed on Capnolina's smoking vase (a count)",
+      "book_says": "thirteen most-measured Greek letters -- ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ (13 characters) (p. 340)",
+      "metres": 0,
+      "source": "p. 340"
+    },
+    {
+      "what": "Named female figures individually described across the chapter's masque (a count)",
+      "book_says": "at least 19: Imeria, Erototimoris, Toxodora, Ennia, Phileda, Velode, Omonia, Diapraxe, Typhlote, Asynecha, Ardelia Comazista, Aschemosyne, Teleste, Vrachivia, Capnolina, Synesia, Plexaura, Ganoma, Psyche (pp. 338-344)",
+      "metres": 0,
+      "source": "pp. 338-344"
+    },
+    {
+      "what": "Named or individually-described trophies/standards preceding the car (a count)",
+      "book_says": "at least seven: the Mars/Pyroeis trophy, the Jupiter trophy, the Hercules trophy, QUIS EVADET, NEMO, the crescent-crown trophy, the DORYKTETOI lead standard -- plus 'many others, of prolix telling' left uncounted (pp. 326-330)",
+      "metres": 0,
+      "source": "pp. 326-330"
+    },
+    {
+      "what": "Aegipans in the rear file (a count)",
+      "book_says": "two aegipans, an unspecified further number of satyrs (p. 344)",
+      "metres": 0,
+      "source": "p. 344"
+    }
+  ]
+}

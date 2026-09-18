@@ -1,0 +1,102 @@
+{
+  "id": "XVI",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher session, 2026-09-17",
+    "date": "2026-09-17",
+    "note": "IMPORTANT DATA-QUALITY FINDING, read before using this chapter's features. The ledger's own pages_1499 [181,188] for chapter XVI ARE the correct 1499 Aldine folio range -- confirmed against translation/en/page_181.md..page_188.md, each of which headers itself '# Page NNN -- Chapter XVI' and page_189.md onward headers 'Chapter XVII'. BUT the text_source.file (the Dallington md, whose internal <!-- Page 181 --> .. <!-- Page 188 --> OCR markers are Dallington's OWN pagination, not the 1499's, per the note already on the record) does NOT contain chapter XVI's content at those marker numbers. Dallington's abridgement compresses roughly 60% of the book out, so by the time his own page-count reaches '181-188' he is only as far as real Colonna chapter ~XIII-XIV material (the ivied hundred-arch garden and the trigonal black-stone Trinity altar with the three golden sphinxes and the O-Omega-N obelisk -- DIMENSIONS.md already tables this same passage under 'chapters VII-XIV', citing the identical Dallington pp. 181-186). That passage IS already built (palace.js _buildPoliaArcade, and the trigonal altar/sphinx cube around palace.js:2305-2380), so nothing is lost -- it is simply mis-filed if attributed to XVI. This is the same class of bug closed by ticket bug-chapter-xi-tour-misattributed (2026-09-09, tours.json chess-match/Logistica-Thelemia mistagging) one seam further into the book, and it likely affects XIV/XV's own page ranges too since their content (a huge processional catalogue of ancient poets' mistresses, ch. XV, and Vertumnus/Pomona/the altar of the seasons, actually ch. XVII per translation/en/page_189's own argument-summary) doesn't obviously match Dallington OCR pp. 158-180 either -- a full re-audit of XIV-XVII's Dallington page assignments against the translation/en chapter headers is recommended before the next research pass on those chapters. I have used translation/en/page_181.md-page_188.md (CC0, correctly chapter-headed) as the authoritative source for THIS chapter's features, not the Dallington md's mislabeled OCR range, and read all eight pages in full plus the surrounding pages (180 and 189) for boundary context. Second finding: the tour_stops entry for chapter XVI, station 'priapus' ('The Altar of the Seasons -- where the English breaks off'), claims Dallington's English 'stops... in the middle of a sentence, at the word Mustulento' on 'facsimile page 193'. I read the complete Dallington Gutenberg text (Project Gutenberg EBook #18459, the full 1592 translation, corpus file md/Hypnerotomachia_by_Francesco_Colonna.md) straight through past that point: 'Mustulento Autumno S.' is only the Latin tag under the Autumn face of a four-sided altar (Spring/Summer/Autumn/Winter), and the English does NOT break off there -- it continues for some 700 more lines (through the Winter face, and Poliphilo and the Nymph sitting before 'an olde decaied temple') and then concludes cleanly with a resolved, complete sentence about the phoenix renewed by the sun, followed by the word 'FINIS.' printed outright, then the transcriber's own technical notes confirming 'the 1592 English translation covers just under half the Italian text.' There is no mid-sentence cutoff anywhere in this text. The general claim that Dallington's coverage ends around the threshold of the Temple of Venus (i.e., approximately where our CC0 translation's chapter XVII picks up) is directionally right and matches the transcriber's note almost exactly -- only the dramatic specifics ('mid-sentence', 'at the word Mustulento') are not supported by the corpus text and should be corrected or re-sourced. Plate #71 ('Worship of Priapus', woodcut_catalog.page_seq 185) is catalogued inside chapter XVI's folio range by the automatic page-range derivation, but the actual descriptive text of the Priapus rite is at 1499 folio 194, which translation/en/page_194.md itself headers as Chapter XVII -- so the plate's page_seq (185) is very likely keyed to where the woodcut is physically printed in the 1499 (a leaf or two ahead of its subject, common in this book), not to where the rite is described. I have kept a feature entry under XVI acknowledging the tour stop as instructed, but flagged the mismatch rather than silently inheriting it. Measurements: chapter XVI's real content (the close of the poets'-mistresses triumph, a second garden of streams and dryads, nymphs bathing and making love-play, and a long interior monologue of Poliphilo's doubt and mythic self-comparison) states NO sizes, distances or counts anywhere in its eight pages -- I checked every page for pace/foot/stadium/mile/cubit/palm and found none; this is a lyrical-psychological chapter, not an architectural one. Measurements array is empty for a real reason, not an oversight."
+  },
+  "features": [
+    {
+      "id": "xvi-poets-mistresses-triumph-close",
+      "name": "The triumph of the ancient poets' beloveds reaches its close, and a general dance begins",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation, 1499 p. 181 (translation/en/page_181.md; CC0)",
+      "status": "unbuilt",
+      "note": "Closes the catalogue-triumph begun in chapter XV (Cynthia, Delia, Nemesis, Corinna, Lyde, Phyllis and the rest, each a named mistress of a Latin poet, each in her own triumphal car) with a general description: countless nymphs and their lovers 'circling round through the whole flowery and most pleasant plain', crowned with laurel and myrtle, 'without term and ending, without weariness'. Not staged anywhere: grepped src/ for the named figures (Liriope, Milanion, Castiamira etc.) and for 'triumphal plain'/'flowery plain' dancing -- no matches. The world's triumphs.js builds the SEVEN allegorical cars (Vertumnus/Pomona, Leda, etc., constants.js:295-312) but not this earlier, separate procession of poets' lovers, nor the loose social dance that follows it.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xvi-second-garden-ringed-hills",
+      "name": "The second garden: a ring-shaped meadow of crystal streams, closed round by wooded hills",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 182",
+      "status": "unbuilt",
+      "note": "A new garden, entered at the Nymph's invitation: an ample circular plain ringed by low, shrubby hills thick with laurel, arbutus, pine, fir and myrtle; gravel- and sand-bedded streamlets running through it in a ring; on the banks the narcissus ('the purple and flowering son of the Nymph Liriope'), water-mint, and iris. Distinct from every built water feature I checked (the octagonal bath, _buildBath, palace.js:1950; the fountains in nature.js) -- none is a ring-meadow closed by planted hills.",
+      "modes": ["walk", "dream"]
+    },
+    {
+      "id": "xvi-nymphs-bathing-with-swans",
+      "name": "Nymphs wading and racing with tame swans, their faces mirrored in the stream",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 182-183",
+      "status": "unbuilt",
+      "note": "Nymphs gather their silk skirts at the arm and wade in, legs and knees bare, racing tame web-footed swans, scooping water and splashing each other laughing; where the current runs slow the water 'feigning' mirrors their faces. Swans exist in the cast (Cast.js:2120 cast.animals.swan) but only harnessed to Venus's fire-chariot (tombs.js) and Leda's triumph car (triumphs.js) -- no built scene has swans loose with bathing nymphs.",
+      "modes": ["walk", "dream"]
+    },
+    {
+      "id": "xvi-lovers-garlands-and-kisses",
+      "name": "Nymphs and lovers weaving flower garlands, exchanging kisses, and mock-slapping in play",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 183-184",
+      "status": "unbuilt",
+      "note": "An intimate genre scene: couples weave 'jewels' of flowers for each other, kiss closely (compared to the octopus's suckers and to shellfish gripping the rocks), some strike each other's cheeks 'sweetly... without weal or bruise' in play, girls tuck stripped rose petals inside their open bodices. Wholly unbuilt and, being this explicit, likely a Dream-mode-only vignette rather than a modelled 3-D scene -- comparable in register to the already-built Priapus rite's frankness (see xvi-priapus-tourstop-mismatch below), so precedent exists for keeping rather than softening it.",
+      "modes": ["dream"]
+    },
+    {
+      "id": "xvi-mythic-shade-trees",
+      "name": "The grove's named mythological trees: the Heliades' poplars, Daphne's laurel, the blood-mulberry of Pyramus and Thisbe, pine, cypress, orange and cedar",
+      "kind": "plant",
+      "plate": null,
+      "source": "p. 184",
+      "status": "unbuilt",
+      "note": "The shade over the lovers is not generic: 'the weeping sisters of wicked Phaethon' (the Heliades, turned to poplars), 'the undying Daphne' (laurel), 'the tree dyed again with the burning blood of the unhappy Babylonians' (the mulberry of Pyramus and Thisbe, Ovid Met. IV), tufted pines, straight cypresses, orange and cedar, underplanted with sky-blue periwinkle. The world plants generic laurel/pine/cypress stock throughout (see PLANTS.md) but nothing labels a grove as this specific mythological set -- a natural candidate for a small 'Ovid's trees' planting pass with plaques, in the manner of temple.js's plaques.",
+      "modes": ["walk", "dream"]
+    },
+    {
+      "id": "xvi-poliphilo-doubt-polia",
+      "name": "Poliphilo's interior monologue: is this Nymph Polia, and his vow to endure any labour to win her",
+      "kind": "person",
+      "plate": null,
+      "source": "pp. 185-186",
+      "status": "unbuilt",
+      "note": "A long silent address to the gods: Poliphilo cannot bring himself to ask the Nymph outright whether she is Polia, and vows labours to rival Hercules winning Deianira from the river-god Achelous, servitude harder than Jacob's for Rachel or Androclus (Androdus) and the lion, endurance beyond Ulysses among the Cyclopes and Calypso. Entirely psychological, no built geometry possible -- but exactly the register hp_dream.js already uses for interior narration (see its Leda/swan passage). Nothing in hp_dream.js or hp_reactions.js currently carries this specific beat (grepped for 'Deianira', 'Hercules', 'Milanion', 'Atalanta' in src/ and src/data/ -- no matches).",
+      "modes": ["dream"]
+    },
+    {
+      "id": "xvi-torment-simile-catalogue",
+      "name": "The catalogue of self-torment: Tityus's regenerating liver, Milo torn by the tree, the labyrinth, Actaeon's own hounds, the ichneumon inside the crocodile, the Ceraunian mountains struck by thunderbolts",
+      "kind": "picture",
+      "plate": null,
+      "source": "pp. 186-187",
+      "status": "unbuilt",
+      "note": "A dense run of classical tortures Poliphilo likens his lovesickness to, each drawn from standard mythography (Tityus: Odyssey XI / Met. IV; Milo of Croton trapped and killed by the tree he tried to split; the Cretan labyrinth; Actaeon devoured by his own hounds after seeing Diana bathe, Met. III; the ichneumon that was believed to kill the crocodile from within). Not literally described as carved or painted anywhere in the text, but the book elsewhere DOES put comparable mythic cycles onto altar friezes and reliefs (e.g. the four-seasons altar two chapters later, or the porch reliefs at 'Dall. p. 73' per DIMENSIONS.md) -- a plausible source for a 'Poliphilo's anguish' relief or fresco station if one is ever designed. A full scholarly reading exists for every figure named (standard Ovid/Homer), so this is left unbuilt rather than declined.",
+      "modes": ["dream"]
+    },
+    {
+      "id": "xvi-cautionary-myths-divine-vengeance",
+      "name": "Poliphilo's second, cautionary catalogue: Syrinx turned to reeds, fading Echo, Ulysses' men and the cattle of the sun, Orion struck down for offending Diana, Phaethon struck by lightning",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 188",
+      "status": "unbuilt",
+      "note": "Poliphilo frightens himself out of presuming on the Nymph's favour by recalling divine vengeance on the presumptuous: Syrinx (Met. I) shaken into reeds by scornful winds, Echo reduced to a last voice, the companions of Ulysses drowned for stealing the cattle of the Sun (Odyssey XII), Orion struck down for offending chaste Diana, 'the son of burning Phoebus' (Phaethon) struck by lightning and bound in the Styx for the peony herbs. The chapter then resolves: Poliphilo calms himself and looks again at the Nymph's 'adorned elegance'. Same buildability note as xvi-torment-simile-catalogue -- unbuilt, not declined, a full reading exists.",
+      "modes": ["dream"]
+    },
+    {
+      "id": "xvi-priapus-tourstop-mismatch",
+      "name": "The chapter's own tour stop (\"The Altar of the Seasons -- where the English breaks off\", station 'priapus') describes text that belongs to chapter XVII, not XVI",
+      "kind": "rite",
+      "plate": 71,
+      "source": "tours.json station 'priapus' (tagged chapter XVI), quoting our translation p. 194 -- but translation/en/page_194.md's own header reads 'Chapter XVII'; woodcut_catalog #71 (Worship of Priapus, 19 women + 5 men) is logged at page_seq 185, inside XVI's own folio range, so its catalogued page and its descriptive text (folio 194) disagree by about nine folios",
+      "status": "unknown",
+      "note": "Recorded here because the task brief named this chapter's tour stop explicitly. `grep -rn -i priapus src/` finds a real, detailed implementation (src/scenes/world/temple.js:1269-1350, _buildPriapusRite -- the canopy on four poles, the gold foils that rattle, old Janus led bound in flower-ropes, the ass sacrifice) that matches our translation's p. 194 text closely. That is strong code-level evidence but I have not loaded the running page this session, so per this pass's rule I am recording 'unknown' rather than promoting it to 'built' -- the next verifier should confirm live and can very likely set this to built with built_as 'temple.js _buildPriapusRite'. Separately from build status: the plate/chapter tagging mismatch (folio 185 catalogued vs. folio 194 described, station tagged XVI vs. its own quoted source headered XVII) is the same class of bug as bug-chapter-xi-tour-misattributed (closed 2026-09-09) one seam further into the book, and belongs with the XIV-XVII page-range re-audit recommended in this chapter's research.note.",
+      "modes": ["walk", "tour"]
+    }
+  ],
+  "measurements": []
+}

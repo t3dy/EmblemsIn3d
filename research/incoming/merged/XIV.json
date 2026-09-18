@@ -1,0 +1,502 @@
+{
+  "id": "XIV",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against our own translation (translation/en/page_158.md through page_176.md), session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "All 19 pages read in full (pp. 158-176: the festival crowd around the four triumphal cars; Triumph 1, Europa on the bull, drawn by six centaurs, emerald-and-diamond car, four reliefs including the NEMO panel; Triumph 2, Leda and the swan on cloth-of-gold cushions, drawn by six white elephants, agate-and-sapphire car, four reliefs including Cupid painting the zodiac; Triumph 3, Danae on a six-cornered green jasper seat gazing at gold in her lap, drawn by six unicorns, chrysolite-and-heliotrope car, four reliefs; Triumph 4, no rider at all -- instead a gold base on four eagles carrying a jacinth urn full of holy ash (Semele's), with two carved relief bands (Jove and the seven nymphs turning into trees; a serpent-crowned god's vine-harvest), four gemstone candelabra with undying flames, and a golden vine canopy, drawn by six spotted tigers of Hyrcania, asbestos-and-carbuncle car; then the Bacchic rout -- Maenads, Silenus on his ass, a sacrificial goat, a wicker-fan bearer, and the named retinue of Mimallones, satyrs, bacchantes, Lenae, Thyiads, Naiads, Tityri and Nymphs. Checked src/scenes/world/triumphs.js (_buildTriumphs, _triumphCar, _triumphBeast, _harness, _riderInstrument, _reliefScene, _reliefTexture) and src/scenes/world/constants.js (TRIUMPHS, TRIUMPH_LIVERY, TRIUMPH_RELIEFS) by grep for every named object and creature (eagle, jasper, jacinth, ash urn, candelabra, Semele, Danae, Hyrcania, tiger, leopard, Maenad, Silenus, thyrsus, Bacchant, Mimallon, goat, wicker fan). Finding: the world already runs a real, well-researched version of the FOUR TRIUMPHAL CARS (europa/leda/danae/bacchus keys in TRIUMPHS match this chapter's four loves of Jove exactly, and PROCESSIONS.md documents two real corrections against the plates -- unicorns not horses for Danae, and the fourth car renamed from a nonexistent 'Triumph of Semele' to 'Festival of Bacchus'). But three structural things the chapter states are still wrong or missing everywhere: (1) each car's LIVERY is supposed to differ -- Europa's blue/crimson/green is not Leda's crimson/yellow/violet, and Danae's is uniform with no rank at all -- but one flat array (TRIUMPH_LIVERY) is applied to every car; (2) two of the four cars (Leda, Danae) have NO rider figure built at all, only the swan/tower prop, confirmed by reading the motif branches in _buildTriumphs; (3) the fourth car's team description in the book has no rider sentence at all -- the ash-urn IS its passenger -- yet the built world puts six nymph riders on it same as the others. The single biggest gap is the fourth car's own centrepiece: the detailed, measured jacinth urn of Semele's ashes on its four eagles, its two carved relief bands, the four gemstone candelabra and the golden vine canopy are all entirely absent, and none of the standing briefs (PROCESSIONS.md, VEHICLES.md) mention them -- the fourth car has always been read as 'the Bacchus car' by its team and its reliefs, never by what is actually riding on it. Also flagged: woodcuts #66-70 (Vertumnus and Pomona; the Four Seasons), which the coverage ledger's page-range derivation assigns to chapter XIV because they print on 1499 pp. 166-167 (inside this chapter's page range), do NOT appear anywhere in this chapter's text -- I read all of it and neither Vertumnus nor Pomona nor the Seasons are mentioned. tours.json itself already tags that station 'chapter XV', and the world's fifth, on-foot procession (team:'satyr', onFoot:true, key 'vertumnus') belongs there, not here -- the same page-range-vs-text-boundary mismatch chapter XI's enumeration flagged for its own tour stops."
+  },
+  "features": [
+    {
+      "id": "xiv-festival-crowd",
+      "name": "The mingled multitude of both kinds keeping festival around the four triumphs",
+      "kind": "people",
+      "plate": null,
+      "source": "translation/en/page_158.md (p. 158)",
+      "status": "unbuilt",
+      "note": "Grep of `_buildTriumphs` (triumphs.js) shows only the six riders and, for the Bacchus car, Silenus are placed on each float; no surrounding crowd of onlookers exists. The chapter opens \"festively going round four most precious and divine triumphs... with the mingled multitude of blessed young people, greatly worshipping\" -- a countless crowd of BOTH KINDS (both sexes), the same detail chapter XI's festival was built around. Nothing seeds this audience here.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-europa-car-materials",
+      "name": "Triumph 1 (Europa): wheels of Scythian emerald, tablets of Indian diamond set in gold",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_158.md (p. 158)",
+      "status": "partial",
+      "note": "`_triumphCar` builds every one of the four cars from the same template: a wheel material hardcoded green ('emerald') and a body colour taken from `TRIUMPHS[].color` (europa=0xc8a040, a gold-tan, not diamond-white). Europa's wheels happen to match the book (hers genuinely are emerald); her tablets are not built as diamond. The same hardcoded emerald wheel is wrongly reused for the other three cars -- see xiv-leda/danae/bacchus-car-materials.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-triumph-car-dimensions",
+      "name": "The triumphal car's stated size: two squares in plan, six feet by three by three, with a sloped deck above",
+      "kind": "building",
+      "plate": null,
+      "source": "translation/en/page_160.md (p. 160)",
+      "status": "unbuilt",
+      "note": "\"This figure of a car was four-cornered, of two perfect squares in length, of six feet, three high and as much wide... and from here upward, a foot and a half, there was a flat two feet and a half wide, five and a half long, with a slope towards the cornice.\" `_triumphCar(t, s=1.5)` sizes the body from an arbitrary scale factor (W=1.3*s, L=2.0*s world units) rather than these stated feet. The construction is said to repeat car to car (\"the axle and the form of it like the first,\" p. 163), so this is one measurement for all four cars -- see measurements below.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-europa-team-centaurs",
+      "name": "Six centaurs, sons of Ixion's fallen seed, in gold chain harness",
+      "kind": "creature",
+      "plate": null,
+      "source": "translation/en/page_161.md (p. 161)",
+      "status": "unknown",
+      "note": "Built: `_triumphBeast('centaur')` composes a horse and a rider's torso, and `_harness('centaur', beast)` gives the gold flagon-chain and a wreath, following Dallington via PROCESSIONS.md. One discrepancy: the code and PROCESSIONS.md call the wreath IVY (\"crowned with yuie, that is called Dendrocyssos\"), but our own CC0 translation of this page says \"The centaurs were crowned with MISTLETOE\" -- a genuine disagreement between the two English texts, unreconciled anywhere. Not verified on the running page this session.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-europa-riders-liveries",
+      "name": "Six nymph musicians ranked by dress: two peacock-blue nearest the car, two crimson, two emerald green foremost",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_161.md (p. 161)",
+      "status": "unknown",
+      "note": "Built: `TRIUMPH_LIVERY` and `_riderInstrument` give this exact rank (blue/crimson/green) with censers, trumpets and cornets. The two nearest the car specifically carry \"vessels of antique shape, of topaz of Arabia... of two feet in height\" -- built as a swinging censer, but not to that stated height (see measurements). Not verified on the running page this session.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-europa-central-figure",
+      "name": "Europa on the white bull: fine cloth of green silk and gold, a veil filling like a sail, a gold crown",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_161.md (p. 161)",
+      "status": "partial",
+      "note": "The 'bull' motif branch of `_buildTriumphs` is one of only two branches that add a rider figure at all: `this.cast.nymph({ robe: 0xe8ddc0, h: 0.7 })` -- cream, not \"a fine cloth of green silk and gold\" as the page states -- and none of the veil tucked at the ankles, the gold crown, or her frightened grip on the bull's dewlaps is built.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-europa-reliefs",
+      "name": "Europa's four relief panels: crowning the bulls, the ride over the sea, Cupid shooting, Mars before Jupiter with NEMO",
+      "kind": "picture",
+      "plate": null,
+      "source": "translation/en/page_158.md through page_159.md (pp. 158-159)",
+      "status": "partial",
+      "note": "`TRIUMPH_RELIEFS.europa` carries all four captions correctly and the fourth panel's word 'NEMO' is drawn onto the texture (`_reliefTexture` always renders a passed `word`). But `_reliefScene` only has named drawings for three other scenes ('triumph of satyrs and nymphs', 'genii, dolphins and a bull', 'forge of Vulcan'); none of these four match, so all four panels fall through to the generic seeded silhouette crowd. The specific pictures -- a nymph crowning bulls, the sea-crossing, Cupid among \"a countless crowd of both kinds of people wounded,\" Mars showing Jove his own wounded breast -- are not drawn, only captioned.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-leda-car-materials",
+      "name": "Triumph 2 (Leda): wheels of dark agate, tablets of dark-blue eastern sapphire sparked with gold",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_163.md (p. 163)",
+      "status": "unbuilt",
+      "note": "Not built distinctly -- the car reuses the same emerald-wheel / flat-colour template as every other car (see xiv-europa-car-materials).",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-leda-team-elephants",
+      "name": "Six white elephants yoked two by two, ivory tusks, blue-silk-and-gold-and-silver traces",
+      "kind": "creature",
+      "plate": null,
+      "source": "translation/en/page_165.md (p. 165)",
+      "status": "unknown",
+      "note": "Built and corrected: PROCESSIONS.md 2b/2c records the hide fixed to white and the traces, square-knots and pearled poitrel added; `_triumphBeast('elephant')` and `_harness('elephant', ...)` match closely. Not verified on the running page this session.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-leda-riders-liveries",
+      "name": "Six girls in Leda's own livery: two crimson, two shining crowfoot-yellow, two violet purple",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_165.md (p. 165)",
+      "status": "unbuilt",
+      "note": "The book gives each car its own rider colours -- Leda's is not Europa's. But `TRIUMPH_LIVERY` is one flat six-entry array applied identically to every car via `robe: TRIUMPH_LIVERY[i]` regardless of `t.key`, so Leda's riders wear Europa's blue/crimson/green, not their own crimson/yellow/violet. Confirmed wrong by reading the code; no live check needed.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-leda-central-figure",
+      "name": "Leda and the swan, on two cushions of cloth of gold, in white silk woven with a warp of gold",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_166.md (p. 166)",
+      "status": "unbuilt",
+      "note": "The 'swan' motif branch builds only `this.cast.animals.swan(1.8)` -- confirmed by reading `_buildTriumphs`: only the 'bull' and 'fire' motifs add a rider figure at all; 'swan' and 'gold' do not. No Leda figure, no cushions, no gown are built.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-leda-reliefs",
+      "name": "Leda's four relief panels: the twin eggs and midwives, the oracle's riddling answer, Cupid painting the zodiac in heaven, the Judgment of Paris",
+      "kind": "picture",
+      "plate": null,
+      "source": "translation/en/page_163.md through page_165.md (pp. 163-165)",
+      "status": "partial",
+      "note": "`TRIUMPH_RELIEFS.leda` gives 'Leda lying-in', 'The eggs presented', 'The king offering eggs at the Temple of Apollo', 'The Judgment of Paris'. The text supports the first, third and fourth reasonably, but does not separately describe a scene of \"the eggs presented\" apart from the lying-in -- and it DOES describe a front-face scene the built captions omit entirely: Cupid raised into the air, painting the starry heaven with animal-shapes at the point of his golden arrow, while men on earth marvel (the invention of the zodiac). As with Europa's panels, all four render as the generic crowd texture regardless of caption.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-danae-car-materials",
+      "name": "Triumph 3 (Danae): wheels of Ethiopian chrysolite, tablets of green Cyprus heliotrope",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_167.md (p. 167)",
+      "status": "unbuilt",
+      "note": "Not built distinctly -- same generic template as the other three cars.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-danae-team-unicorns",
+      "name": "Six unicorns in gold poitrels set with stone, netted and tasselled in silver and silk",
+      "kind": "creature",
+      "plate": null,
+      "source": "translation/en/page_169.md (p. 169)",
+      "status": "unknown",
+      "note": "Built: corrected from horses in the 2026-09-05 pass (PROCESSIONS.md 2b); `_triumphBeast('unicorn')` uses the cast's real unicorn model, `_harness('unicorn', ...)` gives the net-and-tassel poitrel. Not verified on the running page this session.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-danae-riders",
+      "name": "Six girls, uniform in dress interwoven with gold and finest dark-blue silk -- no rank colours",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_169.md (p. 169)",
+      "status": "unbuilt",
+      "note": "Unlike Europa's and Leda's cars, the book gives Danae's six riders one uniform livery, not a three-way colour rank. The built world instead applies the same blue/crimson/green rank (`TRIUMPH_LIVERY`) here too -- the wrong scheme twice over, both the colours and the ranking.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-danae-seat",
+      "name": "Danae's seat: green jasper, six-cornered at the foot, \"serviceable at childbirth, a medicine for the chaste\"",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_169.md (p. 169)",
+      "status": "unbuilt",
+      "note": "No such seat exists anywhere in triumphs.js; jasper is used elsewhere in the world (the Temple altar, the palace pavement, the approach's ring of seats) but never for this object.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-danae-figure",
+      "name": "Danae seated, gold-and-dark-blue-silk gown, gazing at the gold in her lap, golden diadem, hair poured over her back",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_169.md (p. 169)",
+      "status": "unbuilt",
+      "note": "The 'gold' motif branch builds only a tower prop and six orbiting gold spheres -- no Danae figure is added at all, confirmed by reading `_buildTriumphs` (see xiv-leda-central-figure for the identical gap on the swan car).",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-danae-reliefs",
+      "name": "Danae's four relief panels: Acrisius and the tower, Perseus and the Gorgon's head, Venus's revenge on Cupid in the net, Mercury frees him and Jupiter comforts him",
+      "kind": "picture",
+      "plate": null,
+      "source": "translation/en/page_167.md through page_169.md (pp. 167-169)",
+      "status": "partial",
+      "note": "`TRIUMPH_RELIEFS.danae` gives 'Acrisius, and the building of the tower' and 'Perseus with the mirror and the Medusa head', which match well. Its third and fourth captions -- 'Venus and Mars freed' and 'Jupiter comforts Cupid' -- do not match this page: the text has Venus, angry, WITH AN ARMED MAN, catching and plucking the wings of her OWN SON CUPID in a net as revenge (not Mars); it is then MERCURY, \"one with winged sandals,\" whom Jove sends to free Cupid and bring him to Jupiter, who covers him with his cloak and says \"you are to me both sweet and bitter.\" Nobody named Mars appears or is freed in this passage. 'Jupiter comforts Cupid' is fair for the fourth panel; the third caption's identification of the rescuer as Mars rather than Mercury looks like an error in the ledger, flagged here rather than corrected. All four panels render as the generic crowd texture regardless.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-bacchus-car-materials",
+      "name": "Triumph 4 (Bacchus/Semele): wheels of Arcadian asbestos, tablets of Troglodyte carbuncle",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_170.md (p. 170)",
+      "status": "unbuilt",
+      "note": "Not built distinctly -- same generic car template as the other three.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-bacchus-team-tigers",
+      "name": "Six spotted tigers of Hyrcania, bound with twined vine-shoots, leaves and green grape clusters",
+      "kind": "creature",
+      "plate": null,
+      "source": "translation/en/page_172.md (p. 172)",
+      "status": "partial",
+      "note": "`_harness('leopard', ...)` builds the vine-withe-and-green-clusters harness closely, matching \"coupled togither with withes of twined vines... stalkes full of greene clusters.\" But `_triumphBeast('leopard')` is a maned `lion` recoloured plain tawny gold (0xd8a838) -- not spotted, and not the animal our own CC0 translation names here: it says TIGERS, where Dallington / PROCESSIONS.md / the code say leopards or panthers. This is a real disagreement between the two English texts (tiger vs leopard); the \"same beast in period usage\" note in constants.js does not fully resolve it, since tiger and leopard are not interchangeable even loosely.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-bacchus-no-riders",
+      "name": "The fourth car alone has no nymph riders in the book -- the ash-urn takes the platform instead",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_169.md through page_172.md (pp. 169-172)",
+      "status": "partial",
+      "note": "Cars 1-3 are each explicitly given \"six young girls\"/notable Nymphs riding the beasts (pp. 161, 165, 169). The fourth car's team description (p. 172) has no such sentence at all -- it moves straight from the six tigers to \"above which, in the middle of the flat, there was set a base of gold,\" i.e. the urn IS what rides this car; no one else does. `_buildTriumphs`, however, places a nymph rider on every beast of every non-onFoot car including this one, so the built world gives the Bacchus car six riders the book withholds from it.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-ash-urn",
+      "name": "The urn on the fourth car: a gold base on four eagles' backs, a jacinth vessel crusted with topaz vine-carving, filled with holy ash",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_172.md through page_174.md (pp. 172-174)",
+      "status": "unbuilt",
+      "note": "Extensively described and entirely absent from the codebase -- grep for 'eagle', 'jacinth' and 'ash' tied to a car turns up nothing in src/scenes/world/. Four golden eagles stand back-to-back on the gold base, wings raised and touching, talons gripping it; on their backs rests a rounded jacinth vessel \"an enemy to the chisel,\" crusted with emerald-veined vine leaves, topaz stems and amethyst grape-clusters, with two small dragon/lizard handles cut from the same stone; \"which vessel was filled with fine and holy ash\" -- this is Semele's funerary urn, riding in place of a triumphant nymph. See measurements for its full stated dimensions.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-urn-relief-jove-and-nymphs-into-trees",
+      "name": "On the urn's front face: Jove on a sapphire altar, and seven nymphs turning into trees one by one before him",
+      "kind": "picture",
+      "plate": null,
+      "source": "translation/en/page_174.md (p. 174)",
+      "status": "unbuilt",
+      "note": "\"High-thundering Jove... standing upon a sacred altar of sapphire\" faces \"a festive chorus of seven Nymphs... transformed into green trees of an emerald clearness... the last being wholly turned into a little tree, and her feet into little roots; and the next with her feet gone; and the third from the girdle upward... and each of the rest thereafter\" -- a metamorphosis staged in stages across the seven figures. Possibly the subject of woodcut #62 (\"Jupiter and the Heliades,\" catalogued at 1499 p. 161 -- printed several pages before the text it illustrates, worth flagging as a plate/text-page mismatch of the kind SOURCES.md already documents elsewhere). Not built anywhere.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-urn-relief-bacchic-vintage",
+      "name": "On the urn's other face: a serpent-crowned god beneath a vine arbour, with putti harvesting, treading and sleeping off the grape",
+      "kind": "picture",
+      "plate": null,
+      "source": "translation/en/page_175.md (p. 175)",
+      "status": "unbuilt",
+      "note": "\"A festive and joyful godhead... crowned with two long and coiled serpents, the one white and the other black... set delightfully beneath a fruitful vine,\" with naked little spirits climbing the arbour, plucking clusters, offering them in baskets, some lying asleep on the ground \"provoked to a sweet sleep by the juice of the grape,\" others treading the vintage, others drumming. Possibly woodcut #63 (\"Vintage scene with genii and young Bacchus,\" catalogued at 1499 p. 164). Not built anywhere.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-four-candelabra",
+      "name": "Four candelabra at the car's corners, coral-footed, each shaft a different apotropaic gemstone with an undying flame",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_175.md (p. 175)",
+      "status": "unbuilt",
+      "note": "Each stands on \"three little horned feet, of branching coral\"; the four shafts are sky-blue Lusitanian thunderstone (ceraunia, \"unfriendly to tempests... chiefly friendly to Diana\"), Dionysian stone (\"smelling when ground, of the god\"), best Median stone (\"with a nectar-like taste\") and precious nebris stone (black, with white and green mingled in it, \"dedicated to the god\") -- each topped by \"a little shell... a pyramidal little flame of unquenchable fire.\" Not built anywhere; see measurements for the stated height.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-golden-vine-canopy",
+      "name": "A golden vine, sprouting from the urn, roofing the six-tiger team",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_175.md (p. 175)",
+      "status": "unbuilt",
+      "note": "\"Out of the vessel aforesaid there sprouted a leafy vine of gold with curled vine-leaves, fruitfully adorned with little clusters, with crimson grains of Indian amethyst, and the foliage of the holy green selenite of Persia... and it roofed the six-horse team.\" Not built; there is no canopy over any of the four teams in `_buildTriumphs`.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    },
+    {
+      "id": "xiv-bacchic-procession",
+      "name": "The Bacchic rout following the fourth car: countless Maenads, Silenus on his ass, a sacrificial goat, a wicker-fan bearer, and the named retinue",
+      "kind": "people",
+      "plate": null,
+      "source": "translation/en/page_176.md (p. 176)",
+      "status": "partial",
+      "note": "Silenus riding an ass behind the Bacchus car IS built (`if (t.key === 'bacchus')` branch, matching woodcut #65). Everything else in the same paragraph is not: \"countless Maenad Nymphs with their hair loose and scattered,\" some naked in nymph-mantles, some in fawnskins, cymbal- and flute-players, dancing with thyrsi of pine-frond-tipped fronds and vine crowns; then, immediately behind Silenus, \"a shaggy goat adorned with the pomp of sacrifice,\" and a follower who \"carried a wicker fan, with disordered laughter and frantic gestures\"; and the closing catalogue of named followers -- Mimallones, satyrs, bacchantes, Lenae, Thyiads, Naiads, Tityri and Nymphs. Grep for goat / wicker fan / Mimallones / Lenae / Thyiad / Naiad / Tityr in triumphs.js and constants.js returns nothing.",
+      "modes": [
+        "walk",
+        "tour"
+      ]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "triumphal car body length, in plan (\"two perfect squares\")",
+      "book_says": "of two perfect squares in length, of six feet",
+      "metres": 1.776,
+      "source": "p. 160"
+    },
+    {
+      "what": "triumphal car body width and height",
+      "book_says": "three high and as much wide",
+      "metres": 0.888,
+      "source": "p. 160"
+    },
+    {
+      "what": "height of the flat deck above the plinth cornice",
+      "book_says": "from here upward, a foot and a half, there was a flat",
+      "metres": 0.444,
+      "source": "p. 160"
+    },
+    {
+      "what": "width of the flat deck (where the rider stands/sits)",
+      "book_says": "a flat two feet and a half wide",
+      "metres": 0.74,
+      "source": "p. 160"
+    },
+    {
+      "what": "length of the flat deck",
+      "book_says": "five and a half long, with a slope towards the cornice",
+      "metres": 1.628,
+      "source": "p. 160"
+    },
+    {
+      "what": "height of the topaz censer-vessels carried by the two riders nearest each car",
+      "book_says": "of two feet in height, without handles, of a wonderful artifice",
+      "metres": 0.592,
+      "source": "p. 161"
+    },
+    {
+      "what": "beasts drawing each of the four triumphal cars",
+      "book_says": "six wanton centaurs / six white elephants / six...unicorns / six spotted tigers",
+      "metres": 0.0,
+      "source": "pp. 161, 165, 169, 172"
+    },
+    {
+      "what": "nymph riders on each car -- but only three of the four cars",
+      "book_says": "Each was ridden by a notable Nymph (six per car, cars 1-3); the fourth car's team description has no rider sentence at all",
+      "metres": 0.0,
+      "source": "pp. 161, 165, 169 (contrast p. 172)"
+    },
+    {
+      "what": "orientation of the six riders on a car, left/right",
+      "book_says": "three with their notable faces turned to the right, and three to the left",
+      "metres": 0.0,
+      "source": "p. 161"
+    },
+    {
+      "what": "diameter and height of the urn's gold base",
+      "book_says": "a base of gold, of a lowest diameter of one foot and three palms, and of nearly the same height",
+      "metres": 0.518,
+      "source": "p. 172"
+    },
+    {
+      "what": "height of the main jacinth vessel",
+      "book_says": "In height it was two feet and a half",
+      "metres": 0.74,
+      "source": "p. 172"
+    },
+    {
+      "what": "diameter (thickness) of the main jacinth vessel",
+      "book_says": "The diameter of its thickness stood at a foot and a half",
+      "metres": 0.444,
+      "source": "p. 172"
+    },
+    {
+      "what": "circumference of the main jacinth vessel, as the book itself derives it",
+      "book_says": "the circumference was three diameters",
+      "metres": 1.332,
+      "source": "p. 172"
+    },
+    {
+      "what": "cumulative height from the base to where the ewer-shaped neck begins",
+      "book_says": "in all, as far as here, it is a foot and a half",
+      "metres": 0.444,
+      "source": "pp. 172-173"
+    },
+    {
+      "what": "thickness of the border at the base of the ewer-neck",
+      "book_says": "there was a border going round the last thickness of a palm... a palm",
+      "metres": 0.074,
+      "source": "p. 173"
+    },
+    {
+      "what": "further rise of the vessel's form above the border",
+      "book_says": "there grew a form of the vessel aforesaid, raised a foot",
+      "metres": 0.296,
+      "source": "p. 173"
+    },
+    {
+      "what": "further widening of the neck above that rise",
+      "book_says": "began to widen for a palm and a half",
+      "metres": 0.111,
+      "source": "p. 173"
+    },
+    {
+      "what": "diameter at the widened neck -- unit uncertain, see caveat",
+      "book_says": "The diameter two quarters and a half [CAVEAT: 'quarter' is not in DIMENSIONS.md's unit table; read here as a quarter of a Roman foot -- 4 palms to a foot, so 1 quarter = 1 palm = 0.074 m -- giving 2.5 x 0.074, an interpretation and not a settled conversion]",
+      "metres": 0.185,
+      "source": "p. 173"
+    },
+    {
+      "what": "rise from the widened neck to the vessel's mouth -- same uncertain unit",
+      "book_says": "Then it rose most beautifully to the mouth two quarters and a half",
+      "metres": 0.185,
+      "source": "p. 173"
+    },
+    {
+      "what": "the carved girding/leafy band around the vessel's waist",
+      "book_says": "a girding band of two feet",
+      "metres": 0.592,
+      "source": "p. 173"
+    },
+    {
+      "what": "the plain space to each side, beneath the girding band",
+      "book_says": "the space that stands a foot and a half to each side",
+      "metres": 0.444,
+      "source": "p. 173"
+    },
+    {
+      "what": "height of each of the four corner candelabra",
+      "book_says": "with a notable display, adorned with fine-wrought work, of a height of two feet",
+      "metres": 0.592,
+      "source": "p. 175"
+    },
+    {
+      "what": "number of candelabra, one to each corner of the car's flat",
+      "book_says": "At each corner of the flat of the triumphal car there shone widely, set there, a most skilfully made candelabrum",
+      "metres": 0.0,
+      "source": "p. 175"
+    }
+  ]
+}

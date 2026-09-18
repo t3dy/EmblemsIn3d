@@ -1,0 +1,256 @@
+{
+  "id": "XXVI",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher (chapter XXVI pass, Claude)",
+    "date": "2026-09-17",
+    "note": "Read in full: translation/en/page_388.md through page_397.md (our CC0 translation, 1499 pp. 388-397). This is Polia's own narration to the circle of nymphs (Book II): her plague and vow of perpetual chastity to Diana; her admission among Diana's virgins; Poliphilo tracking her down and finding her alone at prayer; her heart freezing 'more freezing than porphyry'; two long love-pleas from Poliphilo (pp. 390-393, one per day, driven off after the first); his death-swoon at her feet (pp. 395-396); and her dragging his corpse into a corner of the temple before fleeing home through Treviso's streets 'as a conscious malefactress' (p. 397). No plague, no dream, no beasts in this chapter -- that is chapter XXVII, next. PLATE-OFFSET FINDING (worth flagging beyond the known trap): woodcut_catalog's page_seq is not the 1499 page directly, despite HPTOTOURPIPELINE.md describing the scan folder as indexed 'by 1499 page' -- in this stretch it is off by a clean +10 (five preliminary leaves not counted in page_seq/page_concordance, which HPTOTOURPIPELINE.md conflates with the translation's own page numbering). Verified against page_concordance (quire/folio) and by reading the actual scans: file hp1499_p386.jpg's text ends '...rachiusi gli somersi occhii allato me se morite' = our p. 396's 'the submerged eyes shut, beside me he died' verbatim, and its woodcut shows Polia standing, reading a book, indifferent, while Poliphilo lies collapsed at her feet -- this is catalog plate #152 ('Polia in temple of Diana; Poliphilus prostrate'), correctly page_seq 386+10=396, NOT excluded as coverage.json's naive page-range math (which used page_seq 387 literally and dropped it as before the chapter) assumed. File hp1499_p387.jpg's text ends '...Qual conscia malefica remeare' = our p. 397's 'as a conscious malefactress to return' verbatim, and its woodcut shows Polia dragging the corpse by the feet into a corner -- this is catalog plate #153 ('Polia drags prostrate Poliphilus from sanctuary'), page_seq 387+10=397. Catalog page_seq for both plates is one leaf short of where the image actually sits (trust the descriptions, not the numbers, per SOURCES.md's existing woodcut-filename warning, now extended to the DB's own page_seq column). Plates #154-156 (page_seq 391-393, so true 1499 pp. 401-403 by the same +10) are confirmed NOT this chapter's: verified by reading the scans at hp1499_p390.jpg (two nude women chained to a burning chariot, dragged by Cupid) and hp1499_p393.jpg (lion and dogs devouring the women, Cupid flying above with a sword, Polia hiding in a thicket) -- this is Polia's nightmare-vision of Cupid's punishment, which chapter XXVII's researcher independently confirmed belongs to their chapter (pp. 399-408), not this one. Grepped src/scenes/world/tombs.js's _buildBookTwo (~L714-823; did not open HPWorldScene.js or Cast.js per the reading-list restriction). It builds one precinct at (44,22): a Temple of Diana (statue, altar, stag, one veiled Polia figure, one Poliphilo figure 'prostrate' near the threshold, two priestesses, a TEMPLVM DIANAE plaque citing plates 152-159 and ch. XXVI), a bed-chamber with the ice/fire-chariot window-vision (later chapters), and the Venus-priestess enthroned (ch. XXXV). No plague/sickbed, no nurse, no dedication-day crowd, no drag-to-the-corner, no polluted corner, no flight through streets, and no Treviso urban fabric (streets/piazza/palace exterior) anywhere in src/scenes/world/ -- grepped the whole folder for street|palazzo|piazza|Treviso and found only the Piazza built for chapter III (unrelated) and this same comment block. None of this is verified live -- statuses below marked 'unknown' where grep found matching code, 'unbuilt' where nothing did. MEASUREMENTS: none. This chapter is pure rhetoric and myth (a love-plea, a death, a flight) with no stated sizes, distances, counts or directions anywhere in pp. 388-397 -- checked against DIMENSIONS.md's units (pace/stadium/foot/cubit) and found nothing to convert; the 'measurements' array below is empty because the chapter states none, not because the pass skipped it."
+  },
+  "features": [
+    {
+      "id": "xxvi-polias-plague",
+      "name": "Polia's plague-sickness: deserted by all but her nurse",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unbuilt",
+      "note": "'Deserted by all, and relinquished, I was -- save by my piteous and best Nurse, who remained to aid... implicated by the grave disease -- incomposite words, and frequent laments and little groans, variously raving and vacillating.' The illness that sets up the vow. No sickbed, no invalid Polia, no attending nurse anywhere in the built precinct -- only the vow's aftermath (the Diana statue and plaque) is staged.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-nurse",
+      "name": "Polia's nurse, who alone remained to tend her",
+      "kind": "person",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unbuilt",
+      "note": "'Save by my piteous and best Nurse, who remained to aid, and to see was the last sigh and exit of my spirit.' Named only as 'Nurse,' but a distinct figure, present at the sickbed and absent from the temple scenes that follow. No nurse NPC exists in the built world.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-vow-of-chastity",
+      "name": "Polia's vow of perpetual chastity and temple-service to Diana",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unknown",
+      "built_as": "tombs.js _buildBookTwo, ~L753-754 (Diana statue + plaque sub-label 'THE VOW OF PERPETVAL CHASTITY · CH. XXVI')",
+      "note": "'With tremulous voice purely exorating, I prayed... religiously, to serve ever her sacred temples, with tenacious chastity, if she, pitying me, freed me from the mortal contagion.' This is the ROOT of her cruelty to Poliphilo -- the chapter's own argument. Grep found a Diana statue and a plaque naming the vow, but not the act of vowing (no altar-side prayer gesture, no votive offering) -- not seen live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-iphigenia-hope",
+      "name": "The Iphigenia exemplum: Polia's hope that Diana would substitute a hind for her, as for Iphigenia at Aulis",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unbuilt",
+      "note": "'I remembered the benign favour that the said Goddess to Iphigenia lent, while Agamemnon... wished to immolate her... she interposed a fume-bearing cloud, reserving Iphigenia; and the hind was found in her place.' The note ties this to the SAME Iphigenia fear Poliphilo has at the Venus-rite (p. 227) -- a bridge motif between the two temples worth a shared inscription or small relief (the hind at the altar) rather than a one-off.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-thesmophoria-cleobis-biton",
+      "name": "Polia arms her vow with the Thesmophoria matrons (sleeping on Agnus-tree leaves) and Cleobis and Biton",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unbuilt",
+      "note": "'No lesser purpose to conserve myself inviolate than the Matrons in the Thesmophoria, sleeping on the strewn leaves of the Agnus tree (chaste-tree); nor with lesser devotion and religion than Cleobis and Biton had.' Learned exempla of chastity/piety; a plantable Agnus castus (chaste-tree) bed near the temple would be a direct, citable planting, distinct from any exempla already built.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-diana-temple-virgin-consort",
+      "name": "Polia admitted among the consort of virgin girls who serve Diana, visiting the Dianal Altars",
+      "kind": "people",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unknown",
+      "built_as": "tombs.js _buildBookTwo, ~L735-767 (temple structure, one Polia figure, two priestesses)",
+      "note": "'Admitted into the holy temple, and into the consortial convent and society of many other virgin girls received (who to that chaste and pure Goddess served), I began, I too, sedulously, with them, to visit and humbly the Dianal Altars to venerate.' The built temple has one Polia and two priestesses, not a company of consecrated virgins, and only one altar. Not seen live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-male-exclusion-frieze",
+      "name": "The temple walls that exclude even 'written and painted male animals' -- the Bona Dea rule mirroring Polia's closed heart",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 388",
+      "status": "unbuilt",
+      "note": "'Not so obliterated were, from the walls of the temple of the Good Goddess, the written and painted male animals, and the ingress of whatever living (male) excluded, than out of my [heart]...' A real Roman cult-rule (Bona Dea) used as a precise image of Polia's consecrated coldness -- buildable as a frieze/fresco panel on the temple's interior wall, and worth pairing with the vow feature so a viewer can read the joke: the wall bars males, and so does she.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-year-of-absence",
+      "name": "\"A year and more\": Poliphilo unable to see her, utterly forgotten by her",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 388-389",
+      "status": "unbuilt",
+      "note": "'Poliphilo... all this intervalled time (which was a year and more), the wretch ever stood discontent... nor so obliterated were... than out of my [heart, was he].' A duration, not a place, but the chapter frames it as the measure of her forgetting -- a plaque quoting it beside the temple threshold would let a visitor feel the asymmetry (his year of grief against her total erasure of him) before the confrontation scene.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-sacred-dedication-day",
+      "name": "Polia's day of consecration, and the wanton youthful throng at the sacred spectacles",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 389",
+      "status": "unbuilt",
+      "note": "'He found me, on the day of my sacred dedication, with some other little maidens consecrating myself. At which solemnity it is customary for the wanton and juvenile throng avidly to convene at the sacred spectacles.' A festal ceremony distinct from the later solitary-prayer confrontation that IS staged -- this is the FIRST re-sighting, in a crowd, not the private meeting. Nothing in the built precinct distinguishes the two occasions.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-poliphilo-the-sleepless-prisoner",
+      "name": "Poliphilo's sleepless search for the hidden, veiled Polia, \"like a man thrust into a horrend prison-house\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 389",
+      "status": "unbuilt",
+      "note": "'With provident and sleepless disquisition and diligence (like a man bound, thrust into a horrend prison-house, solely intent, most-vigilant, on the breaking-out to flee)... he knew so corneredly to investigate.' The note calls this Book I's devotion seen from her side, as a siege she resented -- a strong candidate for a quoted plaque near the temple's exterior approach, distinct from the interior confrontation plaque already implied by the built labels.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-confrontation-freezing-heart",
+      "name": "Poliphilo finds Polia alone at prayer; her heart freezes \"more freezing than porphyry\"",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 389",
+      "status": "unknown",
+      "built_as": "tombs.js _buildBookTwo, ~L757-761 (Polia figure labelled 'MORE FREEZING THAN PORPHYRY'; a figure 'pol' positioned near the threshold)",
+      "note": "'No sooner before me did I see him, than promptly, contaminated, my indisposed heart -- like frigid Diamond, which, by burning, alters not, rigid, froze itself -- became more freezing than the Porphyry stone.' Grep found this exact line already quoted as a sub-label in the built temple -- a genuine hit -- but not verified live, and it is unclear from the code alone whether the Poliphilo figure there is posed for this approach or for his later collapse (see xxvi-poliphilos-death below).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-poliphilos-first-plea",
+      "name": "Poliphilo's first declaration: \"Alas, Polia, fair-haired Nymph! My goddess! My heart! My life!\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 390-391",
+      "status": "unbuilt",
+      "note": "His collapse and first long plea -- 'better to die for thee than live without thy love' -- delivered with 'few little spirits,' pale and trembling. The Polyandrion's own logic (love-suicide) turned prophetic. No quoted inscription of this speech exists anywhere in the built precinct.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-vine-and-elm",
+      "name": "Poliphilo as the vine torn from its elm, the ivy fallen from the poplar",
+      "kind": "plant",
+      "plate": null,
+      "source": "p. 391",
+      "status": "unbuilt",
+      "note": "'In similitude of the serpent and cross Ivy, embracing the old poplar, thence extirpated and torn... falling to the humid earth, lies soft and debile... and like the scandent vine, without its footing and prop upheld, and without the grateful Elm, prostrate, leans.' The ancient vine-and-elm emblem of dependent love (Catullus, the emblem books), here inverted into rejection. Directly buildable as a planting near the temple: a felled or dead elm/poplar with a vine detached and trailing on the ground -- distinct from any planting motif elsewhere in the world, and a natural companion to the temple's cold stone.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-sun-lake-paradox",
+      "name": "The African lake that boils when the sun is absent and cools in its presence -- the paradox of her presence and absence",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 391",
+      "status": "unbuilt",
+      "note": "'As the Arbonensian lake of Africa, the Sun absenting itself, the waters of which fervidly boil, and, in its presence at midday, freezing, cool themselves -- so I, in thy absentation, Polia, my most-irradiating Sun, all adust... melted myself, liquefying; and now, in thy Solar presence, of horror I freeze.' Pliny's Fountain of the Sun, repurposed as a lover's conceit. Buildable as a small pool near the temple with an inscription, or left as a citation-only note -- either way currently absent.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-polias-first-derision",
+      "name": "Polia rises without a word, refuses to look at him, and flees deriding him",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 392",
+      "status": "unbuilt",
+      "note": "'Without not only answering him, but even, in the face not looking at him, indignant, blushing, suddenly I rose. And thence, having left him, made-little (of him), as vain words, I fled, deriding him.' Her cruelty shown in ACT, distinct from the frozen-heart tableau already staged -- this is a first, failed encounter (day one) before the fatal second encounter (day two). No second Polia pose or animation for this exists.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-second-days-plea",
+      "name": "Poliphilo returns the next day with a gentler plea: \"do not vilify thyself by atrocity\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 392-395",
+      "status": "unbuilt",
+      "note": "The second, fatal encounter: he pities her hardness even as he suffers it -- 'do not wish... to vilify thy not-human condition by atrocity, showing thyself against (one) who so sweetly, ardently, thee loves.' This is the long central speech (the hours-of-love and innocence catalogues below are part of it) that ends in his death. No inscription of any part of it exists in the built world.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-hours-of-love",
+      "name": "The lover's clock of pain: a whole day and night mapped to phases of burning and freezing",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 393",
+      "status": "unbuilt",
+      "note": "'Continually at evening I kindle; at twilight I all inflame... at cockcrow, like a cinerous thing, I feel myself... at daybreak, freezingly frozen I find myself... at midday, languishing, to die I feel myself.' An hour-by-hour anatomy of love-torment -- the fullest statement in the book of its sweet/bitter paradox. Strikingly buildable as a sundial or hour-marked column at the temple threshold, each hour inscribed with its phase of his suffering; nothing like it exists.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-pests-similes",
+      "name": "The catalogue of small relentless destroyers: moth, caterpillar, woodworm, blight, rust",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 393",
+      "status": "unbuilt",
+      "note": "'So continual a pain in me tribulously corroding, more than the gnawing Moth to woollen garments, and more than the thirsting caterpillar in the liquor of the pale fronds of Minerva (the olive), and more than the rodent woodworm in the cut beam... and more than saffron rust to hard steel.' Colonna's natural-history erudition given to the emotion; a minor inscription candidate, not separately modelled anywhere.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-innocence-catalogue",
+      "name": "Poliphilo's catalogue of the sacrileges he is NOT guilty of: Ixion, Salmoneus, Brennus, Arachne, the Danaids...",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 395",
+      "status": "unbuilt",
+      "note": "'In me is not found the false boasting of Ixion, nor that of Anchises; nor the insolence of Salmoneus; nor the sacrileges of Brennus and of Dionysius of Syracuse; nor the impudence of Echo; nor the improbe loquacity of Syrinx; nor the temerarious audacity of the Pierides; nor the stupid confidence of the weaver Arachne; nor the cruelty of the daughters of Danaus.' His protest of innocence just before he dies -- throws the guilt onto Polia. A dense mythographic list; buildable as a small frieze or left as a quoted plaque near his death-place.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-poliphilos-death",
+      "name": "Poliphilo's death-swoon at Polia's feet, while she reads on unmoved",
+      "kind": "person",
+      "plate": 152,
+      "source": "pp. 395-396",
+      "status": "unknown",
+      "built_as": "tombs.js _buildBookTwo, ~L760-761 (a figure 'pol' near the threshold, rotation set) -- ambiguous whether this represents the approach/plea or the death itself; not seen live",
+      "note": "'The springing tears, wretched, the last words terminated, prostrate on the ground, he died.' And again, p. 396: '...the submerged eyes shut, beside me he died.' Woodcut #152 (catalogued at page_seq 387, but its true 1499 page is 396, ten more than page_seq -- see the research note) shows exactly this: Polia standing, holding an open book, indifferent, while Poliphilo lies collapsed against her at her feet -- a distinct, citable composition (her continued devotion beside his corpse) that the single generic 'prostrate' figure in the built world does not obviously capture.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-anaxarete-and-the-hardness-catalogue",
+      "name": "Polia measures her own cruelty against Daphne, Medea, Atreus and Thyestes, Theseus, Narcissus, and above all Anaxarete -- who was turned to stone for letting Iphis die of love",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 396",
+      "status": "unbuilt",
+      "note": "'Harder than Daphne. More wicked than Medea. More iniquitous than Atreus and Thyestes. More dire than Theseus. More fugitive than Narcissus. Much more harsh than Anaxarete to her cruel Iphis.' Anaxarete is the GOVERNING exemplum: Ovid's cruel maiden who let Iphis hang himself for her and was petrified by Venus in punishment (Met. XIV) -- the precise myth of a beloved punished for a lover's love-death, and Polia's clearest self-prophecy (Book II's coming punishment-vision and conversion answer exactly this). Nothing in the world names or depicts Anaxarete anywhere; a statue of a woman mid-transformation to stone, sited at or near the temple, would be the single most legible piece of foreshadowing Book II could have and currently has none. Strong candidate for the chapter's most distinctive unbuilt feature.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-corpse-dragged-into-corner",
+      "name": "Polia drags Poliphilo's corpse by the cold feet into a corner of the temple, and abandons it, polluting the sanctuary",
+      "kind": "rite",
+      "plate": 153,
+      "source": "p. 397",
+      "status": "unbuilt",
+      "note": "'Boldly taking him (O immanity, more than ferine!) by his cold feet, illicitly wicked, into a corner of the temple (by me nefariously impiated and polluted), I, with all my power, drawing (him), left (him); and, relinquished without other funeral-anointing.' THE illustrated scene of the chapter -- woodcut #153 (catalogued page_seq 389, true 1499 page 397, see research note) shows exactly this: Polia gripping the ankles, dragging the body across the temple floor. This is the deepest guilt of her confession ('a conscious malefactress') and it is completely absent from the built world: no corpse, no drag, no polluted corner, and no distinction between this act and the death-swoon it follows. The one thing in this chapter that IS drawn is the one thing not built -- the pyramid-tunnels trap in reverse.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-polias-flight-through-treviso",
+      "name": "Polia's guilty flight through the devious streets of Treviso, back to her palace, \"swifter than Hippa\"",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 397",
+      "status": "unbuilt",
+      "note": "'Much around me looking, with the eyes I wandered; nor seeing, nor hearing anyone, out of the Holy Basilica I escaped; by devious streets, with great fatigue of soul, distressed, I contrived thence to depart afar -- and, promptly and swift (perhaps more than Hippa), to my palace, as a conscious malefactress, to return.' Ted's 2026-09-17 decision makes Book II a real second place, Treviso, not a single narrated station -- this line is the clearest textual warrant for a street network: a specific route from a named basilica-temple to a named palace, through backstreets, fled at speed. Grepped src/scenes/world for street|piazza|palazzo|Treviso and found no urban fabric for Book II at all -- the whole precinct is a single clearing with three set-pieces, no streets between them.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvi-polias-palace-exterior",
+      "name": "Polia's family palace in Treviso, to which she flees",
+      "kind": "building",
+      "plate": null,
+      "source": "p. 397",
+      "status": "unbuilt",
+      "note": "'To my palace... return.' The built precinct has a bed-chamber interior (CVBICVLVM POLIAE, for later chapters) but no exterior palace facade, no sense of it standing in a city, and no relation staged between the temple she flees and the palace she flees to. Buildable as the second anchor of a real Treviso, per Ted's decision.",
+      "modes": ["walk", "tour"]
+    }
+  ],
+  "measurements": []
+}

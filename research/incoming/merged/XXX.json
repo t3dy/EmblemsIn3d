@@ -1,0 +1,129 @@
+{
+  "id": "XXX",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher session, 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Read pp. 428–431 in full (translation/en/page_428.md–page_431.md, our CC0 translation, plus the per-page notes). Chapter XXX is Poliphilo's spoken plea to the priestess of Venus that she bind him and Polia as one, and Polia's own account of watching him plead, ending mid-sentence as she is about to interrupt. IMPORTANT CORRECTION to the premise this chapter was assigned under ('no plates'): that premise comes from woodcut_catalog.page_seq falling outside this chapter's derived page range, and it is wrong. woodcut_catalog's page_seq for this stretch of the book runs a consistent 10 pages BEHIND the true 1499 page — confirmed by opening the scans directly and matching their printed Italian text against our translation: the scan filed as hp1499_p415.jpg opens 'cum gli mei longissimi capilli evulsi...', which is verbatim our translation page 425 ('with my longest hairs, plucked...'), not page 415; the scan hp1499_p419.jpg's printed text is verbatim our page 429; hp1499_p421.jpg's is verbatim our page 431; hp1499_p425.jpg's is verbatim our page 435. So: catalog #161 (nominal page_seq 419, 'Polia kneels before Venus priestess; Poliphilus beside') is really at true page 429 — Poliphilo standing, Polia kneeling before the enthroned priestess in a tetrastyle hall with a lit altar and a barred window — squarely inside chapter XXX, illustrating the very opening of his plea. Catalog #162 (also nominal page_seq 419 — the catalogue lists two different plates at the identical page_seq, itself a red flag) does NOT match the single image actually present at true page 429 ('Polia kneels...' is a one-image page); its real content — two couples kneeling before a priestess and her nymphs at a pedimented temple doorway, with a small dog — is the woodcut on the scan filed hp1499_p421.jpg, true page 431, this chapter's own last page. So XXX has two genuine plates, not zero, and neither is presently attached to it in the ledger's plate derivation. Cross-checked against src/scenes/world/tombs.js: the only Book II geometry at a Venus-priestess tribunal (_buildBookTwo, ~L805–823) is posed and labelled for the KISS (chapter XXXI's climax, plate #163 correctly identified — see XXXI.json), not for Poliphilo's plea or for the temple-door scene; I have not loaded the live site this session, so even that is recorded as unknown, not built. Measurements: none stated in this chapter — pp. 428–431 are entirely dialogue, interior monologue and mythological simile; no pace, foot, cubit, stadium or count is given anywhere in the text."
+  },
+  "features": [
+    {
+      "id": "xxx-temple-audience-hall",
+      "name": "The Temple of Venus's audience hall, where the priestess hears petitions",
+      "kind": "place",
+      "plate": 161,
+      "source": "pp. 428–429 (text); woodcut true 1499 p. 429, catalogued as #161 at mislabelled page_seq 419",
+      "status": "unknown",
+      "note": "grep of src/scenes/world/tombs.js finds _buildBookTwo (~L805–823) building a small tetrastyle shrine at TX2,TZ2 with an enthroned priestess and the lovers kissing before her, plaqued 'IN CONSPECTV ANTISTITAE ... PLATE 163' — i.e. built (if it is, unverified live) for chapter XXXI's climax, not explicitly for this chapter's petition scene. The book calls this room 'the vaulted Temple' (p. 428) with a sounding echo; the code's shrine has no vault modelled and no acoustic behaviour.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-priestess-tribunal-throne",
+      "name": "The priestess's throne — her \"holy auditory and tribunal\"",
+      "kind": "object",
+      "plate": 161,
+      "source": "p. 429",
+      "status": "unknown",
+      "note": "grep finds an Antistita NPC ('b2_venus_priestess', tombs.js ~L812–813) enthroned at the same location; not verified live this session, and her pose/label there is written for the kiss, not the plea.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-altar-of-venus-flame",
+      "name": "The lit altar of \"the most-holy Cytherean\" — a flaming vase on a stepped pedestal between two columns",
+      "kind": "object",
+      "plate": 161,
+      "source": "p. 429 (text: \"the sacrificial Altars of the most-holy Cytherean\"); woodcut true p. 429 shows it explicitly, between the columns, opposite the barred window",
+      "status": "unbuilt",
+      "note": "grep finds a stone-block-plus-gold-slab pair at the same precinct (tombs.js ~L807–809) but it is not modelled as a vase with a visible flame, and it is not cited in any comment to this passage — probably not the same object.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-poliphilo-plea-pose",
+      "name": "Poliphilo standing and pleading, Polia kneeling beside him before the priestess",
+      "kind": "rite",
+      "plate": 161,
+      "source": "pp. 429–430",
+      "status": "unbuilt",
+      "note": "the only figures grep finds at this tribunal (b2_poliphilo_kiss, b2_polia_kiss, tombs.js ~L814–817) are posed for the kiss (chapter XXXI's climax) — a 'reach' pose and an 'offer' pose, facing each other, not a kneeling-Polia-before-an-enthroned-priestess supplication pose distinct from that kiss tableau.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-temple-echo",
+      "name": "The vaulted temple's echo — his sighs \"in the vaulted Temple sounding... the emulous echo sent them back\"",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 428",
+      "status": "unbuilt",
+      "note": "an acoustic detail, not a shape; no audio or reverb system was found anywhere in this codebase for any station.",
+      "modes": ["walk", "dream"]
+    },
+    {
+      "id": "xxx-temple-door-two-couples",
+      "name": "Two couples kneeling at the temple's outer door before the priestess and her nymphs, with a small dog at her feet",
+      "kind": "picture",
+      "plate": 162,
+      "source": "woodcut only, true 1499 p. 431 (catalogued as #162, but mislabelled to page_seq 419 alongside #161 — the catalogue entry is wrong; confirmed by reading the scan hp1499_p421.jpg, whose printed text below the image is verbatim our translation's page 431)",
+      "status": "unbuilt",
+      "note": "a genuine plate for this chapter that the ledger's automatic page-range derivation misses entirely, because of the page_seq trap. A pedimented doorway with a rosette oculus, a ring door-pull set in the panelled door, flanking pilasters, and — outside it — an enthroned priestess with an entourage of nymphs receiving two kneeling couples and a small dog. No matching street-facing portal, door-pull, or dog was found by grep anywhere in src/scenes/world.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-temple-portal-facade",
+      "name": "The temple's pedimented street door — rosette oculus, ring door-pull, flanking pilasters",
+      "kind": "building",
+      "plate": 162,
+      "source": "woodcut, true p. 431 — see xxx-temple-door-two-couples",
+      "status": "unbuilt",
+      "note": "distinct from the open colonnaded shrine already conjectured built for the kiss; if Book II becomes a walkable Treviso, this closed, ring-pulled door is what a visitor would actually approach from a street, as opposed to the open interior hall.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-priestess-attendant-nymphs",
+      "name": "The priestess's standing company of nymphs — four behind her throne in the true-p.429 woodcut, more at the door in the true-p.431 woodcut",
+      "kind": "person",
+      "plate": 161,
+      "source": "pp. 429, 431 — woodcuts only; the text never counts or names them here",
+      "status": "unbuilt",
+      "note": "grep finds two priestess NPCs, but at the unrelated Temple of Diana precinct (tombs.js ~L762–765, ch. XXVI), none at the Venus-priestess tribunal beyond the enthroned priestess herself.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-checkerboard-floor-barred-window",
+      "name": "The audience hall's chequered tile floor and its barred, arched window",
+      "kind": "building",
+      "plate": 161,
+      "source": "woodcut, true p. 429",
+      "status": "unbuilt",
+      "note": "architectural detail visible only in the plate, not described in the text; a floor treatment and a window worth citing separately since the room otherwise built for this precinct (per grep) has neither.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxx-castor-pollux-simile",
+      "name": "Poliphilo as safe harbour — \"more salutary... than Gemini's stars to storm-tossed sailors\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 428",
+      "status": "declined",
+      "note": "a rhetorical simile for Polia's feeling of relief, not a description of any place or object in the scene. Nothing here to model."
+    },
+    {
+      "id": "xxx-ossa-olympus-simile",
+      "name": "Their wills once \"more separated... than Ossa from Olympus\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 430",
+      "status": "declined",
+      "note": "a learned simile for emotional distance, not a place in the dream's geography. Nothing here to model."
+    },
+    {
+      "id": "xxx-polia-heart-opened-metaphor",
+      "name": "Polia \"laid open... the gaping opening of her enkindled heart\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 428",
+      "status": "declined",
+      "note": "an interior emotional metaphor, not a physical thing. Nothing here to model."
+    }
+  ],
+  "measurements": []
+}

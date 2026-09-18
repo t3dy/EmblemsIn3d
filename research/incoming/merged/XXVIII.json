@@ -1,0 +1,177 @@
+{
+  "id": "XXVIII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher (chapter XXVIII pass)",
+    "date": "2026-09-17",
+    "note": "Read translation/en/page_409.md through page_417.md in full (our CC0 translation). Chapter XXVIII is entirely the Nurse's spoken counsel to Polia — no change of physical scene within it, and (checked against the scans) NO woodcut actually illustrates it. Plates #157-160, catalogued at page_seq 411/412/413/415 (inside this chapter's page range), were opened as scans and all four depict neighbouring-chapter content, not this chapter's text: hp1499_p411.jpg and p412.jpg show Poliphilo dead / revived in Polia's lap (ch. XXIX, the argument printed at the foot of our p.417); hp1499_p413.jpg shows the priestesses driving the lovers out with rods (also ch. XXIX); hp1499_p415.jpg shows Polia alone in her chamber describing the crystal-chariot vision (the vision belongs to the chapter before this one, per the ch. XXVIII notes on p.409, 'the visions (chs. XXVII)'). So the plate catalogue's page_seq is offset from this chapter by roughly one chapter forward for #157-159 and one back for #160 — none of the four plates cited against XXVIII in the seeded ledger should be attached to it. Chapter XXVIII, like the vaults of ch. V, is pure text: a nurse's speech, a myth-catalogue, and one extended cautionary tale (the refusing girl, her golden-arrow revenge-marriage, her suicide) that is nowhere drawn and, per this grep, nowhere built. Checked against src/scenes/world/tombs.js (_buildBookTwo, the only Book II geometry in the app) and src/systems/Cast.js was NOT opened (per project instructions, ~197k/large token files are off-limits to this pass) — searched only by grep for character/place names. No hpDiag or live page load was performed this pass (research-only); all 'built'/'partial' status below rests on grep of source, not on loading the running site, per the recipe's caution that a plate number or a nearby structure is a weak hint, not proof."
+  },
+  "features": [
+    {
+      "id": "xxviii-nurse-counsel-scene",
+      "name": "The Nurse's counsel, continuing in Polia's bed-chamber",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 409 (opens mid-sentence, continuing ch. XXVII's chamber scene; the chapter never changes location)",
+      "status": "partial",
+      "built_as": "tombs.js._buildBookTwo — 'Cubiculum Poliae' (CX2/CZ2), built for plates #160-165 (the vision + letter-reading)",
+      "modes": ["walk", "dream", "tour"],
+      "note": "The room this whole chapter's speech happens in exists (bed, window, the vision-chariots hung above it for a different scene), but the Nurse is not modelled there and nothing marks that this is where her hour-long counsel is given. The room's plaque cites plates 160-165, not this chapter's text at all."
+    },
+    {
+      "id": "xxviii-nurse",
+      "name": "The Nurse — 'the sagacious and versute Nurse,' Erototrophos",
+      "kind": "person",
+      "plate": null,
+      "source": "pp. 409-417 (speaker of the entire chapter; named as agent throughout, e.g. p. 410 'she, shrewd, with pure and sincere judgement')",
+      "status": "unbuilt",
+      "note": "Grep of tombs.js and Cast.js-adjacent scene files found no 'nurse' NPC anywhere in Book II's precinct. She is the one character who speaks almost the whole of chs. XXVI-XXVIII and she is not in the world. tours.json's gloss (line 987) even translates her Greek epithet, Erototrophos ('nurse-of-Love'), as a place-name gag, but never builds her as a figure."
+    },
+    {
+      "id": "xxviii-vengeance-catalogue",
+      "name": "The Nurse's catalogue of the gods' vengeance: Ajax Oileus struck by lightning, Ulysses's starved companions, Hippolytus revived by Diana, the Propoetides turned to stone for scorning Venus, Arachne turned to a spider, Psyche's labours",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 410",
+      "status": "unbuilt",
+      "note": "A rhetorical list, but a concrete one — six named, visualisable punishments recited in one breath as the Nurse's opening argument (fear first, then love). Buildable as a small relief/frieze or a set of statuettes in the counsel-room, distinct from Book I's own Psyche (the Triumph of Cupid captive, triumphs.js) and Book I's own Medusa (the portal stair-door, portal.js) — those are different episodes of the same figures and shouldn't be conflated with this chapter's citation of them."
+    },
+    {
+      "id": "xxviii-cupid-two-arrows",
+      "name": "Cupid's two dissimilar arrows — the golden (forces love) and the leaden (forces hatred and cruelty)",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 411 ('two dissimilar arrows... one figured of fulgorous gold; the other, of livid and ill-omened lead')",
+      "status": "unbuilt",
+      "note": "The mechanism the Nurse names for Polia's whole condition: she was cruel because struck by the leaden arrow, curable by the golden one (translation notes call this 'the mechanism of the whole Book-II drama'). Any built Cupid figure in Book II's precinct could carry both, visibly distinguished by material."
+    },
+    {
+      "id": "xxviii-cautionary-girl",
+      "name": "The cautionary exemplum: an unnamed beautiful, high-born girl who refused every suitor",
+      "kind": "person",
+      "plate": null,
+      "source": "pp. 412-415 (the Nurse's tale, told entire)",
+      "status": "unbuilt",
+      "note": "A named-in-all-but-name second heroine of Book II, deliberately Polia's mirror (beautiful, high-born, cruel to a worthy suitor). Her whole arc — refusal, Cupid's revenge at 28, forced marriage, suicide — runs pp. 412-416 and is entirely absent from the built world."
+    },
+    {
+      "id": "xxviii-fruitless-willow-simile",
+      "name": "'The fruit-losing willow' — the Nurse's image for beauty unused",
+      "kind": "plant",
+      "plate": null,
+      "source": "p. 412",
+      "status": "unbuilt",
+      "note": "A minor but named plant-simile (a willow that sheds its fruit ungathered) for wasted beauty/generation — the carpe diem argument's governing image. Not checked against PLANTS.md's species list; grep of PLANTS.md found no smilax/ostrya/willow entries relevant to this chapter."
+    },
+    {
+      "id": "xxviii-golden-arrow-strike",
+      "name": "Cupid's revenge: he strikes the 28-year-old refusing girl with the golden dart, and she burns with indiscriminate lust",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 413",
+      "status": "unbuilt"
+    },
+    {
+      "id": "xxviii-repulsive-husband",
+      "name": "The grotesque old bridegroom — pendent cheeks, two rotten upper teeth and four loose lower, ulcerated eyes, ass-bristle beard, goitred throat, fetid breath, urine-smelling garments",
+      "kind": "person",
+      "plate": null,
+      "source": "pp. 413-414 (introduced p. 413, catalogued in full detail p. 414)",
+      "status": "unbuilt",
+      "note": "One of the most vividly, physically described figures anywhere in the two books — a full head-to-foot grotesque catalogue, the exact antithesis of the worthy young suitor the girl refused. The translation's own notes call it the mirror of the executioners at p. 406 ('Book II's ugliness is always the wage of refusing beauty's proper use'). Nothing this concrete should be left unbuilt for lack of a plate — there never was one."
+    },
+    {
+      "id": "xxviii-wedding-night-bed",
+      "name": "The disastrous wedding night — the girl's desire frustrated by the impotent old husband; beatings, jealousy, cold sloth follow",
+      "kind": "place",
+      "plate": null,
+      "source": "pp. 413-414",
+      "status": "unbuilt"
+    },
+    {
+      "id": "xxviii-suicide-rite",
+      "name": "The girl's suicide: crowned with funereal smilax and hornbeam fronds, invoking the Furies, she stabs herself through the heart with a knife",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 415",
+      "status": "unbuilt",
+      "note": "Book II's SECOND love-death (the first is Poliphilo's, from Polia's cold refusal, staged already in the temple precinct). This one is from forced, unfulfilled excess — the opposite extreme, and the translation's notes call the two deaths the frame of the whole chapter's argument. Completely untold in the app; no plate exists for it (confirmed against the scans, see research note above) and it is not mentioned in tombs.js. Candidate for 'the single most interesting thing the book has that the world does not' — see report."
+    },
+    {
+      "id": "xxviii-funereal-smilax-hornbeam-crown",
+      "name": "The death-crown: funereal smilax (bindweed) and ostrya (hornbeam) fronds",
+      "kind": "plant",
+      "plate": null,
+      "source": "p. 415",
+      "status": "unbuilt",
+      "note": "Two named plant species worn specifically for a self-inflicted death, distinct from the garlands elsewhere in the book (which are erotic/festive). Not found in PLANTS.md by grep."
+    },
+    {
+      "id": "xxviii-antiochus-exemplum",
+      "name": "The Antiochus/Stratonice/Erasistratus medical exemplum (love-sickness diagnosed by pulse)",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 413",
+      "status": "declined",
+      "note": "A cited analogy (Plutarch/Appian), not an enacted scene in Polia's narrative — no physical description is given beyond 'diagnosed by the pulse.' No reading exists in the corpus that stages this as a scene in the HP itself; declining rather than inventing a tableau for a one-line citation."
+    },
+    {
+      "id": "xxviii-castalia-medusa-allusion",
+      "name": "Castalia and Medusa, named as women punished for scorning suitors",
+      "kind": "picture",
+      "plate": null,
+      "source": "pp. 415-416",
+      "status": "declined",
+      "note": "Brief rhetorical allusion (a name-check each), not a staged scene. Medusa already has independent, unrelated geometry in the world (portal.js._buildMedusaDoor, the spiral-stair door — a different episode entirely, ch. IV) which should not be repurposed or conflated with this citation. Declining a new build for a one-line mention rather than inventing a scene the text doesn't give."
+    },
+    {
+      "id": "xxviii-carpe-diem-speech",
+      "name": "The Nurse's carpe diem peroration — 'the time of our life is more to be esteemed... than the amplest treasures of Darius'",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 416",
+      "status": "unbuilt",
+      "note": "The translation's own notes call this 'one of the book's most direct statements of its theme' and 'the moral core of Book II.' A strong candidate for an inscribed plaque/panel in the counsel-room, the way other chapters' set-piece lines are lapidarized elsewhere in the app (cf. tombs.js._epitaph)."
+    },
+    {
+      "id": "xxviii-old-age-cosmetics",
+      "name": "Old age's vain remedies: dyeing white hair black with lye of litharge, quicklime, or walnut bark; painting and smoothing the skin",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 416",
+      "status": "unbuilt",
+      "note": "A concrete, named cosmetic-material-culture detail (litharge lye, quicklime, walnut-bark dye) — minor, but a genuine period-recipe detail nowhere else in the corpus's built props."
+    },
+    {
+      "id": "xxviii-hebe-ganymede-allusion",
+      "name": "Hebe's fall (dropped nectar, obscene exposure) and replacement by Ganymede",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 417",
+      "status": "declined",
+      "note": "The Nurse's closing exemplum, a one-paragraph allusion with no independent staging in Polia's own narrative. Declining rather than inventing a tableau."
+    },
+    {
+      "id": "xxviii-venus-shrine-referral",
+      "name": "The Nurse sends Polia to 'the shrine of the most-holy Venus... the sacrificing Priestess'",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 417",
+      "status": "partial",
+      "built_as": "tombs.js._buildBookTwo — the Venus-priestess enthroned (TX2/TZ2), built for plate #163 (ch. XXX-XXXI, the actual visit)",
+      "modes": ["walk", "dream", "tour"],
+      "note": "The destination the Nurse names here already exists as geometry, but it was built to stage the later chapters' arrival scene (plate 163), not this chapter's act of sending her there. Correctly cross-referenced, not double-counted as new."
+    },
+    {
+      "id": "xxviii-dawn-transition",
+      "name": "Dawn breaks as the Nurse finishes speaking — the sky's clouds dispelled, dew drying on the meadow-herbs",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 417 (opening of ch. XXIX, printed on the same page)",
+      "status": "unbuilt",
+      "note": "Minor atmospheric detail (a lighting/time-of-day cue for the precinct at this point in the tour) rather than an object; noted for completeness."
+    }
+  ],
+  "measurements": [
+  ]
+}

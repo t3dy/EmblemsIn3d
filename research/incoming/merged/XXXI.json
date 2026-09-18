@@ -1,0 +1,126 @@
+{
+  "id": "XXXI",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher session, 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Read pp. 432–435 in full (translation/en/page_432.md–page_435.md, our CC0 translation, plus the per-page notes). Chapter XXXI is Polia's answering declaration of love — a long speech reversing every refusal of chs. XXV–XXIX — capped by the betrothal kiss (the arra) and the priestess's ruling that she need not intervene because Love has already joined them. CORRECTION to the premise this chapter was assigned under (that it has two plates, #164 and #165): it does not. The same page_seq offset documented for chapter XXX (woodcut_catalog.page_seq runs 10 pages behind the true 1499 page in this stretch of the book) means #164 (nominal page_seq 433) and #165 (nominal page_seq 435) are NOT inside this chapter at all. Confirmed by reading the scans directly and matching their printed Italian text: hp1499_p433.jpg's text is verbatim our translation's page 443 ('gloriosa morte, miseramente uiuendo...' = 'glorious death, miserably living...'), which is chapter XXXII — Poliphilo's own retrospective lament while writing his first letter, not anything in XXXI. hp1499_p435.jpg's text is verbatim our page 445, the opening of chapter XXXIII. Both plates' true subjects (Poliphilus writing at a desk; Polia reading the letter in her bed-chamber) belong with the tour's own 'Poliphilo's Telling: the Love-Letters' stop (chs. XXXII–XXXIII) — whose folio citation in src/data/tours.json ('woodcuts 164–165, folios 433–435') is itself off by the same 10 pages and should read approximately folios 443/445. The plate that DOES genuinely belong to XXXI is catalog #163 ('Priestess enthroned; lovers kissing in her presence', nominal page_seq 425): its true page is 435 (425+10), confirmed the same way — the scan hp1499_p425.jpg's printed text below the image is verbatim our translation's page 435, the chapter's closing scene. So chapter XXXI has exactly one real plate, and it is the chapter's own climax. Measurements: none stated — pp. 432–435 are Polia's declaration, a catalogue of mythological exempla, and the kiss; no pace, foot, cubit, stadium or count appears anywhere in the text."
+  },
+  "features": [
+    {
+      "id": "xxxi-priestess-enthroned-kiss",
+      "name": "The Venus-priestess enthroned; Poliphilo and Polia kiss before her",
+      "kind": "rite",
+      "plate": 163,
+      "source": "p. 435 (its true page, once the page_seq offset is corrected — see research note)",
+      "status": "unknown",
+      "note": "grep of src/scenes/world/tombs.js finds this exact tableau: _buildBookTwo (~L805–823) builds an enthroned Antistita ('b2_venus_priestess') with Poliphilo and Polia ('b2_poliphilo_kiss'/'b2_polia_kiss') kissing before her, plaqued 'IN CONSPECTV ANTISTITAE ... THE LOVERS KISS IN HER PRESENCE · PLATE 163' — the correct plate, correctly matched to this chapter, whatever its page-citation history. Not verified live this session, so recorded as unknown rather than built. Note the in-code NPC sub-label reads 'ENTHRONED · CH. XXXV' (~L813), a stray chapter mislabel in the comment text (should be XXXI) worth a small fix when this is next touched.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxi-kiss-arra-pledge",
+      "name": "The betrothal kiss — \"kissing, sipping, with a meeting... of the tongue's little bite\" — the *arra*",
+      "kind": "rite",
+      "plate": 163,
+      "source": "pp. 434–435",
+      "status": "unknown",
+      "note": "same built evidence as xxxi-priestess-enthroned-kiss above; tours.json's 'Before the Priestess' stop already narrates this as the pledge-kiss and cross-references Book I's well-rite arra-kiss (p. 218) — the two accounts of the same pledge, from each side of the story.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxi-priestess-blessing-speech",
+      "name": "The priestess's ruling — \"Love has conciled you himself\" — she declines to intervene, and asks Poliphilo to tell his own story",
+      "kind": "rite",
+      "plate": 163,
+      "source": "p. 435",
+      "status": "unbuilt",
+      "note": "the tableau (unverified, per xxxi-priestess-enthroned-kiss) may stand for the moment, but nothing distinguishes her specific ruling — the theological point that she witnesses rather than performs the union — from a generic kiss caption; the plaque text found by grep reads only 'the lovers kiss in her presence', not her verdict.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxi-nymphs-weeping-witness",
+      "name": "The priestess's nymphs, \"standing-by,\" moved to tears at the kiss",
+      "kind": "person",
+      "plate": 163,
+      "source": "p. 435",
+      "status": "unbuilt",
+      "note": "grep finds only the priestess and the two lovers placed at this precinct (tombs.js ~L812–817); no attendant nymphs there, though nymphs exist generically in the cast elsewhere.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxi-polia-declaration-speech",
+      "name": "Polia's spoken declaration of love, cutting off the priestess's response before she can rule",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 432–434",
+      "status": "unbuilt",
+      "note": "the whole content of the chapter's title event — no plate depicts it, only its outcome (the kiss); the built Polia figure ('offer' pose) plausibly stands in for it but nothing distinguishes the declaration-speech from the kiss that follows it.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxi-exempla-punished-refusers",
+      "name": "Polia's catalogue of love's punished refusers, recited as her own cautionary mirror: Eurydice bitten fleeing Aristaeus, Daphne turned to laurel fleeing Apollo, Hesperie snakebit fleeing Aesacus, Arethusa turned to a spring fleeing Alpheus, Picus turned to a woodpecker refusing Circe; and (p. 434) Narcissus turned to a flower for spurning Echo, Syrinx turned to reeds fleeing Pan",
+      "kind": "picture",
+      "plate": null,
+      "source": "pp. 433–434",
+      "status": "unbuilt",
+      "note": "Polia recites this list as her own reason for yielding — check whether ch. XXVII's punishment-visions (already noted as built or unbuilt in that chapter's own ledger entry) cover overlapping iconography with different named victims before building a second gallery; if not, this reads naturally as a wall-relief frieze in the Venus-priestess's hall. No such frieze found by grep.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxi-hector-andromache-image",
+      "name": "Poliphilo's suffering likened to slain Hector, dragged through the dust, before the weeping Andromache",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 432",
+      "status": "unbuilt",
+      "note": "a striking single image Polia uses for how pitiable Poliphilo's grief-stricken appearance was to her; a candidate relief or fresco panel distinct from the punished-refusers set (this one is about her pity, not a warning to herself)."
+    },
+    {
+      "id": "xxxi-atalanta-dido-androcles-relief",
+      "name": "Polia glad to receive him, \"no otherwise... than Atalanta to Hippomenes, and... Dido... to Aeneas, and the fierce Lion to captive Androcles\"",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 434",
+      "status": "unbuilt",
+      "note": "the positive counterpart to xxxi-exempla-punished-refusers: three exempla of glad reciprocation/mercy, in the same speech, a natural pendant set for a relief gallery."
+    },
+    {
+      "id": "xxxi-cupid-universal-dominion",
+      "name": "Cupid's power, that \"no cuirass, nor triple-twilled Lorica, nor steel helm, nor shield-defence\" can resist — his \"Ithyrean bow\" and piercing darts",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 434",
+      "status": "unbuilt",
+      "note": "no Cupid statue, bow/arrow prop, or votive pile of discarded armour was found anywhere in Cast.js by grep — the only Cupid built in this codebase rides Book I's boat to Cythera, a different scene entirely. A pile of broken armour at Venus's altar would literalise this line."
+    },
+    {
+      "id": "xxxi-triumphal-bulla",
+      "name": "Polia's endearment: Poliphilo as her \"triumphal Bulla of my breast\" — a child's protective amulet worn at the neck",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 433",
+      "status": "unbuilt",
+      "note": "one of a string of endearments ('my Asylum', 'my treasure above all the jewels of the world') she gives him in the same breath; a small worn pendant on the Poliphilo figure would literalise just this one word."
+    },
+    {
+      "id": "xxxi-college-crowned-lovers",
+      "name": "\"The holy college of the crowned lovers\" — the confraternity of Venus's successful lovers, in whose sight the pledge is made",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 433",
+      "status": "unbuilt",
+      "note": "named once, and not physically described beyond 'crowned' (i.e. garlanded); a candidate for a small gallery of garlanded statue-couples near the priestess's hall, distinct from any 'crowned' imagery tied to the plague-flight chapters — check before conflating with unrelated garland motifs elsewhere in the book."
+    },
+    {
+      "id": "xxxi-fog-simile",
+      "name": "His torments will vanish \"like fog... resolve themselves... like minute dust\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 434",
+      "status": "declined",
+      "note": "a simile for emotional relief, not a described place or object. Nothing here to model."
+    }
+  ],
+  "measurements": []
+}

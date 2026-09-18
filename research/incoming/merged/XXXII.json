@@ -1,0 +1,111 @@
+{
+  "id": "XXXII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher (chapter XXXII pass)",
+    "date": "2026-09-17",
+    "note": "Read translation/en/page_436.md through page_443.md in full, both the translated text and every page's Notes block. Chapter XXXII is Poliphilo's own narration, delivered aloud to the enthroned Priestess of Venus with Polia present (the frame the priestess opened in ch. XXXI, p. 435): he praises perseverance as the book's moral, then tells his side of falling in love -- first sight of Polia at a festival in the Temple of Diana, his coup de foudre, his vow of total devotion ('no other image...affixable...but hers'), the pain of her departure (Laodamia/Ariadne/Io similes), a spiral into cursing her and a repentance of the curse, and his final resolve at p. 443 to write her a letter. Its own page range (436-443) has NO catalogued plate in hp.db.woodcut_catalog and the site's src/images/woodcuts/ has nothing for it either -- the 'plateless chapter' framing holds for THIS page range. BUT: hp.db.woodcut_catalog's page_seq for catalog_number 164 ('Poliphilus writing at carved desk') is recorded as 433 and the ledger's seeder therefore files it under chapter XXXI (pp. 432-435). I opened the scan directly (site/images/woodcuts_1499/hp1499_p433.jpg) and its printed text is NOT p. 433's content -- it is our translation's p. 443 verbatim ('...Hei Poliphile, contra il tuo bene...Herostrato...Et la ritonda Pila apta di rotarse...' = 'Hey, Poliphilo, against thy good...Herostratus...the round Ball apt to roll'). So the scan/catalog page_seq in this stretch of Book II runs a consistent ~10 pages BEHIND the true 1499/our-translation page number (confirmed again independently for ch. XXXIII/XXXV below). Plate 164 therefore belongs to CHAPTER XXXII, at its own closing page (443, the decision to write), not to XXXI. XXXII is not plateless once the offset is corrected -- it has exactly one plate, and it was hiding under the wrong chapter. Godwin 1999 not consulted. No new measurements: the chapter is pure interior monologue and classical simile, no stated sizes, counts, or distances (see measurements: [])."
+  },
+  "features": [
+    {
+      "id": "xxxii-diana-temple-festival",
+      "name": "The festival at the Temple of Diana where Poliphilo first saw Polia",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 438",
+      "status": "unknown",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "'I arrived at the sacred Temple of chaste Diana... in which she, and many other noble and outstanding girls, festive, with solemn rites and celebrated offices, in that fostering day, hymning, celebrated.' This is Poliphilo's own coup de foudre, the male-side counterpart to Polia's first sight of him from her window (p. 386) -- his heart 'ploughed by Cupid's arrows' while she ministers among the temple virgins. Grep of src/scenes/world/tombs.js found a Temple of Diana already built by _buildBookTwo (~line 735-767): four Ionic columns, a crescent-moon pediment, a Diana statue, a stag, a veiled Polia labelled 'MORE FREEZING THAN PORPHYRY' and a prostrate Poliphilo, plus two priestesses -- but that tableau stages the VOW OF PERPETUAL CHASTITY (ch. XXVI) and the lovers being driven out (ch. XXVIII), not this chapter's festival/first-sight scene. Not verified live, so status is unknown rather than partial: the building exists, the event does not appear to be staged in it. Same building could plausibly host this scene as a second beat."
+    },
+    {
+      "id": "xxxii-greek-rite-vs-barbarian",
+      "name": "The manner of the goddess's worship: Greek choral dance and song, set against Egyptian wailing and barbarian cymbal-clash",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 441",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "As the festival ends: 'not as the Egyptians to Isis and Osiris, with wailing; nor as the barbarians, with cymbal-, drum-, and pipe-strepitus; but as the Greeks, with choral dances, with melodious songs, and Latin consecrations of little maidens, with devotion, and with the utmost alacrity.' An explicit, comparative description of the rite's choreography and instrumentation -- exactly the kind of thing a timed sequence (like the Triumphs) could enact, and a specific antiquarian detail (Colonna distinguishing decorous Greek worship from 'barbarian' noise) that nothing in the corpus grep turned up built anywhere."
+    },
+    {
+      "id": "xxxii-poliphilo-narrating-frame",
+      "name": "Poliphilo's confession, delivered aloud to the enthroned Priestess with Polia present",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 436-437",
+      "status": "unknown",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "Chapters XXXII-XXXIV are not narrated from nowhere: Poliphilo is speaking these words to 'Reverend and holy Priestess' with 'Polia, egregious girl, here present' listening (p. 437). It is the frame the whole of Book II's second half sits inside. Grep of tombs.js found an enthroned Venus-priestess with Poliphilo and Polia kissing before her (~line 806-820, labelled 'ENTHRONED . CH. XXXV' in-code), built for the ch. XXIX-XXXI pledge-kiss, not for this narration-in-progress beat. The figures and setting already exist; a distinct tableau or plaque for 'Poliphilo now tells his own side' does not appear to. Not verified live."
+    },
+    {
+      "id": "xxxii-writing-desk-chamber",
+      "name": "Poliphilo's chamber: the carved writing desk, a window onto a broken column and rocky ground, a small votive image above the desk, and a curtained bed behind him",
+      "kind": "place",
+      "plate": 164,
+      "source": "p. 443; woodcut site/images/woodcuts_1499/hp1499_p433.jpg (hp.db.woodcut_catalog #164, recorded page_seq 433 -- offset; its true page is 443, see research note)",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "Poliphilo's resolve to write: '...disposed myself to find a quite able and honest device, to give her notice... By such argument I cogitated to write to her.' The plate (misfiled in the catalog under ch. XXXI by the page_seq offset -- see research note) shows a domestic interior: a young man at a small carved writing table with a book/box on it, seated before an open window with a classical column and a rocky landscape beyond, a small framed picture (two seated figures) on the wall above the desk, and a curtained four-post canopy bed and a low chest behind him. One of the very few domestic interiors drawn in the whole book. Grep of src/scenes and src/systems found no 'desk' geometry anywhere -- this room does not exist in the world."
+    },
+    {
+      "id": "xxxii-poliphilo-vow-of-worship",
+      "name": "\"No other image, nor simulacrum, nor shrine... affixable\" -- Poliphilo makes Polia his sole religion",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 440",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "He vows to revere Polia 'neither more nor less than the Athenians their Pallas... the Paphians the most-holy Venus'; follows her 'as the Heliotrope... her beloved Phoebus'; and holds 'nor painted, nor carved' any other image in his heart but hers. A monotheistic love-vow, the answer to Polia's own turn (she replaced Diana's image with his, p. 424). Good material for a readable plaque/inscription near the writing-desk chamber or the temple; nothing built for it."
+    },
+    {
+      "id": "xxxii-socratic-breast-window",
+      "name": "The wish to \"fenestrate his breast\" and show Polia the wound of love directly",
+      "kind": "picture",
+      "plate": null,
+      "source": "p. 440",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "'O me, could I open to her and discover my soul... with the Socratic affect, of fenestrating the breast, and of showing her the percussion of the amorous wound.' An emblematic conceit -- the wish for a window in the chest to show the true heart -- that the letter (ch. XXXIII) becomes the substitute for. A striking small emblem (an open, windowed chest revealing a wounded heart) if Book II ever gets emblem-plaques of its own; not a physically described object in the scene, so kept modest here."
+    },
+    {
+      "id": "xxxii-heliotrope-emblem",
+      "name": "The heliotrope (Clytie/Clymene), turning always to follow her beloved sun -- Poliphilo's image of his own constancy",
+      "kind": "plant",
+      "plate": null,
+      "source": "p. 440",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "'This one, indefatigable, I follow -- as the Heliotrope, Clymene, mutated into a flower, revoluble gyres, following the aspect of her beloved Phoebus.' A named, identifiable plant (Rhizopoulou's plant-identification corpus should confirm the species) used here as a constancy-emblem rather than described as physically present. A heliotrope actually planted somewhere in the Book II precinct, turning to track the sun over the day/night cycle, would be a small, cheap, legible piece of geometry carrying real textual weight. Grep found no heliotrope anywhere in src/."
+    },
+    {
+      "id": "xxxii-mythological-exempla",
+      "name": "The chapter's catalogue of classical exempla: Bellerophon, Polycrates, Battus, Siccius Dentatus's front-facing scars, Perillus's bronze bull, Herostratus, Laodamia/Protesilaus, Ariadne on Naxos, Io",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 436, 437, 441, 442, 443",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "Poliphilo argues almost entirely by classical exemplum: perseverance (Bellerophon, Polycrates and the touchstone, p. 436), honourable endurance (Siccius Dentatus's wounds all in front, p. 437), his burning torment (Perillus roasted in his own bronze bull, p. 442), his self-reproach at cursing Polia (Herostratus burning Diana's temple at Ephesus, p. 443), and his grief at her leaving the festival (Laodamia weeping for Protesilaus, Ariadne abandoned on Naxos, Io transformed, p. 441). None of these are described as depicted images in the scene -- they are purely rhetorical similes in his monologue, unlike Book I's triumph-cars, which explicitly carry mythological scenes. Bundled here as a single citation list rather than nine separate entries: worth keeping on hand if the writing-desk chamber or the narration-frame ever gets wall reliefs or a commentary flavour, but nothing to build as-is without inventing imagery the text does not supply."
+    },
+    {
+      "id": "xxxii-plate-writing-at-desk",
+      "name": "Woodcut: Poliphilo writing at a carved desk (hp.db #164)",
+      "kind": "picture",
+      "plate": 164,
+      "source": "p. 443; site/images/woodcuts_1499/hp1499_p433.jpg",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["tour"],
+      "note": "Duplicate of xxxii-writing-desk-chamber's citation, kept as its own picture entry because the plate itself -- as an image asset in the tour -- is absent from src/images/woodcuts/ (SOURCES.md's misfiled-woodcuts table does not list it among the recovered three) and the existing tour station for this chapter ('Poliphilo's Telling: the Love-Letters', src/data/tours.json ~line 1821) carries 'wc': [] -- no woodcut attached, despite its own note-text already correctly describing 'Poliphilo writing at a carved desk... woodcuts 164-165, folios 433-435'. That note cites the catalog's (offset) page_seq numbers as if they were true folios; the true folios are 443 and 446 (see xxxiii-letter-delivery-bedchamber). Worth a small fix independent of this research pass: wire hp1499_p433.jpg into that station."
+    }
+  ],
+  "measurements": []
+}

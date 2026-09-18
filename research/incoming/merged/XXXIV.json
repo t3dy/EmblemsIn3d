@@ -1,0 +1,192 @@
+{
+  "id": "XXXIV",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against our own translation (translation/en/page_449.md-page_455.md, CC0), session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Chapter XXXIV has NO PLATE of its own -- hp.db.woodcut_catalog returns zero rows for page_seq 449-455 (woodcut 165 is p. 435, chapter XXXIII; nothing appears again until 166 at p. 447, also XXXIII). It is Poliphilo's own narration of the courtship's failure and his death: his third and final letter to Polia (pp. 449-451, 'the more I love thee, the more I lapidise thee'), his vain devotions to Cupid and exhaustive search of Treviso's streets and porticoes for her (pp. 451-452), finding her alone in the Sacramentary Temple and collapsing dead at her feet while she watches unmoved (pp. 453-454), and her dawn revival of him (p. 455) -- the same death-and-revival Polia narrated from her own side in chapters XXVI and XXIX, now from his. No measured distances, paces or physical dimensions are stated anywhere in the chapter; the only countable things are narrative (the THIRD letter of three). Per Ted's 2026-09-17 direction that Book II is built as a real second place, the chapter's told city -- Polia's 'superb palace', the streets and porticoes Poliphilo ransacks -- is now buildable geometry, not narration to wave at. Some events (the temple death, the dawn revival) are the same moment the world already stages for chapter XXVI/XXIX at the Book II precinct (src/scenes/world/tombs.js _buildBookTwo, Temple of Diana block, ~line 736) -- graded 'unknown' here, not 'built', because this session did not load the live page, and because that build represents Polia's telling, not this re-telling's specific beats (the lion-pounce, the liquefying to wax)."
+  },
+  "features": [
+    {
+      "id": "xxxiv-third-letter",
+      "name": "Poliphilo's third and final letter to Polia",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_449.md (p. 449)",
+      "status": "unbuilt",
+      "note": "Twice-failed, he sends a third epistle on 'candid papyrus', reproaching her cruelty as worse than the lion of Androcles and making the chapter's central charge: 'the more I love thee, so much the more it seems that I, hardening thee, lapidise thee.' A physical letter prop (scroll or tablet, inscribed with its opening line) is unbuilt for this side of the correspondence; the world's only Book II letter object is Polia reading a DIFFERENT letter (ch. XXXIII's second, plate 165, p. 435) in her bed-chamber.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-lapidise-insight",
+      "name": "\"The more I love thee, the more I lapidise thee\" -- his love turning her to stone",
+      "kind": "motif",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_449.md (p. 449)",
+      "status": "unbuilt",
+      "note": "Poliphilo's own diagnosis: his pleading does not soften Polia but petrifies her further -- his warmth met her stone and hardened it. The book states this as an effect, not a picture, but it is the clearest possible cue for a visual device: a Polia figure with a partial stone texture/overlay that intensifies as he speaks, the reverse of the golden-arrow softening built for ch. XXXV. Nothing in the world currently shows petrification as a process rather than a finished state.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-pyraulus-moth",
+      "name": "The Pyraulus -- the fabled moth that lives and feeds within fire",
+      "kind": "creature",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_451.md (p. 451)",
+      "status": "unbuilt",
+      "note": "'Like a Pyraulus (fire-fly/flame-moth) I nourished myself, wretched' -- Poliphilo's self-simile for a love that sustains itself on the very fire that consumes it (Pliny's legendary insect). Grepped Cast.js and world/*.js for 'moth', 'firefly', 'Pyraulus': no match. A small glowing creature circling a flame near Poliphilo would be a cheap, legible addition.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-imagined-colloquy",
+      "name": "Poliphilo's imagined charming colloquy with Polia",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_451.md (p. 451)",
+      "status": "declined",
+      "note": "Declined -- purely interior. 'With the mind I feigned to have a charming colloquy' with her, addressing her as 'my little Nymph, of inhuman and ferine heart.' No place, object or gesture is described beyond the words he imagines exchanging; there is nothing here that is not already covered by the letter (xxxiv-third-letter) and the catalogue of hardness (xxxiv-catalogue-of-hardness) it contains.",
+      "modes": []
+    },
+    {
+      "id": "xxxiv-catalogue-of-hardness",
+      "name": "Poliphilo's catalogue of Polia's hardness -- steel, murex-stone, grapnel, hinged beam, talon, harpies",
+      "kind": "inscription",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_451.md (p. 451)",
+      "status": "unbuilt",
+      "note": "'More than solid Steel, and more than murex-stone hardest, more tenacious than a retaining Grapnel, more obstinate than a hinged Beam; more mordant than a rapt Talon, and much more than the cruel and foul Harpies' -- and 'more impious than Mithridates, more savage than Alcmaeon, more ungrateful... than Paris toward Oenone.' A plaque or frieze enumerating this catalogue would use the same canvas-plaque/epitaph mechanic already built throughout tombs.js.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-cupids-devotion-venus-vesta",
+      "name": "Poliphilo's votive hopes: Venus healing wounded Aeneas, Vesta's miracle of Tuccia's sieve",
+      "kind": "relief",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_452.md (p. 452)",
+      "status": "unbuilt",
+      "note": "Hoping Cupid will 'draw the same cruel bow' in Polia, he invokes two mythic precedents of divine aid: 'that same medicament which his most-pious Mother, and my Lady (Venus), made to the wounded Aeneas' and the patronage 'holy Vesta lent to her handmaid and subject Tuccia... by the miracle of the sieve' (carrying water in a sieve to prove her chastity). A small relief pairing the two myths would sit naturally beside the other mythological friezes already built in palace.js/portal.js/tombs.js.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-rabid-dog-chain",
+      "name": "Love as a chain he strains against like a rabid dog",
+      "kind": "motif",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_452.md (p. 452)",
+      "status": "unbuilt",
+      "note": "'Like a rabid and impatient dog, biting at its retaining chain, I wished to avoid and flee the hard knot of the amorous but molesting snare... I found myself, afterward, more tightly knotted, and solidly armoured.' The captivity-of-love image recurs across the double narration (the fish-trap of ch. XXXIII, p. 447). A chained-dog statuette or relief near the temple/palace would give the recurring bondage motif a single fixed emblem.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-exhaustive-search-streets",
+      "name": "Poliphilo ransacks Treviso's streets, blind-alleys and porticoes searching for Polia",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_452.md (p. 452)",
+      "status": "unbuilt",
+      "note": "'There remained no place that, by me... was not indagated and lustrated, ratched, and re-searched; no way, and blind-alley, and almost even through the porticoes, unattempted, omitted.' This is the single clearest textual license for Ted's 2026-09-17 directive: an actual street grid, with porticoes and alleys, connecting the Book II precinct's isolated buildings (Temple of Diana, bed-chamber, priestess throne). Nothing of the kind exists -- the precinct today is three freestanding structures on shared paving (tombs.js _buildBookTwo, final CircleGeometry paving call), with no streets between them.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-superb-palace",
+      "name": "Polia's superb palace, about which his groaning voices were vainly dispersed",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_451.md (p. 451)",
+      "status": "unbuilt",
+      "note": "'And less profitable, still, were the groaning voices, about her superb palace vainly dispersed.' Distinct from the bed-chamber interior already built (a single room, no exterior envelope) -- this is Polia's family house as a building in the city, which Poliphilo haunts and calls at from outside.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-sacramentary-temple-encounter",
+      "name": "He finds her alone in the Sacramentary Temple, and approaches like a lion, then liquefies like wax",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_453.md (p. 453)",
+      "status": "unknown",
+      "note": "'Love and Fortune... unforeseenly conducted me into the Sacramentary Temple -- she inadvertent -- into which she frequently went, but occult. And there, having found her alone, swiftly -- the heart shaken... like a spear-armed Lion (at) the insulting prey -- thus... invading, and, with the extreme virtues derived and joined, and having accosted her, of a sudden liquefied -- like wax, by fire, adherent and near -- lifeless I became.' This is the same temple and the same confrontation staged for chapter XXVI (tombs.js _buildBookTwo, Temple of Diana block: Polia veiled, Poliphilo prostrate at the threshold, plates 152-159). Grep found matching code (built_as below); this session did not load the live page, so status is unknown, not built. The specific beat this re-telling adds -- the lion-pounce collapsing instantly into liquefying wax -- is not distinctly modelled; the built figure is simply posed prostrate, not animated through the approach.",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo, Temple of Diana block (~line 736), shared with chapter XXVI's staging",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-holocaust-heart-bellona",
+      "name": "\"My holocaust heart immolated, as the Priests did, sacrificing to Bellona\"",
+      "kind": "relief",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_453.md (p. 453)",
+      "status": "unbuilt",
+      "note": "Poliphilo's plea to Polia: he has venerated her 'like a Goddess... with burning flame of love, my holocaust heart immolated (as the Priests did, sacrificing to Bellona).' The priests of Bellona (the Bellonarii) were famous for wounding themselves in ecstatic devotion -- a vivid, specific rite. Grepped for 'Bellona' across src/: no matches outside the reading data/translation files. A small votive-heart-and-blade relief, or a self-wounding priest figure among the temple's reliefs, would be a striking and specific addition with a named classical rite behind it.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-surpassing-wives-catalogue",
+      "name": "His love said to exceed Cornelia, Alcestis, Portia and Panthea",
+      "kind": "relief",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_454.md (p. 454)",
+      "status": "unbuilt",
+      "note": "'Not that which Tiberius Gracchus showed to his most-beloved consort Cornelia... and greater than that of Alcestis the queen, who, for her dearest husband, wished to undergo the voluntary death... nor wished to deglutinate the kindled coals [Portia]; and (greater) than the most-loving Panthea's to her consort; and, with more amiable affection than Pylades' toward his Orestes.' A catalogue-relief of exemplary devoted lovers/friends, matching the game's existing habit of illustrating such catalogues (e.g. the Polyandrion epitaph friezes).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-final-petrification-catalogue",
+      "name": "Polia's heart hardens as if born among the Cyclops, in Hyrcania, or Cacus's cave",
+      "kind": "relief",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_454.md (p. 454)",
+      "status": "unbuilt",
+      "note": "'No otherwise ignorant of gentleness... than if she were born in Hyrcania, or in the wood of Ida... or on Mount Ismarus; or among the Anthropophagi descended; and among the horrid furies of Cyclops, and in the intercaved cavern of Cacus a nursling, and among the Syrtes.' A catalogue of savage places-of-birth, offered as similes for her cruelty -- another frieze candidate, thematically paired with xxxiv-surpassing-wives-catalogue as opposite extremes (devotion vs. savagery).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-myrrha-tears",
+      "name": "Poliphilo weeps more than Myrrha, distilling through the hard bark",
+      "kind": "plant",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_454.md (p. 454)",
+      "status": "unbuilt",
+      "note": "'More dolorously than the tormented Myrrha, distilling through the hard bark.' Myrrha, turned into the myrrh tree for her transgression, weeps her tears as resin through her own bark forever (Ovid). Grepped for 'myrrh' across src/: no match anywhere in the world. A weeping myrrh tree -- resin/amber droplets seeping visibly from its trunk -- would be a small, specific, unclaimed garden feature, and pairs naturally with xxxv-sealed-name-not-oenones-bark (the Oenone/Paris tree-carving) as a pair of unhappy-love trees.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-death-at-her-feet",
+      "name": "Poliphilo's death at Polia's feet, she unmoved, \"more frigorated than Styx\"",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_455.md (p. 455)",
+      "status": "unknown",
+      "note": "'She persisting rigidly frigorated, more than Styx in Arcadia... whence, with swift exit, I felt my genius (soul)... to flee; and there, in the temple (she present)... on the earth prostrated, dead I remained.' The same moment Polia narrated in chapter XXVI, now confirmed from his side as the instant of death rather than only collapse. Shares the built Temple of Diana staging (see xxxiv-sacramentary-temple-encounter); graded unknown for the same reason -- not verified live this session.",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo, Temple of Diana block (~line 736), shared with chapter XXVI's staging",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-dawn-revival",
+      "name": "Polia returns before dawn and revives him with tears and embraces",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_455.md (p. 455)",
+      "status": "unknown",
+      "note": "'She... returned, before dawn, the following morning, to re-behold, in the violated Temple, the yesterday's soul-slaughter. And, with much virginal handling... infinite kisses, and funereal submurmurs, penitent, embracing me... she revoked, sweetly, my soul.' The same revival chapter XXIX stages (plates 157-158, pp. 411-412) from Polia's side; this is the identical event confirmed from his. The 'before dawn' timing is a specific lighting cue (pre-dawn light through the temple) not distinctly called out in the code comments read.",
+      "built_as": "src/scenes/world/tombs.js _buildBookTwo, Temple of Diana block (~line 736), shared with chapter XXIX's staging",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxiv-desperate-litigation",
+      "name": "Poliphilo's inner tribunal, condemning Love and Fortune then revoking the sentence",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_452.md (p. 452)",
+      "status": "declined",
+      "note": "Declined -- 'in grave litigation, without judge and adverse party, I condemned both (Love and Fortune)... now, glad and festive, I revoked in me the sentence.' Purely interior, no setting or figures described beyond his own mind arguing with itself. The book stages an ACTUAL court, with an actual judge (Venus) and defendant (Cupid), a few pages later -- see xxxv-venus-throne-in-clouds and xxxv-poliphilo-complaint-against-cupid, which are the buildable version of this same impulse.",
+      "modes": []
+    }
+  ],
+  "measurements": [
+    {
+      "what": "how many letters Poliphilo has now sent Polia",
+      "book_says": "the third epistle (\"the begun Agon\")",
+      "metres": null,
+      "source": "p. 449"
+    }
+  ]
+}

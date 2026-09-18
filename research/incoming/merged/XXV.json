@@ -1,0 +1,190 @@
+{
+  "id": "XXV",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against our own translation (translation/en/page_381.md through page_387.md), session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "First chapter of Book II. All seven pages read in full, including the chapter-XXVI argument that begins mid-page-387 (it falls inside XXV's assigned range 381-387, so it is read here, but its features belong to chapter XXVI's own pass and are not duplicated into this file). Checked src/scenes/HPWorldScene.js, src/scenes/world/tombs.js (_buildBookTwo) and src/systems/Cast.js by grep for Treviso, Sile, Lelio, Murgania, Trivisia, Lucretia, podium/comb/window, bubo/plague: no matches anywhere. The world's 'book_two' precinct (tombs.js _buildBookTwo, ~line 729) is real and built, but it is entirely chapter XXVI-XXXV material (Temple of Diana, Polia's bed-chamber, the Venus-priestess) -- nothing in it answers chapter XXV. So chapter XXV, the hinge where the whole book's second half begins, has NOTHING built: not the frame (Polia turning to speak), not the genealogy, not Treviso, not the window where it all started. The woodcut_catalog plate assigned to this chapter's page range (#152, p.387) is itself chapter XXVI's temple scene sitting at a page boundary -- another small instance of the plate not lining up with the chapter that needs research."
+  },
+  "features": [
+    {
+      "id": "xxv-polia-narrates-to-nymphs",
+      "name": "The dream stops: Polia turns to the nymphs at the fountain and takes over the telling",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_381.md (p. 381)",
+      "status": "unbuilt",
+      "note": "The frame device of the whole second half of the book: Polia addresses 'gracious and divine Nymphs' with a modesty-topos exordium, promising to 'weave' her lineage and her 'fatal love.' Tour text for the 'court' stop (tours.json, chapter XXV) narrates this in prose, but no in-world act of Polia-narrating-to-an-assembled-audience exists as geometry or staged NPC scene -- grep of HPWorldScene.js/tombs.js/Cast.js turns up no narration tableau for this chapter.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-chapter-argument-rubric",
+      "name": "The printed argument announcing Book II: Poliphilo and Polia will narrate by turns",
+      "kind": "inscription",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_381.md (p. 381)",
+      "status": "unbuilt",
+      "note": "The chapter's own rubric (\"POLIPHILO BEGINS THE SECOND BOOK...HERE THE DIVINE POLIA NARRATES HER NOBLE AND ANCIENT ORIGIN...\") is exactly the kind of thing the book_two precinct's other plaques (TEMPLVM DIANAE, CVBICVLVM POLIAE) already render as lapidary text. No LIBER SECVNDVS / entry plaque exists for the precinct as a whole.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-sacred-fountain-as-venus-mirror",
+      "name": "The fountain invoked as the mirror of Venus's body, where the nymphs sit",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_382.md (p. 382)",
+      "status": "unknown",
+      "note": "Polia's invocation names the fountain (of ch. XXIII) as holding, mirror-like, 'the most-excellent and contemplable part of her most-beautiful body' -- Venus's. This is likely the same physical fountain already built for chapter XXIII (not verified here; that chapter's own ledger entry should settle it), but this specific description -- the fountain AS Venus's mirror, the site of Polia's testimony -- is chapter XXV's own elaboration and I found no plaque or note carrying it. Marked unknown rather than unbuilt because I have not re-checked ch. XXIII's build.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-lelio-syliro-consul",
+      "name": "Lelio Syliro, sent by the Roman Senate as Consul to the March of Taurisana",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_383.md (p. 383)",
+      "status": "unbuilt",
+      "note": "Polia's ancestor, the founder of her line in the Treviso region; marries Trivisia Calardia Pia. No figure, name or reference anywhere in the world's code.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-roman-marriage-rite",
+      "name": "The confarreatio: Lelio Syliro's wedding to Trivisia Calardia Pia, by the Herculean knot and the goddesses of the girdle",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_383.md (p. 383)",
+      "status": "unbuilt",
+      "note": "A full antiquarian Roman wedding rite named in detail -- confarreatio, the dissolved 'Herculean knot' (the bride's girdle), invocations to Cinxia and Zygia Lucina. Unbuilt; no marriage scene of any kind for Polia's parents exists.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-eleven-lelian-children",
+      "name": "The eleven children of Lelio Syliro and Trivisia: five sons, six daughters, named in full",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_383.md (p. 383)",
+      "status": "unbuilt",
+      "note": "Sons: Lelio Maurio, Lelio Halcyoneo, L. Tipula, L. Narbonio, L. Musilistre. Daughters: Murgania, Quintia, Septimia, Alimbrica, Astorgia, Melmia -- the full household whose hubris (comparing themselves to Venus) triggers the divine punishment on pp. 384. No family group built anywhere.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-sacello-fada-murgania",
+      "name": "The Sacello where Murgania impersonated Venus -- origin of the name 'Fada Murgania' (Morgan le Fay)",
+      "kind": "building",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_384.md (p. 384)",
+      "status": "unbuilt",
+      "note": "A suburban shrine built by the deceived populace, in which Murgania 'lurking, at appointed times, ceremoniously showed herself, feigned (as the goddess)' and was worshipped. Colonna's invented etymology links this shrine directly to Morgan le Fay. A small, buildable, single-cella shrine; nothing in the world answers it.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-divine-punishment-thunderbolt",
+      "name": "Jove's thunderbolt: the false temple blasted, the royal house burned to Casa Carbona and Carbuncularia",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_384.md (p. 384)",
+      "status": "unbuilt",
+      "note": "The punishment for the family's hubris: the impious temple 'thunder-blasted', the royal house 'lightning-struck, reduced to coal' (named Casa Carbona ever after), a second palace reduced to coals and named Carbuncularia. Could be built as a ruin/blast site with an aetiological plaque, in the manner of the book_two precinct's other plaques. Unbuilt.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-family-become-landscape-sile",
+      "name": "The whole family metamorphosed into the rivers and founts of Treviso: the father into the river Sile, the mother into the fountain Calardia, siblings into rivulets, a kingfisher (Alcyoneo) and a water-strider (Tipula)",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_384.md (p. 384)",
+      "status": "unbuilt",
+      "note": "The chapter's most systematic Ovidian aetiology: Murgania, Quintia, Septimia become wells/founts; Alimbrica is made ash then a little river; Astorgia and Melmia become little rivers running into their father; the father Lelio Siliro himself becomes the river Sile (Treviso's real river, from his 'truncated name'); the mother Calardia becomes the fountain Calardia; the second son Musilistre becomes a rivulet 'inundating the Altinate peoples'; the two youngest sons are transformed into a kingfisher (Alcyoneo, 'clad with regal and incorruptible plumes') and a water-strider (Tipula). The land around Treviso literally IS Polia's punished family -- this is the single richest, most buildable piece of new geography the chapter offers (a river-god figure for the Sile, a fountain for Calardia, a kingfisher and a water-strider as attendant creatures) and nothing in the world reflects it.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-lelio-mauro-pirates-teramo",
+      "name": "Lelio Mauro, the sole survivor: captured by pirates at Turricella, adopted at Teramo, renamed Calo Maurio",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_385.md (p. 385)",
+      "status": "unbuilt",
+      "note": "The first-born, spared the metamorphosis because he was away at a funeral; captured by pirates near the watch-tower Turricella (port of Altino), sold into the Bruttian city now called Teramo, adopted by the noble Theodoro, raised to a soldier, and renamed from the ill-omened 'Maurio' (dusky) to 'Calo Maurio' (good) for his exploits. No figure or narrative episode built.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-founding-of-treviso",
+      "name": "Calo Maurio, sent back as Roman military prefect, founds Treviso on the river Sile and names it for his mother Trivisia",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_385.md-page_386.md (pp. 385-386)",
+      "status": "unbuilt",
+      "note": "The city's Roman foundation-legend, complete: the Senate sends Calo Maurio back to his birthplace as poliucho (city-protector); he builds a city on the hill Taurisana, on the river Sile, and names it after his mother Trivisia Pia -- 'even to this day the maternal name it retains (Treviso).' This is Book II's real geographic anchor and the strongest argument for a Trevisan author; a founded-city vignette (walls, the Sile, a founder's monument) is buildable and does not exist.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-polia-born-named-lucretia-1462",
+      "name": "Polia is born of the surviving Lelian line under Venetian rule, named for the chaste Roman Lucretia, and comes of age in 1462",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_386.md (p. 386)",
+      "status": "unbuilt",
+      "note": "Polia states her own birth and naming directly: she is given 'the outstanding name of the chaste Roman [Lucretia], who, for the son of the proud Tarquin, slew herself,' and reaches 'the flower of my age' in 1462 -- the book's own internal date. tours.json already notes (chapter XXV entry) that 'Buffalo Hand B' (an annotator, per Russell 2014) worked out the Lucretia identification from this very page; that is commentary, not a built feature. No birth/naming scene, and no plaque anywhere states the identification or the date in-world.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-window-first-sight",
+      "name": "Polia at her palace window, combing her golden hair in the sun; Poliphilo passes below and is struck instantly in love",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_386.md (p. 386)",
+      "status": "unbuilt",
+      "note": "The true origin-scene of the entire romance, told for the first time from Polia's side: 'I stood... at the window, or the podium, of my palace, with my most-blond hair... over the candid shoulders disposed... glorying... I combed them. Thence, by chance, then passing, Poliphilo' -- whose heart is 'through the middle shattered... at the first and pure regard,' like an oak split by lightning. Everything in Book I flowers from this one domestic street-glimpse. This is a concrete, specific, buildable place (a palace facade with a window/podium over a street) and moment (a girl combing her hair, a young man passing below and stopping), and it has never been built -- the book_two precinct (tombs.js) has a bed-chamber window for a LATER vision (ch. XXVIII, Diana/Venus chariots) but nothing for this first, founding sight.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-polias-mirror-narcissus-fear",
+      "name": "Polia's mirror, in which she feared to become a Narcissus of her own reflection",
+      "kind": "object",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_386.md (p. 386)",
+      "status": "unbuilt",
+      "note": "'Many times, I, in the mirror clearly regarding, doubted lest that which to Narcissus befell might, to me, the like, happen.' A small, telling object (paired with the window scene above) that the annotators would likely have flagged as another instance of the book's mirror motif (cf. Eros Katoptron p. 266, the obsidian p. 352, both already noted for other chapters). Not built.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxv-poliphilos-daily-vigils",
+      "name": "Poliphilo's daily journeys beneath Polia's high windows, unseen and unanswered",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_386.md-page_387.md (pp. 386-387)",
+      "status": "unbuilt",
+      "note": "'Every single day, from my palace he took a sedulous journey; at the high and empty windows regarding, he could not fulfil the sword-like desire of re-seeing me.' Many days and nights of 'paces, vigils, songs and sounds, with little words formed of sighs.' A courtship-vigil rite distinct from anything staged in Book I (which is all dream-garden, not city street). Unbuilt.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-polias-confessed-coldness",
+      "name": "Polia's own confession: she gave Poliphilo no sign of love, her heart 'remote... such as in hard flint would not appear'",
+      "kind": "person",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_387.md (p. 387)",
+      "status": "unbuilt",
+      "note": "The chapter's closing turn and the moral hinge tours.json's own note for this stop names ('what Poliphilo took for cruelty she explains as terror'): Polia states plainly that her mind was 'totally indisposed and inept' to love, with no cognition of Poliphilo's suffering. This is character, not geometry, but per the recipe's instruction to enumerate people as well as places -- there is no in-world moment where Polia's own retrospective voice (as opposed to the tour commentary) is dramatised.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxv-plague-onset-bubo",
+      "name": "The pestilence strikes the city; Polia is struck with a bubo in the groin",
+      "kind": "rite",
+      "plate": 152,
+      "source": "our translation (CC0), translation/en/page_387.md (p. 387)",
+      "status": "unbuilt",
+      "note": "The chapter-XXV page range ends mid-scene, inside chapter XXVI's own argument and opening: a great pestilence ('a gland (bubo) in the pudic groin') strikes the city and Polia herself -- the event that drives her vow to Diana. The book_two precinct's Temple of Diana plaque (tombs.js, 'TEMPLVM DIANAE... THE PLAGVE, THE VOW...') names the plague in text but there is no built plague scene (a stricken, fleeing city) anywhere -- only its consequence, the temple and the vow. Recorded here because it falls in XXV's page range; the fuller plague-and-vow narrative belongs to chapter XXVI's own research pass and should not be re-enumerated there without cross-checking this entry.",
+      "modes": ["walk", "tour", "dream"]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "the children of Lelio Syliro and Trivisia Calardia Pia",
+      "book_says": "\"they had most-noble seed, and copious birth, taking up (bearing) more sons, male and female, alternately\" -- five sons named (Maurio, Halcyoneo, Tipula, Narbonio, Musilistre) and six daughters named (Murgania, Quintia, Septimia, Alimbrica, Astorgia, Melmia)",
+      "metres": 0.0,
+      "source": "p. 383",
+      "note": "A count (11 = 5 + 6), not a distance; included per the recipe's instruction to log stated counts. No unit conversion applies."
+    }
+  ]
+}

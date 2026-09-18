@@ -1,0 +1,159 @@
+{
+  "id": "XII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against Dallington 1592 (the chapter's own text_source) and cross-checked against our translation (translation/en/page_147.md through page_152.md; CC0), session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "The chapter has no explicit rubric in the Dallington markdown, so its boundaries were located by content-matching unique phrases against translation/en, which DOES carry '# Page NNN — Chapter XII' headers for every page even though our translation is only the pipeline's assigned source for chapters XVII+. Chapter XII runs Dallington pp. [204]-214 (the argument 'The most fayre Nymph beeing come to Poliphilus, bearing a Torch...' opens it right after chapter XI's Bibria-laurel line on p. 204/205, and it closes with '...bridling my inconuenient desires' on p. 214, immediately before chapter XIII's own argument 'Polia, as yet vnknowne to her Louer Poliphilus...'). That is 1499 pp. 147-152, matching the ledger's derived range exactly.\n\nThe WHOLE chapter, read in full, is a single unbroken scene: the beautiful torch-bearing nymph (introduced in chapter XI, still unrecognised) comes up to Poliphilo, takes his hand, and leads him walking; he is overwhelmed, half-believes she is Polia, nearly declares himself, checks himself with a flood of classical exempla about presumption and unfulfillable desire, and ends still resolved to love her in silence. There is no architecture, garden or building described anywhere in these six pages -- it is pure interior monologue and rhetorical simile, continuing chapter XI's blazon and setting up chapter XIII's recognition crisis.\n\nTWO DATA-QUALITY FINDINGS worth flagging for whoever next touches the neighbouring chapters (I did not edit either file; only coverage.json is mine to write):\n  (1) src/data/poliphilo.json tags two utterances 'chapter: XIII' that are actually inside chapter XII by the boundary above: the apostrophe sourced 'Dallington p. 207' ('Oh happie hee that may enioy...') and the speech sourced 'Dallington p. 212' ('Oh delycate and heauenly Damosell...'). Both are read on the running page's default-on 'Poliphilo speaking' lens (main.js, station 'polia') -- the content is very likely live, but under the wrong chapter tag. Not fixed here; that file is not coverage.json.\n  (2) hp.db.page_concordance's own section column flips from JOURNEY_DOORS to PROCESSION exactly at 1499 p. 149 -- i.e. at the same page the printed woodcuts (catalog #44 on) begin -- even though the PROCESSION text itself (the triumphal-car reliefs) is not actually narrated until chapter XIII/XIV. The corpus's own section tags follow the images, not the prose; a second, independent confirmation of 'the plates are an index, not an inventory' cutting the other way -- here the index runs AHEAD of the text, not silently past it.\n\nPlates: the ledger's derived plates 44-49 (page_seq 149-152) are the Triumph-of-Europa car and its first reliefs, and the start of Leda's reliefs -- confirmed by eye against hp1499_p149.jpg (PRIMA TABELLA / SECVNDA SINISTRA panels) and hp1499_p152.jpg (the TRIVMPHVS full-page car, one leaf off from the catalogue's own page_seq=151, a common facsimile/catalogue offset). None of this is DESCRIBED in chapter XII's own text -- Poliphilo does not reach the triumphs until the chapter XIII/XIV argument 'drawing near to the triumphs, he saw countless young men and girls keeping festival' -- but the woodcuts are physically printed on these leaves, so they are listed below as this chapter's plates per the recipe, with the mismatch noted on each. All six are already modelled in the world (Triumphs._buildTriumphs, src/scenes/world/triumphs.js; TRIUMPH_RELIEFS.europa/.leda, src/scenes/world/constants.js) -- grep evidence only, not verified live this session.\n\nMeasurements: chapter XII states no size, distance or count anywhere. The only quantifiable/orientational detail in six pages is a single handedness: the nymph carries her torch in her LEFT hand and takes Poliphilo's hand with the other. Recorded below as the one measurement entry; everything else in the chapter is simile."
+  },
+  "features": [
+    {
+      "id": "xii-nymph-takes-hand-and-leads",
+      "name": "The torch-bearing Nymph comes up, takes Poliphilo's hand, and leads him walking",
+      "kind": "rite",
+      "plate": null,
+      "source": "Dallington pp. 206-207 (1499 p. 147); translation/en/page_147.md",
+      "status": "unknown",
+      "note": "The argument heading itself: 'The most fayre Nymph beeing come to Poliphilus, bearing a Torch in her left hand, with the other tooke him and inuited him to walke with her.' This is the direct continuation of chapter XI's xi-nymph-with-the-torch (built_as HPWorldScene._buildPoliaGarden, but PARTIAL and sited three chapters late in the jasmine arbour per that entry). Grep finds no code that has a nymph NPC take the player's hand and lead a scripted walk -- the closest analogue is the scripted tour mode itself, which guides the camera through stops but is not staged as this specific hand-taking gesture. Not verified live.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xii-nymph-offered-arm-blazon",
+      "name": "Her free arm and hand, offered to him: skin like the smoothest paper, veins like azure streams",
+      "kind": "object",
+      "plate": null,
+      "source": "Dallington p. 208 (1499 p. 148); translation/en/page_148.md",
+      "status": "unbuilt",
+      "note": "'shrewdly offering her free arm, whiter than ever was that of Pelops. In which appeared the fine cephalic and the basilic vein, like sandalwood lines drawn upon the cleanest papyrus.' Continues the stone-by-stone/feature-by-feature blazon that chapter XI's necklace, gown, girdle and hair entries already model in geometry (HPWorldScene._dressPoliaAsChapterXI); this specific detail -- the visible veins on the offered forearm -- is not modelled and would need a texture, not new geometry.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xii-nymph-speaks-his-name",
+      "name": "She calls him Poliphilo by name, and he cannot imagine how she knows it",
+      "kind": "rite",
+      "plate": null,
+      "source": "Dallington p. 209 (1499 p. 148); translation/en/page_148.md",
+      "status": "unknown",
+      "note": "'Poliphilus, I thinke my selfe to come in saftie, but it seemeth you stand doubtfull... I was more amazed... to imagine howe she should knowe my name.' Not present verbatim in src/data/poliphilo.json (grep checked); a clean, short, citable line for that data file if someone extends it. Not built as a discrete moment anywhere else.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xii-poliphilo-blessed-lover-apostrophe",
+      "name": "Poliphilo's aside: happy is he who shall possess such a treasure of love",
+      "kind": "inscription",
+      "plate": null,
+      "source": "Dallington p. 207 (1499 p. 147); translation/en/page_147.md",
+      "status": "unknown",
+      "note": "'Oh happie hee that may enioy such and so great a treasure of loue... most happie that shall possesse and obtaine her obedience, to hys desire and rule.' This exact line IS in src/data/poliphilo.json (an 'apostrophe' entry, station 'polia', stop 14) but mistagged 'chapter: XIII' -- see the chapter-level note. Surfaced by main.js's default-on 'Poliphilo speaking' lens if that tagging doesn't gate it out; not verified live this session.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xii-poliphilo-follows-trembling",
+      "name": "He follows her, heart panting, more shaken than the bird sisura, or a lamb in a wolf's mouth",
+      "kind": "rite",
+      "plate": null,
+      "source": "Dallington p. 210 (1499 p. 149-150); translation/en/page_150.md",
+      "status": "declined",
+      "note": "Purely a simile for his interior state while walking behind her ('more shaking than the birde Sisura, or a Lambe carryed in the mouth of a Wolfe') -- no wolf, lamb or bird is present in the scene; nothing to model beyond the walk itself (xii-nymph-takes-hand-and-leads). Declined as a separate build target.",
+      "modes": []
+    },
+    {
+      "id": "xii-flowers-offered-then-faltered",
+      "name": "He resolves to pluck fresh flowers and offer them to her, but his courage 'fell and failed' before he could",
+      "kind": "rite",
+      "plate": null,
+      "source": "Dallington p. 211 (1499 p. 150); translation/en/page_150.md",
+      "status": "unbuilt",
+      "note": "'I determined at that instant to plucke vp some fresh flowers, and in all humble sort to offer them vnto her... my burning heart humbly hauing opened the same, euen as a rype Apple being eyther bytten or shaken, so it fell and fayled me.' An explicitly ABORTED gesture -- he means to, and doesn't. Worth keeping precisely because it never happens: a scripted 'reaches for a flower, hand drops' beat would be truer to the book than either omitting it or having him actually pick one.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xii-poliphilo-declaration-of-fire",
+      "name": "Poliphilo's spoken declaration: \"O delicate and heavenly damsel... thy love hath set me on fire\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "Dallington p. 212 (1499 p. 150-151); translation/en/page_151.md",
+      "status": "unknown",
+      "note": "'Oh delycate and heauenly Damosell, whatsoeuer thou art, thy forcyble loue hath set me on fire and consumeth my grieued heart... a sharpe dart cast into the middest of my breast... hauing made a mortall wounde vncurable.' This exact quotation IS in src/data/poliphilo.json (kind 'speech', station 'polia', stop 14) but mistagged 'chapter: XIII' -- it belongs to XII by the boundary established this pass; see the chapter-level note. Not verified live.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xii-tattered-gown-from-the-wood",
+      "name": "His own ragged gown, still snagged with bramble leaves and thorns from the dark wood",
+      "kind": "object",
+      "plate": null,
+      "source": "Dallington p. 212 (1499 p. 151); translation/en/page_151.md",
+      "status": "unbuilt",
+      "note": "'with my ill fauoured Gowne, that had still some of the Bramble leaues and prickes in the Wood hanging vpon it' -- a costume callback to chapters I-II's dark wood (WOODS.md), worn as visible evidence Poliphilo has not changed clothes since he escaped it. Grep of Cast.js finds Poliphilo's costume built plain; no bramble/thorn decoration is attached to his figure at any station.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xii-peacock-simile",
+      "name": "The peacock, ashamed of its ugly feet, lowering its tail -- the figure for Poliphilo checking his own desire",
+      "kind": "creature",
+      "plate": null,
+      "source": "Dallington p. 212 (1499 p. 151-152); translation/en/page_152.md",
+      "status": "declined",
+      "note": "'euen as a Peacocke in the pride of his feathers, beholding the fowlenesse of his feete, pulleth downe hys traine: so I... appaled the prouocations of my contumacious and high desires.' A rhetorical simile only -- no peacock is physically present in this scene (peacocks DO exist elsewhere in the world's colour palette: TRIUMPH_LIVERY's 'peacock's neck' blue, src/scenes/world/constants.js). Declined as a build target for this chapter specifically.",
+      "modes": []
+    },
+    {
+      "id": "xii-mythic-exempla-of-restraint",
+      "name": "The flood of classical warnings Poliphilo invokes to justify holding back: Tantalus, Ixion, the Thracian who angered Neptune through Tethys, Galanthis who deceived Lucina, and Callisto's shame before Diana",
+      "kind": "inscription",
+      "plate": null,
+      "source": "Dallington pp. 212-214 (1499 p. 151-152); translation/en/page_152.md, page_153.md",
+      "status": "unbuilt",
+      "note": "A dense five-name run of Ovidian exempla used purely as interior rhetoric ('this my present continued griefe was equall with that of wicked Tantalus... it may bee I haue made a wise worke... if I should bee punished for my impudencie, like Ixion. In like sort, the Thracian had neuer founde the deepe seate of Neptune, if he had not medled with Tethis; and Gallantide, the mayde of Lucina, shoulde not haue brought foorth in her mouth, if hee had not deceiued... euen as Calistone, being ashamed at her swelling belley, shronke aside from the presence of Diana; so I withdrewe my selfe'). None of these five names appears anywhere in src/ by grep. No object or place is described for any of them -- they are Poliphilo's own reasoning, not scenery -- so this is offered as a single candidate for the commentary/inscription flavour layer (Priki's work on the rhetoric of love, or the Ovidian register generally; SOURCES.md) rather than as five separate geometry targets.",
+      "modes": ["dream"]
+    },
+    {
+      "id": "xii-mythic-exempla-of-welcome",
+      "name": "The similes for how welcome her company is: the Trojan horse, Artaxerxes and the cupped water, the North star to a sailor, Melicta to Adonis, Peristera to Aphrodite, dittany to wounded Aeneas, and Zeuxis's Agrigentine models",
+      "kind": "inscription",
+      "plate": null,
+      "source": "Dallington pp. 209-211 (1499 p. 148-150); translation/en/page_148.md - page_151.md",
+      "status": "unbuilt",
+      "note": "The mirror-image run to xii-mythic-exempla-of-restraint, all praising rather than warning: her love entering him 'lyke the Troian horse, full of weapons and deceite'; his offered heart likened to Artaxerxes accepting water cupped in a subject's hands; her company 'more comfort than the North starre... to the troubled Marriner... more acceptable then that of Melicta to Adonis, or to Aphrodites, the obsequious Nymph Peristera: and more delightfull then Dittander... to the wound of pious Aeneas'; and earlier, her beauty measured against 'Zenes' (Zeuxis) and his Agrigentine models. None of these names (Peristera, Zeuxis/Agrigentine in THIS sense, Artaxerxes) appears in src/ by grep -- the one 'Zeuxis' hit in tours.json is Lefaivre's unrelated pedestal-method citation. Same disposition as the restraint list: a text/commentary candidate, not geometry.",
+      "modes": ["dream"]
+    },
+    {
+      "id": "xii-recognition-doubt-deepens",
+      "name": "His suspicion that this nymph IS Polia, deepened here by the touch of her hand and her knowing his name",
+      "kind": "rite",
+      "plate": null,
+      "source": "Dallington pp. 208-209 (1499 p. 148); translation/en/page_148.md",
+      "status": "partial",
+      "note": "'by her louely and delightfull countenance, by her fayre tresses... that it should be Polia, whome so greatly I had loued and desired... But her rich and Nymphish habite, vnaccustomed, and the place vnknowne and strange, made mee still doubtfull.' This is the same crisis chapter XI opens (xi-nymph-with-the-torch) and chapter XIII's ledger entry 'polia-recognition' (status partial, 'the world stages the meeting but not the doubt') closes -- chapter XII is the middle beat, where touch and speech (not just sight) start to argue for her identity. Not a separate build; cross-referenced so the doubt's continuity across XI-XII-XIII is visible in one place. Given XIII's existing partial status, this stays partial rather than unbuilt.",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xii-plate-europa-car-and-reliefs",
+      "name": "Plates on this chapter's own leaves (not its own text): the Triumph-of-Europa car and its first two relief panels",
+      "kind": "picture",
+      "plate": 44,
+      "source": "hp.db.woodcut_catalog #44-46, page_seq 149-150 (1499 pp. 149-150); confirmed by eye against hp1499_p149.jpg",
+      "status": "unknown",
+      "note": "Catalogue #44 'Triumphal car with Europa reliefs', #45 'Relief: Rape of Europa', #46 'Reliefs: Cupid shooting stars; Jupiter and Mars'. These woodcuts are physically printed within chapter XII's 1499 page range, but chapter XII's own TEXT never describes them -- the reliefs are narrated only when Poliphilo actually reaches the triumphs, in the following chapter's argument onward (see the chapter-level note on the PROCESSION/JOURNEY_DOORS section split). They are already modelled: TRIUMPH_RELIEFS.europa (src/scenes/world/constants.js) gives 'the ride over the sea' and 'Cupid shooting among the wounded nations; Mars before Jupiter, showing the wound' as the car's own panels, built by Triumphs._buildTriumphs (src/scenes/world/triumphs.js). Grep evidence only -- not verified on the running page this session.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xii-plate-europa-procession-and-leda-begins",
+      "name": "Plates on this chapter's own leaves: the First Triumph of Europa procession, and Leda's reliefs beginning",
+      "kind": "picture",
+      "plate": 47,
+      "source": "hp.db.woodcut_catalog #47-49, page_seq 151-152 (1499 pp. 151-152); confirmed by eye against hp1499_p152.jpg (the full TRIVMPHVS plate, one leaf off the catalogue's own page_seq)",
+      "status": "unknown",
+      "note": "Catalogue #47/48 'First Triumph of Europa: centaurs, nymphs, musicians', #49 'Triumph of Leda reliefs: Leda lying-in, eggs presented'. Same caveat as xii-plate-europa-car-and-reliefs: printed on these leaves, narrated later. The procession (centaur team, ranked nymph musicians in blue/crimson/emerald livery) is built by Triumphs._buildTriumphs with TRIUMPHS[0] (key 'europa', team 'centaur'); Leda's first two reliefs match TRIUMPH_RELIEFS.leda[0-1] ('Leda lying-in', 'The eggs presented') on the Leda car built from TRIUMPHS[1]. Grep evidence only -- not verified live.",
+      "modes": ["walk", "tour"]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "which hand carries the torch, and which hand takes Poliphilo's",
+      "book_says": "The most fayre Nymph beeing come to Poliphilus, bearing a Torch in her left hand, with the other tooke him and inuited him to walke with her",
+      "metres": 0.0,
+      "source": "Dallington p. 206-207 (1499 p. 147) -- direction/handedness, not a distance; the only quantifiable or orientational detail anywhere in this chapter's six pages"
+    }
+  ]
+}

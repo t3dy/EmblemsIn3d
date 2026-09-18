@@ -1,0 +1,252 @@
+{
+  "id": "XXVII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher (chapter XXVII pass, Claude)",
+    "date": "2026-09-17",
+    "note": "Read in full: translation/en/page_398.md through page_408.md (our CC0 translation, 1499 pp. 398-408). This chapter has no woodcut in its own page range, but it is not undepicted: plates 154-156 ('Dream of Polia: Cupid punishes two women' / 'Cupid brandishes sword over kneeling victim' / 'Lion, dog, dragon devour victims; Cupid flies above') sit at 1499 pp. 391-393, which coverage.json's page-range logic assigns to chapter XXVI. But chapter XXVI's own text at those pages (verified pp. 392, 396-397) is Poliphilo's death and Polia's guilty flight from the temple -- it says nothing about a whirlwind, a chariot, or beasts. The vision the three plates depict is only narrated in chapter XXVII's text (pp. 399-408), five to fifteen pages after its own woodcuts. This is a 1499 quire-layout artifact (the block was cut and set before the text it illustrates), not a duplicate telling -- and it means a plate-driven coverage check would credit chapter XXVI with 'covering' a scene its text does not contain, while chapter XXVII -- which spends six pages on it in far more graphic and zoological detail than any three-line caption (six kinds of beast, not 'lion, dog, dragon'; named weapons; hearts torn out) -- shows as plateless and gets skipped. Recommend chapter XXVI's researcher note this cross-reference too. Grepped src/scenes/world/tombs.js (_buildBookTwo, ~L714-823), src/scenes/HPWorldScene.js and src/systems/Cast.js for whirlwind/executioner/nurse/fiery chariot/paliurus/soliferrum/rhomphaea: no matches. The built Book II precinct (_buildBookTwo) covers only the Temple of Diana and the vow (ch. XXV-XXVI, plates 152-153), the bed-chamber's ice-chariot/fire-chariot window vision (ch. XXVI/XXXV, plates 160-165), and the Venus-priestess enthroned (ch. XXXV, plate 163). Nothing from chapter XXVII -- the whirlwind, the punishment-vision, the thorn-thicket, or the nightmare of the two executioners -- exists anywhere in the code. Cast.js already has wolf(), dog(), lion(), eagle() and a generic bird() constructor (grepped, not opened in full) -- most of the beast-feast's cast is already modelled for other scenes and only needs assembling here; kite and vulture have no dedicated model but bird() takes a colour argument."
+  },
+  "features": [
+    {
+      "id": "xxvii-tribunal-of-nymphs",
+      "name": "The nymphs weep for Poliphilo and \"almost damn\" Polia as she confesses",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 398",
+      "status": "unbuilt",
+      "note": "The frame around all of Book II: Polia's audience of nymphs are moved to tears for the dead Poliphilo and hear her own telling as an accusation -- \"almost as guilty they damned Polia.\" She wipes her eyes with a kerchief and resumes. No scene anywhere in the world stages Polia narrating to a circle of nymphs; _buildBookTwo has no such tableau. Buildable as a seated circle of nymph NPCs around a Polia figure, reusable as the generic frame for every Book II chapter, not just this one.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-frozen-heart-self-accusation",
+      "name": "Polia's self-accusation: \"the divine retribution, where was it hidden?\" and the heart like wax that will not stick to wet rock",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 398-399",
+      "status": "unbuilt",
+      "note": "Two of the chapter's key lines of self-judgment: she wishes vengeance had struck her sooner, and describes her heart as ground Love's power (\"like wax... impelled and compressed onto the wet rock\") could not adhere to. A plaque/inscription candidate, continuous with the porphyry and flint imagery already used for her in the built Temple of Diana scene (sub: \"MORE FREEZING THAN PORPHYRY\").",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-whirlwind",
+      "name": "The whirlwind that snatches Polia and carries her, unharmed, into the wood",
+      "kind": "machine",
+      "plate": null,
+      "source": "pp. 399-400",
+      "status": "unbuilt",
+      "note": "\"Suddenly, unaware, by a windy whirl caught up, and turbinately circumvolved, without other harm and any lesion, into an agrestic Grove.\" A supernatural transport, the female counterpart to Poliphilo's own transports in Book I. Buildable as a particle/vortex effect (dust, leaves, a visible funnel) that lifts a Polia figure, or as a fixed sculptural/animated set-piece marking the threshold between the temple grounds and the vision-wood.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-thorny-grove",
+      "name": "The pathless, thorny grove where the vision unfolds",
+      "kind": "place",
+      "plate": null,
+      "source": "pp. 399-400",
+      "status": "unbuilt",
+      "note": "\"An agrestic Grove -- a shrubbery, and shady wood, of tall and vast trees planted, and forested, of horrid thorns a thicket, much impeded and pathless.\" A distinct wild-wood biome, unlike the cultivated gardens built everywhere else in the world -- dense, dark, thorned, impassable. This is the stage for the whole punishment vision (features below) and for Polia's hiding place. Nothing like it exists in the current world, which is otherwise manicured.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-two-damsels-chained",
+      "name": "The two doleful girls, chained by white-hot steel to the fiery chariot's yoke",
+      "kind": "person",
+      "plate": 154,
+      "source": "p. 400",
+      "status": "unbuilt",
+      "note": "\"Dishevelled, nude, with the arms bound at the back... with chains candent of strong steel, to the yoke ensnared; which, hard-straining the tender and whitest and downy flesh, scorched it.\" Plate 154 ('Dream of Polia: Cupid punishes two women') depicts this pairing but is catalogued under chapter XXVI's page range (p. 391) -- see research note above on the plate/text mismatch. Two bound, suffering nymph-figures, distinct from every other NPC pose in the game.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-fiery-chariot",
+      "name": "The ignited vehicle -- Cupid's fiery chariot, with white-hot chains for a yoke",
+      "kind": "machine",
+      "plate": 154,
+      "source": "p. 400",
+      "status": "unbuilt",
+      "note": "The torture-engine itself: a burning chariot the girls are yoked to and forced to drag. Distinct from the ice-chariot/fire-chariot pair already built in the bed-chamber vision (Diana's stags, Venus's swans, ch. XXVI/XXXV) -- this is a punishment vehicle, not a triumphal one, and belongs to the wood, not the sky.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-cupid-tormentor",
+      "name": "Cupid as executioner: a winged boy, furious, with an incendiary scourge",
+      "kind": "creature",
+      "plate": 154,
+      "source": "p. 400",
+      "status": "unbuilt",
+      "note": "\"A flame-bearing, and without measure furious and implacable, boy -- who, winged, above the ardent vehicle sat, with his aspect formidable (more indignant and horrible was not the terrible Gorgonean head to Phineus)... with a nervy and incendious scourge, ferociously he beat them.\" The dark inverse of every other Cupid in the game (the triumph-car Cupid of Book I, the Venus-shrine Cupid): here he tortures and, on p. 401, kills. Worth a distinct model/pose or at minimum a distinct material (fire-lit, not gilt).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-dragged-through-thorns",
+      "name": "The girls dragged bleeding through the brambles, blood scattering in the briars",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 401",
+      "status": "unbuilt",
+      "note": "\"By the lacerating and mortal friction, and by the ardour of the fiery chariot... from head to feet lacerated, and, of blood, the shattered members rained... the vermilion and fuming blood copiously to scatter itself through the barbed briars.\" An animation/particle beat (the chariot dragged through the thorny grove, gore on the brambles) rather than a static model -- the visceral centre of the vision.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-cupid-slays-with-blade",
+      "name": "Cupid dismounts and runs both girls through the heart with javelin and broadsword",
+      "kind": "rite",
+      "plate": 155,
+      "source": "p. 401",
+      "status": "unbuilt",
+      "note": "\"With a soliferrum (all-iron javelin) and cutting rhomphaea (broadsword)... through the middle of their pulsing heart, he... suddenly transfixed them.\" Corresponds to plate 155 ('Cupid brandishes sword over kneeling victim'), catalogued under chapter XXVI's range -- see research note. The contrapasso's central image: the heart that would not feel, destroyed. Two named period weapons (soliferrum, rhomphaea) that do not otherwise appear in the game's prop set.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-beast-feast",
+      "name": "The pack: hunting dogs, lions, wolves, eagles, kites and vultures converge on the bodies",
+      "kind": "creature",
+      "plate": 156,
+      "source": "p. 402",
+      "status": "unbuilt",
+      "note": "\"Many hunting dogs, bristle-haired, famished... rabid Lions, and roaring; and raging wolves; and, in the air, rapacious Eagles, and fasting Kites; and hissing Vultures -- to the warm blood and nefarious feast they presented themselves.\" Corresponds to plate 156 ('Lion, dog, dragon devour victims; Cupid flies above'), which the plate caption simplifies to three animals where the text names six -- another instance of the caption underselling the passage. Cast.js already has wolf(), dog(), lion() and eagle() (grepped, not built into any scene yet for this chapter); kite and vulture have no dedicated model but the generic bird() constructor takes a colour.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-hearts-and-viscera-thrown",
+      "name": "Cupid cuts the bodies in two, tears out the living hearts and throws them to the birds",
+      "kind": "rite",
+      "plate": 156,
+      "source": "p. 402",
+      "status": "unbuilt",
+      "note": "\"Into two partitions cut them; and, unsealed their female breast, the living heart he drew out, and that to the fierce fowls threw, and the fuming viscera to the savage Eagles; and the rest of the pallid bodies, quartered, to the rabid animals cast.\" The most extreme single image in the chapter -- possibly in the whole book. \"Ah, cruel spectacle! Alas, horrend mode of burial!\" Not a scene the game would necessarily render literally, but the vision this whole precinct is built around, and it should not be softened out of the record.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-polia-hiding-in-thornbrake",
+      "name": "Polia hidden in the thicket, watching, terrified she will be next -- an Iphigenia among the Taurians",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 402",
+      "status": "unbuilt",
+      "note": "\"I stood lurking and hidden among a biting thicket... under this brushy density, and nemoral shade, thus standing over-covered, I doubted... fearing lest the untamed and smell-tracking beasts... should not, on me, make a similar laceration.\" She likens her fear to Iphigenia's among the Tauri (Diana's own cruel cult -- pointed, since she has just fled Diana's temple). A hiding-place tableau: a Polia figure crouched in the thicket built for feature xxvii-thornbrake-plants below.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-thornbrake-plants",
+      "name": "The named thicket: sloe-bush, dog-rose, wild pear, and Christ's-thorn (paliurus)",
+      "kind": "plant",
+      "plate": null,
+      "source": "p. 402",
+      "status": "unbuilt",
+      "note": "\"Enveloped with thorny sloe-bushes, and dog-roses, and of pricking wild-pear, and, with valid prickles, the harsh Christ's-thorn (paliurus).\" Colonna names four specific thicket plants even inside the nightmare -- his herbarium persists into horror, per the page's own note. Four discrete, identifiable species (Prunus spinosa, Rosa canina, Pyrus pyraster/wild pear, Paliurus spina-christi) that could each be checked against Rhizopoulou's plant identifications and built as a distinct thorny understory, unlike anything in the cultivated gardens.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-polias-lament",
+      "name": "Polia's spoken lament: \"O day unlucky and funereal...\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "pp. 403-404",
+      "status": "unbuilt",
+      "note": "Her formal complaint, begun on p. 403 and continued on p. 404, replacing the \"obstinate silence\" that killed Poliphilo (p. 396) -- the first time in the whole book she cannot stop talking. A quotable utterance in the vein of poliphilo.json's utterance catalogue, but there is no equivalent file/collection for Polia's own speech acts anywhere in src/data.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-grief-self-mutilation",
+      "name": "Polia tears her hair and claws her own face \"with hatred of my adornment\"",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 404",
+      "status": "unbuilt",
+      "note": "\"The hands, desperate, in the blond hair I put, with hatred of my adornment, and, the tresses scattered, I wept, and the most-beautiful face, with the hostile nails reddening, I defiled.\" Grief turned against the very beauty that was her family's pride -- a distinct pose/animation for a Polia NPC, not used anywhere else (all other Polia figures in the built precinct are composed: veiled, reclining, kissing).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-return-at-nightfall",
+      "name": "Phoebus's horses set; the sky fills with stars; Polia returns home \"no more alive than dead\"",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 404",
+      "status": "unbuilt",
+      "note": "\"Ardent Phoebus beginning the round back of his swift and flying steeds Pyroïs and Aethon to Hesperia... the serene sky beginning ornately to paint with irradiating stars.\" A time-of-day/skybox beat marking the vision's end and her walk home, mentioning Phoebus's named team (Pyroïs, Aethon) -- minor next to the sun-chariot machinery elsewhere in the book, but a specific detail if a day/night cycle or a sun-chariot prop already exists to reuse.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-nurse-summoned-to-bed",
+      "name": "Afraid to sleep alone, Polia calls her nurse -- \"in place of a parent\" -- into her bed",
+      "kind": "person",
+      "plate": null,
+      "source": "p. 405",
+      "status": "unbuilt",
+      "note": "\"Not daring, for the nocturnal fallacies, to sleep alone... I called to me the dear and revered (in place of a parent) my Nurse, in whom, deposited, reposed, and collocated I had, every my confidence and hope; because, alone, I, in the past, with my chaste Goddess Diana, had been.\" The Nurse is Book II's guide-figure, structurally equivalent to Book I's priestess, and does not exist as an NPC anywhere: grepped Cast.js and tombs.js for \"nurse\"/\"Nurse\", no matches. She reappears through chapter XXVIII (the counsel), so building her once serves both chapters.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-broken-chamber-door",
+      "name": "The dream-invasion: bolts smashed, bars seized, locks broken, the chamber doors laid open",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 405-406",
+      "status": "unbuilt",
+      "note": "\"It seemed to me... that the bolts were removed, and the bars seized, and, by breakers-through, the locks broken, and violently laid-open the closed little doors and barred thresholds of my chamber.\" The built bed-chamber (_buildBookTwo's second precinct, ~L769-803) has a window for the ch. XXVI/XXXV chariot-vision but no door, and nothing breaks it open -- this chapter's dream needs a violable door, not just a window.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-two-grotesque-executioners",
+      "name": "The two grotesque executioners who burst into her chamber",
+      "kind": "creature",
+      "plate": null,
+      "source": "pp. 406-407",
+      "status": "unbuilt",
+      "note": "Colonna's most repellent portrait, and arguably the single most vivid unbuilt thing in this chapter: basilisk eyes under grottoed, Silenus-bristled brows, two great moustaches, rotten ferruginous tusk-teeth in a gaping boar's mouth, goat-hair unkempt like an old elm's bark, callous bloodied hands with taloned putrid fingers, ropes and lictors' axes slung under Cynyphian goat-cloth, a stench the text calls out by name. No model, no name, no mention anywhere in the codebase -- grepped and found nothing. The antithesis of every beautiful figure the world otherwise builds (nymphs, gods, Poliphilo): love's punishers made physically ugly on purpose.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-executioners-harangue",
+      "name": "The executioners' charge: \"negligent of her own pleasingness\"",
+      "kind": "inscription",
+      "plate": null,
+      "source": "p. 406",
+      "status": "unbuilt",
+      "note": "\"Now come, come, proud and nefarious one!... rebel, and, to the empire of the immortal Gods, adversary enemy... negligent of her own pleasingness! Ha, wretchling... the condign and divine vengeance of thee, cruel, shall be made... as, yesterday morning, thou sawest of two other (girls, like thee) wicked adolescents, of their members lacerated -- and as, a little instant hence, on thee the like to be made thou shalt see.' The verdict named outright, and it names the specific charge (refusing to use her beauty for love) that the Polyandrion's ice-damned and Anaxarete both stand for elsewhere in the world. A plaque/inscription candidate.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-dragged-by-the-hair",
+      "name": "Polia dragged from her bed by her hair, screaming, resisting",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 407",
+      "status": "unbuilt",
+      "note": "\"On me stretching the malefic and sinewy arms... by my blond hair, dishonouring, snarling, dishevelling me, they began impiously to draw me... wishing to resist the incendious dragging, I... forced myself, and, with the hurt and all-debilitated forces, strove to mitigate the violent drawing... with the naked feet, and with both the hands, resisting.\" The blond hair that was her pride and her family's hubris becomes the handle of her punishment -- the contrapasso completed in the nightmare, an animation beat for a Polia figure and two executioner figures.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-nurse-wakes-her",
+      "name": "The nurse wakes her and embraces her: \"Polia, my beautiful daughter... my life, my little blood\"",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 407",
+      "status": "unbuilt",
+      "note": "\"My piteous Nurse, who soporously slept, feeling, by chance, my somnolent movements... awoke; and, expergefacted, roused me from the furial sleep... into her arms she embraced me.\" The rescue that ends the nightmare -- the first warmth Polia has received in the whole account, and it comes from the nurse, not from a god or a lover. A tender two-figure embrace tableau, the counterpart to the bound-and-dragged tableau above.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-polias-half-confession",
+      "name": "Polia tells the nurse everything except Poliphilo's death, admitting only that she was \"insipid and foolish to Love\"",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 408",
+      "status": "unbuilt",
+      "note": "\"Except that, of the undue and importunate death of Poliphilo, as I suspected, not the least I spoke to her; but well (I told her) that I had shown myself, to Love, insipid and foolish (blitea).\" The precise, incomplete degree of her remorse at this point in the story -- worth marking as a distinct narrative beat (e.g. a differently-worded speech bubble/inscription) from the fuller confession that will come later, since Colonna is explicit about the gap.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxvii-nurse-as-physician",
+      "name": "The nurse, \"with senile expertise,\" suspects the cause and offers to be Polia's \"true remedy-maker\"",
+      "kind": "person",
+      "plate": null,
+      "source": "p. 408",
+      "status": "unbuilt",
+      "note": "Sets up chapter XXVIII's counsel scene (already narrated at the 'cythera_isle' tour station per src/data/tours.json, but not built as geometry there either). Polia submits as a \"most-following, most-mild, disciplinable\" pupil -- her first act of humility. Closes the chapter; the counsel itself is chapter XXVIII's to enumerate, not this one's, but the submission belongs here.",
+      "modes": ["walk", "tour"]
+    }
+  ],
+  "measurements": []
+}

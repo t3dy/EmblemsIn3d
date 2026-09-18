@@ -1,0 +1,129 @@
+{
+  "id": "XV",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher",
+    "date": "2026-09-17",
+    "note": "Read Dallington 1592 (corpus md/Hypnerotomachia_by_Francesco_Colonna.md) end to end across the whole plausible span of this chapter, lines ~10259-11127 (the file's own <!-- Page 241 --> through <!-- Page 260 --> HTML page-markers, which is the numbering this ledger's existing 'Dallington pp. N' citations already use -- confirmed by cross-checking known citations, e.g. chapter V's 'vaults-maze' at 'Dallington pp. 82-84' lands exactly on the vaults scene at marker 82). No woodcuts fall inside coverage.json's own pages_1499=[177,180] window (nearest plates are #70 at 1499 p.167 and #71 at p.185) -- confirmed, this chapter is plate-free as billed.\n\nIMPORTANT BOUNDARY PROBLEM, flagged rather than silently resolved: coverage.json's pages_1499=[177,180] disagrees with this project's own tours.json, which tags the 'Vertumnus and Pomona' stop (the triumph, its rustic company, and the Four Seasons altar -- woodcuts #66 and #67-70, at 1499 folios 166-167) as chapter XV. Folios 166-167 fall inside coverage.json's own range for chapter XIV ([158,176]), not XV. I read the WIDER span anyway (from the close of the four-Jupiter-triumphs sequence through Dallington's literal FINIS) and enumerate everything in it, because: (a) the existing tour_stops entry on this very ledger record already carries 'Vertumnus and Pomona' under XV, so an XV entry with nothing for it would contradict the ledger's own derived field; (b) 'err toward including'; (c) whoever reconciles XIV/XV boundaries needs the full inventory in one place, not split by a guess. Features 1-6 below are the material that may actually belong to XIV -- flagged per-feature. Features 7-8 (the seaside temple and the blazon of the Nymph/Polia) are the only content that unambiguously falls after 1499 p.176 and before Dallington's stopping point, so THOSE are chapter XV under any reading.\n\nSECOND FINDING, larger than mine to fix: tours.json's 'priapus' stop (chapter XVI) states as established fact that 'on facsimile page 193, in the middle of a sentence, at the word Mustulento, Robert Dallington's 1592 English stops.' It does not. I read past 'Mustulento Autumno S.' (the Autumn altar-panel's own dedication -- the word is not a fragment, it is the end of a complete Latin tag) and the corpus md file continues for roughly 200 more lines: the Winter altar-panel, the walk to an old ruined temple by the sea, and an extended blazon of the Nymph's body and dress, ending in an explicit 'FINIS.' at real printed-book page 100 (recto-only numbering; the facsimile's own collation note reads 'A-Z4, Aa-Cc4', and the signature marks I actually saw in sequence -- Y2, Z, Bb, Bb2, Cc, Cc2 -- confirm the text runs to the last gathering, not stopping mid-Z). This is the same Bodleian facsimile (STC 5577) SOURCES.md and tours.json cite for the 'stops at p.193' claim, so either that claim is simply wrong, or it describes a different, incomplete exemplar than the one this corpus's md file was OCR'd from. I have not resolved which; I flag it because it means real, usable, non-Godwin Dallington English exists for the seaside-temple scene and the blazon of Polia (features 7-8), and probably bears on how chapter XVI's researcher should scope their own read -- 'Mustulento' is not where the trail goes cold.\n\nMeasurements: one true physical dimension in the whole chapter (the hedge height), logged below. Several bare counts appear (four satyrs draw the car, three matrons govern the virgins, four altar panels) but none converts to a distance, so per the instructions only the hedge is logged as a measurement."
+  },
+  "features": [
+    {
+      "id": "xv-bathing-nymphs-river",
+      "name": "The river of bathing nymphs and tame swans",
+      "kind": "place",
+      "plate": null,
+      "source": "Dallington pp. 242-244",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour", "dream"],
+      "note": "A clear stream with graveled and soft yellow-sand banks, winding through wooded low hills, where young nymphs and their beardless lovers wade and swim, lifting their silk garments to the thigh, watching their own reflections, swimming beside tame swans, splashing water at one another, weaving garlands on the banks and giving them to their lovers with kisses. No trace in src/scenes/ (grepped for 'bathing nymph', 'swans'); not to be confused with the built Venus-temple swan sacrifice (temple.js) or the Book II stag/swan chariots (tombs.js), which are unrelated later scenes."
+    },
+    {
+      "id": "xv-lovers-grove-games",
+      "name": "The grove of courting nymphs and youths, under named trees",
+      "kind": "place",
+      "plate": null,
+      "source": "Dallington pp. 244-248",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "Flirtation set-pieces under the 'weeping sister of whited Phaeton' (poplar/Heliades), 'immortal Daphne' (laurel), pine, cypress, orange and cedar: singing love-songs, mock-fleeing and chasing with laughter, throwing flowers in pursuers' faces, giving rose-leaf kisses, play-slapping cheeks red 'like the wheels of Phoebus'. Distinct scene from the river (previous feature), same general meadow. No trace in src/scenes/."
+    },
+    {
+      "id": "xv-vertumnus-pomona-triumph",
+      "name": "The triumph of Vertumnus and Pomona",
+      "kind": "rite",
+      "plate": 66,
+      "source": "Dallington pp. 251-255 (woodcut #66, folio 166 -- inside coverage.json's own XIV range [158,176], flagged in research.note)",
+      "status": "unknown",
+      "built_as": "src/scenes/world/triumphs.js _buildTriumphs (TRIUMPHS.vertumnus, onFoot: true, team: 'satyr'); src/scenes/world/constants.js TRIUMPH_RELIEFS.vertumnus",
+      "modes": ["walk", "tour"],
+      "note": "Grep of src/ shows a full implementation: Vertumnus (garland of roses, lap full of flowers) and Pomona (crowned with fruit, flaxen hair, cornucopia in each hand) walking on foot with satyrs and nymphs either side rather than drawn by beasts, exactly matching the plate's silence on a draught animal. Not verified on the live page this session -- do not promote to 'built' without loading it. Missing even if the code is live: the ancient four-wheeled cart itself (the book seats Vertumnus and Pomona IN a chariot drawn by four horned satyrs, not walking beside a car); the Clepsydra water-vessel at Pomona's feet; the two trophy-bearing nymphs walking before the car (see next feature)."
+    },
+    {
+      "id": "xv-orchard-hedge-garden",
+      "name": "The square hedged orchard where the triumph circles the altar",
+      "kind": "place",
+      "plate": null,
+      "source": "Dallington pp. 252-254",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "'A large square inclosure compassed about with broade walkes... a quick-set vpon either sides, in height one pace, of pricking iuniper thicke set togither, and mixt with box' -- a topiary hedge exactly one pace (1.48 m) tall bounding a square green mead, with palm trees in symmetrical rows bearing black, crimson and yellow fruit, interplanted with citrons, oranges, pomegranates and other fruit trees. Distinct from the (built) Cythera knot-garden hedges (cythera.js), which are a different chapter's garden. See measurements[0]."
+    },
+    {
+      "id": "xv-hamadryad-satyr-company",
+      "name": "The rustic company: fauns, satyrs, Hamadryades and Dryades in animal skins",
+      "kind": "creature",
+      "plate": null,
+      "source": "Dallington pp. 253-254",
+      "status": "partial",
+      "built_as": "triumphs.js generic satyr/nymph walkers (cast.props.satyr, cast.nymph) for TRIUMPHS.vertumnus.onFoot",
+      "modes": ["walk", "tour"],
+      "note": "The book specifies the company's dress: 'basely apparrelled, some in fauns skins, painted with white spots, some in lynx skins... others in leopards', leaves bound over their nakedness, horned fauns and lascivious satyrs. The world's onFoot walkers use generic satyr/nymph liveries, not spotted animal-skin costuming."
+    },
+    {
+      "id": "xv-vertumnus-trophy-inscription",
+      "name": "The two trophy-nymphs before the car: an inscribed tablet and a bundle of rural tools",
+      "kind": "inscription",
+      "plate": null,
+      "source": "Dallington pp. 254-255",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "Two nymphs march before the chariot and its four draught satyrs. One bears a trophy with a hanging tablet reading (Latin, as printed): 'Integerrimam corporis valetudinem & stabile robur castasque mensarum delitias, & beatam animi securitatem cultoribus me offero.' A plain, non-Godwin literal rendering: 'I offer to my worshippers unblemished bodily health and steadfast strength, and the chaste delights of the table, and the soul's blessed security.' The other nymph bears a bundle of green sprigs with rural implements bound among them. Neither trophy exists in the code (grepped for 'Integerrimam', no match)."
+    },
+    {
+      "id": "xv-seasons-altar",
+      "name": "The four-sided marble altar (Chytropodus) the procession circles",
+      "kind": "object",
+      "plate": null,
+      "source": "Dallington pp. 255-256 (the four reliefs on it are woodcuts #67-70, folio 167 -- same XIV/XV boundary flag as the triumph above)",
+      "status": "partial",
+      "built_as": "constants.js TRIUMPH_RELIEFS.vertumnus (rendered as panels on the chariot itself, per the code comment 'the Seasons belong on their car')",
+      "modes": ["walk", "tour"],
+      "note": "The book's altar is a FREE-STANDING square white marble stone in the middle of the mead ('a great square stone like an aulter... which the procession compasses about'), fed by fountain-streams, cut on its four faces by 'a cunning lapicidary'. The world instead paints the four seasons onto the triumph car's own panels ('the Seasons belong on their car' -- a deliberate simplification, not an oversight, per the comment at constants.js:292-294), so there is no separate altar object standing in the ground for the procession to circle. Recorded as partial rather than unbuilt because the iconography does exist, just relocated."
+    },
+    {
+      "id": "xv-seasons-altar-inscriptions",
+      "name": "The altar's four dedications and figures: Spring, Summer, Autumn, Winter",
+      "kind": "inscription",
+      "plate": null,
+      "source": "Dallington pp. 255-256",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour"],
+      "note": "Four panels, each a figure plus a Latin tag (given in the primary text, not Godwin): (1) a flower-girdled goddess casting roses into a censer ('Chytropodus'), a myrtle branch, a winged boy with bow beside her, two pigeons overhead -- 'Florido veri S.' ('sacred to flowering spring'). (2) A wheat-crowned maiden with a cornucopia of ripe grain, three ears of corn, a bound sheaf and a gleaning boy at her feet -- 'Flauae Messi S.' ('sacred to the golden harvest'). (3) A naked vine-crowned boy with grape clusters and a cornucopia of grapes, a shaggy goat at his feet -- 'Mustulento Autumno S.' ('sacred to must-sweet autumn' -- this is the word tours.json wrongly treats as where the translation stops, see research.note). (4) A stern, beast-skin-clad king with a scepter raised into a stormy, hail-filled sky -- 'Hiemi Aeoliae S.' ('sacred to Aeolian winter'). Code has only the English season words (VER/AESTAS/AVTVMNVS/HIEMS) and scene captions, not the Latin dedications or the attendant figures/animals (cupid+doves, gleaning boy, goat, storm)."
+    },
+    {
+      "id": "xv-seaside-ruined-temple",
+      "name": "The old decayed temple by the sea, where the two sit down",
+      "kind": "building",
+      "plate": null,
+      "source": "Dallington p. 256",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["walk", "tour", "dream"],
+      "note": "'From thence the most faire and pleasant Nymph brought me towards the sea side and sandie shore, where we came to an olde decaied temple, before the which vpon the fresh and coole hearbs, vnder sweete shadie trees we sate downe and rested ourselues.' This is where Poliphilo begins the long blazon of the Nymph's body (next feature). No shoreline temple exists in src/scenes/ under any of 'decayed temple', 'ruined temple', 'seaside temple', 'shore temple' (grepped) -- the only other ruined temple in the world is the Polyandrion (tombs.js), a different building from an earlier chapter. Under coverage.json's pages_1499=[177,180], this is unambiguously chapter XV: it is the first scene after the Four Seasons altar (1499 p.~176) and well before the FINIS point."
+    },
+    {
+      "id": "xv-polia-blazon-costume",
+      "name": "The blazon of the Nymph's (Polia's) beauty and dress, at the ruined temple",
+      "kind": "person",
+      "plate": null,
+      "source": "Dallington pp. 257-260 (FINIS)",
+      "status": "unbuilt",
+      "built_as": null,
+      "modes": ["dream", "tour"],
+      "note": "Poliphilo's extended gaze, sitting beside her: her forehead 'pampynulated with threds of gold', compared to the lodestone Heraclea; her feet in 'red leather cut vpon white, fastened vpon the instep with buttons of gold in loopes of blew silke'; her neck circled with a 'carkenet of orient pearle'; her breasts likened to the golden apples of the Hesperides and to Pomona's own fruit, the valley between them called 'the delicate sepulcher of my wounded hart exceeding the famous Mausolea' (a love/death, Eros/tomb figure worth flagging for the alchemical or neoplatonic commentary lens, not built out here). Poliphilo's inward monologue runs to the very edge of self-restraint before he checks himself; the passage ends 'FINIS.' -- the literal close of Dallington's translation as printed in this facsimile (see research.note on the Mustulento discrepancy). No shoe, hair-thread or necklace detail this specific appears in Cast.js (grepped for 'carkenet', 'pearl necklace', 'blue silk lace', 'gold button' -- no matches); the existing Polia figure is generic by comparison."
+    }
+  ],
+  "measurements": [
+    {
+      "what": "height of the juniper-and-box hedge enclosing the square orchard where the Vertumnus/Pomona procession circles the altar",
+      "book_says": "a quick-set vpon either sides, in height one pace, of pricking iuniper thicke set togither, and mixt with box",
+      "metres": 1.48,
+      "source": "Dallington p. 253"
+    }
+  ]
+}

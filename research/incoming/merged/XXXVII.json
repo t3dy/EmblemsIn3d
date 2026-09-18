@@ -1,0 +1,85 @@
+{
+  "id": "XXXVII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "hp-researcher session, 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Read whole chapter (translation/en/page_462.md, page_463.md, page_464.md; CC0, our translation). Three pages, no plate (hp.db.woodcut_catalog has no row with page_seq in 462-464; nearest plates are #163 at p.425 and #166 at p.447). This chapter carries the book's actual ending: Polia finishes weaving a chaplet as she finishes her tale and crowns Poliphilo with it; the nymphs praise her and resume dancing at the fount, draw the lovers into a chorus through meadows and groves, then depart, leaving the lovers alone; Poliphilo's final avowal names Polia 'Philareta' and 'Eupathia'; Polia begins her answer; and at the height of their embrace she dissolves into musk-and-amber smoke and vanishes, saying 'Poliphilo, my dear -- loving me -- Farewell.' Seven features. No measurements stated anywhere in these three pages (no size, distance or count is given) -- measurements is empty for this chapter."
+  },
+  "features": [
+    {
+      "id": "xxxvii-chaplet-crowning",
+      "name": "The floral chaplet Polia weaves while telling her tale, finished and set on Poliphilo's head",
+      "kind": "object",
+      "plate": null,
+      "source": "p. 462",
+      "status": "unbuilt",
+      "note": "'just as she, enucleatedly ... narrated -- neither more nor less she bound, inter-weaving the most-odorous florets into a circular little chaplet; and, with the sweet words, it was completed -- and, to my head, affectionately genuflecting herself, cunningly she placed (it); and, with twin nectareous and cinnamon lips, dove-wise kissing me.' The page's own translation note calls this 'a tender, buildable emblem for the world/novel (the beloved crowning the lover with the flowers of the finished tale)'. Grepped src/data/tours.json and hp_dream.js: no chaplet, garland-crowning, or completion-image of any kind appears at this point in either the tour or dream text.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxvii-nymphs-praise-eloquence",
+      "name": "The nymphs praise Polia's eloquence, her lineage, and the happy outcome of her love",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 462",
+      "status": "unbuilt",
+      "note": "'For which thing the Nymphs extremely lauded, approving the most-charming speaking ... Then, much more most-pleasing, the understanding of her high and noble origin, and egregious stock, and generous lineage ... and of the happy exit of her love, thus orderly recited.' An audience-reaction beat -- the frame closing its judgement on the whole embedded narration -- not staged anywhere in the corpus of built text.",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxvii-dance-at-the-fount",
+      "name": "The nymphs return to their dances, ringing the sacred fount to soft instrumental music",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 462-463",
+      "status": "partial",
+      "note": "'Incontinently, to their Nymphal diversions ... they returned -- beginning the muted (many) instruments, with canorous music, to sound ... dancing in a ring around the sacred fount most-limpid, flowing sweet liquors.' PARTIAL: DreamMode's 'fountain' station (Fountain of Venus, Book I's climax, ch. XI) already stages nymphs singing and dancing around a fountain -- 'Venus crowns them with myrtle; the nymphs sing; even the water keeps time' -- but this is a textually distinct SECOND dance, later in the story, at the fount within Polia's own storytelling frame, and it is not separately sited or dated.",
+      "built_as": "src/data/hp_dream.js 'fountain' stop (an earlier, different dance at the same kind of fount -- Book I's, not this one)",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxvii-chorus-through-meadows-and-groves",
+      "name": "The nymphs draw the lovers into their dancing chorus through flowery meadows and shaded fruit-groves, feast, dance, and take their leave",
+      "kind": "place",
+      "plate": null,
+      "source": "p. 463",
+      "status": "unbuilt",
+      "note": "'with charming whisper, through the soft and flower-bearing and rosy meadows, flowery, of diverse colours; and through the opaque shade-canopies of the pleasant little Groves of fruit-bearing trees. And there, rapt Polia and me they drew to the joyous Chorus ... And, after great feast and manifold dances and choruses, the Nymphs ... thence departed -- with sweetest and mutual embracings and biting kisses ... took leave.' A landscape passage (many-coloured meadows, fruit-groves) the dream walk does not currently traverse at this point in the story, ending with the nymphs' final exit and the lovers left alone -- the hinge into the book's last scene.",
+      "modes": ["walk", "dream", "tour"]
+    },
+    {
+      "id": "xxxvii-love-names-philareta-eupathia",
+      "name": "Poliphilo's new names for Polia: Philareta (virtue-loving) and Eupathia (well/rightly-feeling)",
+      "kind": "person",
+      "plate": null,
+      "source": "p. 463",
+      "status": "unbuilt",
+      "note": "'Philareta (Virtue-loving) Polia, most-desired, and my most-elegant Eupathia (Well-feeling) ...' -- the page's own note: 'new love-names crediting her converted heart: she who was cruel now loves virtue and feels rightly ... They also continue the book's Greek-coinage naming.' Grepped src/data/tours.json and hp_dream.js for 'Philareta' and 'Eupathia': no occurrence anywhere. Every label the world gives Polia elsewhere is plain 'Polia'.",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxvii-final-mutual-vow",
+      "name": "Poliphilo's culminating vow -- his column and prop, his chief Philoctetes, diamantine chains -- and Polia's answering endearment, broken off mid-sentence by the chapter break",
+      "kind": "rite",
+      "plate": null,
+      "source": "pp. 463-464",
+      "status": "unbuilt",
+      "note": "'Thou art that solid column and prop of my life, and true and most-immovable support, and my chief Philoctetes ... commodulated of diamantine snares and indissoluble chains' -- and, swearing he was never any other's, 'had I lived more years than the Terebinth of Hebron'. Polia answers, 'Poliphilo, my delight, my sole festive refrigerium ... licentious dominator of my sworded and transfixed little heart -- to --' and the chapter division cuts her off. tours.json's 'book_two' lede summarises the avowals generally ('They make their final avowals') but none of this page's specific imagery -- Philoctetes, the Terebinth of Hebron, the diamantine chains -- appears anywhere in the corpus of built text.",
+      "built_as": "src/data/tours.json 'book_two' stop (general summary only: 'They make their final avowals')",
+      "modes": ["dream", "tour"]
+    },
+    {
+      "id": "xxxvii-polia-dissolves-into-smoke",
+      "name": "Polia, blushing and in tears, dissolves into fragrant musk-and-amber smoke rising toward the ether and vanishes with the sleep, saying 'Poliphilo, my dear -- loving me -- Farewell'",
+      "kind": "rite",
+      "plate": null,
+      "source": "p. 464",
+      "status": "unknown",
+      "note": "'that celestial, deified image, like a fumy wand of musk-and-amber suffumigation seeking the ether ... through the air resolving itself -- with the delightsome sleep, quickish, from my eyes, and with swift flight, took herself away, she saying: Poliphilo, my dear -- loving me -- Farewell.' The WORDS are strongly built: src/data/tours.json's 'book_two' tour stop ('The Binding, and the Dissolution') quotes this exact line as its pull-quote and its notes dwell on the musk-and-amber imagery at length ('She goes as suffumigation ... not a ghost fading but incense burning'). hp_dream.js's 'awakening' station also paraphrases the dissolving ('Poliphilo at last takes Polia in his arms -- and she dissolves') but drops the musk-and-amber imagery and Polia's own farewell line entirely -- it quotes only Poliphilo's LATER farewell at waking (p. 465, 'Farewell then, Polia'), not hers here. Grepped src/systems/DreamMode.js for any dissolve/smoke/particle handling tied to a beat or the guide figure: found none -- the guide is walked and narrated only, with no per-beat visual effect system. So the SCENE (a player-visible dissolve) has no code evidence; status is unknown rather than unbuilt because the text is present and I have not loaded the live page to check for a possible effect elsewhere.",
+      "built_as": "src/data/tours.json 'book_two' stop (quotes the line and describes the smoke in prose; no evidence of a corresponding visual effect in src/systems/DreamMode.js)",
+      "modes": ["dream", "tour"]
+    }
+  ],
+  "measurements": []
+}

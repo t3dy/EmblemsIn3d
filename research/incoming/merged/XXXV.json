@@ -1,0 +1,191 @@
+{
+  "id": "XXXV",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against our own translation (translation/en/page_455.md [argument]-page_460.md, CC0), session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "Chapter XXXV has NO PLATE of its own -- hp.db.woodcut_catalog returns zero rows for page_seq 456-460. The nearest plates (166-168) fall at pages 447-448, inside chapter XXXIII's text as translated (translation/en/page_447.md, page_448.md), TWO PAGES BEFORE chapter XXXIV even opens -- so the catalogue's page_seq for these three plates does not line up with the events they depict (Venus in the clouds, Cupid with Polia's bust, Cupid shooting the bust), which are narrated only here in XXXV, pp. 456-458. This is a genuine mismatch worth a ticket: either the catalogue's page_seq is off for #166-168, or the 1499's plates were set ahead of the text they illustrate (a known period layout habit). This pass treats the plates as belonging to this chapter's events on content grounds, per hp.db's own descriptions, while leaving the numeric page_seq discrepancy on record. The chapter itself is Poliphilo's near-death vision: his soul, freed at his death (the close of ch. XXXIV), rises to Venus enthroned in the clouds, complains against Cupid, watches Cupid strike Polia's divine effigy with the golden arrow and win her yielding, is shown a beatific vision of Polia's celestial beauty, hears Venus's world-softening voice, and returns to his body. This chapter is also where the world's own tour text for chapter XXXV is attached -- to 'quinta_essentia' (src/scenes/world/constants.js line 57), which is a pre-existing BOOK I station, 'The Obelisk of the Trinity' (folio 119). No ground of its own has been modelled for this chapter's heavenly court; the note is attached to unrelated Book I geometry. Separately, tombs.js's built Venus-priestess-enthroned scene (_buildBookTwo, ~line 828) is code-commented 'sub: ENTHRONED . CH. XXXV', but its plate (163, p. 425) and its content (a human priestess on earth, the lovers kissing before her) actually belongs to chapters XXX-XXXI, not this chapter's heavenly throne (Venus in the clouds, not a priestess on earth). That mislabel is worth a ticket of its own: a code comment naming this chapter proves someone looked, not that this chapter's content exists. No measured distances, paces or physical dimensions are stated anywhere in the chapter; the only countable things are narrative (three presences at the throne; six gods named as susceptible to Venus's voice; three zodiacal figures named as banished from it)."
+  },
+  "features": [
+    {
+      "id": "xxxv-spirit-addresses-body",
+      "name": "Poliphilo's returning soul addresses his own inert body",
+      "kind": "motif",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_455.md-page_456.md (pp. 455-456)",
+      "status": "unbuilt",
+      "note": "The chapter's argument opens with the freed soul speaking to the body it is about to re-enter: 'Amorously joyful... exult, with the utmost jocundity, O my little body, gracious mansion, and most-loving domicile... thy soul festively accommodating, convert thyself, and revoke.' A literal split -- an ethereal double of Poliphilo standing over/beside his own prostrate corpse, addressing it -- is described nowhere else in the book and is unbuilt. This is the single strongest candidate for the thing the book has that the world does not: not a place or an object but a person doubled, alive twice over for one paragraph.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-venus-throne-in-clouds",
+      "name": "Venus enthroned in the clouds, apart from the cold zodiac",
+      "kind": "place",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_456.md (p. 456)",
+      "status": "unbuilt",
+      "note": "'Venus, then, was Lady there, without doubting, disjoined and distant from the cold, and torpid, and worn Virgin Astraea, and remote from the avenger of nimbose Orion, and disjoined from the hirsute Ram' -- a heavenly court explicitly positioned apart from Virgo/Astraea, Orion and Aries. This is NOT the built priestess-throne (tombs.js _buildBookTwo, TX2/TZ2 block) -- that is a human priestess on earth, seated for the lovers' earthly kiss (plate 163, p. 425, chs. XXX-XXXI). No sky-court with the goddess herself, Cupid and the excluded zodiacal figures exists anywhere in the world.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-poliphilo-complaint-against-cupid",
+      "name": "Poliphilo's soul, wounded, presents itself and complains against Cupid",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_456.md (p. 456)",
+      "status": "unbuilt",
+      "note": "'I, to that lofty and divine throne, at the sight of the grave, holy, and severe majesty, lancinated (wounded) and groaning, presented myself... against her malefic and law-breaking son (Cupid), inculpating, lamenting myself, I put forth: that thus, guiltless... he has drawn, into my already-sieved heart, more punctures than... grains are found.'",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-venus-summons-cupid",
+      "name": "Venus calls Cupid and demands the cause of the injury",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_457.md (p. 457)",
+      "status": "unbuilt",
+      "note": "'Having benignly heard my lamentable complaints, to herself, immediately, the glorious Goddess and sublime Lady called the flying offspring (Cupid), demanding of him what had been the cause of so much injury.'",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-cupid-promise-equability",
+      "name": "Cupid's promise: the two souls to be made equal, \"reciprocal vicissitude of equability\"",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_457.md (p. 457)",
+      "status": "unbuilt",
+      "note": "'Amorous Mother -- it will not be a protraction of time, that becomingly co-adapted shall be the present litigation and discordant souls, with reciprocal vicissitude of equability.' Answers Poliphilo's own earlier petition to the priestess to 'equalise' the lovers (p. 430) -- the reconciliation decreed in heaven before it happens on earth.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-effigy-of-polia",
+      "name": "Cupid shows Poliphilo \"the true and divine effigy of Polia\"",
+      "kind": "object",
+      "plate": "166-167",
+      "source": "our translation (CC0), translation/en/page_457.md (p. 457); hp.db.woodcut_catalog #166-167 (page_seq 447-448, 'Poliphilus before Venus in clouds; Cupid listens' / 'Cupid with bust of Polia and arrow') -- catalogued two pages before this chapter's own page range, see research note",
+      "status": "unbuilt",
+      "note": "'Behold diligently this noteworthy image... shall be blessed, beatific, and best, only to gaze on her' -- Cupid presents an effigy (a bust or portrait-image) of Polia to Poliphilo as a distinct object, before striking it. A pedestal-mounted bust of Polia, gold or marble, held or shown by Cupid, is a concrete and unclaimed prop.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-gift-of-polia-thalasio",
+      "name": "Cupid declares Polia a divine gift, surpassing a Sabine bride at the Thalasio",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_457.md (p. 457)",
+      "status": "declined",
+      "note": "Declined for geometry -- 'these particular gifts, given by the Gods most-precious, ought not to be spurned... the first-fruits of so glorious a congeries of virtue and corporeal beauties, which I, gracious, offer thee,' with a passing comparison to 'a virgin Thalasio... in the rape of the Sabines.' The passage is entirely a spoken declaration; the actual gift is enacted by the arrow-shot (xxxv-cupid-shoots-the-image), which is the buildable version of the same moment. The Thalasio reference (the Roman wedding acclamation) is a one-line classical allusion with no described object or scene.",
+      "modes": []
+    },
+    {
+      "id": "xxxv-cupid-shoots-the-image",
+      "name": "Cupid strikes the effigy with a golden arrow, thorn-feathered and many-coloured",
+      "kind": "object",
+      "plate": "168",
+      "source": "our translation (CC0), translation/en/page_458.md (p. 458); hp.db.woodcut_catalog #168 (page_seq 448, 'Cupid shoots arrow at bust of Polia') -- catalogued one page before this chapter's own page range, see research note",
+      "status": "unbuilt",
+      "note": "'He re-assumed his candent, penetrable, and barbed armatures, prependent from the most-holy flank, from the promptuary Quiver... with the curved, and, with rigour, corded bow -- into the delicate breast of the shown image, striking, he shot, of a golden arrow, little-feathered of mordant thorns, and adorned of manifold colouring.' A specific, ornate object -- gold shaft, thorn fletching, many-coloured -- distinct from any generic arrow already modelled for Cupid elsewhere in the world.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-effigy-yields",
+      "name": "The struck image yields at once -- ductile, mild, self-accusing",
+      "kind": "motif",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_458.md (p. 458)",
+      "status": "unbuilt",
+      "note": "'Nor sooner, wounding, did that fulgurant arrow fix itself... than the virgin girl -- ductile, facile, mild, benign -- gladly acclived herself, bending; and, vanquished and prostrated, with Nymphal manner accusing herself... of the accustomed cruelty.' The instantaneous softening of the effigy -- image-magic, the woman changing because her picture is struck -- is the vision's central device and is unbuilt; it would naturally pair with xxxiv-lapidise-insight as the reverse transformation (softening vs. hardening).",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-three-presences",
+      "name": "Poliphilo beholds \"three presences -- two divine\" at the throne",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_458.md-page_459.md (pp. 458-459)",
+      "status": "unbuilt",
+      "note": "'There being I, in the most-blessed sight of three presences -- two divine, -- the third a little less than celestial... I beheld, in the open and openly, mysteries and arcane visions, rarely to mortals and material senses permitted to discern.' Venus, Cupid, and Polia (raised almost to their rank) form a beatific triad Poliphilo's soul alone is privileged to see.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-beatific-vision-of-polia",
+      "name": "The ecstatic blazon of Polia's celestial beauty at the throne",
+      "kind": "motif",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_459.md (p. 459)",
+      "status": "unbuilt",
+      "note": "'Two coruscating and splendid eyes, more clear than the matutinal stars... scintillating little arrows of gold... her milky breast, in which Love had made his delicious Orchard, and most-pleasant little garden, a manifest seminary and vestige of Jove -- with golden interweaving of her balled-up tresses.' A radiant, celestial double of Polia distinct from her earthly nymph model -- her eyes now themselves shoot golden arrows back at him (the earthly eyes-as-arrows image, p. 427, made reciprocal), and her breast is explicitly the garden the whole dream has been seeking, localised onto her body.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-gods-affected-by-venus-voice",
+      "name": "Six gods named as susceptible to Venus's voice: Mars disarmed, Jove's bolts taken, Saturn made young, Phoebus darkened, Mercury made to stammer, Diana defiled",
+      "kind": "relief",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_460.md (p. 460)",
+      "status": "unbuilt",
+      "note": "Venus's voice is 'soothing (enough to re-serene the beclouded heavens, to take the noxious armature from Enyalian Mars, and the thunderbolts from the hand of the jaculating Jove, to in-youth the old Saturn, to Ethiopise (darken) the most-beautiful Phoebus, to in-stammer the eloquent Cyllenian (Mercury), and to defile the chaste Diana).' A small gallery of six gods, each shown affected -- Mars unarmed, Jove without his bolts, a young Saturn, a darkened Phoebus, a stammering Mercury, a defiled Diana -- would match the game's existing habit of building small mythological reliefs/statue-groups (e.g. the hieroglyph friezes, the Diana-vs-Venus sky vision) and is a genuinely unusual catalogue: Diana named among the goddesses Venus's power can corrupt, in a Book II otherwise organised around Diana-versus-Venus.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-venus-reassures-postliminium",
+      "name": "Venus assures Poliphilo of health, love, and his \"postliminium\" (restored homecoming)",
+      "kind": "event",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_460.md (p. 460)",
+      "status": "declined",
+      "note": "Declined for geometry -- 'she made me secure of my health, and of my prosperous love, and of this my most-jocund postliminium (homecoming), and to thee (Polia) to return.' Dialogue only, no place or object described beyond the voice itself (which is covered separately as xxxv-venus-throne-in-clouds and its own sound-effects catalogue, xxxv-gods-affected-by-venus-voice). Worth recording as vocabulary: postliminium is the Roman legal term for a citizen's restored rights on return from captivity or exile -- exact and specific, and a good word for a plaque if the throne scene is ever built.",
+      "modes": []
+    },
+    {
+      "id": "xxxv-cupid-made-surety",
+      "name": "Venus makes Cupid \"surety\" (bail) for completing the union",
+      "kind": "motif",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_460.md (p. 460)",
+      "status": "unbuilt",
+      "note": "'With a most-charming little laugh, she said to her offspring: \"And thou -- if, for the wounded Virgin girl, perhaps to turn-tail from this amorous office, and to relinquish this present soul, thou shouldst fore-attempt -- thou shalt be surety (bail).\"' Venus legally binds Cupid to complete the union he started, on the mother's own authority -- a striking, specific legal-mythic image (the god of love as a bonded defendant) that nothing in the world currently depicts. A small relief or statue of Cupid restrained, holding or bound by a tablet/bond, would be a distinctive, unclaimed object.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-sealed-name-not-oenones-bark",
+      "name": "The soul returns bearing Polia's name sealed within, not carved and fading like Oenone and Paris's names in the bark",
+      "kind": "relief",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_460.md (p. 460)",
+      "status": "unbuilt",
+      "note": "'That most-celebrated name, in me impressed, by which, from thee, I receded; which, otherwise, is carved and impressed, and sealed, within me, vegetable and fecund -- (it) was not that of Oenone and of Paris, sculpted in the ramose trees and rugose barks, nor thence ever shall it be erased.' Invokes the Oenone/Paris myth of names carved in tree-bark that fade as an explicit FOIL to Poliphilo's permanent, soul-sealed devotion. A tree bearing faded/half-erased 'OENONE' and 'PARIS' carvings, sited as an ironic counter-monument, would pair naturally with xxxiv-myrrha-tears (Myrrha's weeping bark) as a small pair of unhappy-love trees in the Book II precinct -- two mythological trees, neither built.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxxv-soul-reunion-soteria",
+      "name": "The soul rejoins the body, and Poliphilo calls for a festive Soteria (thanksgiving)",
+      "kind": "rite",
+      "plate": null,
+      "source": "our translation (CC0), translation/en/page_460.md (p. 460)",
+      "status": "unbuilt",
+      "note": "'Come, indigene inhabitant, and Lady of the supreme citadel of my mind, best rational portion. Come, my heart, domicile of irritable ardour. Come, extreme part where makes residence my exhorter Cupid -- and let us make, then, the festive Soteria (thanksgivings) for thy retrograde reformation (return).' A named thanksgiving rite -- Soteria, 'a saving' -- for the soul's safe return, distinct from and following the throne-vision. The book gives no liturgical detail beyond the name and the occasion, so any build would be generic (garlands, an offering) rather than textually specific; recorded here rather than declined because the rite is named and its occasion is exact, unlike the truly undescribed Polyandrion medallions.",
+      "modes": ["walk", "tour"]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "presences Poliphilo beholds at the throne",
+      "book_says": "three presences -- two divine, the third a little less than celestial",
+      "metres": null,
+      "source": "pp. 458-459"
+    },
+    {
+      "what": "gods named as susceptible to Venus's voice",
+      "book_says": "Mars, Jove, Saturn, Phoebus, Mercury, Diana -- six named",
+      "metres": null,
+      "source": "p. 460"
+    },
+    {
+      "what": "zodiacal figures named as excluded from Venus's throne",
+      "book_says": "Virgin Astraea, Orion, the hirsute Ram -- three named",
+      "metres": null,
+      "source": "p. 456"
+    }
+  ]
+}

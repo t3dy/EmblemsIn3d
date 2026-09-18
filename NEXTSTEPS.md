@@ -34,6 +34,51 @@ grep the scene.** Two items below were once "missing" and turned out to be built
 
 ---
 
+### 0-W. Ted, 2026-09-17: spread everything out, and build everything in the novel
+
+*"I feel like we still don't have all the structures that Poliphilo visits in the novel, and our
+dream garden is still too cramped. I'd like to spread everything out and make sure we build
+everything that's in the novel."*
+
+Two calls taken the same day (`DECISIONS.md` 54 and 55): **true scale, 1 : 1, staged**, which
+reverses the 2026-09-09 call to leave the ground plan alone; and **Book II is built as a second
+place**, Treviso, not one station with commentary.
+
+**Done 2026-09-17, and verified on the deployed page**
+
+- **All 38 chapters are enumerated for the first time.** 20 chapters were read end to end in one
+  sweep. The ledger went from 18/38 enumerated and 25 unbuilt features to **38/38 and 251
+  unbuilt**. That number is not a regression; it is the first honest count of what the novel
+  contains. `COVERAGE.md`.
+- **The plan exists as data**: `research/plan.json` / `research/plan.md`, 23 precincts, 13 729 m
+  along the itinerary, every distance marked *stated* (the book gives it, with a page) or *ours*
+  (and then written in stadia, so a guess reads as a guess). `scripts/plan_build.py` computes it.
+- **Stage 1 built and deployed**: `SPREAD = 4`, derived rather than chosen — 26 m between the
+  palace and the porch times four is 104 m, the first whole factor at which the book's own
+  88.8 m green enclosure fits where the book puts it. **Nine overlapping pairs of stations went
+  to zero**; the world's extent went from 77 × 105 m to 306 × 2 326 m.
+- Four tickets opened from what the reading turned up, all with acceptance criteria:
+  `bug-plate-page-seq-offset` (the big one — see below), `bug-dallington-page-drift`,
+  `bug-tours-prose-ahead-of-geometry`, `plan-resite-precincts-true-scale`.
+
+**Open, in order**
+
+1. **Stages 2–4 of the plan.** Stage 1 put the precincts at 4× their old siting, not at
+   `plan.json`'s true-scale centres. Still to come: the precincts onto the plan proper, then the
+   monuments grown into the room it makes (the pyramid is 17.5 m against a stated 1 139.6), then
+   the screens — `DIRECTIONS.md` §5, *nothing in this book is approached across open ground with
+   the destination in view*, which is what will stop the spread reading as objects on a lawn.
+2. **251 unbuilt features.** The build queue in `COVERAGE.md` is now the real one. The richest
+   seams the reading found: chapter XXII's theatre (50 features, 30 unbuilt — including a cavea
+   that is not stone but planted jasper flower-boxes, and three gallery floors made to be
+   *smelled* underfoot); chapter XIV's fourth triumphal car, which carries no nymph at all but
+   Semele's ashes in a jacinth urn under a golden vine; and the whole of Book II.
+3. **The decorative scatter left behind by stage 1** — bird perches, turf seats, pollen motes had
+   no per-object anchor and are now misplaced against the precincts that moved.
+4. `hpGoTo('cythera_isle')` does not reach the island; the island is reached by Cupid's boat
+   (digit 0) by design, so this is probably not a defect — but nobody has confirmed that, and it
+   was noticed while verifying the spread.
+
 ### 0-X. Ted, 2026-09-13: the people and animals should behave like Katamari's
 
 *"I'm not seeing the people or nymphs or dragon and other animals responding like the people

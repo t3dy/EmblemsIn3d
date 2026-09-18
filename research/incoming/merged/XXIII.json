@@ -1,0 +1,321 @@
+{
+  "id": "XXIII",
+  "research": {
+    "status": "enumerated",
+    "enumerated_by": "read end to end against our own translation (translation/en/page_358.md through page_368.md), session of 2026-09-17",
+    "date": "2026-09-17",
+    "note": "All eleven pages read in full (pp. 358-368: the kneeling before the fountain, the heptagonal fountain's full architecture and gem-lore, the coniunctio program in the columns, the inscription, the curtain of Hymen, the unveiling of Venus, the Adonis/thelygonon/arsenogonon planting and the doves and Peristeria, the Three Graces (Eurydomene/Eurymone/Eurymeduse) and Bacchus-and-Ceres, the six agate steps, Venus's speech assigning eight named attendant nymphs and giving two rings, Cupid's wounding of both lovers, the swoon, the sea-dew healing and re-robing, and Mars's armed arrival and embrace). Checked src/scenes/world/temple.js (_buildFountain, called from cythera.js as this chapter's own fountain, enclosure:true) and src/scenes/world/cythera.js (_buildAmphitheatre, which is chapter XXII's theatre architecture, not this chapter's) by grep for the chapter's names and objects (Synesia, Philedia, Peristeria, Eurydomene, Eurymone, Eurymeduse, Nyctelius/Bacchus, Ceres, Enosina, Monori, Phrontis, Critoa, Adiacorista, Pistinia, Sophrosyne, Edosia, Lycaon, hermaphrodite, dove, socket/infant). Finding: the fountain's ARCHITECTURE (the heptagonal/round kerb, the seven gem columns with their planetary attributions, the crystal cupola and carbuncle, a static Venus primitive standing in the basin with a floating-hair ring, the torn curtain of Hymen as an object, and the fountain's own Greek motto as a plaque) is genuinely built, closely and with real citations to this chapter's own pages -- see temple.js comment block at line ~712 onward. But everything that makes this chapter a SCENE rather than a stage set is missing: no coniunctio figures inside the column shafts, no zodiac carving in the frieze (a plain gold band stands in for it), no doves or Peristeria, no Three Graces (Eurydomene/Eurymone/Eurymeduse -- a DIFFERENT trio of Graces, Aglaia/Euphrosyne/Thalia, exists at an unrelated mainland fountain and is explicitly withheld from this one), no Bacchus-and-Ceres pair (the tour's own prose at tours.json describes their dripping liquor as though built -- 'the water dripped from Bacchus and Ceres beside her' -- but no such geometry exists; this is aspirational tour text, not a built object), no arrow-passing rite with Synesia and Philedia, no wounding, no swoon, no sea-dew healing/re-robing, no eight named attendant nymphs, no rings, and no Mars. A second finding, worth flagging for whoever settles the plate catalogue: catalog plates #149 (p. 363) and #150 (p. 365) fall inside this chapter's page range by page_seq, and I opened both scans (hp1499_p363.jpg, hp1499_p365.jpg) directly -- both show the ALABASTER SEPULCHRE OF ADONIS (the Sardonyx-lidded tomb, the roses medallion reading 'IMPVRA SVAVITAS', nymphs kneeling before it), which is chapter XXIV's own text (our pp. 370-374, already built as _buildAdonis and correctly cited there), not this chapter's curtain-and-fountain unveiling. The plates precede the text they illustrate by several leaves, a known feature of this book's printing, and the catalogue's page_seq should not be read as 'this plate belongs to the chapter with this page range.' I did not find a scan clearly showing #151 ('Poliphilus and Polia at Fountain of Venus with nymphs', also page_seq 365) distinct from the Adonis image on the same page; a reviewer with sqlite access to woodcut_id/link_basis should settle whether #151 is a real second image on that leaf or a duplicate catalog row."
+  },
+  "features": [
+    {
+      "id": "xxiii-fountain-kerb",
+      "name": "The fountain's kerb: heptagonal without, round within, a foot high, of the blackest stone",
+      "kind": "building",
+      "plate": null,
+      "source": "translation/en/page_359.md (p. 359)",
+      "status": "unknown",
+      "note": "Built: src/scenes/world/temple.js `_buildFountain` (called for Cythera from cythera.js with `{enclosure:true}`) raises a 7-segment outer wall and a 36-segment round inner wall at the kerb, matching the book's 'heptagonal on the outside and round within.' Not verified on the running page this session -- grep evidence only.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-seven-gem-columns",
+      "name": "The seven lathe-turned, bellied columns: sapphire, emerald, turquoise, a melilot-coloured stone, jasper, topaz, and a seventh of hexagonal Indian beryl",
+      "kind": "building",
+      "plate": null,
+      "source": "translation/en/page_359.md (pp. 359-360)",
+      "status": "unknown",
+      "note": "Built: temple.js `_buildFountain`'s COLS array names all seven stones and gives the beryl column `hex:true` while the rest are round-shafted, matching the text exactly. Not verified live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-coniunctio-column-figures",
+      "name": "The sexual program set into the middle of each column shaft: an infant boy in each of the three right-hand columns, the female sex in each of the three left, and a Hermaphrodite child alone in the beryl column",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_360.md (p. 360)",
+      "status": "unbuilt",
+      "note": "The translation's own note calls this 'the alchemical heart of the fountain' and 'the same figure the Atalanta Fugiens draws in Emblem XXXIII' -- but grep of temple.js's column-building loop shows only the shaft, base, capital and a planet-name plaque; no embedded boy/girl/hermaphrodite figure 'held in a socket' at any column's middle exists anywhere in the codebase (grep for 'socket', 'infant', 'hermaphrodite' near the fountain code: no matches). The columns are built; their entire alchemical point is not.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-planetary-altar-figures",
+      "name": "Seven gold planetary figures on small altars at the crown's angles, each a third the height of the column beneath it: Saturn, then round to Cynthia/Selene",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_360.md (p. 360)",
+      "status": "unknown",
+      "note": "Built: temple.js places `this.cast.figure(...)` at crown height for each of the seven COLS entries, sized `COL_H/3` per the text, with a 'reach' pose and crown for Sol. The translator's note flags that the book's own planetary sequence (Saturn/Cynthia...ending at Selene) doesn't quite close -- Cynthia and Selene are both the Moon -- and the world's COLS array resolves this its own way (Saturn, Jupiter, Mars, Sol, Venus, Mercury, Luna) rather than reproducing Colonna's unclosed sequence; worth a reviewer's eye. Not verified live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-zodiac-frieze",
+      "name": "The twelve zodiac signs, carved with their governing characters, in the frieze beneath the planetary altars",
+      "kind": "inscription",
+      "plate": null,
+      "source": "translation/en/page_360.md (p. 360)",
+      "status": "unbuilt",
+      "note": "Grep of temple.js's cornice/frieze code (the two plain CylinderGeometry rings just below/above the crown) shows no zodiac symbols, texture, or carving of any kind -- the frieze is unornamented gold. The book calls this out as 'expressed in outstanding carving.'",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-crystal-cupola-and-carbuncle",
+      "name": "The veinless crystal cupola crowning the fountain, girdled with foliage and interwoven boys, and the egg-shaped, ostrich-sized carbuncle at its peak",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_360.md (p. 360)",
+      "status": "unknown",
+      "note": "Built: temple.js raises a transparent dome (`DOME_R`) and a red emissive, spinning, egg-scaled sphere at its peak with its own pulsing point-light. The girdling relief of foliage and putti described in the text is not separately modelled -- the dome is a plain hemisphere -- but the two headline objects (dome, carbuncle) are present. Not verified live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-spark-motto-inscription",
+      "name": "The fountain's motto, cut in ancient Greek and inlaid with silver into the columns: ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ, \"as a spark, so enchantment\" -- each column face three feet, the columns seven feet tall base to architrave",
+      "kind": "inscription",
+      "plate": null,
+      "source": "translation/en/page_361.md (p. 361)",
+      "status": "unknown",
+      "note": "Built, but relocated: temple.js renders the Greek motto as a free-standing plaque set on the kerb, not as lettering cut into the columns themselves as the text specifies ('the ready columns were raised, there were cut... letters'). The translator flags that the letter-count given (2 + 3x6 = 20) does not match the number of letters in the phrase, and is unresolved pending the facsimile. Not verified live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-curtain-of-hymen",
+      "name": "The little veiling curtain of sandalwood colour, embroidered with the gold Greek letters ΥΜΗΝ, hung between the sapphire and emerald columns and torn",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_361.md (p. 361)",
+      "status": "unknown",
+      "note": "Built: temple.js hangs two panels either side of a gap, with a tie-rod and a plaque reading 'ΥΜΗΝ / THE CURTAIN OF HYMEN, TORN.' The curtain is presented already split, as a static fact rather than an enacted tearing (see xxiii-arrow-passing-rite). Not verified live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-arrow-passing-rite",
+      "name": "Cupid gives the golden arrow to the nymph Synesia to offer to Polia; Polia refuses; Cupid routes it through the nymph Philedia to Poliphilo, who tears the curtain",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_361.md (p. 361)",
+      "status": "unbuilt",
+      "note": "This is the chapter's hinge action and its allegory is named outright in the translation notes (Synesia = understanding, Philedia = love-of-pleasure). Grep for 'Synesia' finds the name only in triumphs.js, leading a DIFFERENT procession (the golden car of Cupid, an earlier chapter); 'Philedia' appears nowhere in src/. No arrow object, no handoff, no choice or animation exists at the Cythera fountain -- the curtain is simply pre-torn (see xxiii-curtain-of-hymen).",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxiii-venus-revealed",
+      "name": "The divine Venus standing naked in the clear salt water up to her flanks, her body given back by the water undistorted, her hair floating loose on the surface",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_362.md (pp. 361-362)",
+      "status": "unknown",
+      "note": "Built: a primitive figure group (cylinder/cone/capsule/sphere) stands in the basin at BASIN_Y, with a separate gold torus 'hairRing' animated as slow-turning water to stand for the hair 'scattered in a gyre'. The blazon detail -- rosy cheeks, pearl earrings, the rose-and-gem circlet, the coral mouth -- is not modelled, which is expected for a primitive rather than a sculpted figure. A slot (`_venusSlots`) is left for an imported marble statue to replace the primitive. Not verified live.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-actaeon-dread",
+      "name": "Poliphilo's fear, on seeing the goddess unveiled, that he will share Actaeon's fate",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_362.md (p. 362)",
+      "status": "declined",
+      "note": "Declined: this is an interior simile (Colonna does not even name Actaeon; the reader supplies it), with no object, figure or place of its own to build. It is already carried, as far as this world can carry it, by the unveiling scene (xxiii-venus-revealed) and by the fact that Venus's later sprinkling is explicitly the ANTI-Actaeon gesture (see xxiii-sea-dew-healing-robing). Nothing further to enumerate.",
+      "modes": []
+    },
+    {
+      "id": "xxiii-adonis-thelygonon-arsenogonon-plants",
+      "name": "Flowering purple Adonis (the anemone) at the fountain's rim, thelygonon on the left and arsenogonon on the right -- Pliny's herbs of female and male conception, always in flower",
+      "kind": "plant",
+      "plate": null,
+      "source": "translation/en/page_363.md (p. 363)",
+      "status": "unbuilt",
+      "note": "Grep of temple.js's Cythera-fountain build (`enclosure:true` branch) shows generic mead/rose planting around the OUTER balustrade, not this specific rim planting of three named, sexed herbs kept clear of the water at the fountain's own inner edge. Rhizopoulou's plant-identification table (SOURCES.md, sources/rhizopoulou/) is the source to check first if this is built.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-doves-and-peristeria",
+      "name": "Small white doves circling the goddess, dipping their golden bills and bedewing her body with droplets that show as pearls; the dove-nymph Peristeria attending",
+      "kind": "creature",
+      "plate": null,
+      "source": "translation/en/page_363.md (p. 363)",
+      "status": "unbuilt",
+      "note": "The tour's own lede text for this station claims 'her doves bathing her in spray' as though this were already staged, but grep of temple.js's `_buildFountain` finds no dove object and no figure named or posed as Peristeria anywhere near the Cythera fountain (the only dove-building code in cythera/temple.js serves an unrelated altar station). Tour prose is not evidence of a build.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-three-graces-ch23",
+      "name": "Three naked divine girls embraced inseparably at the fountain's right: Eurydomene and Eurymone facing outward, Eurymeduse turned away -- holding an opened oyster-shell of roses and a burning torch",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_363.md (p. 363)",
+      "status": "unbuilt",
+      "note": "This is the canonical two-frontal-one-turned Three Graces pose, named by the translation as a deliberate statue-type quotation. A DIFFERENT trio of Graces (Aglaia, Euphrosyne, Thalia) is built at the unrelated mainland folio-80 fountain (temple.js `_buildFolio80Company`), and the code explicitly withholds that company from the Cythera build (`if (!enclosure) this._buildFolio80Company(...)`) -- so this chapter's own three named Graces, with the oyster and torch that Venus later draws the two rings from, have never been built anywhere.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-bacchus-and-ceres-figures",
+      "name": "Nyctelius (an androgynous Bacchus, leaning on two tigers) and a wheat-crowned Ceres (resting on two serpents) seated at the fountain's steps, each dripping a sweet, foaming liquor from a nippled sphere -- read by the annotator Hand E as Sol and Luna feeding the chemical wedding",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_363.md (p. 363)",
+      "status": "unbuilt",
+      "note": "The tour's own prose (tours.json, this station and the chapter-XXII station before it) describes 'the water dripped from Bacchus and Ceres beside her' and glosses Hand E's alchemical reading of the pair as Sol/Luna -- both times as though built. Grep of temple.js's `_buildFountain` finds no such figures: no tiger-flanked god, no serpent-flanked goddess, no dripping spheres. This is the clearest instance in this chapter of tour commentary running ahead of the geometry.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-six-agate-steps",
+      "name": "Six little steps of dark agate down from the topmost step (where the columns stand) to the fountain's lip, over a wave-worked, milk-veined floor; the water standing at the edge of the fourth step",
+      "kind": "building",
+      "plate": null,
+      "source": "translation/en/page_363.md (p. 363)",
+      "status": "unbuilt",
+      "note": "The built kerb (xxiii-fountain-kerb) is a single stepped ring at height KERB, not a run of six agate steps down to a lip with the water held specifically at the fourth. No agate material, no six-tier step geometry, and no waterline-at-the-fourth-step logic exists in temple.js.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-poliphilo-polia-kneeling",
+      "name": "Poliphilo and Polia knelt face-down together before the fountain throughout the whole revelation",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_358.md (p. 358); recurs p. 361, p. 364",
+      "status": "unbuilt",
+      "note": "The player stands in for Poliphilo in first person, so his kneeling is a pose/animation question rather than a geometry one; but grep finds no companion Polia figure posed kneeling at the Cythera fountain specifically, and no kneel animation tied to this station at all. Given as its own entry because the book repeats the posture three times across the chapter as the frame for everything that happens.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-cupid-wounds-lovers",
+      "name": "Cupid's golden arrow (\"not the Gortynian bow... but the divine one\") pierces Poliphilo's heart, then Polia's, and is rewashed in the fountain before being sheathed",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_366.md (pp. 365-366)",
+      "status": "unbuilt",
+      "note": "Grep finds Cupid modelled elsewhere (the boat crossing, the triumph car) but no wounding action, arrow object, or blood/washing detail staged at the fountain. This is the emotional turn of the whole chapter -- the swoon that follows it (xxiii-sea-dew-healing-robing) is likewise absent.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxiii-hermaphroditus-salmacis-simile",
+      "name": "Poliphilo, pierced by love, can only liken the sensation to Hermaphroditus fused with Salmacis in her spring",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_366.md (pp. 366-367)",
+      "status": "declined",
+      "note": "Declined as its own build target: this is a first-person simile, not a scene with a place or a separate figure of its own -- Colonna reaches for the myth to describe an internal sensation. Its one legitimate physical referent is the hermaphrodite child already described as carved into the beryl column (xxiii-coniunctio-column-figures), which carries the same figure architecturally; nothing further to build under this entry.",
+      "modes": []
+    },
+    {
+      "id": "xxiii-eight-attendant-nymphs",
+      "name": "Venus's two sets of four named nymphs, given as lifelong companions: Enosina, Monori, Phrontis and Critoa to Poliphilo; Adiacorista, Pistinia, Sophrosyne and Edosia to Polia",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_365.md (pp. 365-366)",
+      "status": "unbuilt",
+      "note": "None of these eight names appears anywhere in src/ (grep checked each individually). The translation's note reads them as the personified virtues a marriage is dowered with (union, care, judgement, faith, temperance, decorum, etc.) -- a clear, citable, and entirely unbuilt cast.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-violet-gem-rings",
+      "name": "Two rings, each set with a turning violet gem, drawn from the oyster-shell and given by Venus to Polia and to Poliphilo",
+      "kind": "object",
+      "plate": null,
+      "source": "translation/en/page_365.md (p. 365)",
+      "status": "unbuilt",
+      "note": "No ring object, gift event, or inventory item tied to this chapter exists in src/ by grep. Small, cheap, and specific -- a plausible first build if this chapter is picked up.",
+      "modes": ["walk", "tour"]
+    },
+    {
+      "id": "xxiii-sea-dew-healing-robing",
+      "name": "Venus cups sea-water in her palm and sprinkles the swooned lovers -- the anti-Actaeon gesture, healing rather than destroying -- and the nymphs strip Poliphilo's threadbare clothes and dress him anew in white, then all kiss",
+      "kind": "rite",
+      "plate": null,
+      "source": "translation/en/page_367.md (p. 367)",
+      "status": "unbuilt",
+      "note": "No sprinkling animation, no costume-change event, and no post-wounding revival sequence exists at this station. The translation notes flag this as the passage that explicitly answers the chapter's own Actaeon dread (xxiii-actaeon-dread) -- a resolution with no build to show for it.",
+      "modes": ["walk", "tour", "dream"]
+    },
+    {
+      "id": "xxiii-mars-arrival",
+      "name": "Mars arrives in full armour -- silver shield, olive-wreathed helmet, gold cuirass, gold scimitar, a scourge in hand, his hound Lycaon at heel -- disarms, and embraces Venus; the nymphs and the lovers withdraw, leaving the two gods alone",
+      "kind": "person",
+      "plate": null,
+      "source": "translation/en/page_368.md (p. 368)",
+      "status": "unbuilt",
+      "note": "Grep for 'Lycaon' and for an armoured Mars figure near the Cythera fountain: no matches. This closes the chapter and the whole audience at the fountain -- the moment the lovers are dismissed -- and nothing marks it in the world.",
+      "modes": ["walk", "tour"]
+    }
+  ],
+  "measurements": [
+    {
+      "what": "height of the fountain's kerb (the 'little wall' at its centre)",
+      "book_says": "there rose at its centre a little wall a foot high",
+      "metres": 0.296,
+      "source": "p. 359"
+    },
+    {
+      "what": "height of the seven columns, from the golden bases to the architrave",
+      "book_says": "from the golden bases up to the architrave the height stood at seven feet",
+      "metres": 2.072,
+      "source": "p. 361"
+    },
+    {
+      "what": "length of each face of the heptagonal kerb/arcade (where the inscription is cut, three letters to a face)",
+      "book_says": "Each face was three feet",
+      "metres": 0.888,
+      "source": "p. 361"
+    },
+    {
+      "what": "depth/height of the cut Greek lettering on the columns",
+      "book_says": "letters of the most ancient Greek, the shaft being three-quarters of a foot",
+      "metres": 0.222,
+      "source": "p. 361 (translator flags this clause as compressed/uncertain -- may describe the letters' cutting depth rather than height; check against facsimile)"
+    },
+    {
+      "what": "height of each gold planetary figure on the crown",
+      "book_says": "an image of a planet with its proper attribute... its size exactly a third of the column below it",
+      "metres": 0.691,
+      "source": "p. 360 (derived: one third of the 7-foot/2.072 m column height given on p. 361)"
+    },
+    {
+      "what": "number of gem columns, and of the planetary figures above them",
+      "book_says": "seven of them in all, turned with the utmost exquisiteness",
+      "metres": 0.0,
+      "source": "p. 359 (count, not a linear measure)"
+    },
+    {
+      "what": "number of zodiac signs carved in the frieze beneath the planetary altars",
+      "book_says": "in the frieze running round... were to be seen the twelve signs of the zodiac",
+      "metres": 0.0,
+      "source": "p. 360 (count)"
+    },
+    {
+      "what": "number of steps down from the topmost step (where the columns stand) to the fountain's lip",
+      "book_says": "six little steps more went down to the lip of the fountain, of dark agate",
+      "metres": 0.0,
+      "source": "p. 363 (count)"
+    },
+    {
+      "what": "how high the fountain's water stands, relative to the six steps",
+      "book_says": "The fountain's water reached to the edge of the fourth step; the others stood clear of it",
+      "metres": 0.0,
+      "source": "p. 363 (relative level, not a stated absolute distance)"
+    },
+    {
+      "what": "number of nymphs Venus first assigns to attend Polia and Poliphilo at the rite",
+      "book_says": "she assigned three apiece to Polia and to him",
+      "metres": 0.0,
+      "source": "p. 358 (count: 3 + 3 = 6)"
+    },
+    {
+      "what": "number of nymphs Venus assigns afterward as lifelong companions",
+      "book_says": "I will give and consign to you four illustrious little maidens... likewise I present four other noble and most accomplished maidens into your unceasing company",
+      "metres": 0.0,
+      "source": "pp. 365-366 (count: 4 + 4 = 8)"
+    },
+    {
+      "what": "number of letters in the fountain's motto as Colonna states the layout",
+      "book_says": "On the front face only two letters were to be seen... and then following, on the other faces, three and three",
+      "metres": 0.0,
+      "source": "p. 361 (count: 2 + 3×6 = 20; the translator flags that the phrase ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ has more than 20 letters, so the arithmetic given does not close)"
+    },
+    {
+      "what": "which columns stand where relative to the entrance, and where the curtain hangs",
+      "book_says": "Two of these stood answering one another, equally, opposite the entrance... on the right hand [sapphire]... on the left [emerald]... between the sapphire and the emerald column, hung... the most beautiful little veiling curtain",
+      "metres": 0.0,
+      "source": "pp. 359, 361 (direction, not a distance)"
+    }
+  ]
+}
