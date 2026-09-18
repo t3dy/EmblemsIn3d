@@ -584,7 +584,10 @@ export function buildLitter(sc, STATIONS, { density = 1 } = {}) {
   for (const st of STATIONS) {
     const ids = ZONES[st.key];
     if (!ids) continue;
-    const isle = st.pos[1] < -95;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): threshold x4 (-95 -> -380) to
+    // track HP_STATIONS' own move -- 'cythera' (shore) is now at z -132 and
+    // 'cythera_isle' at z -416, so the split still falls cleanly between them.
+    const isle = st.pos[1] < -380;
     const host = isle ? isleRoot : root;
     const R = (st.radius || 8) * 1.6;
     // More in a big place; the count is per station and scaled by its area.
@@ -605,17 +608,22 @@ export function buildLitter(sc, STATIONS, { density = 1 } = {}) {
   // wonders is not bare. Small things only: the big ones belong to a place.
   const DUST = EVERYWHERE.concat(['sherd', 'coin', 'acorn', 'walnut', 'snail', 'chaplet', 'sandal']);
   const N = Math.round(2400 * density);
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): the dusting box is the mainland
+  // cluster's own extent, so it grows x4 with it (-52..52, -60..50 -> -208..
+  // 208, -240..200), or the dust stays clumped near the old origin while the
+  // stations it is meant to dust have moved away from it.
   for (let i = 0; i < N; i++) {
-    const x = -52 + rnd() * 104, z = -60 + rnd() * 110;
+    const x = -208 + rnd() * 416, z = -240 + rnd() * 440;
     const k = byId.get(DUST[(rnd() * DUST.length) | 0]);
     if (k) drop(k, x, z, root);
   }
-  // and over the island
+  // and over the island -- centre x4 (-150 -> -600), radius (the island's own
+  // sward) is a size and stays.
   const IN = Math.round(1100 * density);
   for (let i = 0; i < IN; i++) {
     const a = rnd() * Math.PI * 2, r = Math.sqrt(rnd()) * 48;
     const k = byId.get(DUST[(rnd() * DUST.length) | 0]);
-    if (k) drop(k, Math.cos(a) * r, -150 + Math.sin(a) * r, isleRoot);
+    if (k) drop(k, Math.cos(a) * r, -600 + Math.sin(a) * r, isleRoot);
   }
 
   return { pieces: made, kinds: KINDS.length };

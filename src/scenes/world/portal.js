@@ -13,12 +13,15 @@
 import * as THREE from 'three';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
-import { DOORS, SIGNS, PIAZZA } from './constants.js?v=8';
+import { DOORS, SIGNS, PIAZZA } from './constants.js?v=9';
 
 export const Portal = {
   _buildGreatPortal() {
     const S = this.style;
-    const Z = 26;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): 26 -> 104. Everything below is
+    // Z-relative except the dragon NPC, hand-measured as an absolute z and
+    // moved by the same +78.
+    const Z = 104;
     // Massive piers flanking a tall passage — and massive is a hundred stones,
     // not one box. Eight courses of twelve ashlars each, joints broken course by
     // course, and the lintel above resting on both of them: undermine either
@@ -112,11 +115,16 @@ export const Portal = {
       this._wallCol(s2 > 0 ? PORCH - 0.4 : -(NECK + 2), s2 > 0 ? NECK + 2 : -(PORCH - 0.4),
                     Z - 1.8, Z + 1.8);
       // and the WEDGE of mountain beyond its end, up to where the cliffs' own
-      // colliders begin at z = 41.5. Filling the whole quarter instead would
-      // also have worked and is what the old curtain did -- but it walled off
-      // the ground in FRONT of the wall too, so the reader could never come up
+      // colliders begin. Filling the whole quarter instead would also have
+      // worked and is what the old curtain did -- but it walled off the
+      // ground in FRONT of the wall too, so the reader could never come up
       // to the face and see that it is made of stones.
-      this._wallCol(s2 > 0 ? NECK : -200, s2 > 0 ? 200 : -NECK, Z + 1.8, 41.5);
+      //
+      // SPREAD = 4 (2026-09-17, DECISIONS.md 54): was z = 41.5, hand-measured
+      // against the old cliff loop's first ring at z = 38 +/- 3.6. The cliff
+      // loop in _valleyCliffs now starts at z = 152, so this wedge now runs
+      // to 148.4 (152 - 3.6), not a simple x4 of 41.5.
+      this._wallCol(s2 > 0 ? NECK : -200, s2 > 0 ? 200 : -NECK, Z + 1.8, 148.4);
     }
     // and the wall over the door, which ties the two halves into one mass
     this._ashlar(0, 7.6, Z, PORCH * 2, BASE_TOP - 7.6, 3.2, this._stoneMat,
@@ -193,7 +201,7 @@ export const Portal = {
 
     // The dragon that drove Poliphilo through the vaults
     const dragon = this.cast.animals.dragon(1.6);
-    this._npc('dragon', dragon, 3.4, 23.2, 2.6, { label: 'The Dragon', labelY: 1.6, sway: 0.06 });
+    this._npc('dragon', dragon, 3.4, 101.2, 2.6, { label: 'The Dragon', labelY: 1.6, sway: 0.06 });
   },
 
   // The winged nymph on the obelisk's point: robe "blowne abroad with the winde,"
@@ -300,7 +308,9 @@ export const Portal = {
   _buildPorchStylobate() {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
-    const Z = 26, PORCH = 9;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): Z 26 -> 104, matching the
+    // portal's own anchor; PORCH is a size (the piers' outer face) and stays.
+    const Z = 104, PORCH = 9;
     const PX = PORCH - 1.4, PZ = Z + 1.9;      // against the eastern jamb, on the approach side
     const W = 1.5, H = 1.5, CORN = 0.17;
 
@@ -335,7 +345,9 @@ export const Portal = {
 
   _buildDoorsWall() {
     const S = this.style;
-    const Z = 12, WALL_H = 4.8;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): 12 -> 48. WALL_H is a size
+    // and stays.
+    const Z = 48, WALL_H = 4.8;
 
     // Dallington p. 192–193 (corpus ll. 8100–8125): after the bridge "a rocky
     // and stony place, where high & craggie Mountaines lifted vp themselues …
@@ -443,9 +455,10 @@ export const Portal = {
     // the hard gate with a lute (borrowed from Thelemia) and, when he chooses the
     // flowered one, casts it on the ground and breaks it.
     const logistica = this.cast.nymph({ name: 'Logistica', robe: 0x7a90b8, h: 0.95, pose: 'point', attribute: 'lute' });
-    this._npc('logistica', logistica, -2.6, 15.5, 0.6, { label: 'Logistica', sub: 'REASON', labelY: 2.0 });
+    // z was 15.5, hand-measured as Z+3.5; moved the same way as Z (12 -> 48).
+    this._npc('logistica', logistica, -2.6, 51.5, 0.6, { label: 'Logistica', sub: 'REASON', labelY: 2.0 });
     const thelemia = this.cast.nymph({ name: 'Thelemia', robe: 0xc87a8a, h: 0.95, pose: 'beckon' });
-    this._npc('thelemia', thelemia, 2.6, 15.5, -0.6, { label: 'Thelemia', sub: 'DESIRE', labelY: 2.0 });
+    this._npc('thelemia', thelemia, 2.6, 51.5, -0.6, { label: 'Thelemia', sub: 'DESIRE', labelY: 2.0 });
   },
 
   // ── The Elephant & Obelisk (f.25) — plaza centrepiece ─────────────────────
@@ -711,7 +724,11 @@ export const Portal = {
     // the piazza's start is z 70.4, so he stands at z 55.6. The lateral offset
     // is ours: the book gives none, and +7 puts him in the middle of the walk
     // that is left once the colossus takes the west half.
-    const HX = 7, HZ = 55.6;
+    //
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): PIAZZA.z1 moved to 148.4 (z0
+    // 26 -> 104), so ten paces in from its mouth is 148.4 - 14.8 = 133.6, not
+    // a simple x4 of 55.6. HX is ours and moves x4 with everything else here.
+    const HX = 28, HZ = 133.6;
 
     const bronze = woodcut
       ? S.mat({ color: 0x14120e, tone: 0.28, roughness: 0.5 })
@@ -1345,7 +1362,8 @@ export const Portal = {
   // Aldine dolphin before it was Aldine. (ARCHITECTURE.md §4.)
   _buildBridge() {
     const S = this.style;
-    const BX = -11, BZ = 20;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (-11, 20) -> (-44, 80).
+    const BX = -44, BZ = 80;
     const woodcut = S.key === 'woodcut';
 
     // a watercourse crossing the processional cross-path
@@ -1427,7 +1445,8 @@ export const Portal = {
   // its own two tables; this one crosses the same water lower down.
   _buildSecondBridge() {
     const S = this.style, woodcut = S.key === 'woodcut';
-    const BX = -11, BZ = 14;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (-11, 14) -> (-44, 56).
+    const BX = -44, BZ = 56;
     const stone = this._stoneMat, dark = this._darkStoneMat;
     const porphyr = woodcut ? S.mat({ tone: 0.24 }) : S.mat({ color: 0x7a2a2c, roughness: 0.55 });
     // three arches over the water, piers bearing forth against the two fronts

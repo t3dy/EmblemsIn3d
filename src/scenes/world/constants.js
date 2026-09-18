@@ -34,39 +34,53 @@
 // HAND is +x and his LEFT is −x, which is what puts the wolf at −x (Dall. p. 23)
 // and the Medusa door at +x (p. 31). This used to be implicit and every siting
 // argument in this table leaned on it unstated.
+//
+// ── SPREAD = 4 (2026-09-17, DECISIONS.md call 54, ticket
+// plan-resite-precincts-true-scale) ─────────────────────────────────────────
+// Stage 1 of 4 toward the true-scale plan in research/plan.json (13,729 m,
+// 23 precincts — this is ~40% of the way there, not the destination). Every
+// `pos` and `look` below is the old (cramped) siting multiplied by 4, scaled
+// about the world origin (0, 0) so every bearing above still holds. `radius`
+// is left alone — a station's trigger is human-sized, not a precinct.
+// The factor itself: the palace stands at z 0 and the Great Portal's porch at
+// z 26, so 26 m separates them; the book's own green enclosure before the
+// palace — 60 paces, the forecourt whose fourth side IS the palace (Dall. p.
+// 124) — is 88.8 m. 26 × 4 = 104, the first whole factor at which that
+// forecourt fits where the book puts it. See PIAZZA.z0 below, which is the
+// same 26 → 104 move.
 export const HP_STATIONS = [
   // Moved 2026-09-08 from [0, 45] — eight metres from the Great Portal — into
   // the middle of the rebuilt wood, 190 m of Hercynian deep. See _buildWood.
   { key: 'wood',             name: 'The Dark Wood',          folio: 2,
-    pos: [0, 340],    look: [0, 318],  radius: 16 },
+    pos: [0, 1360],    look: [0, 1272],  radius: 16 },
   { key: 'portal',           name: 'The Great Portal',       folio: 13,
-    pos: [0, 37],     look: [0, 26],   radius: 7, pitch: 0.2 },
+    pos: [0, 148],     look: [0, 104],   radius: 7, pitch: 0.2 },
   { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62,
-    pos: [-10.4, 23.8], look: [-23.5, 18.5], radius: 9 },
+    pos: [-41.6, 95.2], look: [-94, 74], radius: 9 },
   { key: 'three_doors',      name: 'The Three Doors',        folio: 119,
-    pos: [0, 21],     look: [0, 12],   radius: 6, pitch: 0.05 },
+    pos: [0, 84],     look: [0, 48],   radius: 6, pitch: 0.05 },
   // MOVED 2026-09-09 (DECISIONS.md call 51) out of the garden and into the
   // piazza, where chapter III puts it: *"non troppo distante dal magno caballo,
   // ad libella"* (1499 l. 1385), which Dallington renders "not farre distant
   // from the horse straight forward" (p. 46). It stood at [0, 6.5], PAST the
   // Great Portal, so the tour's own order crossed the gate three times.
   { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,
-    pos: [7, 49],     look: [7, 42],   radius: 6 },
+    pos: [28, 196],     look: [28, 168],   radius: 6 },
   { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,
-    pos: [-11.5, 0],  look: [-20, 0],  radius: 9 },
+    pos: [-46, 0],  look: [-80, 0],  radius: 9 },
   { key: 'quinta_essentia',  name: 'The Obelisk of the Trinity', folio: 119,
-    pos: [13, 0],     look: [21, 0],   radius: 8 },
+    pos: [52, 0],     look: [84, 0],   radius: 8 },
   { key: 'fountain',         name: 'Fountain of Venus',      folio: 80,
-    pos: [0, -10.5],  look: [0, -20],  radius: 8, pitch: 0.16 },
+    pos: [0, -42],  look: [0, -80],  radius: 8, pitch: 0.16 },
   { key: 'cythera',          name: 'The Shore to Cythera',   folio: 193,
-    pos: [0, -33],    look: [0, -46],  radius: 8 },
+    pos: [0, -132],    look: [0, -184],  radius: 8 },
   // Discoverable, not on the digit row:
   // Chapters XVII–XVIII, fifteen plates. It stands west of the grove with the
   // sea and Cythera behind it, which is the direction the pilgrims leave in.
   { key: 'venus_temple',     name: 'The Temple of Venus',    folio: 205,
-    pos: [-30, -12], look: [-30, -21], radius: 9 },
+    pos: [-120, -48], look: [-120, -84], radius: 9 },
   { key: 'labyrinth',        name: 'The Water Labyrinth',    folio: 177,
-    pos: [-29.2, 34], look: [-44, 34], radius: 12 },   // outside the basin, beside the viewing mount
+    pos: [-116.8, 136], look: [-176, 136], radius: 12 },   // outside the basin, beside the viewing mount
   // MOVED AND TURNED 2026-09-09 (DECISIONS.md call 51). He used to lie EAST-WEST
   // at (36, 4), past the portal. He now lies ALONG the valley on the piazza's
   // west side, feet at z 72 and head at z 44 -- which is the book's own approach,
@@ -74,33 +88,33 @@ export const HP_STATIONS = [
   // only "from thence" comes to the head (Dall. p. 44). The mouth opens north,
   // so the station stands between the porch and the mouth and looks back into it.
   { key: 'colossus',         name: 'The Colossus',           folio: 34,
-    pos: [-19, 35],  look: [-19, 41],  radius: 10 },
+    pos: [-76, 140],  look: [-76, 164],  radius: 10 },
   { key: 'priapus',          name: 'The Rite of Priapus',    folio: 185,
-    pos: [44, -12],  look: [44, -6],   radius: 7 },
+    pos: [176, -48],  look: [176, -24],   radius: 7 },
   { key: 'book_two',         name: "Book II — Treviso",      folio: 387,
-    pos: [44, 32],   look: [44, 22],   radius: 12 },
+    pos: [176, 128],   look: [176, 88],   radius: 12 },
   { key: 'polia',            name: "Polia's Garden",         folio: 143,
-    pos: [14.5, 23.5], look: [19, 19.5], radius: 7 },
+    pos: [58, 94], look: [76, 78], radius: 7 },
   { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158,
-    pos: [5.5, -4.5], look: [10.6, -9.4], radius: 5 },
+    pos: [22, -18], look: [42.4, -37.6], radius: 5 },
   { key: 'polyandrion',      name: 'The Polyandrion',        folio: 242,
-    pos: [23, -22], look: [30, -27], radius: 9 },
+    pos: [92, -88], look: [120, -108], radius: 9 },
   // The island itself — reached by Cupid's boat (digit 0), returned from by 9:
   { key: 'cythera_isle',     name: 'The Gardens of Cythera', folio: 290,
-    pos: [0, -104], look: [0, -150], radius: 13 },
+    pos: [0, -416], look: [0, -600], radius: 13 },
   { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358,
-    pos: [0, -133.5], look: [0, -150], radius: 11, pitch: 0.05 },
+    pos: [0, -534], look: [0, -600], radius: 11, pitch: 0.05 },
   // The last station of Book I (ch. XXIV, our pp. 370-379). It has no woodcut,
   // which is why the tour's stop 25 pointed at the theatre's floor for months:
   // every coverage check ran off the plate catalogue. See ROUTER.md rule 6.
   { key: 'adonis',           name: 'The Fountain of Adonis', folio: 370,
-    pos: [20.34, -122.01], look: [24.69, -116.02], radius: 8 },
+    pos: [81.36, -488.04], look: [98.76, -464.08], radius: 8 },
   // Appended after the island so the digit keys 1-9 keep their journey order.
   // The chess ballet is at signature g8r-h1r, facsimile pages 111-113 — the
   // Queen's entertainment after the banquet, and the last thing that happens
   // at her palace before Logistica and Thelemia lead the dreamer away.
   { key: 'chess',            name: 'The Human Chess Match',  folio: 111,
-    pos: [-32.5, 6], look: [-40, 6], radius: 8 },
+    pos: [-130, 24], look: [-160, 24], radius: 8 },
   // The first monument of the piazza. MOVED 2026-09-09 (DECISIONS.md call 51)
   // from [10.5, 22.5], which was past the Great Portal. The 1499 sites him
   // exactly: *"Sopra di questa piacia, dal'initio intro verso la porta x passi,
@@ -108,7 +122,7 @@ export const HP_STATIONS = [
   // inward toward the gate, ten paces. The piazza runs z 70.4 -> 26, so ten
   // paces (14.8 m) in from its start is z 55.6.
   { key: 'horse',            name: 'The Winged Horse',       folio: 22,
-    pos: [7, 62],      look: [7, 55.6],    radius: 6 },
+    pos: [28, 248],      look: [28, 222.4],    radius: 6 },
   // Second nature (GARDENS.md 2), built 2026-09-07: the worked countryside
   // Poliphilo comes into after the vaults -- "a fayre and plentifull countrie,
   // fruitefull fieldes, and fertile groundes" (Dallington p. 90). It lies west
@@ -127,15 +141,15 @@ export const HP_STATIONS = [
     // is the only aspect where all three of south, south-west and south-east
     // hit worked ground and neither rock nor glass. Modest rather than grand:
     // about 7 m to the nearest furrow. See ticket bug-fields-dark-wedge.
-    pos: [-24, 64],  look: [-24, 52],  radius: 12 },
+    pos: [-96, 256],  look: [-96, 208],  radius: 12 },
   // The southern approach, built 2026-09-08 (DIRECTIONS.md §3). Appended, so
   // the digit keys 1–9 keep their journey order.
   { key: 'great_oak',        name: 'The Great Oak',          folio: 20,
-    pos: [9, 178],   look: [9, 193],   radius: 14 },
+    pos: [36, 712],   look: [36, 772],   radius: 14 },
   { key: 'palm_plain',       name: 'The Palm and the Wolf',  folio: 23,
-    pos: [-6, 141],  look: [-9, 128],  radius: 13 },
+    pos: [-24, 564],  look: [-36, 512],  radius: 13 },
   { key: 'valley',           name: 'The Valley of the Approach', folio: 24,
-    pos: [0, 104],   look: [0, 60],    radius: 14, pitch: 0.04 },
+    pos: [0, 416],   look: [0, 240],    radius: 14, pitch: 0.04 },
   // Where the dream opens (Dall. p. 14), and where the player now wakes —
   // DECISIONS.md 2026-09-09 call 2: *"we need to be following the novel to the
   // letter."* Chapter I walks the plain FIRST and enters the wood off it; the
@@ -154,15 +168,19 @@ export const HP_STATIONS = [
   // the place: it is composed absence, and a 6 m trigger on an empty plain
   // would simply never fire.
   { key: 'plain',            name: 'The Spacious Plain',     folio: 14,
-    pos: [0, 448],   look: [0, 424],   radius: 26 },
+    pos: [0, 1792],   look: [0, 1696],   radius: 26 },
   // The gardens of glass and of silk -- chapter X, 1499 pp. 124-127, not XII-XIII
   // as this comment used to say. Built 2026-09-09 AGAINST Hunt's argument that
   // they should not be; see _buildArtificialGardens, and the note at this stop,
   // which is not optional. Sited 2026-09-13 against the Queen's palace, glass on
   // its south wall and silk on its north. The station stands at the west end of
   // the glass garden and looks down its beds, box and cypress alternating.
+  // pos nudged (-120.8 -> -119, 38.2 -> 40) 2026-09-17: at the plain x4 of
+  // the old siting this station's trigger circle clipped 'chess' by 0.1 m --
+  // the one pair the SPREAD pass didn't clear on its own. A 2.4 m nudge away
+  // from chess, not a rule change.
   { key: 'artificial',       name: 'The Gardens of Glass and Silk', folio: 124,
-    pos: [-30.2, 9.55], look: [-22.5, 9.55], radius: 9 },
+    pos: [-119, 40], look: [-90, 38.2], radius: 9 },
 ];
 
 // ── THE PIAZZA (chapter III; built 2026-09-09) ───────────────────────────
@@ -179,9 +197,13 @@ export const HP_STATIONS = [
 // "heape of ruinated, broken and downe-fallen marbles" Poliphilo climbs to
 // reach the colossus (p. 44), which is why its drums lie where they lie.
 export const PIAZZA = {
-  z0: 26,          // flush with the front of the porch
+  // z0 moved 26 -> 104 with SPREAD = 4 (2026-09-17, DECISIONS.md 54): this IS
+  // the porch line, and _buildGreatPortal's own Z anchor moves by the same
+  // factor, so the two stay flush. `side` is the book's OWN stated size (30
+  // paces) and does not scale — only the piazza's position does.
+  z0: 104,         // flush with the front of the porch
   side: 44.4,      // thirty paces
-  get z1() { return this.z0 + this.side; },        // 70.4, the court's mouth
+  get z1() { return this.z0 + this.side; },        // 148.4, the court's mouth
   get halfX() { return this.side / 2; },           // 22.2
   intercol: 22.2,  // fifteen paces
   colX: 21,        // the rows, set just inside the outermost edge
@@ -300,17 +322,18 @@ export const TRIUMPH_RELIEFS = {
   ],
 };
 
+// Positions x4 with SPREAD (2026-09-17, DECISIONS.md 54) -- see HP_STATIONS.
 export const TRIUMPHS = [
-  { key: 'europa',  title: 'Triumph of Europa',    motif: 'bull',  team: 'centaur',  pos: [10.6, -9.4],   color: 0xc8a040 },
-  { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-10.6, -9.4],  color: 0xb0c0d8 },
-  { key: 'danae',   title: 'Triumph of Danaë',     motif: 'gold',  team: 'unicorn',  pos: [-10.6, -30.6], color: 0xe0c060 },
-  { key: 'bacchus', title: 'Festival of Bacchus',  motif: 'fire',  team: 'leopard',  pos: [10.6, -30.6],  color: 0xd86a3a },
+  { key: 'europa',  title: 'Triumph of Europa',    motif: 'bull',  team: 'centaur',  pos: [42.4, -37.6],   color: 0xc8a040 },
+  { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-42.4, -37.6],  color: 0xb0c0d8 },
+  { key: 'danae',   title: 'Triumph of Danaë',     motif: 'gold',  team: 'unicorn',  pos: [-42.4, -122.4], color: 0xe0c060 },
+  { key: 'bacchus', title: 'Festival of Bacchus',  motif: 'fire',  team: 'leopard',  pos: [42.4, -122.4],  color: 0xd86a3a },
   // The fifth procession (#66, "Triumph of Vertumnus and Pomona: satyrs,
   // nymphs"). It did not exist in the world at all. The plate names no draught
   // beast — this is the rustic triumph, ACCOMPANIED by satyrs and nymphs on
   // foot rather than drawn by exotic teams — so it walks with its company.
   { key: 'vertumnus', title: 'Triumph of Vertumnus and Pomona', motif: 'fruit',
-    team: 'satyr', onFoot: true, pos: [0, -34.2], color: 0x8aa04a },
+    team: 'satyr', onFoot: true, pos: [0, -136.8], color: 0x8aa04a },
 ];
 
 // Is `o` inside `root`? Used to keep the acting Poliphilo out of the roll-up
@@ -370,14 +393,22 @@ export function isDescendantOf(o, root) {
 
   // The wood's own extent, so the duff, the trees, the clearance map and the
   // meadow all agree about where it is.
-export const WOOD = { x0: -100, x1: 100, z0: 225, z1: 420 };
+// SPREAD = 4 (2026-09-17, DECISIONS.md 54): the wood is a SIZE (three stadia
+// deep, WOODS.md §1) and does not grow at stage 1 -- it TRANSLATES. Its own
+// centre was (0, 322.5); offset = 3x that = (0, 967.5), so the depth (195 m)
+// and width (200 m) are unchanged and every builder that reads WOOD (_buildWood,
+// _buildApproach, _buildSpaciousPlain) follows without being touched itself.
+export const WOOD = { x0: -100, x1: 100, z0: 1192.5, z1: 1387.5 };
 
   // Five clearings where the canopy opens and the sun reaches the floor. These
   // are the wood's ONLY navigational information, and they are deliberate: with
   // no path and no sightline, the shafts are how a walker recovers the sun's
   // bearing and walks out of the Hercynian. Seeded, so the wood is the same
   // wood every time and can be learned.
-export const WOOD_CLEARINGS = [[-58, 262, 13], [24, 296, 11], [-16, 340, 15], [62, 372, 12], [-44, 398, 10]];
+// Translated by the same (0, 967.5) as WOOD above -- x and radius (a size)
+// are untouched, only z moves so the clearings stay in the same relative
+// place inside the wood.
+export const WOOD_CLEARINGS = [[-58, 1229.5, 13], [24, 1263.5, 11], [-16, 1307.5, 15], [62, 1339.5, 12], [-44, 1365.5, 10]];
 
   // ── POLIPHILO, ACTING ─────────────────────────────────────────────────────
   //

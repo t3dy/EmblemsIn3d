@@ -294,7 +294,11 @@ export function attachShade(field, texture, x0, z0, w, d) {
 // gates placement (flower drifts, clump thinning).
 export function createMeadowField({
   count = 20000,
-  bounds = { x0: -42, x1: 42, z0: -33, z1: 52 },
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): the mainland grass/undergrass/
+  // wildflower fields in nature.js._buildMeadow rely on this DEFAULT (they
+  // pass no bounds of their own), so it has to grow x4 with the cluster it
+  // covers, or the sward stops well short of the now-spread precincts.
+  bounds = { x0: -168, x1: 168, z0: -132, z1: 208 },
   seed = 7331,
   clearance = null,
   accept = null,

@@ -25,31 +25,31 @@ import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=57';
-import { DragonFlight } from '../systems/DragonFlight.js?v=2';
+import { DragonFlight } from '../systems/DragonFlight.js?v=3';
 import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=11';
 import { Creatures } from '../systems/Creatures.js?v=3';
 import { Masonry } from '../systems/Masonry.js?v=8';
-import { buildLitter } from '../systems/Litter.js?v=5';
+import { buildLitter } from '../systems/Litter.js?v=6';
 import { isVariant } from '../systems/AssetVariants.js?v=12';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=6';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
-import { createMeadowField, attachShade } from '../systems/Meadow.js?v=5';
+import { createMeadowField, attachShade } from '../systems/Meadow.js?v=6';
 // The world's shared tables. Lifted out 2026-09-09; see world/constants.js.
 import {
   HP_STATIONS, EYE, METALS, DOORS, ELEMENTS, SENSE_NYMPHS,
   TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS, isDescendantOf,
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
-} from './world/constants.js?v=8';
+} from './world/constants.js?v=9';
 import { Materials } from './world/materials.js?v=7';
-import { Nature } from './world/nature.js?v=13';
-import { Approach } from './world/approach.js?v=10';
-import { Portal } from './world/portal.js?v=24';
-import { Palace } from './world/palace.js?v=19';
+import { Nature } from './world/nature.js?v=14';
+import { Approach } from './world/approach.js?v=11';
+import { Portal } from './world/portal.js?v=25';
+import { Palace } from './world/palace.js?v=20';
 import { Triumphs } from './world/triumphs.js?v=10';
-import { Tombs } from './world/tombs.js?v=7';
-import { Temple } from './world/temple.js?v=3';
-import { Cythera } from './world/cythera.js?v=8';
+import { Tombs } from './world/tombs.js?v=8';
+import { Temple } from './world/temple.js?v=4';
+import { Cythera } from './world/cythera.js?v=9';
 import { Rollup } from './world/rollup.js?v=9';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
@@ -81,7 +81,10 @@ export class HPWorldScene {
       // maxZ was 50 -- the far edge of the old dark wood. The wood now begins
       // at z = 200 and the spacious plain the dream opens on runs to z = 470
       // (DIRECTIONS.md 3), so the walkable box reaches it.
-      bounds: { minX: -140, maxX: 140, minZ: -206, maxZ: 462 },
+      // SPREAD = 4 (2026-09-17, DECISIONS.md 54): every bound x4, so the
+      // walkable box still reaches the plain (station z 1792 + 26 radius)
+      // and the shore rails (z -384).
+      bounds: { minX: -560, maxX: 560, minZ: -824, maxZ: 1848 },
       onDigit: (n) => {
         if (n === 0) { this.teleport('cythera_isle'); return; }   // Cupid ferries the willing
         const st = HP_STATIONS[n - 1];
@@ -104,7 +107,12 @@ export class HPWorldScene {
       // DECISIONS.md 2026-09-09 call 2. The wood is 28 m ahead and you walk
       // into it, which is what makes it a wood you enter rather than a wood you
       // are simply in.
-      this.walker.player.pos.set(0, 0, 448);
+      // SPREAD = 4 (2026-09-17, DECISIONS.md 54): this default was a hardcoded
+      // copy of the old 'plain' station pos (0, 448), not a read of HP_STATIONS,
+      // so scaling the table did not move it -- found live, spawning the
+      // walker deep in the old, now-empty siting. 448 -> 1792, matching
+      // HP_STATIONS['plain'].pos exactly.
+      this.walker.player.pos.set(0, 0, 1792);
       this.walker.player.yaw = 0;
       this.walker.player.pitch = -0.02;
     }
@@ -254,18 +262,21 @@ export class HPWorldScene {
     // The book's most copied image, and it was missing from the world: set
     // just north of Polia's garden, facing the dreamer who arrives from the
     // portal (woodcut_catalog #19; see _buildNymphFountain).
-    this._buildNymphFountain(19, 27.5, 0);
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (19, 27.5) -> (76, 110).
+    this._buildNymphFountain(76, 110, 0);
     this._buildDoorsWall();
     this._buildColossalHorse();
     // The elephant stands in the PIAZZA now, not at the world origin: the
     // book's court before the porch, "not farre distant from the horse straight
     // forward" (Dall. p. 46). _placeAt carries his plaques and his collider
     // with him -- setting his group's position alone would not. DECISIONS.md 51.
-    this._placeAt(7, 42, 0, () => this._buildElephant());
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (7, 42) -> (28, 168).
+    this._placeAt(28, 168, 0, () => this._buildElephant());
     this._buildPalace();
     this._buildChessBallet();
     this._buildQuinta();
-    this._buildGracesFountain(0, -20);   // folio 80's own fountain; ch. XXIII's stays on Cythera
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (0, -20) -> (0, -80).
+    this._buildGracesFountain(0, -80);   // folio 80's own fountain; ch. XXIII's stays on Cythera
     this._buildTriumphs();
     this._buildSecondBridge();
     this._buildVenusTemple();
@@ -276,7 +287,8 @@ export class HPWorldScene {
     // Turned a quarter and laid along the valley's west side, feet toward the
     // arriving dreamer, head toward the porch. He used to lie east-west at
     // (36, 4), past the Great Portal. DECISIONS.md 51.
-    this._placeColossus(-19, 44);
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (-19, 44) -> (-76, 176).
+    this._placeColossus(-76, 176);
     this._buildPriapusRite();
     this._buildBookTwo();
     this._buildCythera();
@@ -320,7 +332,11 @@ export class HPWorldScene {
     // can fold it away while the dreamer is inside the garden. Must run after
     // everything is built and before the draw calls are compiled, because the
     // gathering is a reparenting and the compiler merges per group.
-    const folded = this._foldPoliaCourt(19, 20, 9, 42);
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
+    // true-scale, item 5): centre (19, 20) -> (76, 80), matching
+    // _buildPoliaGarden's own CX/CZ move; the ring radii are distances against
+    // OTHER stations that also moved x4, so they scale too (9 -> 36, 42 -> 168).
+    const folded = this._foldPoliaCourt(76, 80, 36, 168);
     console.info("[dream fold]", folded, "objects fold for Polia's garden,",
       this._poliaArcade ? this._poliaArcade.children.length : 0, "arcade pieces stand");
 
@@ -942,7 +958,9 @@ export class HPWorldScene {
     const dragon = this.cast.animals.flyingDragon(2.4);
     this.scene.add(dragon);
     this.flight = new DragonFlight(this.renderer, dragon, {
-      bounds: { minX: -60, maxX: 60, minZ: -208, maxZ: 54, minY: 0.9, maxY: 48 },
+      // SPREAD = 4 (2026-09-17, DECISIONS.md 54): x/z bounds x4; minY/maxY are
+      // altitude, a size, and stay.
+      bounds: { minX: -240, maxX: 240, minZ: -832, maxZ: 216, minY: 0.9, maxY: 48 },
       onDigit: (n) => { if (n === 0) this.teleport('cythera_isle'); else { const st = HP_STATIONS[n - 1]; if (st) this.teleport(st.key); } },
       onLand: () => { this.endFlight(); this.onLand?.(); },
     });

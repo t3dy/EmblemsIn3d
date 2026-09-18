@@ -11,7 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { DOORS } from './constants.js?v=8';
+import { DOORS } from './constants.js?v=9';
 
 export const Tombs = {
   // ── The Polyandrion — the ruined temple of the dead ───────────────────────
@@ -26,7 +26,8 @@ export const Tombs = {
   _buildPolyandrion() {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
-    const PX = 30, PZ = -27;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (30, -27) -> (120, -108).
+    const PX = 120, PZ = -108;
 
     // a ruin floor of cracked paving, half-lost in the grass
     const ruinMat = woodcut ? S.mat({ tone: 0.05, rim: 0 }) : S.mat({ color: 0x9a8a6a, roughness: 0.95 });
@@ -694,7 +695,8 @@ export const Tombs = {
   // built as unread devices: five roundels on a broken wall of the ruin, each
   // spelling a sequence from the fifteen sourced signs, and the plaque says
   // plainly that no one has read them. The tour must say the same.
-  _polyandrionMedallions(PX = 30, PZ = -27) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (30, -27) -> (120, -108).
+  _polyandrionMedallions(PX = 120, PZ = -108) {
     const wz = PZ + 9.4;
     this._m(new THREE.BoxGeometry(9.0, 0.5, 0.8), this._darkStoneMat, PX, 0.25, wz, { cast: false });
     this._m(new THREE.BoxGeometry(9.0, 2.2, 0.6), this._stoneMat, PX, 1.6, wz, { outline: true });
@@ -726,7 +728,8 @@ export const Tombs = {
   // p. 425); and the Venus-priestess enthroned, the lovers kissing in her
   // presence (#163). The chariots are built as the vision, on poles above
   // the chamber, so the window frames them.
-  _buildBookTwo(BX = 44, BZ = 22) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (44, 22) -> (176, 88).
+  _buildBookTwo(BX = 176, BZ = 88) {
     const S = this.style;
     const lit = S.key !== 'woodcut';
     const stone = this._stoneMat, dark = this._darkStoneMat;

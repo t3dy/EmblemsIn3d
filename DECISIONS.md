@@ -11,6 +11,41 @@ Directional calls made mid-build, recorded so they don't get re-litigated. Newes
 
 ---
 
+## 2026-09-17 — 54. The world is rebuilt at the book's own scale
+
+*Reverses call 3 of 2026-09-09. Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
+
+Ted: *"I feel like we still don't have all the structures that Poliphilo visits in the novel,
+and our dream garden is still too cramped. I'd like to spread everything out and make sure we
+build everything that's in the novel."* Offered true scale, true-distances-with-capped-monuments,
+or a uniform 1 : 2, he chose **true scale, 1 : 1, staged**.
+
+The measurement that settles the argument: the mainland holds all 18 of its stations inside
+**77 × 105 m**, while the book gives the green enclosure before the palace **88.8 m** on its own
+— and **nine pairs of stations physically overlap**, the worst by 12.8 m. The monuments are built
+at ~1 : 60 and the gardens at ~1 : 12, so the compression is **not uniform**: the world reads as
+crowded rather than as small, which is the worse of the two.
+
+Staged, in this order, and no precinct is moved twice: **the plan as data first** (one siting
+table, every separation sourced and marked *stated* or *ours*), **then precincts translate whole**
+via `_placeAt`, which already carries plaques and colliders with the geometry, **then the
+monuments grow** into the room the plan made.
+
+The blocker `DIRECTIONS.md` §6A names — a ±58 m shadow frustum — **was already fixed on
+2026-09-08** and §6A is stale: the shadow box tracks the walker at ±118 m with `far = 700`.
+The real question at true scale is whether a *tracking* box of that size still covers the
+largest thing standing next to you, and the pyramid is 1 140 m wide.
+
+## 2026-09-17 — 55. Book II is built as a second place, not narrated at one station
+
+*Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
+
+Chapters XXV–XXXVIII get real ground — Treviso, the temple of Diana, Polia's chamber, the river
+Sile — not one station with commentary. **A told room is geometry**: the reading rule the
+researchers now work under, because Book II was half-invisible to the ledger for the same shape
+of reason chapter V's vaults were. Not a missing plate this time but a missing *kind* — nobody
+had decided narrated places were buildable, so nobody enumerated them as places.
+
 ## 2026-09-09 — Version 5 shipped, and what it settled
 
 *Written after the fact, so the next reader does not have to reconstruct it from six commits.
@@ -169,8 +204,14 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*53 calls. Each links to its full text in the archive.*
+*55 calls. Each links to its full text in the archive.*
 
+
+**2026-09-17**
+
+- [54. The world is rebuilt at the book's own scale](decisions/2026-09.md#2026-09-17--54-the-world-is-rebuilt-at-the-books-own-scale-this-reverses-call-3-of-2026-09-09) — **reverses call 3 of 2026-09-09**
+- [55. Book II is built as a second place, not narrated at one station](decisions/2026-09.md#2026-09-17--55-book-ii-is-built-as-a-second-place-not-narrated-at-one-station)
+- [56. Stage 1 of the true-scale plan built: SPREAD = 4](decisions/2026-09.md#2026-09-17--56-stage-1-of-the-true-scale-plan-built-spread--4)
 
 **2026-09-13**
 

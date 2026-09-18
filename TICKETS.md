@@ -6,13 +6,47 @@
 
 ---
 
-**39 tickets** — 7 open, 3 declined, 29 done. By kind: 18 debt, 10 bug, 7 infra, 2 perf, 1 question, 1 feat.
+**43 tickets** — 11 open, 3 declined, 29 done. By kind: 19 debt, 13 bug, 7 infra, 2 perf, 1 question, 1 feat.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
+
+### `bug-plate-page-seq-offset` — woodcut_catalog.page_seq runs ~10 pages behind the text it illustrates, so the ledger attaches plates to the wrong chapters
+
+**○ open** · bug · priority 1 · hp-researcher
+ · opened 2026-09-17
+
+
+**Evidence.** Found independently by five chapter researchers on 2026-09-17 and confirmed each time by opening the scan and matching its printed Italian verbatim against translation/en/, not by inference. hp1499_p386.jpg's text is our p. 396 word for word; hp1499_p421.jpg's text is our p. 431; hp1499_p433.jpg's is our p. 443; hp1499_p435.jpg's is our p. 446; hp1499_p447.jpg's is our p. 457; hp1499_p341.jpg carries the Area-of-32-paces passage, which is our p. 351. The offset is about ten pages -- five leaves, consistent with the preliminaries -- and it is a property of the CATALOGUE's numbering, not of the scans. coverage_seed.py derives chapters[].plates by matching page_seq into a chapter's pages_1499 range, so every plate in Book II and much of Book I is filed one chapter early. Concrete wrong attributions already in the ledger: #152-153 (Polia reading as he dies; Polia dragging the corpse) dropped from ch. XXVI entirely; #157-160 filed under XXVIII when they illustrate XXIX; #161-162 missing from XXX; #164-165 filed under XXXI when they belong to XXXII-XXXIII; #166-168 filed under XXXIII when they belong to XXXV; #149-150 filed under XXII-XXIII when they show ch. XXIV's sepulchre of Adonis.
+
+**Acceptance.** coverage_seed.py resolves a plate to a chapter through a corrected page mapping rather than raw page_seq, and all eight attributions listed in the evidence come out right when the seeder is re-run. A regression test asserts that plate #153 (Polia dragging the corpse) lands on chapter XXVI and plate #163 (the kiss before the priestess) on chapter XXXI.
+
+**Risk.** The offset must be MEASURED across the whole book before it is applied, not assumed to be a constant ten: the five confirmations are all from pp. 341-457 and nobody has checked Book I's opening. Applying a blanket shift would trade a known error for an unknown one. The corpus at C:\Dev\hypnerotomachia polyphili is read-only from here, so the correction belongs in coverage_seed.py or in a mapping table beside it -- not in hp.db.
+
+**Files.** `scripts/coverage_seed.py` · `research/coverage.json` · `src/data/tours.json`
+
+**See.** ROUTER.md · HPTOTOURPIPELINE.md
+
+
+### `plan-resite-precincts-true-scale` — Move every precinct onto the true-scale plan
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-17
+
+
+**Evidence.** Measured 2026-09-17: the mainland holds all 18 of its stations inside 77 x 105 m, and NINE PAIRS of stations overlap once their radii are counted -- the gardens of glass and silk sit 12.8 m inside the chess ground, the colossus 11.8 m inside the water labyrinth, the court inside the three doors, the fountain inside the triumphs. The book gives the green enclosure alone 88.8 m. research/plan.json now holds the true-scale siting for all 23 precincts, 13 729 m along the itinerary and 1 850 m at its widest, every distance marked stated or ours.
+
+**Acceptance.** Every precinct's geometry stands at its plan.json centre, and a re-run of the station-spacing measurement reports ZERO pairs with negative clearance. hpDiag() before and after, both readings in the commit message, per rule 7.
+
+**Risk.** The mechanism exists and is proven -- _placeAt (world/materials.js) reroutes this.scene and patches _wallCol/_circleCol so baked-in world coordinates, plaques and colliders travel together -- so a precinct moves by wrapping its builder in an offset. What does NOT travel that way: anything spanning precincts (the ground, the valley mountains, the meadow, the rills between court and fountain), the shade map, and _foldPoliaCourt, whose 42 m ring is sized for the cramped plan. Move one precinct, verify live, then the next. Do not move the world in one commit.
+
+**Files.** `src/scenes/HPWorldScene.js` · `src/scenes/world/constants.js` · `research/plan.json`
+
+**See.** DECISIONS.md · research/plan.md
+
 
 ### `bug-court-has-no-room-left` — The Court of Eleuterylida is full: nothing more of the banquet can be put in it
 
@@ -35,6 +69,40 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js`
 
 **See.** Dallington pp. 143-160 · DECISIONS.md 2026-09-09 the dream does not have to add up
+
+
+### `bug-dallington-page-drift` — Dallington's page numbers drift out of sync with the 1499's after about chapter XIV
+
+**○ open** · bug · priority 2 · hp-researcher
+ · opened 2026-09-17
+
+
+**Evidence.** Found enumerating chapter XVI, 2026-09-17. coverage.json gives XVI pages_1499 [181,188], which is right for the 1499 and is confirmed by translation/en/page_181 -page_188.md, each of which headers itself '# Page NNN -- Chapter XVI'. But the Dallington markdown's own OCR markers <!-- Page 181 --> .. <!-- Page 188 --> carry the same numbers over completely different content: the ivied hundred-arch garden and the trigonal altar with the three golden sphinxes, which is chapter XIII-XIV material and is already built (palace.js _buildPoliaArcade, and the altar around palace.js:2305). Dallington abridges to just under half the Italian, so his page count falls behind through Book I and the two numberings cannot be used interchangeably after roughly chapter XIV. Same class as the closed ticket bug-chapter-xi-tour-misattributed, one seam further in.
+
+**Acceptance.** coverage.json's text_source note for every chapter whose text_source is Dallington says which page numbering its pages_1499 field is in, and RECIPES/research-a-chapter.md tells the reader to confirm a Dallington page against the translation/en/ header before citing it. A spot check of chapters XIV, XV and XVI finds the cited passage at the cited page.
+
+**Risk.** Every source string already written against Dallington in the ledger for chapters XII-XVI may carry his page or the 1499's, and the two now differ. Do not mass-rewrite them: check each against the text before changing it, because some are right.
+
+**Files.** `research/coverage.json` · `RECIPES/research-a-chapter.md`
+
+**See.** ROUTER.md
+
+
+### `bug-tours-prose-ahead-of-geometry` — Tour commentary describes scenes that were never built
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-17
+
+
+**Evidence.** Two independent instances found on 2026-09-17 while enumerating chapters XXIII and XV. (1) The Fountain of Venus stop in src/data/tours.json describes Bacchus and Ceres standing at the fountain dripping their liquor into it, quoting the Hand-E alchemical gloss as though the figures were in front of you; grep of world/temple.js _buildFountain and world/cythera.js finds no such figures anywhere. (2) The priapus stop states as fact that Dallington's English 'stops in the middle of a sentence, at the word Mustulento' -- it does not: Mustulento Autumno S. is a complete Latin tag under one face of the Four Seasons altar, and the English runs on for several hundred more lines through a seaside ruined temple and a full blazon of Polia, ending on FINIS. Both were found by reading the page rather than the commentary about it.
+
+**Acceptance.** Neither claim stands: the Bacchus-and-Ceres sentence either describes built geometry or is rewritten to say what is actually there, and the Mustulento claim is corrected. A sweep of tours.json for present-tense descriptions of figures reports every one whose name does not appear in any builder.
+
+**Risk.** The second one is not only a copy fix: it means there is public-domain English for the seaside temple and the blazon of Polia that the project has been telling itself does not exist. Closing the ticket by editing the sentence alone would bury that.
+
+**Files.** `src/data/tours.json`
+
+**See.** ROUTER.md
 
 
 ### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it

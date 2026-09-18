@@ -13,7 +13,9 @@ import * as THREE from 'three';
 
 export class DragonFlight {
   constructor(renderer, dragon, {
-    bounds = { minX: -60, maxX: 60, minZ: -208, maxZ: 54, minY: 0.9, maxY: 48 },
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): dead default -- HPWorldScene
+    // always passes explicit bounds -- but kept in step regardless.
+    bounds = { minX: -240, maxX: 240, minZ: -832, maxZ: 216, minY: 0.9, maxY: 48 },
     onDigit = null,
     onLand = null,
   } = {}) {

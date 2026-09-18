@@ -13,8 +13,8 @@
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
-import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=5';
-import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=8';
+import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=6';
+import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=9';
 
 export const Nature = {
   // ── The pleasures of the garden (PLEASURES.md) ───────────────────────────
@@ -799,7 +799,10 @@ export const Nature = {
   // (0,1,0) = (-1,0,0). Facing north, his right is -x. The DEXTER stream is
   // therefore the western one, and it is named so in the roll-up.
   _buildDividingSpring() {
-    const SX = -40, SZ = 56;              // in view from the fields station
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): shifted by the same (-72,
+    // +192) as _buildSecondNature's field box, so the spring stays in view
+    // from the fields station.
+    const SX = -112, SZ = 248;              // in view from the fields station
     const S = this.style;
     const woodcut = S.key === 'woodcut';
     const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 233.3) * 43758.5453; return v - Math.floor(v); };
@@ -1153,7 +1156,7 @@ export const Nature = {
       ...common, clearance: isleClear,
       count: mobile ? 6000 : 20000,
       seed: 5150,
-      bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
+      bounds: { x0: -50, x1: 50, z0: -650, z1: -550 },  // SPREAD=4: island CZ -150 -> -600
       blade: { height: 0.27, width: 0.018, segments: 3, planes: 3 },
       colors: { root: 0x2b3f1c, tip: 0x62803a, rootB: 0x33501f, tipB: 0x82964e, back: 0xb8b87c },
       wind: { windStrength: 0.16, windSpeed: 1.15 },
@@ -1162,7 +1165,7 @@ export const Nature = {
       ...common, clearance: isleClear,
       count: mobile ? 4000 : 13000,
       seed: 5151,
-      bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
+      bounds: { x0: -50, x1: 50, z0: -650, z1: -550 },  // SPREAD=4: island CZ -150 -> -600
       blade: { height: 0.14, width: 0.015, segments: 2, planes: 3 },
       colors: { root: 0x24361a, tip: 0x4a6629, rootB: 0x2a4020, tipB: 0x5c7636, back: 0x90a064 },
       wind: { windStrength: 0.09, windSpeed: 1.0 },
@@ -1171,7 +1174,7 @@ export const Nature = {
       ...common, clearance: isleClear,
       count: mobile ? 900 : 2600,
       seed: 611,
-      bounds: { x0: -50, x1: 50, z0: -200, z1: -100 },
+      bounds: { x0: -50, x1: 50, z0: -650, z1: -550 },  // SPREAD=4: island CZ -150 -> -600
       accept: (x, z, clump) => clump > 0.52,
       blade: { height: 0.42, width: 0.019, segments: 3, planes: 2, flare: 1.9 },
       colors: { root: 0x314c1d, tip: 0xcc6472, rootB: 0x354c20, tipB: 0xd8bc5e, back: 0xe0c898 },
@@ -1191,7 +1194,9 @@ export const Nature = {
     // chicory and periwinkle, white for lily-of-the-valley, purple for cyclamen,
     // dittany and loosestrife. Four drifts, then, in those colours, on the
     // sward round the palace and the court, and nowhere else.
-    const palaceField = (x, z) => x > -44 && x < -3 && z > -18 && z < 30;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): x4 so it still covers the
+    // palace (-82, 0) and the court (-76, 80), both now much further out.
+    const palaceField = (x, z) => x > -176 && x < -12 && z > -72 && z < 120;
     const fieldDrift = (seed, thr, tip, tipB, back, scale) => createMeadowField({
       ...common, count: mobile ? 220 : 620, seed,
       accept: (x, z, clump) => palaceField(x, z) && clump > thr,

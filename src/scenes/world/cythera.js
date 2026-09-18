@@ -11,37 +11,42 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { CYTHERA_CLIMBERS, SPECIES } from './constants.js?v=8';
+import { CYTHERA_CLIMBERS, SPECIES } from './constants.js?v=9';
 
 export const Cythera = {
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
 
   _buildCythera() {
     const S = this.style;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
+    // true-scale, item 4): the shore is CONNECTIVE ground between the
+    // mainland and an island that just moved from z -150 to -600, so both
+    // planes' sizes AND positions grow x4, like the approach corridor. Pier,
+    // rails and boat position x4 with them so the crossing still lines up.
     // The sea now runs all the way to the island (its material breathes in update)
-    const sea = this._m(new THREE.PlaneGeometry(170, 185), S.waterMat(), 0, 0.03, -126, { rx: -Math.PI / 2, cast: false });
+    const sea = this._m(new THREE.PlaneGeometry(680, 740), S.waterMat(), 0, 0.03, -504, { rx: -Math.PI / 2, cast: false });
     if (sea.material.transparent) this._sea = { mat: sea.material, base: sea.material.opacity };
     // Sand strip
     const sandMat = S.key === 'woodcut' ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0x9a8a64, roughness: 0.95 });
-    this._m(new THREE.PlaneGeometry(130, 4.5), sandMat, 0, 0.05, -35.5, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(520, 18), sandMat, 0, 0.05, -142, { rx: -Math.PI / 2, cast: false });
 
     // Pier out over the water
     for (let i = 0; i < 4; i++) {
-      this._m(new THREE.BoxGeometry(2.2, 0.12, 1.6), this._trunkMat, 0, 0.22, -38.2 - i * 1.7);
-      for (const s of [-1, 1]) this._m(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 6), this._trunkMat, s * 0.95, 0.05, -38.2 - i * 1.7);
+      this._m(new THREE.BoxGeometry(2.2, 0.12, 1.6), this._trunkMat, 0, 0.22, -152.8 - i * 6.8);
+      for (const s of [-1, 1]) this._m(new THREE.CylinderGeometry(0.08, 0.08, 0.5, 6), this._trunkMat, s * 0.95, 0.05, -152.8 - i * 6.8);
     }
     // Sea rails: the crossing is Cupid's to make, not the walker's. Everything
     // seaward of the shore is fenced; the island keeps its own coast.
-    this._wallCol(-58, -1.2, -37, -96);
-    this._wallCol(1.2, 58, -37, -96);
-    this._wallCol(-2, 2, -44.6, -96);
+    this._wallCol(-232, -4.8, -148, -384);
+    this._wallCol(4.8, 232, -148, -384);
+    this._wallCol(-8, 8, -178.4, -384);
     // How to sail (digit 0 → the island; 9 returns)
     this._plaque({ main: 'AD CYTHERAM', sub: 'PRESS 0 — CUPID FERRIES THE WILLING' },
-      1.7, 0.42, 1.6, 1.15, -41.5, Math.PI * 0.06, true);
+      1.7, 0.42, 6.4, 1.15, -166, Math.PI * 0.06, true);
 
     // Cupid's boat, riding at the pier's end -- the book's own exeres, since
     // 2026-09-08 (ch. XIX-XX, our pp. 276-277, 284-285, 290)
-    this._buildExeres(0, -47.2);
+    this._buildExeres(0, -188.8);
 
     // (The old distant-isle mock stood here at z = -58. The real island is now
     // built by _buildCytheraIsle at z = -150, hazed by the same fog that used
@@ -228,7 +233,9 @@ export const Cythera = {
   _buildCytheraIsle() {
     const S = this.style;
     const lit = S.key !== 'woodcut';
-    const CX = 0, CZ = -150, R = 50;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): CZ -150 -> -600. R (the
+    // island's own radius, stated at 1499 pp. 292, 297) is a size and stays.
+    const CX = 0, CZ = -600, R = 50;
     const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
     // TWENTY, not twelve (2026-09-08). Our p. 294 does not merely assert the
     // number -- it gives the classical golden-section construction for

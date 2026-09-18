@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=289';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=290';
 import { VaultsScene } from './scenes/VaultsScene.js?v=14';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';
@@ -1348,7 +1348,8 @@ window.hpRoll = async () => {
   // small AND ON THE GROUND. That points here, the open sward between the
   // elephant plaza and the fountain grove: grass underfoot, and the triumph
   // cars and the rills within a short roll.
-  await launchHPWorld({ chooser: false, spawn: { pos: [7, 0, -7], yaw: Math.PI, pitch: -0.03 } });
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (7, -7) -> (28, -28).
+  await launchHPWorld({ chooser: false, spawn: { pos: [28, 0, -28], yaw: Math.PI, pitch: -0.03 } });
   const sc = state.activeScene;
   if (!sc) return;
   const hud = document.getElementById('roll-hud');
@@ -1784,8 +1785,10 @@ const dreamUI = {
 function startDream() {
   const scene = state.activeScene;
   if (!(scene instanceof HPWorldScene) || scene.dream) return;
-  // the dream begins in the dark wood
-  scene.walker.player.pos.set(0, 0, 49.5);
+  // the dream begins in the dark wood (DreamMode teleports to its own first
+  // stop immediately after; this is just a safe starting floor)
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): 49.5 -> 198.
+  scene.walker.player.pos.set(0, 0, 198);
   scene.walker.player.yaw = 0;
   scene.walker.player.pitch = -0.02;
   scene.dream = new DreamMode(scene, dreamUI, DREAM_STOPS, DREAM_REACTIONS);

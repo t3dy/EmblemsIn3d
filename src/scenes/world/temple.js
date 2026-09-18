@@ -75,7 +75,8 @@ export const Temple = {
   //   gelid heart" — and the virgins answer "So be it" (p. 216). Polia's own
   //   account of it, two chapters later, is that love "stole her from the
   //   chaste college" and made her put her torch out.
-  _buildVenusTemple(TX = -30, TZ = -21) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (-30, -21) -> (-120, -84).
+  _buildVenusTemple(TX = -120, TZ = -84) {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
     const M = (color, extra = {}) => woodcut
@@ -1281,7 +1282,8 @@ export const Temple = {
   // songs. Dallington's Bacchic company (p. 235): nymphs "some naked with
   // aprons of goates skins", timbrels and flutes, vine-sprigs about their
   // heads. The god is built as the plate has him, a herm.
-  _buildPriapusRite(RX = 44, RZ = -6) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (44, -6) -> (176, -24).
+  _buildPriapusRite(RX = 176, RZ = -24) {
     const S = this.style;
     const lit = S.key !== 'woodcut';
     const gold = lit ? S.mat({ color: 0xd9b25a, metalness: 0.9, roughness: 0.25 }) : S.mat({ tone: 0.04 });
@@ -1573,7 +1575,8 @@ export const Temple = {
   // throat, which Dallington leaves in Greek. Hunt notes that the 1499 and the
   // 1592 both decline to illustrate it (GARDENS.md §3); this is therefore a
   // reading of the text, not of a plate.
-  _buildWaterLabyrinth(LX = -44, LZ = 34) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (-44, 34) -> (-176, 136).
+  _buildWaterLabyrinth(LX = -176, LZ = 136) {
     const S = this.style;
     const lit = S.key !== 'woodcut';
     const stone = this._stoneMat, dark = this._darkStoneMat;

@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { METALS, SENSE_NYMPHS } from './constants.js?v=8';
+import { METALS, SENSE_NYMPHS } from './constants.js?v=9';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Palace = {
@@ -20,7 +20,11 @@ export const Palace = {
 
   _buildCourt() {
     const S = this.style;
-    const CX = -19, CZ = 20;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (-19, 20) -> (-76, 80). Every
+    // interior offset in this builder is CX/CZ-relative, so moving the anchor
+    // moves the whole precinct -- plaques and colliders included -- without
+    // touching a single relative coordinate below. See HP_STATIONS.
+    const CX = -76, CZ = 80;
     const woodcut = S.key === 'woodcut';
     const gold = woodcut ? S.mat({ tone: 0.02 })
                          : S.mat({ color: 0xc9a244, metalness: 0.9, roughness: 0.26 });
@@ -554,7 +558,8 @@ export const Palace = {
   _buildChessBallet() {
     const S = this.style;
     const lit = S.key !== 'woodcut';
-    const CX = -40, CZ = 6;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (-40, 6) -> (-160, 24).
+    const CX = -160, CZ = 24;
     const SQ = 1.15;                      // a square, and a dancer's ground
     const B = 8 * SQ;                     // the board, 9.2 units across
 
@@ -878,7 +883,11 @@ export const Palace = {
   _buildPalaceFrieze() {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
-    const FX = -12.90, W = 13.2, H = 1.0, Y = 1.32;
+    // FX was measured against the palace front, not carried by a shared
+    // constant; SPREAD = 4 (2026-09-17, DECISIONS.md 54) moves the palace's
+    // CX from -20.5 to -82, an offset of -61.5, and FX moves the same amount:
+    // -12.90 -> -74.40.
+    const FX = -74.40, W = 13.2, H = 1.0, Y = 1.32;
 
     const tex = this._reliefTexture("genii, dolphins and a bull's skull");
     // safe to set the wrap on the cached texture: this scene has one user
@@ -899,7 +908,9 @@ export const Palace = {
 
   _buildPalace() {
     const S = this.style;
-    const CX = -20.5;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): -20.5 -> -82; z stays at the
+    // palace's own 0. _buildArtificialGardens keys off this CX -- see there.
+    const CX = -82;
     this._buildPalaceFrieze();
 
     // A stepped platform, not a slab: stylobate over two courses, with a flight
@@ -1152,7 +1163,9 @@ export const Palace = {
   },
 
   _buildPoliaGarden() {
-    const CX = 19, CZ = 20;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (19, 20) -> (76, 80). Also the
+    // anchor _foldPoliaCourt's ring is centred on -- see the call site.
+    const CX = 76, CZ = 80;
     this._m(new THREE.BoxGeometry(11, 0.22, 10), this._darkStoneMat, CX, 0.11, CZ, { cast: false });
 
     // The arbour of sweet jessamine, a tunnel he walks in under. Rebuilt
@@ -1434,7 +1447,11 @@ export const Palace = {
     // first nature into second, which is Hunt's whole point. It was first laid
     // west of the water-labyrinth and had to move: the labyrinth basin is
     // 9.8 m in radius about (-44, 34) and the fields were standing in it.
-    const X0 = -60, X1 = -20, Z0 = 46.5, Z1 = 61;
+    //
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): a SIZED precinct, so it
+    // TRANSLATES rather than stretches -- shifted by the same (-72, +192) as
+    // the 'fields' station's own move (-24, 64) -> (-96, 256).
+    const X0 = -132, X1 = -92, Z0 = 238.5, Z1 = 253;
     const CXm = (X0 + X1) / 2, CZm = (Z0 + Z1) / 2, WID = X1 - X0;
 
     // ── the tilled strips ────────────────────────────────────────────────
@@ -1597,10 +1614,15 @@ export const Palace = {
     // z 10.6-13.4 clear across the world; these keep to the band z 2.5-9.5,
     // east and west of the plaza, where there is nothing but grass.
     //   [ points ..., which point carries the fall ]
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): this is a small self-contained
+    // feature, a SIZE, so it TRANSLATES rather than scales -- every point
+    // shifted by the same (+21, +126) as the nearby elephant's own move
+    // (7, 42) -> (28, 168), so the rills stay the rills and do not stretch
+    // into 60 m streams.
     const RILLS = [
-      { pts: [[16.4, 3.0], [13.8, 4.5], [11.4, 3.6], [9.0, 5.3], [6.6, 4.3], [4.9, 6.1]], fall: 2 },
-      { pts: [[-5.0, 6.5], [-7.3, 4.9], [-9.7, 6.5], [-12.0, 5.1]], fall: 1 },
-      { pts: [[5.9, 8.7], [8.5, 9.5], [11.1, 8.3], [13.7, 9.3], [16.2, 8.1]], fall: 2 },
+      { pts: [[37.4, 129.0], [34.8, 130.5], [32.4, 129.6], [30.0, 131.3], [27.6, 130.3], [25.9, 132.1]], fall: 2 },
+      { pts: [[16.0, 132.5], [13.7, 130.9], [11.3, 132.5], [9.0, 131.1]], fall: 1 },
+      { pts: [[26.9, 134.7], [29.5, 135.5], [32.1, 134.3], [34.7, 135.3], [37.2, 134.1]], fall: 2 },
     ];
 
     this._rillFalls = [];
@@ -1664,7 +1686,7 @@ export const Palace = {
 
     this._plaque({ main: 'IN THEYR CROOKING CHANNELS',
       sub: 'SMALL STREAMES PYPPLING AND SLYDING DOWNE VPON THE AMBER GRAVELL · BY SOME SVDDAINE FALL · DALLINGTON P. 196' },
-      3.4, 0.42, 18.4, 0.54, 5.6, -Math.PI / 2, true);
+      3.4, 0.42, 39.4, 0.54, 131.6, -Math.PI / 2, true);
   },
 
   // ── The shaded walk (Dallington p. 92) ───────────────────────────────────
@@ -1693,7 +1715,11 @@ export const Palace = {
   // avenue. See PLEASURES.md 1.
   _buildShadedWalk() {
     const S = this.style, woodcut = S.key === 'woodcut';
-    const X = 31, Z0 = 15, Z1 = 30, HALF = 2.6;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): this is a walk BETWEEN
+    // precincts, connective like the approach corridor, so its length grows
+    // with the anchor x4 rather than merely translating; HALF (its own
+    // width) is a size and stays.
+    const X = 124, Z0 = 60, Z1 = 120, HALF = 2.6;
     const N = 6;                                  // pairs of trees
     const rnd = (i, k) => {
       const v = Math.sin(i * 83.1 + k * 149.7 + 31.7) * 43758.5453;
@@ -2324,7 +2350,8 @@ export const Palace = {
   //   Logistica's reading: "Diuinæ infinitæque trinitati vnius essentiæ."
   _buildQuinta() {
     const S = this.style, woodcut = S.key === 'woodcut';
-    const CX = 21.5, CZ = 0;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (21.5, 0) -> (86, 0).
+    const CX = 86, CZ = 0;
     const M = (color, extra = {}) => woodcut ? S.mat({ tone: extra.tone ?? 0.08 }) : S.mat({ color, ...extra, tone: undefined });
     const chalced = M(0x9ec4d0, { roughness: 0.15, metalness: 0.2, transparent: !woodcut, opacity: 0.86, tone: 0.06 });
     const jasper  = M(0xa03a2c, { roughness: 0.45, tone: 0.22 });
@@ -2413,8 +2440,9 @@ export const Palace = {
     }
     this._plaque({ main: 'DIVINAE INFINITAEQVE TRINITATI VNIVS ESSENTIAE', sub: 'LOGISTICA READS THE MONVMENT · THE THIRD GARDEN · CH. XI · PLATE 33' },
       3.0, 0.42, CX, 0.55, CZ + 3.9, 0, true);
-    this._obelisk(25.5, -3.4, 1.1, 3.0);
-    this._obelisk(25.5,  3.4, 1.1, 3.0);
+    // these two were hand-written as CX+4 rather than CX-relative; moved with it
+    this._obelisk(CX + 4, -3.4, 1.1, 3.0);
+    this._obelisk(CX + 4,  3.4, 1.1, 3.0);
   },
 
   _knotTexture() {

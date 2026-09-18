@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { Walker } from '../../systems/Walker.js?v=6';
-import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=8';
+import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=9';
 
 export const Approach = {
   // ── Ground, paths ─────────────────────────────────────────────────────────
@@ -43,24 +43,31 @@ export const Approach = {
     // grated oculus of the ciborium and the stair-pit of the crypt door. The
     // crypt is genuinely underground (ch. XIX, p. 247: "a blind, sloping little
     // stair descending"), so the ground has to open for it.
-    this._m(this._holedGround(130, 130, 0, -2, [[30, -27, 0.8], [35.3, -28.0, 1.15, 0.52]]), groundMat, 0, 0, -2, { rx: -Math.PI / 2, cast: false });
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
+    // true-scale, item 4): the sward, the crosspaths and the fences are the
+    // GROUND ITSELF under the whole "north of the portal" cluster, so they
+    // grow x4, not just translate -- otherwise the walker steps off the edge
+    // of the world between the spread-out precincts. The holes follow the
+    // Polyandrion, whose own anchor (PX, PZ) moved 30,-27 -> 120,-108 (see
+    // tombs.js _buildPolyandrion; the second hole is PX+5.3, PZ-1.0, so it
+    // becomes 125.3,-109); hole RADII are a size and stay.
+    this._m(this._holedGround(520, 520, 0, -8, [[120, -108, 0.8], [125.3, -109.0, 1.15, 0.52]]), groundMat, 0, 0, -8, { rx: -Math.PI / 2, cast: false });
     // The approach's meadow takes the SAME material, or the two planes meet at
     // z = 54 in a straight seam of two different greens.
     this._groundMat = groundMat;
 
     // Main processional axis (wood → shore), two cross paths to the courts
-    this._m(new THREE.PlaneGeometry(3.4, 86), pathMat, 0, 0.012, 7, { rx: -Math.PI / 2, cast: false });
-    this._m(new THREE.PlaneGeometry(38, 2.8), pathMat, 0, 0.012, 0, { rx: -Math.PI / 2, cast: false });
-    this._m(new THREE.PlaneGeometry(38, 2.8), pathMat, 0, 0.012, 20, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(3.4, 344), pathMat, 0, 0.012, 28, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(152, 2.8), pathMat, 0, 0.012, 0, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(152, 2.8), pathMat, 0, 0.012, 80, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(7, 40), pathMat, 0, 0.014, 0, { rx: -Math.PI / 2, cast: false });
-    this._m(new THREE.CircleGeometry(8.5, 40), pathMat, 0, 0.014, -20, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.CircleGeometry(8.5, 40), pathMat, 0, 0.014, -80, { rx: -Math.PI / 2, cast: false });
 
-    // The garden's sward is 130 m square and the walkable box is now 280 m
-    // wide, because the wood and the approach need the room. Two fences keep
-    // the walker on the ground he has: south of the Great Portal the world is
-    // the valley, and it is the cliffs that hold him; north of it, it is these.
-    this._wallCol(62, 150, -208, 44);
-    this._wallCol(-150, -62, -208, 44);
+    // The garden's sward is now 520 m square. Two fences keep the walker on
+    // the ground he has: south of the Great Portal the world is the valley,
+    // and it is the cliffs that hold him; north of it, it is these.
+    this._wallCol(248, 600, -832, 176);
+    this._wallCol(-600, -248, -832, 176);
   },
 
   _buildWood() {
@@ -239,12 +246,18 @@ export const Approach = {
       this._dress(gravelMat, this._surfaceTexture({ base: '#6e6446', dark: '#3e3826', light: '#8e8260', blobs: 60, speckle: 5200, repeat: 20 }), 0.3);
       gravelMat.roughnessMap = null; gravelMat.roughness = 1.0;
     }
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
+    // true-scale, item 4): the approach corridor is CONNECTIVE GROUND, not a
+    // sized precinct, so both its planes' positions AND their own extents grow
+    // x4 -- it has to cover four times the walk between the portal and the
+    // wood, or the walker falls off the world between them.
     // the valley floor and the mead, from the portal to the wood
-    this._m(new THREE.PlaneGeometry(300, 172), meadMat, 0, 0.004, 140, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.PlaneGeometry(1200, 688), meadMat, 0, 0.004, 560, { rx: -Math.PI / 2, cast: false });
     // the sandy plain of the palm, inside the valley mouth
-    this._m(new THREE.CircleGeometry(31, 26), gravelMat, -6, 0.010, 130, { rx: -Math.PI / 2, cast: false });
-    // the spacious plain the dream opens on, beyond the wood
-    this._m(new THREE.PlaneGeometry(280, 70), meadMat, 0, 0.004, W.z1 + 28, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.CircleGeometry(31, 26), gravelMat, -24, 0.010, 520, { rx: -Math.PI / 2, cast: false });
+    // the spacious plain the dream opens on, beyond the wood (grows with the
+    // spread too -- item 4; position stays tied to WOOD so it always meets it)
+    this._m(new THREE.PlaneGeometry(1120, 280), meadMat, 0, 0.004, W.z1 + 28, { rx: -Math.PI / 2, cast: false });
 
     // ── The cliffs that close the valley ──
     this._valleyCliffs();
@@ -255,10 +268,16 @@ export const Approach = {
     // leauie armes to make a coole shadowe" (Dall. p. 20). He lies down on his
     // left side here and falls into the second dream. It is a long way from the
     // river on purpose: he lost the water chasing the song.
-    this._forestTree(9, W.z0 - 32, 31, 'oak', 4242);
+    // Position x4 with SPREAD (2026-09-17, DECISIONS.md 54): the old anchor
+    // was W.z0-32 = 193 (before WOOD itself moved); hardcoded at 4x (772)
+    // rather than left W-relative, because WOOD now translates by its OWN
+    // centre and the two are no longer the same move. Matches great_oak's
+    // HP_STATIONS pos (36, 712) closely enough for the mead around the tree.
+    const OAKZ = 772;
+    this._forestTree(36, OAKZ, 31, 'oak', 4242);
     for (let i = 0; i < 5; i++) {                        // a few outliers, well apart
       const a = rnd(i, 41) * Math.PI * 2, r = 26 + rnd(i, 42) * 30;
-      this._forestTree(9 + Math.cos(a) * r, W.z0 - 32 + Math.sin(a) * r * 0.7,
+      this._forestTree(36 + Math.cos(a) * r, OAKZ + Math.sin(a) * r * 0.7,
         18 + rnd(i, 43) * 8, i % 2 ? 'ash' : 'oak', 900 + i * 31);
     }
 
@@ -269,11 +288,14 @@ export const Approach = {
     // Oliue… Thus walking solitarily betwixt the trees, GROWING DISTANTLY ONE
     // FROM ANOTHER" (Dall. p. 23). Open and sunlit — the exact opposite of the
     // wood, and the contrast is the point.
+    // Position (offset AND scatter range) x4 with SPREAD -- this corridor is
+    // connective ground, so it grows rather than merely translating; see the
+    // note at the ground planes above.
     const VALLEY = ['oak', 'ash', 'laurel', 'olive', 'plane', 'oak', 'olive', 'ash'];
     for (let i = 0; i < 34; i++) {
-      const x = -78 + rnd(i, 51) * 156;
-      const z = 150 + rnd(i, 52) * 42;
-      if (Math.abs(x) < 12 && z < 168) continue;         // keep the sightline open
+      const x = -312 + rnd(i, 51) * 624;
+      const z = 600 + rnd(i, 52) * 168;
+      if (Math.abs(x) < 48 && z < 672) continue;         // keep the sightline open
       this._tree(x, z, 1.5 + rnd(i, 53) * 1.4, VALLEY[Math.floor(rnd(i, 54) * VALLEY.length) % VALLEY.length]);
     }
 
@@ -281,10 +303,10 @@ export const Approach = {
     // "a faire Palme tree with his leaues like the Culter of a plowe, and
     // abounding with sweet and pleasant fruite… an elect and chosen signe of
     // victorie" (Dall. p. 23). One tree, alone on the gravel.
-    this._tree(-6, 128, 2.4, 'palm');
+    this._tree(-24, 512, 2.4, 'palm');
     for (let i = 0; i < 150; i++) {                      // "bespotted with greene tuffes"
       const a = rnd(i, 61) * Math.PI * 2, r = 2 + rnd(i, 62) * 28;
-      this._tuft(-6 + Math.cos(a) * r, 0.02, 130 + Math.sin(a) * r, 'mint', 0.55 + rnd(i, 63) * 0.4);
+      this._tuft(-24 + Math.cos(a) * r, 0.02, 520 + Math.sin(a) * r, 'mint', 0.55 + rnd(i, 63) * 0.4);
     }
 
     // ── The wolf ──
@@ -313,7 +335,7 @@ export const Approach = {
     // recording as the first thing having the whole book in English actually
     // caught. See DIRECTIONS.md §4.
     const wolf = this.cast.animals.wolf(1.15);
-    this._npc('wolf', wolf, 21, 132, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
+    this._npc('wolf', wolf, 84, 528, 1.35, { label: 'The Wolf', labelY: 1.6, sway: 0.03 });
   },
 
   _buildWitness() {
@@ -490,7 +512,11 @@ export const Approach = {
     };
 
     // ── I. The garden of glass, against the palace's SOUTH (left) wall ──────
-    const GX0 = -26.5, GX1 = -18.5, GA = 7.1, GB = 12.0;
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): shifted by the SAME -61.5 as
+    // _buildPalace's own CX (-20.5 -> -82), so the gardens stay against its
+    // walls; z is untouched because the palace's own CZ is 0, unaffected by
+    // x4. See the note above at _buildPalace stands at (-82, 0).
+    const GX0 = -88, GX1 = -80, GA = 7.1, GB = 12.0;
     const glassM = woodcut ? S.mat({ tone: 0.02, rim: 1 })
       : S.mat({ color: 0xcfe4e8, roughness: 0.06, metalness: 0.1,
                 transparent: true, opacity: 0.42, side: THREE.DoubleSide });
@@ -525,7 +551,8 @@ export const Approach = {
       3.0, 0.4, GX0 - 0.9, 0.5, (GA + GB) / 2, -Math.PI / 2, true);
 
     // ── II. The garden of silk, against the palace's NORTH (right) wall ─────
-    const SX0 = -23.5, SX1 = -15.5, SA = -7.1, SB = -12.6;
+    // Same -61.5 x shift as the glass garden above.
+    const SX0 = -85, SX1 = -77, SA = -7.1, SB = -12.6;
     const silkLeaf = woodcut ? S.mat({ tone: 0.13, rim: 1 })
       : S.mat({ color: 0x8fae86, roughness: 0.26, metalness: 0.05, side: THREE.DoubleSide });
     const pearlM = woodcut ? S.mat({ tone: 0.02, rim: 1 })
@@ -632,8 +659,11 @@ export const Approach = {
     const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 233.9) * 43758.5453; return v - Math.floor(v); };
 
     // The plain runs from the wood's southern edge to the far wall of the
-    // walkable box (Walker bounds maxZ = 462).
-    const Z0 = W.z1 + 2, Z1 = 458, HALF = 138;
+    // walkable box (Walker bounds maxZ, now 1848 -- SPREAD = 4, DECISIONS.md
+    // 54). Z1 is old Z1 x4 (458 -> 1832), comfortably past the 'plain'
+    // station's new pos (0, 1792) + its 26 m radius. HALF (half-width) is
+    // left alone -- nothing spreads sideways here, only away from the wood.
+    const Z0 = W.z1 + 2, Z1 = 1832, HALF = 138;
 
     // ── The ground: green, and spotted with many sorts ──
     // Its own material rather than the shared meadow, because this is the one
@@ -707,16 +737,25 @@ export const Approach = {
     // storey now runs from the piers at x = ±9 out to the rock at ±24, and the
     // pyramid above it is 40 m wide against the 17.5 it was. The southern end is
     // unchanged, so the valley still opens out toward the palm plain.
-    const gap = (z) => 24 + Math.max(0, z - 40) * 0.42;
+    //
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): the constant and the threshold
+    // are POSITIONS (they move the wall out with everything else it flanks) so
+    // both are x4; the RATE (0.42, a slope, dx/dz) is untouched, because a
+    // uniform scale multiplies both x and z by 4 and the ratio is unchanged.
+    const gap = (z) => 96 + Math.max(0, z - 160) * 0.42;
     // How high the wall stands. It used to be 26 m at the portal, chosen "so the
     // building is not dwarfed at the moment of arrival" — with a 38 m pyramid on
     // a 12 m base there is no longer any danger of that, and a valley the book
     // calls shut needs walls that look like they could shut it.
-    const high = (z) => 44 + Math.max(0, z - 40) * 0.30;
+    //
+    // A vertical SIZE, so it does NOT grow with the spread: divide z by 4 first
+    // so the formula still reads the original (pre-spread) position along the
+    // corridor and produces the same 44-85 m range as before.
+    const high = (z) => 44 + Math.max(0, z / 4 - 40) * 0.30;
 
     let n = 0;
     for (const side of [-1, 1]) {
-      for (let z = 38; z <= 176; z += 7) {
+      for (let z = 152; z <= 704; z += 28) {
         const g0 = gap(z), h0 = high(z);
         // the wall itself: a stack of two blocks, jittered, so the face breaks
         for (let k = 0; k < 3; k++) {
@@ -730,8 +769,10 @@ export const Approach = {
           blk.rotation.y = rnd(i, 6) * 0.6;
           blk.rotation.x = (rnd(i, 7) - 0.5) * 0.12;
         }
-        // and it is a WALL: you cannot walk through the mountain
-        this._wallCol(side > 0 ? gap(z) : -200, side > 0 ? 200 : -gap(z), z - 3.6, z + 3.6);
+        // and it is a WALL: you cannot walk through the mountain. The "far"
+        // placeholder is bumped to 2000 (from 200): SPREAD = 4 lets gap(z)
+        // itself pass 200 near the wood end, which would invert the range.
+        this._wallCol(side > 0 ? gap(z) : -2000, side > 0 ? 2000 : -gap(z), z - 3.6, z + 3.6);
         // conifers on the lower slope — fir, larch and silver fir are the
         // mountain's trees (1499 l. 2813), not the dark wood's
         for (let t = 0; t < 2; t++) {
@@ -761,15 +802,18 @@ export const Approach = {
     // approach: the mountains close the far side of the palm plain except for
     // the way back to the mead. (Dall. p. 27: "no man could go further forward
     // or backe againe" cuts both ways.)
+    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): the whole closing wall is
+    // POSITION (z range, x offset), so x4; the rock BLOCK sizes (scale.set)
+    // are untouched.
     for (const side of [-1, 1]) {
-      for (let z = 176; z <= 200; z += 8) {
+      for (let z = 704; z <= 800; z += 32) {
         const i = n++;
         const blk = this._m(this._indexed(new THREE.DodecahedronGeometry(1, 0)), rockMat,
-          side * (86 + rnd(i, 21) * 10), 22 + rnd(i, 22) * 14, z, { cast: true });
+          side * (344 + rnd(i, 21) * 10), 22 + rnd(i, 22) * 14, z, { cast: true });
         blk.scale.set(16 + rnd(i, 23) * 10, 26 + rnd(i, 24) * 14, 9 + rnd(i, 25) * 6);
         blk.rotation.y = rnd(i, 26) * 0.7;
       }
-      this._wallCol(side > 0 ? 76 : -200, side > 0 ? 200 : -76, 172, 204);
+      this._wallCol(side > 0 ? 304 : -2000, side > 0 ? 2000 : -304, 688, 816);
     }
   },
 
@@ -1024,12 +1068,14 @@ export const Approach = {
   // Heraclea Nympha, of some called water Lillye or Nenuphar, and the roote of
   // Aron or wake Robyn … And Amella or Bawme Gentill". The bridge's watercourse
   // is that river; it had nothing growing in or beside it.
-  _buildRiverPlants(BX = -11, BZ = 20) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (-11, 20) -> (-44, 80),
+  // matching _buildBridge's own BX/BZ move.
+  _buildRiverPlants(BX = -44, BZ = 80) {
     const S = this.style, woodcut = S.key === 'woodcut';
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
     for (let i = 0; i < 26; i++) {
       const side = i % 2 ? 1 : -1, z = BZ - 7.2 + rnd(i, 1) * 14.4;
-      if (Math.abs(z - BZ) < 2.3 || Math.abs(z - 14) < 1.8) continue;          // the two bridges
+      if (Math.abs(z - BZ) < 2.3 || Math.abs(z - 56) < 1.8) continue;          // the two bridges
       this._tuft(BX + side * (1.55 + rnd(i, 2) * 0.35), 0.03, z, i % 3 === 0 ? 'rush' : i % 3 === 1 ? 'reed' : 'arum', 0.45 + rnd(i, 3) * 0.3);
     }
     // the nenuphar: pads on the water, a few white flowers
@@ -1037,7 +1083,7 @@ export const Approach = {
     const bloom = woodcut ? S.mat({ tone: 0.0 }) : S.mat({ color: 0xf6f2e4, roughness: 0.5 });
     for (let i = 0; i < 18; i++) {
       const x = BX + (rnd(i, 4) - 0.5) * 2.4, z = BZ - 7 + rnd(i, 5) * 14;
-      if (Math.abs(z - BZ) < 2.4 || Math.abs(z - 14) < 1.9) continue;
+      if (Math.abs(z - BZ) < 2.4 || Math.abs(z - 56) < 1.9) continue;
       const p = this._m(new THREE.CircleGeometry(0.14 + rnd(i, 6) * 0.1, 12, 0.3, Math.PI * 2 - 0.5), pad, x, 0.075, z, { rx: -Math.PI / 2, cast: false });
       p.rotation.z = rnd(i, 7) * 6.3;
       if (i % 3 === 0) { for (let q = 0; q < 6; q++) this._m(new THREE.ConeGeometry(0.03, 0.09, 5), bloom, x + Math.cos(q * 1.05) * 0.05, 0.12, z + Math.sin(q * 1.05) * 0.05, { cast: false, rx: -0.5 * Math.cos(q * 1.05), rz: 0.5 * Math.sin(q * 1.05) }); this._m(new THREE.SphereGeometry(0.025, 6, 5), woodcut ? bloom : S.mat({ color: 0xe8c040, roughness: 0.6 }), x, 0.13, z, { cast: false }); }
@@ -1056,7 +1102,9 @@ export const Approach = {
   // hammerwort were growing in dry cracks of tombs", and "thorny plants, sharp
   // thistles and cedars are cited in the text as occurring among ancient
   // monuments and historical ruins".
-  _buildRuinWeeds(PX = 30, PZ = -27) {
+  // SPREAD = 4 (2026-09-17, DECISIONS.md 54): defaults (30, -27) -> (120,
+  // -108), matching tombs.js _buildPolyandrion's own PX/PZ move.
+  _buildRuinWeeds(PX = 120, PZ = -108) {
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
     const wz = PZ + 9.4;
     // aster and pellitory in the cracks of the medallion wall and the temple front
