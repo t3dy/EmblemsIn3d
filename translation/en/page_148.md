@@ -30,3 +30,17 @@ marvelling how she knew my name. And all my inward parts, laid low, encircled by
 flame, and my voice taken from me, shut in between fear and a reverent bashfulness. And thus,
 unawares, I knew not what I might worthily answer her to that, nor how otherwise to reverence the divine
 young girl, save that I readily offered her my unworthy and unfitting hand.
+
+---
+
+## Notes
+
+**Confidence: medium.** She takes his hand and speaks his name. One detail is very well done and
+worth keeping: *la subtile cephalica et la basilica fibra* are correctly the cephalic and basilic
+veins of the arm, named as a physician would name them, drawn like sandalwood lines on clean
+papyrus. Pelops's ivory whiteness and the cinnamon-fragrant mouth are right. Medium for the long
+recognition-period in the middle of the page, where memory presents Polia to the heart, which is one
+Italian sentence and four English ones, and because the tapering asterisk device that closes the
+Italian leaf is dropped.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

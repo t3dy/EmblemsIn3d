@@ -19,3 +19,16 @@ And without delay, turning my shoulders and entering into the darkness, I commit
 flight, anxiously carrying my already hastened feet to flee. With the greatest nimbleness, unknowing,
 penetrating swift-footed into the inner parts of that dark place, escaping through divers and oblique
 turnings and windings of passages.
+
+---
+
+## Notes
+
+**Confidence: medium.** The dragon, and the flight into the dark. Short and vivid, and the Greek
+epithets are correctly resolved: *alexicaco Hercule* as evil-averting, *molorchia Clava* from
+Molorchus his host, *micropsycho* as small-souled, *acupedio* as swift-footed, *trisulche lingue* as
+three-forked. Medium because the page is built almost entirely of such coinages given by their
+standard equivalents without external check, and because one word is simply not resolved — *diffiso
+di qualunque vasura*, rendered "mistrusting any escape whatever", where *vasura* is a guess.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

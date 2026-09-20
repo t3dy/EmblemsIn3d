@@ -22,3 +22,18 @@ together seemly. Understanding that out of the vessels set in the corners of the
 and the vine came out together. But out of the remaining vessels there rose alternately either a vine
 or a bindweed of gold, various in kind. And lying over the crossed little beams, with a plentiful
 stretch of scattering branches, entwining one with another mutually in an elegant
+
+---
+
+## Notes
+
+**Confidence: medium.** The frieze finished, the row of hardstone vases, and the golden trellis that
+carries the vine. The dimensions are again exact — vases a good three feet high, uprights seven
+feet, hollow within — and the logic of the structure is preserved (uprights and vine rise together
+from the corner vases; from the rest, alternately a vine or a bindweed). *Opera topiaria* is given
+as trellis-work, which is right for the sense here though the Latin term properly covers ornamental
+gardening generally. Medium for the sheer chain of subordinate clauses describing the frieze's
+dolphins, stork-heads and vertebrae, which is rendered clause by clause and is hard to hold in
+English as a single image.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

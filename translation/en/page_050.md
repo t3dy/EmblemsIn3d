@@ -35,3 +35,19 @@ the solid, with wings spread. Which had lovingly seized a noble and most delicat
 garments. So shrewdly that the pointed and hooked talons, turning themselves aside, did not hurt the
 soft flesh. And so, by gripping and drawing at the little folds, its clenched feet towards the swelling
 and keeled
+
+---
+
+## Notes
+
+**Confidence: medium.** The bronze bases and Corinthian capitals, the green threshold, the arch
+mouldings, and the eagle in the keystone. Well handled in the main: *Callimacho Catategnos* is
+correctly the *katatexitechnos*, the melter-away of art; the basket on the Corinthian maiden's grave
+and Agrippa's Pantheon portico are both correctly placed; *petra praxina* is the green prasine,
+*harpiconi* the iron cramps, and *La spina ... overo fibula, overo Cuneo* correctly the keystone.
+Two things to weigh. The Callimachus sentence carries a double negative in the Italian and comes out
+in English almost unreadable, though its drift — that these capitals surpassed even his — is clear.
+And the eagle carrying off the delicate boy without hurting him is Ganymede, which the English
+describes without naming.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

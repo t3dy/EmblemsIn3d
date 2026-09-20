@@ -12,3 +12,17 @@ silk woven with a warp of gold, shining, with an elegant ornament of precious st
 places. Without lack of anything whatever that comelily comes together for the increase of delight.
 Exceedingly notable and delightful to those who looked. With all the parts that were described at the
 first, of praise and applause.
+
+---
+
+## Notes
+
+**Confidence: medium.** Leda and the swan upon the second car, described without euphemism. One
+error to fix, and it may be Colonna's own: the Nymph is called *filiola de Theseo* and the English
+keeps "daughter of Theseus", where Leda is the daughter of **Thestius** — the Italian is probably a
+corruption of *Thestio*, and either way the English repeats it without a note. *Olore* is correctly
+the swan. Medium also because this is one of the pages the world would build from and its furniture
+(two cloth-of-gold cushions stuffed with down, the gown of white silk with a gold warp) is
+transcribed rather than reconciled with the plate.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

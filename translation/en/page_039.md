@@ -20,3 +20,20 @@ At which unaccustomed thing I stood not a little stupefied, and with some horror
 delaying too long, turning to go back, I saw likewise another lamp burning and shining, as is said
 before. And crossing over the opening by which one climbs, there towards the head of the animal, in
 this side too I found a like making of a most ancient burial. And the
+
+---
+
+## Notes
+
+**Confidence: medium.** Inside the elephant: the hanging lamp, and the King's tomb with its
+trilingual inscription. The description is accurate throughout — the keel-shaped shield whose form
+is taken from a horse's skull, the silver teeth, eyes and nails, the scale-work on the sarcophagus
+lid — and the Latin is translated correctly (*NVDVS ESSEM, BESTIA NI ME TEXISSET. QVAERE, ET
+INVENIES. ME SINITO.*). The reason for medium is an editorial loss on one of the book's most quoted
+pages: the 1499 prints this epitaph three times over, in Hebrew, in Greek and in Latin, and the
+source transcription carries all three; the English gives a single italic line and drops the
+originals, so the reader cannot see that it is trilingual, nor check the Hebrew and Greek against
+the Latin. One word is also an interpretation rather than a rendering: *quale extimo stava
+subiecto*, of the solid mass left inside the beast, becomes "the ballast".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

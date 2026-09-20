@@ -29,3 +29,18 @@ The sweetness of it and the delight offered me far more pleasure than the little
 offering itself. So much so that the water drawn up, held within the enclosure of the intervals of my
 teeth — my understanding as it were senseless and already stupefied, and my appetite laid to sleep,
 no faculty gainsaying it — the knots being loosed, was spilt upon the moist earth.
+
+---
+
+## Notes
+
+**Confidence: medium.** The muddy river, the hands cupped to drink, and the Dorian singing that
+interrupts the draught. The sense is secure and the anatomical Latinisms are read correctly —
+*popliti* the hams (so, kneeling), *vola lacunata* the hollowed palm, *caverniculate orechie* the
+little caverns of the ears, *potiuncula* the small draught. The river-catalogue (Hypanis, Ganges,
+Tigris, Euphrates, Nile, Eridanus) and the spring the ram showed Father Liber at Ammon are all
+identified. Medium only because the page is built almost entirely of such diminutive coinages, each
+rendered by its standard equivalent without external confirmation, and because the long final period
+has been broken into English sentences.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -35,3 +35,18 @@ curve, with a well-polished knotting, both in the one ring and in the other.
 
 Above the middle curve, beneath the projection of the lip, was fixed the head of a little old man with
 his chin drawn back into foliage, biting a
+
+---
+
+## Notes
+
+**Confidence: medium.** The base of the second fountain: the wheeled square, the four corner
+harpies, the triumph of satyrs in half-relief, and the vessel rising out of the foliage. The
+measurements are transcribed exactly (three feet long, two wide, raised a third of a foot) and the
+moulding-words are right — *gulule et undicule, et follicule* as gorges, wavings and husks, *Toreute
+... cum la Tudicula* as the chaser with his graver. Medium because the page is a single unbroken
+chain of relative clauses describing one object, broken into English paragraphs at the translator's
+discretion, and because the reader is given no help in holding the shape of the thing being
+described.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

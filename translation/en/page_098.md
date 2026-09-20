@@ -20,3 +20,17 @@ a breadth and knitting should be so excellently made.
 
 In the middle prospect over against our entry, upon a stepped and royal throne, adorned and filled with
 manifold fitting-together of
+
+---
+
+## Notes
+
+**Confidence: medium.** The emerald vine-ceiling, and Poliphilo's question about how it could have
+been made. Two things for a reviewer. *Tale non fue quello, nel quale impresso era Amenone* is
+rendered "the one in which Amenon was engraved", leaving a name that means nothing; it is Pliny's
+emerald engraved with **Amymone** (*Natural History* 37), and the comparison is lost without it. And
+the page lists four methods of working metal — glue, soldering, hammering, casting — and then says
+*per queste tre conditione*; the English reproduces "these three conditions" faithfully, which is
+right, but a reader will take it for a translator's slip unless it is marked as the source's own.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

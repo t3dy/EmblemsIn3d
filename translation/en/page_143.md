@@ -32,3 +32,18 @@ Sometimes, by the tempered blowing of the little winds, the light garment being 
 modest and neat shape, which made a ready scorn of it. So that I did not rashly suspect that she was
 almost not of a seed-born composition. Then her outstretched arms, with her long hands, adorned with
 fine and turned fingers, with longish, faintly reddened and
+
+---
+
+## Notes
+
+**Confidence: medium.** The Nymph's dress, described garment by garment — the page the world would
+have to dress her from. Two good things: *il sacrato Cesto della sancta Cytherea* is correctly
+Venus's girdle, and Pamphila daughter of Plates, the inventress of Coan weaving, is correctly
+placed. But the same error as p. 75 is here, and here it contradicts itself within two lines: the
+*bombicina interula* is rendered "a shift of cotton" in a sentence that immediately invokes the
+inventress of **Coan silk** — *bombycina* is the silkworm's stuff, the sheerest silk, and the whole
+point of the garment is that it is transparent. A reviewer should fix both pages together.
+*Mesanlone*, the wood where Paris judged, is also left unresolved.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

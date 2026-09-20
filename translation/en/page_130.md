@@ -37,3 +37,17 @@ ignorant, unavailing, and feeble."
 
 Logistica having here excellently set out the most approved precepts with a most complete knowledge,
 with a sagacious skill, plucked from the most abundant lap of divine nature, I began
+
+---
+
+## Notes
+
+**Confidence: medium.** Logistica's exegesis of the monument — the most sustained piece of doctrine
+in Book I, and its argument survives intact in English, including the close, that the climber learns
+*that it is* and remains ignorant of *what* it is. Medium for the Greek. The three epithets
+ADIEGETOS, ADIACHORISTOS and ADIEREUNES are given untranslated (indescribable, indivisible,
+unsearchable), and the last is silently emended to ADIEREUNETOS without a note; the three letters
+are again given as OON with no gloss. *Theophrasta Logistica* is also rendered "Logistica, well
+taught", which reads the epithet as learning rather than as divine speech.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

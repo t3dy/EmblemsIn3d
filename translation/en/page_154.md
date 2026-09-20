@@ -37,3 +37,18 @@ thick ears of corn, and the sacred first-fruits and the Thesmophoria to Demeter.
 
 And going further with her most festively through the grassy and flowering plain, tressed with green
 hair, sometimes my searching and
+
+---
+
+## Notes
+
+**Confidence: medium.** The Nymph's speech that true love has no respect for outward things, and
+Poliphilo's catalogue of comparisons. Several are exactly right — *Prymnesio over Tonsilla*
+correctly the cable and the mooring-post, the rain that fell on Croesus's pyre, *l'intonso
+Apolline*, and *el sacro Premetio, et Thesmophoria ad Dimitra* correctly the first-cut sheaf and the
+women's festival. Two need a reviewer. *El copioso oro ad Hippodamia* is transcribed as it stands,
+but gold thrown down to win a race belongs to Hippomenes and Atalanta, not Hippodamia. And *la
+Sacrima della magna Creta* is rendered "the mysteries of great Crete", where *sacrima* is the first
+offering of new wine.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

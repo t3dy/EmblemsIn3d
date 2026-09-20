@@ -28,3 +28,16 @@ contemplation, he would fittingly have chosen her as his one most apt exemplar, 
 the girls of Agrigentum and of the whole round world, of the highest and absolute perfection.
 
 Which shapely and heaven-dwelling Nymph, now
+
+---
+
+## Notes
+
+**Confidence: medium.** The end of the quarrel, the rubric to chapter XII, and the praise of the
+Nymph as the image of God stamped in a creature. The argument is well turned, including the
+distinction Poliphilo draws between possessing such a treasure and being possessed by it, and Zeuxis
+choosing among the girls of Agrigentum is correctly placed. Medium for the chapter rubric, again set
+in italic rather than in capitals, and for *el tumulo del Re de Bibria*, whose laurel is carried
+into English unexplained in the middle of the sentence that closes the quarrel.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

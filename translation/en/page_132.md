@@ -32,3 +32,17 @@ not knowing them, which were bound to the horns, and then why in porphyry stone,
 the other side."
 
 At once, without other pondering, she kindly answered me: "Of the branches, the one is
+
+---
+
+## Notes
+
+**Confidence: medium.** Thelemia on the two hands of Jove, and Logistica's reading of the elephant.
+The riddle is unfolded correctly and it resolves something left dangling eighty pages earlier: the
+inscription on the elephant's brow, which page 37 could not print because the source transcription
+drops it, is here given its vernacular sense — *Fatica et industria* — and the moral drawn, that the
+rotting body is idleness and the adorned head is the writing that must be carried off. A reviewer
+joining the two pages will see that the English of p. 37 should carry a cross-reference. Medium for
+the long question-and-answer periods, divided into paragraphs by the translator.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

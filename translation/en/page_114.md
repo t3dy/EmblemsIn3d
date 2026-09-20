@@ -23,3 +23,16 @@ flowers made of perfect coral in calyxes full of golden points.
 Beyond this, out of the top of the pipe-like hollow stem there came a turning and free shaft, the lower
 pivot of which was fixed in a socketed head, or rather made fast upon the middle of the axle. And it
 rose up through the open and hollowed trunk.
+
+---
+
+## Notes
+
+**Confidence: medium.** The hill of gems and the golden pomegranate tree — the most exactly
+translated technical page in this stretch. Every one of the pomegranate's own terms is correctly
+resolved: *sidio* the rind, *Cico* the pale membrane between the seeds (rendered in silver foil),
+*balausti* the pomegranate flowers (in coral), *unione* the single large pearls standing for unripe
+seeds. Medium rather than high only for *uno capo peronato*, given as "a socketed head" on a guess,
+and because the whole description is one period.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

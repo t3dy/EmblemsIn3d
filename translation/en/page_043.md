@@ -38,3 +38,19 @@ thickness. Otherwise, such a falling-short being there, I do not call it perfect
 beautifully and exquisitely and diligently observed by the best and most skilled of the ancients in
 their arches, to give the arch elegance and fitting resistance, and to avoid the encroachment of the
 projections of the Abaci.
+
+---
+
+## Notes
+
+**Confidence: medium.** The architect's ethics, and the rule for setting out the arch. Dense but
+well construed. The arch geometry is right and usable: the mid-point of the truncated line E.F. is
+the centre for bending the *arcotrabe* into a half-circle, and the springing is stilted by the
+half-diameter of its own thickness, which the translation correctly gives as an addition *agli
+inversi corni* rather than as a flaw. *Abachi* as abaci, and the reason given for the stilting (to
+keep the arch clear of their projection), are both right. Medium for the sheer weight of technical
+vocabulary rendered by standard equivalents, and for one clause of the moralising — *la virtute in
+quello consiste et beatitudine canta il poeta* — which the English leaves as obscure as the Italian,
+without naming the poet.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

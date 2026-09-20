@@ -38,3 +38,18 @@ orchard, seeing that it holds in itself so many delights and yet lies under so w
 a necessity." Then Logistica, smiling, inspired, added: "Poliphilo, in this devouring gap there sits a
 severe beholder holding the scales, and a judge of those who enter, who with an even balance weighs and
 scrupulously ponders their action. By which they might fare better, or worse,
+
+---
+
+## Notes
+
+**Confidence: medium.** The labyrinth's later circuits, the scales at the centre, and the title over
+the middle tower. The allegory is correctly told — the water turns against the rower after the
+second tower, the fifth tower is a mirror, the circuits shorten as they near the centre so that one
+runs faster towards it, and no one can turn back because the next boats are at the stern. *Medium
+tenuere beati* is rightly kept in Latin and glossed, and *stateraria* and *theophorita* are
+correctly the scale-holder and the god-inspired. Medium because THEON LYKOS DYSALGETOS, the
+frightful title over the centre, is left untranslated — it is the pitiless wolf of the god, that is,
+Death, and it is the point the whole allegory has been travelling towards.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

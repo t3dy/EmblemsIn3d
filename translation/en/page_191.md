@@ -15,3 +15,17 @@ with this title:
 
 *To those who till me I offer the soundest health of body, and steady strength, and the chaste
 delights of the table, and a blessed security of mind.*
+
+---
+
+## Notes
+
+**Confidence: medium.** The triumph of Vertumnus and Pomona, and the first of the two trophies. The
+scene is exactly described — the four horned fauns, the baked-clay clepsydra at Pomona's feet, the
+spear-trophy of mattocks, forks, hoes and sickles — and the English of the inscription is accurate.
+The flag is that the inscription itself is gone: the 1499 carves it in Latin capitals with the
+period's own abbreviations (CORPOR., MENSAR., CULTORIB.), and the English prints only its
+translation, so a reader cannot see that it is a lapidary text at all, nor cite it. *Hymenide* is
+rightly kept.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

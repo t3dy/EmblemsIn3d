@@ -18,3 +18,17 @@ finding myself in a region unknown and uncultivated, though a country pleasant e
 grieved me sorely that the flowing spring, found with such labour and sought out with such care, had
 been taken away and lost from my eyes. For all which things I stood with my mind entangled in
 ambiguity, and much perplexed. At last, seized by so great a weariness, my whole body
+
+---
+
+## Notes
+
+**Confidence: medium.** The chase after the receding voice, and the collapse. Short and mostly
+plain, and the sense is not in doubt. One word carries a real choice a reviewer should make:
+*difeso, et relicto dalle proprie virtute* is here "left defenceless and abandoned by my own
+powers", reading *difeso* as "without defence", but in this string of exhaustion-words it is more
+probably *defesso*, worn out — "spent, and abandoned by my own powers". The other judgement call is
+*inhumana nota*, given the favourable sense "more-than-human strain"; that is right for a divine
+voice, but it is an interpretation, not the literal word.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

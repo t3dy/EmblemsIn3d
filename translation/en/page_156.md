@@ -34,3 +34,17 @@ as Corycus does not bring forth, nor Centuripe, exceedingly gracious to the sigh
 golden filament. With a choice adornment of shining gems at the outermost hems about the ankles, held
 by the purest gold. Some were mingled among them with sacred fillets and of a divine and pontifical
 worship. Some with a hunting dress.
+
+---
+
+## Notes
+
+**Confidence: medium.** The crowd of young men and girls, and their clothes. The textile vocabulary
+is unusually well handled and is the reason to trust the page: *Thabbì* correctly as watered tabby
+silk, *Milesia lana* as Milesian wool, *non subditi ad le lege Opie* correctly as exempt from the
+Oppian sumptuary law, *Sandacina* as sandarac, and the saffron of Corycus and Centuripe correctly
+placed. *Epaphrodita* is rightly the Nymph beloved of Venus, and *Typhoni* rightly whirlwinds.
+Medium because the clothing list is a single unbroken period in the Italian and because several
+dye-names are given by their standard equivalents without external check.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

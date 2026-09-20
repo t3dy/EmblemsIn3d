@@ -28,3 +28,17 @@ Between the shoulders of the winged boys, from the central point of the flat of 
 base, there rose a shaft of distinguished expression of an antique candelabrum, which at its point held
 its little shell, like those aforesaid, and of as great an opening as suited to fill the empty space
 left in the middle between the six shells. Which shells the servers had
+
+---
+
+## Notes
+
+**Confidence: medium.** The perfume-burner on its three harpy feet, with the three winged boys and
+their seven shells. Described precisely enough to model — the boys two cubits high, right foot
+planted on the corner, left free towards the next boy's planted foot, six shells in a ring and a
+seventh on a candelabrum-shaft at the centre. *Anteride* is correctly the supporting buttress,
+*stylo balausticato* the pomegranate-flower shaft, *Beenzuì* benzoin. Medium for the density of such
+terms and for the perfume-recipe clause, where the English has to guess at the proportions Colonna
+only gestures at.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

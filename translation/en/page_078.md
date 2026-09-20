@@ -40,3 +40,18 @@ away."
 POLIPHILO, HAVING BEEN MADE AT HOME AND MADE SAFE BY THE FIVE NYMPHS, WENT WITH THEM TO THE BATHS,
 WHERE THERE WAS MUCH LAUGHTER AT THE JEST OF THE FOUNTAIN, AND ALSO AT THE ANOINTING. BEING AFTERWARDS
 LED TO THE QUEEN
+
+---
+
+## Notes
+
+**Confidence: medium.** The five nymphs praise the country, and Queen Eleuterylida is named. The
+geography is Pliny's and is correctly rendered: Mount Taurus on its northern side with the two-cubit
+grape-cluster and the fig yielding seventy measures; the Hyperborean island; Talge on the Caspian
+mountain; Egypt as the world's public granary. Eleuterylida is rightly left in her own form. Medium
+for the speeches themselves, which are five separate encomia run together in the Italian with almost
+no punctuation and have been divided into paragraphs at the translator's discretion, and for one
+phrase that stays opaque — *una nel aspecto ad omni praecipitio illectiva*, given literally as "one
+alluring in aspect to every headlong fall".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

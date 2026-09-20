@@ -35,3 +35,17 @@ she consents by no leave that men should discern how great and of what kind her 
 not lawful, nor permitted, that a divine beauty should appear to bodily eyes; and for such a reason the
 effect of her outcome stands blind. But with a wonderful observance she transforms herself, changing
 her skin and of many forms, unwilling to reveal herself unasked.
+
+---
+
+## Notes
+
+**Confidence: medium.** Telosia named and described, the ring of *anchitis* given, and Logistica and
+Thelemia appointed. The stone, the gift and the Queen's warning are all accurately rendered, and
+*Amphasiatico* is rightly speechless, *versipelle* rightly skin-changing. Medium for the same
+silence as on pp. 79 and 93: the two guides are Reason and Will, and Telosia is the End (*telos*) —
+the Queen even explains her own name, "she it is who ends everything", and the English gives the
+explanation without giving the Greek that makes it a name and not an epithet. The allegory of the
+whole next chapter turns on this and is left for the reader to reconstruct.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -23,3 +23,18 @@ stands. And take heed, Poliphilo, that these figures, with a perpetual affinity 
 most distinguished antique monuments and Egyptian hieroglyphs, which, wishing to hint at it, say to
 you: *To the divine and infinite Trinity of one essence.* The lowest figure is consecrated to the
 divinity, because from unity it is
+
+---
+
+## Notes
+
+**Confidence: medium.** The hieroglyphs on the Trinity monument: sun, rudder, flaming dish, the
+three sphinx-like beasts, and the three-sided pyramid lettered with circles. Accurately described.
+Medium because almost every inscription on the page is left for the reader to decode alone. DYS A LO
+TOS is transliterated and not translated (indissoluble); the three letters OMICRON, OMEGA and NY are
+given as letters with no indication that they spell *ho on*, He Who Is; and Logistica's reading of
+the whole, which the Italian gives in Latin as DIVINAE INFINITAEQUE TRINITATI UNIUS ESSENTIAE,
+appears only in English, so the Latin on the stone is again lost. *Tarina degli Sace Regina* is
+Diodorus's Zarinaea and keeps her corrupted name.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

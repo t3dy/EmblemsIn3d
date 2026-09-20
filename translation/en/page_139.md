@@ -14,3 +14,15 @@ is yours, which is the thing of the world of which your obstinate heart thinks a
 ceasing." So that, scrupulously running it over within myself, I found only that nothing else was
 stamped upon my wretched heart, thinkable and most desired, save my sun-born Polia. By these
 comfortable and most welcome and divine little words
+
+---
+
+## Notes
+
+**Confidence: high.** The pivot of the whole book, and it is translated plainly and exactly:
+Logistica throws the lyre down and breaks it, Thelemia laughs and signs to him not to listen, and
+Logistica turns her back and goes out sighing. Nothing here needs a decision. *La mia Elioida Polia*
+is correctly the sun-born Polia, which keeps the etymology; *fucosa* in the preceding speech was
+rightly the painted, and the narrative here is short, unadorned and defensible sentence by sentence.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

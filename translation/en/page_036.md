@@ -40,3 +40,20 @@ well as by rule one could artificially feign and set up in statue — and in the
 approvedly adorned with many seals and bosses and little histories and figures, sustained most firmly
 founded an Obelisk of greening Laconian stone. Of a breadth in its levelled faces equal to the lowest
 diameter of one pace, and multiplied by seven, so much was it to the sharpened summit
+
+---
+
+## Notes
+
+**Confidence: medium.** The inside of the colossus — the anatomy labelled in Chaldean, Greek and
+Latin, the heart where love is read — and then the elephant of black stone. Most of it is secure and
+some of it is very well done: *petra lacedaemonia verdegiante* is correctly the green Laconian
+porphyry, *mice argentee* the silver mica, *Ephippio Aeneo* the bronze saddle-cloth, and the
+reasoning about why the obelisk's weight must not stand over a void is rendered clearly. One
+sentence fails, and it is the page's most interesting: *Arte sopra omni exquisito inventa, ch'homo
+sencia anatomia praestante se facesse* is given as "that a man should make himself without an
+excelling anatomy", which means nothing in English. The sense Colonna is reaching for is that the
+colossus makes a man expert in anatomy without dissection — the statue teaches what a cadaver would.
+A reviewer should start there.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -22,3 +22,17 @@ committed. And where the axle was fixed and turned, fitted to that plinth there 
 of as great a breadth at the joining of the plinth as was twice the distance from the turning hub to
 the top. And here there began exquisitely two foliages, which, dividing, ran down beneath the plinth;
 in the middle of the space between which there stood out, moderately, a five-petalled rose, in the
+
+---
+
+## Notes
+
+**Confidence: medium.** The construction of the first car, measured. Every figure is transcribed
+exactly and the car could be modelled from this page: two perfect squares in length at six feet,
+three feet high and as much wide, the cornice above and below the plinth, a foot and a half up a
+flat two and a half feet wide and five and a half long, sloping to the cornice and scaled with gems.
+*Limachale voluto* is correctly the snail-scroll, *meditulo* the hub, *papavero cornuto* the horned
+poppy. Medium because the page is one continuous technical description broken into English
+paragraphs, and because the caption PARS ANTERIOR ET POSTERIOR TRIUMPHI is dropped as on p. 159.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

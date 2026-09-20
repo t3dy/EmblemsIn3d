@@ -40,3 +40,17 @@ farewell.
 
 By such and so made an affliction and exaggerated disturbance, beyond all thought, my soul was bitterly
 wrung and exasperated. Above all
+
+---
+
+## Notes
+
+**Confidence: high.** Poliphilo's lament in the dark — a page of pure rhetoric with no technical
+vocabulary, no coinage needing a decision, and no allusion to place. It is well turned and can be
+defended throughout: the paradox that he could will death but could not will not to it; the fear not
+merely of dying but of being carried whole into the beast and cast out again; the final antithesis
+that the sweet light is taken from the living and the earth denied to the dead; and the
+twice-repeated *Vale*. Where Colonna's own syntax breaks down, near the end, the English breaks down
+with it rather than repairing it, which is the right choice here.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

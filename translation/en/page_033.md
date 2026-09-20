@@ -26,3 +26,21 @@ On the opposite face likewise, in a crown of leaves of deadly Aconite, was such 
 On the right-hand side thereafter were carved certain figures of men and of damsels dancing, with two
 faces apiece — the one in front laughing, the hinder one weeping. And they danced in a ring, holding
 one another by the arms, man with man and woman with woman: the one arm of a man
+
+---
+
+## Notes
+
+**Confidence: medium.** The cast group of youths thrown from the horse, Perillus and Hiram, and the
+pedestal with its first two garlanded roundels. The founders are correctly identified (Perillus of
+the brazen bull; Hiram, the bronze-caster of 1 Kings 7, here called *iudaeo* as Colonna calls him).
+Two problems for a reviewer. First, an unevenness in the apparatus: the first roundel's inscription
+is missing from the source transcription and is marked as such by an editorial note, but the second
+— *in una corona di foglie di mortifero Aconito cusì annotato* — is missing too and is left
+unmarked, so the English simply stops. Both readings are recoverable from the corpus: hp.db
+`woodcut_catalog` nos. 7 and 8, on this leaf, record them as the garland with **D.AMBIG.D.D.** and
+the garland of orpine with **Equus infalicitatis**. Second, the clause *il quale non si sentiva per
+essere prive, perche il significo solamente non gli pote l'aura vitale inspirare* is rendered into
+an English sentence that does not parse; *significo* is the unresolved word.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -40,3 +40,17 @@ and that it was sweetly departing to the last and utmost bounds of blessedness.
 And in this manner I found myself wavering beyond all measure, lifeless and astonished, so that I
 almost thought myself drugged. There offering itself to my tenacious memory the unguents of the
 mischievous
+
+---
+
+## Notes
+
+**Confidence: medium.** The flower-games, and the trees that shade the lovers. Three trees are
+described by their metamorphoses and all three are correctly rendered without being named — the
+weeping sisters of Phaethon (poplars), the undying Daphne (laurel), and the tree dyed again with the
+blood of the unhappy Babylonians (the mulberry of Pyramus and Thisbe). *Gelasine guance* as dimpled
+cheeks and *vibice et sugillatione* as weal and bruise are right. Medium for those three unglossed
+identifications, and because *la glaciale Elice* is kept as a name where the reader has just been
+told about Callisto on p. 178 and is not told that they are the same person.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

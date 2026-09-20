@@ -30,3 +30,20 @@ sat a Nymph of excellent relief of brass, holding two torches: one quenched, tur
 earth, and one lit, towards the Sun. The burning one in the right, and the other in the left hand.
 
 On the right side, then, in the squaring, I saw the jealous Clymene, who
+
+---
+
+## Notes
+
+**Confidence: medium.** The Greek dedication on the frieze, the two putti holding it, the trophy of
+arms, and the four panels above the cornice. Three things for a reviewer. First and largest: the
+1499 prints the dedication in Greek capitals **and** Colonna supplies his own Latin rendering
+immediately after (*Diis Veneri et filio amori, Bacchus, et Ceres de propriis ... Matri
+pientissimae*); the English gives neither, only an italic version, so the reader loses both the
+inscription and the author's own gloss of it. *Matri pientissimae* is also softened to "most tender
+Mother" where it means most dutiful. Second, a register slip: *la facinorosa Coronice* is rendered
+"the wickedly fine Cornice", which is modern colloquial English and out of key with the rest. Third,
+the sentence about azure compacted *in pastilli* — pigment cakes of lapis — does not survive into
+intelligible English.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

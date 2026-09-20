@@ -36,3 +36,18 @@ The aforesaid history the craftsman had diligently carried upon a flat of coral-
 introduced within the waved bound of the Altar. Which colouring flooded through the translucent stone,
 the coloured part being set only beneath the naked bodies and limbs, and in the hollow bounded round
 about the figures. Like a rose, flesh-tinted,
+
+---
+
+## Notes
+
+**Confidence: medium.** The relief on the right-hand pedestal: the bearded smith forging a pair of
+small glowing wings, the winged Matron with the naked child on her thigh, the armed man in the aegis
+with Medusa on his breast. Everything is described accurately and the stone is right (*petra
+Alabastrite* translucent alabaster, the *coralicea petra* ground showing through the nude flesh — a
+real observation about how the relief was coloured). Medium because the cast is not named: Colonna
+does not name them either, but these are unmistakably Vulcan, Venus, Cupid and Mars, and a reader of
+the English alone has no way to see that the panel is the forging of Cupid's wings. The
+identification is the reviewer's first job on this page.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

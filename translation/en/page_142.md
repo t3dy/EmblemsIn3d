@@ -15,3 +15,16 @@ hand, was directing her maidenly steps towards me; whence, plainly seeing that s
 girl, I did not move, but gladly awaited her. And here, with girlish readiness and a modest approach,
 and with a starry face, coming straight towards me and now drawing near, she came smiling, with such a
 presence and comely
+
+---
+
+## Notes
+
+**Confidence: high.** Short, plain narrative: Poliphilo comes to the end of the jasmine arbour, sees
+the crowd of young people keeping festival on the plain, and one Nymph with a lit torch separates
+from them and comes towards him. Nothing technical, no allusion to place, no coinage needing a
+decision. *Agminatamente* as "in troops" and *sopra sedendo admirativo* as sitting down full of
+wonder are both right, and the page's one delicate point — that he does not move because he can see
+she is *una vera et reale puella*, a real girl and not an apparition — is rendered exactly.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

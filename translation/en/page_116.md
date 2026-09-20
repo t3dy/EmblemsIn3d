@@ -35,3 +35,16 @@ appointed, the Nymph of the fountain departed.
 Last of all the magnanimous and lofty Queen at once ordered an unheard-of dance, or ball, upon the
 jasper squares, finished with an exact artifice, burnished and bright — such a thing as among mortals
 was never seen nor devised.
+
+---
+
+## Notes
+
+**Confidence: medium.** The dolphin handles, the gearing, and the loving-cup that closes the
+banquet. The mechanism is the page's strength and is correctly construed: one of the road-wheels
+carries a toothed wheel meshing into a spindle with sockets for the teeth, so the vessel spins and
+pours while the car rolls and stops when it stops — a lantern-pinion, described in working terms.
+*Analecti* is rightly the leavings swept up. Medium for *Chariceumati*, given as "favours", which is
+a reasonable but unconfirmed reading of a Greek coinage, and for the page's long final period.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -20,3 +20,19 @@ its unchecked swiftness and hard jolting. Whereupon some were falling, some stoo
 falling headlong. Some on their backs, and some thrown over backwards, and others were climbing up
 leaning on it; some, tumbled over, held vainly to the long hairs caught in their gripping hands.
 There were some fallen, and then in the act of rising, slipped beneath the body of the shaker-off.
+
+---
+
+## Notes
+
+**Confidence: medium.** The broken colonnade, the trees growing in it, and the winged horse. Two
+things are done well: the gymnasium vocabulary (*Hippodromo*, *Xysto*, *Paradromyde*, *Ambulacri*,
+*Euripo*) is correctly given as the covered walk, the open walk beside it, the ambulatories and the
+water-channel; and *aligero Desultore* is rightly the vaulting-horse of the *desultor*, the rider
+who leaps from mount to mount, not a mere winged horse. The measurements are transcribed exactly —
+five feet across the hoof-shoe, nine feet from hoof to breast. Medium for the column-anatomy in the
+first sentence, where *Astragalo et Hypotrachelia et Hypotesi* is given as "the Astragal and the
+neck and the foot": the necking is right, but *hypothesis* as "foot" is a guess, and the sentence
+does not make clear how far up the ruins the shafts are buried.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -38,3 +38,18 @@ But the damsels were well skilled, with their plentiful tresses poured over thei
 hanging unsteadily and then leaping upon their backs according to the movement, bound at the head with
 a little crown of fragrant violets. And when one was taken captive, they raised their arms and beat one
 palm against the other. So that, playing and dancing thus, there remained
+
+---
+
+## Notes
+
+**Confidence: medium.** The rules of the chess-dance, and the first game won by silver. Most of it
+is exactly right, including the knight's move — *per dui aequilateri recti et uno dalla linea
+devio*, two squares straight and one off the line — and the rooks running three, four or five
+squares in a measure, and the detail that the two pieces kiss before the taken one leaves the board.
+One rule comes out as nonsense and a reviewer should start there: *Non poteano retrocedere ... né
+rectamente procedere nisi per linea diagonale* is rendered "nor go straight forward, except by a
+diagonal line", which describes no possible move; the Italian is about the pawn, which may not take
+straight ahead but only on the diagonal, and may not go back except by promotion on the King's rank.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

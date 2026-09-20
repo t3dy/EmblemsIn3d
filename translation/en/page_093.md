@@ -35,3 +35,18 @@ frankly unfastening her curtain, we were led in.
 Here too there was an equal space between the second and a third curtain, most excellently woven with
 discourse and reason, and painted in fine work with endless bindings and holdfasts and with the most
 ancient instruments for grappling and holding fast
+
+---
+
+## Notes
+
+**Confidence: medium.** The palace exterior, and the three curtains with their keepers. The Roman
+comparisons are correctly placed (the Gordian villa on the Praenestine Way, Titus's burnished
+Phoenician stones), though two of the four marbles in the Historia Augusta's two hundred columns —
+*Simiade* and *Tistie* — are carried into English untranslated. The larger thing the English does
+not say is the same omission as the five nymphs on p. 79: Cynosia, Indalomena and Mnemosyna are the
+inner faculties in order — watchfulness, image-making and memory — and one must pass all three, in
+that sequence, to reach the Queen. The names are transliterated faithfully and the scheme is left
+invisible. (The heading here reads Chapter VIII, which is right; page 92's does not.)
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

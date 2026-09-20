@@ -24,3 +24,17 @@ An invention unimaginable and beyond estimation, an excess of labour and of rash
 Auger could bore through so great a hardness and stubbornness of stone, and hollow out so great a
 hardness of material, or what other builder's engines could do it? The hollowing within agreeing
 harmoniously with the outward form. At last, having returned onto the courtyard, I saw in this
+
+---
+
+## Notes
+
+**Confidence: medium.** The Queen's tomb, the second inscription, and the way out of the elephant.
+The Latin is translated accurately (*QUISQUIS ES, QUANTUNCUNQUE LIBUERIT HUIUS THESAURI SUME. AT
+MONEO. AUFER CAPUT. CORPUS NE TANGITO.*), the gesture is right — she points with her forefinger
+behind her own shoulders — and Poliphilo's refusal to touch anything is rendered without addition.
+Medium for the same editorial loss as page 39: the Hebrew and Greek versions printed in the 1499 are
+dropped, leaving only an English line, on the page that sets the book's central riddle about the
+head and the body. *Trepano* is correctly the auger.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

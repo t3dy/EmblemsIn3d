@@ -39,3 +39,16 @@ Alas for me. Then, having said this to myself secretly, I began wretchedly to we
 call up abundantly the familiar tears to my weeping eyes, and to find the way to long for most hateful
 death. And for some space, thus fiercely goaded by an excessive and deadly love, which sorrowfully
 stirred me beyond all bound, and with a
+
+---
+
+## Notes
+
+**Confidence: medium.** The blazon of torment, part by part, and the comparison with Tityus. Well
+rendered, including *Minerva il figmento de Prometeo accense ... cum la leve ferula*, correctly the
+fennel-stalk in which the fire was carried, and Milo torn apart. One phrase does not survive: *gli
+sagittanti risguardi della vita me sospendono* is given as "the arrow-shooting glances of her life
+hang me up", which means nothing; *della vita* is almost certainly *della vista*, of her sight, and
+the line is about her glances. *Babylonico palude* is also left unexplained.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

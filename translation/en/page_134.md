@@ -17,3 +17,17 @@ And thence next to a broken and pathless and rugged mountain, all gnawed away an
 roughness. High into the air, worn down to a spur, and bare of all greenness, and dry mountains round
 about. And there were carved the three rough doors, rudely hollowed in the living rock, an antique
 work, and beyond belief most ancient, in a great harshness of site.
+
+---
+
+## Notes
+
+**Confidence: medium.** The two bridge-hieroglyphs read, and the arrival at the three doors. This
+page shows how the inscriptions in this translation ought to be handled everywhere: *Medium tenuere
+beati* and *Velocitatem sedendo, tarditatem tempera surgendo* are both kept in Latin **and** glossed
+in English, which is exactly what pages 34, 41, 49, 52, 54, 69 and 73 do not do. *Marmoro Hymetio*
+is right. Medium for one editorial loss: the Italian page ends with the tapering device of
+asterisks, three then two then one, and the English drops it — the same typographic signature the
+front matter records on p. 1.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

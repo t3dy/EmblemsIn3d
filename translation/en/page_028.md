@@ -33,3 +33,20 @@ LICHAS THE LIBYAN, STONE-BUILDER, SET ME UP.
 Let us return for the present to the Base, or Block, set beneath the Pyramid; in the front of which I
 beheld an elegant and magnificent sculpture of a cruel Battle of the Giants, wanting only the breath
 of life, excellently carved in wonderful relief; with its movements, and with so much
+
+---
+
+## Notes
+
+**Confidence: medium.** The light-shafts finished, the climb, the balustrade at the top, the bronze
+tablet, and the architect's signature. Two things a reviewer should see. First, an editorial loss
+rather than a mistranslation: the 1499 prints Lichas's name twice on this page, once in Greek
+majuscules (ΛΙΧΑΣ ΟΛΙΒΥΚΟΣ ΛΙΘΟΔΟΜΟΣ ΩΡΘΟΣΕΝΜΕ) and once in Latin (LICHAS LIBYCUS ARCHITECTUS ME
+EREXIT), and the English gives a single line, so the reader cannot tell that the page is bilingual.
+Elsewhere this translation keeps such inscriptions in the original with a gloss. Second, *al
+pedamento Areo del aedificio* is rendered "the Airy footing"; *areo* here is almost certainly the
+*areobate*, the ground-course, the same word the translation handled correctly as "base" on p. 23.
+The balustrade measurements (a foot between centres, half a pace high) and *illuminarii*/*catabassi*
+as light-wells and down-shafts are secure.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

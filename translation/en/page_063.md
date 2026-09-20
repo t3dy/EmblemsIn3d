@@ -37,3 +37,19 @@ thing.
 
 And there, finding myself naked and deprived of every refuge in so mortal a strait and dissolute grief
 — although naturally hateful death is in no way welcome, yet in this hour I esteemed it gracious. The
+
+---
+
+## Notes
+
+**Confidence: medium.** Lost in the dark under the pyramid, with a long catalogue of other people's
+terrors. The Apuleian layer is secure and well caught — Thrasyleon in the bear's skin, Psyche's
+straits, the perils of Lucius made an ass, and his hearing the robbers plan his death — and
+Porsena's labyrinth and Cacus's cave are correctly placed. Two places to look again. The gods'
+flight from Typhon (*Mercurio facendose Ibi, et Apolline in Threicia, et Diana in Chlomone avicula,
+et Pana in bina formatione*) is rendered word for word without being recognised as Ovid,
+*Metamorphoses* 5, and *Chlomone* is left untranslated in the middle of it. And *Cochlea del suo
+guberno gerula* becomes "the Snail, bearer of its own governance", where the point is simply that
+the snail carries its own house.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

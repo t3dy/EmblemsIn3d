@@ -37,3 +37,18 @@ dress, such as never was seen in the world's judgement. In the midst, then, sat 
 sovereign Queen with pomp and the utmost state, and an unthinkable adornment. The borders led round her
 ambitious garments were filled with most opulent jewels of alternating colour in such plenty that you
 would say nature had hailed down there all the finest manners of shining gems, in a wanton array.
+
+---
+
+## Notes
+
+**Confidence: medium.** The Queen enthroned, described from the mitre down to the footstool. Pliny
+is behind almost every comparison and the translation places them correctly: the seat of *Eusebes*
+stone in the temple of Hercules at Tyre, the pearls of the Indian promontory Perimula, the pearls
+not to be had in Arabia or the Persian gulf. The dress-vocabulary is right too — *stalagmii* as drop
+earrings, *discerniculo* as the parting-pin, *crepidule* as slippers, *hypopodio* as the footstool.
+Medium because this is a single unbroken inventory that has had to be paragraphed by the translator,
+and because *aluminate margarite* is given as "burnished" where the word points to pearls whitened
+with alum.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

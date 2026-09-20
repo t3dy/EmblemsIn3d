@@ -20,3 +20,17 @@ groaned. Gaping, of a tallness of sixty paces. And by the hairs one could climb 
 and by the matted and tormented hairs of the thick beard, to the lamenting mouth. Which by passages
 was all void and empty. Through that, then, driven by the stimulus of curious searching, without other
 counsel, into the throat by little steps
+
+---
+
+## Notes
+
+**Confidence: high.** The horse of Seius recalled, the elephant glimpsed, and the groaning colossus
+found. Plain narrative, and every part of it can be defended: the proverbially unlucky *cavallo
+Seiano* is correctly identified; the mechanism is rendered exactly as Colonna gives it, air entering
+through the soleless feet and the hollow shins and issuing as a groan at the mouth; the measurement
+(sixty paces long) is transcribed without gloss; and the climb up by the chest-hair and the
+*tomentati et tormentati pili* of the beard is neither smoothed nor expanded. No coinage on the page
+needs a decision.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

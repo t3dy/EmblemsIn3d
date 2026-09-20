@@ -41,3 +41,17 @@ I answered her reverently: "Poliphilo, Lady." "It pleases me well," she said, "i
 the name." And without delay she added: "And what is your dear beloved called?" I answered modestly:
 "Polia." And she said: "Ah, I judged that your name signified 'much loving'; but what I now hear means
 'the friend of Polia'." And at once she said: "If here
+
+---
+
+## Notes
+
+**Confidence: medium.** The wall-inlay, the two dolphin reliefs, the bathing, and the etymology of
+Poliphilo's name. The etymology is the page's whole point and it is handled exactly right, with both
+readings kept — Osfressia guesses *molto amante*, "much-loving", and is corrected to *Amico di
+Polia*, the friend of Polia — which is the hinge the book's title turns on. *Geloeasto fonte* is
+correctly the laughter-making fountain, and *quale cornice tra candide columbine* comes across
+intact. Medium for the opening technical sentence on the cut-and-inlaid black stone, and because the
+youth on the dolphin with a lyre is Arion and is not named.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

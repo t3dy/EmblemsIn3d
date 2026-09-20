@@ -34,3 +34,18 @@ ever anyone could feel or tell.
 
 To such endless riches, then, supreme delights and immense treasure, let not the Hyrcanian pontiff
 boast himself. Nor Darius, nor Croesus, nor any
+
+---
+
+## Notes
+
+**Confidence: medium.** The rooms of the palace, the coffered ceiling, and the gardens. The
+architectural inventory is right throughout — *Triclinii*, *Cubili*, *Conclavi*, *Balnei*,
+*Bibliotheca*, *Pinacotheca* correctly as dining-rooms, bedchambers, closets, baths, library and
+picture-gallery; *laquearia contignatione* as the coffered ceiling; *oviculatura* as egg-and-dart;
+*peristromati* as the strewn coverings — and *il trabeato di Salauce re degli Colchi* is Pliny's
+Saulaces with his gold and silver ceilings. Medium because the whole page is a single exclamatory
+list with no main verb in the Italian, and the English has had to supply its own sentence-divisions
+to be readable at all.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

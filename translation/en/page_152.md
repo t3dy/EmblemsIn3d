@@ -36,3 +36,16 @@ and presume upon forbidden delights — perhaps in this holy place, and of such 
 forbidden — might it not easily befall me, as a profane man, as it did to many others who have
 shamelessly offended: the cold and unbroken angers justly used upon bold and most confident Ixion? And
 in like manner
+
+---
+
+## Notes
+
+**Confidence: medium.** Poliphilo checks himself: the peacock that drops its tail when it looks at
+its own feet, and Tantalus between the water and the fruit. Both comparisons are rendered exactly,
+and the burrs still hooked in his gown tie the page back to p. 101. Ixion is correctly placed as the
+type of the man punished for presuming on a goddess. Medium for the page's construction — three long
+Italian periods, redivided in English — and for *le frede et infracte ire*, given as "the cold and
+unbroken angers", where both adjectives are guesses at an uncertain text.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

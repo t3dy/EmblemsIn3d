@@ -34,3 +34,19 @@ been devised and set up. And if I rightly judged its excess, beyond belief, to b
 unimaginable to look upon — which in the beholding wearied the visual power not a little, and thinned
 the other spiritual senses — how much more to make it? Therefore, so far as the grasp of my
 understanding will grant it me, in this manner I now briefly describe it.
+
+---
+
+## Notes
+
+**Confidence: medium.** Plants rooted in the ruins, the coloured stones, and the first measurements
+of the great structure. The stone- and carving-words are well handled (*Ophites*, *Coralitico*, and
+*panglypho et hemiglypho* correctly as high and half relief). Medium on two counts. The plant-names
+are standard equivalents again, and one loses a joke: *Anagyro non quassabondo* is the stinking
+bean-trefoil of the proverb "do not stir the anagyris", so "the unshaken Bean-trefoil" reads as an
+epithet where the Italian is an allusion. And this page carries measurements the 3-D world depends
+on — *passi vinti, et stadii sei*, and the height at *uno quinto de stadio* — which are transcribed
+literally and correctly but not reconciled with each other; anyone modelling from this page should
+treat the figures as Colonna gives them, not as a coherent survey.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -36,3 +36,17 @@ Logistica, taking note of my honest question, answered at once, saying: "Know, P
 gem is carved the image of the highest Jove sitting crowned upon his throne. And beneath his majestic
 and holy footstool are the ruined giants, who wished to climb up to his most high seat, level with the
 height of his most ample sceptre. And he struck them with lightning. In his left hand he holds a
+
+---
+
+## Notes
+
+**Confidence: medium.** The walk from the Trinity monument, and Poliphilo's question about the
+Queen's diamond. Pliny stands behind the three comparisons and two of them are placed correctly —
+the jasper cut with Nero in his breastplate, and Nonius the senator proscribed for his gem. The
+third is wrong and should be fixed: *il Topacio della statua di Arsinoe Regina Araba* is rendered
+"the topaz of the statue of Arsinoe, the Arabian queen", but Arsinoe was queen of Egypt; the Arabian
+element in Pliny is the island of Topazos in the Arabian gulf, from which the stone came. Osiris's
+two golden temples are correctly Diodorus's.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

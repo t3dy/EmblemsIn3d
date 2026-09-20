@@ -35,3 +35,18 @@ their gills leafed and likewise their fins, the outermost part passing into foli
 certain little boys with their hands seizing the whorl, which ended in an antique flower. The dolphin's
 head had a curve, one part of which turned back towards the little boy, and the other wound itself
 towards a vessel with an open mouth,
+
+---
+
+## Notes
+
+**Confidence: medium.** The fourth wall with the Queen's throne raised under the Sun, the lapis
+pilasters and the ox-and-dolphin frieze. The governing numbers are transcribed exactly and are
+buildable: each wall twenty-eight paces, the pilasters four paces apart in a sevenfold partition,
+the seventh roundel over the door holding the Sun and set higher than the rest for the throne.
+*Vasculi ballaustici* is correctly the pomegranate-flower vase. Medium for two ornament-words left
+unresolved in the middle of an otherwise exact description — *pupi cum le extremitate in scyle*,
+given as "figures ending in scrolls", and *Cylindruli, o vero Terreticuli*, given as "little
+cylinders, or rounds".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

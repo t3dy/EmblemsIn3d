@@ -32,3 +32,17 @@ and laughing dimples of two little hollows, comelily adorned with a choice grace
 colour of fresh roses, gathered at the rising of Aurora. And then set in vessels of the cleanest
 crystal of Cyprus, shining through no otherwise, with a reddening clearness: so, without fail, with such
 brightness I judged them.
+
+---
+
+## Notes
+
+**Confidence: medium.** The necklace stone by stone, the hair, and the eyes. The learned allusions
+are correctly placed: Eriphyle's fatal necklace and the betrayal of Amphiaraus, and Berenice's lock
+vowed in the temple of Venus and set in the sky by Conon the mathematician — which the English keeps
+as a triangle, as the Italian has it. The gem-sequence of the necklace is transcribed exactly and
+could be made. Medium for two unresolved names: *della Cerva Caesarea*, the collared hind, is left
+without indication of which story is meant; and *più belle che mai alla Mimoria fusseron dicate* is
+rendered "dedicated to Memory", which is a guess at *Mimoria*.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

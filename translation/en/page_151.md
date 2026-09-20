@@ -35,3 +35,17 @@ And saying thus, meaning to uncover the hidden fire and to lessen a little the s
 excessively growing worse from this raging and terrible inflaming (of love) remaining hidden — yet
 patiently I stayed; and in such a way all these fervid and heavy stirrings, and rash thoughts, and
 wanton and violent appetites, I turned back, seeing myself with my
+
+---
+
+## Notes
+
+**Confidence: medium.** The heart opens like a split pomegranate, and Poliphilo speaks for the first
+time. The catalogue of helps in the middle of the page is well handled — Tiphys steering in foul
+weather, the star of Castor, Peristera the nymph turned to a dove, and the Idaean dittany brought by
+Venus to Aeneas's wound — and the Trojan-horse image for a sweet face stuffed with ambushes comes
+through cleanly. Medium for three renderings taken on trust: *mordica, o vero carancia* given as the
+pomegranate, *amplustre* given as "tiller" where it is properly the stern-ornament, and *quello di
+Mylicta al batuto Adone*, carried across untouched.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

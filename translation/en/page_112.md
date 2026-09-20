@@ -23,3 +23,17 @@ Last of all there appeared a miraculous work, another perpetual fountain by a de
 material named before. But of another most worthy shaping and figure, wonderfully wrought. Founded upon
 a fixed axle, by which the turning wheels went round. Upon which axle there stood, made fast, an
 unequal square three feet long,
+
+---
+
+## Notes
+
+**Confidence: medium.** The coral tree finished, the cup, the unknown fruits, and the second
+perpetual fountain begun. The detail is good: *bidentulo d'oro* is correctly the two-tined fork, and
+Cleopatra's draught for the Roman captain is correctly placed. One sentence would repay a gloss
+rather than a correction — *quale si nella gratiosa materia disiuncta, fusse l'ingresso della optata
+forma* is translated literally as matter receiving the entrance of the longed-for form, which is
+scholastic hylomorphism used as a joke about taste, and an English reader with no Latin philosophy
+will read it as noise.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

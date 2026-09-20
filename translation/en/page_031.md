@@ -39,3 +39,20 @@ cushioned, capitals, with the bark-like, or spiral, volutes outside the ringed e
 astragals beneath, hanging here and there, exceeding by a third part its own base — that is, of the
 capital, which was of a thickness equal to the half-diameter of the column set beneath it. Upon which
 lay the Architrave, or straight beam,
+
+---
+
+## Notes
+
+**Confidence: medium.** Poliphilo sighs for Polia, laments the lost vocabulary of building, and
+begins the forecourt. The lament and the narrative are secure. The architecture is where the doubt
+is. *Areostylo* is correctly the wide-spaced intercolumniation; but the capitals are described as
+*Dorici, overo Pulvinati, cum gli cortici, overo volute cochleate, fora delli echini inanulati* and
+rendered straight — cushioned capitals with volutes outside a ringed echinus are Ionic by any
+Vitruvian reckoning, and the translation faithfully reproduces Colonna's contradiction without
+noting that it is one. The proportion that follows (*la tertia parte sua più, excedendo lo imo suo
+... il quale di crassitudine dilla supposta columna semidiametro constava*) comes out in English as
+an unreadable string of pronouns and cannot be used as a measurement. *Metopa* is also dropped,
+glossed away as "front".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

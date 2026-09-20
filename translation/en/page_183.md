@@ -37,3 +37,17 @@ knotted elegantly with nymphlike care, with flying veils. Some with hair-fillets
 plaiting, adorned with gems.
 
 Then, drawing somewhat together, they
+
+---
+
+## Notes
+
+**Confidence: medium.** The kisses and embraces by the water, and the lovers' songs. The similes are
+all correctly rendered and none is softened — the octopus's suckers, the shellfish on the Illyrian
+rocks, the dodder, the ivy on old elms, the Axius in Mygdonia. *Più che alla materia la optata
+forma* recurs here from p. 112, and is again given literally without a gloss, so the scholastic joke
+lands twice and is explained neither time. Medium for the page's construction, one long accumulating
+period, and because the catalogue of what the songs could do (tame the Caucasus, undo what Orpheus's
+lyre did, quiet Scylla) is rendered clause by clause and reads as a list rather than as a hyperbole.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

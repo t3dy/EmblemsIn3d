@@ -24,3 +24,17 @@ age, and lively movements and games; and it girt it round most beautifully with 
 
 Above the order and projection of the little columns there tended perpendicularly from each, to the
 summit of the dome, a
+
+---
+
+## Notes
+
+**Confidence: medium.** The weathervane explained (the wind turns the vane, the hollow nape takes
+the draught, the trumpet sounds — and so the carob-trees had frightened him), and the bath's
+interior begun. ASAMINTHOS is rightly kept in the Greek, and it is the Homeric word for a
+bathing-tub, which is the joke. The four inlaid steps with the water covering two of them, and the
+Corinthian colonnettes at the angles, are clear enough to model. One reference is left unresolved:
+*tale therme non suppedita l'amplitudine di Tacio* is rendered "the amplitude of Tatius does not
+surpass", keeping a name that in this context is almost certainly the baths of Titus.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

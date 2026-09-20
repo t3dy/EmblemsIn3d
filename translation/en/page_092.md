@@ -33,3 +33,18 @@ other that ever built. What framing, then, of beams and of rafters; what distrib
 chambers and inner rooms and courts; what walls covered and crusted with precious panelling; what
 wonderful order of ornament; what unfading colouring of pigment upon the walls; what rule of columns
 and of spacing — and there, by this
+
+---
+
+## Notes
+
+**Confidence: medium.** The pavement of the cloister — *opus sectile* described with real precision
+— and the opening of the praise of the palace. The technical terms are right: *sectilii Tesseri,
+Scutuli, Trigoni, Quadrati* as cut tesserae, lozenges, triangles and squares; *smirilio* as emery;
+*xesturgia* as the polisher's art; *contignatione trabeata et di canterii* as the framing of beams
+and rafters; *caviedii* as the courts. One thing a reviewer must fix is not in the translation but
+on it: this page's heading reads **Chapter IX**, while page 93 reverts to Chapter VIII and the
+chapter IX rubric is not printed until page 94. The heading is wrong, and because the manifest takes
+each page's chapter from its own heading, the error is now in the manifest too.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

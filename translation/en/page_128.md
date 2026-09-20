@@ -37,3 +37,18 @@ horn of plenty packed full, fixed at the blunted, or cut-off, corners, the short
 made even, a foot and a sixth, of purest gold. The horns, thongs and statues shone forth, with their
 hands wrapped in the wandering and straggling thongs. Flying along the flat of the stone. And in
 nymphlike dress, a workmanship not human but divine. And therefore
+
+---
+
+## Notes
+
+**Confidence: medium.** Thelemia's song, and the third garden with the Trinity monument. The
+monument is transcribed exactly and is buildable — a hundred brick arches five paces high and three
+in the opening, ivy-covered, each with a porphyry altar and a golden nymph; at the centre a
+chalcedony cube, a jasper cylinder two feet high and a pace and a half across, and a black
+triangular prism a pace and a half high, with three figures holding cornucopias at the cut corners.
+*Areostylo*, *displuvio* and *Edyepea* are all correctly construed. Medium for the density of that
+single description and for the absence of any note that the three-part monument is about to be read
+as a theological figure.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

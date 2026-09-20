@@ -35,3 +35,17 @@ Therefore it persuaded me opportunely to give effort to keeping myself for the k
 which sometimes may be to me a bountiful and long-haired minister of prosperous and favourable things.
 And by this constrained and compelled, moving my sluggish journey a little more, and reined in by my
 broken and
+
+---
+
+## Notes
+
+**Confidence: medium.** The escape into the pleasant country, and the white mouse remembered as a
+good omen. Mostly secure, and one good touch: fortune as *capillosa ministra*, the long-haired
+minister, which keeps the forelock of Occasion that the statue on the obelisk already carried. But
+one word is reversed. *Gli Dii demeritamente benedicendo* is given as "blessing the gods
+undeservedly"; *demeritamente* is from *demereri*, to deserve well of, so Poliphilo is blessing the
+gods **as they deserved** — the English makes his thanksgiving grudging where the Italian makes it
+dutiful. A reviewer should start there.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

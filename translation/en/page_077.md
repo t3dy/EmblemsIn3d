@@ -41,3 +41,16 @@ troublesome assault; for by this way you might perhaps easily find yourself bles
 therefore, and be tranquil again, and comfort your mind. For here, as you plainly see, is a place of
 pleasure and delight, and not of grief nor of any terror. Because the age is uniform, the site secure
 and unchanging, time does not run, the joyful convenience, the gracious and companionable living
+
+---
+
+## Notes
+
+**Confidence: high.** Poliphilo is questioned and answers: plain narrative and direct speech, with
+no technical vocabulary and no allusion needing identification. It can be defended throughout — the
+debate with himself whether to kneel, turn back or stand still; the maxim that the innocent carries
+his own protection; his standing speechless *quale statua*; the nymphs' reassurance; and his
+declaration that he is the unhappiest lover in the world and does not know where either she or he
+may be. The one thing given up is *ardelia*, a busybody, which is flattened into "bold".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

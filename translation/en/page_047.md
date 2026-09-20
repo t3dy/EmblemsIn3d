@@ -31,3 +31,19 @@ From which, a little cornice being drawn out above in due measure, and with its 
 the base of the perfect square, it remained by rule broader than high — that is, four-cornered. Most
 common expressions, and not native ones, I must use, because we are degenerate and cut off from that
 treasure, so as rightly to set out
+
+---
+
+## Notes
+
+**Confidence: medium.** The rubric to chapter V, the apology to the lovers for so much architecture,
+and the musical analogy. The analogy is the best thing here and is handled precisely: the architect
+invents the solid and then divides it, *quale il Musico havendo invento la intonatione et il
+mensurato tempo in una maxima* — and *maxima* is correctly kept as the longest mensural note-value
+rather than flattened to "a great note". *Stilypodio, overo columnipedio* is rightly the
+stylobate-pedestal. Medium for the opening period, which runs to seven lines of Italian and has been
+broken into English sentences at the translator's discretion, and for *Vulgatissime prolatione, et
+non vernacule*, where the point — that he must use borrowed words because the native ones are dead —
+survives but the wording is strained.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

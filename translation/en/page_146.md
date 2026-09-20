@@ -33,3 +33,18 @@ and head more beautifully adorned than ever the warlike Necho, adorned by the Ac
 rays, saw; wounding me deeply in my heart like a dart let fly by an angry Cupid. So that, concluding, I
 might almost dare to say that Delos, made steadfast, did not bring forth to mortals lights so gracious,
 so bright, so
+
+---
+
+## Notes
+
+**Confidence: medium.** The mouth and teeth, then the quarrel between the eyes and the appetite —
+one of the book's best pieces of psychology, and its argument comes through clearly, down to the
+closing simile of the starving man among many dishes who is content with none, *de Bulimia infecto*,
+correctly the ravenous hunger. Medium because three of the page's allusions defeat the English.
+*Thespis cum le nove figliole* is carried across as it stands (the nine are the Muses); *el Belliger
+Neco dagli Acintani ornato de splendenti radii* is transcribed untouched; and *quali ramenti Abiegni
+sempre in pampinulati orbiculi, merentise* comes out as "such shavings of fir, always deserving to
+be in vine-curled circles", which means nothing in a sentence about a woman's hair.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

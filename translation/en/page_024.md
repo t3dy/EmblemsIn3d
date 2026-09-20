@@ -32,3 +32,21 @@ or pole. Which held up an image of a Nymph, an elegant work of the material alre
 turn to stupefaction anyone who considered it most carefully and with fixed gaze. Of such and so
 made a proportion that she allowed herself to be seen perfectly from below, in the air, at the common
 stature. And
+
+---
+
+## Notes
+
+**Confidence: medium.** The geometry of the pyramid, the cube, the obelisk, and the turning Nymph.
+The arithmetic is read correctly — *dece, et quatro cento et mille gradi* is rightly 1,410 steps,
+and the four-and-twenty stadia of the perimeter follow from six a side — and *petra Pyropecila
+Thebaicha* is correctly the fire-flecked Theban granite, *petaso* correctly the pivot-cap. Two soft
+places, and the first is the place to start. *Tale non fue chermadio levato da Titide* is given as
+"the block quarried by Titis"; *chermadio* is the Greek χερμάδιον, a stone hurled by hand, and
+*Titide* is far more likely Tydides — Diomedes lifting the great stone in *Iliad* 5 — so the
+comparison is to a feat of strength, not to a quarry, and the English as it stands names nobody.
+Second, the cube's taper (*uno prolapso in ambito, de sei parte, due in descenso, et una nella
+cacuminata planicie*) is rendered word for word and is not intelligible as a ratio; a modeller
+should work from the woodcut.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

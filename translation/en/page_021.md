@@ -17,3 +17,18 @@ Here again in this place I found no inhabitant, nor any other animal whatever. B
 solitary among those palms — not thickly set, but standing apart, and most worth the seeing — I
 thought that the palms of Rachelais, of Phaselis and of Libya were perhaps not comparable to these.
 Behold, then, a famished and flesh-eating wolf appeared to me on the right hand, with its mouth full.
+
+---
+
+## Notes
+
+**Confidence: medium.** The herb-list, the palm grove, and the wolf with its mouth full. The
+narrative half is secure, and the palm's emblematic sense is correctly caught (*electo Signo de
+victoria per el resistere suo ad l'urgente pondo* — the palm is the sign of victory because it
+springs back under a weight). Medium for the nomenclature on both sides of the page: the herbs
+(*Cythiso, Carice, Cerinthe, Panachia, ranunculo, cervicello o vero Elaphio, seratula*) are given by
+their standard equivalents, of which *cervicello/Elaphio* as hartwort is the least certain; and
+*Rachelaide, Phaselide, et Libyade* are Pliny's named varieties of date-palm, rendered here as
+places rather than as cultivars.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

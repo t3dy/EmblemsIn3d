@@ -27,3 +27,19 @@ incredible expense, was so great a weight carried up and set so high in the air,
 heavens? With what Windlass, and with what wheeled Pulleys, and with what Crabs, or Block-and-tackle,
 and other hauling Engines, and framed Scaffoldings? Let every other incredible and greatest structure
 keep silence here.
+
+---
+
+## Notes
+
+**Confidence: medium.** The statue turning in the wind, the sounding of the metal, and the catalogue
+of hoisting engines. The Vitruvian machinery at the foot of the page is the strongest thing here and
+is exactly identified — *Ergate* windlass, *orbiculate Troclee* wheeled pulleys, *Capre* the
+shear-legs or crab, *Polispasio* the block-and-tackle. What the page does not do is name what it is
+describing: the figure with *le trece libere volante* in front and the *Calva coppa* bare behind,
+holding a cornucopia and turning at every breeze, is Occasion-Fortune in her standard attributes,
+and the English renders the attributes faithfully without saying so. Two comparisons are also left
+literal and unidentified — the noise never heard *dal romano aerario*, and *quello dille cinque
+Pyramide sopra il quadrato stante*.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -37,3 +37,18 @@ womanly garment. Upon which they set the capital with the volutes hanging before
 twisted hair and womanly ornament. Those caryatids which have for capital a woman's head with curled
 locks were expressed in the temple of that rebelling people; which, being afterwards subjugated again,
 in token of inconstancy like women's, in the meaning
+
+---
+
+## Notes
+
+**Confidence: medium.** The left-hand pedestal — the winged-footed master teaching the boy three
+arrows, plainly Mercury and Cupid, with the caduceus at his feet — and then the doctrine that
+fluting is female and cabling male. The Vitruvian material is rendered correctly: *rudentata* as
+cabled, twenty-four flutes, the flutes as the folds of a woman's dress, and the caryatids of the
+rebel city carrying their punishment in the capital. Two flags. The trophy's motto NIHIL FIRMUM is
+replaced in the English by "NOTHING IS FIRM", so the Latin on the stone cannot be quoted — the same
+silent substitution as TEMPUS and AMISSIO on p. 34. And the whole doctrine is Vitruvius I.1.5 at one
+remove, which the English does not say.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

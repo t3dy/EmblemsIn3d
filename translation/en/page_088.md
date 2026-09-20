@@ -36,3 +36,18 @@ falling down into a wide basin, which was of the finest amethyst, its diameter c
 of a thickness of a quarter, dwindling towards the lips to an inch, of most excellent casting; and all
 round about there appeared, in relief, most worthily expressed, water-monsters — as many as the
 inventors of antiquity
+
+---
+
+## Notes
+
+**Confidence: medium.** The cypress avenue and the cloister walled in citrus, orange and lemon. This
+is one of the most measurement-rich pages in the book and the figures are all transcribed exactly:
+the avenue four stadia long, the living hedge six feet thick and as high as the cypresses, the
+palace front sixty paces, the court a square *Hypaethrio ... subdiale* open to the sky, the amethyst
+basin three paces in diameter and a quarter thick, thinning to an inch at the lip. Anyone modelling
+the cloister can work from this page. Medium because the figures are transcribed and not reconciled,
+and because the description of the hedge's interior scaffolding of knitted branches — one can climb
+inside it unseen — is rendered so literally that its cleverness is hard to see.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

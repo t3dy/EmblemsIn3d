@@ -33,3 +33,18 @@ purified and cleanest, as before. And this too was a distinguished and unheard-o
 the tripods and the boards were readily taken down and carried thence away.
 
 All which most excellent showings, the more carefully
+
+---
+
+## Notes
+
+**Confidence: medium.** The fifth, sixth and seventh courses, and the trick with the napkin. Two
+things are right and one is left half-said. *Il conservabile Pavone* is correctly the peacock whose
+flesh was held never to putrefy, and *non subdita alla legie Licinia* correctly the sumptuary law
+this table would have broken. What is left half-said is the marvel that closes the page: the cloth
+and napkins of *Bysso di Carysto* are thrown into the embers, glow, and come out unhurt and cleaner
+than before — because Carystian byssus is **asbestos**, and Pliny reports exactly this trick of it.
+The English translates the words faithfully and leaves an English reader with an unexplained
+miracle.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

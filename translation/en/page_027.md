@@ -35,3 +35,19 @@ aforesaid spiral stairs were everywhere clearly lit. For the ingenious and most 
 shrewdly made certain light-stealing passages, with great and most exquisite investigation of the
 understanding. Which, in respect of the wandering of the Sun, corresponded directly to three parts:
 the lowest, the middle, and the upper. The lower one by the
+
+---
+
+## Notes
+
+**Confidence: medium.** The plinth, the Medusa-mouth gate, the spiral stair inside the rock, and the
+light-shafts. A strong page, and its two hardest words are correctly construed: *Clepsiphoti meati*
+as light-stealing passages, and *Catillo* as the upper cap-stone. It is medium for its density of
+architectural terms rather than for any doubt about what happens, with one word to weigh —
+*temeramente el vipereo capo ... era perfectamente coelato* is given as "fearsomely carved", but
+*temeramente* is more probably *temerariamente*, boldly or daringly, describing the carver's nerve
+rather than the head's effect. This is also the page that establishes the passage and stair running
+up inside the pyramid, which the world has to take on the text alone: there is no woodcut of the
+interior.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

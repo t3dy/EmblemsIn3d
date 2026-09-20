@@ -36,3 +36,18 @@ Then in turn I looked upon delightful Aegina, taking the highest pleasure both i
 in the divine fire. Her too born of Fullus, and her of Menemphus, festive with the feigned father. And
 the other of Diodes with her lap filled with most beautiful flowers, and reverent to the twisting
 serpent. And the seemly girl no longer grieving at the horns sprouted on her. And Astyoche
+
+---
+
+## Notes
+
+**Confidence: medium.** The Elysian meadow with its flower-catalogue, and the first of the loved
+nymphs. The botany is the best-handled list in Book I and deserves saying so: *Paralisis* as
+cowslip, *Gyth* as nigella, *Vatrachio* as crowfoot, *Sticados* as cassidony, *Saliuncha* as Celtic
+nard, *Idiosmo* as wild mint are all right, and the repetition of amaranth is the Italian's own. The
+mythological roll-call is where the doubt is. Antiope is given as "of Lesbos", where she is
+Nycteus's Theban daughter; and *Antichia filiola de Acco*, *la genita de Athasio*, *l'agnata de
+Fullo*, *quella de Menempho* and *quella de Diode* are all carried into English as unglossed names
+that a reviewer should try to identify.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

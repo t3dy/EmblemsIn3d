@@ -26,3 +26,16 @@ almost down to the pavement, unravelled at the edge all round, with its own thre
 with threads of gold and silver, hanging beneath a band, or border, a sixth of a foot in its breadth,
 subtly rewoven and richly furnished with pearls. Hung a hand's breadth clear of the pavement, evenly,
 all round on every side. And of this workmanship all the cloths were
+
+---
+
+## Notes
+
+**Confidence: medium.** The fourteen musicians, the ebony tripods, and the first table laid.
+Measurements are exact and usable: the round gold table three feet across and a thumb thick, the
+border a sixth of a foot wide, the cloth hanging a hand's breadth clear of the pavement. Two flags.
+The Italian calls the table *d'oro* in one sentence and *eburnee*, ivory, in the next, and the
+English reproduces both without marking the contradiction — a reviewer should check the facsimile.
+And *panno hormisino* is flattened to "green silk", losing the Hormuz taffeta the word names.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

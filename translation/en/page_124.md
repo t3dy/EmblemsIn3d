@@ -35,3 +35,17 @@ excellent watch-tower, near the garden." And Thelemia remaining below, by a wind
 cheerfully to the levelled upper part. Where she showed me, with a divine eloquence, a garden of a very
 wide circuit, drawn out in the form of a various intricate labyrinth, and its circling passages not to
 be walked,
+
+---
+
+## Notes
+
+**Confidence: medium.** The garden of glass, and the climb to the watch-tower. The description is
+exact and the measurements usable (cypresses not above two paces, box one, the socle raised a sixth
+of a foot, rhombs of glass a third of a foot across), and the aside *quale non se trovarebbe in
+Muriano* is kept, which is the joke — nothing like it would be found at Murano. Medium for one
+compressed clause: Logistica praises the art and *vituperando la sua natura*, rendered flatly as
+"blaming its nature", where the point being set up is that the glass garden is splendid and false,
+which is why she leads him away from it two pages later.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

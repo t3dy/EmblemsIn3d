@@ -36,3 +36,19 @@ whose head, as far as the mouth, was all hollowed in the form of a funnel, with 
 through to the mouth; to which, soldered, was joined a trumpet, held with one hand by the boy near the
 soldering, and the other stretched towards the end of the trumpet, levelled in a line with the vane.
 Every
+
+---
+
+## Notes
+
+**Confidence: medium.** The octagonal baths and the trumpet-blowing weathervane. The building is
+described clearly enough to model: paired piers at each of the eight outer angles, base-courses
+level with the floor, frieze of naked boys with bundles of twigs, and an eight-sided dome pierced
+between the angles and glazed with plates of crystal that look like lead from a distance. The
+mechanism is the weak part, and it is the part a builder needs: *El Pterygio adnixo era sopra uno
+acuminato, la forma octogonale dilla Cupula Sectario* comes out as "The little wing was fixed above
+a pointed thing, the eight-sided form of the Dome being sectioned", which is not a description
+anyone could build from, and *una pila nella cima per il tertio dilla infernate* is equally opaque.
+The boy himself — hollow from the nape to the mouth, with a trumpet soldered on — is clear.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -38,3 +38,17 @@ true promise of Queen Eleuterylida, but she does not reveal it; for, if I do not
 infallibly seems so to me. And this amorous and running thought being made, and this persuading
 presupposition, and being gone out of every other desire, I only pondered, with my heart and with my
 mind returning to the notable Nymph. By the great love of whom, closely
+
+---
+
+## Notes
+
+**Confidence: medium.** Her feet and legs seen as she walks, and Poliphilo bound. The images are all
+correctly placed and none is softened: the Herculean knot and the one Alexander cut, Regulus in the
+nail-studded barrel, the gripping *Paguro*, the *damnulo* gaping like a hunted fawn, and the scarlet
+grain gathered in the Peloponnese set in white milk. The page also carries the first clear statement
+that this Nymph looks like Polia in every bodily line, which is the hinge of the next twenty pages.
+Medium for the length of its periods and because *tincte di finissima grana* is left as "tinted",
+where the word is the kermes dye itself.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

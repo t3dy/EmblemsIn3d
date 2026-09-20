@@ -35,3 +35,17 @@ embracing him they receive him as a guest, and invite him with them to wander th
 circuits; and according to his bent readiness, and with divers exercise, inseparably they lead them as
 far as the third tower. In this place whoever will persevere with his companion, she never abandons nor
 leaves him. Because there they find other more voluptuous damsels, and many cast off the
+
+---
+
+## Notes
+
+**Confidence: medium.** The water-labyrinth of human life, seen from the tower — the book's plainest
+allegory, and the description of it is accurate, including the seven circuits run *da Ariete ad la
+extrema cauda pissatile*, correctly from the Ram to the tail of the Fishes. But two of the three
+Greek titles that carry the meaning are transliterated and left untranslated: DOXA KOSMIKE HOS
+POMPHOLYX, worldly glory is as a bubble, which is what the first tower tells you before you embark;
+and THESPION on the urn of lots. *Fatali melli* as "fated tokens" is also a guess at a word the
+passage needs. A reader of the English alone cannot see that the towers are the ages of a life.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

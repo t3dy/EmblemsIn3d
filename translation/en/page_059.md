@@ -36,3 +36,18 @@ worked in new and gracious pottery-work. And so too the coloured soffit was free
 Spider's weaving, because there breathed there continually a most fresh air; the panelled walls joined
 beneath the binding. Which binding, of most subtle conceit, extended from the capitals of the most
 upright antae as far as the extremity of the said entry. As long as
+
+---
+
+## Notes
+
+**Confidence: medium.** The catalogue of famous colossi, the white mouse at the threshold, and the
+entry into the vestibule with its black mirrors. The colossi are all correctly identified (Chares of
+Lindos at Rhodes, Xenodorus, the emerald Serapis, Hercules at Tyre), *Ostraco* is rightly the tiled
+pavement, and the omen of the *fugaculo et candido Sorice* is rendered without embellishment. The
+place to look again is the mirror sentence: *in quelli se offeriva chiaramente el iudicio dille
+historie di musea operatura* becomes "the judgment of the histories notably painted in mosaic",
+which hides what is actually happening — the polished black stones are throwing back the mosaics on
+the opposite wall, which is why Poliphilo is startled by his own image a line earlier.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

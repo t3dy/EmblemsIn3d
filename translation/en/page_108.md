@@ -33,3 +33,18 @@ with this distinction: the first offering in oil of orange flowers; the second i
 third in oil of jasmine flowers; the fourth in oil of the finest benzoin; the last in oil pressed of
 musk and amber. Having tasted this delectable dish savourily and with an eager and greedy appetite,
 they then presented a solemn cup of the stone named above,
+
+---
+
+## Notes
+
+**Confidence: medium.** The trumpets and flutes, then the first two courses. The pharmacy is well
+handled and worth a reader's attention: the opening confection is a *confectio de gemmis* — shaved
+unicorn horn, the two sandalwoods, pearls quenched in burning water, manna, pine kernels,
+rose-water, musk and ground gold, pressed with sugar and starch — and the translation renders each
+ingredient as a medieval apothecary would have understood it, including *aqua ardente* as burning
+water rather than modernising it to spirit. *Talasicho panno* is correctly sea-purple. Medium
+because the five fritters' frying oils (orange-flower, clove, jasmine, benzoin, musk-and-amber) are
+transcribed without any note that such oils are the period's own luxury vocabulary.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

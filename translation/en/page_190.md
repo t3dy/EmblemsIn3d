@@ -36,3 +36,17 @@ skins, some of the fawn with white spots, dappled and painted, and others of lyn
 others in the leaves of burdock, some of butterbur, and of taro, of mallow, and of the greater
 coltsfoot, and of other fronds with various flowers and fruits upon the bare flesh, with buskins of
 sorrel leaves, and garlanded with flowers, keeping festival
+
+---
+
+## Notes
+
+**Confidence: medium.** The wood, the fauns and dryads, and the palm-planted squares. The
+date-varieties are handled better here than anywhere else in the book — *Dabulan*, the *Scaeniti
+Arabi* as the tent-dwelling Arabs, and Jericho are all correctly given as sources of dates, where
+the same kind of list on p. 21 came out as place-names. *Cynacanthe, o vero Uva senticosa* and
+*medulosa ferula* are right, and the grove of Feronia is correctly placed. One inconsistency to fix:
+*Mixe* is rendered "mallow" here, where on p. 74 the same word (*papiracie Mixe, overo muse*) was
+correctly the banana; the two pages should be reconciled.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

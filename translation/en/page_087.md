@@ -33,3 +33,17 @@ of these pleased me and taste it for my deliverance. For which cause I refused t
 condemned the little dragon-plant for its burning; I accepted the Amella. And this, being cleaned, she
 persuaded me to taste. Whereupon it was no long space of time before, the slippery goad departing, the
 intemperance was extinguished. Thus in this manner the carnal enticements being bridled,
+
+---
+
+## Notes
+
+**Confidence: medium.** The chase among the flowers, and the herb that cools him. Well handled,
+including the small botanical logic that makes the passage work: *una radice di Aron* and *il
+Draconculo* are the same plant, and the translation keeps both names and lets Poliphilo reject it
+for its caustic burning, then take the *Amella*. *Salicea strophia* as a withy band and *natante
+Vitrice* as the osier are right. Medium because the anti-aphrodisiac pharmacology here (*Heraclea
+Nymphea* refused, Amella accepted) is rendered without any indication of which plant was believed to
+do what, so the choice reads as arbitrary; and the long run of the chase is one Italian period.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

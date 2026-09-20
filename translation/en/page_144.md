@@ -33,3 +33,17 @@ Alas, that they would scarcely have filled the hollow of a hand, with the faires
 nature of life could feign.
 
 At her whitest throat, whiter than Scythian snow, a necklace
+
+---
+
+## Notes
+
+**Confidence: medium.** The arms, the pearl-fastened side-openings, the neck-chain and the breast.
+The anatomical and antiquarian words are mostly right (*Fucilie* as the wrists, the three pearls
+braided with dark blue silk, Cleopatra's undissolved pearl). Two to fix. *Agelia Minerva* is given
+as "Minerva of the flock": *Ageleia* is Athena's epithet as bringer of spoil, from *agele* in the
+sense of booty, not a herd. And the Babylonian comparison is syntactically inverted — the four
+golden *iynges* called the tongues of the gods were not *as* forcible in reconciling minds to the
+king's love as these are, where the English reads as though they were such.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

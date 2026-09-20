@@ -27,3 +27,18 @@ their maidenly heads they showed the metamorphosis that was to follow upon them 
 
 On the other side, in relief, there appeared a festive and joyful godhead, with the semblance of a
 slippery girl, crowned with two long and coiled serpents,
+
+---
+
+## Notes
+
+**Confidence: medium.** The carved vine on the vase, and the panel of Jove with the seven nymphs
+turning into trees. Two things are very well done: Alcimedon's cups and Alcon's cup are both
+correctly placed, and the progressive metamorphosis is rendered with all its stages intact — the
+last nymph wholly a tree, the next with only her feet gone into roots, the third from the girdle up,
+and each of the rest showing at the crown of her head what is to come. The vessel *completo de
+minuto et sancto cinere*, filled with fine and holy ash, is correctly given and is the key to the
+whole car. Medium because none of the figures is named, and because the relief-technique passage
+(the leaves undercut to a thumb's breadth from the ground) is one long clause.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

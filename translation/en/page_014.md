@@ -19,3 +19,17 @@ back, it hindered and made sluggish my attempted flight.
 Beyond this, seeing no sign of instructive footprints, nor the worn line of any path, in no small
 measure mistrustful and doubting, I hastened the more anxiously. So that, what with my swift steps
 and what with the midday heat, made hot also by the motion of my body, all moistened with sweat the
+
+---
+
+## Notes
+
+**Confidence: high.** Plain first-person narrative, and it can be defended sentence by sentence: the
+Hercynian forest, the catalogue of feared beasts (the tusked boar that killed *Charidemus*, the
+starved *Uro* or aurochs, the hissing serpent, the wolves), the scratched face and torn gown, the
+absence of any worn path. No coinages of consequence, no structural guesswork; *Salto et dumeto et
+senticoso loco* is correctly a glade, a thicket and a briar-patch rather than three synonyms. The
+page ends mid-clause at *tutto de sudore humefacto el*, and the break is carried correctly into page
+15.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

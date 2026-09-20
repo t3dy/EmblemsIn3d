@@ -21,3 +21,17 @@ The drawing elephants were covered with a covering of gold fringed with thick pe
 adorned with other gems. And their necks encircled with round and thick jewels; and above their wide
 foreheads there hung an unsteady little apple of marvellous pearls, with a long little beard of various
 silk and golden threads, unsteady at every movement.
+
+---
+
+## Notes
+
+**Confidence: medium.** Paris's judgement, and the six white elephants that draw the second car. The
+geography and the triumphal history are right: Agisymba and the Gandari as the ends of the known
+elephant-country, Pompey's African triumph, and Father Liber's after the conquest of India. *Spiche
+del monte Gargano* and *el flore del Apio Ranino* as the crowfoot are correctly rendered. Medium for
+the harness passage, which runs to a single period describing silk traces, four-square knots, golden
+breastplates and rings, and for the colour-names of the six riders, given by their standard
+equivalents.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

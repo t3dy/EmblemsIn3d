@@ -15,3 +15,17 @@ astounded, and as it were without breath and abashed. And being asked by her the
 my coming, and my entry into that place by my companions, they readily set the whole out and fully
 recited it. Moved by this, the honeyed Queen made me rise, and having heard my name, began thus
 affably to speak: "Poliphilo, be of good heart
+
+---
+
+## Notes
+
+**Confidence: high.** The court rises, the ladies whisper, and the Queen begins to speak. Short,
+plain narrative and direct address, with nothing technical and no allusion to place. It is accurate
+throughout, including *la mellea Regina* kept as the honeyed Queen, *cubicularie et cortale donne*
+correctly distinguished as the chamber-women and the ladies of the court, and *pudefacto* as
+abashed. The one liberty is a syntactic one Colonna invites: his sentence beginning *Ad tanto dunque
+imperiale ... conspecto venerabondi, et ad terra geniculati* has no clear subject, and the English
+supplies the kneeling to Poliphilo, which is the only reading the next clause allows.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

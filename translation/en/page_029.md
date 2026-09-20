@@ -38,3 +38,18 @@ with what Rollers was so great and such a vastness of stones forced along? And u
 were they joined and confederated? And upon what mound of cemented rough-work? And of so great an
 immensity, the loftiest Obelisk, and the immense Pyramid? So that never did Dinocrates more boastfully
 propose to Alexander the Great the
+
+---
+
+## Notes
+
+**Confidence: medium.** The Gigantomachy in relief on the front of the base — a long ecphrasis, and
+the arms and armour are read well: *Parazonii* side-swords, *balctei ensati* belted blades, *spathe
+antiquarie persice*, *apici* as helmet-crests, *cataglypho* as deep relief. The mythology is right
+too, and the best touch is that the flight of the giants *dal rudito asinino* is kept intact, which
+is the bray of Silenus's ass that routed them. Medium because the page is one unbroken catalogue
+that has had to be split into English paragraphs, and because of one silent emendation the reader
+cannot see: *cum quali Rutuli* is translated "with what Rollers", reading *rutuli* as *rotuli*,
+which is surely right in a list of haulage gear but is a correction, not a translation.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

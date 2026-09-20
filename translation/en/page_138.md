@@ -36,3 +36,17 @@ are ruined. O sordid love. O most absurd frenzy. O disordered and empty desire, 
 the hearts you have touched with so many errors and torments. O wicked and deadly destruction of
 manifold good. O huge monster, how easily and slyly you veil and cloud the eyes of your unhappy lovers?
 O sad and ill-starred are they who make themselves birdlime with so many evils, in
+
+---
+
+## Notes
+
+**Confidence: medium.** The middle door: Philtronia, her six, and Logistica's denunciation. The
+invective is the best-translated rhetoric in this chapter — the painted beauty, the great heap of
+filth behind her, sweetness adulterated with misery, the brief cheerfulness and the perpetual
+weeping — and it loses nothing. Medium on two counts. The six names (Rastonelia, Chortasina,
+Idonesa, Tryphelea, Etiania, Adia) are again untranslated, so that ease, satiety, delight and luxury
+read as proper names. And *il melle in Cholco dalle fronde stillante* keeps Colchis, where the
+poisonous honey of the ancients is Pontic, from the Black Sea coast near Heraclea.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

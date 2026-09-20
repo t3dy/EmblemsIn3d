@@ -37,3 +37,18 @@ dishonouring the parts that proceed from the middle, neglectful of that which na
 showing. It being a golden and heavenly saying and lesson that in that consists virtue — and the poet
 sings of blessedness — which, being deserted and neglected, must needs come out disordered, and
 everything with it.
+
+---
+
+## Notes
+
+**Confidence: medium.** GENEA on the horse's brow (rightly left in Greek), the four things time
+spared, and the first geometric construction of the gate. The construction is read correctly:
+sixteen squares from three lines each way, then twenty-four when half the figure is added, and
+*lepturgia* rightly as fine work; the *figura di cordicelle* is correctly understood as the
+scaling-grid of strings. Two cautions. The English of that sentence inverts its clauses and reads
+awkwardly. And the page's last sentence breaks off in the source at *et omni cosa .*, which the
+English silently finishes as "and everything with it" — a reviewer should check the facsimile before
+anyone quotes it.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

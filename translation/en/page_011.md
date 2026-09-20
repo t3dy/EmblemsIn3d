@@ -29,3 +29,18 @@ In that very hour when the coloured flowers no longer feared the heat of Hyperio
 thing that harms them, but were bedewed and flowing with the fresh tears of the Dawn, and the meadows
 green; and the Halcyons, above the levelled waves of a tranquil calm and a becalmed sea, appeared to
 be nesting on the sandy shores. Then, therefore, when the grieving Hero
+
+---
+
+## Notes
+
+**Confidence: medium.** The opening AURORAE DESCRIPTIO. The astronomy and the mythology are secure —
+Phoebus and Matuta Leucothea, Pyrous and Eous, the un-horned (full) Cynthia with her two horses and
+her Mule, Orion leaving off his pursuit of the Bull's shoulder and the Pleiades — and the page is
+rendered close. What is compromised is Colonna's Graeco-Latin coinage, given here by its standard
+equivalent without certainty: *lycophe* (λυκόφως, wolf-light) flattened to "pale-lit"; *aricentare*
+to "kindled"; *Malacia* and *flustro* to "tranquil calm" and "becalmed". One small loss worth a
+reviewer's eye: *le sue irradiante come* are the sun's radiant **tresses** (*comae*), and "his beams
+came curling" keeps the curling but drops the hair.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

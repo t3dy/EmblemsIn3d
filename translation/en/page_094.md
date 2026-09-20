@@ -28,3 +28,17 @@ The most charming and precious pavement I saw set between a surrounding tessella
 sixty-four squares, of three feet the diameter of each. Of which the one shone with jasper of a coral
 colour, and the other of the greenest, dropped with bloody drops, with an almost imperceptible cohesion
 of the composition, like a
+
+---
+
+## Notes
+
+**Confidence: medium.** Mnemosyne's counsel, and the chessboard court. The measurement that matters
+is exact and usable — sixty-four squares of three feet each, alternately coral-coloured jasper and
+green jasper spotted with blood-red, *quale uno gioco di scachi* — which is the floor the human
+chess-game is played on later in the book. The narrative is secure. Medium for a formatting
+inconsistency the reviewer should note: the chapter IX rubric is set here as an italic paragraph in
+the middle of the page, whereas every other chapter rubric in this translation is set in capitals,
+so a reader scanning for chapter openings will miss this one.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

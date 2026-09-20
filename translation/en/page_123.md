@@ -34,3 +34,17 @@ Having come into the enclosed area of the orange hedge, Thelemia says to me with
 "Beyond the most excellent and marvellous things that you have beheld, Poliphilo, four more wonderful
 things remain for you to see." And on the left side of the incomparable palace they led me into a most
 notable garden of the greatest devising, of cost, of
+
+---
+
+## Notes
+
+**Confidence: medium.** Telosia's ambiguity, the farewell, and the inscription over the palace door.
+The narrative is secure and the sentence about divine beauty not being lawful to bodily eyes is well
+turned. The flag is the inscription, and it is the opposite fault to the one elsewhere in this
+translation: HO TES PHYSEOS OLBOS is carried across in transliteration and given **no** English at
+all, where pages 52, 54, 69 and 73 gave the English and dropped the original. The phrase means the
+wealth, or blessedness, of Nature, and it is the motto of the whole palace; as the page stands an
+English reader gets nothing from it.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

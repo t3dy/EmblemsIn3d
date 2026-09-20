@@ -35,3 +35,18 @@ figure is O.P.Q.T. It is manifest that it contains in itself a Four-square, and 
 equally divided into six portions by straight lines, there are found five lines between and six
 partitions. Upon the fifth upper line, at its middle mark, is offered by rule the pinnacle of the
 frontispiece, the lining sloping down from there above
+
+---
+
+## Notes
+
+**Confidence: medium.** The proportions of the entablature and the setting-out of the pediment. The
+arithmetic is transcribed accurately, including the key ratio (five parts to the architrave, five to
+the frieze, six to the cornice) and the *sesquialtera* correctly as three-to-two. The niche is here
+too: the middle seventh of the interval, reserved *ad uno solio, overo Nichio ove resideva la
+Nymphale statua*. Medium because the page is nothing but proportional arithmetic rendered word for
+word, which means it has not been checked for internal consistency — anyone modelling the gate must
+re-derive these numbers rather than trust the English chain — and because *Remanendo camellato uno
+semipede* is given as "chamfered" on a guess.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

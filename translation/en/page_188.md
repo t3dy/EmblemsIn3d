@@ -36,3 +36,17 @@ the comely form of this noble and distinguished Nymph, I wholly comforted myself
 in herself all that can perfectly delight in love, and all that can be sweetly loved, dispensing so
 great a sweetness widely from her festive eyes that, the troubling and unbridled thoughts being driven
 out of my disquieted
+
+---
+
+## Notes
+
+**Confidence: medium.** Five exempla of mortals punished for presuming on the gods. All are
+correctly rendered and one is glossed exactly right: the son of Phoebus struck down *per usare le
+Glycyside herbe* is Aesculapius, and *glycyside* is Pliny's name for the peony, which the English
+gives. Syrinx by the Ladon, Echo reduced to a last voice, Phaethusa and Lampetie guarding the herd,
+and Orion against Diana are all secure. Medium for the page's rhetorical structure — a chain of
+conditionals that the English has had to break up — and because the herd is called Apollo's, as the
+Italian has it, where the Odyssey makes it the Sun's.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

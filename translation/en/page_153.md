@@ -28,3 +28,17 @@ having bound me strongly with the solidest chains of love, I felt him prick hurt
 urgent bite force me violently, being already put under the privilege of his hard but pleasant laws.
 And filled with a doubtful delight, sighing beyond measure, I melted and wasted away. The excellent
 Nymph, with a most splendid adornment, without delay coaxing, and with her
+
+---
+
+## Notes
+
+**Confidence: medium.** Three exempla of presumption punished, then the rubric to chapter XIII.
+Callisto hiding her pregnancy from Diana is correctly placed. The other two are rendered word for
+word and left opaque: *Thrace non harebbe ancora lui trovato de Neptuno le profunde sedie* becomes
+"the Thracian would not have found the deep seats of Neptune", naming nobody, in a story about the
+man who first mixed wine with water; and Galanthis, whose punishment is that she bears her young
+through the mouth, is given without the weasel she was turned into, so the English reads as a
+riddle. The rubric is again italic rather than capitals.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

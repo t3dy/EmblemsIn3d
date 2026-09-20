@@ -36,3 +36,18 @@ This fabric, pinnacled with an eight-sided roof and covered with lead, had at on
 much higher as was one half of its square, of white and shining marble. Its breadth I judged to be six
 feet. Of this noble stone were diligently made two fluted half-columns, with the bases supporting a
 stretched-out Cyma with gorge and added dentils and little cords, with the capitals set beneath a
+
+---
+
+## Notes
+
+**Confidence: medium.** The two streams, the riverside and mountain plants, and the first sight of
+the octagonal fountain-house. The measurements are transcribed exactly and are usable for modelling:
+an eight-sided building with an eight-sided lead-covered roof, one front carrying a stone higher
+than the rest by half its own square, judged six feet broad, with two fluted half-columns.
+*Farfugio* as coltsfoot, *Orni* as manna-ash, *Sapini* as silver-fir and *unistirpio Abiete* as the
+single-stemmed fir are all right. Medium for one repeated fault: *Trichomanes* and *Adianto* are
+given as "the Maidenhair, and the Adiantum", which makes one plant into two and leaves the second
+untranslated — the same slip as the two houseleeks on p. 56.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

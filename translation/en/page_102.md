@@ -29,3 +29,18 @@ shining gold, with marvellous weaving and workmanship. These did not eat at thes
 Over against the triumphing Queen there answered the opening of the third curtain, which was a great
 and distinguished door, not of marble, but of lovely and hardest eastern jasper. Made by art and by
 ancient workmanship, very notable and worthy. On either side, here and there, of this
+
+---
+
+## Notes
+
+**Confidence: medium.** The painted roundel over the throne, Mercury caught in the Scorpion's tail,
+and the court ladies. The astrological point is correctly rendered — Mercury's benign nature
+corrupted by his place in the sign — and so is the self-deprecating comparison that follows,
+Poliphilo in his rough gown being to that company what the scorpion is among the zodiac's nobler
+signs. Pliny's obsidian (not of Latium, not of Spain, but of India), the *crinuli Popeani* and the
+*Spintri* as shoulder-clasps are all right. Medium because the figure in the roundel is described
+but not identified: beardless, yellow-haired, on an eagle's spread wings, with an azure diadem of
+seven rays, over a throne the previous page placed under the Sun.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

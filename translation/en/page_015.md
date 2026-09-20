@@ -27,3 +27,18 @@ lawlessly wandering, some way out. Whereupon, trembling more than the moving lea
 must-scented Autumn under the raging North winds, stripped of their green and of the juicy weight of
 their moisture, I said within myself, praying thus: O Diespiter, Greatest, Best, Almighty and
 Helping, if by the divine suffrages the
+
+---
+
+## Notes
+
+**Confidence: medium.** Echo answering, the wish for Ariadne's thread, the chapter rubric, and the
+prayer to Diespiter. The allusions are secure and correctly placed — Ariadne and the *discolo
+labyrintho*, Amphiaraus and Curtius swallowed by the earth, Pyreneus falling from a height,
+*mustulento Autumno* (the same word at which Dallington stops, on p. 193). Two things a reviewer
+should weigh. *L'amante rauco della roscida Aurora* is Tithonus, who became the cicada; "the hoarse
+chirping of the lover of the dewy Dawn" translates it but does not identify it, and a reader will
+not see the insect. And *novissima* in the Echo sentence is more probably "last" than the "newly"
+printed here.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

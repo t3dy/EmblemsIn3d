@@ -42,3 +42,17 @@ beneath the blunt dome that I too began (having come to myself) to laugh so hard
 dying of it.
 
 Afterwards I understood the deception of the artifice, most skilfully
+
+---
+
+## Notes
+
+**Confidence: medium.** The second fountain — two nymphs holding up a boy who makes water into the
+bath — and the practical joke it plays. The description is accurate and detailed enough to build,
+down to the shift parted at the thigh and the three laughing faces. Medium chiefly for a policy the
+reviewer should be aware of rather than a mistake: this translation renders Colonna's explicit words
+by euphemism, so *il mengore levoe il priapulo* becomes "the little water-maker lifted his spout".
+That is defensible as register, but it is consistent across the bath chapter (see also p. 73) and it
+means the English is systematically less frank than the Italian.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

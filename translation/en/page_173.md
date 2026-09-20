@@ -40,3 +40,18 @@ little tendrils and ringed shoots, of a vein fitted to the devising, of topaz. S
 found in the island Ophiodes.
 
 The foliage of finest emerald, the clusters of amethyst. O how
+
+---
+
+## Notes
+
+**Confidence: medium.** The great vase measured, moulding by moulding: a page of pure dimension and
+ornament, and every figure is carried across exactly as the Italian gives it, which is what a
+modeller needs. The stones are right (*Ophiade*, the island of topaz) and the anatomy of the vessel
+— border, ewer-neck, gadroons, twisted flutes, the shell mouth, the two emerald dragons whose coiled
+tails make the handles — is construed correctly throughout. Medium because it is one unbroken period
+of technical description, because several of the fractions are given in palms and quarters without
+being reduced to a common measure, and because *Trochlea* is rendered "pulley moulding" where the
+scotia is meant.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

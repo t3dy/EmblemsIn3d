@@ -20,3 +20,17 @@ sadly: "Poliphilo, this path is not known until the end." And thus of this vener
 Thelemia, sharp-witted, quickly said to me: "O Poliphilo, the love of such a laborious woman is not for
 you now." I, nodding shrewdly to Thelemia, we came forth from there. And the door being closed again,
 they knocked at the left-hand one.
+
+---
+
+## Notes
+
+**Confidence: medium.** The right-hand door: PYLURANIA, and Theude with her six attendants. The
+scene is accurately described — the wattled cottage with its smoked walls, the stony thorn-choked
+road, the bare arm pointing to Olympus — and Thelemia's dismissal ("the love of such a laborious
+woman is not for you now") is exactly caught. Medium because every name on the page is
+transliterated and left untranslated: PYLURANIA is the gate of heaven, and Parthenia, Edosia,
+Hypocolinia, Pinotidia, Tapinosa and Ptochina are the contemplative virtues down to humility and
+poverty. Without a gloss the door reads as a list of proper names rather than as a way of life.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

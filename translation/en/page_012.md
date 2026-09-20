@@ -34,3 +34,18 @@ shares in operations so high.
 
 O high-thundering Jupiter! Happy, or wonderful, or terrifying shall I call this unaccustomed vision,
 which leaves in me no atom that does not tremble and burn to think upon it. To me
+
+---
+
+## Notes
+
+**Confidence: medium.** Poliphilo sleepless, and the vision begins. The sense is secure throughout,
+including the personification *Agrypnia* (Sleeplessness) as the "dear watcher" who sits up with him,
+the *frameo disio* rendered literally as a spear-like desire, and the sleep that takes only the part
+of him not united with the waking spirits. The compromise is structural: Colonna's second paragraph
+is an anacoluthon in the Italian (*Havendome ... doluto ... et già fessi gli vaghi spiriti*, with no
+main verb arriving), and the translation preserves the broken syntax rather than repairing it, so
+the English reads as awkwardly as the original does. *Lucubratrice* is "watcher" here; it is
+properly one who works by lamplight, and the lamp is lost.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

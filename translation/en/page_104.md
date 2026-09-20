@@ -31,3 +31,18 @@ itself. The third lightly dried her hands.
 
 The wide and spreading vessel of this fountain was artfully founded upon four little wheels, and they
 carried it running along over the tables to wash most aptly
+
+---
+
+## Notes
+
+**Confidence: medium.** The violets strewn, the Queen's changed dress, and the self-replenishing
+hand-washing fountain. Accurate throughout, and three words are handled well: *Lolia Paulina* is the
+Lollia Paulina of Pliny 9 whose jewels were proverbial; *investitura belluata* is correctly a
+garment figured with beasts, and the English says so in the following clause rather than in the
+word; *malluvio* is the hand-bowl. Medium for the page's form rather than its content — it is a
+single unbroken inventory of ceremony, divided into English paragraphs at the translator's
+discretion, and the choreography of who pours, who catches and who dries is easier to follow in
+English than the Italian actually allows.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

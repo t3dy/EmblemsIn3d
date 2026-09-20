@@ -35,3 +35,17 @@ So that I should almost say this making far more acceptable to the senses than t
 which roof, in the going-round form, were seats of ruddy jasper; and all the space between of a solid
 rounding, as far as the ample circuit went, of yellow jasper, of various mixtures confusedly agreeing
 and most charmingly adulterated in one. With
+
+---
+
+## Notes
+
+**Confidence: medium.** The garden of silk with its walls of pearl. The craft-words are right
+(*ponto di razzo* as tapestry stitch, *Theophilia* as god-loving), and the description is detailed
+enough to build. One sentence must be fixed: Thelemia's invitation is rendered "Let us go for a walk
+to the other garden, no less delightful and filled with delights: the glass one adjoining the right
+wall", and then the garden described is of **silk**. The Italian compares the new garden to the
+glass one just left; the English punctuation turns the comparison into an apposition and makes the
+page contradict itself in two sentences.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

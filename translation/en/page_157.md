@@ -34,3 +34,17 @@ Many likewise with sounding instruments, such as would never be found in Ausonia
 of Orpheus, keeping high festival through the flowering meadows and the most level plain with sweetest
 sounds, and with the sweetest voices and exulting songs, and with a multiplied glory, making one with
 another amorous
+
+---
+
+## Notes
+
+**Confidence: medium.** Hair, jewels, shoes and faces of the festive crowd — the fullest costume
+page in Book I, and the one a costumer would work from. The shoe-vocabulary is right throughout
+(*solee*, *crepidule*, *cothurni*, *Socculi*, *obstraguli*, the Sicyonian shoes), and *Caio
+Galicola* is correctly Caligula, whose name is the soldier's boot. *Stalagmiate* as hung with
+drop-jewels and *conato Araneo* as a spider's making are also right. Medium because the page is one
+period of accumulation with no main verb, and because several of these words are period technical
+terms rendered by their standard equivalents without corroboration.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -16,3 +16,19 @@ herbs and shrubs; while together many merry Nymphs, jesting playfully, coaxingly
 And in the manner recited above, beneath the figure were certain hollowed Capitals which said this
 one word: LOSS. And they were choice letters, exactly made, their thickness a ninth part, and a
 little more, of the diameter of the square.
+
+---
+
+## Notes
+
+**Confidence: medium.** The ring of two-faced dancers and the two pedestal mottoes. The description
+is secure and the count is right (*sette et sette*, seven men and seven women, each glad face
+meeting the mournful face before it), and the letter-proportion at the foot of the page —
+stroke-thickness a ninth of the square's diameter, and a little more — is Colonna's Roman-capital
+rule, transcribed correctly. What a reviewer should weigh is editorial rather than linguistic: the
+two celebrated lemmata are printed in the 1499 as Latin capitals, TEMPUS and AMISSIO, and the
+English silently replaces them with "TIME" and "LOSS", so a reader cannot quote what the stone says.
+Elsewhere this translation keeps such inscriptions and glosses them (see *Cerebrum est in capite*,
+p. 37).
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

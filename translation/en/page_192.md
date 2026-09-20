@@ -13,3 +13,19 @@ devoutly scattered flowers and roses upon a little sacrifice, a little flame lea
 three-footed pot; and in the other she held a little branch of fragrant and berried myrtle. Beside her
 there stood a winged and most beautiful little boy, laughing, with his wounding tokens, and two doves
 likewise. Beneath the feet of which figure was inscribed: *sacred to the flowering spring*.
+
+---
+
+## Notes
+
+**Confidence: medium.** The four-faced altar, and the first face: Venus with Cupid and the doves,
+sacred to spring. Accurately described (*Chytropode* correctly the three-footed pot, *supparo* the
+thin overgarment). The flag here is the most useful one in this whole stretch, because it sits
+exactly on the seam. The inscription *Florido veri. S.* is the first of the four Seasons-dedications
+on this altar, and the English gives only "sacred to the flowering spring". The very next page —
+193, the first page of the translation proper, where Dallington stops — sets the other three as
+block quotations with the Latin kept and glossed (**HYEMI AEOLIAE · S.** and the rest). So one
+altar's four faces are treated two different ways, three sentences apart, and the difference marks
+precisely where the whole-book bulk pass ends and the annotated translation begins.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

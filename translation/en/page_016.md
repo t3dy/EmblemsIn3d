@@ -33,3 +33,19 @@ waves. And thereafter it received great increase from impetuous and wave-soundin
 from the melted snows of the alpine and rigid mountains, which appeared to stand not too far off,
 made white in the freezing monster of Pan. To which, having come many times in my fearful flight, I
 found there a little dusky light, where the lofty trees were somewhat
+
+---
+
+## Notes
+
+**Confidence: medium.** The prayer answered, the exit from the wood, and the finding of the spring.
+Secure in the main: the *Medioximi* correctly given as the middle gods between those above and
+below; Achaemenides begging Aeneas; the stream gathering rills and torrents. Two soft places, both
+named rather than smoothed. The four plants at the spring-head (*palustri Achori*, *barba Silvana*,
+*fiorita Lisimachia*, *muscariata Imperatoria*) are given by their standard equivalents — sweet
+flag, loosestrife, masterwort — but *barba Silvana* is not a settled name and is left as "the
+Silvan's beard". And *candidati nel algente monstro de Pana* is rendered literally as "made white in
+the freezing monster of Pan"; the monster of Pan is most likely the goat-fish **Capricorn**, i.e.
+the mountains white in the depth of winter, which the literal English hides.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

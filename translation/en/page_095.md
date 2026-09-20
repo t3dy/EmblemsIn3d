@@ -36,3 +36,18 @@ seven triumphs of those subject to the ruling planets, most skilfully made in th
 the right side I saw likewise seven harmonies of them, and the passage of the soul, with its
 qualitative receiving of the degrees of the circles, with an incredible history of the celestial
 operations that come with it.
+
+---
+
+## Notes
+
+**Confidence: medium.** The stone border, the sandalwood benches, the gold-plated walls and the
+three painted cycles. The craft-words are right (*Recisamento lapideo* as cutwork, *Enchaustica
+opera* as encaustic, *tomentato o vero pulvinato* as stuffed or cushioned, *Praxini* as prasine).
+Medium because the third cycle is a doctrine rendered literally and left unexplained: *il transito
+de l'alma, cum receptione qualitativa degli circularii gradi* — the descent of the soul through the
+planetary spheres, taking a quality from each — is the Neoplatonic scheme that governs this whole
+room, and in English it reads as an unmotivated phrase about degrees of circles. It should be
+glossed before the room is built from this page.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

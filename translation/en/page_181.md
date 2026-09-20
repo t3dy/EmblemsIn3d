@@ -27,3 +27,16 @@ scanty part of blessedness. Having really beheld these things, I stayed a great 
 gladdened beyond esteeming, and marvelling beyond measure.
 
 Afterwards the
+
+---
+
+## Notes
+
+**Confidence: medium.** The triumphs close, and the rubric to chapter XVI. Plain praise-prose,
+secure in sense, and the closing sentence on the blessed possessing their country without
+interruption is well turned. Medium for the chapter rubric, again set as an italic paragraph rather
+than in capitals — the fifth time in this chapter-range — and because the page opens mid-sentence
+from p. 180 with two unidentified singers in white and green, so its first clause cannot be read on
+its own.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

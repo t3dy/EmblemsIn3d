@@ -16,3 +16,16 @@ beautiful and divine object, and in such a place. Whose excellent aspect would h
 draw and carry the lost souls out of the eternal flames, and to bring the bodies not yet joined in
 their tombs back to their partner; and Bacchus would have neglected the famous drunkenness of Gauranum,
 Faustianum and Falernum, and
+
+---
+
+## Notes
+
+**Confidence: medium.** The hand held — warm snow and milky curd — and Poliphilo's shame at his own
+ragged dress beside her. Short and secure in sense. Medium because the page turns on two comparisons
+that are given without help: that her aspect could draw lost souls out of the eternal flames and
+return unburied bodies to their partners, which is rendered so literally that the second clause is
+hard to construe; and the three wines Bacchus would have forsaken (*Gaurano, Faustiano, et Falerno*)
+are correctly kept but unglossed, as is *Pucino, o vero Pictano* on the next page.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

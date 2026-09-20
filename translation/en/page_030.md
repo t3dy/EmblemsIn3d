@@ -26,3 +26,18 @@ building and of artifice could fitly be raised up, nor defined by invention. Whe
 so captivated at this intent and obstinate sight, together with excess of pleasure and with
 stupefaction, that nothing else came into my ravished memory that was solacing and most joyful,
 except when I looked applying myself, and curiously all the parts to the comely
+
+---
+
+## Notes
+
+**Confidence: high.** The close of the pyramid ecphrasis and the rubric to chapter IV. Plain
+rhetorical prose, and every allusion in it is standard and correctly rendered: Dinocrates proposing
+to carve Mount Athos for Alexander, the labyrinths (*Lemno* is the Lemnian one, from Pliny's four),
+the Mausoleum, the writer of the seven wonders, the tomb of Ninus. The structural reasoning about
+what vaults and piers could bear the load is straightforward and comes out clearly. This page also
+carries the sentence the Dream Garden has to build from — *io explorai per l'ampia porta. Et vidi
+che nel intimo era densa obscuritate et concavitate* — and it is translated exactly, with nothing
+added: thick darkness and hollowness, and no description of what is inside.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

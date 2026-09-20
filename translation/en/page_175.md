@@ -27,3 +27,18 @@ Then in one of them the whole shaft was of sky-blue Lusitanian thunderstone, unf
 and chiefly friendly to Diana, with a tempered body, and a narrowing of longish pomegranate-shapes and
 knots. With a notable display, adorned with fine-wrought work, of a height of two feet. The other stood
 of finest
+
+---
+
+## Notes
+
+**Confidence: medium.** The Bacchus panel, the golden vine that roofs the car, and the coral
+candelabra. The panel is well told. Two things to fix. The coral's virtues come out as three
+sentence fragments — "excellent for country folk. Lightnings. Whirlwinds. And driving off tempests"
+— where the Italian is one list of the things coral protects countrymen against, and the English
+punctuation makes it unreadable. And *el sancto Silenite di Persida ... ad gli moti Lunarii non
+subdito* is rendered "not subject to the movements of the moon", which contradicts the whole
+lapidary tradition of selenite, whose image waxes and wanes with the moon; the negative should be
+checked against the facsimile.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -35,3 +35,19 @@ age was such a chased work, nor anything near its equal, devised more welcome or
 And thus astonished I considered besides those stubbornly hard stones of the support of the great
 basin — that is, the shaft of ewer-vessels set one above another. With what ready ease, neither more
 nor less than if the material had been of soft wax, were those drawn threadings made, and so
+
+---
+
+## Notes
+
+**Confidence: medium.** The six golden dragons that take the Graces' water in their hollow skulls
+and vomit it out again, and the channel round the base. The plumbing is fully and correctly
+transcribed and is buildable: water from the breasts into the dragons' open crowns, out through
+their pipes, over the ophite round, into a channel a foot and a half wide and two feet deep between
+the ophite and the three-foot porphyry ring, with lion-masks spouting between the dragons.
+*Toreutica* is rightly chased work, and *quale Iris nelle cavate nebule* survives intact. Medium for
+the length of the single Italian period and for one small editorial habit visible here: the printed
+gathering-signature at the foot of the leaf (*f ii*) is dropped without note, as are those on pp.
+89, 93 and 95.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

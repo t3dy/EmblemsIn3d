@@ -37,3 +37,19 @@ to be seen. Of which, if its every measured proportion has not been particularly
 must be laid upon regard for prolixity, and upon the lack of the proper words of description. And
 because gnawing time had left this one alone untouched, therefore I did not approve of passing on
 without having said and treated something especially of it.
+
+---
+
+## Notes
+
+**Confidence: medium.** The Scyllas' tails, the goat Amalthea suckling the infant Jove with Melissa
+and the dancing Corybants, and the pediment inscription. The sculptural roll-call is correctly
+resolved to the Mausoleum team — Scopas, Bryaxis, Timotheus, Leochares (with Theon) — though
+*Scaphes* to Scopas is a silent emendation the reader cannot see. AMALTHEA and MELISSA are rightly
+kept as the stone gives them. The flag is the pediment: the 1499 carves ΔΙΟΣ ΑΙΓΙΟΧΟΙΟ in Attic
+capitals and the English prints only "Of aegis-bearing Zeus", dropping the Greek — the same
+substitution as the frieze on p. 52, and on the two inscriptions that identify the whole gate. The
+seal fleeing the heavenly wrath (*de vitulo marino refuge la coeleste ira*) is rendered but not
+explained; the seal was proverbially proof against lightning.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -10,3 +10,16 @@ pleasant little words, and maidenly jests and caresses, we went out of the heate
 upon the dry steps with great dancing and festivity; where they anointed themselves with fragrant
 perfumed unguents and were smeared with an ointment of nutmeg, and offered me too a little box, and
 anointed me. Of which
+
+---
+
+## Notes
+
+**Confidence: high.** Short and entirely secure. The mechanism is explained in a single clause that
+is correctly construed and could be built from it — weight on the lowest, unstable step drives it
+down and drives the boy's spout up — and GELOIASTOS is rightly left standing in its Attic capitals
+on the little frieze, which is the one place in this stretch where an inscription is not replaced by
+its translation. The unguents are correctly identified (*diaspasmatici* perfumed powders, *myristico
+liquore* the nutmeg ointment). Nothing on the page needs a decision.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

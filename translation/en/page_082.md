@@ -32,3 +32,18 @@ sweet-smelling and temperately warm, without furnace or stoke-hole, and purged b
 no hindering medium between the object and the sense of sight. For the various little fishes, on the
 fronts of the seats and of the floor, artificially expressed in mosaic in emulation of nature, appeared
 to swim alive. Red mullets, or mullets; lampreys, and manifold others — the
+
+---
+
+## Notes
+
+**Confidence: medium.** The dome's ribs, the lion-mask holding the ring, the hanging brazier, the
+seated nymph statues and the mosaic fishes. Two technical points are exactly right and worth
+keeping: *sencia Hypocausto et praefurnio* — the water is naturally warm, with no hypocaust or
+stoke-hole — and *petra Gallatite*, the milk-stone. The colour of the vault is the fault.
+*Coloratione Cyanea de Litharmeno* is given as "a Cyanean colouring of litharge", but litharge is a
+lead oxide and yellow-red; a blue ground in this period is *lapis Armenus*, azurite, which is what
+the word is reaching for. A reviewer should settle it, because the colour of this dome is a thing
+the world would have to paint.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

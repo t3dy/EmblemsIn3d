@@ -33,3 +33,19 @@ Whereupon many worthy works were clothed and covered with this and much other gr
 And of the great and turned columns, one upon another, there was an inestimable collapse, so that they
 appeared not columns but a confused heap of timber cast down to the ground. Among the ruin likewise
 conspicuous relics of statues, with manifold acts: many naked, some with the garments wrinkled
+
+---
+
+## Notes
+
+**Confidence: medium.** The rest of the ruined closure: the dwarf columns, the coloured marbles, and
+a long catalogue of the plants growing out of the walls. Two good things — *ignorata Enthesi* is
+exactly right, an entasis so slight it goes unnoticed, and the riddling epithet for ivy (*il ligno
+cui poculato divide Bacco da Thetide*, the wood whose cup separates wine from water) is kept intact
+rather than flattened. Medium for the plant-list, which is the weakest in the book so far:
+*Erogenneto* and *Aizoi* are both rendered "houseleek", so two different words in one sentence come
+out as one plant; and *la virente Oliveta cultrice di ruine* is given as "the green Olive-grove that
+dwells in ruins", which cannot be right in a list of wall-ferns and mosses. *Citracho ... cum il
+riverso erugineo* as the rusty-backed spleenwort is, by contrast, exactly right.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -32,3 +32,17 @@ have made little of them.
 He would likewise have given way here, that stupendous miracle of the statue of the magnanimous
 Semiramis carved on Mount Bagistan, of seventeen stadia. And the writers, keeping silence too on the
 insolence
+
+---
+
+## Notes
+
+**Confidence: medium.** The rubric to chapter VI, and the argument that this ruin outdoes everything
+Egypt has. The antiquarian references are handled correctly and the arithmetic with them — Satyrus
+the Mausoleum architect; the three colossi of Jove carved for Simandius (Osymandyas) with a foot
+over seven cubits; Semiramis on Mount Bagistan at *stadii .x. et .vii.*, rightly added to seventeen.
+What a reviewer should note is that *il naturale historico*, the writer whose Egypt this would have
+shamed, is Pliny, and the English leaves the phrase as "the natural historian" without saying so,
+which makes the whole comparison harder to follow than it needs to be.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

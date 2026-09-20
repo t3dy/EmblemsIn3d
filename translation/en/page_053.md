@@ -36,3 +36,19 @@ of thongs plaited through the little bundles. Held by two Scyllas, half human an
 fish-like, which with the arm above and the other below aptly embraced it. From the one and the other
 of the lying angles above the cymatium of the cornice, they stretched out their sea-beast tails,
 hampered by ready coils; and towards the end of the scaly tail
+
+---
+
+## Notes
+
+**Confidence: medium.** Four metamorphosis panels, the upper cornice, and the crown held by two
+Scyllas. The cornice vocabulary is right, including *stillicidio* correctly as the drip-mould and
+*il rosicante Trepano* as the sculptor's running drill. Cyparissus, Leucothoe and Daphne are all
+correctly told. The first panel is the problem and is where a reviewer should start: Colonna's
+*zelotypa Clymene* is Clytie, not Clymene — the jealous rival of Leucothoe in the panel beside it,
+who pined after the Sun and became the heliotrope — and the English both keeps the wrong name and
+muddles the agency, making Phoebus the one who weeps and pursues when it is she who follows and he
+who flees. *Nicoli* in the cornice-list is also rendered "Nicolo-stones", a gem-name, in a sentence
+otherwise made entirely of mouldings.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

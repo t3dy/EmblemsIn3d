@@ -22,3 +22,18 @@ like — I interpreted thus.
 
 On the other side I beheld this elegant carving: a circle; an anchor, about whose shank a dolphin
 wound itself. And these I interpreted most excellently thus: *Always make haste slowly.*
+
+---
+
+## Notes
+
+**Confidence: medium.** The bridge with its two hieroglyph panels — and the Aldine device itself.
+Two flags, both editorial. The first panel's reading (*Gli quali hieraglyphi ... cusì io li
+interpretai*) is followed in the English by nothing whatever, with no note that the interpretation
+is missing from the source; the reader is left with a dangling colon. The second is worse for being
+the most famous emblem in the book: the 1499 prints ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ and Colonna's own Latin
+*Semper festina tarde* beneath it, and the English gives only "Always make haste slowly", so the
+anchor-and-dolphin page of Aldus's own book no longer carries Aldus's own words. *Lavernato*, hidden
+as by a thief, after Laverna, is nicely caught.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

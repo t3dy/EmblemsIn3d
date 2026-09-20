@@ -34,3 +34,17 @@ and in the middle growing little by little to an immoderate body, and thence ris
 two feet in height, without handles, of a wonderful artifice. Out of which there leapt a clouding smoke,
 scattering a fragrance beyond all esteeming. Those that followed blew golden trumpets, with a hanging
 cloth of fine silk, interwoven with gold, with
+
+---
+
+## Notes
+
+**Confidence: medium.** Europa on the bull, and the six centaurs who draw the first car with their
+six riding nymphs. The mythology is correctly placed — the centaurs as sons of Ixion's falling seed,
+and Erichthonius as the inventor of the yoked four-horse car — and the lapidary lore is right: the
+topaz of Arabia *grato a Lucina*, at which the waves grow quiet, is Pliny's. *Pancarpie* as
+all-fruit garlands is correct. Medium for the harness and costume description, which is one unbroken
+period, and for *Dendrocysto*, rendered "mistletoe" on a plausible but unconfirmed reading of the
+coinage.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

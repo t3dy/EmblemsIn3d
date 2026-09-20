@@ -31,3 +31,17 @@ Last they offered the most precious cup, and thus it was observed in those that 
 The fourth rich table being removed, at the fifth the board was clothed again with cloth of purple
 silk; and like was the nymphlike dress. Flowers dark, yellow, white and amethyst. For meat, eight
 morsels of the flesh
+
+---
+
+## Notes
+
+**Confidence: medium.** The third and fourth courses. The seasonings are rendered ingredient by
+ingredient and the structure of each course — cloth, flowers, dish, sauce, vessel-stone — is kept
+exactly, which is what makes the banquet legible at all. Medium because three of the names on this
+page are carried into English unresolved and a reviewer should settle them: the *Giebbedine* roses;
+*pane Mnestorense*, given as "Mnestorian bread"; and *capo caecamente saginato*, translated word for
+word as "a blindly fattened head", where the sense is a bird or beast fattened in the dark. *Accere*
+as maple-sap is also a guess.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -25,3 +25,17 @@ more than royal munificence. The distinguished ordering of the architecture, and
 of this building, perfect and complete; the nobility of the marble-worker's art. The setting straight of
 the columns, the perfection of statues, the ornament of walls, the variation of stones, the royal
 vestibule, the most ample peristyle, the artful pavements — who would believe with what luxury and
+
+---
+
+## Notes
+
+**Confidence: medium.** The rubric to chapter X and the recapitulation of everything the palace
+holds. Medium on two counts. The rubric is again set as an italic paragraph rather than in capitals,
+as on p. 94, so it does not look like the chapter opening it is. And *la Aemiliana eloquentia* is
+rendered "the eloquence of Aemilius", naming a person the Italian does not clearly name; it may as
+easily be the Aemilian gens or the Aemilian basilica, and a reviewer should settle it. *Falerata
+bellecia* as "trapped-out beauty" is correct in sense (decked as a horse in phalerae) but reads
+oddly.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -27,3 +27,17 @@ with dark blue silk, in a fine dress of girlish neatness adorned with manifold g
 affectionate delight in gazing at a plenty of heavenly gold in her lap. With the solemn honours and
 joyful applause like the others, she sat with her abundant hair poured over her back, crowned with a
 golden diadem and with many-formed little stones.
+
+---
+
+## Notes
+
+**Confidence: medium.** Jove rescuing Cupid from his mother, the six unicorns, and Danaë enthroned
+with the golden rain in her lap. The jasper of the seat carries its correct lore (*officioso al
+parto*, the childbirth stone), and the unicorns *alla gelida Diana riverenti* are rightly reverent
+to chaste Diana. The flag is the inscription: the 1499 carves Jove's words in Greek over against his
+mouth, ΣΥ ΜΟΙ ΓΛΥΚΥΣ ΤΕ ΚΑΙ ΠΙΚΡΟΣ, and the English prints only "you are to me both sweet and
+bitter", dropping the Greek — the same substitution as pp. 52, 54, 69, 73 and 159, and here on the
+sentence that states the book's whole thesis about love.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

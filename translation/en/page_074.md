@@ -39,3 +39,18 @@ Standing therefore in such suspension of mind, all stirred with thinking of the 
 of having entered where I did not know — the hieroglyphs of the left side of the bridge suddenly
 sprouting in my memory — I feared to rush into some adverse accident; and that such a monument, worthy
 of golden carving, was not set in vain for those who
+
+---
+
+## Notes
+
+**Confidence: medium.** The rose-close, the field of bananas, the flowered plain and the citrus
+orchard. One genuinely good thing: *papiracie Mixe, overo muse* is correctly the banana, with its
+great wind-torn leaves and hanging cluster — one of the earliest European descriptions of the plant,
+and the translation does not flinch from it. *Cynara grata a Venere* and *Colocassia cum le scutacee
+foglie* are right too. Medium for the flower-catalogue, where several names are simply carried
+across untranslated (*Satyrione*, *Pancuculo*, *Naponculi* as "little Turnips") and for the clause
+about the orange-trees' *colore Hyalino ... di turbinata forma*, which does not come out as
+intelligible English.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

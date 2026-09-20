@@ -40,3 +40,17 @@ And my tormented heart is more hurtfully gnawed by her biting eyes than the croc
 eaten by the ichneumon. And beyond belief it is so taken up by them with unceasing strokes, as upon an
 anvil, more than the Ceraunian mountains often struck by the heavenly thunderbolts. And so much the
 more that I cannot, with all the power of my wit,
+
+---
+
+## Notes
+
+**Confidence: medium.** Milanion, Hercules and Achelous, and the great lament. The elegiac allusions
+are correctly placed (Milanion and the centaur Hylaeus for Atalanta, out of Propertius; Inarime on
+Typhon; the vultures at Tityus; Actaeon's hounds; the ichneumon and the crocodile; the Ceraunian
+mountains), and one technical image is very well caught: *ardendo quale Oro nel forte cemento
+trovome solido giacio*, burning like gold in the cementation-powder and finding himself solid ice.
+Medium because *Castiamira* is carried across unidentified, and because the lament is one unbroken
+Italian period that the English has divided at its own discretion.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

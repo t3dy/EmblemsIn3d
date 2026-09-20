@@ -30,3 +30,16 @@ cleanest gold.
 In the right-hand tablet I beheld expressed a noble and royal Nymph with many of her own age in a
 meadow, crowning the victorious bulls with manifold garlands of flowers. And one clinging to her, made
 very particularly familiar with her.
+
+---
+
+## Notes
+
+**Confidence: medium.** The rubric to chapter XIV, the argument that nothing is hard to the gods,
+and the first triumphal car. One piece of natural history is exactly right and worth keeping: the
+Indian diamond that defies emery and steel and fire but is *quieto et domabile* to warm goat's
+blood, which is Pliny's lore and the reason the car can be carved at all. *Seiuge* is correctly the
+six-horse car, *cataglyphia* the sunken relief. Medium for the chapter rubric, again italic rather
+than capitals, and for the density of gem-names taken on trust.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

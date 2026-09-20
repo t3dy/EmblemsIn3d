@@ -37,3 +37,18 @@ Such and so made a discourse pierced my inflamed heart, so most acceptable was i
 when she called me thus: "My Poliphilo." Because I was made wholly suspicious that without fail she was
 Polia. For which cause I felt myself, from head to foot, inwardly altered and refreshed with the
 highest sweetness, and my beaten heart flee to her alone. And of this vehement effect
+
+---
+
+## Notes
+
+**Confidence: medium.** More of the loved nymphs, and the Nymph's own speech about her torch — the
+most important thing on the page and correctly rendered: no earth-born creature enters here without
+a kindled torch, won either by ardent love and great labour or by the company of the three matrons,
+and she must quench hers at the temple for his sake. The classical loves are mostly right (Erigone
+with her lap of grapes, Melantho and the swimming beast, Philyra with Chiron's father, Lara with the
+slayer of Argus, Juturna). Medium for the three that defeat it — *Curisice inventrice delle prime
+quadrige*, the Garamantian nymph on the banks of the Bagradas held by the crab, and *la filiola de
+Re Chollo* — all transcribed without identification.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

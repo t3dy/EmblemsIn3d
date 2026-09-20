@@ -33,3 +33,18 @@ seasonings. This waggon Nymph then readily distributed the preparation to those 
 The table being then taken down for the next change, everything above recited returned to the clearing
 carriage. And when it had departed, the girls with the leading trumpets — such as were invented neither
 by Piseus the Tyrrhenian, nor by
+
+---
+
+## Notes
+
+**Confidence: medium.** The fountain's hydraulics, the scented pomander, and the serving-car. The
+mechanism is the best thing here and is correctly construed: the water rises again *per violentia di
+concepto aere*, by the force of trapped air, through twin pipes of unequal length either side of a
+pierced partition inside the vessel — a working description of a recirculating device, not a vague
+marvel. *Philocale* and *edeatrice* are rightly the beauty-loving girls and the stewards; Piseus the
+Tyrrhenian and Maletus of Etruria are Pliny's inventors of the trumpet. Medium for the long
+ecphrasis of the car itself, and because *dal dicto Trigone, o vero pila* loses *trigon*, the ball
+of the Roman game, and keeps only "ball".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

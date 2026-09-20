@@ -25,3 +25,17 @@ oaks, and acorn-bearing Oaks and Holm-oaks, and so abounding in branches that th
 rays of the gracious Sun to reach the dewy ground entire. But, as beneath a vaulted roof covered over
 with thickening leaves, the kindly light did not penetrate. And in this manner I found myself in the
 cool shade, the humid air, and the dusky wood.
+
+---
+
+## Notes
+
+**Confidence: medium.** The spacious flowered plain, the catalogue of absent countrymen, and the
+entry into the wood. Nearly all secure, and the herdsman-words are correctly distinguished
+(*Opilione* shepherd, *Epolo* goatherd, *Busequa* oxherd, *Equisio* groom; *Magar* and *Magalia* as
+hut and shieling, after Virgil's African *magalia*). One clause is rendered word-for-word without
+being construed: *corticosi Subderi apto additamento muliebre* becomes "the corky Cork-oak fit for a
+woman's adding", which is not English — the cork-oak is fit for a woman's **height**, i.e. for the
+cork platform soles of the period's chopines. A reviewer should start there.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

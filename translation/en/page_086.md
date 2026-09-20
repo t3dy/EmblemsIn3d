@@ -36,3 +36,17 @@ violently, stirred as I was by the increase of an almost deadly plague and of an
 One, then, of these flaming Nymphs, Aphea by name, said to me in sport: "Poliphilo, what ails you? A
 moment since you were jesting merrily, and now I see you altered and changed." I said to her: "Forgive
 me, for I writhe more than
+
+---
+
+## Notes
+
+**Confidence: medium.** The nymphs' song, and the ointment's effect. The song is a summary of
+Apuleius — the lover who means to turn himself into a bird, takes the wrong box and becomes an ass —
+and it is correctly rendered and correctly placed as a joke at Poliphilo's expense, but the *Golden
+Ass* is not named, on a page where knowing the source is the difference between a joke and a
+non-sequitur. *Pastomo* is well caught as the horse's nose-twitch, *hirqueo intuito* as the goatish
+sidelong look, and the Phrygian mode is kept. Medium for that unattributed source and for the long
+final period of the arousal, broken up in English.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

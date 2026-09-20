@@ -34,3 +34,20 @@ off. Basins, and Shells, and vases, of Numidian stone and of Porphyry and of var
 ornament. Great washing-basins. Aqueducts, and almost infinite other fragments of noble sculpture,
 wholly deprived of any knowing what they had been when whole, and reduced as it were to their first
 rough beginning; fallen and cast down to the earth here and there. Above
+
+---
+
+## Notes
+
+**Confidence: medium.** The wolf flees, the obelisk is sighted, and the ruin-field is catalogued.
+The structure of the page is secure and the antiquarian vocabulary is mostly read correctly
+(*Epistyli*, *Coronice*, *Zophori overo Phrygii*, *Trabi arcuati*, *petra Numidica*, and
+*valliclusio* as an enclosed valley). Three places a reviewer should weigh. *Rubricati gli sui
+lymbi* is given as edges "exquisitely reddened"; in masonry *rubrica* is the red ochre used to test
+a true face, so the sense may be dressed rather than coloured. *Aspera celatura* is rendered "rough
+carving", but *caelatura aspera* is relief standing proud of the ground, not unfinished work. And
+the sentence on the tightness of the joints (*una subtilecia quantunque aculeata ... penetrare
+potuto non harebbe*) comes out logically tangled in English, though its meaning — no blade however
+fine could enter — is not in doubt.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

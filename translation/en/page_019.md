@@ -30,3 +30,17 @@ At last, renouncing and proscribing this wearisome life, whatever might come of 
 estranged by the gravest cogitations, and reeling as though in madness, once again beneath this
 oaken shade, wanton with the spreading darkness of its branches, I was overcome by an overpowering
 sleep; and the sweet drowsiness being spread through my limbs, it seemed to me that I slept again.
+
+---
+
+## Notes
+
+**Confidence: medium.** The ancient oak, the dying-stag simile, Circe, and the second
+falling-asleep. The learned references are securely identified and well handled — the *Rhombo*
+correctly as the magician's wheel rather than a fish or a lozenge, Mercurial *Moly* with its black
+root, Hypsipyle showing the Greeks the spring of Langia, the thirst-bringing serpent *Dipsas*. Two
+smaller compromises. *Despreciato per la fertile Chaonia* is given as "despised by fertile Chaonia";
+the Virgilian sense is rather that the acorn is despised **in favour of** Chaonian corn, which
+reverses the agency. And *la siticulosa uvea* is the uvula, smoothed here to "palate".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -38,3 +38,18 @@ Neobule, with the comely Phyllis and with the fair Lyce; and Tiburtus and Pyrrha
 rejoiced delightfully. Now after this fourth triumph there followed among the Maenads a notable damsel
 who, singing with her beloved Phaon, longed for horns for the beauty of her head. Last of all, after
 them all, she showed me a most honest matron of white
+
+---
+
+## Notes
+
+**Confidence: medium.** The choirs that sing before each car. The names are transcribed accurately,
+but the English does not say what they are, and that is the page's real loss: this is a roll-call of
+the mistresses of Latin love-elegy — Lycoris for Gallus, Nemesis and Delia for Tibullus, Corinna for
+Ovid, Cynthia for Propertius, Quintilia for Calvus, Violantilla for Statius, Lyde, Chloe, Neobule,
+Phyllis, Lyce and Pyrrha out of Horace, and at the end Sappho, longing for horns and singing with
+her Phaon — and "the other weeping for the sparrow" is Catullus's Lesbia, named by her most famous
+poem and left unidentified. *Himerino* is correctly the father of desire. *Tyburte* is also given as
+a man's name in a list of women and should be checked.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -37,3 +37,18 @@ workings.
 
 Stripped therefore and sequestered of every other thought, only my beloved Polia came often to my
 sticky memory, kept and most welcome. But for all this, with a sounding
+
+---
+
+## Notes
+
+**Confidence: medium.** The fallen statues, the architect's praise, and the diatribe against
+avarice. The best thing here is technical and exact: the standing figures are described in true
+contrapposto, the weight on one foot and the head held perpendicular over the centre of the heel,
+and the canon that follows — the foot a sixth part of the height, four cubits — is Vitruvius III.1
+transcribed correctly, and is usable as a measurement. *Eurythmia* is kept. Medium for two smaller
+things: *manubie spolie* collapses two distinct words (booty taken by the general, and spoils) into
+"spoils of war"; and *nella viscida memoria* comes out as "my sticky memory", which is literal but
+reads oddly in a register that is otherwise formal.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

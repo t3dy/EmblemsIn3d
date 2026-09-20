@@ -38,3 +38,18 @@ foliage with stalk-work of most approved expression.
 Above this sat the Zophorus of winding fronds, deeply carved among the spirals, or great turnings, and
 various stalks and flowers with pleasing vine-work, in which many birds were nesting. Then above there
 followed an order of exquisite Modillions, with
+
+---
+
+## Notes
+
+**Confidence: medium.** The pediment finished, then the four great columns, their bases and the
+architrave's three fasciae. Several hard words come out right: *Enthesi* is correctly the entasis,
+*duidetriginta* correctly twenty-eight cubits, and the second fascia's *fusi truncati* with *dui
+spondili soppressi in filatura* is an exact description of a bead-and-reel, even though the English
+does not name it. One omission to flag: *l'altre due cariatice, overo striate, overo canaliculate*
+becomes "the other two channelled, or fluted, or grooved" — *cariatice* is simply dropped, and it
+matters, because page 49 goes on to argue about caryatids at length. The base proportions in the
+middle paragraph are, as on p. 44, transcribed rather than reconciled.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

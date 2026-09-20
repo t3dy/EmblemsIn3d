@@ -29,3 +29,20 @@ carved for climbing upon the flat surface. By which, eager for novelty, I mounte
 reserved quadrangle, set beneath the perpendicular of the saddle-cloth, I saw a little door hollowed
 out. A thing of great admiration, that in so stubborn a material so apt a hollow was afforded; so that
 by certain posts of metal fixed after the manner of a ladder, by which was a convenient ascent, one
+
+---
+
+## Notes
+
+**Confidence: medium.** The elephant's base: the tusks, the breast-piece, the mouldings, the
+dimensions, and the little door. The moulding-vocabulary is the best-handled technical passage so
+far and is exactly right — *Areobato*, *latastro*, *gula*, *thoro*, *orbiculo*, *Astragali*,
+*inversa Sima*, *torque trochili*, *denticuli* all come out as the base-course, block, gorge, torus,
+roundel, astragals, reversed cyma, scotia-collar and dentils. (It also shows that *areo* on p. 28
+should have been the same word.) *Cerebrum est in capite* is kept in Latin and glossed, which is the
+right treatment. The gap is the saddle-cloth inscription: *vidi alcune littere Ionice, et Arabe, le
+quale cusì dicevano* is followed in the English by nothing at all, with no editorial note. The leaf
+is hp.db `woodcut_catalog` no. 11, "Elephant saddle-cloth with Greek and Arabic inscription", so the
+corpus knows the inscription is there even though our source transcription drops it.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

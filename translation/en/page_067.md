@@ -37,3 +37,17 @@ plains, and conjecturing the delight of them, I praised such an invitation most 
 behind me every trembling restraint of mournful fear, I entered somewhat. But first I invoked the
 divine light, and the prospering Genii, that they should be present to guide me at this my entering,
 and be Companions to my wandering Pilgrimage, and bestowers of their holy guidance.
+
+---
+
+## Notes
+
+**Confidence: medium.** Poliphilo argues himself into going on. The two allusions are correctly
+rendered though neither is named: the bronze lions *dil tempio dil sapientissimo iudaeo* are
+Solomon's throne-lions of the medieval legend, and *quale non vide Regulo* is the serpent of the
+Bagrada. *Proselytia* is rightly his wandering pilgrimage, and the fear that the dragon has robbed
+him of his memory of the gate — as the lions robbed men — is well caught. Medium for those two
+unnamed identifications and for the page's long persuasion-periods, which are broken up in English
+at the translator's discretion.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

@@ -17,3 +17,17 @@ and removed, the good remains." So vehement was her song that I was already cons
 these young women, however much the habit of labour appeared there — when suddenly Thelemia, trim and
 coaxing, and with a sweet semblance, said to me: "It seems to me a reasonable thing that before you
 settle here, my dearest little Poliphilo, you should by all means see the third door as well."
+
+---
+
+## Notes
+
+**Confidence: medium.** The left-hand door: Eucleia with her golden sword and her six attendants,
+and Logistica's song in the Dorian mode. Well rendered — *chrysaora* is correctly the
+golden-sworded, the crown and palm hanging on the blade are exactly placed, and the moral of the
+song (*the labour being lifted away, the good remains*) comes across cleanly. Medium for the same
+silence as on p. 136: Eucleia is Good Repute, and Merimnasia, Epitide, Ergasilea, Anectea, Statia
+and Olistea are the virtues of the active life, all left untranslated, so the second way of life is
+as unlabelled in English as the first.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

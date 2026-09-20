@@ -31,3 +31,18 @@ one ancient. But envious and rivalling antiquity, and the narrowness of the appr
 the wall-shrubs of ivy and other branches, had made it a thicket — so that one scarcely discerned that
 there was any way out or gape. A place only for going out, but showing the utmost difficulty for
 returning. Then to me so much
+
+---
+
+## Notes
+
+**Confidence: medium.** The rubric to chapter VII, and the wooded mountain with the hidden postern.
+The narrative is secure and two plant-glosses are right: *il Cyclamino ad Lucina nocevole* (cyclamen
+and childbirth) and *ambi gli Melampodii dal pastore denominati*, the two hellebores named from
+Melampus. The tree- and herb-list is the weak part and is the reason for medium. *Iligni* and
+*Ilice* are both rendered as forms of holm-oak, producing "the two Holm-oaks" where the Italian may
+mean something else; *Naxi bicolori*, *Trientale* and *la trifolia tora, overo triangularis* are
+carried into English untranslated or half-translated. A botanist should go through this page before
+it is quoted.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

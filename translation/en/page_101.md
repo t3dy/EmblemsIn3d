@@ -33,3 +33,18 @@ the five companions, placed second, between Osfressia and Achoe, after the Queen
 companions on the other side. So far apart one from another that they took up that length in an
 orderly way. And in the lofty middle throne, come down upon the lower step, she sat in royal fashion,
 and with an august dignity.
+
+---
+
+## Notes
+
+**Confidence: medium.** The Queen's welcome and the invitation to the banquet. Secure, and one small
+detail is very well done: Poliphilo takes his seat still in his woollen gown with the burrs and the
+clinging husks of *Aperine*, goose-grass, from the wood — a touch the English keeps rather than
+tidying away, and it is the whole point of the next page's self-comparison. *Philotesia* is rightly
+the banquet of friendship. One inconsistency to flag: *la capillosa fortuna tua* is given here as
+"your tangled fortune", where the same word on p. 66 was correctly the long-haired fortune whose
+forelock one seizes; the two pages now render one word two ways, and the Occasion image is lost
+here.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

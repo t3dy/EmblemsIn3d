@@ -33,3 +33,19 @@ fluctuating spirit, and somewhat refreshed and as it were reassured; and my empt
 love, somewhat recalled, quickened again with resprouting love, and altogether filled; and every lost
 and exiled thought fitted itself again to its former work. And now more fixed upon my lovable Polia,
 binding me with renewed entanglements more closely,
+
+---
+
+## Notes
+
+**Confidence: medium.** The underground altar with its eternal lamp, and the piers holding up the
+pyramid — the passage the Dream Garden's vaults have to be built from, since there is no woodcut of
+any of this. The load-bearing details are transcribed exactly and are usable: the altar five feet
+high and twice as broad, with three seated golden images; the subterranean or under-mountain
+passages supported by very large four-square and six-square piers, with eight-sided props elsewhere;
+and the reason so little can be seen, that thick bad air is the enemy of light. *Cerito et quasi
+larvato* is correctly frenzied and as if possessed. Medium because Canistius and Philonides, the two
+runners he outruns, are left unglossed, and because the long final period has been cut into English
+sentences.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

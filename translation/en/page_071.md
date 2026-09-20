@@ -37,3 +37,19 @@ suspected that in this place she had been turned to stone from the living, and s
 
 She held her lips somewhat parted and fitted for breathing, where one saw as it were down into the
 hollowed and pierced throat. Then from the head the
+
+---
+
+## Notes
+
+**Confidence: medium.** The fountain of the sleeping Nymph — one of the world's set pieces — and the
+hydraulics are transcribed exactly: cold water from the right breast, hot from the left, falling
+into a porphyry basin of two joined receivers six feet from the figure, meeting in a channel between
+them and running off tempered into a rill. The pose is described precisely enough to model from. One
+error to fix: *Nichomede re degli Gnidii comparandola ... tutto lo havere dil suo populo expose* is
+rendered "Nicomedes, king of the Cnidians", but Nicomedes was king of Bithynia and the story (Pliny
+36.20) is that he offered to discharge the Cnidians' whole public debt to **buy** the Venus from
+them — the English makes him their own king and loses the bargain. The sentence about what men did
+to the statue is also softened well past what the Italian says.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

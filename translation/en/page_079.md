@@ -32,3 +32,18 @@ shining mirror — our delight — Orassia is her name. This one who holds the s
 Achoë. This last, who bears this vessel of most precious liquor, has the name Geussia. And let us go
 together to these temperate Baths, for pleasure and delight. Whereupon shortly you too (since your
 propitious fortune has fallen here) will come with us
+
+---
+
+## Notes
+
+**Confidence: medium.** The rubric to chapter VIII, and the five nymphs give their names. The
+toilet-vocabulary is right (*diapasmatici* perfumed powders, *smigmatici* cleansing vessels,
+*discerniculi* the golden bodkins for parting the hair), and *le demerite gratie* is here correctly
+the thanks he owes — which confirms that the same word was inverted on p. 66. The reason for medium
+is what the English does not say. Aphea, Osfressia, Orassia, Achoë and Geussia are the five senses
+in Greek — touch, smell, sight, hearing, taste — and each carries her own sense's attribute in the
+same sentence (the scent-boxes, the mirror, the lyre, the vessel of liquor). The names are
+transliterated faithfully and the allegory is left invisible to an English reader.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

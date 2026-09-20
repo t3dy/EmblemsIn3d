@@ -37,3 +37,18 @@ then, drawing up the water with their hollowed hands, they scattered it laughing
 out of the flowing streams, standing upon the soft herbs, busily wove jewels of the fragrant and
 variously coloured flowers. Which they familiarly offered to their most welcome lovers, and afterwards
 lovingly did not deny the accessory succulent and
+
+---
+
+## Notes
+
+**Confidence: medium.** The streams, and the nymphs bathing. Mostly good: *el purpureo et floribondo
+filiolo della Nympha Liriope* is correctly the narcissus gazing at itself in the water, and *amnice
+et punicea balsamita* the crimson water-mint. But a clause is **missing from the English**. After
+*balneavano vicino ad gli rotondi tali* the Italian continues *sentivi questo havere virtute de
+convertire alcuno, forsa che a quello non fusse apto ma inepto et extincto*, and the English stops
+at "bathed them near their round ankles" and goes on to the next sentence. Whether the clause was
+skipped as unintelligible or lost in transcription, it should be restored or marked. *Dryope* is
+also left untranslated.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

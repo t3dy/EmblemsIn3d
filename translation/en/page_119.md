@@ -38,3 +38,17 @@ pause.
 The King of the silver (the sound beginning again from the top) bade her that stood before the Queen
 set herself over against her. She, going forward with those same reverent gestures, made her pause and
 stood. In this ordered manner, according to the measuring of the musical time, thus they
+
+---
+
+## Notes
+
+**Confidence: medium.** The last of the recapitulation, and the chess-ballet set out. The sumptuary
+allusions are correct and well kept — Clodius the tragedian's dinner, and a feast subject to neither
+the Tappulan nor the Licinian law — and the chessmen are correctly identified as they enter:
+*custodi della rocha* the rooks, *Taciturnuli o vero Secretarii* the bishops, *Equiti* the knights,
+sixteen in gold against sixteen in silver, with *Delphine Petauriste* rightly the tumblers. One name
+is wrong and should be fixed: *Hircano Pontifice* is given as "the Hyrcanian pontiff", but this is
+Hyrcanus the high priest, whose opening of David's tomb was the byword for treasure, not a people.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

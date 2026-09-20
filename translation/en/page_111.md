@@ -33,3 +33,18 @@ apple of inestimable making; likewise the base and the cup were of distinguished
 little monsters and two-formed little Scyllas, as exquisitely expressed as ever chased work could be
 wrought fiercely, with a proportioned circling. And the biting setting of the acorned little hill was
 of incomparable jewels, and so throughout the base, where
+
+---
+
+## Notes
+
+**Confidence: medium.** The end of the courses, the server who looks like Polia, and the coral tree
+brought in for the sweetmeats. The luxury-proverbs are all standard and correctly rendered (the
+Sicilian table, the ornaments of Attalus, Corinthian bronze, the delights of Cyprus, the Salian
+suppers), and *pemmate* and *bellarii* are rightly sweetmeats and dainties. Medium for one
+unresolved comparison and one awkward sentence: coral *quale non sa trovarebbe alle Orchade insule*
+is carried straight into English as the Orkney isles, which makes no sense for coral and should be
+checked against the facsimile; and the long sentence in which Poliphilo drags his eyes back from the
+girl to the gems comes out with its pronouns tangled.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

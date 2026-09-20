@@ -20,3 +20,17 @@ as appeared to ashen Semele, deceived by the counterfeited form of Beroë of Epi
 
 Alas, I began again to tremble, become more fearful than the frightened fawns seeing the tawny Lioness
 roaring with hunger. Contending within myself whether I should kneel
+
+---
+
+## Notes
+
+**Confidence: medium.** The nymphs' shoes, and their first sight of Poliphilo. Secure, and two
+allusions are exactly placed: *cinerea Semele ... dalla simulata forma di Beroe Epidaura decepta* is
+Ovid, *Metamorphoses* 3, with Juno in Beroë's shape, and "ashen" rightly keeps what became of her;
+*hymnuli* are fawns and *elephantine gambe* are ivory, not elephantine. Medium for the
+shoe-description, which is an unbroken technical period about thongs, clasps, loops and hems, given
+word for word, and for the last clause (*senza accusare gli detta*) where the English keeps the
+Italian's idiom — "without accusing the toes" — rather than saying that the shoes did not show them.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

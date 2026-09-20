@@ -36,3 +36,17 @@ By reason of all these things, plundered and spoiled and wholly conquered, I was
 in my fist some fresh little herbs and, offering them to her, to say as a suppliant: *I yield*. Seeing
 that already in my mind I silently confirmed it, and had granted her free entry and a wide opening of
 my appointed soul. At once, upon this, my warm breast humbly
+
+---
+
+## Notes
+
+**Confidence: medium.** The fire simile, Artaxerxes, and Poliphilo's surrender. Artaxerxes stooping
+to the water offered in a peasant's hands is correctly placed, and the reed-bed catching from a
+single spark is well turned. The flag is the surrender itself: Poliphilo means to take a fistful of
+fresh herbs, hold them out and say *Herbam do* — the Roman gesture of conceding, handing over the
+grass — and the English replaces the Latin with "*I yield*", which severs the words from the herbs
+in his hand and leaves the gesture unexplained two lines after it is described. *Sisura avicula* is
+also left untranslated; it is the wagtail.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

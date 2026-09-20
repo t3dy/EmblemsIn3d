@@ -28,3 +28,18 @@ veins of gems, an incredible thing. In height it was two feet and a half. Almost
 diameter of its thickness stood at a foot and a half, and the circumference was three diameters. Which
 vessel, made fast from the bottom upon the wings, rose a third, and then there was a border going round
 the last
+
+---
+
+## Notes
+
+**Confidence: medium.** Cupid's complaint against Venus, and the tigers of the fourth car. The lore
+is right — the Hyrcanian tigers bound with vine-shoots, the crimson *Aetite* of Persia (which is the
+eagle-stone, and the carver has made it into four eagles, a pun the English does not point out) —
+and the measurements of the golden base are transcribed exactly. The flag is Jove's verse. The text
+says in so many words that it is a *monostichon* carved in Latin letters on a tablet before the
+god's face, and then the English prints only "bear the spark, you who set fire to heaven and to
+all", with *Perfer scintillam, qui caelum accendis et omnes* dropped — so the page announces an
+inscription and does not show it.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

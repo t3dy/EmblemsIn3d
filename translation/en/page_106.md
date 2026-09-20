@@ -30,3 +30,17 @@ mouthfuls as were to be offered, so many scented and perfumed folded napkins the
 changing, silken, of wonderful woven workmanship.
 
 To each of those at table, then, such an order of service they diligently
+
+---
+
+## Notes
+
+**Confidence: medium.** The flasks boiling over embers, and the three servers who attend each guest.
+The service is correctly and clearly set out — one offers the food, one holds a little plate beneath
+it so that nothing falls, the third wipes the lips with a napkin never used twice — and the detail
+that the servers' dress changes colour with the table-cloths is kept. *Fiori sambuculi* as
+elder-flower and *ulne nodate* as folded arms are right. Medium for one long clause in the middle of
+the page, describing the servers' bodices, which runs together the drapery, the gaze it invites and
+the appetite it exceeds, and comes out in English as a chain of phrases with no main verb.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

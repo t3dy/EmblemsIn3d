@@ -36,3 +36,17 @@ forgetfulness the past and befallen cases, and thence the wearisome thoughts, an
 for I am certain that at present you are fully restored. Since, then, you wish to go on undaunted in
 the amorous flames of Polia, I judge it a fitting thing that for this recovery you should go to the
 three doors, where the high Queen Telosia dwells; in which place
+
+---
+
+## Notes
+
+**Confidence: medium.** The third and fiercest round of the chess-dance, and the Queen's charge
+sending Poliphilo to the three doors. The music-history is correctly placed — the Phrygian mode and
+Marsyas, and Timotheus rousing Alexander to arms and then calming him again — and *Eupathia* is
+rightly the well-being of the disposed body. Two smaller points. *Il mostulento basio* is given as
+"the honeyed kiss", where the word is the must-scented one this translation renders correctly
+elsewhere (pp. 15, 193), so the same coinage now has two Englishes. And *Mymphurio tornatorio* is
+left unresolved inside a phrase rendered as "like a turning tumbler".
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

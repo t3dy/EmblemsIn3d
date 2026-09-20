@@ -27,3 +27,17 @@ all over with its fragrant little flowers of the three colours mingled. Entering
 anxious at the unlooked-for loss, and thinking again upon the various and great and stupendous things
 gone by, and above all the high hope that I firmly held, according to the royal and fated promises, of
 finding again my golden-haired Polia — alas, Polia,
+
+---
+
+## Notes
+
+**Confidence: medium.** The nymphs of the middle door described, and the rubric to chapter XI. The
+description is secure. Two things for a reviewer. *Isotrichechrysa Polia* is rendered "golden-haired
+Polia" — the same English this translation gives to *auricoma*, *Chrysocoma* and (nearly) to
+*Elioida*, so four distinct coinages Colonna invents for Polia's hair arrive in English as one
+phrase, and the reader cannot see that he keeps making new ones. And *Empyrivitico contagio*, given
+as "a fiery contagion", is a coinage rendered by guess. The chapter rubric is again set as an italic
+paragraph rather than in capitals (as on pp. 94 and 117).
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

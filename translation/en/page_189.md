@@ -25,3 +25,16 @@ Which were of wooded groves of a notable thickness, as though the little trees h
 in order: the yew of Corsica and of Arcady, the fruitless and resinous wild pine, tall pines, straight
 firs, careless of bending and stubborn under a weight, the burnable spruce, the spongy larch, airy
 torch-pines, and lovers of the hills, kept and tended by festive Oreads. Here we both,
+
+---
+
+## Notes
+
+**Confidence: medium.** Calm restored, then the rubric to chapter XVII and the conifer wood. The
+trees are right (*Taxo Cyrneo* the Corsican yew, *Picee* the spruce, *Tede aeree* the torch-pines,
+the firs careless of bending under a load). This rubric matters more than the others, because it
+announces the Nymph quenching her torch and revealing herself as Polia, and it too is set as an
+italic paragraph rather than in capitals, so the book's most important chapter-opening looks like a
+stage direction. *Abactrice pare a llei* is rendered "driving me as her equal", which strains.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

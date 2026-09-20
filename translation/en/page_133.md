@@ -26,3 +26,18 @@ at our crossing I saw a matron bound with a serpent, sitting upon one haunch onl
 leg in the act of rising; with the hand on the side she sat on she held a pair of wings, and in the
 other, on the rising side, a tortoise. Opposite there was a circle, the centre of which two little
 spirits held, turning their backs with their little breasts to the circumference.
+
+---
+
+## Notes
+
+**Confidence: medium.** The woods and stones of the bridge hieroglyphs explained, and the
+three-arched bridge itself. The lore is correctly rendered — porphyry that will not burn and keeps
+its neighbours from burning, as patience is not kindled and quenches others — and *cataglyphia* is
+rightly the sunk relief. One thing to check against the facsimile: the fir is made the
+fire-resistant wood and the larch the one that will not bend under load, which is the reverse of the
+usual ancient claim (Vitruvius's larch is the timber that will not take fire). The English follows
+the Italian exactly, so if this is an error it is Colonna's or the transcriber's and should be
+marked as such.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

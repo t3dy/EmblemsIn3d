@@ -19,3 +19,18 @@ by his strength above the sleeping Nymph, showed that he made her a gracious sha
 arm he drew the end of a little curtain, which was knotted to the branches nearest the trunk. Between
 the strawberry-tree and the Satyr sat two infant Satyrs: one with a vase in his hands, and the other
 with his hands wrapped about by two coiling serpents.
+
+---
+
+## Notes
+
+**Confidence: medium.** The Nymph's hair and limbs, and the Satyr bending the strawberry-tree over
+her with the two infant satyrs beneath — the iconography the whole fountain turns on, and it is
+described accurately, including the curtain knotted to the branches and the second infant with two
+serpents coiled round his hands. *Capreato et Simo* is rightly goat-like and snub-nosed. Medium
+because the same tree is called by three names in the Italian (*Memerylo*, *Unedi*, *Arbuto*,
+*comaro*) and comes out in English as two, so a reader cannot see that Colonna is piling up
+synonyms; and because the sentence on the carver having nature present in his Idea is garbled into
+English that repeats its own verb.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

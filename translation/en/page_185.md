@@ -35,3 +35,17 @@ by the transformations of the company of Calypso; and not to spare my gracious l
 whatever, and to bear a harder and longer servitude than the loving Hebrew shepherd bore, and a more
 dreadful one than that of Androdus the slave — because there every labour is shut out where love burns
 — and to set myself to the
+
+---
+
+## Notes
+
+**Confidence: medium.** Circe, Medea, Byrrhena and Pamphile; then the vow to bear any labour. The
+Apuleian pair are correctly kept (Byrrhena's hurtful songs and Pamphile's grave-verses are from the
+*Golden Ass*, though the book is not named, as on p. 86), and *dal simulato Atlantiade, el decepto
+Sosia* is correctly Mercury and Sosia from the *Amphitruo*, and the two doors shown to Amphitryon's
+son are the choice of Hercules. One error to fix, and it may be Colonna's: *le transformatione della
+compagnia di Calypso* is given as Calypso, where it was **Circe** who transformed Ulysses's
+companions; the English repeats it without a note.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

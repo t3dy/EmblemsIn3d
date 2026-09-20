@@ -38,3 +38,19 @@ covering.
 
 Upon the lips of the gaping basin (whose circuit went about one foot wider than the ophite beneath it),
 standing with heads raised above their viper feet, with a most seemly spacing
+
+---
+
+## Notes
+
+**Confidence: medium.** The fountain of the three Graces: jasper shaft, ophite plinth, four golden
+harpies under the amethyst basin, and the Graces with water falling from their breasts. The
+iconography is complete and accurate, including the six little pipes among the fruit of the joined
+cornucopias and the left hand covering *la parte digna di copertura*. Two cautions. *Quincuncio* is
+rendered "by a fifth part" — as a Roman fraction the quincunx is five twelfths, and as a term of art
+it is the planting pattern, so the height of the ophite round above the pavement is not settled. And
+*Pausania ... il suo cratere aeneo ad Hippari* is carried across untouched; the bronze krater is
+Herodotus's, dedicated by Pausanias the Spartan, and *Hippari* is unexplained. The source page also
+ends in a stray letter **f**, which the English silently drops.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

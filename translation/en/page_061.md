@@ -37,3 +37,19 @@ to rush on.
 O unhappy me, and sad of fortune! Behold, of a sudden I see plainly, coming to the threshold of the
 gate — not, as to Androcles, the limping lion in the cave, but a fearful and horrendous Dragon, its
 three-forked
+
+---
+
+## Notes
+
+**Confidence: medium.** The Pasiphaë and Daedalus mosaics, a remarkable paragraph on how the
+mosaicist handled perspective, and the dragon's approach. Icarus, the Icarian sea and the wings hung
+up by vow are all correct, and two technical terms are exactly right — *parergi* as the by-works
+(Pliny's term for the landscape filler) and *dipravato il coloramento cum la distantia* as aerial
+perspective. The linear perspective sentence is where a reviewer should look: *come le linee dille
+fabriche allo obiecto trahevano* comes out as "how the lines of the fabrics drew towards the
+object", which hides what is being described — the orthogonals of the painted buildings converging
+on the point of sight. On a page that is one of the earliest vernacular descriptions of the
+construction, that matters.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

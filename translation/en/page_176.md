@@ -21,3 +21,17 @@ carried a wicker fan, with disordered laughter and frantic gestures. With this m
 rite they gloriously extolled this fourth triumph; and with a reverent discourse, crying out
 confusedly with a loud voice to Bacchus, there followed, keeping festival, the Mimallones, satyrs,
 bacchantes, Lenae, Thyiads, Naiads, Tityri and Nymphs.
+
+---
+
+## Notes
+
+**Confidence: medium.** The four candelabra-stones and the Bacchic rout. The stones carry their lore
+correctly — the *Dionysia* that smells of wine when ground, the Median stone with a taste of nectar,
+the *Nebride* sacred to the god — and the rout keeps all its proper names (Mimallones, Lenae,
+Thyiads, Tityri, and the *viminaceo Vanno*, which is Virgil's mystic winnowing-fan of Iacchus,
+though the English does not say so). One flag: the ritual cry *Evì Bache* is turned into narration,
+"crying out confusedly with a loud voice to Bacchus", so the actual words of the rite disappear from
+a page that is entirely about the rite.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

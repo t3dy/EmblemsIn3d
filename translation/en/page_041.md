@@ -14,3 +14,18 @@ Which most ancient and sacred writings, considering them, I interpreted thus:
 *From your labour sacrifice liberally to the god of nature; little by little you will bring back a
 mind made subject to god. He will hold a firm guard over your life, governing it mercifully, and will
 keep it unharmed.*
+
+---
+
+## Notes
+
+**Confidence: medium.** The elephant-base hieroglyphs and Poliphilo's reading of them — the book's
+most quoted page of picture-writing, and the objects are correctly identified one by one (*Malluvio*
+basin, *Gutturnio* ewer, the thread wound on a *Pyrono*, the stoppered vase, the sole with an eye,
+anchor and goose, lamp in a hand, rudder wreathed in olive, two *Harpaguli* as grappling-hooks,
+dolphin, closed ark). The Latin sense is translated accurately. It is medium for an editorial loss:
+the 1499 prints Poliphilo's reading as a block of Latin capitals (EX LABORE DEO NATURAE SACRIFICA
+LIBERALITER ...), and the English replaces it with an italic paraphrase, so the reader cannot see or
+quote the Latin the page actually carries — on exactly the page where the Latin is the point.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

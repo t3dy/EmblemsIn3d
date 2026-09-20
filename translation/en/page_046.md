@@ -36,3 +36,19 @@ universal fabric, rather than the ornaments, which are accessory to the principa
 Therefore to the first, the fertile skill of one alone is required. But to the second many handworkers,
 or unlearned operatives — called by the Greeks Ergatai — necessarily come together. Who, as has been
 said, are the instruments of the Architect.
+
+---
+
+## Notes
+
+**Confidence: medium.** The broken upper cornice, the two bearded busts in their roundels, the eagle
+on the frieze, and the close of the architectural digression. Two real faults, both worth a
+reviewer's time. *Quel spatio la figura scalina, che monstra uno trigonio di pleure, overo coste
+inaequale* is rendered "the figure of a stairway"; but Colonna glosses the word himself in the next
+breath as a triangle of unequal sides, so *scalina* is **scalene**, not a stair, and the English
+contradicts its own next clause. Second, the Italian ends this page in a tapering block of type, the
+lines shortening to the single word *Architecto* — the same typographic device the front matter
+records on p. 9 — and the English sets it as flat prose, so the shape is lost. *Ergati* is rightly
+kept in the Greek.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

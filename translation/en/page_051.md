@@ -34,3 +34,17 @@ and most white. Behind the columning was seen the white panelling of the best ma
 
 Above the Beam sat the Zophorus, in the middle of which was a curved Tablet of gilded metal, with an
 epigram of excellent Greek capitals of refined silver set into it, which said thus:
+
+---
+
+## Notes
+
+**Confidence: medium.** The keystone eagle and boy finished, the coffered soffit, and the two winged
+figures in the spandrels. Well observed and well rendered: the *osso remigale* is correctly the
+wing-bone the boy grips; the cameo is read exactly right, the boy cut from the white vein of the
+sardonyx and the bird from the sard beneath, which is how such stones are worked; *Pastophora* is
+correctly the shrine-bearer, *Chameo* the cameo, *copellato argento* the cupelled silver. Medium for
+the usual reason in this stretch — an unbroken technical description split into English paragraphs
+at the translator's discretion — and for *Tabella harpata*, given as "curved" on a guess at *harpe*.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

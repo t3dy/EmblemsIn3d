@@ -39,3 +39,18 @@ them had their little feet excellently laced with double soles, with manifold bi
 and of purpling silk. Some shod then over stretched hose of scarlet and greening cloth, and some over
 the naked, of soft and gracious shining leather, and others of chamois dyed in most beautiful
 colourings, without accusing the toes.
+
+---
+
+## Notes
+
+**Confidence: medium.** The carob-trees mistaken for the dragon, the invocation of Jugatinus,
+Collatina and Vallonia, and the first sight of the five nymphs. The small Roman deities of ridge,
+hill and valley are correctly kept, and *Antie* as forelocks and *conchiliata* as shellfish purple
+are right. Two things for a reviewer, both in the costume, which the world has to build from.
+*Bombicina* is rendered "cotton"; *bombycina* is fine silk gauze, from *bombyx* the silkworm, and
+the Italian has already used *sericea* for the middle tunic, so the top layer should be the sheerest
+silk, not cotton. And *carpantico habito* is left as "Carpathian habit", which is a guess. The Latin
+*SEMPER FESTINA TARDE* at the head of the page is again replaced by its English.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*

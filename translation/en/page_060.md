@@ -38,3 +38,19 @@ acts, the places, and the fitting expression of the history — was this mosaic 
 
 On the part opposite, in this same manner, I beheld the wanton Pasiphaë, kindled with infamous love,
 and lying hid in the wooden engine
+
+---
+
+## Notes
+
+**Confidence: medium.** The vault's sea-thiasos and the first two mosaic histories. *Opera
+vermiculata* with glass tesserae is exactly right, and so is *protectione Chilonea* as the
+tortoise-shell shield. But the Cadmus panel carries two faults a reviewer must fix. *Et ad gli sui
+filioli lo edicto di Re Agenore, a Cadmo, Fenice, et Cilice* is rendered "to her sons the edict of
+King Agenor": Cadmus, Phoenix and Cilix are Agenor's sons and Europa's brothers, and the English
+makes them her children. And *Aedificava dunque Cadmo Athene* is translated straight as "Cadmus
+therefore built Athens", where the city is Thebes — whether Colonna wrote it or the transcription
+corrupted it, the English repeats an error without marking it, on the same page that correctly
+derives Boeotia from the lowing heifer.
+
+*Confidence stated 2026-09-20 by a second reader, not by the translator (ticket tr-confidence-unstated-180).*
