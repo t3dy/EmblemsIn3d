@@ -19,6 +19,26 @@ the 3-D world. Both halves exist now and this joins them.
                          each chapter. Some stops cover a range ("VI-VII"),
                          which is split so both chapters resolve.
 
+Closed 2026-09-20, debt-reading-station-is-chapter-grained: the chapter rule
+alone is too coarse for a chapter that runs many pages and carries several
+stops. Chapter X is 1499 pp. 117-140 with FIVE stops (labyrinth, chess,
+artificial, quinta_essentia, three_doors), and the chapter rule put every one
+of those 24 pages at `labyrinth`, the first stop in the array, including p.119
+(the chess ballet, "thirty-two young girls... clothed in cloth of gold") which
+has its own built station, `chess`, standing unused. So a stop MAY now declare
+the 1499 page range it actually covers -- "pages": [lo, hi] -- and
+page_to_station() resolves each page to the stop whose declared range contains
+it, checked narrowest-first (so a range nested inside a wider one wins). Only
+where NO stop declares a range for a page does the old chapter rule apply, and
+that fallback is what still carries chapters with a single stop (e.g. VIII,
+or XI-XIII, which run several pages but were never mis-split because only one
+stop claims them). Ranges were read off the English text itself, page by page
+-- not the tour prose -- e.g. p.118 is still recapping the banquet's splendour
+("who would believe with what luxury...") and p.119 is where the queen "at
+once...ordered a game to be looked at...an excellent dance" and the
+thirty-two girls enter; that is the labyrinth/chess seam, and it is not where
+the tour's own chapter tag would have put it.
+
 Pages with no station of their own inherit the last one that had one, so the
 world never jumps back to nowhere in the middle of a chapter.
 
@@ -46,10 +66,8 @@ PAGE_OFFSET = 8      # db page_seq + 8 = this edition's page; see fetch_1499_pla
 DASH = re.compile(r"\s*[–—-]\s*")          # en dash, em dash, hyphen
 
 
-def chapter_to_station():
+def chapter_to_station(stops):
     """First station of each chapter, with ranged stops split."""
-    tours = json.loads(TOURS.read_text(encoding="utf-8"))
-    stops = (tours.get("tours") or tours)["novel"]["stops"]
     out = {}
     for s in stops:
         ch = (s.get("chapter") or "").strip()
@@ -60,6 +78,35 @@ def chapter_to_station():
             if part and part not in out:
                 out[part] = {"station": s["station"], "title": s.get("title", "")}
     return out
+
+
+def page_to_station_ranges(stops):
+    """Explicit 1499 page ranges some stops declare, narrowest first.
+
+    A stop's "pages": [lo, hi] says which 1499 pages it actually covers, and
+    wins over the chapter-level fallback for every page inside it -- see the
+    module docstring, debt-reading-station-is-chapter-grained. Sorting
+    narrowest-first means a stop whose range is nested inside a wider one
+    (there is none of that today, but the schema allows it) resolves to the
+    more specific stop rather than whichever happens to be found first.
+    """
+    ranges = []
+    for s in stops:
+        pr = s.get("pages")
+        if not pr:
+            continue
+        lo, hi = pr
+        ranges.append((lo, hi, {"station": s["station"], "title": s.get("title", "")}))
+    ranges.sort(key=lambda r: r[1] - r[0])
+    return ranges
+
+
+def station_for_page(n, ch, ranges, ch2st):
+    """The narrowest declared range containing page n, else the chapter rule."""
+    for lo, hi, hit in ranges:
+        if lo <= n <= hi:
+            return hit
+    return ch2st.get(ch)
 
 
 EDITORIAL = re.compile(r"^\*\((.*?)\)\*\s*$", re.M | re.S)
@@ -114,7 +161,10 @@ def main():
     man = json.loads(MANIFEST.read_text(encoding="utf-8"))
     titles = plate_titles()
     have_plate = {int(f.stem[1:]) for f in PLATES.glob("p*.jpg")} if PLATES.is_dir() else set()
-    ch2st = chapter_to_station()
+    tours = json.loads(TOURS.read_text(encoding="utf-8"))
+    stops = (tours.get("tours") or tours)["novel"]["stops"]
+    ch2st = chapter_to_station(stops)
+    ranges = page_to_station_ranges(stops)
     pages, last_station, missing = [], None, set()
 
     for n in sorted(int(k) for k in man["pages"]):
@@ -125,7 +175,7 @@ def main():
         if not f.exists():
             continue
         ch = rec.get("chapter") or ""
-        hit = ch2st.get(ch)
+        hit = station_for_page(n, ch, ranges, ch2st)
         if hit:
             last_station = hit["station"]
         elif ch:

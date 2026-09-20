@@ -865,10 +865,11 @@
       "id": "debt-reading-station-is-chapter-grained",
       "title": "The reading mode places a page by its CHAPTER, so a long chapter strands the reader at one station",
       "kind": "debt",
-      "status": "open",
+      "status": "done",
       "priority": 3,
-      "evidence": "Noticed 2026-09-09 while fixing bug-chapter-xi-tour-misattributed, and it is the same weakness one level down. build_reading.py's chapter_to_station() takes the FIRST stop of each chapter and every page of that chapter inherits it. Chapter X runs 1499 pp. 117-140 -- twenty-four pages -- and its first stop in the array is #14, \"The Palace, the Water-Labyrinth and the Banquet\", tagged IX-X. So the chess ballet at p. 119 puts the reader at the WATER LABYRINTH while the text describes thirty-two girls dancing on a chequered pavement, and the world has a Human Chess Match station (#15) standing built and unused for exactly that text.\n\nThis is not a mis-tag -- both stops are correctly chapter X. It is that the page->station map has no resolution below a chapter, and the chapters in this book are long.\n\nVerified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 141 to `polia`.",
+      "evidence": "Noticed 2026-09-09 while fixing bug-chapter-xi-tour-misattributed, and it is the same weakness one level down. build_reading.py's chapter_to_station() takes the FIRST stop of each chapter and every page of that chapter inherits it. Chapter X runs 1499 pp. 117-140 -- twenty-four pages -- and its first stop in the array is #14, \"The Palace, the Water-Labyrinth and the Banquet\", tagged IX-X. So the chess ballet at p. 119 puts the reader at the WATER LABYRINTH while the text describes thirty-two girls dancing on a chequered pavement, and the world has a Human Chess Match station (#15) standing built and unused for exactly that text.\n\nThis is not a mis-tag -- both stops are correctly chapter X. It is that the page->station map has no resolution below a chapter, and the chapters in this book are long.\n\nVerified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 141 to `polia`. Re-verified 2026-09-20 before this fix, directly against the regenerated-but-not-yet-fixed reading.json (main.js's DATA_V had since moved to 48; behaviour was unchanged): p.119 still `labyrinth`, p.141 still `polia`.",
       "acceptance": "A tour stop can declare the 1499 PAGE RANGE it covers, and reading.json resolves each page to the narrowest stop that contains it, falling back to the chapter rule when no stop declares a range. Checked on p. 119, which must resolve to `chess`, and on p. 141, which must stay `polia`.",
+      "resolution": "Five chapter-X stops (labyrinth, chess, artificial, quinta_essentia, three_doors) each gained a \"pages\": [lo, hi] field in tours.json, read off translation/en/page_*.md directly rather than the tour prose: labyrinth 92-118 (the palace tour and the banquet, closing with a full page of recap -- 'who would believe with what luxury' -- that is still praising the banquet, not yet the game); chess 119-121 (p.119: 'she ordered a game to be looked at...an excellent dance' and the thirty-two girls enter; the third dance's winner is declared partway through p.121); artificial 122-127 (the queen names Logistica and Thelemia at p.122, they walk him out to the glass garden at p.123-124, and the water-labyrinth Logistica narrates from its watch-tower runs to the 'let us go down to our companion Thelemia' at the end of p.127 -- note this water-labyrinth is the SAME one tours.json's own `labyrinth`-stop lede describes, but it is narrated here, later, not during the p.92-118 palace tour: the tour write-up compresses two textual locations into one lede, which is fine for prose but was not fine for a page range, so the range follows the text, not the lede); quinta_essentia 128-134 (Thelemia's song, then the triangular obelisk with its genii and hieroglyphs, ending with Logistica's gloss 'these hieroglyphs...are most fitly set here as a monument for those passing by' at p.134); three_doors 135-140 (the titles above the doors, the three ladies, and Logistica breaking her lute at p.139, closing the chapter at p.140). build_reading.py's chapter_to_station() was left alone and renamed page_to_station_ranges()/station_for_page() added beside it: ranges are checked narrowest-first, falling back to the chapter rule for every chapter that still has only one stop. Regenerated reading.json confirms both named checks (p.119 chess, p.141 polia) and every page 92-140 now resolves within the five ranges with no gap. SWEPT for the same shape elsewhere: chapters I (3 stops: plain/wood/great_oak), II (2 stops: wood/palm_plain) and III (4 stops: horse/colossus/elephant x2) each have the identical first-stop-wins defect -- confirmed live in the regenerated reading.json, e.g. all of manifest chapter III (pp.20-29) still resolves to `valley` and all of chapter IV (pp.30-46) to `portal`, so `horse`/`colossus`/`elephant` never fire at all. NOT fixed here: these five stops carry \"half\": \"dallington\" chapter tags, and a text check found the mismatch runs deeper than a resolution gap -- the Palm-grove-and-wolf text tours.json's `palm_plain` stop (tagged chapter II) describes is actually on p.21, which translation/manifest.json calls chapter III, and the Great-Oak sleep tours.json's `great_oak` stop (tagged chapter I) describes is on p.19, chapter II. Adding page ranges under a chapter tag that is itself wrong would be inventing a boundary, not citing one, so this is filed as debt-early-chapter-tags-drift-from-1499-pagination instead of guessed at here. Not touched: src/main.js's DATA_V (still '48') was not bumped -- out of scope for this pass -- so the regenerated reading.json is not yet live; the reading mode's page-to-station text needs both a DATA_V bump and a browser check (walk to p.119 in Read mode and confirm the world stands at the chess station, not the water-labyrinth) before this is verified end to end.",
       "files": [
         "scripts/build_reading.py",
         "src/data/tours.json",
@@ -877,9 +878,32 @@
       "role": "hp-builder",
       "refs": [
         "ticket bug-chapter-xi-tour-misattributed",
-        "COVERAGE.md ch. X"
+        "COVERAGE.md ch. X",
+        "ticket bug-early-chapter-tags-drift-from-1499-pagination"
       ],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-20"
+    },
+    {
+      "id": "bug-early-chapter-tags-drift-from-1499-pagination",
+      "title": "tours.json's chapter tags for chapters I-III put Dallington content on the wrong 1499 chapter, so no page range can be added without inventing one",
+      "kind": "bug",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Found 2026-09-20 sweeping for the same first-stop-wins shape closed in debt-reading-station-is-chapter-grained (chapter X). Chapters I (stops plain/wood/great_oak), II (wood/palm_plain) and III (horse/colossus/elephant x2) each carry multiple stops under one \"half\": \"dallington\" chapter tag, and chapter_to_station() picks the first and strands the rest exactly as it did for chapter X -- confirmed live in the regenerated reading.json: every page of manifest chapter III (pp.20-29) resolves to `valley` and every page of chapter IV (pp.30-46) to `portal`; `horse`, `colossus` and `elephant` never fire.\n\nUnlike chapter X, this is not just a resolution gap: the chapter TAGS tours.json gives these stops disagree with translation/en/*.md, which is the text reading.json actually displays. tours.json's `palm_plain` stop (tagged chapter II, \"The Palm and the Wolf\") describes a palm-grove and a famished wolf; that text is on p.21, which translation/en/page_021.md and manifest.json both call chapter III. tours.json's `great_oak` stop (tagged chapter I) describes Poliphilo falling asleep under the ancient oak into the deeper dream; that text is on p.19, chapter II. Same class as the already-open bug-dallington-page-drift, which found this starting 'about chapter XIV' -- it starts by chapter I.",
+      "acceptance": "Each of the plain/wood/great_oak, wood/palm_plain and horse/colossus/elephant/elephant stops carries a chapter tag and a \"pages\" range that both match translation/en/page_NNN.md's own header for the page the stop's lede describes. A spot check of p.19 (great_oak), p.21 (palm_plain) and pp.30-46 (horse/colossus/elephant, currently chapter IV in the manifest, tagged III in tours.json) finds each cited stop's content on the page its own tag and range claim.",
+      "risk": "Retagging these five-plus stops without reading each one's actual page first would repeat exactly the mistake this ticket is about -- do not mass-retag by pattern-matching Dallington chapter numbers to manifest chapter numbers, because bug-dallington-page-drift already shows the two numberings are not a constant offset from each other past a certain point, and this ticket's own evidence shows that point is earlier than previously measured.",
+      "files": [
+        "src/data/tours.json",
+        "src/data/reading.json"
+      ],
+      "role": "hp-researcher",
+      "refs": [
+        "ticket debt-reading-station-is-chapter-grained",
+        "ticket bug-dallington-page-drift",
+        "ticket bug-chapter-xi-tour-misattributed"
+      ],
+      "opened": "2026-09-20"
     },
     {
       "id": "debt-plaque-subtitles-too-long",
