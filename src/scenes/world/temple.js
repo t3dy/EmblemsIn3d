@@ -1014,15 +1014,22 @@ export const Temple = {
       const RITE_X = 1.15;            // either side of the line to the curtain
       const HAND_Y = 1.05;            // where a nymph of h 0.95 holds something
 
+      // Label heights are STAGGERED deliberately, here and for the Graces and
+      // the eight attendants below. This precinct ended up with fourteen labelled
+      // figures on two sides of one approach, and at a common height their
+      // captions overlapped into an unreadable pile -- seen in the screenshot of
+      // 2026-09-20 and fixed the same pass. The captions are also kept short for
+      // the same reason: these two carry the allegory in four words, not a
+      // sentence. Anything longer belongs on a plaque, which is what plaques are.
       const synesia = this.cast.nymph({ name: 'Synesia', robe: 0x5a6fb0, pose: 'offer' });
       this._npc('fount_synesia', synesia, FX - RITE_X, RITE_Z, Math.PI * 0.62,
-        { label: 'Synesia', sub: 'VNDERSTANDING · SHE OFFERS, AND POLIA WILL NOT',
-          labelY: 1.95, sway: 0.02 });
+        { label: 'Synesia', sub: 'VNDERSTANDING · POLIA WILL NOT',
+          labelY: 2.42, sway: 0.02 });
 
       const philedia = this.cast.nymph({ name: 'Philedia', robe: 0xb05a72, pose: 'offer' });
       this._npc('fount_philedia', philedia, FX + RITE_X, RITE_Z, Math.PI * 1.38,
-        { label: 'Philedia', sub: 'LOVE OF PLEASVRE · SHE OFFERS, AND HE DOES',
-          labelY: 1.95, sway: 0.02 });
+        { label: 'Philedia', sub: 'LOVE OF PLEASVRE · AND HE DOES',
+          labelY: 2.42, sway: 0.02 });
 
       // The golden arrow in the air between them, laid along x so it points from
       // Synesia's hand toward Philedia's — the direction Cupid redirects it.
@@ -1161,8 +1168,8 @@ export const Temple = {
         const g = this.cast.figure({ h: 0.9, robe: null, pose: 'stand' });
         this._npc('fount_grace_' + gi, g, FX + GR + gr.ox, FZ + (gi === 2 ? -0.42 : 0.2),
           Math.PI + gr.turn,
-          { label: gr.n, sub: gi === 2 ? 'TVRNED AWAY · HER HIPS VEILED BY HER HAIR'
-                                       : 'HER MAIDEN FACE TOWARD VS', labelY: 1.9, sway: 0.014 });
+          { label: gr.n, sub: gi === 2 ? 'TVRNED AWAY' : 'FACING VS',
+            labelY: 1.78 + gi * 0.3, sway: 0.014 });
       });
 
       // -- Peristeria, and the doves she ministers -------------------------
@@ -1176,7 +1183,7 @@ export const Temple = {
       // the reason she is there at all.
       const per = this.cast.nymph({ name: 'Peristeria', robe: 0xe8e2d6, pose: 'offer' });
       this._npc('fount_peristeria', per, FX + R + 0.95, FZ + 1.15, Math.PI * 1.2,
-        { label: 'Peristeria', sub: 'THE DOVE-NYMPH · SHE ATTENDS THE SERVICES OF VENVS',
+        { label: 'Peristeria', sub: 'THE DOVE-NYMPH',
           labelY: 1.95, sway: 0.02 });
       for (let i = 0; i < 6; i++) {
         const a2 = (i / 6) * Math.PI * 2 + 0.3;
@@ -1231,14 +1238,14 @@ export const Temple = {
       // on the two sides, by the same right/left derivation as everything else
       // in this precinct: his on +x, hers on -x.
       const ATT = [
-        { side: 1, n: 'Enosina',     g: 'VNION · SHE LEADS HIS FOVR' },
+        { side: 1, n: 'Enosina',     g: 'VNION · LEADS HIS' },
         { side: 1, n: 'Monori',      g: 'THE MATCHLESS' },
         { side: 1, n: 'Phrontis',    g: 'CARE · FORETHOVGHT' },
-        { side: 1, n: 'Critoa',      g: 'IVDGEMENT · HER SILENT SISTER' },
-        { side: -1, n: 'Adiacorista', g: 'THE VNDIVIDED · SHE LEADS HER FOVR' },
+        { side: 1, n: 'Critoa',      g: 'IVDGEMENT · THE SILENT' },
+        { side: -1, n: 'Adiacorista', g: 'THE VNDIVIDED · LEADS HERS' },
         { side: -1, n: 'Pistinia',    g: 'FAITH' },
         { side: -1, n: 'Sophrosyne',  g: 'TEMPERANCE' },
-        { side: -1, n: 'Edosia',      g: 'DECORVM · AND A KEEPER OF THE THIRD DOORE' },
+        { side: -1, n: 'Edosia',      g: 'DECORVM' },
       ];
       ATT.forEach((t, ti) => {
         const i4 = ti % 4;
@@ -1248,7 +1255,7 @@ export const Temple = {
                                     pose: i4 === 0 ? 'offer' : 'stand' });
         this._npc('fount_att_' + t.n.toLowerCase(), g,
           FX + Math.sin(aa) * rad, FZ + Math.cos(aa) * rad, aa + Math.PI,
-          { label: t.n, sub: t.g, labelY: 1.95, sway: 0.018 });
+          { label: t.n, sub: t.g, labelY: 1.72 + i4 * 0.31, sway: 0.018 });
       });
       this._plaque({ main: 'THE DOWER OF EIGHT',
                      sub: 'FOVR TO HIM, FOVR TO HER · THE VIRTVES A MARRIAGE IS DOWERED WITH · P. 365' },
@@ -1303,6 +1310,199 @@ export const Temple = {
       this._plaque({ main: 'TWO RINGS, THE STONES SET TVRNING',
                      sub: 'ONE TO POLIA, ONE TO POLIPHILO · ANTEROTA, LOVE RETVRNED · P. 365' },
         1.4, 0.3, FX + 0.42, VEN_Y + 0.62, FZ + 0.42, 0, true);
+
+      // -- The zodiac in the frieze (p. 360) -------------------------------
+      //
+      //   "Beneath these, in the frieze running round ... were to be seen the
+      //    twelve signs of the zodiac, with their governing impressions and
+      //    characters, expressed in outstanding carving."
+      //
+      // The frieze band under the planetary altars has been plain gold. The
+      // signs are drawn rather than modelled -- the register this world uses for
+      // lettering and for anything read rather than walked round (_plaqueTexture,
+      // _spoilTexture, _orderBoardTexture all do the same). A band 0.22 m tall
+      // seen from six metres cannot carry twelve carved reliefs and does not need
+      // to; what it needs is to be legibly the zodiac, which is what the glyphs
+      // are for. Set just proud of the existing band so the two do not z-fight.
+      const zc = document.createElement('canvas');
+      zc.width = 1536; zc.height = 128;
+      const zx = zc.getContext('2d');
+      zx.fillStyle = '#c9a44e'; zx.fillRect(0, 0, zc.width, zc.height);
+      zx.fillStyle = '#3a2c12';
+      zx.font = '86px Georgia, serif';
+      zx.textAlign = 'center'; zx.textBaseline = 'middle';
+      // The order is the ecliptic's own, Aries first, which is also the order
+      // Colonna's planetary sequence above runs against.
+      '♈♉♊♋♌♍♎♏♐♑♒♓'.split('').forEach((gl, gi) => {
+        zx.fillText(gl, (gi + 0.5) * (zc.width / 12), zc.height / 2 + 4);
+      });
+      const zTex = new THREE.CanvasTexture(zc);
+      zTex.anisotropy = 4;
+      const zMat = woodcut ? S.mat({ tone: 0.06, side: THREE.DoubleSide })
+        : S.mat({ color: 0xffffff, roughness: 0.62, metalness: 0.35, side: THREE.DoubleSide });
+      zMat.map = zTex;
+      this._disp.push(zMat);
+      this._m(new THREE.CylinderGeometry(R + 0.085, R + 0.085, 0.22, 48, 1, true), zMat,
+        FX, KERB + 0.42 + COL_H, FZ, { cast: false });
+
+      // -- The lovers kneeling, and the one arrow through both (pp. 361, 366) --
+      //
+      //   "both of us -- Polia and I -- kneeling face down upon our bending
+      //    knees"                                                    (p. 361)
+      //   "it struck, carried through the middle of my unwitting heart ...
+      //    without delay it transfixed also the heart of my red-haired Polia"
+      //                                                              (p. 366)
+      //
+      // ONE arrow through TWO hearts is the image, so it is built as one shaft
+      // passing through both of them rather than as two wounds. Cupid stands on
+      // the kerb behind it with the bow already loosed.
+      //
+      // TWO CONCRETE DETAILS FROM THE TEXT, not invented: Polia is
+      // `pyrrothricha`, flame-haired -- a rare piece of physical description and
+      // our translator flags it as worth keeping -- so her hair is red here and
+      // nowhere else in the world. And Poliphilo kneels in WHITE, because by
+      // p. 367 the nymphs have "stripped from me the plebeian robes" and clothed
+      // him "in a white and somewhat elegant garment": the white robe IS the
+      // outcome of the sprinkling, so a reader who looks at him is looking at the
+      // end of the rite.
+      //
+      // THESE TWO ALSO STAND AT THE TRIUMPH CAR, 18 m north, bound in roses
+      // (chapter XXII, triumphs.js). That is deliberate and is how this world
+      // already works -- it is a garden of tableaux, not a timeline, and Polia
+      // likewise appears at the Queen's banquet as "the resemblance of Polia".
+      // The captions carry the moment so the two readings cannot be confused.
+      const KN_Z = FZ + R + 0.95, HEART_Y = 0.86;
+      const lovers = [
+        { k: 'poliphilo', x: -0.52, robe: 0xf0ece2, hair: 0x4a3018,
+          n: 'Poliphilo', s: 'KNEELING · CLOTHED ANEW IN WHITE' },
+        { k: 'polia', x: 0.52, robe: 0xb8607a, hair: 0xa8431c,
+          n: 'Polia', s: 'FLAME-HAIRED · THE SAME SHAFT' },
+      ];
+      for (const lv of lovers) {
+        // kneeling: about three-fifths of standing height, tipped forward a
+        // little. There is no `kneel` pose in Cast.js -- stand | reach | point |
+        // offer -- so the attitude is carried by height and inclination.
+        const g = this.cast.nymph({ name: lv.n, robe: lv.robe, hair: lv.hair, h: 0.6, pose: 'offer' });
+        g.position.set(FX + lv.x, 0, KN_Z);
+        g.rotation.y = Math.PI;                      // facing the fountain, south
+        g.rotation.x = 0.13;                         // bowed
+        this.scene.add(g);
+        const l = this.cast.label(lv.n, { sub: lv.s });
+        l.position.y = 1.45;
+        g.add(l);
+        this.npcs['fount_' + lv.k] = g;
+        this._npcs.push({ g, phase: lv.x * 2, baseY: Math.PI, sway: 0.01 });
+      }
+      // the single shaft through both hearts, laid along x
+      this._m(new THREE.CylinderGeometry(0.015, 0.015, 1.9, 6), gold,
+        FX, HEART_Y, KN_Z, { rz: Math.PI / 2 });
+      this._m(new THREE.ConeGeometry(0.042, 0.14, 8), gold,
+        FX + 1.02, HEART_Y, KN_Z, { rz: -Math.PI / 2, outline: true });
+      // Cupid on the kerb behind them, the bow already loosed
+      const cupid = this.cast.figure({ h: 0.42, robe: null, pose: 'reach', crowned: false });
+      cupid.position.set(FX + 1.35, KERB + 0.06, FZ + R + 0.2);
+      cupid.rotation.y = Math.PI * 0.82;
+      this.scene.add(cupid);
+      this._npcs.push({ g: cupid, phase: 0.7, baseY: cupid.rotation.y, sway: 0.02 });
+      this._m(new THREE.TorusGeometry(0.2, 0.014, 6, 16, Math.PI * 1.15), gold,
+        FX + 1.52, KERB + 0.52, FZ + R + 0.2, { ry: Math.PI * 0.82, rz: 0.3 });
+
+      // -- The sea-dew that transmutes rather than destroys (p. 367) -------
+      //
+      //   "with her cupped divine palm ... divinely drew up the salt waters and,
+      //    moistening, sprinkled them over us. Not as indignant Diana rained upon
+      //    the unlucky hunter, tearing him to a beast for the dogs, but on the
+      //    contrary, unhesitating, sprinkling to TRANSMUTE"
+      //
+      // Colonna sets this against Diana on Actaeon on purpose -- the same act of
+      // a goddess casting water on a mortal who has seen her, answered the other
+      // way -- and `fermentare` in the same paragraph is the fourth time this
+      // chapter names an alchemical operation outright. So the drops fall over
+      // the kneeling pair and nowhere else, and they move: they are registered
+      // in `_waters`, the same animator as the foam and the goddess's floating
+      // hair, and NOT in `_vanes`.
+      const dewMat = woodcut ? S.glowMat()
+        : S.mat({ color: 0xdff0f4, roughness: 0.15, metalness: 0.1,
+                  emissive: 0x9fd2e0, emissiveIntensity: 0.5 });
+      for (let i = 0; i < 14; i++) {
+        const t = (i / 14) * Math.PI * 2;
+        const dx = FX + Math.cos(t) * 0.78, dz = KN_Z + Math.sin(t) * 0.34;
+        const drop = this._m(new THREE.SphereGeometry(0.016, 6, 5), dewMat,
+          dx, 1.15 + (i % 5) * 0.16, dz, { cast: false });
+        this._waters.push({ m: drop, rate: 0.55 + (i % 4) * 0.1 });
+      }
+      this._plaque({ main: 'SPRINKLED TO TRANSMVTE, NOT TO DESTROY',
+                     sub: 'NOT AS DIANA RAINED VPON ACTAEON · SHE FERMENTS OVR KINDLED LOVES · P. 367' },
+        1.6, 0.3, FX, 1.62, KN_Z + 0.5, 0, true);
+
+      // -- Mars, come to lay his armour down (p. 368) ----------------------
+      //
+      //   "a manly soldier, divine in aspect, down the steps, out of the
+      //    recesses beneath the first pergola ... with a most cunningly wrought
+      //    silver-gleaming shield ... clad in a golden cuirass ... most robustly
+      //    holding a scourge in his hand, and attended by his growling Lycaon.
+      //    Come now at last to the delightful and delicious fountain, he showed
+      //    himself eager to LAY DOWN HIS ARMOUR and, disarmed, to go in to the
+      //    beloved goddess."
+      //
+      // Colonna never names him. Our translator's note is firm that this is Mars
+      // and that withholding the name is the same discretion he uses for Actaeon
+      // and the rest -- the reader supplies it. So the figure is labelled Mars
+      // and the caption says the text does not name him, which is the honest way
+      // to carry a reading that is certain but unstated.
+      //
+      // THE ARMS ARE ON THE GROUND, NOT ON HIM, because the laying-down is the
+      // whole point and it is the same argument the island already makes twice
+      // over: Cythera's trophies are the disarmed panoplies of the gods, and the
+      // pair of them spell QVIS EVADET / NEMO -- who shall escape? no one. Mars
+      // arriving in a golden cuirass and putting it off at Venus's water is that
+      // sentence enacted instead of hung on a pole. He keeps only the scourge,
+      // which the text has in his hand as he comes.
+      const MX = FX + 1.35, MZ = FZ - R - 3.4;
+      const mars = this.cast.figure({ h: 1.08, robe: 0xc9a54e, pose: 'stand', crowned: false });
+      this._npc('fount_mars', mars, MX, MZ, 0.32,
+        { label: 'Mars', sub: 'THE ARMED ONE NEWLY COME · HE LAYES DOWNE HIS ARMES · VNNAMED IN THE TEXT',
+          labelY: 2.6, sway: 0.016 });
+      const silver = woodcut ? S.mat({ tone: 0.04 })
+        : S.mat({ color: 0xd8dde2, metalness: 0.92, roughness: 0.22 });
+      // the helmet, wreathed with olive, with its crest and golden apex
+      this._m(new THREE.SphereGeometry(0.13, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), silver,
+        MX, 1.78, MZ, { outline: true });
+      this._m(new THREE.TorusGeometry(0.132, 0.018, 6, 16), this._leafMat, MX, 1.78, MZ,
+        { rx: Math.PI / 2 });                                   // the olive wreath
+      this._m(new THREE.BoxGeometry(0.03, 0.12, 0.26), gold, MX, 1.9, MZ);   // the crest
+      this._m(new THREE.ConeGeometry(0.035, 0.1, 8), gold, MX, 2.0, MZ);     // the golden apex
+      // the baldric across the cuirass, and the scourge still in his hand
+      this._m(new THREE.BoxGeometry(0.055, 0.6, 0.02), gold, MX, 1.36, MZ + 0.14, { rz: 0.5 });
+      this._m(new THREE.CylinderGeometry(0.014, 0.018, 0.4, 6), this._trunkMat,
+        MX + 0.28, 1.28, MZ, { rz: 0.35 });
+      for (let i = 0; i < 3; i++) {
+        this._m(new THREE.CylinderGeometry(0.006, 0.006, 0.3, 4), this._trunkMat,
+          MX + 0.36 + i * 0.02, 1.02, MZ - 0.02 + i * 0.02, { rz: 0.1, cast: false });
+      }
+      // AND THE ARMS LAID DOWN: the silver shield flat on the ground and the
+      // golden scimitar beside it, in front of him, between him and the water.
+      const shield = this._m(new THREE.CylinderGeometry(0.34, 0.34, 0.04, 20), silver,
+        MX - 0.34, 0.17, MZ - 0.62, { outline: true });
+      shield.rotation.x = 0.06;
+      this._m(new THREE.TorusGeometry(0.3, 0.025, 6, 20), gold, MX - 0.34, 0.20, MZ - 0.62,
+        { rx: Math.PI / 2, cast: false });
+      // the scimitar: a curved blade, so an arc rather than a bar
+      const scim = this._m(new THREE.TorusGeometry(0.34, 0.017, 6, 14, Math.PI * 0.55), gold,
+        MX + 0.16, 0.18, MZ - 0.58, { rx: Math.PI / 2, ry: 0.4 });
+      scim.scale.z = 0.35;
+      this._m(new THREE.CylinderGeometry(0.02, 0.024, 0.16, 6), this._trunkMat,
+        MX + 0.42, 0.19, MZ - 0.44, { rz: Math.PI / 2, ry: 0.4 });
+      // Lycaon, growling at his heel -- a war-god's hound with a wolf-king's name
+      const lycaon = this.cast.animal('dog', 0.42);
+      lycaon.position.set(MX - 0.72, 0, MZ + 0.22);
+      lycaon.rotation.y = 0.5;
+      this.scene.add(lycaon);
+      const ll = this.cast.label('Lycaon', { sub: 'HIS GROWLING HOVND' });
+      ll.position.y = 1.1; lycaon.add(ll);
+      this._plaque({ main: 'HE LAYES DOWNE HIS ARMES',
+                     sub: 'THE GOD OF WARRE DISARMED AT HER WATER · QVIS EVADET · NEMO · P. 368' },
+        1.5, 0.3, MX, 0.72, MZ - 1.0, Math.PI, true);
     }
 
     // ── The water ────────────────────────────────────────────────────────

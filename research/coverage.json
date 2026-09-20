@@ -5223,8 +5223,8 @@
           "kind": "building",
           "plate": null,
           "source": "translation/en/page_359.md (p. 359)",
-          "status": "unknown",
-          "note": "Built: src/scenes/world/temple.js `_buildFountain` (called for Cythera from cythera.js with `{enclosure:true}`) raises a 7-segment outer wall and a 36-segment round inner wall at the kerb, matching the book's 'heptagonal on the outside and round within.' Not verified on the running page this session -- grep evidence only.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). The kerb stands and reads as the blackest stone in the screenshot. Its heptagonal-without/round-within construction is taken from the code (a 7-segment outer wall, a 36-segment inner) and was NOT separately measured against the geometry; the ring itself is confirmed.",
           "modes": [
             "walk",
             "tour"
@@ -5236,8 +5236,8 @@
           "kind": "building",
           "plate": null,
           "source": "translation/en/page_359.md (pp. 359-360)",
-          "status": "unknown",
-          "note": "Built: temple.js `_buildFountain`'s COLS array names all seven stones and gives the beryl column `hex:true` while the rest are round-shafted, matching the text exactly. Not verified live.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). Radial raycasts at the seven column angles all strike the shaft at 2.78-2.79 m (the surface at R-0.16), while the same rays fired at the seven ARCADE GAPS between them strike nothing -- a clean control, so the probe discriminates. Seven more rays at crown height strike on all seven. SEVEN columns, confirmed by count, and their coloured shafts are plainly visible in the screenshot. The beryl is the hexagonal one and stands alone at due south.",
           "modes": [
             "walk",
             "tour"
@@ -5263,8 +5263,8 @@
           "kind": "object",
           "plate": null,
           "source": "translation/en/page_360.md (p. 360)",
-          "status": "unknown",
-          "note": "Built: temple.js places `this.cast.figure(...)` at crown height for each of the seven COLS entries, sized `COL_H/3` per the text, with a 'reach' pose and crown for Sol. The translator's note flags that the book's own planetary sequence (Saturn/Cynthia...ending at Selene) doesn't quite close -- Cynthia and Selene are both the Moon -- and the world's COLS array resolves this its own way (Saturn, Jupiter, Mars, Sol, Venus, Mercury, Luna) rather than reproducing Colonna's unclosed sequence; worth a reviewer's eye. Not verified live.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). Radial raycasts at the seven column angles all strike the shaft at 2.78-2.79 m (the surface at R-0.16), while the same rays fired at the seven ARCADE GAPS between them strike nothing -- a clean control, so the probe discriminates. Seven more rays at crown height strike on all seven. All seven planetary figures stand on the angles of the crown and are visible in the screenshot. The ledger note from the research pass still stands and is worth a reviewer's eye: the world's COLS array resolves Colonna's unclosed planetary sequence (Saturn/Cynthia ... ending at Selene, where Cynthia and Selene are both the Moon) its own way, as Saturn, Jupiter, Mars, Sol, Venus, Mercury, Luna.",
           "modes": [
             "walk",
             "tour"
@@ -5276,12 +5276,13 @@
           "kind": "inscription",
           "plate": null,
           "source": "translation/en/page_360.md (p. 360)",
-          "status": "unbuilt",
-          "note": "Grep of temple.js's cornice/frieze code (the two plain CylinderGeometry rings just below/above the crown) shows no zodiac symbols, texture, or carving of any kind -- the frieze is unornamented gold. The book calls this out as 'expressed in outstanding carving.'",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_360.md. The frieze band under the planetary altars had been plain gold; it now carries the twelve signs in ecliptic order, Aries first, as a CanvasTexture ring set just proud of the existing band so the two do not z-fight. DRAWN rather than carved, which is this world's own register for anything read rather than walked round (_plaqueTexture, _spoilTexture, _orderBoardTexture all do the same): a band 0.22 m tall seen from six metres cannot carry twelve reliefs and does not need to. Verified on the running page at main.js?v=421 by probe and screenshot. Exactly ONE mesh in the scene carries the 1536x128 glyph texture, a CylinderGeometry of radius 3.035 (= R + 0.085) at y 3.84 (= KERB + 0.42 + COL_H) -- the designed values, and one not two, so the enclosure gate holds and it has not reached the mainland fountain.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the `if (enclosure)` zodiac band"
         },
         {
           "id": "xxiii-crystal-cupola-and-carbuncle",
@@ -5289,8 +5290,8 @@
           "kind": "object",
           "plate": null,
           "source": "translation/en/page_360.md (p. 360)",
-          "status": "unknown",
-          "note": "Built: temple.js raises a transparent dome (`DOME_R`) and a red emissive, spinning, egg-scaled sphere at its peak with its own pulsing point-light. The girdling relief of foliage and putti described in the text is not separately modelled -- the dome is a plain hemisphere -- but the two headline objects (dome, carbuncle) are present. Not verified live.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). Both found by direct scene probe: exactly one half-sphere cupola of radius > 2 over the basin, and exactly one carbuncle orb, lit and pulsing, in `_orbs`. Visible in the screenshot glowing red at the apex. Still unmodelled, as the research pass noted: the girdling relief of foliage and interwoven boys -- the dome is a plain hemisphere.",
           "modes": [
             "walk",
             "tour"
@@ -5302,8 +5303,8 @@
           "kind": "inscription",
           "plate": null,
           "source": "translation/en/page_361.md (p. 361)",
-          "status": "unknown",
-          "note": "Built, but relocated: temple.js renders the Greek motto as a free-standing plaque set on the kerb, not as lettering cut into the columns themselves as the text specifies ('the ready columns were raised, there were cut... letters'). The translator flags that the letter-count given (2 + 3x6 = 20) does not match the number of letters in the phrase, and is unresolved pending the facsimile. Not verified live.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). The plaque reading OSPER SPINTHER KELETHMOS / AS A SPARK, SO ENCHANTMENT is legible in the screenshot on the kerb. Still true, and still a fidelity gap: the book cuts these letters INTO the columns in inlaid silver, and we render them on a free-standing plaque instead. The letter-count arithmetic the translator flags as not closing is untouched.",
           "modes": [
             "walk",
             "tour"
@@ -5315,8 +5316,8 @@
           "kind": "object",
           "plate": null,
           "source": "translation/en/page_361.md (p. 361)",
-          "status": "unknown",
-          "note": "Built: temple.js hangs two panels either side of a gap, with a tie-rod and a plaque reading 'ΥΜΗΝ / THE CURTAIN OF HYMEN, TORN.' The curtain is presented already split, as a static fact rather than an enacted tearing (see xxiii-arrow-passing-rite). Not verified live.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). The YMHN plaque and the parted curtain are legible in the screenshot between the sapphire and emerald columns. As the research pass said, it is presented already split -- a static fact rather than an enacted tearing -- but the tearing now has its agents beside it: see xxiii-arrow-passing-rite, built the same day.",
           "modes": [
             "walk",
             "tour"
@@ -5343,8 +5344,8 @@
           "kind": "person",
           "plate": null,
           "source": "translation/en/page_362.md (pp. 361-362)",
-          "status": "unknown",
-          "note": "Built: a primitive figure group (cylinder/cone/capsule/sphere) stands in the basin at BASIN_Y, with a separate gold torus 'hairRing' animated as slow-turning water to stand for the hair 'scattered in a gyre'. The blazon detail -- rosy cheeks, pearl earrings, the rose-and-gem circlet, the coral mouth -- is not modelled, which is expected for a primitive rather than a sculpted figure. A slot (`_venusSlots`) is left for an imported marble statue to replace the primitive. Not verified live.",
+          "status": "built",
+          "note": "VERIFIED 2026-09-20 on the running page at main.js?v=421, converting this from `unknown` (the 2026-09-17 researcher had grep evidence only and was instructed not to load the page). The goddess stands in the basin, taken by the water at the flanks, with her hair floating on the surface, and is visible in the screenshot through the parted curtain. She now also holds the oyster-shell of spring roses and the burning torch of p. 363 -- see xxiii-violet-gem-rings, which builds them with the rings drawn out of the shell.",
           "modes": [
             "walk",
             "tour"
@@ -5395,7 +5396,7 @@
           "plate": null,
           "source": "translation/en/page_363.md (p. 363)",
           "status": "built",
-          "note": "Built 2026-09-20 from translation/en/page_363.md. Eurydomene and Eurymone facing the dreamer, Eurymeduse turned away -- two frontal and one from behind, which is the canonical antique Three Graces group, so the pose is itself the citation. Sited outside the fountain on the right, clear of the collider, where the page puts them with Peristeria. Deliberately NOT the Aglaia/Euphrosyne/Thalia trio at the mainland fountain: a different set of Graces under different names, kept apart on purpose. Verified on the running page at main.js?v=418 by controlled raycast (screenshot impossible: render loop stalled, app window behind another window). All three present as npcs fount_grace_0..2. The oyster-shell of spring roses and the burning torch the same sentence gives Venus's hands were BUILT later the same day, with the rings that are drawn from the shell -- see xxiii-violet-gem-rings. KNOWN DEFECT seen in the screenshot and not yet fixed: with the Graces, Peristeria and the eight attendants all standing on the same two sides, their labels and sub-captions OVERLAP and are hard to read from the northern approach. The figures are right; the label layout is not. Needs a label-declutter pass at this station.",
+          "note": "Built 2026-09-20 from translation/en/page_363.md. Eurydomene and Eurymone facing the dreamer, Eurymeduse turned away -- two frontal and one from behind, which is the canonical antique Three Graces group, so the pose is itself the citation. Sited outside the fountain on the right, clear of the collider, where the page puts them with Peristeria. Deliberately NOT the Aglaia/Euphrosyne/Thalia trio at the mainland fountain: a different set of Graces under different names, kept apart on purpose. Verified on the running page at main.js?v=418 by controlled raycast (screenshot impossible: render loop stalled, app window behind another window). All three present as npcs fount_grace_0..2. The oyster-shell of spring roses and the burning torch the same sentence gives Venus's hands were BUILT later the same day, with the rings that are drawn from the shell -- see xxiii-violet-gem-rings. A label-declutter pass was run the same day and is part of this build: fourteen labelled figures on two sides of one approach had piled their captions into an unreadable heap, so label heights are now STAGGERED (Graces 1.78 + 0.30 each, attendants 1.72 + 0.31 each, Synesia and Philedia lifted to 2.42) and seven of the longest captions were cut back, the detail moving to plaques. Confirmed readable in the screenshot at main.js?v=421. Labels are billboards, so they still crowd at very close range; that is inherent, not a defect of this station.",
           "modes": [
             "walk",
             "tour"
@@ -5436,12 +5437,13 @@
           "kind": "rite",
           "plate": null,
           "source": "translation/en/page_358.md (p. 358); recurs p. 361, p. 364",
-          "status": "unbuilt",
-          "note": "The player stands in for Poliphilo in first person, so his kneeling is a pose/animation question rather than a geometry one; but grep finds no companion Polia figure posed kneeling at the Cythera fountain specifically, and no kneel animation tied to this station at all. Given as its own entry because the book repeats the posture three times across the chapter as the frame for everything that happens.",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_361.md ('both of us -- Polia and I -- kneeling face down upon our bending knees'). Both kneel on the northern approach facing the fountain. There is no `kneel` pose in Cast.js (stand | reach | point | offer), so the attitude is carried by height -- about three-fifths of standing -- and a forward inclination. Verified on the running page at main.js?v=421 by probe and screenshot. Both present as npcs fount_poliphilo and fount_polia. NOTE, deliberate and not a duplicate bug: these two ALSO stand at the triumph car 18 m north, bound in roses (ch. XXII, triumphs.js). This world is a garden of tableaux, not a timeline -- Polia likewise appears at the Queen's banquet as 'the resemblance of Polia' -- and the captions carry the moment so the two readings cannot be confused.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the `if (enclosure)` lovers block"
         },
         {
           "id": "xxiii-cupid-wounds-lovers",
@@ -5449,13 +5451,14 @@
           "kind": "rite",
           "plate": null,
           "source": "translation/en/page_366.md (pp. 365-366)",
-          "status": "unbuilt",
-          "note": "Grep finds Cupid modelled elsewhere (the boat crossing, the triumph car) but no wounding action, arrow object, or blood/washing detail staged at the fountain. This is the emotional turn of the whole chapter -- the swoon that follows it (xxiii-sea-dew-healing-robing) is likewise absent.",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_366.md. ONE arrow through TWO hearts, which is the image the page gives -- it transfixes Poliphilo and then 'without delay it transfixed also the heart of my red-haired Polia' -- so it is built as a single shaft passing through both rather than as two wounds. Cupid stands on the kerb behind it with the divine bow already loosed. POLIA IS RED-HAIRED HERE AND NOWHERE ELSE IN THE WORLD: `pyrrothricha`, flame-haired, is a rare piece of physical description and our translator flags it as worth keeping. Verified on the running page at main.js?v=421 by probe and screenshot. The passage this closes ends on Hermaphroditus and Salmacis, which is the same coniunctio the seven columns argue at p. 360 -- the alchemical union stated a second time, in the first person. The two features now stand in one view.",
           "modes": [
             "walk",
             "tour",
             "dream"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the `if (enclosure)` lovers block"
         },
         {
           "id": "xxiii-hermaphroditus-salmacis-simile",
@@ -5501,13 +5504,14 @@
           "kind": "rite",
           "plate": null,
           "source": "translation/en/page_367.md (p. 367)",
-          "status": "unbuilt",
-          "note": "No sprinkling animation, no costume-change event, and no post-wounding revival sequence exists at this station. The translation notes flag this as the passage that explicitly answers the chapter's own Actaeon dread (xxiii-actaeon-dread) -- a resolution with no build to show for it.",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_367.md. Fourteen drops of sea-dew fall over the kneeling pair and nowhere else, registered in `_waters` -- the same animator as the foam and the goddess's floating hair -- and deliberately not in `_vanes`, which is Fortuna's. A plaque carries the point the chapter turns on: Colonna sets Venus's sprinkling explicitly against Diana's on Actaeon, the same act of a goddess casting water on a mortal who has seen her, answered the other way -- 'sprinkling to TRANSMUTE' -- and `fermentare` in the same paragraph is the fourth time the chapter names an alchemical operation outright. THE ROBING IS BUILT AS ITS OUTCOME RATHER THAN AS AN ACTION: by p. 367 the nymphs have 'stripped from me the plebeian robes' and clothed him 'in a white and somewhat elegant garment', so Poliphilo kneels in WHITE. A reader looking at him is looking at the end of the rite. Verified on the running page at main.js?v=421 by probe and screenshot. ",
           "modes": [
             "walk",
             "tour",
             "dream"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the `if (enclosure)` lovers block"
         },
         {
           "id": "xxiii-mars-arrival",
@@ -5515,12 +5519,13 @@
           "kind": "person",
           "plate": null,
           "source": "translation/en/page_368.md (p. 368)",
-          "status": "unbuilt",
-          "note": "Grep for 'Lycaon' and for an armoured Mars figure near the Cythera fountain: no matches. This closes the chapter and the whole audience at the fountain -- the moment the lovers are dismissed -- and nothing marks it in the world.",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_368.md, which closes the chapter. He comes from the south with the golden cuirass, the silver-gleaming shield, the olive-wreathed helmet with its crest and golden apex, the baldric, the scourge still in his hand, and Lycaon growling at his heel. COLONNA NEVER NAMES HIM. Our translator is firm that this is Mars and that withholding the name is the same discretion used for Actaeon and the rest -- the reader supplies it -- so the figure is labelled Mars and the caption says outright VNNAMED IN THE TEXT, which is the honest way to carry a reading that is certain but unstated. THE ARMS ARE ON THE GROUND, NOT ON HIM, because the laying-down is the point and it is the argument this island already makes twice: Cythera's trophies are the disarmed panoplies of the gods, and the pair of them spell QVIS EVADET / NEMO. Mars arriving in gold and putting it off at Venus's water is that sentence enacted rather than hung on a pole, and his plaque quotes it. Verified on the running page at main.js?v=423: npc fount_mars present, no console errors, and Mars, Lycaon's label and the HE LAYES DOWNE HIS ARMES plaque all legible in the screenshot. A defect was found and fixed in the same pass -- the laid-down arms were authored at y 0.03-0.06 and the island floor there reads at 0.12, so they were sunk into it; the shield now measures 0.19 against a 0.12 ground. NOT separately measured: the scimitar. A downward ray through its centre passes through the torus hole, so the reading at that point is the floor, not the blade.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the `if (enclosure)` Mars block"
         }
       ]
     },
