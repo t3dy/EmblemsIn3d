@@ -5395,7 +5395,7 @@
           "plate": null,
           "source": "translation/en/page_363.md (p. 363)",
           "status": "built",
-          "note": "Built 2026-09-20 from translation/en/page_363.md. Eurydomene and Eurymone facing the dreamer, Eurymeduse turned away -- two frontal and one from behind, which is the canonical antique Three Graces group, so the pose is itself the citation. Sited outside the fountain on the right, clear of the collider, where the page puts them with Peristeria. Deliberately NOT the Aglaia/Euphrosyne/Thalia trio at the mainland fountain: a different set of Graces under different names, kept apart on purpose. Verified on the running page at main.js?v=418 by controlled raycast (screenshot impossible: render loop stalled, app window behind another window). All three present as npcs fount_grace_0..2. Not built, and belonging to Venus rather than to them: the opened oyster-shell of spring roses and the burning torch the same sentence gives her hands.",
+          "note": "Built 2026-09-20 from translation/en/page_363.md. Eurydomene and Eurymone facing the dreamer, Eurymeduse turned away -- two frontal and one from behind, which is the canonical antique Three Graces group, so the pose is itself the citation. Sited outside the fountain on the right, clear of the collider, where the page puts them with Peristeria. Deliberately NOT the Aglaia/Euphrosyne/Thalia trio at the mainland fountain: a different set of Graces under different names, kept apart on purpose. Verified on the running page at main.js?v=418 by controlled raycast (screenshot impossible: render loop stalled, app window behind another window). All three present as npcs fount_grace_0..2. The oyster-shell of spring roses and the burning torch the same sentence gives Venus's hands were BUILT later the same day, with the rings that are drawn from the shell -- see xxiii-violet-gem-rings. KNOWN DEFECT seen in the screenshot and not yet fixed: with the Graces, Peristeria and the eight attendants all standing on the same two sides, their labels and sub-captions OVERLAP and are hard to read from the northern approach. The figures are right; the label layout is not. Needs a label-declutter pass at this station.",
           "modes": [
             "walk",
             "tour"
@@ -5473,12 +5473,13 @@
           "kind": "person",
           "plate": null,
           "source": "translation/en/page_365.md (pp. 365-366)",
-          "status": "unbuilt",
-          "note": "None of these eight names appears anywhere in src/ (grep checked each individually). The translation's note reads them as the personified virtues a marriage is dowered with (union, care, judgement, faith, temperance, decorum, etc.) -- a clear, citable, and entirely unbuilt cast.",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_365.md. Venus's dower: four maidens to Poliphilo (Enosina/union, Monori, Phrontis/forethought, Critoa/judgement, 'her silent sister') on the dreamer's right, four to Polia (Adiacorista/the undivided, Pistinia/faith, Sophrosyne/temperance, Edosia/decorum) on the left, in two files clear of the Graces, with a DOWER OF EIGHT plaque. Each name is left untranslated on the figure and glossed on her caption, which is what our translator's note asks for: the reader is meant to decode them, as with the sense-nymphs at the Queen's court. Verified on the running page at main.js?v=419, and this pass finally got a SCREENSHOT as well as probes -- the render loop came back when the pane began drawing. All eight present as npcs fount_att_*, and their labels are legible in the screenshot.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the p.365 `if (enclosure)` block"
         },
         {
           "id": "xxiii-violet-gem-rings",
@@ -5486,12 +5487,13 @@
           "kind": "object",
           "plate": null,
           "source": "translation/en/page_365.md (p. 365)",
-          "status": "unbuilt",
-          "note": "No ring object, gift event, or inventory item tied to this chapter exists in src/ by grep. Small, cheap, and specific -- a plausible first build if this chapter is picked up.",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_365.md, with Venus's oyster-shell of spring roses and her burning torch from p.363 built alongside, since the rings are drawn from the shell. Two gold rings risen from the shell, each with a violet gem. THE MECHANIC IS THE POINT AND IT WORKS: Colonna mounts the stones `anterota` -- SET TURNING, revolving in the collet, with a pun on anteros, love returned -- so they are registered in `_orbs` with spin, the registry the carbuncle already uses, and deliberately NOT in `_vanes`, which is Fortuna's and which ROUTER.md says will write NaN across both if a second thing turns through it. A reader who never opens a note can see that these two stones, alone in the world, answer one another by turning. Verified on the running page at main.js?v=419, and this pass finally got a SCREENSHOT as well as probes -- the render loop came back when the pane began drawing. MEASURED: rotation.y advanced 1.625 -> 2.625 over 40 animation frames on both stones, so they are genuinely turning and not merely registered. _orbs holds 4 entries, 3 of them spinning (the carbuncle and the two stones), with the torch flame bobbing un-spun. The octahedron gems are passed through _indexed() -- ROUTER.md's bare OctahedronGeometry that once cost 500 draw calls.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain, the p.365 `if (enclosure)` block"
         },
         {
           "id": "xxiii-sea-dew-healing-robing",

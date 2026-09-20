@@ -1217,6 +1217,92 @@ export const Temple = {
       plant(Math.PI, 0x8e2f6e, 7);            // Adonis, purple, at the south rim
       plant(Math.PI * 1.5, 0xc9d6a8, 5);      // thelygonon, pale, on the left (-x)
       plant(Math.PI * 0.5, 0xd8c98a, 5);      // arsenogonon, on the right (+x)
+
+      // -- Venus's dower: eight attendants and two rings (p. 365) ----------
+      //
+      // Venus assigns four named maidens to each lover and gives each a ring.
+      // The names are their offices, and our translator's note is explicit that
+      // rendering them as names rather than translating them is deliberate --
+      // the reader is meant to decode them, as with the sense-nymphs at the
+      // Queen's court. So each carries her gloss on her caption and no more.
+      //
+      // Poliphilo's four are called "from the pergolas"; Polia's "from that
+      // place, at leisure from their songs and sounds". They stand in two files
+      // on the two sides, by the same right/left derivation as everything else
+      // in this precinct: his on +x, hers on -x.
+      const ATT = [
+        { side: 1, n: 'Enosina',     g: 'VNION · SHE LEADS HIS FOVR' },
+        { side: 1, n: 'Monori',      g: 'THE MATCHLESS' },
+        { side: 1, n: 'Phrontis',    g: 'CARE · FORETHOVGHT' },
+        { side: 1, n: 'Critoa',      g: 'IVDGEMENT · HER SILENT SISTER' },
+        { side: -1, n: 'Adiacorista', g: 'THE VNDIVIDED · SHE LEADS HER FOVR' },
+        { side: -1, n: 'Pistinia',    g: 'FAITH' },
+        { side: -1, n: 'Sophrosyne',  g: 'TEMPERANCE' },
+        { side: -1, n: 'Edosia',      g: 'DECORVM · AND A KEEPER OF THE THIRD DOORE' },
+      ];
+      ATT.forEach((t, ti) => {
+        const i4 = ti % 4;
+        const aa = (t.side > 0 ? Math.PI / 2 : Math.PI * 1.5) + (i4 - 1.5) * 0.23;
+        const rad = R + 2.85;                 // well clear of the Graces at R+1.55
+        const g = this.cast.nymph({ name: t.n, robe: t.side > 0 ? 0x6f7fa8 : 0xa87f8f,
+                                    pose: i4 === 0 ? 'offer' : 'stand' });
+        this._npc('fount_att_' + t.n.toLowerCase(), g,
+          FX + Math.sin(aa) * rad, FZ + Math.cos(aa) * rad, aa + Math.PI,
+          { label: t.n, sub: t.g, labelY: 1.95, sway: 0.018 });
+      });
+      this._plaque({ main: 'THE DOWER OF EIGHT',
+                     sub: 'FOVR TO HIM, FOVR TO HER · THE VIRTVES A MARRIAGE IS DOWERED WITH · P. 365' },
+        1.5, 0.3, FX, KERB * 0.62, FZ + R + 1.05, 0, true);
+
+      // -- The oyster-shell, the torch, and the two turning rings ----------
+      //
+      //   "she drew from within the oyster-shell two rings, each with a precious
+      //    violet gem SET TURNING in it, and gave one to Polia and the other to
+      //    me"                                  — page_365.md, and p. 363 for
+      // the shell of spring roses and the burning torch in her other hand.
+      //
+      // The gems really turn. `anterota` is the mounting -- the stone revolves
+      // in its collet -- and our translator notes the pun on anteros, love
+      // returned. So they go in `_orbs` with spin, the registry the carbuncle
+      // already uses, and NOT in `_vanes`, which is Fortuna's. A reader who
+      // never opens a note can still see that these two stones, alone in the
+      // world, answer one another by turning.
+      const VEN_Y = 1.02;                     // her hands: BASIN_Y + 1.16 * 1.35
+      const shellMat = woodcut ? S.mat({ tone: 0.06 })
+        : S.mat({ color: 0xe9dcc6, roughness: 0.5, metalness: 0.12 });
+      const shell = this._m(new THREE.SphereGeometry(0.17, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+        shellMat, FX + 0.42, VEN_Y, FZ + 0.06, { outline: true });
+      shell.rotation.x = -0.5;
+      for (let i = 0; i < 5; i++) {           // the fresh spring roses packed in it
+        const ra = i * 1.27;
+        this._m(new THREE.SphereGeometry(0.034, 8, 6), bloom(0xd9788f),
+          FX + 0.42 + Math.cos(ra) * 0.07, VEN_Y + 0.08, FZ + 0.06 + Math.sin(ra) * 0.07,
+          { cast: false });
+      }
+      // the burning torch in the other hand
+      this._m(new THREE.CylinderGeometry(0.022, 0.028, 0.42, 8), this._trunkMat,
+        FX - 0.42, VEN_Y + 0.02, FZ + 0.06, { rz: 0.22 });
+      const flame = this._m(new THREE.ConeGeometry(0.06, 0.2, 8),
+        woodcut ? S.glowMat() : S.mat({ color: 0xffb24a, emissive: 0xff7a1e, emissiveIntensity: 1.3 }),
+        FX - 0.46, VEN_Y + 0.32, FZ + 0.06, { cast: false });
+      this._orbs.push({ orb: flame, base: flame.position.y, phase: 1.7 });
+      // and the two rings, risen from the shell, their violet stones turning
+      for (const s3 of [-1, 1]) {
+        const rx = FX + 0.42 + s3 * 0.14, ry = VEN_Y + 0.3, rz = FZ + 0.06;
+        this._m(new THREE.TorusGeometry(0.038, 0.009, 6, 16), gold, rx, ry, rz, { rx: Math.PI / 2 });
+        const gemMat = woodcut ? S.mat({ tone: 0.1 })
+          : S.mat({ color: 0x7a4fb0, roughness: 0.15, metalness: 0.4,
+                    emissive: 0x4a2a80, emissiveIntensity: 0.35 });
+        const stone = this._m(new THREE.OctahedronGeometry(0.028), gemMat, rx, ry + 0.03, rz,
+          { outline: true });
+        // PolyhedronGeometry must be indexed or it poisons its whole draw-call
+        // bucket -- ROUTER.md, the bare OctahedronGeometry that cost 500 calls.
+        stone.geometry = this._indexed(stone.geometry);
+        this._orbs.push({ orb: stone, base: stone.position.y, phase: s3 > 0 ? 0.3 : 2.1, spin: true });
+      }
+      this._plaque({ main: 'TWO RINGS, THE STONES SET TVRNING',
+                     sub: 'ONE TO POLIA, ONE TO POLIPHILO · ANTEROTA, LOVE RETVRNED · P. 365' },
+        1.4, 0.3, FX + 0.42, VEN_Y + 0.62, FZ + 0.42, 0, true);
     }
 
     // ── The water ────────────────────────────────────────────────────────
