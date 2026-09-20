@@ -11,6 +11,18 @@ Directional calls made mid-build, recorded so they don't get re-litigated. Newes
 
 ---
 
+## 2026-09-20 — 63. Roll mode's camera falls behind the ball's growth, Katamari-style
+
+*Settles `question-roll-camera-curve`. Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
+
+Ted: *"I want the camera to behave like it does in Katamari Damacy, zooming out when the
+ball grows so that you can see the bigger things you are becoming able to roll up."*
+`tune.camBase`/`tune.camScale` default 0/6 → **1.2/2.0** in `src/systems/RollUp.js` — the
+camera falls behind growth instead of holding a constant frame fraction, at the cost of a
+third the view at full size. Both curves stay live-flippable for comparison.
+
+*(Decision 64, the wedding fanfare: Ted said no — index only, see above.)*
+
 ## 2026-09-20 — 60. Stage 2 of the true scale: the world moves by precinct, not by literal
 
 *Executes call 54. Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
@@ -249,6 +261,8 @@ say plainly that both early editions withheld what you are looking at.
 
 **2026-09-20**
 
+- [64. No wedding fanfare — the 2026-09-04 silence rule stands](decisions/2026-09.md#2026-09-20--64-no-wedding-fanfare--the-2026-09-04-silence-rule-stands) — asked directly, Ted said no; `AlchemicalAudio.fanfare('wedding')` stays a documented no-op
+- [63. Roll mode's camera falls behind the ball's growth, Katamari-style](decisions/2026-09.md#2026-09-20--63-roll-modes-camera-falls-behind-the-balls-growth-katamari-style) — `tune.camBase`/`camScale` default 0/6 → **1.2/2.0**; the ball swells in frame as it grows, at the cost of a third the view at full size
 - [60. Stage 2 of the true scale: the world moves by precinct, not by literal](decisions/2026-09.md#2026-09-20--60-stage-2-of-the-true-scale-the-world-moves-by-precinct-not-by-literal) — **executes call 54**; 13.7 km, 23 precincts, and **not one interior coordinate re-typed**; the pyramid is square at 1 139.6 m and the valley's neck is derived from it
 - [61. The triumph cars are four cars, not one car four times](decisions/2026-09.md#2026-09-20--61-the-triumph-cars-are-four-cars-not-one-car-four-times) — each car's own two stones and its own livery; **the fourth car has no riders**, because Semele's urn is what rides it, and the urn is built
 - [62. `node --check` is not a syntax gate for ES modules](decisions/2026-09.md#2026-09-20--62-node---check-is-not-a-syntax-gate-for-es-modules) — it exits 0 on a real error; use `scripts/parsecheck.mjs`. **A check you have not seen fail is not a check.**

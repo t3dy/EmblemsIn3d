@@ -69,7 +69,7 @@ were false. A session acting on them rebuilds what is already here.
 
 ## 2. What Phase 1 actually leaves to build
 
-**Updated 2026-09-20 (third pass).** Three of the five below are BUILT and shipped — §2.2 the size gauge, §2.3 the countdown, §2.4 the wedding cinematic — and their tickets are closed in `research/tickets.json` with the readings that closed them. §2.1 the camera formula now has its dials (`tune.camBase`, `tune.camScale`, defaults unchanged) and is still Ted's call. §2.5 was already done. See DECISIONS.md 58. **The one thing that was asked for and deliberately NOT built is the sounding fanfare**: the site is silent by the call of 2026-09-04 and the cue is filed as `question-roll-wedding-fanfare`.
+**Updated 2026-09-20 (fourth pass).** All five below are settled. §2.2 the size gauge, §2.3 the countdown, §2.4 the wedding cinematic were built and shipped, and their tickets closed with the readings that closed them (DECISIONS.md 58). §2.1 the camera formula was Ted's call and he made it: `tune.camBase`/`tune.camScale` now default to **1.2/2.0**, sub-proportional — the ball swells in frame as it grows, Katamari-style — not the old proportional `r * 6` (DECISIONS.md 63). §2.5 was already done. **The sounding fanfare was asked for and Ted said no**: the site stays silent by the call of 2026-09-04; `AlchemicalAudio.fanfare('wedding')` remains a documented no-op (DECISIONS.md 64, `question-roll-wedding-fanfare` closed).
 
 Note for whoever bumps `RollUp.js?v=`: there are **three** importers now — `scenes/HPWorldScene.js`, `scenes/world/rollup.js` and `main.js`, which imports `METALS` and `WEDDING` for the HUD.
 
@@ -77,7 +77,10 @@ The original five, in payoff order, kept for the reasoning:
 
 ### 2.1 The camera formula — *a directional call, not a bug* (§1.1)
 
-Today the camera holds a **constant six ball-radii**, so the ball occupies the same fraction
+**Settled 2026-09-20, DECISIONS.md 63 — the plan's curve is now the default.** Kept below
+for the reasoning; "today" in this subsection means as of the third pass, before Ted chose.
+
+Then the camera held a **constant six ball-radii**, so the ball occupied the same fraction
 of the frame at 0.22 m and at 18 m. The plan asks for `1.2 + r × 2.0`, which is
 **sub-proportional**: the ball grows in frame as you grow, which is the "I have become
 massive" reading Katamari gets.

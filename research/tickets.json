@@ -1043,7 +1043,7 @@
       "id": "question-roll-camera-curve",
       "title": "Should the camera keep a constant six ball-radii, or fall behind the ball's growth so the ball swells in frame?",
       "kind": "question",
-      "status": "question",
+      "status": "done",
       "priority": 2,
       "evidence": "2026-09-20, and it needs Ted's eye because it is a change of FEEL, not a defect.\n\nToday the camera is proportional: cam.dist is set to r * 6 on start (src/systems/RollUp.js:416) and clamped every frame to [r * 2.4, r * 9] (:691), the wheel moving it inside that band. Because the distance is a fixed number of radii, the ball occupies the same fraction of the frame at 22 cm and at 18 m. You can see that you are eating bigger things; you cannot see that you have become bigger. (ROLLMODEPLAN.md section 1.1 asserts the camera is at a FIXED distance and does not scale. That is simply wrong, and the plan has been marked stale at the top.)\n\nThe plan asks for `1.2 + r * 2.0`, which is sub-proportional -- the camera falls behind the growth, so the ball swells in frame. That is how Katamari reads 'I have become massive'.\n\n    r        today (r*6)    plan (1.2 + r*2)\n    0.22 m       1.3 m          1.6 m\n    2 m         12 m            5.2 m\n    6 m         36 m           13.2 m\n    18 m       108 m           37.2 m\n\nTwo consequences worth knowing before choosing. The plan's curve is far tighter late, so at full size you would see much less of the garden at the moment the garden has finally opened to you -- that cuts both ways. And it may help the frame budget, since less is in view; rule 7 says measure it rather than assume.\n\nThe wheel clamp at :691 is written in radii and would have to move with any change, or the wheel would fight the new curve.\n\n2026-09-20, later: the dials now EXIST. roll.tune.camBase and roll.tune.camScale are read at every use site, so the curve can be flipped mid-roll from the console — `roll.tune.camBase = 1.2; roll.tune.camScale = 2.0` for the plan's curve, 0 and 6 for today's. The defaults are unchanged and were checked to be bit-for-bit today's feel: on the running page cam.dist on start/restart is exactly r * 6, and the two clamps that were written as bare radii are now ratios of the wanted distance that come out at the same numbers (0.4 and 1.5 of 6r = 2.4r and 9r; 1/3 and 7/3 of 6r = 2r and 14r). _camWant() at r = 3 returns 18 with the defaults and 7.2 with the plan's pair. What is left is Ted rolling both and the call being written into DECISIONS.md.",
       "acceptance": "tune.camBase and tune.camScale exist on the instance so the two curves can be flipped between mid-roll from the console, Ted has rolled both, and his call is written into DECISIONS.md. Until then the default stays r * 6 -- do not change the feel of a mode he has played without asking.",
@@ -1055,13 +1055,15 @@
         "ROLLMODEPLAN.md#11-dynamic-camera-distance-primary",
         "HANDOVER_ROLLMODE.md#21-the-camera-formula--a-directional-call-not-a-bug"
       ],
-      "opened": "2026-09-20"
+      "opened": "2026-09-20",
+      "closed": "2026-09-20",
+      "resolution": "Ted: \"I want the camera to behave like it does in Katamari Damacy, zooming out when the ball grows so that you can see the bigger things you are becoming able to roll up.\" tune.camBase/camScale defaults changed 0/6 -> 1.2/2.0 in src/systems/RollUp.js. DECISIONS.md 63. Cache chain bumped through RollUp.js -> HPWorldScene.js/world/rollup.js/main.js -> index.html."
     },
     {
       "id": "question-roll-wedding-fanfare",
       "title": "Should the chemical wedding be the one sound on a site that is silent by decision?",
       "kind": "question",
-      "status": "question",
+      "status": "done",
       "priority": 3,
       "evidence": "Raised 2026-09-20 while closing debt-roll-wedding-not-a-moment, whose acceptance asked for 'a fanfare through AlchemicalAudio'. It could not be given one, because the site is silent by a standing call of Ted's that outranks a ticket: DECISIONS.md 2026-09-04 (evening, final), 'No music, no ambient bed, no sound of any kind — not during the guided tours, not in Poliphilo's Dream, not in the Atalanta worlds, not on any page... Do not add audio to this project without Ted asking for it.' Two earlier attempts at a soundtrack both ended as noise in his speakers, and RECIPES/verify-live.md now proves the silence at release by proxying AudioContext.\n\nSo the wedding calls AlchemicalAudio.fanfare('wedding') and that function does nothing. The question is whether ONE cue — four or five seconds at the single moment the work completes, nowhere else on the site, off by default — is the exception, or whether silence means silence. If it is wanted, the whole of the work is one function body in src/systems/AlchemicalAudio.js; the gain-staged ambient implementation is still in git at ab5f82b. It would want sourcing like everything else here rather than the unsourced sine-wave arpeggio the Atalanta mock used.",
       "acceptance": "Ted has said yes or no, and it is written into DECISIONS.md. If yes: a cue plays at the wedding and nowhere else, it is built inside AlchemicalAudio.js with no second AudioContext anywhere under src/, it is off unless asked for, and RECIPES/verify-live.md is updated so its silence check knows about the one exception.",
@@ -1075,7 +1077,9 @@
         "DECISIONS.md",
         "ROLLMODEPLAN.md#43-level-endings--level-progression"
       ],
-      "opened": "2026-09-20"
+      "opened": "2026-09-20",
+      "closed": "2026-09-20",
+      "resolution": "Asked directly; Ted said no. AlchemicalAudio.fanfare(\"wedding\") stays a documented no-op, the 2026-09-04 silence rule stands. No file changed. DECISIONS.md 64."
     },
     {
       "id": "debt-dallington-tail-unread",

@@ -26,7 +26,7 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=57';
 import { DragonFlight } from '../systems/DragonFlight.js?v=3';
-import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=12';
+import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=13';
 import { Creatures } from '../systems/Creatures.js?v=3';
 import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=6';
@@ -51,7 +51,7 @@ import { Triumphs } from './world/triumphs.js?v=15';
 import { Tombs } from './world/tombs.js?v=9';
 import { Temple } from './world/temple.js?v=13';
 import { Cythera } from './world/cythera.js?v=11';
-import { Rollup } from './world/rollup.js?v=11';
+import { Rollup } from './world/rollup.js?v=12';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
 import { Screens } from './world/screens.js?v=5';
 

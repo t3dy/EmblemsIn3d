@@ -213,29 +213,24 @@ export class RollUp {
 
       // ── The camera's distance curve: dist = camBase + r * camScale ──────
       //
-      // Added 2026-09-20 for `question-roll-camera-curve`
-      // (research/tickets.json), which is TED'S CALL, not the builder's: these
-      // are the dials, not a new feel. The defaults are exactly the curve that
-      // has been in the mode since it was written — camBase 0, camScale 6, so
-      // `dist = r * 6` — which is purely proportional, and therefore holds the
-      // ball at the same fraction of the frame at 0.22 m as at 18 m. You can
-      // see that you are eating bigger things; you cannot see that you have
-      // become bigger.
+      // `question-roll-camera-curve` (research/tickets.json), settled 2026-09-20:
+      // Ted wants it to behave like Katamari Damacy, "zooming out when the ball
+      // grows so that you can see the bigger things you are becoming able to
+      // roll up" — DECISIONS.md. That is the SUB-proportional curve
+      // { camBase: 1.2, camScale: 2.0 } from ROLLMODEPLAN.md §1.1: the camera
+      // falls behind the ball's growth, so the ball swells in frame — 1.6 m
+      // back at r 0.22, 37 m back at r 18 — instead of holding a constant
+      // fraction of the frame the way the old default (camBase 0, camScale 6,
+      // i.e. dist = r * 6) did. The trade Ted accepted: less of the garden is
+      // visible at full size, in exchange for actually feeling the growth.
       //
-      // ROLLMODEPLAN.md §1.1 asks instead for { camBase: 1.2, camScale: 2.0 },
-      // which is SUB-proportional: the camera falls behind the growth, so the
-      // ball swells in frame — 1.6 m back at 0.22, 37 m back at 18 against
-      // today's 108 — which is how Katamari reads "I have become massive". It
-      // also shows much less of the garden at the moment the garden has
-      // finally opened to you, which cuts both ways. Both are read at their use
-      // sites, so the two curves can be flipped between MID-ROLL:
+      // Both values are read at their use site (_camWant(), below), so they
+      // can still be flipped live to compare:
       //
-      //   window._hp.state.activeScene.roll.tune.camBase  = 1.2
-      //   window._hp.state.activeScene.roll.tune.camScale = 2.0
-      //
-      // HANDOVER_ROLLMODE.md §2.1. Do not change the defaults without Ted.
-      camBase: 0,
-      camScale: 6,
+      //   window._hp.state.activeScene.roll.tune.camBase  = 0
+      //   window._hp.state.activeScene.roll.tune.camScale = 6
+      camBase: 1.2,
+      camScale: 2.0,
     };
     this.spin = new THREE.Quaternion();      // the ball's accumulated rotation
 

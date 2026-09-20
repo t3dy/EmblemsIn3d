@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=319';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=320';
 import { VaultsScene } from './scenes/VaultsScene.js?v=14';
 import { DreamMode } from './systems/DreamMode.js?v=9';
 import { DREAM_STOPS } from './data/hp_dream.js?v=7';
@@ -16,7 +16,7 @@ import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=9';
 // invention waiting to drift. The ?v= must match the other importers of
 // RollUp.js (scenes/HPWorldScene.js, scenes/world/rollup.js) or the browser
 // loads a second, separate copy of the module.
-import { METALS, WEDDING } from './systems/RollUp.js?v=12';
+import { METALS, WEDDING } from './systems/RollUp.js?v=13';
 import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=12';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
