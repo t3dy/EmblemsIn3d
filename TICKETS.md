@@ -6,7 +6,7 @@
 
 ---
 
-**49 tickets** — 12 open, 2 question, 3 declined, 32 done. By kind: 22 debt, 13 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**49 tickets** — 11 open, 2 question, 3 declined, 33 done. By kind: 22 debt, 13 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -29,27 +29,6 @@
 **Files.** `scripts/coverage_seed.py` · `research/coverage.json` · `src/data/tours.json`
 
 **See.** ROUTER.md · HPTOTOURPIPELINE.md
-
-
-### `infra-wrong-repo-preflight` — A handover's paste-block sent a build session into the Atalanta repo, and it built a mock of this project from the plan's prose
-
-**○ open** · infra · priority 1 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** 2026-09-20. HANDOVER_ROLLMODE.md ended with an 'Entry point for next session' block that named files by RELATIVE path (src/systems/RollUp.js) and named no repository. It was pasted into a session opened in C:\Dev\EMBLEMSIN3D -- the Atalanta Fugiens project, github.com/t3dy/emblems-in-3d -- rather than C:\Dev\HPin3D, github.com/t3dy/EmblemsIn3d. The two repository names differ only in case and hyphens.
-
-That session had no Hypnerotomachia world to build against, so instead of stopping it reconstructed one from the PROSE of ROLLMODEPLAN.md: a standalone ball on an empty 200x400 m plane, with invented physics, and with the four colour-stages NIGREDO/ALBEDO/CITRINITAS/RUBEDO in place of the seven metals this project takes from hp.db.alchemical_symbols -- contradicting section 4.1 of the very document it was built from. Three commits (4de9021, 7b82414, a009bda) and a published page at t3dy.github.io/emblems-in-3d/roll-up.html resulted. Zero lines were salvageable.
-
-Two failures compound here, and the second is the dangerous one: (1) nothing made the session check which repo it was in; (2) nothing made it stop when the files the brief named were absent. An agent that cannot find src/systems/RollUp.js must treat that as a contradiction to be reported, not a blank page to fill.
-
-Ted, 2026-09-20, on being shown it: leave the Atalanta page alone, and bake the fix into the system files.
-
-**Acceptance.** Three checks, each mechanical. (1) `git remote -v` in this repo prints github.com/t3dy/EmblemsIn3d; every agent brief in .claude/agents/ instructs the agent to run it first and to stop if it prints emblems-in-3d. (2) Each agent brief carries an explicit rule that a named file which does not exist is a STOP-and-report condition, never a licence to create it from a description. (3) Every paste-block entry point in a handover names the absolute repo path and the expected remote. Grep: no handover under the repo root contains an entry-point fence without the string 'C:\Dev\HPin3D'.
-
-**Files.** `.claude/agents/hp-builder.md` · `.claude/agents/hp-researcher.md` · `.claude/agents/hp-verifier.md` · `ROUTER.md` · `HANDOVER_ROLLMODE.md`
-
-**See.** ROUTER.md#the-rules-that-outrank-everything-else · HANDOVER_ROLLMODE.md#0-what-happened-on-2026-09-20-and-why-it-matters
 
 
 ### `plan-resite-precincts-true-scale` — Move every precinct onto the true-scale plan
@@ -499,6 +478,29 @@ Every other point light in the world -- eleven of them, in palace.js, portal.js,
 **Files.** `src/scenes/HPWorldScene.js`
 
 **See.** ENGINEERING.md#2c · ORCHESTRATION.md
+
+
+### `infra-wrong-repo-preflight` — A handover's paste-block sent a build session into the Atalanta repo, and it built a mock of this project from the plan's prose
+
+**✅ done** · infra · priority 1 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** 2026-09-20. HANDOVER_ROLLMODE.md ended with an 'Entry point for next session' block that named files by RELATIVE path (src/systems/RollUp.js) and named no repository. It was pasted into a session opened in C:\Dev\EMBLEMSIN3D -- the Atalanta Fugiens project, github.com/t3dy/emblems-in-3d -- rather than C:\Dev\HPin3D, github.com/t3dy/EmblemsIn3d. The two repository names differ only in case and hyphens.
+
+That session had no Hypnerotomachia world to build against, so instead of stopping it reconstructed one from the PROSE of ROLLMODEPLAN.md: a standalone ball on an empty 200x400 m plane, with invented physics, and with the four colour-stages NIGREDO/ALBEDO/CITRINITAS/RUBEDO in place of the seven metals this project takes from hp.db.alchemical_symbols -- contradicting section 4.1 of the very document it was built from. Three commits (4de9021, 7b82414, a009bda) and a published page at t3dy.github.io/emblems-in-3d/roll-up.html resulted. Zero lines were salvageable.
+
+Two failures compound here, and the second is the dangerous one: (1) nothing made the session check which repo it was in; (2) nothing made it stop when the files the brief named were absent. An agent that cannot find src/systems/RollUp.js must treat that as a contradiction to be reported, not a blank page to fill.
+
+Ted, 2026-09-20, on being shown it: leave the Atalanta page alone, and bake the fix into the system files.
+
+**Acceptance.** Three checks, each mechanical. (1) `git remote -v` in this repo prints github.com/t3dy/EmblemsIn3d; every agent brief in .claude/agents/ instructs the agent to run it first and to stop if it prints emblems-in-3d. (2) Each agent brief carries an explicit rule that a named file which does not exist is a STOP-and-report condition, never a licence to create it from a description. (3) Every paste-block entry point in a handover names the absolute repo path and the expected remote. Grep: no handover under the repo root contains an entry-point fence without the string 'C:\Dev\HPin3D'.
+
+**Resolution.** All three checks verified mechanically. (1) `git remote -v` prints github.com/t3dy/EmblemsIn3d. (2) All three agent briefs (.claude/agents/hp-builder.md, hp-researcher.md, hp-verifier.md) open with a Step 0 that runs the remote check, stops on emblems-in-3d, and states the rule that a named file which does not exist is a STOP-and-report condition, never a licence to invent it. (3) HANDOVER_ROLLMODE.md's entry-point block (section 5) names C:\Dev\HPin3D and the expected remote explicitly; no other handover in the repo carries an entry-point fence. CLAUDE.md rule 4 and ROUTER.md rule 4 also now carry both repository names side by side, and DECISIONS.md 57 records the incident and the call to leave the Atalanta page as-is.
+
+**Files.** `.claude/agents/hp-builder.md` · `.claude/agents/hp-researcher.md` · `.claude/agents/hp-verifier.md` · `ROUTER.md` · `HANDOVER_ROLLMODE.md`
+
+**See.** ROUTER.md#the-rules-that-outrank-everything-else · HANDOVER_ROLLMODE.md#0-what-happened-on-2026-09-20-and-why-it-matters
 
 
 ### `read-audit-turns-against-italian` — Audit every directional claim in the world against the 1499, not Dallington
