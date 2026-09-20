@@ -1,6 +1,6 @@
 {
   "$schema_note": "See HPTOTOURPIPELINE.md for the field meanings and the workflow.",
-  "generated": "2026-09-17",
+  "generated": "2026-09-20",
   "generator": "scripts/coverage_seed.py",
   "hand_edited_fields": [
     "chapters[].research",
@@ -12,6 +12,16 @@
     "chapters[].tour_stops",
     "build_evidence"
   ],
+  "page_numbering": {
+    "note": "There are TWO page numberings in this project and they are ten pages apart. Mixing them is ticket bug-plate-page-seq-offset, which filed most of Book II one chapter early.",
+    "translation": "translation/en/page_NNN.md counts from the title page. chapters[].pages_1499 and plates[].page_translation are in THIS numbering, despite the older field name.",
+    "hp_db": "hp.db page_seq counts from a1r, the leaf the text begins on, ten pages later. plates[].page_1499 and sections_1499[].pages_1499 are in THIS numbering. The scans hp1499_pNNN.jpg are named by it too.",
+    "offset": 10,
+    "shape": "one constant across the whole book — not a step function, and with no break at the Book I/II seam. Measured 2026-09-20 at eight scan/page pairs spanning chapters I, XVII, XXI, XXIV, XXVI, XXXI and XXXIII; the measurements are listed in scripts/coverage_seed.py.",
+    "caveat": "woodcut_catalog.page_seq is itself only good to about +/-2 pages (LLM_ASSISTED subject-matching; see its link_basis column), so a plate sitting within a page or two of a chapter boundary may still be on the wrong side of it. Plates carrying page_checked have been seen on the scan; the rest have not.",
+    "regression_check": "16 plate->chapter pairs asserted on every seed (check_plates() in scripts/coverage_seed.py)",
+    "sections_caveat": "sections_1499 comes from page_concordance.section, whose boundaries drift progressively early past page_seq ~167 — BOOK_II_POLIA is marked at 271 when Book II opens at 371. Shifting it by the offset does not repair it. Use chapters[].pages_1499 to place a chapter, never a section. Ticket bug-concordance-section-drift."
+  },
   "modes": [
     "walk",
     "dream",
@@ -44,6 +54,10 @@
       "pages_1499": [
         1,
         3
+      ],
+      "pages_translation": [
+        11,
+        13
       ]
     },
     {
@@ -51,6 +65,10 @@
       "pages_1499": [
         4,
         15
+      ],
+      "pages_translation": [
+        14,
+        25
       ]
     },
     {
@@ -58,6 +76,10 @@
       "pages_1499": [
         16,
         37
+      ],
+      "pages_translation": [
+        26,
+        47
       ]
     },
     {
@@ -65,6 +87,10 @@
       "pages_1499": [
         38,
         62
+      ],
+      "pages_translation": [
+        48,
+        72
       ]
     },
     {
@@ -72,6 +98,10 @@
       "pages_1499": [
         63,
         79
+      ],
+      "pages_translation": [
+        73,
+        89
       ]
     },
     {
@@ -79,6 +109,10 @@
       "pages_1499": [
         80,
         105
+      ],
+      "pages_translation": [
+        90,
+        115
       ]
     },
     {
@@ -86,6 +120,10 @@
       "pages_1499": [
         106,
         148
+      ],
+      "pages_translation": [
+        116,
+        158
       ]
     },
     {
@@ -93,6 +131,10 @@
       "pages_1499": [
         149,
         167
+      ],
+      "pages_translation": [
+        159,
+        177
       ]
     },
     {
@@ -100,6 +142,10 @@
       "pages_1499": [
         168,
         185
+      ],
+      "pages_translation": [
+        178,
+        195
       ]
     },
     {
@@ -107,6 +153,10 @@
       "pages_1499": [
         186,
         215
+      ],
+      "pages_translation": [
+        196,
+        225
       ]
     },
     {
@@ -114,6 +164,10 @@
       "pages_1499": [
         216,
         220
+      ],
+      "pages_translation": [
+        226,
+        230
       ]
     },
     {
@@ -121,6 +175,10 @@
       "pages_1499": [
         221,
         255
+      ],
+      "pages_translation": [
+        231,
+        265
       ]
     },
     {
@@ -128,6 +186,10 @@
       "pages_1499": [
         256,
         270
+      ],
+      "pages_translation": [
+        266,
+        280
       ]
     },
     {
@@ -135,18 +197,20 @@
       "pages_1499": [
         271,
         448
+      ],
+      "pages_translation": [
+        281,
+        458
       ]
     }
   ],
   "build_evidence": {
     "plates_cited_in_source": [
       18,
-      19,
       24,
       87
     ],
     "builders": [
-      "Approach",
       "ArtificialGardens",
       "Birds",
       "BookTwo",
@@ -154,6 +218,7 @@
       "ChessBallet",
       "ColossalHorse",
       "Court",
+      "CypressAvenue",
       "Cythera",
       "CytheraIsle",
       "DividingSpring",
@@ -163,12 +228,16 @@
       "Fumes",
       "Garden",
       "GracesFountain",
+      "GreatOak",
       "GreatPortal",
+      "GreenEnclosure",
       "Ground",
       "Meadow",
       "Motes",
       "NymphFountain",
       "Palace",
+      "PalacePaths",
+      "PalmPlain",
       "Piazza",
       "PlanetaryPalace",
       "PoliaGarden",
@@ -187,38 +256,22 @@
       "SpaciousPlain",
       "ThreeDoors",
       "Timeline",
+      "TombApron",
       "Trees",
       "Triumphs",
       "TurfSeats",
+      "Valley",
       "Venus",
       "VenusTemple",
       "WaterLabyrinth",
       "WaterParticles",
       "Witness",
-      "Wood"
+      "Wood",
+      "WoodedCountry"
     ],
     "stations": []
   },
-  "plates_not_attached_to_a_chapter": [
-    {
-      "plate": 1,
-      "description": "Poliphilus entering the dark forest",
-      "page_1499": 4,
-      "section": "DARK_FOREST"
-    },
-    {
-      "plate": 2,
-      "description": "Poliphilus kneeling by a rivulet",
-      "page_1499": 8,
-      "section": "DARK_FOREST"
-    },
-    {
-      "plate": 3,
-      "description": "Poliphilus sleeping under a tree (dream within dream)",
-      "page_1499": 10,
-      "section": "DARK_FOREST"
-    }
-  ],
+  "plates_not_attached_to_a_chapter": [],
   "chapters": [
     {
       "id": "I",
@@ -235,9 +288,11 @@
       },
       "plates": [
         {
-          "plate": 4,
-          "description": "Poliphilus among classical ruins with wolf",
-          "page_1499": 11
+          "plate": 1,
+          "description": "Poliphilus entering the dark forest",
+          "page_1499": 4,
+          "page_translation": 14,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p4   'peruenuto nella uastissima Hercynia silua' = our p.14 (ch. I)"
         }
       ],
       "plates_from": "page-range",
@@ -383,9 +438,10 @@
       },
       "plates": [
         {
-          "plate": 5,
-          "description": "The great pyramidic temple with obelisk",
-          "page_1499": 16
+          "plate": 2,
+          "description": "Poliphilus kneeling by a rivulet",
+          "page_1499": 8,
+          "page_translation": 18
         }
       ],
       "plates_from": "page-range",
@@ -518,44 +574,22 @@
       },
       "plates": [
         {
-          "plate": 6,
-          "description": "Colossal bronze horse on pedestal with genii",
-          "page_1499": 22
+          "plate": 3,
+          "description": "Poliphilus sleeping under a tree (dream within dream)",
+          "page_1499": 10,
+          "page_translation": 20
         },
         {
-          "plate": 7,
-          "description": "Pedestal end: garland of marjoram and ferns (D.AMBIG.D.D.)",
-          "page_1499": 23
+          "plate": 4,
+          "description": "Poliphilus among classical ruins with wolf",
+          "page_1499": 11,
+          "page_translation": 21
         },
         {
-          "plate": 8,
-          "description": "Pedestal end: garland of orpine (Equus infalicitatis)",
-          "page_1499": 23
-        },
-        {
-          "plate": 9,
-          "description": "Pedestal side: two-faced youths and nymphs dancing",
-          "page_1499": 24
-        },
-        {
-          "plate": 10,
-          "description": "Pedestal side: youth distributing flowers",
-          "page_1499": 25
-        },
-        {
-          "plate": 11,
-          "description": "Elephant saddle-cloth with Greek and Arabic inscription",
-          "page_1499": 27
-        },
-        {
-          "plate": 12,
-          "description": "Colossal elephant of black stone bearing obelisk",
-          "page_1499": 28
-        },
-        {
-          "plate": 13,
-          "description": "Sarcophagus with nude King figure",
-          "page_1499": 29
+          "plate": 5,
+          "description": "The great pyramidic temple with obelisk",
+          "page_1499": 16,
+          "page_translation": 26
         }
       ],
       "plates_from": "page-range",
@@ -831,19 +865,64 @@
       },
       "plates": [
         {
+          "plate": 6,
+          "description": "Colossal bronze horse on pedestal with genii",
+          "page_1499": 22,
+          "page_translation": 32
+        },
+        {
+          "plate": 7,
+          "description": "Pedestal end: garland of marjoram and ferns (D.AMBIG.D.D.)",
+          "page_1499": 23,
+          "page_translation": 33
+        },
+        {
+          "plate": 8,
+          "description": "Pedestal end: garland of orpine (Equus infalicitatis)",
+          "page_1499": 23,
+          "page_translation": 33
+        },
+        {
+          "plate": 9,
+          "description": "Pedestal side: two-faced youths and nymphs dancing",
+          "page_1499": 24,
+          "page_translation": 34
+        },
+        {
+          "plate": 10,
+          "description": "Pedestal side: youth distributing flowers",
+          "page_1499": 25,
+          "page_translation": 35
+        },
+        {
+          "plate": 11,
+          "description": "Elephant saddle-cloth with Greek and Arabic inscription",
+          "page_1499": 27,
+          "page_translation": 37
+        },
+        {
+          "plate": 12,
+          "description": "Colossal elephant of black stone bearing obelisk",
+          "page_1499": 28,
+          "page_translation": 38
+        },
+        {
+          "plate": 13,
+          "description": "Sarcophagus with nude King figure",
+          "page_1499": 29,
+          "page_translation": 39
+        },
+        {
           "plate": 14,
           "description": "Sarcophagus with nude Queen figure",
-          "page_1499": 30
+          "page_1499": 30,
+          "page_translation": 40
         },
         {
           "plate": 15,
           "description": "Hieroglyphic devices with decorated casket",
-          "page_1499": 31
-        },
-        {
-          "plate": 16,
-          "description": "Ancient gate with medallion busts",
-          "page_1499": 38
+          "page_1499": 31,
+          "page_translation": 41
         }
       ],
       "plates_from": "page-range",
@@ -987,9 +1066,10 @@
       },
       "plates": [
         {
-          "plate": 17,
-          "description": "Poliphilus fleeing the dragon",
-          "page_1499": 52
+          "plate": 16,
+          "description": "Ancient gate with medallion busts",
+          "page_1499": 38,
+          "page_translation": 48
         }
       ],
       "plates_from": "page-range",
@@ -1116,19 +1196,10 @@
       },
       "plates": [
         {
-          "plate": 18,
-          "description": "Emblematic devices (PATIENTIA / Anchor-Dolphin)",
-          "page_1499": 59
-        },
-        {
-          "plate": 19,
-          "description": "Sleeping nymph fountain with satyrs",
-          "page_1499": 63
-        },
-        {
-          "plate": 20,
-          "description": "Poliphilus meeting five nymphs",
-          "page_1499": 66
+          "plate": 17,
+          "description": "Poliphilus fleeing the dragon",
+          "page_1499": 52,
+          "page_translation": 62
         }
       ],
       "plates_from": "page-range",
@@ -1250,14 +1321,22 @@
       },
       "plates": [
         {
-          "plate": 21,
-          "description": "Weather-cock with genius blowing trumpet",
-          "page_1499": 71
+          "plate": 18,
+          "description": "Emblematic devices (PATIENTIA / Anchor-Dolphin)",
+          "page_1499": 59,
+          "page_translation": 69
         },
         {
-          "plate": 22,
-          "description": "Part of second fountain",
-          "page_1499": 75
+          "plate": 19,
+          "description": "Sleeping nymph fountain with satyrs",
+          "page_1499": 63,
+          "page_translation": 73
+        },
+        {
+          "plate": 20,
+          "description": "Poliphilus meeting five nymphs",
+          "page_1499": 66,
+          "page_translation": 76
         }
       ],
       "plates_from": "page-range",
@@ -1334,34 +1413,22 @@
       },
       "plates": [
         {
+          "plate": 21,
+          "description": "Weather-cock with genius blowing trumpet",
+          "page_1499": 71,
+          "page_translation": 81
+        },
+        {
+          "plate": 22,
+          "description": "Part of second fountain",
+          "page_1499": 75,
+          "page_translation": 85
+        },
+        {
           "plate": 23,
           "description": "Third fountain with Graces, harpies, griffins",
-          "page_1499": 80
-        },
-        {
-          "plate": 24,
-          "description": "Frieze ornament with genii, dolphins, bull skull",
-          "page_1499": 84
-        },
-        {
-          "plate": 25,
-          "description": "Panelled wall in Queen's palace with planetary names",
-          "page_1499": 88
-        },
-        {
-          "plate": 26,
-          "description": "Poliphilus before Queen Eleuterylida enthroned",
-          "page_1499": 90
-        },
-        {
-          "plate": 27,
-          "description": "Medallion in canopy: youth with nimbus and eagle",
-          "page_1499": 92
-        },
-        {
-          "plate": 28,
-          "description": "Richly ornamented tripod",
-          "page_1499": 93
+          "page_1499": 80,
+          "page_translation": 90
         }
       ],
       "plates_from": "page-range",
@@ -1520,24 +1587,58 @@
       },
       "plates": [
         {
+          "plate": 24,
+          "description": "Frieze ornament with genii, dolphins, bull skull",
+          "page_1499": 84,
+          "page_translation": 94
+        },
+        {
+          "plate": 25,
+          "description": "Panelled wall in Queen's palace with planetary names",
+          "page_1499": 88,
+          "page_translation": 98
+        },
+        {
+          "plate": 26,
+          "description": "Poliphilus before Queen Eleuterylida enthroned",
+          "page_1499": 90,
+          "page_translation": 100
+        },
+        {
+          "plate": 27,
+          "description": "Medallion in canopy: youth with nimbus and eagle",
+          "page_1499": 92,
+          "page_translation": 102
+        },
+        {
+          "plate": 28,
+          "description": "Richly ornamented tripod",
+          "page_1499": 93,
+          "page_translation": 103
+        },
+        {
           "plate": 29,
           "description": "Golden basin upon wheels",
-          "page_1499": 94
+          "page_1499": 94,
+          "page_translation": 104
         },
         {
           "plate": 30,
           "description": "Tripod with three naked boys on lion-footed pedestal",
-          "page_1499": 95
+          "page_1499": 95,
+          "page_translation": 105
         },
         {
           "plate": 31,
           "description": "Vessel surmounted by coral-tree",
-          "page_1499": 102
+          "page_1499": 102,
+          "page_translation": 112
         },
         {
           "plate": 32,
           "description": "Magnificent vessel with gold shrub, twice nymph height",
-          "page_1499": 105
+          "page_1499": 105,
+          "page_translation": 115
         }
       ],
       "plates_from": "page-range",
@@ -1700,57 +1801,56 @@
         {
           "plate": 33,
           "description": "Triangular obelisk of mystic Trinity with sphinxes",
-          "page_1499": 119
+          "page_1499": 119,
+          "page_translation": 129
         },
         {
           "plate": 34,
           "description": "Cameo: Jupiter with cornucopia and vanquished giants",
-          "page_1499": 122
+          "page_1499": 122,
+          "page_translation": 132
         },
         {
           "plate": 35,
           "description": "Woman with tortoise and wings (Velocitatem sedendo)",
-          "page_1499": 123
+          "page_1499": 123,
+          "page_translation": 133
         },
         {
           "plate": 36,
           "description": "Circular bas-relief: two genii holding apple (Medium tenuere beati)",
-          "page_1499": 124
+          "page_1499": 124,
+          "page_translation": 134
         },
         {
           "plate": 37,
           "description": "Poliphilus at three gates: GLORIA DEI, MATER AMORIS, GLORIA MUNDI",
-          "page_1499": 125
+          "page_1499": 125,
+          "page_translation": 135
         },
         {
           "plate": 38,
           "description": "Poliphilus meets venerable matron with six attendants",
-          "page_1499": 126
+          "page_1499": 126,
+          "page_translation": 136
         },
         {
           "plate": 39,
           "description": "Poliphilus receives crown and palm-branch on sword",
-          "page_1499": 127
+          "page_1499": 127,
+          "page_translation": 137
         },
         {
           "plate": 40,
           "description": "Poliphilus among nymphs; flight of Logistica",
-          "page_1499": 129
+          "page_1499": 129,
+          "page_translation": 139
         },
         {
           "plate": 41,
           "description": "Poliphilus embraced by the nymph",
-          "page_1499": 130
-        },
-        {
-          "plate": 42,
-          "description": "Poliphilus looking through bower as Polia approaches",
-          "page_1499": 132
-        },
-        {
-          "plate": 43,
-          "description": "Poliphilus and Polia retreating from bower",
-          "page_1499": 139
+          "page_1499": 130,
+          "page_translation": 140
         }
       ],
       "plates_from": "page-range",
@@ -1987,7 +2087,14 @@
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 42,
+          "description": "Poliphilus looking through bower as Polia approaches",
+          "page_1499": 132,
+          "page_translation": 142
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -2171,34 +2278,10 @@
       },
       "plates": [
         {
-          "plate": 44,
-          "description": "Triumphal car with Europa reliefs",
-          "page_1499": 149
-        },
-        {
-          "plate": 45,
-          "description": "Relief: Rape of Europa",
-          "page_1499": 149
-        },
-        {
-          "plate": 46,
-          "description": "Reliefs: Cupid shooting stars; Jupiter and Mars",
-          "page_1499": 150
-        },
-        {
-          "plate": 47,
-          "description": "First Triumph of Europa: centaurs, nymphs, musicians (left)",
-          "page_1499": 151
-        },
-        {
-          "plate": 48,
-          "description": "First Triumph of Europa (right continuation)",
-          "page_1499": 151
-        },
-        {
-          "plate": 49,
-          "description": "Triumph of Leda reliefs: Leda lying-in, eggs presented",
-          "page_1499": 152
+          "plate": 43,
+          "description": "Poliphilus and Polia retreating from bower",
+          "page_1499": 139,
+          "page_translation": 149
         }
       ],
       "plates_from": "page-range",
@@ -2410,38 +2493,7 @@
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [
-        {
-          "plate": 50,
-          "description": "Relief: King offering eggs at Temple of Apollo",
-          "page_1499": 153
-        },
-        {
-          "plate": 51,
-          "description": "Reliefs: Cupid tracing figures; Judgment of Paris",
-          "page_1499": 154
-        },
-        {
-          "plate": 52,
-          "description": "Second Triumph of Leda: elephants, swan (left)",
-          "page_1499": 155
-        },
-        {
-          "plate": 53,
-          "description": "Second Triumph of Leda (right continuation)",
-          "page_1499": 155
-        },
-        {
-          "plate": 54,
-          "description": "Triumph of Danae reliefs: Acrisius, tower construction",
-          "page_1499": 156
-        },
-        {
-          "plate": 55,
-          "description": "Perseus with mirror and Medusa head; Pegasus",
-          "page_1499": 156
-        }
-      ],
+      "plates": [],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -2546,79 +2598,142 @@
       },
       "plates": [
         {
+          "plate": 44,
+          "description": "Triumphal car with Europa reliefs",
+          "page_1499": 149,
+          "page_translation": 159
+        },
+        {
+          "plate": 45,
+          "description": "Relief: Rape of Europa",
+          "page_1499": 149,
+          "page_translation": 159
+        },
+        {
+          "plate": 46,
+          "description": "Reliefs: Cupid shooting stars; Jupiter and Mars",
+          "page_1499": 150,
+          "page_translation": 160
+        },
+        {
+          "plate": 47,
+          "description": "First Triumph of Europa: centaurs, nymphs, musicians (left)",
+          "page_1499": 151,
+          "page_translation": 161
+        },
+        {
+          "plate": 48,
+          "description": "First Triumph of Europa (right continuation)",
+          "page_1499": 151,
+          "page_translation": 161
+        },
+        {
+          "plate": 49,
+          "description": "Triumph of Leda reliefs: Leda lying-in, eggs presented",
+          "page_1499": 152,
+          "page_translation": 162
+        },
+        {
+          "plate": 50,
+          "description": "Relief: King offering eggs at Temple of Apollo",
+          "page_1499": 153,
+          "page_translation": 163
+        },
+        {
+          "plate": 51,
+          "description": "Reliefs: Cupid tracing figures; Judgment of Paris",
+          "page_1499": 154,
+          "page_translation": 164
+        },
+        {
+          "plate": 52,
+          "description": "Second Triumph of Leda: elephants, swan (left)",
+          "page_1499": 155,
+          "page_translation": 165
+        },
+        {
+          "plate": 53,
+          "description": "Second Triumph of Leda (right continuation)",
+          "page_1499": 155,
+          "page_translation": 165
+        },
+        {
+          "plate": 54,
+          "description": "Triumph of Danae reliefs: Acrisius, tower construction",
+          "page_1499": 156,
+          "page_translation": 166
+        },
+        {
+          "plate": 55,
+          "description": "Perseus with mirror and Medusa head; Pegasus",
+          "page_1499": 156,
+          "page_translation": 166
+        },
+        {
           "plate": 56,
           "description": "Reliefs: Venus and Mars freed; Jupiter comforts Cupid",
-          "page_1499": 158
+          "page_1499": 158,
+          "page_translation": 168
         },
         {
           "plate": 57,
           "description": "Third Triumph of Danae: unicorns (left)",
-          "page_1499": 159
+          "page_1499": 159,
+          "page_translation": 169
         },
         {
           "plate": 58,
           "description": "Festival of Bacchus reliefs: Jupiter and Semele",
-          "page_1499": 160
+          "page_1499": 160,
+          "page_translation": 170
         },
         {
           "plate": 59,
           "description": "Third Triumph of Danae (right continuation)",
-          "page_1499": 159
+          "page_1499": 159,
+          "page_translation": 169
         },
         {
           "plate": 60,
           "description": "Jupiter commits infant Bacchus to Mercury",
-          "page_1499": 160
+          "page_1499": 160,
+          "page_translation": 170
         },
         {
           "plate": 61,
           "description": "Venus and Cupid before Jupiter; Psyche with lamp",
-          "page_1499": 161
+          "page_1499": 161,
+          "page_translation": 171
         },
         {
           "plate": 62,
           "description": "Vase relief: Jupiter and the Heliades",
-          "page_1499": 161
+          "page_1499": 161,
+          "page_translation": 171
         },
         {
           "plate": 63,
           "description": "Vintage scene with genii and young Bacchus",
-          "page_1499": 164
+          "page_1499": 164,
+          "page_translation": 174
         },
         {
           "plate": 64,
           "description": "Fourth Triumph: Festival of Bacchus, panthers (left)",
-          "page_1499": 165
+          "page_1499": 165,
+          "page_translation": 175
         },
         {
           "plate": 65,
           "description": "Festival of Bacchus with Silenus on ass (right)",
-          "page_1499": 165
+          "page_1499": 165,
+          "page_translation": 175
         },
         {
           "plate": 66,
           "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
-          "page_1499": 166
-        },
-        {
-          "plate": 67,
-          "description": "Four Seasons relief: Spring (Venus and Cupid)",
-          "page_1499": 167
-        },
-        {
-          "plate": 68,
-          "description": "Four Seasons: Summer (Ceres with boy)",
-          "page_1499": 167
-        },
-        {
-          "plate": 69,
-          "description": "Four Seasons: Autumn (Wine God with ram)",
-          "page_1499": 167
-        },
-        {
-          "plate": 70,
-          "description": "Four Seasons: Winter (Jupiter Pluvius)",
-          "page_1499": 167
+          "page_1499": 166,
+          "page_translation": 176
         }
       ],
       "plates_from": "page-range",
@@ -3002,7 +3117,32 @@
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 67,
+          "description": "Four Seasons relief: Spring (Venus and Cupid)",
+          "page_1499": 167,
+          "page_translation": 177
+        },
+        {
+          "plate": 68,
+          "description": "Four Seasons: Summer (Ceres with boy)",
+          "page_1499": 167,
+          "page_translation": 177
+        },
+        {
+          "plate": 69,
+          "description": "Four Seasons: Autumn (Wine God with ram)",
+          "page_1499": 167,
+          "page_translation": 177
+        },
+        {
+          "plate": 70,
+          "description": "Four Seasons: Winter (Jupiter Pluvius)",
+          "page_1499": 167,
+          "page_translation": 177
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -3175,18 +3315,12 @@
         "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
         "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
       },
-      "plates": [
-        {
-          "plate": 71,
-          "description": "Worship of Priapus with nineteen female and five male figures",
-          "page_1499": 185
-        }
-      ],
+      "plates": [],
       "plates_from": "page-range",
       "tour_stops": [
         {
           "station": "priapus",
-          "title": "The Altar of the Seasons — where the English breaks off",
+          "title": "The Altar of the Seasons — the hand-off to our translation",
           "notes": 7
         }
       ],
@@ -3328,74 +3462,84 @@
       },
       "plates": [
         {
+          "plate": 71,
+          "description": "Worship of Priapus with nineteen female and five male figures",
+          "page_1499": 185,
+          "page_translation": 195
+        },
+        {
           "plate": 72,
           "description": "Section and ground-plan of rotunda temple",
-          "page_1499": 195
+          "page_1499": 195,
+          "page_translation": 205,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p195 full-page rotunda section, signature 'n iii' only = our p.205 (ch. XVII)"
         },
         {
           "plate": 73,
           "description": "Nude winged female half-figure with foliage",
-          "page_1499": 197
+          "page_1499": 197,
+          "page_translation": 207
         },
         {
           "plate": 74,
           "description": "Globular lamp hung in chains",
-          "page_1499": 198
+          "page_1499": 198,
+          "page_translation": 208
         },
         {
           "plate": 75,
           "description": "Crowning of lantern in cupola with bells",
-          "page_1499": 201
+          "page_1499": 201,
+          "page_translation": 211
         },
         {
           "plate": 76,
           "description": "Temple of Venus: procession of seven virgins to altar",
-          "page_1499": 205
+          "page_1499": 205,
+          "page_translation": 215,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p205 'Et ecco cum summa ueneratione ... el rituale libro' = our p.215 (ch. XVII)"
         },
         {
           "plate": 77,
           "description": "Polia's torch extinguished in altar-fountain",
-          "page_1499": 207
+          "page_1499": 207,
+          "page_translation": 217
         },
         {
           "plate": 78,
           "description": "Temple ceremony continuation",
-          "page_1499": 208
+          "page_1499": 208,
+          "page_translation": 218
         },
         {
           "plate": 79,
           "description": "Two virgins offering swans and doves for sacrifice",
-          "page_1499": 208
+          "page_1499": 208,
+          "page_translation": 218
         },
         {
           "plate": 80,
           "description": "The altar in the Temple of Venus",
-          "page_1499": 210
+          "page_1499": 210,
+          "page_translation": 220
         },
         {
           "plate": 81,
           "description": "Temple ceremony continuation",
-          "page_1499": 212
+          "page_1499": 212,
+          "page_translation": 222
         },
         {
           "plate": 82,
           "description": "Temple ceremony continuation",
-          "page_1499": 213
+          "page_1499": 213,
+          "page_translation": 223
         },
         {
           "plate": 83,
           "description": "Temple ceremony continuation",
-          "page_1499": 213
-        },
-        {
-          "plate": 84,
-          "description": "Miracle of the roses: rose-tree rising from altar, doves",
-          "page_1499": 221
-        },
-        {
-          "plate": 85,
-          "description": "Poliphilus and Polia receive fruits from priestess",
-          "page_1499": 221
+          "page_1499": 213,
+          "page_translation": 223
         }
       ],
       "plates_from": "page-range",
@@ -3514,59 +3658,16 @@
       },
       "plates": [
         {
-          "plate": 86,
-          "description": "Ruins of Temple Polyandrion with obelisk among trees",
-          "page_1499": 233
+          "plate": 84,
+          "description": "Miracle of the roses: rose-tree rising from altar, doves",
+          "page_1499": 221,
+          "page_translation": 231
         },
         {
-          "plate": 87,
-          "description": "Obelisk with hieroglyphic devices",
-          "page_1499": 233
-        },
-        {
-          "plate": 88,
-          "description": "Hieroglyphic medallion relief (first)",
-          "page_1499": 233
-        },
-        {
-          "plate": 89,
-          "description": "Hieroglyphic medallion relief (second)",
-          "page_1499": 235
-        },
-        {
-          "plate": 90,
-          "description": "Hieroglyphic medallion relief (third)",
-          "page_1499": 235
-        },
-        {
-          "plate": 91,
-          "description": "Hieroglyphic medallion relief (fourth)",
-          "page_1499": 236
-        },
-        {
-          "plate": 92,
-          "description": "Hieroglyphic relief (fifth)",
-          "page_1499": 236
-        },
-        {
-          "plate": 93,
-          "description": "Architrave fragment with bird and lamp",
-          "page_1499": 236
-        },
-        {
-          "plate": 94,
-          "description": "Cupola above entrance to the crypt",
-          "page_1499": 237
-        },
-        {
-          "plate": 95,
-          "description": "Sarcophagus: Interna Plotoni",
-          "page_1499": 238
-        },
-        {
-          "plate": 96,
-          "description": "Mosaic of Hell on crypt ceiling (after Dante)",
-          "page_1499": 241
+          "plate": 85,
+          "description": "Poliphilus and Polia receive fruits from priestess",
+          "page_1499": 221,
+          "page_translation": 231
         }
       ],
       "plates_from": "page-range",
@@ -3671,94 +3772,166 @@
       },
       "plates": [
         {
+          "plate": 86,
+          "description": "Ruins of Temple Polyandrion with obelisk among trees",
+          "page_1499": 233,
+          "page_translation": 243
+        },
+        {
+          "plate": 87,
+          "description": "Obelisk with hieroglyphic devices",
+          "page_1499": 233,
+          "page_translation": 243
+        },
+        {
+          "plate": 88,
+          "description": "Hieroglyphic medallion relief (first)",
+          "page_1499": 233,
+          "page_translation": 243
+        },
+        {
+          "plate": 89,
+          "description": "Hieroglyphic medallion relief (second)",
+          "page_1499": 235,
+          "page_translation": 245
+        },
+        {
+          "plate": 90,
+          "description": "Hieroglyphic medallion relief (third)",
+          "page_1499": 235,
+          "page_translation": 245
+        },
+        {
+          "plate": 91,
+          "description": "Hieroglyphic medallion relief (fourth)",
+          "page_1499": 236,
+          "page_translation": 246
+        },
+        {
+          "plate": 92,
+          "description": "Hieroglyphic relief (fifth)",
+          "page_1499": 236,
+          "page_translation": 246
+        },
+        {
+          "plate": 93,
+          "description": "Architrave fragment with bird and lamp",
+          "page_1499": 236,
+          "page_translation": 246
+        },
+        {
+          "plate": 94,
+          "description": "Cupola above entrance to the crypt",
+          "page_1499": 237,
+          "page_translation": 247
+        },
+        {
+          "plate": 95,
+          "description": "Sarcophagus: Interna Plotoni",
+          "page_1499": 238,
+          "page_translation": 248
+        },
+        {
+          "plate": 96,
+          "description": "Mosaic of Hell on crypt ceiling (after Dante)",
+          "page_1499": 241,
+          "page_translation": 251
+        },
+        {
           "plate": 97,
           "description": "Sepulchral monument with masks",
-          "page_1499": 243
+          "page_1499": 243,
+          "page_translation": 253
         },
         {
           "plate": 98,
           "description": "Sepulchral monument with Renaissance urn",
-          "page_1499": 245
+          "page_1499": 245,
+          "page_translation": 255
         },
         {
           "plate": 99,
           "description": "Sacrifice relief: old man, youth, faun, dancers",
-          "page_1499": 245
+          "page_1499": 245,
+          "page_translation": 255
         },
         {
           "plate": 100,
           "description": "Epitaph with eagle and dolphins",
-          "page_1499": 247
+          "page_1499": 247,
+          "page_translation": 257
         },
         {
           "plate": 101,
           "description": "Epitaph fragment",
-          "page_1499": 247
+          "page_1499": 247,
+          "page_translation": 257
         },
         {
           "plate": 102,
           "description": "Sepulchral urn with Greek inscription",
-          "page_1499": 249
+          "page_1499": 249,
+          "page_translation": 259
         },
         {
           "plate": 103,
           "description": "Tombstone surmounted by urn",
-          "page_1499": 249
+          "page_1499": 249,
+          "page_translation": 259
         },
         {
           "plate": 104,
           "description": "Epitaph fragment with skulls and laurel",
-          "page_1499": 247
+          "page_1499": 247,
+          "page_translation": 257
         },
         {
           "plate": 105,
           "description": "Epitaph: D.M. Lyndia",
-          "page_1499": 251
+          "page_1499": 251,
+          "page_translation": 261
         },
         {
           "plate": 106,
           "description": "Sarcophagus: P. Cornelia Annia",
-          "page_1499": 251
+          "page_1499": 251,
+          "page_translation": 261
         },
         {
           "plate": 107,
           "description": "Sarcophagus with hieroglyphic devices",
-          "page_1499": 250
+          "page_1499": 250,
+          "page_translation": 260
         },
         {
           "plate": 108,
           "description": "Large epitaph: O lector infoelix",
-          "page_1499": 252
+          "page_1499": 252,
+          "page_translation": 262
         },
         {
           "plate": 109,
           "description": "Sepulchral monument with laurel wreath",
-          "page_1499": 254
+          "page_1499": 254,
+          "page_translation": 264
         },
         {
           "plate": 110,
           "description": "Monument of Artemisia drinking ashes of Mausolus",
-          "page_1499": 258
+          "page_1499": 258,
+          "page_translation": 268
         },
         {
           "plate": 111,
           "description": "Epitaph with busts of youth and woman",
-          "page_1499": 258
+          "page_1499": 258,
+          "page_translation": 268
         },
         {
           "plate": 112,
           "description": "Sepulchral portal: narrow gates of life and death",
-          "page_1499": 260
-        },
-        {
-          "plate": 113,
-          "description": "Standard of Cupid's bark (blue silk with rebus)",
-          "page_1499": 275
-        },
-        {
-          "plate": 114,
-          "description": "The bark of the god of love",
-          "page_1499": 281
+          "page_1499": 260,
+          "page_translation": 270
         }
       ],
       "plates_from": "page-range",
@@ -3917,7 +4090,14 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 113,
+          "description": "Standard of Cupid's bark (blue silk with rebus)",
+          "page_1499": 275,
+          "page_translation": 285
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -4052,114 +4232,94 @@
       },
       "plates": [
         {
+          "plate": 114,
+          "description": "The bark of the god of love",
+          "page_1499": 281,
+          "page_translation": 291
+        },
+        {
           "plate": 115,
           "description": "Water-work in garden of island of Venus",
-          "page_1499": 295
+          "page_1499": 295,
+          "page_translation": 305
         },
         {
           "plate": 116,
           "description": "Tree clipped in ring-shape",
-          "page_1499": 295
+          "page_1499": 295,
+          "page_translation": 305
         },
         {
           "plate": 117,
           "description": "Box-tree clipped as man supporting towers with arch",
-          "page_1499": 296
+          "page_1499": 296,
+          "page_translation": 306
         },
         {
           "plate": 118,
           "description": "Box-tree",
-          "page_1499": 296
+          "page_1499": 296,
+          "page_translation": 306
         },
         {
           "plate": 119,
           "description": "Box-tree clipped as centre piece",
-          "page_1499": 296
+          "page_1499": 296,
+          "page_translation": 306
         },
         {
           "plate": 120,
           "description": "Box-tree clipped as mushroom",
-          "page_1499": 297
+          "page_1499": 297,
+          "page_translation": 307
         },
         {
           "plate": 121,
           "description": "Peristyle in pleasure-ground of island of Venus",
-          "page_1499": 298
+          "page_1499": 298,
+          "page_translation": 308
         },
         {
           "plate": 122,
           "description": "Plan of the island of Venus",
-          "page_1499": 301
+          "page_1499": 301,
+          "page_translation": 311
         },
         {
           "plate": 123,
           "description": "Ornament of a flower-bed",
-          "page_1499": 309
+          "page_1499": 309,
+          "page_translation": 319
         },
         {
           "plate": 124,
           "description": "Square ornament of a flower-bed",
-          "page_1499": 309
+          "page_1499": 309,
+          "page_translation": 319
         },
         {
           "plate": 125,
           "description": "Clipped tree upon altar with bull's skull and festoons",
-          "page_1499": 295
+          "page_1499": 295,
+          "page_translation": 305
         },
         {
           "plate": 126,
           "description": "Pattern of a flower-bed",
-          "page_1499": 311
+          "page_1499": 311,
+          "page_translation": 321
         },
         {
           "plate": 127,
           "description": "Box-tree clipped as three peacocks on altar-vase",
-          "page_1499": 313
+          "page_1499": 313,
+          "page_translation": 323
         },
         {
           "plate": 128,
           "description": "Flower-bed in shape of eagle",
-          "page_1499": 313
-        },
-        {
-          "plate": 129,
-          "description": "Flower-bed: two birds on a vase",
-          "page_1499": 317
-        },
-        {
-          "plate": 130,
-          "description": "Trophy of Roman arms with winged genius head",
-          "page_1499": 317
-        },
-        {
-          "plate": 131,
-          "description": "Trophy: tunic with winged genius head and laurel",
-          "page_1499": 317
-        },
-        {
-          "plate": 132,
-          "description": "Trophy: tiger-skin and bull's head",
-          "page_1499": 319
-        },
-        {
-          "plate": 133,
-          "description": "Trophy: disk with wings, tablet 'Quis evadet?'",
-          "page_1499": 319
-        },
-        {
-          "plate": 134,
-          "description": "Trophy with gold wings and tablet 'Nemo'",
-          "page_1499": 319
-        },
-        {
-          "plate": 135,
-          "description": "Trophy with gold wings and floating ribbons",
-          "page_1499": 319
-        },
-        {
-          "plate": 136,
-          "description": "Trophy: laurel wreath with Cupid, tablet 'Gained by spear'",
-          "page_1499": 321
+          "page_1499": 313,
+          "page_translation": 323
         }
       ],
       "plates_from": "page-range",
@@ -4236,64 +4396,118 @@
       },
       "plates": [
         {
+          "plate": 129,
+          "description": "Flower-bed: two birds on a vase",
+          "page_1499": 317,
+          "page_translation": 327
+        },
+        {
+          "plate": 130,
+          "description": "Trophy of Roman arms with winged genius head",
+          "page_1499": 317,
+          "page_translation": 327
+        },
+        {
+          "plate": 131,
+          "description": "Trophy: tunic with winged genius head and laurel",
+          "page_1499": 317,
+          "page_translation": 327
+        },
+        {
+          "plate": 132,
+          "description": "Trophy: tiger-skin and bull's head",
+          "page_1499": 319,
+          "page_translation": 329
+        },
+        {
+          "plate": 133,
+          "description": "Trophy: disk with wings, tablet 'Quis evadet?'",
+          "page_1499": 319,
+          "page_translation": 329
+        },
+        {
+          "plate": 134,
+          "description": "Trophy with gold wings and tablet 'Nemo'",
+          "page_1499": 319,
+          "page_translation": 329
+        },
+        {
+          "plate": 135,
+          "description": "Trophy with gold wings and floating ribbons",
+          "page_1499": 319,
+          "page_translation": 329
+        },
+        {
+          "plate": 136,
+          "description": "Trophy: laurel wreath with Cupid, tablet 'Gained by spear'",
+          "page_1499": 321,
+          "page_translation": 331
+        },
+        {
           "plate": 137,
           "description": "Superb nymph figure with javelin",
-          "page_1499": 327
+          "page_1499": 327,
+          "page_translation": 337
         },
         {
           "plate": 138,
           "description": "Vase with dragon-handle monsters",
-          "page_1499": 330
+          "page_1499": 330,
+          "page_translation": 340
         },
         {
           "plate": 139,
           "description": "Small precious stone vase with fiery sparks",
-          "page_1499": 331
+          "page_1499": 331,
+          "page_translation": 341
         },
         {
           "plate": 140,
           "description": "Earthenware amphora with odoriferous fumes",
-          "page_1499": 331
+          "page_1499": 331,
+          "page_translation": 341
         },
         {
           "plate": 141,
           "description": "Terminal figure with three male heads",
-          "page_1499": 334
+          "page_1499": 334,
+          "page_translation": 344
         },
         {
           "plate": 142,
           "description": "Trophy with three heads of Cerberus and serpent",
-          "page_1499": 334
+          "page_1499": 334,
+          "page_translation": 344
         },
         {
           "plate": 143,
           "description": "Triumph of Cupid: nymphs, satyrs, dragons, captives (left)",
-          "page_1499": 337
+          "page_1499": 337,
+          "page_translation": 347
         },
         {
           "plate": 144,
           "description": "Triumph of Cupid (right continuation)",
-          "page_1499": 337
+          "page_1499": 337,
+          "page_translation": 347
         },
         {
           "plate": 145,
           "description": "Column base with rams' heads and sacrifice medallion",
-          "page_1499": 339
+          "page_1499": 339,
+          "page_translation": 349
         },
         {
           "plate": 146,
           "description": "Frieze ornament: bull with nude figure and satyrs",
-          "page_1499": 339
+          "page_1499": 339,
+          "page_translation": 349
         },
         {
           "plate": 147,
           "description": "The Amphitheatre in island of Venus",
-          "page_1499": 341
-        },
-        {
-          "plate": 148,
-          "description": "Ground-plan of fountain of Venus",
-          "page_1499": 349
+          "page_1499": 341,
+          "page_translation": 351
         }
       ],
       "plates_from": "page-range",
@@ -4964,19 +5178,10 @@
       },
       "plates": [
         {
-          "plate": 149,
-          "description": "Fountain of Venus: water from sarcophagus of Adonis",
-          "page_1499": 363
-        },
-        {
-          "plate": 150,
-          "description": "Statue of Venus on Tomb of Adonis with nymphs",
-          "page_1499": 365
-        },
-        {
-          "plate": 151,
-          "description": "Poliphilus and Polia at Fountain of Venus with nymphs",
-          "page_1499": 365
+          "plate": 148,
+          "description": "Ground-plan of fountain of Venus",
+          "page_1499": 349,
+          "page_translation": 359
         }
       ],
       "plates_from": "page-range",
@@ -5305,7 +5510,27 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 149,
+          "description": "Fountain of Venus: water from sarcophagus of Adonis",
+          "page_1499": 363,
+          "page_translation": 373,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p363 'sopra il fonte. Nelquale ... uno serpe aureo' = our p.373 (ch. XXIV)"
+        },
+        {
+          "plate": 150,
+          "description": "Statue of Venus on Tomb of Adonis with nymphs",
+          "page_1499": 365,
+          "page_translation": 375
+        },
+        {
+          "plate": 151,
+          "description": "Poliphilus and Polia at Fountain of Venus with nymphs",
+          "page_1499": 365,
+          "page_translation": 375
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -5511,13 +5736,7 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [
-        {
-          "plate": 152,
-          "description": "Polia in temple of Diana; Poliphilus prostrate (Book II)",
-          "page_1499": 387
-        }
-      ],
+      "plates": [],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -5779,24 +5998,20 @@
       },
       "plates": [
         {
+          "plate": 152,
+          "description": "Polia in temple of Diana; Poliphilus prostrate (Book II)",
+          "page_1499": 386,
+          "page_translation": 396,
+          "page_corrected_from": 387,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
           "plate": 153,
           "description": "Polia drags prostrate Poliphilus from sanctuary",
-          "page_1499": 389
-        },
-        {
-          "plate": 154,
-          "description": "Dream of Polia: Cupid punishes two women",
-          "page_1499": 391
-        },
-        {
-          "plate": 155,
-          "description": "Cupid brandishes sword over kneeling victim",
-          "page_1499": 392
-        },
-        {
-          "plate": 156,
-          "description": "Lion, dog, dragon devour victims; Cupid flies above",
-          "page_1499": 393
+          "page_1499": 387,
+          "page_translation": 397,
+          "page_corrected_from": 389,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -6145,7 +6360,28 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 154,
+          "description": "Dream of Polia: Cupid punishes two women",
+          "page_1499": 390,
+          "page_translation": 400,
+          "page_corrected_from": 391,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
+          "plate": 155,
+          "description": "Cupid brandishes sword over kneeling victim",
+          "page_1499": 392,
+          "page_translation": 402
+        },
+        {
+          "plate": 156,
+          "description": "Lion, dog, dragon devour victims; Cupid flies above",
+          "page_1499": 393,
+          "page_translation": 403
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -6488,28 +6724,7 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [
-        {
-          "plate": 157,
-          "description": "Poliphilus as dead; Polia kneels in grief",
-          "page_1499": 411
-        },
-        {
-          "plate": 158,
-          "description": "Poliphilus revived in Polia's lap; embracing",
-          "page_1499": 412
-        },
-        {
-          "plate": 159,
-          "description": "Priestesses drive lovers from Temple of Diana",
-          "page_1499": 413
-        },
-        {
-          "plate": 160,
-          "description": "Polia in bed-chamber; Diana vs Venus vision in sky",
-          "page_1499": 415
-        }
-      ],
+      "plates": [],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -6714,19 +6929,28 @@
       },
       "plates": [
         {
-          "plate": 161,
-          "description": "Polia kneels before Venus priestess; Poliphilus beside",
-          "page_1499": 419
+          "plate": 157,
+          "description": "Poliphilus as dead; Polia kneels in grief",
+          "page_1499": 411,
+          "page_translation": 421
         },
         {
-          "plate": 162,
-          "description": "Enamoured couple kneeling before priestess",
-          "page_1499": 419
+          "plate": 158,
+          "description": "Poliphilus revived in Polia's lap; embracing",
+          "page_1499": 412,
+          "page_translation": 422
         },
         {
-          "plate": 163,
-          "description": "Priestess enthroned; lovers kissing in her presence",
-          "page_1499": 425
+          "plate": 159,
+          "description": "Priestesses drive lovers from Temple of Diana",
+          "page_1499": 413,
+          "page_translation": 423
+        },
+        {
+          "plate": 160,
+          "description": "Polia in bed-chamber; Diana vs Venus vision in sky",
+          "page_1499": 415,
+          "page_translation": 425
         }
       ],
       "plates_from": "page-range",
@@ -6935,7 +7159,20 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 161,
+          "description": "Polia kneels before Venus priestess; Poliphilus beside",
+          "page_1499": 419,
+          "page_translation": 429
+        },
+        {
+          "plate": 162,
+          "description": "Enamoured couple kneeling before priestess",
+          "page_1499": 419,
+          "page_translation": 429
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -7120,14 +7357,11 @@
       },
       "plates": [
         {
-          "plate": 164,
-          "description": "Poliphilus writing at carved desk",
-          "page_1499": 433
-        },
-        {
-          "plate": 165,
-          "description": "Polia reading lover's letter in bed-chamber",
-          "page_1499": 435
+          "plate": 163,
+          "description": "Priestess enthroned; lovers kissing in her presence",
+          "page_1499": 425,
+          "page_translation": 435,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p425 'sauiando, sorbiculante ... morsiunculo' = our p.435 (ch. XXXI)"
         }
       ],
       "plates_from": "page-range",
@@ -7298,7 +7532,14 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 164,
+          "description": "Poliphilus writing at carved desk",
+          "page_1499": 433,
+          "page_translation": 443
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {
@@ -7454,19 +7695,10 @@
       },
       "plates": [
         {
-          "plate": 166,
-          "description": "Poliphilus before Venus in clouds; Cupid listens",
-          "page_1499": 447
-        },
-        {
-          "plate": 167,
-          "description": "Cupid with bust of Polia and arrow",
-          "page_1499": 448
-        },
-        {
-          "plate": 168,
-          "description": "Cupid shoots arrow at bust of Polia",
-          "page_1499": 448
+          "plate": 165,
+          "description": "Polia reading lover's letter in bed-chamber",
+          "page_1499": 435,
+          "page_translation": 445
         }
       ],
       "plates_from": "page-range",
@@ -7840,7 +8072,26 @@
         "file": "translation/en/page_NNN.md",
         "note": "page numbers ARE the 1499's, so they line up with hp.db"
       },
-      "plates": [],
+      "plates": [
+        {
+          "plate": 166,
+          "description": "Poliphilus before Venus in clouds; Cupid listens",
+          "page_1499": 447,
+          "page_translation": 457
+        },
+        {
+          "plate": 167,
+          "description": "Cupid with bust of Polia and arrow",
+          "page_1499": 448,
+          "page_translation": 458
+        },
+        {
+          "plate": 168,
+          "description": "Cupid shoots arrow at bust of Polia",
+          "page_1499": 448,
+          "page_translation": 458
+        }
+      ],
       "plates_from": "page-range",
       "tour_stops": [
         {

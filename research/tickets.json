@@ -22,7 +22,7 @@
       "id": "bug-plate-page-seq-offset",
       "title": "woodcut_catalog.page_seq runs ~10 pages behind the text it illustrates, so the ledger attaches plates to the wrong chapters",
       "kind": "bug",
-      "status": "open",
+      "status": "done",
       "priority": 1,
       "evidence": "Found independently by five chapter researchers on 2026-09-17 and confirmed each time by opening the scan and matching its printed Italian verbatim against translation/en/, not by inference. hp1499_p386.jpg's text is our p. 396 word for word; hp1499_p421.jpg's text is our p. 431; hp1499_p433.jpg's is our p. 443; hp1499_p435.jpg's is our p. 446; hp1499_p447.jpg's is our p. 457; hp1499_p341.jpg carries the Area-of-32-paces passage, which is our p. 351. The offset is about ten pages -- five leaves, consistent with the preliminaries -- and it is a property of the CATALOGUE's numbering, not of the scans. coverage_seed.py derives chapters[].plates by matching page_seq into a chapter's pages_1499 range, so every plate in Book II and much of Book I is filed one chapter early. Concrete wrong attributions already in the ledger: #152-153 (Polia reading as he dies; Polia dragging the corpse) dropped from ch. XXVI entirely; #157-160 filed under XXVIII when they illustrate XXIX; #161-162 missing from XXX; #164-165 filed under XXXI when they belong to XXXII-XXXIII; #166-168 filed under XXXIII when they belong to XXXV; #149-150 filed under XXII-XXIII when they show ch. XXIV's sepulchre of Adonis.",
       "acceptance": "coverage_seed.py resolves a plate to a chapter through a corrected page mapping rather than raw page_seq, and all eight attributions listed in the evidence come out right when the seeder is re-run. A regression test asserts that plate #153 (Polia dragging the corpse) lands on chapter XXVI and plate #163 (the kiss before the priestess) on chapter XXXI.",
@@ -37,7 +37,9 @@
         "ROUTER.md",
         "HPTOTOURPIPELINE.md"
       ],
-      "opened": "2026-09-17"
+      "opened": "2026-09-17",
+      "closed": "2026-09-20",
+      "resolution": "MEASURED, then fixed. The correction is ONE CONSTANT across the whole book -- not a step function, and with no break at the Book I/II seam: our translation page = hp.db page_seq + 10. hp.db counts from a1r, the leaf the text begins on; translation/en counts from the title page, ten pages (five unsigned preliminary leaves) earlier. Eight scan/page pairs were checked on 2026-09-20 by opening hp1499_pNNN.jpg and matching its printed Italian word for word against translation/en/page_NNN.md, spanning chapters I, XVII, XXI, XXIV, XXVI, XXXI and XXXIII: p4 (\"peruenuto nella uastissima Hercynia silua\") = our p.14, ch. I -- so the offset is already +10 at the first woodcut in the book and does NOT start at zero and grow; p195 (the full-page rotunda section, no body text, only the gathering-signature \"n iii\" at its foot, exactly as our page describes it) = our p.205, ch. XVII; p205 (\"Et ecco cum summa ueneratione ... el rituale libro\") = our p.215, ch. XVII; p291 (\"Nello intersito mediano dilla coaequata emblematura ... tre auree hydre\") = our p.301, ch. XXI; p363 (\"sopra il fonte. Nelquale ... uno serpe aureo\", with the Adonia pergola woodcut) = our p.373, ch. XXIV, the last chapter of Book I; p387 (\"Per laqualcosa no dimota uno quantulo ... Qual conscia malefica remeare\", with the dragging woodcut) = our p.397, ch. XXVI, in Book II -- +10 on both sides of the seam; p425 (\"sauiando, sorbiculante ... morsiunculo\") = our p.435, ch. XXXI; p435 (\"lentia, dilectione & amore, oltra omni cogitato\") = our p.445, ch. XXXIII. That last pair corrects this ticket's own evidence: it recorded p435 as our p.446, a +11, and the page reads p.445. There is no +11 anywhere; the offset is uniform. Corroboration needing no scan: the only four page numbers translation/en has no file for -- 55, 90, 195, 380 -- are page_seq 45, 80, 185, 370, and 80/185/195 are exactly the book's full-page woodcuts (plates #23, #71, #72), which have no body text to translate. A SECOND and smaller error was found riding on top of the constant, and is the reason a flat shift alone does not satisfy the acceptance: woodcut_catalog.page_seq is itself only good to about +/-2 pages, because those rows were placed by subject-matching rather than observation (woodcuts.source_method is LLM_ASSISTED, and woodcut_catalog.link_basis for #153 says so in words -- \"subject match on 1499 page 389: shared terms drags, polia, poliphilus, prostrate, sanctuary\"). Opening the pages shows #153 is printed on p387, not p389 (p389 is unbroken text, signature \"B ii\", no woodcut at all); #152 on p386, not p387; #154 on p390, not p391. Only #153 changes chapter as a result. So the fix is the constant PAGE_SEQ_TO_TRANSLATION = 10 plus a three-entry PLATE_PAGE_FIXES table in scripts/coverage_seed.py holding only plates whose page was actually seen on the scan, each with the line of Italian that identifies it. After re-seeding, all 168 plates attach to a chapter and none are left unattached (was 165 attached, 3 unattached), and every attribution in this ticket's evidence comes out right: #152-153 in XXVI, #157-160 in XXIX, #161-162 in XXX, #164 in XXXII and #165 in XXXIII, #166-168 in XXXV, #149-150 in XXIV. One correction to the evidence: #153 was NOT dropped from XXVI -- under the old code page_seq 389 happened to fall inside XXVI's range, so it was right by accident; it is now right for the right reason, on its true page. check_plates() in coverage_seed.py asserts all sixteen plate->chapter pairs on every seed and aborts the run if any moves; reinstating the bug in-process was confirmed to make it fire, reproducing this ticket's wrong-attribution list exactly, so the assertion is not vacuous. src/data/tours.json was NOT touched: coverage_seed.py only reads it, in tour_stops(); it is an input to the seeder and never an output. No live-page verification applies -- this is a research-ledger and tooling change with no rendering surface."
     },
     {
       "id": "bug-dallington-page-drift",
@@ -1043,6 +1045,46 @@
       "refs": [
         "bug-tours-prose-ahead-of-geometry",
         "HPTOTOURPIPELINE.md"
+      ],
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "bug-concordance-section-drift",
+      "title": "hp.db page_concordance.section boundaries drift progressively early, by 116 pages at Book II",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Found 2026-09-20 while closing bug-plate-page-seq-offset. page_concordance.section gives each narrative section a page_seq range, and those ranges agree exactly with the pages of the plates belonging to them for DARK_FOREST, PYRAMID_RUINS, DRAGON_PORTAL, FIVE_SENSES and PROCESSION -- and then run progressively early: QUEEN_PALACE by 4 pages, JOURNEY_DOORS by 13, VENUS_TEMPLE by 17, POLYANDRION by 47, CYTHERA_VOYAGE by 59, CYTHERA_GARDENS by 74, VENUS_FOUNTAIN by 83, BOOK_II_POLIA by 116. The section table says Book II begins at page_seq 271; it begins at page_seq 371, measured by opening the scans -- hp1499_p363.jpg is our p.373 and still chapter XXIV (Book I), hp1499_p387.jpg is our p.397 and already chapter XXVI (Book II), and Book II opens at our p.381 (\"POLIPHILO BEGINS THE SECOND BOOK OF HIS HYPNEROTOMACHIA\") = page_seq 371. This is NOT the +10 preliminaries offset and shifting by it does not repair it: the early sections are correct at +0, so the error is a progressive compression, not a constant. Related: page_concordance's signature labels are wrong in the same region -- it calls page_seq 387 'C6r' and 389 'C7r', while the scans of those pages are plainly signed 'B' and 'B ii', and it stops at page_seq 448 when the book runs to at least 457 (our p.467, the errata and Aldine colophon). The quire model behind the table appears to be a reconstruction that assumes uniform eight-leaf gatherings.",
+      "acceptance": "Either page_concordance.section is superseded by a measured section table beside coverage_seed.py, or sections_1499 is dropped from the ledger. Machine-checkable: for every narrative_section in woodcut_catalog, the section's page range contains the pages of all its plates. The corpus at C:\\Dev\\hypnerotomachia polyphili is read-only from here, so no fix may be written into hp.db.",
+      "risk": "Low to leave open: nothing reads sections_1499 today except coverage_seed.py, which emits it, and a caveat now travels with it in the ledger and in the sections() docstring. It is dangerous only if someone uses a section boundary to decide which chapter a page belongs to -- which is precisely the mistake bug-plate-page-seq-offset was. Fixing it needs measurement at roughly a dozen more scans, not reasoning.",
+      "files": [
+        "scripts/coverage_seed.py",
+        "research/coverage.json"
+      ],
+      "role": "hp-researcher",
+      "refs": [
+        "HPTOTOURPIPELINE.md",
+        "bug-plate-page-seq-offset"
+      ],
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "bug-woodcut-catalog-page-jitter",
+      "title": "woodcut_catalog.page_seq is subject-matched, not observed, and is good only to about +/-2 pages",
+      "kind": "bug",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Found 2026-09-20 while closing bug-plate-page-seq-offset. woodcut_catalog rows were placed on pages by subject-matching against the woodcuts table, whose source_method is LLM_ASSISTED; woodcut_catalog.link_basis records it, e.g. #153 \"subject match on 1499 page 389: shared terms drags, polia, poliphilus, prostrate, sanctuary\", and 20 rows carry a link_basis beginning \"unresolved\". Opening scans shows the drift is real: #152 is printed on p386 not p387, #153 on p387 not p389, #154 on p390 not p391. Worse, #165 (\"Polia reading lover's letter in bed-chamber\") is catalogued at page_seq 435 and hp1499_p435.jpg is unbroken text with no woodcut on it at all (signature \"E\"), so that row's page is simply wrong and its true page is not yet known. The catalogue and the woodcuts table also disagree with each other outright on 13 plates (#79, #80, #81, #83, #102, #104, #107, #124, #140, #149, #154, #156, #162), by up to 11 pages. This matters for the ledger only where a plate sits within a page or two of a chapter boundary; 64 of the 168 plates do. Eight plates have now been opened on the scan: #152, #153 and #154 were corrected, and #1, #72, #76, #149 and #163 were confirmed as catalogued. Five of those eight (#1, #152, #153, #154, #163) are among the 64 sitting near a boundary; the other 59 near-boundary plates have not been looked at.",
+      "acceptance": "Every plate that resolves within 3 pages of a chapter boundary has had its scan opened and its page either confirmed or corrected in PLATE_PAGE_FIXES in scripts/coverage_seed.py, with the identifying line of Italian recorded in the comment. Machine-checkable: no plate in coverage.json lacks page_checked while resolving within 3 pages of a chapter boundary. Nothing is written into hp.db, which is read-only here.",
+      "risk": "The failure mode is a plate filed one chapter off, which is a research-ledger error rather than a build error -- but it is exactly the class of error that hides work, so it should not be inferred away. Do not guess a plate's page from the surrounding text or from the woodcuts table; both were already wrong here. Open the scan.",
+      "files": [
+        "scripts/coverage_seed.py",
+        "research/coverage.json"
+      ],
+      "role": "hp-researcher",
+      "refs": [
+        "HPTOTOURPIPELINE.md",
+        "bug-plate-page-seq-offset"
       ],
       "opened": "2026-09-20"
     }

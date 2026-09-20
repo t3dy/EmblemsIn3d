@@ -204,7 +204,7 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*55 calls. Each links to its full text in the archive.*
+*56 calls. Each links to its full text in the archive.*
 
 
 **2026-09-17**
@@ -214,6 +214,7 @@ say plainly that both early editions withheld what you are looking at.
 - [56. Stage 1 of the true-scale plan built: SPREAD = 4](decisions/2026-09.md#2026-09-17--56-stage-1-of-the-true-scale-plan-built-spread--4)
 - [58. Roll mode’s HUD says where you are on the ladder; the wedding takes two seconds; the fanfare stays silent](decisions/2026-09.md#2026-09-20--58-roll-modes-hud-says-where-you-are-on-the-ladder-the-wedding-takes-two-seconds-the-fanfare-stays-silent) — the gauge’s ruler is **linear** and the crowding at the bottom is the ladder’s own shape; the fanfare is refused under the 2026-09-04 silence call and filed as a question; `tune.camBase`/`camScale` exist, defaults unchanged
 - [57. The roll-mode build that landed in the Atalanta repo is abandoned, not ported; its page stays up](decisions/2026-09.md#2026-09-20--57-the-roll-mode-build-that-landed-in-the-atalanta-repo-is-abandoned-not-ported-its-page-stays-up) — **zero lines salvaged**; the handover's own baseline was wrong in four places
+- [59. There are two page numberings, ten pages apart; and a page is placed by opening the scan, not by trusting a column](decisions/2026-09.md#2026-09-20--59-there-are-two-page-numberings-ten-pages-apart-and-a-page-is-placed-by-opening-the-scan-not-by-trusting-a-column) — our translation page = `hp.db` `page_seq` **+ 10**, one constant, **no step at the Book I/II seam**; `hp.db` is authoritative for *what* a plate shows and unreliable for *where* it sits — `woodcut_catalog.page_seq` is LLM subject-matched (±2 pages) and `page_concordance.section` is 116 pages out at Book II
 
 **2026-09-13**
 
