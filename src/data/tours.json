@@ -1122,10 +1122,10 @@
       },
       {
         "station": "priapus",
-        "title": "The Altar of the Seasons — where the English breaks off",
+        "title": "The Altar of the Seasons — the hand-off to our translation",
         "chapter": "XVI",
         "half": "dallington",
-        "lede": "The rustic triumphs move on toward the rites; the offerings are prepared; the procession approaches the altar of the Seasons. And there, on facsimile page 193, in the middle of a sentence, at the word *Mustulento*, Robert Dallington's 1592 English stops. It was the only public-domain English the book had, and for four centuries everything past this point — the temple, the tombs, the whole of Cythera, all of Polia's own telling — existed in English only under copyright. **The next stop is the first sentence of our translation.**",
+        "lede": "The rustic triumphs move on toward the rites; the offerings are prepared; the procession approaches the altar of the Seasons. Robert Dallington's 1592 English does not break off here: *Mustulento Autumno S.* is a complete Latin dedication under the altar's Autumn face, not a severed sentence, and his English runs on afterward for some pages yet, through a seaside ruined temple and a full blazon of Polia's beauty, before it closes with a formal **FINIS** — a deliberate stop, not an abandonment, and the reason his 1592 edition covers under half of Colonna's Italian. That stretch of his public-domain English, between this altar and his actual FINIS, is still unread by this project (see the open research ticket). **The next stop is still the first sentence of our own translation** — this project's choice of hand-off point, not the point where Dallington's manuscript gave out.",
         "wc": [],
         "notes": [
           {
@@ -1138,7 +1138,7 @@
           },
           {
             "type": "literary",
-            "text": "The break is not a decision, it is an abandonment mid-clause. *Mustulento* — 'of new wine', from *mustum* — is the last word he set. The vintage was being described when the English gave out."
+            "text": "**This was not an abandonment.** *Mustulento* — 'of new wine', from *mustum* — is not Dallington's last word: it is one word into the complete tag *Mustulento Autumno S.*, and his English runs on past it, through the seaside temple and the blazon of Polia, to a formal **FINIS** (Hypnerotomachia_by_Francesco_Colonna.md, lines 10926–11127 in the project's corpus copy). Choosing this altar as the hand-off to our own translation is this project's own pacing decision, not a point where his manuscript gave out."
           },
           {
             "type": "gloss",
@@ -1146,7 +1146,7 @@
           },
           {
             "type": "allegory",
-            "text": "There is an accidental fitness in where he stopped. The chapter is about the turning of the year and the pressing of the vintage — about time running out on a season — and the English runs out inside it."
+            "text": "There is a fitness in cutting over here anyway, even though the English does not actually give out at this altar: the face under discussion is Autumn's, mid-vintage, and this project hands off from Dallington's hand to its own at exactly the turn of a season — a chosen fitness, not an accidental one."
           },
           {
             "type": "context",
@@ -1447,7 +1447,7 @@
         "title": "The Triumph of Cupid and the Theatre of Venus",
         "chapter": "XXII",
         "half": "ours",
-        "lede": "The whole world has been built to walk toward this. A triumph of Cupid, hung with the disarmed trophies of the gods — one of them lettered *Quis evadet? — Nemo*, \"Who escapes? No one\" — leads the lovers to an obsidian-floored amphitheatre of planted tiers. At its centre stands the most-holy fountain; the curtain before the goddess is drawn away, and Venus is revealed in her majesty, her doves bathing her in spray as the water dripped from Bacchus and Ceres beside her.",
+        "lede": "The whole world has been built to walk toward this. A triumph of Cupid, hung with the disarmed trophies of the gods — one of them lettered *Quis evadet? — Nemo*, \"Who escapes? No one\" — leads the lovers to an obsidian-floored amphitheatre of planted tiers. At its centre stands the most-holy fountain; the curtain before the goddess is drawn away, and Venus is revealed in her majesty in the salt spring. The book adds doves bathing her in spray and a seated Bacchus and Ceres dripping their liquor into the water beside her (translation/en/page_363.md) — figures this world does not yet build; see the note below.",
         "quote": "The white doves dipped their golden bills in the spotless waters and bedewed the little Cytherean body, and the droplets showed on her translucent flesh as nothing other than orient pearls.",
         "quoteAttr": "The Fountain of Venus revealed (ch. XXIII)",
         "notes": [
@@ -1461,7 +1461,7 @@
           },
           {
             "type": "myth",
-            "text": "Bacchus and Ceres flank the fountain, dripping their liquor in: Terence's proverb *sine Cerere et Baccho friget Venus* — without bread and wine, love grows cold. The powers of generation gathered around their queen."
+            "text": "**The book seats Bacchus and Ceres at the fountain's rim; this world does not build them.** At translation/en/page_363.md, above the topmost step, the wine-god Nyctelius and a wheat-crowned Ceres sit at their ease, each holding a sphere that drips 'a most sweet, foaming and potent liquor' into the water — Terence's proverb *sine Cerere et Baccho friget Venus*, without bread and wine, love grows cold. What the fountain built here actually carries is chapter XXIII's own programme: the seven planetary columns, the Venus figure standing in the basin, and the torn curtain of Hymen. The seated pair, the Three Graces beside them (Eurydomene, Eurymone, Eurymeduse), the dove-nymph Peristeria, and Adonis's anemone at the rim are all named in the text and none of them stand here yet."
           },
           {
             "type": "allegory",
@@ -1473,7 +1473,7 @@
           },
           {
             "type": "alchemical",
-            "text": "At Venus's fountain, Hand E glossed the Bacchus and Ceres who flank it as Sol and Luna — gold and silver, the male and female metals — their wine and bread the 'occult virtue' that feeds the union. (Russell, 2014, p. 188.)"
+            "text": "The same page (translation/en/page_363.md) has annotator **Hand E** gloss the seated Bacchus and Ceres alchemically — *Bacchus et Ceres id est sol et luna* — gold and silver, the male and female metals, their dripped liquor the 'occult virtue' that feeds the union (`hp.db.folio_descriptions` c6v; Russell, 2014, p. 188). The pairing is textual and annotational, not modelled: no seated Bacchus, Ceres or dripping vessel stands at this fountain yet."
           },
           {
             "type": "literary",

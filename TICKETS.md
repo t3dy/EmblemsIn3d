@@ -6,7 +6,7 @@
 
 ---
 
-**49 tickets** — 11 open, 2 question, 3 declined, 33 done. By kind: 22 debt, 13 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**50 tickets** — 11 open, 2 question, 3 declined, 34 done. By kind: 23 debt, 13 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -88,23 +88,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **See.** ROUTER.md
 
 
-### `bug-tours-prose-ahead-of-geometry` — Tour commentary describes scenes that were never built
-
-**○ open** · bug · priority 2 · hp-builder
- · opened 2026-09-17
-
-
-**Evidence.** Two independent instances found on 2026-09-17 while enumerating chapters XXIII and XV. (1) The Fountain of Venus stop in src/data/tours.json describes Bacchus and Ceres standing at the fountain dripping their liquor into it, quoting the Hand-E alchemical gloss as though the figures were in front of you; grep of world/temple.js _buildFountain and world/cythera.js finds no such figures anywhere. (2) The priapus stop states as fact that Dallington's English 'stops in the middle of a sentence, at the word Mustulento' -- it does not: Mustulento Autumno S. is a complete Latin tag under one face of the Four Seasons altar, and the English runs on for several hundred more lines through a seaside ruined temple and a full blazon of Polia, ending on FINIS. Both were found by reading the page rather than the commentary about it.
-
-**Acceptance.** Neither claim stands: the Bacchus-and-Ceres sentence either describes built geometry or is rewritten to say what is actually there, and the Mustulento claim is corrected. A sweep of tours.json for present-tense descriptions of figures reports every one whose name does not appear in any builder.
-
-**Risk.** The second one is not only a copy fix: it means there is public-domain English for the seaside temple and the blazon of Polia that the project has been telling itself does not exist. Closing the ticket by editing the sentence alone would bury that.
-
-**Files.** `src/data/tours.json`
-
-**See.** ROUTER.md
-
-
 ### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
 
 **○ open** · infra · priority 2 · hp-builder
@@ -120,6 +103,23 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
+
+
+### `debt-dallington-tail-unread` — Dallington's English runs past the Four Seasons altar to a formal FINIS -- unread and unenumerated
+
+**○ open** · debt · priority 3 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 while closing bug-tours-prose-ahead-of-geometry. tours.json had told itself Dallington's 1592 English breaks off mid-sentence at 'Mustulento' (facsimile p. 193), and that everything past that point existed in English only under copyright. It does not: in the project's corpus copy, C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md, 'Mustulento Autumno S.' is a complete altar-tag at line 10926, immediately followed by Winter's tag at line 10936, completing the Four Seasons altar. Dallington's English then runs on: the nymph leads Poliphilo 'towards the sea side and sandie shore, where we came to an olde decaied temple' (lines 10937-10947, e-text pp. 256-257), then gives a full blazon of Polia's beauty -- starry forehead, feet, neck with a pearl carkenet, breasts as a 'delicious vallie' -- (lines ~11004-11031, e-text pp. 258-259), and closes with a formal 'FINIS.' at line 11127 (e-text p. 260). The transcriber's own technical notes begin immediately after, at line 11129 ('Technical Notes and further information ... Note that the 1592 English translation covers just under half the Italian text'), confirming this FINIS is the actual end of Dallington's whole 1592 translation, not a chapter break. So there is roughly 200 lines of genuine public-domain 1592 English -- a seaside ruined temple and a complete blazon of Polia -- that this project has never read end-to-end or enumerated into research/coverage.json, and the tour has been telling readers it doesn't exist.
+
+**Acceptance.** An hp-researcher pass reads Hypnerotomachia_by_Francesco_Colonna.md lines 10926-11127 end-to-end against the corresponding 1499 Italian/our translation, enumerates the seaside ruined temple and the blazon of Polia into research/coverage.json chapter by chapter, and records whether either scene is already covered by existing built geometry (the mainland grove, an existing tomb or portrait station) or is a genuine gap.
+
+**Risk.** Closing bug-tours-prose-ahead-of-geometry by editing the Mustulento sentence alone, without opening this ticket, would have buried the fact that this stretch of public-domain English exists and has never been read by this project -- exactly the risk that ticket's own risk note warned against.
+
+**Files.** `C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md` · `research/coverage.json`
+
+**See.** bug-tours-prose-ahead-of-geometry · HPTOTOURPIPELINE.md
 
 
 ### `debt-plaque-subtitles-too-long` — Twenty-two plaque subtitles are longer than a stone can hold; two lines fixes 21 of them
@@ -692,6 +692,25 @@ WHAT IS NOT FIXED: the belt still overlaps the mountain and the glass garden. Gi
 **Files.** `src/scenes/world/approach.js` · `src/scenes/world/constants.js`
 
 **See.** DECISIONS.md 2026-09-09 the Great Portal at scale · DIRECTIONS.md
+
+
+### `bug-tours-prose-ahead-of-geometry` — Tour commentary describes scenes that were never built
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-17, closed 2026-09-20
+
+
+**Evidence.** Two independent instances found on 2026-09-17 while enumerating chapters XXIII and XV. (1) The Fountain of Venus stop in src/data/tours.json describes Bacchus and Ceres standing at the fountain dripping their liquor into it, quoting the Hand-E alchemical gloss as though the figures were in front of you; grep of world/temple.js _buildFountain and world/cythera.js finds no such figures anywhere. (2) The priapus stop states as fact that Dallington's English 'stops in the middle of a sentence, at the word Mustulento' -- it does not: Mustulento Autumno S. is a complete Latin tag under one face of the Four Seasons altar, and the English runs on for several hundred more lines through a seaside ruined temple and a full blazon of Polia, ending on FINIS. Both were found by reading the page rather than the commentary about it.
+
+**Acceptance.** Neither claim stands: the Bacchus-and-Ceres sentence either describes built geometry or is rewritten to say what is actually there, and the Mustulento claim is corrected. A sweep of tours.json for present-tense descriptions of figures reports every one whose name does not appear in any builder.
+
+**Risk.** The second one is not only a copy fix: it means there is public-domain English for the seaside temple and the blazon of Polia that the project has been telling itself does not exist. Closing the ticket by editing the sentence alone would bury that.
+
+**Resolution.** Both claims fixed in src/data/tours.json, prose-only, no rendering change. (1) The Theatre-of-Venus/Fountain-of-Venus stop (station cythera_theatre, ch. XXII) had a lede and two notes (myth, alchemical) presenting Bacchus and Ceres as physically flanking the fountain, dripping liquor, with Hand E's Sol/Luna gloss quoted as though the figures were built. Confirmed by grep that temple.js _buildFountain and cythera.js build only the seven planetary columns, the Venus statue in the basin, and the torn curtain of Hymen -- no Bacchus, Ceres, Graces, Peristeria or doves. The text does describe them (translation/en/page_363.md, confirmed against Hand E's gloss at hp.db.folio_descriptions c6v), so the lede and both notes were reframed to say the book seats them there and this world does not yet build them, rather than presenting them as in front of the viewer. (2) The priapus stop (station priapus, ch. XVI) claimed as fact that Dallington's 1592 English 'stops in the middle of a sentence, at the word Mustulento'. Verified against C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md: Mustulento Autumno S. (line 10926) is a complete Latin altar-tag, immediately followed by Winter's tag (line 10936), and Dallington's English runs on for ~200 more lines through a seaside ruined temple (lines 10937-10947) and a full blazon of Polia's beauty (lines ~11004-11031) to a formal FINIS (line 11127) -- confirmed as the true end of his whole 1592 translation by the transcriber's endnotes starting line 11129. Rewrote the stop's title, lede, and the literary and allegory notes to say the hand-off to this project's own translation happens at this altar by editorial choice, not because Dallington's manuscript gave out mid-clause. Opened debt-dallington-tail-unread for the untapped seaside-temple/blazon-of-Polia passage per the ticket's own risk note. Sweep for present-tense named figures against every builder in src/scenes/world/*.js turned up no further instances beyond these two -- Priapus, the Vertumnus/Pomona car and its Four Seasons reliefs, the Cupid-triumph retinue (Synesia, Plexaura, Ganoma, Psyche), the Temple of Diana precinct, Adonis's tomb, and the Proserpina fresco all checked out against their builders. No hpDiag applies: text/data only, no geometry or rendering touched.
+
+**Files.** `src/data/tours.json`
+
+**See.** ROUTER.md
 
 
 ### `debt-roll-size-gauge` — Roll mode shows the ball's size as a bare number, so the ladder of the seven metals is invisible while you climb it
