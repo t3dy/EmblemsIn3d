@@ -819,6 +819,67 @@ export const Temple = {
       this._m(new THREE.SphereGeometry(0.19, 12, 8), mat, x, KERB + 0.1 + COL_H * 0.42, z).scale.set(1, 0.42, 1);
       this._m(new THREE.BoxGeometry(0.42, 0.12, 0.42), gold, x, KERB + 0.17 + COL_H, z, { ry: -a });
 
+      // ── The coniunctio, set into the middle of every shaft (ch. XXIII) ──
+      //
+      //   "In the middle of the shaft of the seventh, the beryl column, on the
+      //    inner face, there was marvellously carved out of that same stone ...
+      //    a little Hermaphrodite child, held in a socket. The three shining
+      //    columns of the right-hand order had likewise, each of them, an
+      //    infant boy caught in a kind of receptacle; and so too on the shaft
+      //    of each of the precious columns of the left there hung, set into it,
+      //    the female sex."          — translation/en/page_360.md (ours, CC0)
+      //
+      // Our translator's note calls this the alchemical heart of the fountain:
+      // male and female resolved in the hermaphrodite, built as architecture,
+      // and the same figure the Atalanta Fugiens draws in Emblem XXXIII. The
+      // columns have stood here without it, which made the fountain a stage set
+      // for a programme it never stated.
+      //
+      // WHICH SIDE IS RIGHT is not decorative — invert it and the programme
+      // inverts. It is fixed by the approach, not by the array order. The
+      // curtain hangs between sapphire and emerald on the north face and the
+      // dreamer comes from the north, so he faces SOUTH here; facing −z with
+      // +y up, his right hand is +x. Indices 0–2 (sapphire, melilot, jasper)
+      // all have sin(a) > 0 and so stand at +x: they are the right-hand order
+      // and take the boys. Indices 4–6 (topaz, turquoise, emerald) stand at −x
+      // and take the female. The beryl (3) sits at due south, alone and
+      // hexagonal, facing the midpoint between the first two, exactly as the
+      // note describes. DIRECTIONS.md governs this.
+      //
+      // RETICENCE, AND IT IS TED'S CALL TO REVERSE: Colonna's left-hand term is
+      // anatomical — `il femineo sexo`, the female sex, not a female figure.
+      // We set a small figure of the column's own stone there, as on the right,
+      // rather than model genitalia in a walkable world. The precedent is the
+      // sacrifice to Priapus (#71), which NEXTSTEPS flags rather than builds for
+      // the same reason. The socket, the siting and the sequence are the book's;
+      // only the left-hand figure is softened, and the call is recorded in this
+      // feature's note in research/coverage.json for Ted to overrule.
+      // Cythera's fountain only, like the rite below: the mainland folio-80
+      // fountain borrows these columns as an approximation, and its own source
+      // (Dall. pp. 124–127) sets no programme in them.
+      if (enclosure) {
+        const MID_Y = KERB + 0.1 + COL_H * 0.5;
+        const inX = -Math.sin(a), inZ = -Math.cos(a);     // toward the centre
+        // the socket itself — a gold receptacle let into the inner face
+        this._m(new THREE.CylinderGeometry(0.075, 0.075, 0.03, 12), gold,
+          x + inX * 0.135, MID_Y, z + inZ * 0.135, { rx: Math.PI / 2, ry: -a, cast: false });
+        // and the figure held in it, carved "out of that same stone"
+        const kind = i === 3 ? 'hermaphrodite' : (i < 3 ? 'boy' : 'female');
+        const child = this.cast.figure({
+          h: 0.115, skin: c.stone, robe: null,
+          pose: kind === 'hermaphrodite' ? 'reach' : 'stand',
+        });
+        child.position.set(x + inX * 0.2, MID_Y - 0.1, z + inZ * 0.2);
+        child.rotation.y = a + Math.PI;                   // out of the socket, inward
+        this.scene.add(child);
+        // The seventh is the one the whole programme resolves into, so it says so.
+        if (kind === 'hermaphrodite') {
+          this._plaque({ main: 'THE HERMAPHRODITE CHILD',
+                         sub: 'CARVED OF THE BERYL ITSELF · MALE AND FEMALE MADE ONE · P. 360' },
+            1.0, 0.3, x + inX * 0.62, MID_Y + 0.46, z + inZ * 0.62, a + Math.PI, true);
+        }
+      }
+
       // the planet's name and glyph, read from outside at eye height
       this._plaque({ glyph: c.glyph, glyphColor: '#e8c860', main: c.planet, sub: c.name.toUpperCase() },
         0.72, 0.38, x + Math.sin(a) * 0.5, KERB + 0.62, z + Math.cos(a) * 0.5, a);

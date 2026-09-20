@@ -5249,12 +5249,13 @@
           "kind": "object",
           "plate": null,
           "source": "translation/en/page_360.md (p. 360)",
-          "status": "unbuilt",
-          "note": "The translation's own note calls this 'the alchemical heart of the fountain' and 'the same figure the Atalanta Fugiens draws in Emblem XXXIII' -- but grep of temple.js's column-building loop shows only the shaft, base, capital and a planet-name plaque; no embedded boy/girl/hermaphrodite figure 'held in a socket' at any column's middle exists anywhere in the codebase (grep for 'socket', 'infant', 'hermaphrodite' near the fountain code: no matches). The columns are built; their entire alchemical point is not.",
+          "status": "partial",
+          "note": "Built 2026-09-20 from translation/en/page_360.md (ours, CC0). A gold socket is let into the inner face of all seven shafts at mid-height, with a small figure of the column's own stone held in it -- infant boys on the right-hand order, the female on the left, and the Hermaphrodite child alone in the hexagonal beryl at due south, which carries a plaque. Gated on `enclosure` so it does not reach the mainland folio-80 fountain, whose own source (Dall. pp. 124-127) sets no programme in these columns. WHICH SIDE IS RIGHT was derived, not guessed: the curtain hangs on the north face and the dreamer comes from the north, so he faces -z and his right hand is +x; indices 0-2 (sapphire, melilot, jasper) have sin(a) > 0 and take the boys, 4-6 take the female. PARTIAL, and here is exactly what is and is not confirmed. CONFIRMED on the running page at main.js?v=417: a controlled raycast from the fountain centre out to each of the seven columns returns 2 hits at socket height against 1 at a 1.2 m control height, on all seven -- so an object stands in front of every shaft at mid-height and nowhere else; and the static census rose 6380 -> 6402 meshes and 4 275 192 -> 4 291 714 triangles, which is more than the 7 sockets and 1 plaque alone, so the figures were created. NOT CONFIRMED: that the child figures READ at this size. They are h 0.115 (about 0.2 m) against a 3 m column, they merge into the gem buckets so a position census cannot see them (HANDOVER 4.2), and no screenshot was possible because the render loop was stalled (the app window sat behind another window). A visual pass is owed before this goes to `built`. TED'S CALL, DELIBERATELY SOFTENED: Colonna's left-hand term is anatomical -- `il femineo sexo`, the female sex, not a female figure -- and we set a small figure there instead of modelling genitalia in a walkable world. The precedent is the sacrifice to Priapus (#71), which NEXTSTEPS flags rather than builds for the same reason. Overrule this and the fix is one branch in the coniunctio block.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain (src/scenes/world/temple.js), COLS.forEach -> the `if (enclosure)` coniunctio block"
         },
         {
           "id": "xxiii-planetary-altar-figures",
