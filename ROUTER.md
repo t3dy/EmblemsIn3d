@@ -34,6 +34,16 @@ a session.
    `src/data/af_*.js`, `lab/`, `images/emblems/`) but they are **dormant**: do not re-wire
    them, and do not add Atalanta features. **Never `git add -A src/`** — stage explicit
    paths; that habit swept an Atalanta file into an HP commit twice.
+
+   **And the repository next door is not this one.** `C:\Dev\HPin3D` is
+   `github.com/t3dy/EmblemsIn3d`; `C:\Dev\EMBLEMSIN3D` is `github.com/t3dy/emblems-in-3d`,
+   the live *Atalanta Fugiens* project. The names differ only in case and hyphens. On
+   2026-09-20 a handover's paste-block — all relative paths, no repository named — was opened
+   in the wrong one, and the session, finding none of the files it had been told about,
+   reconstructed this project's roll mode from the *prose* of a planning document and
+   published it. **`git remote -v` first, every session**, and treat a named file that is not
+   there as a contradiction to report, never a blank page to fill. Every agent brief in
+   `.claude/agents/` now opens with that check; ticket `infra-wrong-repo-preflight`.
 5. **Write directional decisions down the moment they are made** — in
    [`DECISIONS.md`](DECISIONS.md), and the standing queue in
    [`NEXTSTEPS.md`](NEXTSTEPS.md). A decision that lives only in chat gets summarised away

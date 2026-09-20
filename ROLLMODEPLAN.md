@@ -4,6 +4,15 @@
 
 **Related:** `ROLLMODE.md` (the design brief), `ROLLING.md` (growth tuning), `CRUST.md` (crust physics), `src/systems/RollUp.js` (implementation).
 
+> ⚠️ **The "Current state:" lines below are stale, and one session has already been misled by
+> them** (2026-09-20). §1.1 says the camera is at a fixed distance — it is not, it scales at
+> `r × 6`, clamped `[r × 2.4, r × 9]` (`src/systems/RollUp.js:416`, `:691`); §3.2 says the
+> collection count is not displayed — it is (`src/index.html:1203`); §3.3's stage display and
+> §4.3's score screen both exist already. **Read `HANDOVER_ROLLMODE.md` §1 for the verified
+> baseline before building anything from this file.** The *targets* here are still good; only
+> the claims about what is already built are wrong.
+
+
 ---
 
 ## 1. CAMERA MECHANICS — Scale + Distance

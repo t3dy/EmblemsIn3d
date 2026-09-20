@@ -35,6 +35,11 @@ first token of every session.
    branch `atalanta-archive` (tag `atalanta-archive-2026-09-06`). Do not
    re-import them, and do not build new Atalanta features.
    **Never `git add -A src/`** — stage explicit paths.
+   **`git remote -v` at the start of every session:** this repo is
+   `github.com/t3dy/EmblemsIn3d`. `C:\Dev\EMBLEMSIN3D` is a *different*, live project —
+   `github.com/t3dy/emblems-in-3d`, the Atalanta one — and the names differ only in case and
+   hyphens. A file your brief names that is not there is a contradiction to report, never a
+   blank page to fill. → `TICKETS.md`, `infra-wrong-repo-preflight`
 5. **Write directional decisions down immediately** — `DECISIONS.md` for calls,
    `NEXTSTEPS.md` for the standing queue. A decision that lives only in chat gets
    summarised away and re-litigated.

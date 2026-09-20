@@ -212,6 +212,7 @@ say plainly that both early editions withheld what you are looking at.
 - [54. The world is rebuilt at the book's own scale](decisions/2026-09.md#2026-09-17--54-the-world-is-rebuilt-at-the-books-own-scale-this-reverses-call-3-of-2026-09-09) — **reverses call 3 of 2026-09-09**
 - [55. Book II is built as a second place, not narrated at one station](decisions/2026-09.md#2026-09-17--55-book-ii-is-built-as-a-second-place-not-narrated-at-one-station)
 - [56. Stage 1 of the true-scale plan built: SPREAD = 4](decisions/2026-09.md#2026-09-17--56-stage-1-of-the-true-scale-plan-built-spread--4)
+- [57. The roll-mode build that landed in the Atalanta repo is abandoned, not ported; its page stays up](decisions/2026-09.md#2026-09-20--57-the-roll-mode-build-that-landed-in-the-atalanta-repo-is-abandoned-not-ported-its-page-stays-up) — **zero lines salvaged**; the handover's own baseline was wrong in four places
 
 **2026-09-13**
 

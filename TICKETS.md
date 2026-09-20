@@ -6,7 +6,7 @@
 
 ---
 
-**43 tickets** — 11 open, 3 declined, 29 done. By kind: 19 debt, 13 bug, 7 infra, 2 perf, 1 question, 1 feat.
+**48 tickets** — 15 open, 1 question, 3 declined, 29 done. By kind: 22 debt, 13 bug, 8 infra, 2 perf, 2 question, 1 feat.
 
 ---
 
@@ -29,6 +29,27 @@
 **Files.** `scripts/coverage_seed.py` · `research/coverage.json` · `src/data/tours.json`
 
 **See.** ROUTER.md · HPTOTOURPIPELINE.md
+
+
+### `infra-wrong-repo-preflight` — A handover's paste-block sent a build session into the Atalanta repo, and it built a mock of this project from the plan's prose
+
+**○ open** · infra · priority 1 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** 2026-09-20. HANDOVER_ROLLMODE.md ended with an 'Entry point for next session' block that named files by RELATIVE path (src/systems/RollUp.js) and named no repository. It was pasted into a session opened in C:\Dev\EMBLEMSIN3D -- the Atalanta Fugiens project, github.com/t3dy/emblems-in-3d -- rather than C:\Dev\HPin3D, github.com/t3dy/EmblemsIn3d. The two repository names differ only in case and hyphens.
+
+That session had no Hypnerotomachia world to build against, so instead of stopping it reconstructed one from the PROSE of ROLLMODEPLAN.md: a standalone ball on an empty 200x400 m plane, with invented physics, and with the four colour-stages NIGREDO/ALBEDO/CITRINITAS/RUBEDO in place of the seven metals this project takes from hp.db.alchemical_symbols -- contradicting section 4.1 of the very document it was built from. Three commits (4de9021, 7b82414, a009bda) and a published page at t3dy.github.io/emblems-in-3d/roll-up.html resulted. Zero lines were salvageable.
+
+Two failures compound here, and the second is the dangerous one: (1) nothing made the session check which repo it was in; (2) nothing made it stop when the files the brief named were absent. An agent that cannot find src/systems/RollUp.js must treat that as a contradiction to be reported, not a blank page to fill.
+
+Ted, 2026-09-20, on being shown it: leave the Atalanta page alone, and bake the fix into the system files.
+
+**Acceptance.** Three checks, each mechanical. (1) `git remote -v` in this repo prints github.com/t3dy/EmblemsIn3d; every agent brief in .claude/agents/ instructs the agent to run it first and to stop if it prints emblems-in-3d. (2) Each agent brief carries an explicit rule that a named file which does not exist is a STOP-and-report condition, never a licence to create it from a description. (3) Every paste-block entry point in a handover names the absolute repo path and the expected remote. Grep: no handover under the repo root contains an entry-point fence without the string 'C:\Dev\HPin3D'.
+
+**Files.** `.claude/agents/hp-builder.md` · `.claude/agents/hp-researcher.md` · `.claude/agents/hp-verifier.md` · `ROUTER.md` · `HANDOVER_ROLLMODE.md`
+
+**See.** ROUTER.md#the-rules-that-outrank-everything-else · HANDOVER_ROLLMODE.md#0-what-happened-on-2026-09-20-and-why-it-matters
 
 
 ### `plan-resite-precincts-true-scale` — Move every precinct onto the true-scale plan
@@ -105,6 +126,44 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **See.** ROUTER.md
 
 
+### `debt-roll-size-gauge` — Roll mode shows the ball's size as a bare number, so the ladder of the seven metals is invisible while you climb it
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** Read out of the code 2026-09-20. #roll-size (src/index.html:1202) prints '22 cm' then '1.40 m'. That is the ball's size, but not its PROGRESS: nothing shows how far 18 m is, and nothing shows where the seven transmutations fall along the way. The transmutation from lead to gold is the mode's whole narrative arc -- see the header of src/systems/RollUp.js on why the ball is a Sol/Luna rebis -- and a player currently learns the arc exists only when a stage happens to fire.
+
+The data needed is already in place and already sourced: METALS (src/systems/RollUp.js:115) carries sign, name, metal, tint and a cited note for each of the seven, with transmutation points at 0, 0.6, 1.4, 2.6, 4.5, 7.5 and 11 m, and WEDDING at 18. Nothing new needs sourcing; this is display only.
+
+Note the earlier handover claimed 'No HUD'. That was false -- #roll-hud exists and shows Size, Things and Metal -- and a session acting on it would have rebuilt what is there. The gap is the gauge specifically.
+
+**Acceptance.** On the running page in roll mode, a gauge is visible that fills from 0 to 18 m as the ball grows, carries the seven metal signs from METALS at their `at` values as markers, and tints each marker with that metal's `tint` once reached. Check by driving the ball's radius from the console -- `const r = window._hp.state.activeScene.roll; r.r = 5.0;` -- and confirming the gauge and the passed markers move with it. `await hpDiag()` before and after, both in the commit message; a HUD is DOM, so the draw-call count must not move at all.
+
+**Files.** `src/index.html` · `src/main.js` · `src/systems/RollUp.js`
+
+**See.** ROLLMODEPLAN.md#31-ball-size-indicator-critical · HANDOVER_ROLLMODE.md#22-the-size-gauge-31--the-largest-genuine-gap
+
+
+### `debt-roll-wedding-not-a-moment` — The wedding at 18 m hands you a score card, but the world does not mark the moment the work completes
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** 2026-09-20. _transmute (src/systems/RollUp.js:563) sets done, sets active false, and calls onWedding with count, grass, seconds and radius; main.js:1389 fills #roll-done with final size, things, grass and time, and shows it. So there IS an ending and a score screen -- the earlier handover's 'No ending = run just stops' was false.
+
+What is missing is that the ending is instantaneous: the ball simply stops and a card appears over it. ROLLMODEPLAN.md section 4.3 asks for a camera pull-back and a fanfare, and it is right to -- this is the chemical wedding, the union of Sol and Luna that the ball has been carrying on its two faces the whole run, and it is the one moment in the mode where the alchemy and the mechanic coincide. Ending it with a UI card alone is the decoration failure CLAUDE.md names.
+
+There is an audio system already: src/systems/AlchemicalAudio.js. Roll mode does not reference it -- grep finds no audio call in RollUp.js or scenes/world/rollup.js. Do not write a second sound system, and do not copy the bare sine-wave C-major arpeggio from the Atalanta mock, which is unsourced.
+
+**Acceptance.** Reaching 18 m pulls the camera back over roughly two seconds before the score card appears, and a fanfare plays through AlchemicalAudio rather than a new AudioContext (grep: no `new AudioContext` or `webkitAudioContext` added under src/). The card gains a 'roll again' that restarts at r0 without a page reload -- verify by taking it twice in one session. Force the ending from the console with `window._hp.state.activeScene.roll.r = 18.1` rather than rolling for it.
+
+**Files.** `src/systems/RollUp.js` · `src/main.js` · `src/index.html` · `src/systems/AlchemicalAudio.js`
+
+**See.** ROLLMODEPLAN.md#43-level-endings--level-progression · HANDOVER_ROLLMODE.md#24-the-wedding-as-a-cinematic-43
+
+
 ### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
 
 **○ open** · infra · priority 2 · hp-builder
@@ -162,6 +221,23 @@ Verified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 
 **See.** ticket bug-chapter-xi-tour-misattributed · COVERAGE.md ch. X
 
 
+### `debt-roll-stage-countdown` — The metal display names where you are but not how far the next transmutation is
+
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** 2026-09-20. #roll-metal (src/index.html:1204) is set by onStage (src/main.js:1377) to the current metal's sign and name -- '♂ Iron' -- and the cited note is raised as a hint at the moment of transmutation. Both are good. Neither tells you that Venus is at 2.6 m and you are at 1.8.
+
+This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to hand at the point where the display is written, and the ball's radius is already being pushed to #roll-size on every swallow.
+
+**Acceptance.** In roll mode the metal line reads as current sign, metal, and progress to the next -- e.g. 'Mars · Iron — 1.8 / 2.6 m' -- and updates as the ball grows, not only on transmutation. At Sol, the last rung, it counts to the wedding at 18 m rather than to a metal that does not exist (METALS[7] is undefined; an off-by-one here shows as 'NaN' on screen, so check it by setting `r.r = 12` from the console).
+
+**Files.** `src/main.js` · `src/index.html`
+
+**See.** ROLLMODEPLAN.md#33-current-stage--metal-display-high · HANDOVER_ROLLMODE.md#23-countdown-to-the-next-stage-33
+
+
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
 
 **○ open** · debt · priority 3 · hp-builder
@@ -203,6 +279,41 @@ Verified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 
 **Acceptance.** Either the badge is renamed to what it measures (`no queries`, say), or every page carries a stated confidence so the badge and the census cannot disagree.
 
 **Files.** `scripts/translation_status.py` · `scripts/build_translation_page.py`
+
+
+---
+
+## Questions for Ted
+
+*Blocked on a directional call. **An agent must not decide these.***
+
+### `question-roll-camera-curve` — Should the camera keep a constant six ball-radii, or fall behind the ball's growth so the ball swells in frame?
+
+**? question** · question · priority 2 · ted
+ · opened 2026-09-20
+
+
+**Evidence.** 2026-09-20, and it needs Ted's eye because it is a change of FEEL, not a defect.
+
+Today the camera is proportional: cam.dist is set to r * 6 on start (src/systems/RollUp.js:416) and clamped every frame to [r * 2.4, r * 9] (:691), the wheel moving it inside that band. Because the distance is a fixed number of radii, the ball occupies the same fraction of the frame at 22 cm and at 18 m. You can see that you are eating bigger things; you cannot see that you have become bigger. (ROLLMODEPLAN.md section 1.1 asserts the camera is at a FIXED distance and does not scale. That is simply wrong, and the plan has been marked stale at the top.)
+
+The plan asks for `1.2 + r * 2.0`, which is sub-proportional -- the camera falls behind the growth, so the ball swells in frame. That is how Katamari reads 'I have become massive'.
+
+    r        today (r*6)    plan (1.2 + r*2)
+    0.22 m       1.3 m          1.6 m
+    2 m         12 m            5.2 m
+    6 m         36 m           13.2 m
+    18 m       108 m           37.2 m
+
+Two consequences worth knowing before choosing. The plan's curve is far tighter late, so at full size you would see much less of the garden at the moment the garden has finally opened to you -- that cuts both ways. And it may help the frame budget, since less is in view; rule 7 says measure it rather than assume.
+
+The wheel clamp at :691 is written in radii and would have to move with any change, or the wheel would fight the new curve.
+
+**Acceptance.** tune.camBase and tune.camScale exist on the instance so the two curves can be flipped between mid-roll from the console, Ted has rolled both, and his call is written into DECISIONS.md. Until then the default stays r * 6 -- do not change the feel of a mode he has played without asking.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLMODEPLAN.md#11-dynamic-camera-distance-primary · HANDOVER_ROLLMODE.md#21-the-camera-formula--a-directional-call-not-a-bug
 
 
 ---
