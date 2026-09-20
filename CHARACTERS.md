@@ -1,4 +1,4 @@
-<!-- tokens: ~1,935 · read for: the named cast -->
+<!-- tokens: ~1,942 · read for: the named cast -->
 # Character Module System
 
 ## How the Characters Work
@@ -194,7 +194,7 @@ Historian, lead with textual evidence. Designer, propose the playable space.
 Both characters begin with:
 - **Historian**: The full context of O'Neill's thesis, Russell's marginalia analysis, and key HP scholarship
 - **Designer**: Playable narrative principles from Dragon Age, The Witcher, and environmental storytelling practices
-- **Shared**: VISION.md, the HP database structure, and the marginalia-centered view of the book
+- **Shared**: `archive/planning-2026-06/VISION.md`, the HP database structure, and the marginalia-centered view of the book
 
 As the project grows, they accumulate decision logs and become more specialized to HPin3D.
 

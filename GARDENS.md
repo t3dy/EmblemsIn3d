@@ -1,4 +1,4 @@
-<!-- tokens: ~4,501 · read for: the island's rings, terraces, parterres, topiary -->
+<!-- tokens: ~4,514 · read for: the island's rings, terraces, parterres, topiary -->
 # Gardens — research pass
 
 > Read 2026-09-01 from `E:\pdf\hypnerotomachia polyphili`, chiefly John Dixon
@@ -258,7 +258,7 @@ built as an object.
    apples in the first order, pears in the second, plums with pistachios in the
    third. This is the largest single build
    remaining in the project and the book's culmination; Segre's plan above is
-   detailed enough to work from directly. See [RESEARCHPASSFORVR.md](RESEARCHPASSFORVR.md)
+   detailed enough to work from directly. See [`archive/planning-2026-06/RESEARCHPASSFORVR.md`](archive/planning-2026-06/RESEARCHPASSFORVR.md)
    for why it should probably come before anything else.
 5. **The three artificial gardens — but not modelled.** Per §3, building them
    plausibly destroys them. Proposal: stage them as *described* rather than shown —

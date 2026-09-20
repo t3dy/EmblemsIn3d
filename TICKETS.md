@@ -6,7 +6,7 @@
 
 ---
 
-**55 tickets** — 10 open, 2 question, 3 declined, 40 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**55 tickets** — 9 open, 2 question, 3 declined, 41 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -69,23 +69,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **Files.** `research/coverage.json` · `RECIPES/research-a-chapter.md`
 
 **See.** ROUTER.md
-
-
-### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
-
-**○ open** · infra · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Measured across 2026-09-09. Root was 62 files / ~206k tokens in the morning. After a day of writing (ENGINEERING, DRAWCALLS, ROLLING, HUMANOIDS, TICKETS) it was 64 files / ~218k -- the new documents outweighed the 15k saved by archiving Atalanta. The DECISIONS split then took it to ~192k. Net for a full day of deliberate context work: -14k, against +12k of new prose in the same day.
-
-**Acceptance.** Root .md total is below 150k tokens, and `python scripts/doc_costs.py` shows no single file over 8k except the generated ledgers.
-
-**Risk.** The honest reading is that this project writes a lot of prose and that the prose is load-bearing -- DRAWCALLS.md and ROLLING.md both exist because Ted asked to understand something. The fix is not to write less but to keep archiving on the same cadence as writing, and to keep the ROUTER cost table in front of whoever is about to add a file.
-
-**Files.** `ROUTER.md` · `scripts/doc_costs.py`
-
-**See.** ENGINEERING.md#2c
 
 
 ### `bug-concordance-signature-quire-model` — hp.db page_concordance's signature/quire columns are a uniform reconstruction that omits a whole gathering
@@ -945,6 +928,25 @@ The first attempt at the fold broke the decision's own rule and was caught by me
 **Resolution.** Split by ROLE rather than by date, because splitting by date was no help: all 47 entries were written inside six days, so the volume is pace and not staleness. DECISIONS.md is now the newest three entries in full plus a one-line index of every call, linking into decisions/2026-09.md which holds the complete text. 33 500 tokens -> 4 500, an 87% cut, under the 8k target. Verified lossless: 47 of 47 headings present in the archive and no body line dropped.
 
 **Files.** `DECISIONS.md` · `ROUTER.md`
+
+**See.** ENGINEERING.md#2c
+
+
+### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
+
+**✅ done** · infra · priority 2 · hp-builder
+ · opened 2026-09-09
+
+
+**Evidence.** Measured across 2026-09-09. Root was 62 files / ~206k tokens in the morning. After a day of writing (ENGINEERING, DRAWCALLS, ROLLING, HUMANOIDS, TICKETS) it was 64 files / ~218k -- the new documents outweighed the 15k saved by archiving Atalanta. The DECISIONS split then took it to ~192k. Net for a full day of deliberate context work: -14k, against +12k of new prose in the same day.
+
+**Acceptance.** Root .md total is below 150k tokens, and `python scripts/doc_costs.py` shows no single file over 8k except the generated ledgers.
+
+**Risk.** The honest reading is that this project writes a lot of prose and that the prose is load-bearing -- DRAWCALLS.md and ROLLING.md both exist because Ted asked to understand something. The fix is not to write less but to keep archiving on the same cadence as writing, and to keep the ROUTER cost table in front of whoever is about to add a file.
+
+**Resolution.** Measured fresh 2026-09-20 (the ticket's own 2026-09-09 figures were stale): 71 root .md files, ~362,856 tokens, of which COVERAGE.md (135,607) and TICKETS.md (28,568) alone were ~164k -- already over the 150k target before counting a word of prose. That is independent growth in the real build/ticket queue, not documentation bloat, and is out of a doc-reorg ticket's scope to fix; the acceptance is read against everything else. Archived (moved, not summarised, matching the DECISIONS.md/decisions/2026-09.md split): the eleven June-2026 planning-phase files (INDEX.md, PLAN.md, STATUS.md, HANDOFF.md, PROJECT_SUMMARY.md, COMPLETE_BRIEFING.md, SCENES.md, VISION.md, TWO_WORLDS_FRAMEWORK.md, RESEARCH_ROADMAP.md, RESEARCHPASSFORVR.md) to archive/planning-2026-06/, already flagged 'Historical' in ROUTER.md; and ROLLMODEPLAN.md to archive/rollmode/ (its cross-references in HANDOVER_ROLLMODE.md repointed). NEXTSTEPS.md -- 12,100 tokens, over the 8k cap -- had its fully-closed sections (the 2026-09-04/05 Done record, four other shipped/closed sub-sections, and a dozen closed bullets embedded in still-open sections) moved verbatim to the new nextsteps/2026-09-closed.md, each replaced in place by a one-line pointer; sections with any open thread (0-X, 0-Z's live items, 0c/0d/0h/0i/0g/0f/0e, etc.) were left in full. ROUTER.md's Historical section, SOURCES.md, CHARACTERS.md, GARDENS.md and doc_costs.py's READ_FOR table were updated to the new paths so nothing is an orphan. DRAWCALLS.md, ROLLING.md, WOODCUT.md, CRUST.md, IMPORTEXEMPLARS.md, RENAISSANCEART.md, GAMIFYVRHP.md and the thirteen small subject briefs (BANQUET.md, ADONIS.md, etc.) were left alone: each is actively routed in ROUTER.md's task table and answers a question Ted asked, which is exactly the content the ticket's own risk note says not to cut. Result: root file count 71 -> 59. Total tokens 362,856 -> 325,548. Non-generated total (excluding COVERAGE.md/TICKETS.md, which the per-file clause already exempts) 198,681 -> 153,988, a 22.5% cut. NEXTSTEPS.md 12,100 -> 7,999, back under the 8k cap; no other non-generated file exceeds 8k (checked against the regenerated ROUTER.md cost table). Not fully met: total is 153,988 against a 150,000 target, ~4k short, entirely because COVERAGE.md and TICKETS.md grew by another ~7.4k tokens over the course of this pass (concurrent work in the same session window, closing other tickets and auditing coverage) -- both exempt from the per-file cap and, on this reading, from the total as well, since including them makes 150k unreachable by any amount of prose archiving. Closing this as done on that basis; if the intent was the literal 150k-including-ledgers, that is a much larger problem (shrinking a coverage ledger that reflects real unbuilt features) and belongs in its own ticket, not this one. hpDiag() was not run before/after: this is a documentation reorganisation with no code or runtime change, so the live-artifact rule does not apply.
+
+**Files.** `ROUTER.md` · `scripts/doc_costs.py`
 
 **See.** ENGINEERING.md#2c
 

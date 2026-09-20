@@ -1,4 +1,4 @@
-<!-- tokens: ~2,000 · read before starting roll mode work -->
+<!-- tokens: ~2,525 -->
 # HANDOVER — Roll Mode improvements
 
 *Rewritten 2026-09-20 (second pass), after the first Phase 1 build landed in the wrong
@@ -13,7 +13,7 @@ pasted into a session opened in **`C:\Dev\EMBLEMSIN3D`** — the *Atalanta Fugie
 (`github.com/t3dy/emblems-in-3d`) — not in `C:\Dev\HPin3D`
 (`github.com/t3dy/EmblemsIn3d`). The two repositories have confusingly similar names. That
 session had no access to the Hypnerotomachia world, so it built a **standalone mock from the
-prose of `ROLLMODEPLAN.md`**: a ball on an empty 200 × 400 m brown plane, with its own
+prose of `archive/rollmode/ROLLMODEPLAN.md`**: a ball on an empty 200 × 400 m brown plane, with its own
 physics, its own HUD, and its own stage names.
 
 Three commits resulted in the Atalanta repo (`4de9021`, `7b82414`, `a009bda`), and the mock
@@ -24,7 +24,7 @@ is live at `https://t3dy.github.io/emblems-in-3d/roll-up.html`.
 - It uses **NIGREDO → ALBEDO → CITRINITAS → RUBEDO**, four colour-stages, where this project
   uses the **seven metals** (Saturn/Lead → Sol/Gold) sourced from `hp.db.alchemical_symbols`
   and cited in the header of `src/systems/RollUp.js`. That is a rule 2 violation
-  (cite, don't invent) and it contradicts `ROLLMODEPLAN.md` §4.1, which the mock was
+  (cite, don't invent) and it contradicts `archive/rollmode/ROLLMODEPLAN.md` §4.1, which the mock was
   supposedly built from.
 - It has **no world**: no census, no rollables, no creatures, no crust, no masonry. Its
   collection counter counts nothing — the HUD comment concedes the "+1" float is "ready for
@@ -125,7 +125,7 @@ itself feels dead.
 
 ## 3. Phase 2 and 3
 
-Unchanged from `ROLLMODEPLAN.md` §6, and still correct because they describe things that
+Unchanged from `archive/rollmode/ROLLMODEPLAN.md` §6, and still correct because they describe things that
 genuinely do not exist: **strafe (Shift + WASD)** — note Shift is currently *dash*, so that
 binding has to move; 180-turn feedback and momentum; camera heading-drift; stage-gated eating
 (§4.2); then spin mode, the crust indicator, mouse refinement, per-object swallow sounds.
@@ -134,7 +134,7 @@ binding has to move; 180-turn feedback and momentum; camera heading-drift; stage
 
 ## 4. Reference files
 
-- `ROLLMODEPLAN.md` — the detailed spec. **Its "Current state:" lines are stale in the same
+- `archive/rollmode/ROLLMODEPLAN.md` — the detailed spec. **Its "Current state:" lines are stale in the same
   way this file's were** (§1.1 and §3.2 in particular); trust the table in §1 above instead.
 - `ROLLMODE.md` — the design brief. `ROLLING.md` — growth tuning. `CRUST.md` — shedding.
 - `src/systems/RollUp.js` — the implementation, and the best document of the reasoning.
@@ -152,7 +152,7 @@ Continue Roll Up mode Phase 1 in C:\Dev\HPin3D (github.com/t3dy/EmblemsIn3d).
 
 Read HANDOVER_ROLLMODE.md §1 first — it is the verified baseline. The HUD, the seven-metal
 stage display, the wedding score card and a scaling camera ALL ALREADY EXIST. Do not rebuild
-them. ROLLMODEPLAN.md's "Current state:" lines are stale.
+them. archive/rollmode/ROLLMODEPLAN.md's "Current state:" lines are stale.
 
 Build, in this order, from §2 of the handover:
   1. The size gauge (0 -> 18 m, seven metal signs at the transitions). CSS is inline in

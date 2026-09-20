@@ -64,8 +64,9 @@ READ_FOR = {
     "PROCESSIONS.md":       "the triumphs, cars, teams, liveries",
     "NYMPHS.md":            "who the figures are",
     "CHARACTERS.md":        "the named cast",
-    "COMPLETE_BRIEFING.md": "SUPERSEDED — June 2026 two-world planning",
-    "TWO_WORLDS_FRAMEWORK.md": "SUPERSEDED — June 2026 two-world planning",
+    # COMPLETE_BRIEFING.md and TWO_WORLDS_FRAMEWORK.md moved to
+    # archive/planning-2026-06/ on 2026-09-20 (ticket infra-doc-growth) along with the
+    # rest of the June 2026 planning set; they no longer glob into this root pass.
     "HPTOTOURPIPELINE.md":  "corpus in, game out: the research-to-build route",
 }
 

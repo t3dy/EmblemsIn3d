@@ -1,4 +1,4 @@
-<!-- tokens: ~3,313 · read for: the corpus map, and which scholar to read per asset -->
+<!-- tokens: ~3,326 · read for: the corpus map, and which scholar to read per asset -->
 # Sources & Scholarship — the research corpus behind HPin3D
 
 **Read this before describing or modelling anything in the Hypnerotomachia world.**
@@ -92,8 +92,9 @@ book and the scholarship actually say about it, so the shape matches the comment
 gives it. Ground truth in order: (1) `hp.db.folio_descriptions` and `woodcut_catalog` /
 `woodcuts` / `image_readings` for the folio in question — this is the book's own description,
 folio by folio; (2) the named scholar below; (3) the project's own briefs `GARDENS.md`,
-`PROCESSIONS.md`, `CHARACTERS.md`, `VISION.md`, `RESEARCH_ROADMAP.md`, and the figure
-sourcebook `research/nymphs.html`.
+`PROCESSIONS.md`, `CHARACTERS.md`, `archive/planning-2026-06/VISION.md`,
+`archive/planning-2026-06/RESEARCH_ROADMAP.md`, and the figure sourcebook
+`research/nymphs.html`.
 
 | Asset in the world | Read first |
 |---|---|

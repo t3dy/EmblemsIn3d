@@ -1,4 +1,4 @@
-<!-- tokens: ~3,400 · read for: where this project stands and what to do next -->
+<!-- tokens: ~1,887 · read for: where this project stands and what to do next -->
 # HANDOVER — session of 2026-09-17 (the world spreads out; the whole novel enumerated)
 
 *Live at `main.js?v=390`, commit `6640c45`, verified on https://t3dy.github.io/EmblemsIn3d/src/.
