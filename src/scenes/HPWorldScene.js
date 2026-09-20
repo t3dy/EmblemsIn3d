@@ -42,7 +42,7 @@ import {
   CYTHERA_CLIMBERS, HERBS, SPECIES,
   PLAN_SITES, PLAN_EXTENT, shiftOf,
 } from './world/constants.js?v=14';
-import { Materials } from './world/materials.js?v=9';
+import { Materials } from './world/materials.js?v=10';
 import { Nature } from './world/nature.js?v=16';
 import { Approach } from './world/approach.js?v=13';
 import { Portal } from './world/portal.js?v=26';

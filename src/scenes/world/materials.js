@@ -301,6 +301,47 @@ export const Materials = {
     return [parts.slice(0, best).join(' · '), parts.slice(best).join(' · ')];
   },
 
+  // Greedy word-wrap at a fixed font size. Used only by _plaqueWrapLines,
+  // below, as the fallback when the middot split above still overruns the
+  // stone at the floor.
+  _wrapWords(x, text, maxW, px, family = 'Georgia') {
+    x.font = px + 'px ' + family;
+    const words = text.split(' ');
+    const lines = [];
+    let cur = '';
+    for (const w of words) {
+      const test = cur ? cur + ' ' + w : w;
+      if (cur && x.measureText(test).width > maxW) { lines.push(cur); cur = w; }
+      else cur = test;
+    }
+    if (cur) lines.push(cur);
+    return lines;
+  },
+
+  // ticket debt-plaque-subtitles-too-long (research/tickets.json). Measured
+  // 2026-09-20 against this project's own Georgia (canvas.measureText, not a
+  // character-count guess): the two-line middot split in _plaqueLines still
+  // overran the stone's width at the 9px floor for most of the over-95-
+  // character subtitles under src/scenes/world/ — eighteen of the twenty-two,
+  // not only the 344-character-in-source (329 once its · escapes
+  // resolve) Cythera rose plaque the ticket named as its acceptance example.
+  // This is the fallback _plaqueTexture reaches for when that split still
+  // doesn't fit: plain greedy word-wrap, adding a third line and then a
+  // fourth before the floor is touched, and lowering the floor only as far
+  // as the one plaque that still needs it (the rose plaque ran to seven
+  // lines at the 9px floor; four lines fit at 6px). Ordinary plaques never
+  // reach this function at all — _plaqueTexture only calls it once the
+  // middot split has already been measured and found wanting.
+  _plaqueWrapLines(x, sub, innerW) {
+    let lines = this._wrapWords(x, sub, innerW, 9);
+    if (lines.length <= 4) return { lines, px: 9 };
+    for (let px = 8; px >= 6; px--) {
+      lines = this._wrapWords(x, sub, innerW, px);
+      if (lines.length <= 4) return { lines, px };
+    }
+    return { lines, px: 6 };   // last resort at the lowest floor this allows
+  },
+
   _plaqueTexture({ glyph = null, glyphColor = null, main, sub }, wide = false) {
     const P = this.style.plaqueColors;
     const c = document.createElement('canvas');
@@ -333,11 +374,26 @@ export const Materials = {
       // inscriptions in this book are long and the interpuncts are already
       // there; this uses them.
       const lines = this._plaqueLines(x, sub || '', innerW);
-      if (lines.length === 1) {
-        this._fitFont(x, lines[0], innerW, 14);           if (sub) x.fillText(lines[0], cx, 72);
-      } else {
+      x.font = '9px Georgia';
+      // debt-plaque-subtitles-too-long: the middot split above is measured
+      // against the same 9px floor _fitFont bottoms out at, but a balanced
+      // split can still leave one half wider than the stone — checked here
+      // rather than assumed. When it does, fall through to _plaqueWrapLines
+      // instead of letting _fitFont's floor clip it silently.
+      const fitsAtFloor = sub && lines.every(l => x.measureText(l).width <= innerW);
+      if (!sub) {
+        // nothing to draw
+      } else if (fitsAtFloor && lines.length === 1) {
+        this._fitFont(x, lines[0], innerW, 14);           x.fillText(lines[0], cx, 72);
+      } else if (fitsAtFloor) {
         this._fitFont(x, lines[0], innerW, 13);           x.fillText(lines[0], cx, 66);
         this._fitFont(x, lines[1], innerW, 13);           x.fillText(lines[1], cx, 82);
+      } else {
+        const { lines: wrapped, px } = this._plaqueWrapLines(x, sub, innerW);
+        x.font = px + 'px Georgia';
+        const top = 56, bottom = 88;                      // stays clear of the title above and the border below
+        const step = (bottom - top) / wrapped.length;
+        wrapped.forEach((line, i) => x.fillText(line, cx, top + step * (i + 0.5)));
       }
     }
     const t = new THREE.CanvasTexture(c);
