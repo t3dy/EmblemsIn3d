@@ -1,4 +1,4 @@
-<!-- tokens: ~11,293 · read for: Ted's standing asks, in his words -->
+<!-- tokens: ~12,100 · read for: Ted's standing asks, in his words -->
 # Next steps — the standing work queue
 
 *Everything Ted has asked for that is not yet finished. **Read this at the start of every
@@ -22,12 +22,41 @@ it goes in here immediately, in his words, before the work starts.
 
 ---
 
-## Open
+## Open — 2026-09-20 Status
 
-*One list, highest value first. It had become seven dated sections stacked newest-first,
-which is a log, not a queue — the thing this file exists to prevent. Consolidated
-2026-09-05; nothing dropped, and the lessons that belong in code now live in
-`AssetVariants.js`, `ARCHITECTURE.md` and `RECIPES/`, not here.*
+*Updated 2026-09-20 after full audit of plan implementation and coverage. All four plan
+stages (1–4) are deployed. The constraint now is the 251-feature build queue.*
+
+**PLAN STATUS: ALL STAGES DEPLOYED**
+
+- ✅ **Stage 1** (2026-09-17): SPREAD = 4 — precincts at 4× old siting
+- ✅ **Stage 2** (2026-09-17–20): Precinct shifts applied via `_placeAt` in `HPWorldScene`
+- ✅ **Stage 3** (deployed): Monument scaling — pyramid at 1,139.6 m (PYRAMID_W constant), all dimensions from the book
+- ✅ **Stage 4** (2026-09-20): Screens built — cypress avenue (740 m), green enclosure (88.8 m square), wooded country ringwall
+
+**COVERAGE AUDIT FINDING**
+
+Coverage regenerated 2026-09-20. The ledger shows 251 unbuilt features, but many features ARE in the code
+(marked `?` in COVERAGE.md, meaning grep found evidence but live verification hasn't run this session).
+
+The real gap is not missing *architecture*, but missing *narrative and allegorical detail*:
+- **Built**: Building shells, basic structures, major monuments
+- **Missing**: Character-specific costumes, allegorical figures (infants in fountain shafts), narrative moments (arrow-passing rite), scent-infused surfaces, intricate ornamentation
+
+**PRIORITY BUILD QUEUE**
+
+Work chapters in this order (most impact first):
+
+1. **XXII (Theatre of Cupid's Triumph)**: 30 unbuilt
+   - Stage is set (car, nymphs, lovers built); missing: 13-nymph masque, Psyche's elaborate costume, trophies' gem details
+   
+2. **XXIII (Fountain of Venus)**: ~20 unbuilt (estimate from COVERAGE.md)
+   - Fountain architecture built; missing: allegorical infants in column shafts (the core coniunctio symbol), zodiac carvings, arrow-passing rite (chapter's climactic narrative)
+   
+3. **Book II (Treviso, Polia's Chamber)**: 16 unbuilt in ch. XXV + unbuilt in XXVI-XXXIII
+   - This is where the romance resolves; needs full geometric build from scratch
+   
+4. **Remaining 180+ features**: Work chapter by chapter, prioritizing narrative beats over decorative detail
 
 **Before building anything from this list, read `RECIPES/model-an-asset.md` step 0 and
 grep the scene.** Two items below were once "missing" and turned out to be built.
