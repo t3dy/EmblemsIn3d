@@ -27,13 +27,37 @@
 // Each stop: path (waypoints [x, z] continuing from wherever the player
 // stands), look/pitch to settle the camera, an optional guide who walks
 // ahead, and click-to-continue narration beats.
+//
+// ── EVERY COORDINATE BELOW IS IN THE ORIGINAL, CRAMPED FRAME ───────────────
+//
+// They were written when the whole garden was about 90 m across, and they were
+// never touched again: SPREAD = 4 multiplied the world by four on 2026-09-17
+// and this file stayed where it was, so from that day the dream walked the
+// dreamer to coordinates a quarter of the way to everything it names. Stage 2
+// (2026-09-20) would have made that four kilometres instead of forty metres.
+//
+// They are NOT re-typed. Each stop now names the PRECINCT its wonder stands
+// in, and `DreamMode` puts every path point, `look` and `jump` through
+// `toWorld(precinct, x, z)` — which applies the two moves the world has made,
+// x4 and then that precinct's own stage-2 shift. The choreography written here
+// is the choreography that plays, wherever the plan puts the wonder next.
+//
+// This is the third time the same bug has been found in a different costume
+// (HANDOVER.md §4.3). The cure is always the same: stop copying the number.
 
 export const DREAM_STOPS = [
   {
     id: 'wood',
+    precinct: 'wood',
     title: 'The Dark Wood',
-    path: [[0, 48], [0, 44], [0, 40.5]],
-    look: [3.5, 39],
+    // STAGE 2 (2026-09-20): this stop was never in the wood. Its path ran to
+    // z 40.5, which in the original frame is the VALLEY, a hundred metres south
+    // of WOOD.z0 (298) — so the beats about being closed over by trunks played
+    // in open ground and always had. Re-pathed into the wood proper, walking
+    // north from its southern edge into the dark. Still the original frame;
+    // `toWorld` carries it. (WOOD spans 298-347 here; the station is at 340.)
+    path: [[0, 352], [0, 344], [0, 337]],
+    look: [3.5, 330],
     beats: [
       { text: 'Poliphilo has passed a night of sighs. Polia — the name means "many things," and to him means one thing only — will not have him. Toward dawn, at last, sleep takes him. And in sleep the dream begins: he finds himself on a wide silent plain, and beyond it this wood, so thick that neither light nor path survives beneath the crowns.' },
       { text: 'He walks until walking loses its direction. Thorns take his clothes; roots take his feet. Then, on his left hand, a wolf — mouth full, eyes indifferent. It is the first living thing the dream has shown him, and no comfort at all.',
@@ -45,6 +69,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'portal',
+    precinct: 'pyramid',
     title: 'The Great Portal',
     path: [[0, 36], [0, 32.5]],
     look: [0, 26],
@@ -64,9 +89,16 @@ export const DREAM_STOPS = [
   },
   {
     id: 'elephant',
+    precinct: 'piazza',
     title: 'The Elephant & Obelisk',
-    path: [[0, 27], [0, 22], [0, 16], [0, 7]],
-    look: [0, 0],
+    // STAGE 2 (2026-09-20): stale since DECISIONS.md 51 (2026-09-09), which
+    // moved the elephant out of the world origin and into the piazza where
+    // chapter III puts him, "not farre distant from the horse straight
+    // forward". The path still walked to the origin, so the dream arrived at
+    // bare pavement and narrated an elephant forty metres away. He stands at
+    // (7, 42) in this frame.
+    path: [[7, 58], [7, 52], [7, 47]],
+    look: [7, 42],
     pitch: 0.12,
     beats: [
       { text: 'Among the ruins stands a marvel he circles three times before believing: an elephant of stone blacker than obsidian and dusted over with gold and silver, so polished it gives back whatever stands before it. It is saddled in brass, not with a rider but with an obelisk of green Lacedaemonian stone. Its breast-strap says CEREBRVM EST IN CAPITE — the brain is in the head; the frontlet over its face says, in Greek, labour and native wit.' },
@@ -83,6 +115,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'court',
+    precinct: 'palace',
     title: 'The Court of Queen Eleuterylida',
     path: [[0, 12.8], [0, 17], [-4, 20], [-11.5, 20]],
     look: [-20, 20],
@@ -99,6 +132,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'doors',
+    precinct: 'three_doors',
     title: 'The Three Doors',
     path: [[-8, 20], [-3, 20], [0, 18.5]],
     look: [0, 12],
@@ -118,6 +152,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'palace',
+    precinct: 'palace',
     title: 'The Planetary Palace',
     path: [[4.6, 14], [4.6, 9], [0, 3], [-6, 0], [-11.5, 0]],
     look: [-20, 0],
@@ -130,6 +165,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'polia',
+    precinct: 'polia_garden',
     title: 'Polia Found',
     path: [[-6, 0], [0, 2], [4.6, 6], [4.6, 14], [8, 18], [13, 20]],
     look: [19, 20],
@@ -144,7 +180,28 @@ export const DREAM_STOPS = [
     ],
   },
   {
+    // Chapter XI's last page, added 2026-09-20 (BUILDINGPLAN, Polia's garden;
+    // COVERAGE.md xi-eyes-appetite-quarrel, previously unbuilt). It does not
+    // travel: the dreamer stands exactly where the last stop left him, close
+    // enough to touch her and unable to speak, and the stop's whole content is
+    // what happens inside him. Its reaction is in hp_reactions.js.
+    id: 'polia_quarrel',
+    precinct: 'polia_garden',
+    title: 'The Sedition of the Eyes',
+    path: [[13.6, 20.4]],
+    look: [19, 20],
+    beats: [
+      { text: 'He does not say her name. He stands where he is, within reach of her, and something in him takes the chance to start an argument — not with her, and not about whether to speak, but about WHICH PART OF HER IS FAIREST. His eyes take her by pieces and swear by each in turn; his appetite, gone elsewhere entirely, insists on another.',
+        quote: '“There was straightway born a great sedition and a bitter contention. For my various and thieving eyes commended one part as far fairer than the others. But the appetite, carried off to another part of that divine little body, argued and preferred that one to the rest.”',
+        source: 'our translation of the 1499, p. 146',
+        voice: 'ours',
+        page: 146 },
+      { text: 'The book lets the two of them speak in turn, like advocates, and then declares a winner: the eyes take it, by being stubborn. It is the most exact thing in the whole romance about what it is like to look at someone you want — and it happens while she is standing there, waiting, holding a torch, three feet away.' },
+    ],
+  },
+  {
     id: 'triumphs',
+    precinct: 'triumphs',
     title: 'The Four Triumphs',
     path: [[10, 16], [4.6, 12], [4, 4], [7, -3], [8, -6.5]],
     look: [10.6, -9.4],
@@ -160,6 +217,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'quinta',
+    precinct: 'palace',
     title: 'The Temple Rites',
     path: [[8, -4], [10, 0], [13, 0]],
     look: [21, 0],
@@ -172,6 +230,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'fountain',
+    precinct: 'palace',
     title: 'The Fountain of Venus',
     path: [[10, 2], [4, -2], [0, -6], [0, -10.5]],
     look: [0, -20],
@@ -185,6 +244,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'cythera',
+    precinct: 'shore',
     title: 'The Shore to Cythera',
     path: [[3, -14], [6, -20], [4, -27], [0, -32], [0, -36], [0, -41]],
     look: [0, -47],
@@ -203,6 +263,7 @@ export const DREAM_STOPS = [
     // stop JUMPS to Cythera -- the crossing is Cupid's, not the walker's --
     // and comes up the road that ends at the sacred grove.
     id: 'adonis',
+    precinct: 'cythera',
     title: 'The Sepulchre of Adonis',
     jump: [14.1, -130.6],
     path: [[17.0, -126.6], [19.4, -123.3], [20.3, -122.0]],
@@ -226,6 +287,7 @@ export const DREAM_STOPS = [
   },
   {
     id: 'awakening',
+    precinct: 'shore',
     title: 'The Awakening',
     // the dreamer is on the island now; the waking is back at the shore
     jump: [0, -36],

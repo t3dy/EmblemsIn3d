@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS } from './constants.js?v=9';
+import { TRIUMPH_LIVERY, TRIUMPH_RIDER_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS, shiftOf } from './constants.js?v=14';
 
 export const Triumphs = {
   // ── The Four Triumphs of Jupiter — floats ringing the grove ──────────────
@@ -48,9 +48,19 @@ export const Triumphs = {
         g.add(beast);
         // "Their hayres yellowe, and falling ouer their fayre neckes, with
         // Pancarpiall garlands of all manner of flowers, vpon their heades."
-        // Every rider on every car, and it applies to all four teams: the
-        // later cars are described as "in such pompe and manner as before".
-        const rider = this.cast.nymph({ robe: TRIUMPH_LIVERY[i], h: 0.62,
+        //
+        // CORRECTED 2026-09-20. The comment used to end "Every rider on every
+        // car, and it applies to all four teams: the later cars are described
+        // as 'in such pompe and manner as before'" — and the code did what the
+        // comment said, taking `TRIUMPH_LIVERY[i]` for all four. Reading the
+        // chapter through gives each car its own rider colours (our pp. 161,
+        // 165, 169) and gives the FOURTH no riders at all (p. 172): its team
+        // description is the only one of the four without a "six young girls"
+        // sentence, because the urn is what rides that car. See
+        // TRIUMPH_RIDER_LIVERY and COVERAGE.md xiv-fourth-car-no-riders.
+        const livery = TRIUMPH_RIDER_LIVERY[t.key] || TRIUMPH_LIVERY;
+        if (!TRIUMPH_RIDER_LIVERY[t.key] && t.key in TRIUMPH_RIDER_LIVERY) continue;
+        const rider = this.cast.nymph({ robe: livery[i], h: 0.62,
                                         hair: 0xc8a24a, garland: 'pancarpial' });
         const ry = t.team === 'elephant' ? 1.15 : 0.82;
         rider.position.set(sx, ry, z + 0.1);
@@ -106,6 +116,18 @@ export const Triumphs = {
         const vert = this.cast.figure({ h: 0.9, robe: 0x6a8a3a, pose: 'reach' });
         vert.position.set(0.42, 0.62, 0.15); g.add(vert);
       }
+      else if (t.motif === 'fire') {
+        // THE FOURTH CAR CARRIES NO GOD AND NO NYMPH. It carries Semele's
+        // ashes, and eight pages of the book are spent on the vessel they are
+        // in. What stood here was `cast.props.fire()` with a figure beside it —
+        // a generic flame, which is what you build when you have only the
+        // car's NAME ("Festival of Bacchus") and not its text.
+        motif = this._semeleUrn(1.5);
+        motif.position.y = 0.92;
+        // "Out of the vessel aforesaid there sprouted a leafy vine of gold ...
+        // and it roofed the six-horse team." (our p. 175)
+        this._goldenVine(g, 1.5);
+      }
       else { motif = this.cast.props.fire(1.2); motif.position.y = 0.75; const f = this.cast.figure({ h: 0.7, robe: 0xc86a50 }); f.position.set(0, 0.9, 0.5); g.add(f); }
       g.add(motif);
 
@@ -135,10 +157,17 @@ export const Triumphs = {
       const cx = 0, czz = -20;
       const orbitR = 14.2;    // clears the grove cypresses inside and the shore outside
       const theta = Math.atan2(z - czz, x - cx);
-      const col = { x, z, r: 2.3 };
-      this.walker.colliders.push(col);
+      // STAGE 2 (2026-09-20): the collider is WORLD-space and the orbit is
+      // computed in the precinct's LOCAL frame, so the two need the shift
+      // between them. `_circleCol` supplies it — it is the registrar `_placeAt`
+      // patches, and this used to push straight onto `walker.colliders`, which
+      // stepped round it and would have left five moving colliders standing in
+      // an empty field 4.5 km south of the cars they belong to. The updater in
+      // HPWorldScene adds `shift` for the same reason.
+      const col = this._circleCol(x, z, 2.3);
       this._floats.push({ g, wheels: [], phase: Math.random() * 6,
-        orbit: { cx, cz: czz, r: orbitR, theta, om: 0.032 }, col });
+        orbit: { cx, cz: czz, r: orbitR, theta, om: 0.032 },
+        shift: shiftOf('triumphs'), col });
     }
   },
 
@@ -215,11 +244,25 @@ export const Triumphs = {
     const emerald = woodcut ? S.mat({ tone: 0.1 })
                             : S.mat({ color: 0x0d7548, roughness: 0.24, metalness: 0.35,
                                       emissive: 0x06301d, emissiveIntensity: 0.35 });
+    // EACH CAR IS CUT FROM ITS OWN TWO STONES (2026-09-20). The wheel used to be
+    // hardcoded to emerald for all four and the tablets were not built at all;
+    // `wheel` and `tablet` are now in the TRIUMPHS table with the page that
+    // gives them. See constants.js. The woodcut register takes tones, as
+    // everything does there — a plate has no gems, only ink.
+    const rim = t.wheel
+      ? (woodcut ? S.mat({ tone: 0.10 }) : S.mat({ ...t.wheel }))
+      : emerald;
+    const tablet = t.tablet
+      ? (woodcut ? S.mat({ tone: 0.04 }) : S.mat({ ...t.tablet }))
+      : gold;
 
     const W = 1.3 * s, L = 2.0 * s, PY = 0.5 * s;
     // plinth and deck
     this._m(new THREE.BoxGeometry(W, 0.18 * s, L), body, 0, PY, 0, { parent: g, outline: true });
-    this._m(new THREE.BoxGeometry(W * 1.06, 0.06 * s, L * 1.04), gold, 0, PY + 0.12 * s, 0, { parent: g, cast: false });
+    // the band round the deck: gold, or on the fourth car the "tablets of
+    // Troglodyte carbuncle" the book gives it
+    this._m(new THREE.BoxGeometry(W * 1.06, 0.06 * s, L * 1.04), tablet,
+      0, PY + 0.12 * s, 0, { parent: g, cast: false });
 
     // the four relief panels — the car's own argument, one to a face
     const P = TRIUMPH_RELIEFS[t.key] || [];
@@ -268,13 +311,14 @@ export const Triumphs = {
       ac.rotation.x = Math.PI;
     }
 
-    // wheels of Scythian emerald on solid gold axles, a five-leaved rose at each end
+    // The wheels, on solid gold axles, a five-leaved rose at each end. Their
+    // stone is the car's own: emerald, agate, chrysolite, asbestos. See `rim`.
     for (const sz of [-1, 1]) {
       this._m(new THREE.CylinderGeometry(0.028 * s, 0.028 * s, W * 1.22, 8), gold,
         0, 0.34 * s, sz * 0.7 * s, { parent: g, rz: Math.PI / 2 });
       for (const sx of [-1, 1]) {
         const wx = sx * 0.72 * s;
-        const wheel = this._m(new THREE.TorusGeometry(0.33 * s, 0.055 * s, 8, 22), emerald,
+        const wheel = this._m(new THREE.TorusGeometry(0.33 * s, 0.055 * s, 8, 22), rim,
           wx, 0.34 * s, sz * 0.7 * s, { parent: g, ry: Math.PI / 2, outline: true });
         void wheel;
         for (let k = 0; k < 8; k++) {                     // spokes
@@ -295,6 +339,289 @@ export const Triumphs = {
       }
     }
     return g;
+  },
+
+  // -- SEMELE'S URN, the fourth car's identity (2026-09-20) -----------------
+  //
+  // `BUILDINGPLAN.md`: "Bacchus car's urn (Semele's funerary urn). 8 pages of
+  // description. Complex build. This IS the 4th car's identity."
+  //
+  // The world gave this car a generic flame and six riders copied from the
+  // other three. The book gives it neither. Our pp. 172-175, read through:
+  //
+  //   "Above which, in the middle of the flat, there was set a base of gold,
+  //    of a lowest diameter of one foot and three palms, and of nearly the
+  //    same height... The flat of this was hollow in the middle in a circle.
+  //    Into which hollowing there descended the tails of four eagles... of
+  //    precious crimson aetites of Persia. And these stood with their backs
+  //    one opposite the other. Having their clawed golden talons fixed and
+  //    treading upon the said base. And each with both wings raised and
+  //    touching.
+  //
+  //    Upon these, at the elbow, was founded this wondrous vessel of most
+  //    bright Ethiopian jacinth, an enemy to the chisel... In height it was
+  //    two feet and a half... The diameter of its thickness stood at a foot
+  //    and a half...
+  //
+  //    ...two cut half-rings... held in the biting jaws of two lizards, or
+  //    little dragons... left perfectly of a vein of emerald, the rest crusted
+  //    away... These coils were for the handles.
+  //
+  //    I beheld the said vessel covered all over with an exact vine of
+  //    carving. Of which the stems, or shoots, with vine-leaves, with little
+  //    tendrils and ringed shoots... of topaz... The foliage of finest
+  //    emerald, the clusters of amethyst.
+  //
+  //    Which vessel was filled with fine and holy ash."
+  //
+  // The proportions are the book's, taken as ratios of the base's diameter so
+  // that the whole thing scales with the car: base 1.75 ft across and as high,
+  // vessel 2.5 ft high and 1.5 ft through. It is drawn as a LATHE, because a
+  // vessel described by its profile — rounds, waves, upturned mouldings, a
+  // border of a palm, a ewer rising a foot and widening a palm and a half — is
+  // a profile, and turning one is how it was actually made.
+  //
+  // The ash is the point of the object and the last thing the description
+  // gives, so it is visible: a pale grey disc at the mouth, and nothing else
+  // on this car is pale.
+  _semeleUrn(s = 1.5) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const g = new THREE.Group();
+    const M = (o) => woodcut ? S.mat({ tone: o.tone ?? 0.08 }) : S.mat(o.lit);
+    const gold    = M({ tone: 0.02, lit: { color: 0xd8b24a, metalness: 0.95, roughness: 0.2 } });
+    // aetites, the eagle-stone: crimson, and the book says the eagles are made
+    // of it. The gem it names for the bird that carries it.
+    const aetites = M({ tone: 0.22, lit: { color: 0xa8203a, roughness: 0.35, metalness: 0.3 } });
+    // jacinth: the orange-red hyacinth zircon, "most bright", "an enemy to the
+    // chisel" — so it is polished hard and takes a sharp specular.
+    const jacinth = M({ tone: 0.12, lit: { color: 0xc4521e, roughness: 0.12, metalness: 0.25,
+                                           emissive: 0x3a1004, emissiveIntensity: 0.35 } });
+    const emerald = M({ tone: 0.10, lit: { color: 0x0d7548, roughness: 0.22, metalness: 0.35,
+                                           emissive: 0x06301d, emissiveIntensity: 0.4 } });
+    const topaz   = M({ tone: 0.06, lit: { color: 0xe0a828, roughness: 0.18, metalness: 0.5 } });
+    const amethy  = M({ tone: 0.16, lit: { color: 0x7a3ab0, roughness: 0.2, metalness: 0.3 } });
+    const ash     = M({ tone: 0.03, lit: { color: 0xbdb8ab, roughness: 1.0 } });
+
+    const FT = 0.15 * s;                    // the book's foot, at the car's scale
+    const PALM = FT / 4;
+    const BD = FT + 3 * PALM;               // base: "one foot and three palms" across
+    const BH = BD;                          // "and of nearly the same height"
+
+    // -- the base of gold, its mouldings turned ----------------------------
+    // "One part at the lowest rounded course, and a half at the wave, or
+    // upturned moulding and braid. The rest was distributed to the pulley
+    // moulding, and to the inverted wave."
+    const baseProfile = [
+      [BD / 2,        0],
+      [BD / 2,        BH * 0.16],           // the lowest rounded course
+      [BD / 2 * 0.88, BH * 0.30],           // the wave
+      [BD / 2 * 0.94, BH * 0.44],           // upturned moulding and braid
+      [BD / 2 * 0.80, BH * 0.62],           // the pulley moulding
+      [BD / 2 * 0.86, BH * 0.82],           // the inverted wave
+      [BD / 2 * 0.72, BH],
+      [BD / 2 * 0.40, BH],                  // "hollow in the middle in a circle"
+      [BD / 2 * 0.40, BH * 0.86],
+      [0,             BH * 0.86],
+    ].map(([x, y]) => new THREE.Vector2(x, y));
+    this._m(new THREE.LatheGeometry(baseProfile, 24), gold, 0, 0, 0, { parent: g, outline: true });
+
+    // -- the four eagles, backs to one another -----------------------------
+    // Their TAILS descend into the hollow of the base and their talons tread
+    // on it; each raises both wings, and the wings touch, and the vessel is
+    // founded on them "at the elbow".
+    const ER = BD * 0.24;
+    for (let i = 0; i < 4; i++) {
+      const a = (i / 4) * Math.PI * 2 + Math.PI / 4;
+      const ex = Math.cos(a) * ER, ez = Math.sin(a) * ER;
+      // the tail, dropped into the base's hollow
+      const tail = this._m(new THREE.ConeGeometry(BD * 0.05, BD * 0.26, 6), aetites,
+        Math.cos(a) * ER * 0.55, BH * 0.92, Math.sin(a) * ER * 0.55, { parent: g, cast: false });
+      tail.rotation.set(0.5, -a, 0, 'YXZ');
+      // the body, leaning out, and the head over it
+      const body = this._m(new THREE.CapsuleGeometry(BD * 0.085, BD * 0.20, 4, 8), aetites,
+        ex, BH + BD * 0.22, ez, { parent: g });
+      body.rotation.set(-0.22, -a, 0, 'YXZ');
+      this._m(new THREE.SphereGeometry(BD * 0.065, 8, 6), aetites,
+        ex * 1.28, BH + BD * 0.40, ez * 1.28, { parent: g, cast: false });
+      // the beak
+      const beak = this._m(new THREE.ConeGeometry(BD * 0.026, BD * 0.09, 5), gold,
+        ex * 1.5, BH + BD * 0.39, ez * 1.5, { parent: g, cast: false });
+      beak.rotation.set(Math.PI / 2 - 0.3, -a, 0, 'YXZ');
+      // "clawed golden talons fixed and treading upon the said base"
+      for (let k = -1; k <= 1; k += 1) {
+        const ta = a + k * 0.34;
+        this._m(new THREE.ConeGeometry(BD * 0.016, BD * 0.07, 4), gold,
+          Math.cos(ta) * ER * 1.12, BH + BD * 0.02, Math.sin(ta) * ER * 1.12,
+          { parent: g, rx: Math.PI, cast: false });
+      }
+      // "each with both wings raised and touching" — so the wing tips meet
+      // over the gaps BETWEEN the eagles, and the vessel sits on the ring the
+      // four pairs make at the elbow.
+      for (const sw of [-1, 1]) {
+        const wa = a + sw * 0.40;
+        const wing = this._m(new THREE.ConeGeometry(BD * 0.05, BD * 0.52, 4), aetites,
+          Math.cos(wa) * ER * 0.92, BH + BD * 0.46, Math.sin(wa) * ER * 0.92, { parent: g });
+        wing.rotation.set(-0.30, -wa, sw * 0.26, 'YXZ');
+      }
+    }
+
+    // -- the vessel of Ethiopian jacinth -----------------------------------
+    // "In height it was two feet and a half... the diameter of its thickness
+    // stood at a foot and a half": the body; then the border a palm thick, the
+    // ewer rising a foot and widening a palm and a half, and the mouth "of a
+    // little shell with wide rims".
+    const VY = BH + BD * 0.62;              // founded on the eagles, at the elbow
+    const VH = 2.5 * FT, VR = 0.75 * FT;
+    const vesselProfile = [
+      [0,           0],
+      [VR * 0.44,   0],
+      [VR * 0.72,   VH * 0.06],
+      [VR * 0.96,   VH * 0.18],
+      [VR,          VH * 0.34],             // the body at its full thickness
+      [VR * 0.94,   VH * 0.48],
+      [VR * 0.78,   VH * 0.56],             // the sloping ridge, scaled of jacinth
+      [VR * 0.62,   VH * 0.60],             // the border, a palm thick
+      [VR * 0.58,   VH * 0.64],
+      [VR * 0.46,   VH * 0.74],             // the ewer, rising
+      [VR * 0.52,   VH * 0.86],             // ...and widening a palm and a half
+      [VR * 0.70,   VH * 0.95],             // the border of wound fronds
+      [VR * 0.78,   VH],                    // the mouth, wide-rimmed
+      [VR * 0.70,   VH * 0.985],
+      [0,           VH * 0.985],
+    ].map(([x, y]) => new THREE.Vector2(x, y));
+    this._m(new THREE.LatheGeometry(vesselProfile, 28), jacinth, 0, VY, 0,
+      { parent: g, outline: true });
+
+    // "which vessel was filled with fine and holy ash"
+    this._m(new THREE.CircleGeometry(VR * 0.68, 20), ash, 0, VY + VH * 0.99, 0,
+      { parent: g, rx: -Math.PI / 2, cast: false });
+
+    // -- the vine of carving over the body ---------------------------------
+    // stems of topaz, foliage of emerald, clusters of amethyst — "an exact
+    // vine of carving... covered all over". Three shoots winding the body.
+    for (let v = 0; v < 3; v++) {
+      const turns = 1.6, seg = 26;
+      const pts = [];
+      for (let k = 0; k <= seg; k++) {
+        const t = k / seg;
+        const a = v * (Math.PI * 2 / 3) + t * turns * Math.PI * 2;
+        const y = VH * (0.06 + t * 0.44);
+        const r = VR * (0.46 + 0.56 * Math.sin(Math.PI * (0.10 + t * 0.62))) * 1.03;
+        pts.push(new THREE.Vector3(Math.cos(a) * r, y, Math.sin(a) * r));
+      }
+      const curve = new THREE.CatmullRomCurve3(pts);
+      this._m(new THREE.TubeGeometry(curve, seg, VR * 0.028, 5, false), topaz, 0, VY, 0,
+        { parent: g, cast: false });
+      // the foliage and the clusters along it
+      for (let k = 2; k < seg; k += 4) {
+        const q = pts[k];
+        const leaf = this._m(new THREE.SphereGeometry(VR * 0.085, 6, 5), emerald,
+          q.x * 1.06, VY + q.y, q.z * 1.06, { parent: g, cast: false });
+        leaf.scale.set(1, 0.42, 1);
+        if (k % 8 === 2) {
+          for (let c = 0; c < 4; c++) {
+            this._m(new THREE.SphereGeometry(VR * 0.035, 6, 5), amethy,
+              q.x * 1.04 + (c % 2) * VR * 0.05, VY + q.y - VR * 0.07 - c * VR * 0.045,
+              q.z * 1.04, { parent: g, cast: false });
+          }
+        }
+      }
+    }
+
+    // -- the two little dragons that are the handles -----------------------
+    // "held in the biting jaws of two lizards, or little dragons... left
+    // perfectly of a vein of emerald, the rest crusted away... Which little
+    // dragons... made with their turning tails a round and ready coil towards
+    // the spine. And then they made another like it below. These coils were
+    // for the handles."
+    for (const sx of [-1, 1]) {
+      const hx = sx * VR * 0.76, hy = VY + VH * 0.58;
+      // the two coils, one above the other, which are what a hand takes
+      for (const dy of [0, -VH * 0.13]) {
+        const ring = this._m(new THREE.TorusGeometry(VR * 0.19, VR * 0.036, 6, 14), emerald,
+          hx, hy + dy, 0, { parent: g, ry: Math.PI / 2, cast: false });
+        void ring;
+      }
+      // the body along the ridge, the four lizard feet, and the biting head
+      const bodyD = this._m(new THREE.CapsuleGeometry(VR * 0.05, VR * 0.28, 4, 7), emerald,
+        hx * 0.94, hy + VH * 0.05, 0, { parent: g, cast: false });
+      bodyD.rotation.z = Math.PI / 2 - sx * 0.4;
+      for (let f = 0; f < 4; f++) {
+        this._m(new THREE.ConeGeometry(VR * 0.022, VR * 0.07, 4), emerald,
+          hx * 0.88, hy + VH * 0.02, (f < 2 ? -1 : 1) * VR * 0.12 + (f % 2) * VR * 0.06,
+          { parent: g, rx: Math.PI, cast: false });
+      }
+      this._m(new THREE.SphereGeometry(VR * 0.058, 7, 6), emerald,
+        hx * 1.04, hy + VH * 0.12, 0, { parent: g, cast: false });
+    }
+
+    return g;
+  },
+
+  // "Out of the vessel aforesaid there sprouted a leafy vine of gold with
+  // curled vine-leaves, fruitfully adorned with little clusters, with crimson
+  // grains of Indian amethyst, and the foliage of the holy green selenite of
+  // Persia, not subject to the movements of the moon, and placid to Cupid.
+  // Keeping its bearer safe; and it roofed the six-horse team." (our p. 175)
+  //
+  // A canopy, and the only one over any of the four teams. It springs from the
+  // urn's mouth and arches forward over the six tigers, which is what "roofed"
+  // has to mean: the team walks under it. Built into the CAR's group so it
+  // travels with the whole triumph.
+  _goldenVine(g, s = 1.5) {
+    const S = this.style;
+    const woodcut = S.key === 'woodcut';
+    const gold = woodcut ? S.mat({ tone: 0.02 })
+      : S.mat({ color: 0xd8b24a, metalness: 0.95, roughness: 0.22 });
+    // selenite: a pale, moon-green stone, and the book is explicit that it is
+    // "not subject to the movements of the moon" — the joke is that it looks
+    // lunar and is not.
+    const selen = woodcut ? S.mat({ tone: 0.1 })
+      : S.mat({ color: 0x9ad8b0, roughness: 0.3, metalness: 0.2,
+                emissive: 0x143a24, emissiveIntensity: 0.3 });
+    const amethy = woodcut ? S.mat({ tone: 0.16 })
+      : S.mat({ color: 0x9a3ac0, roughness: 0.2, metalness: 0.3 });
+
+    // the team stands from z = -2.5 to -6.0 in the car's frame (see the loop
+    // above), so the vine has to reach the far pair.
+    const Z0 = 0.15 * s, Z1 = -6.6 * s, TOP = 2.85 * s;
+    for (const sx of [-1, 1]) {
+      const pts = [];
+      for (let k = 0; k <= 22; k++) {
+        const t = k / 22;
+        // out of the mouth, up, over, and down past the leading pair
+        const z = Z0 + (Z1 - Z0) * t;
+        const y = 1.55 * s + Math.sin(Math.PI * Math.min(1, t * 1.06)) * (TOP - 1.55 * s);
+        const x = sx * (0.10 + Math.sin(t * Math.PI) * 1.05) * s + Math.sin(t * 9.4) * 0.07 * s;
+        pts.push(new THREE.Vector3(x, y, z));
+      }
+      const curve = new THREE.CatmullRomCurve3(pts);
+      this._m(new THREE.TubeGeometry(curve, 30, 0.026 * s, 6, false), gold, 0, 0, 0,
+        { parent: g, cast: true });
+      // the curled leaves and the clusters hanging from them
+      for (let k = 2; k < 22; k += 2) {
+        const q = pts[k];
+        const leaf = this._m(new THREE.SphereGeometry(0.082 * s, 7, 5), selen,
+          q.x, q.y - 0.04 * s, q.z, { parent: g, cast: false });
+        leaf.scale.set(1, 0.30, 1.3);
+        leaf.rotation.y = k * 0.7;
+        if (k % 4 === 2) {
+          for (let c = 0; c < 5; c++) {
+            this._m(new THREE.SphereGeometry(0.022 * s, 6, 5), amethy,
+              q.x + ((c % 2) - 0.5) * 0.034 * s, q.y - 0.10 * s - c * 0.031 * s,
+              q.z + (c % 3 - 1) * 0.02 * s, { parent: g, cast: false });
+          }
+        }
+      }
+      // the tendrils, which are what makes a vine read as a vine
+      for (let k = 4; k < 20; k += 5) {
+        const q = pts[k];
+        const t = this._m(new THREE.TorusGeometry(0.048 * s, 0.009 * s, 4, 9, Math.PI * 1.6), gold,
+          q.x + sx * 0.08 * s, q.y - 0.02 * s, q.z, { parent: g, cast: false });
+        t.rotation.set(1.2, k * 0.9, 0.4);
+      }
+    }
   },
 
   // A draught beast for a triumphal car. Centaurs and leopards aren't in the

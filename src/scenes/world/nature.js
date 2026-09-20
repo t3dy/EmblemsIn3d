@@ -13,8 +13,8 @@
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
-import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=6';
-import { TRIUMPHS, HERBS, SPECIES } from './constants.js?v=9';
+import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=7';
+import { TRIUMPHS, HERBS, SPECIES, PLAN_SITES, shiftOf } from './constants.js?v=14';
 
 export const Nature = {
   // ── The pleasures of the garden (PLEASURES.md) ───────────────────────────
@@ -869,7 +869,18 @@ export const Nature = {
     }
   },
 
-  _tree(x, z, s = 1, species = null) {
+  // `opts` (2026-09-20, for the cypress avenue):
+  //   leaves  multiply the species' card count. A tree's leaf cards are a FIXED
+  //           number per species, so scaling one up spreads the same 26 cards
+  //           over 4.6³ = 97 times the volume and the crown comes apart into a
+  //           halo of separate black specks. The avenue's cypresses are the
+  //           first trees in this world built at avenue scale, and they found
+  //           it immediately.
+  //   cone    force the solid foliage cone that `SP.cone` species get. It is
+  //           what stops sky showing between the cards on a columnar tree, and
+  //           a cypress needs it for the same reason a fir does — the book's
+  //           avenue is a WALL of cypress, not a row of sparse ones.
+  _tree(x, z, s = 1, species = null, opts = {}) {
     // The primitive variant is the founding manifesto look, kept selectable
     // (DECISIONS.md, 2026-09-05). It used to be the woodcut register's default;
     // since 2026-09-07 the woodcut draws the same species as the lit garden,
@@ -952,9 +963,10 @@ export const Nature = {
         g.add(f);
       }
     } else {
-      this._canopyCards(g, species, cx, cy, cz, SP.crown[0] * s, SP.crown[1] * s, SP.crown[2] * s, SP.n,
-        seed, { cone: !!SP.cone, weeping: !!SP.weeping });
-      if (SP.cone) this._m(new THREE.ConeGeometry(SP.crown[0] * s * 0.55, SP.crown[1] * s * 1.9, 7), this._foliageMats(SP.dark, SP.light)[0], 0, cy, 0, { parent: g, cast: true, receive: false });
+      const nCards = Math.round(SP.n * (opts.leaves || 1));
+      this._canopyCards(g, species, cx, cy, cz, SP.crown[0] * s, SP.crown[1] * s, SP.crown[2] * s, nCards,
+        seed, { cone: !!SP.cone || !!opts.cone, weeping: !!SP.weeping });
+      if (SP.cone || opts.cone) this._m(new THREE.ConeGeometry(SP.crown[0] * s * 0.55, SP.crown[1] * s * 1.9, 7), this._foliageMats(SP.dark, SP.light)[0], 0, cy, 0, { parent: g, cast: true, receive: false });
       if (SP.fruit && !SP.big) {
         // a few fruit as bodies, so they read at a distance where the card's do not
         const fruitMat = this.style.mat({ color: SP.fruit, roughness: 0.55 });
@@ -1013,49 +1025,88 @@ export const Nature = {
   // 0 means "on the path" — the meadow fields use it to mask the processional
   // axis, the plazas, the court slabs, the wood duff, and the shore.
   _meadowClearance(x, z) {
-    const rect = (x0, x1, z0, z1) => {
+    // ── STAGE 2: every rect below belongs to a PRECINCT (2026-09-20) ────────
+    //
+    // This table was written in the original, cramped coordinates and never
+    // moved: SPREAD = 4 multiplied the world by four and left it behind, and
+    // stage 2 moves the precincts apart by up to five kilometres. Left alone it
+    // would mask bare ground five kilometres from anything and grow grass
+    // straight through the Queen's pavement.
+    //
+    // Rather than re-type twenty-five rectangles — which is the mistake this
+    // whole stage exists to stop — each is declared under the precinct it
+    // belongs to and read through `at(key)`, which does the two moves the world
+    // has made since they were written: x4 for SPREAD, then the precinct's own
+    // stage-2 shift. The numbers are therefore still the numbers that were
+    // measured, and they follow their buildings for ever after.
+    const raw = (x0, x1, z0, z1) => {
       const dx = Math.max(x0 - x, 0, x - x1);
       const dz = Math.max(z0 - z, 0, z - z1);
       return Math.hypot(dx, dz);
     };
-    const circle = (cx, cz, r) => Math.max(0, Math.hypot(x - cx, z - cz) - r);
+    const rawCircle = (cx, cz, r) => Math.max(0, Math.hypot(x - cx, z - cz) - r);
+    // `at(key)` returns a {rect, circle} pair in that precinct's frame.
+    const at = (key) => {
+      const [sx, sz] = shiftOf(key);
+      return {
+        rect:   (x0, x1, z0, z1) => raw(x0 * 4 + sx, x1 * 4 + sx, z0 * 4 + sz, z1 * 4 + sz),
+        circle: (cx, cz, r) => rawCircle(cx * 4 + sx, cz * 4 + sz, r),
+      };
+    };
     let d = 2;
+
+    // The processional axis is no longer a 344 m strip in the garden: stage 2
+    // lays it the whole length of the plan, so it is masked in world
+    // coordinates and at the width it is actually drawn (3.4 m).
+    d = Math.min(d, raw(-1.9, 1.9, -1e6, 1e6));
+
+    const pal = at('palace');
     d = Math.min(d,
-      rect(-1.9, 1.9, -36, 51),          // main processional axis
-      rect(-19.5, 19.5, -1.65, 1.65),    // cross path to the courts
-      rect(-19.5, 19.5, 18.35, 21.65),   // cross path, upper
-      rect(-13, -9, 12.5, 27.5),         // the bridge and its watercourse
+      pal.rect(-19.5, 19.5, -1.65, 1.65),    // cross path to the courts
+      pal.rect(-19.5, 19.5, 18.35, 21.65),   // cross path, upper
+      pal.rect(-13, -9, 12.5, 27.5),         // the bridge and its watercourse
       // the shaded walk of p. 92: its floor is leaf litter, and nothing grows
       // in a path -- what grows is the umbriphilous herbs, placed by hand
-      rect(28.0, 34.0, 13.4, 31.6),
-      // the rills of p. 196: a cut channel has a kerb and gravel, not grass
-      rect(4.4, 16.9, 2.5, 6.6), rect(-12.5, -4.5, 4.4, 7.0), rect(5.4, 16.7, 7.8, 10.0),
-      circle(0, 0, 7.2),                 // Elephant plaza
-      circle(0, -20, 8.8),               // fountain grove
-      rect(-27.5, -12.5, 14, 26),        // court of Eleuterylida slab
-      rect(13, 25, 14.5, 25.5),          // Polia's garden slab
-      rect(-28.5, -12.5, -6, 6),         // Planetary Palace slab
-      rect(-46.5, -33.5, -0.5, 12.5),    // the chess pavement and its enclosure
-      rect(7.9, 13.1, 14.6, 18.4),       // the colossal horse and its pedestal
-      circle(21.5, 0, 6.2),              // Quinta Essentia round
-      circle(25.5, -3.4, 1.5), circle(25.5, 3.4, 1.5),
+      pal.rect(28.0, 34.0, 13.4, 31.6),
+      pal.circle(0, -20, 8.8),               // fountain grove
+      pal.rect(-27.5, -12.5, 14, 26),        // court of Eleuterylida slab
+      pal.rect(-28.5, -12.5, -6, 6),         // Planetary Palace slab
+      pal.rect(-46.5, -33.5, -0.5, 12.5),    // the chess pavement and its enclosure
+      pal.circle(21.5, 0, 6.2),              // Quinta Essentia round
+      pal.circle(25.5, -3.4, 1.5), pal.circle(25.5, 3.4, 1.5),
+    );
+
+    const piz = at('piazza');
+    d = Math.min(d,
+      piz.circle(7, 42, 7.2),                // Elephant plaza (moved with him, DECISIONS 51)
+      piz.rect(7.9, 13.1, 14.6, 18.4),       // the colossal horse and its pedestal
+      // the rills of p. 196: a cut channel has a kerb and gravel, not grass.
+      // Re-measured off _buildRills' own points, which moved with the elephant.
+      piz.rect(6.4, 9.4, 32.2, 33.9), piz.rect(2.2, 4.1, 32.7, 33.2),
+    );
+
+    d = Math.min(d,
+      at('polia_garden').rect(13, 25, 14.5, 25.5),     // Polia's garden slab
       // The three doors are cut in a rocky place "without any greene grasse or
       // hearbe" (Dall. p. 192), and the seat is the point of the choice made
       // there. This was a 2.8 m strip at the foot of the rock, so grass grew
       // over the whole approach the reader actually walks.
-      rect(-15.5, 15.5, 5.5, 19.5),      // Three Doors: the whole stony seat
+      at('three_doors').rect(-15.5, 15.5, 5.5, 19.5),  // the whole stony seat
+      at('pyramid').rect(-19, 19, 24.2, 27.8),         // Great Portal piers
+      at('wood').rect(-120, 120, 210, 435),            // dark-wood duff
       // the dividing spring and its two channels: water, stone kerb and wet
-      // margin, so no meadow
-      rect(-49, -31, 47, 58),
-      rect(-19, 19, 24.2, 27.8),         // Great Portal piers
-      rect(-120, 120, 210, 435),         // dark-wood duff (moved with the wood)
-      // Ploughed ground is ploughed: meadow grass must not grow out of the
-      // furrows of the strip fields, nor under the orchard and the arbustum.
-      rect(-61, -19, 41.5, 62),          // second nature -- the worked belt
-      rect(-70, 70, -70, -33),           // sand strip and sea
-      circle(30, -27, 9.3),              // the polyandrion's ruin floor
+      // margin, so no meadow. Ploughed ground is ploughed too: meadow grass
+      // must not grow out of the furrows of the strip fields.
+      at('wooded_country').rect(-49, -31, 47, 58),
+      at('wooded_country').rect(-61, -19, 41.5, 62),   // second nature, the worked belt
+      at('shore').rect(-70, 70, -70, -33),             // sand strip and sea
+      at('polyandrion').circle(30, -27, 9.3),          // the polyandrion's ruin floor
     );
-    for (const t of TRIUMPHS) d = Math.min(d, circle(t.pos[0], t.pos[1], 2.4));
+
+    // The triumph cars. TRIUMPHS.pos is already in stage-1 (x4) coordinates, so
+    // it takes the precinct's shift and no multiplication.
+    const [tx, tz] = shiftOf('triumphs');
+    for (const t of TRIUMPHS) d = Math.min(d, rawCircle(t.pos[0] + tx, t.pos[1] + tz, 2.4));
     return d;
   },
 
@@ -1091,6 +1142,28 @@ export const Nature = {
                      fogColor: this.scene.fog.color.getHex(),
                      fogDensity: this.scene.fog.density };
 
+    // ── STAGE 2: the sward covers the GARDENS, not a square about the origin ─
+    //
+    // These fields used to take createMeadowField's default bounds, a 336 x 340
+    // box round (0, 38) — which was the whole of the north-of-the-portal
+    // cluster when that cluster was 300 m across. It is 5.5 km now, and the
+    // origin it was centred on is bare ground between the pyramid's north face
+    // and the wooded country. The bounds come from the plan instead: from the
+    // green enclosure's south edge down to the polyandrion's north, which is
+    // every precinct a walker crosses on foot, and as wide as the widest of
+    // them. 36 000 blades over 5.5 km is thin, so the count rises with it.
+    const P = PLAN_SITES;
+    const GARDENS = {
+      x0: -320, x1: 320,
+      z0: P.enclosure.zSouth,       // -2885.6
+      z1: P.polyandrion.zNorth,     // -5797.9
+    };
+    const ISLE = {
+      x0: P.cythera.centre[0] - 50, x1: P.cythera.centre[0] + 50,
+      z0: P.cythera.centre[1] - 50, z1: P.cythera.centre[1] + 50,
+    };
+    const DENSE = mobile ? 3.0 : 4.0;   // the gardens are 8x the old box
+
     // The sward, rebuilt 2026-09-07. The first version read as cartoon: the
     // blades were 10 cm across at the base, half a metre tall, and lime. Three
     // changes, none of them expensive, because this is all one InstancedMesh:
@@ -1102,7 +1175,8 @@ export const Nature = {
     //     whole field glow is now a pale straw.
     const grass = createMeadowField({
       ...common,
-      count: mobile ? 11000 : 36000,
+      count: Math.round((mobile ? 11000 : 36000) * DENSE),
+      bounds: GARDENS,
       seed: 7331,
       blade: { height: 0.30, width: 0.019, segments: 3, planes: 3 },
       colors: { root: 0x2b3f1c, tip: 0x5f7c37, rootB: 0x33501f, tipB: 0x7d904a, back: 0xb4b478 },
@@ -1114,7 +1188,8 @@ export const Nature = {
     // painted plane between separate spikes.
     const undergrass = createMeadowField({
       ...common,
-      count: mobile ? 7000 : 22000,
+      count: Math.round((mobile ? 7000 : 22000) * DENSE),
+      bounds: GARDENS,
       seed: 2287,
       blade: { height: 0.15, width: 0.016, segments: 2, planes: 3 },
       colors: { root: 0x24361a, tip: 0x486327, rootB: 0x2a4020, tipB: 0x5a7434, back: 0x8c9c60 },
@@ -1125,7 +1200,8 @@ export const Nature = {
     // noise crests, so they read as scattered drifts, not a second crop
     const wildflowers = createMeadowField({
       ...common,
-      count: mobile ? 400 : 1000,
+      count: Math.round((mobile ? 400 : 1000) * DENSE),
+      bounds: GARDENS,
       seed: 4211,
       accept: (x, z, clump) => clump > 0.72,
       blade: { height: 0.40, width: 0.018, segments: 3, planes: 2, flare: 1.9 },
@@ -1141,6 +1217,7 @@ export const Nature = {
     const roses = createMeadowField({
       ...common,
       count: mobile ? 600 : 1500,
+      bounds: GARDENS,
       seed: 9042,
       accept: (x, z, clump) => roseBand(x, z) && clump > 0.3,
       blade: { height: 0.42, width: 0.020, segments: 3, planes: 2, flare: 1.8 },
@@ -1156,7 +1233,7 @@ export const Nature = {
       ...common, clearance: isleClear,
       count: mobile ? 6000 : 20000,
       seed: 5150,
-      bounds: { x0: -50, x1: 50, z0: -650, z1: -550 },  // SPREAD=4: island CZ -150 -> -600
+      bounds: ISLE,   // STAGE 2: from PLAN_SITES.cythera, not a literal
       blade: { height: 0.27, width: 0.018, segments: 3, planes: 3 },
       colors: { root: 0x2b3f1c, tip: 0x62803a, rootB: 0x33501f, tipB: 0x82964e, back: 0xb8b87c },
       wind: { windStrength: 0.16, windSpeed: 1.15 },
@@ -1165,7 +1242,7 @@ export const Nature = {
       ...common, clearance: isleClear,
       count: mobile ? 4000 : 13000,
       seed: 5151,
-      bounds: { x0: -50, x1: 50, z0: -650, z1: -550 },  // SPREAD=4: island CZ -150 -> -600
+      bounds: ISLE,   // STAGE 2: from PLAN_SITES.cythera, not a literal
       blade: { height: 0.14, width: 0.015, segments: 2, planes: 3 },
       colors: { root: 0x24361a, tip: 0x4a6629, rootB: 0x2a4020, tipB: 0x5c7636, back: 0x90a064 },
       wind: { windStrength: 0.09, windSpeed: 1.0 },
@@ -1174,7 +1251,7 @@ export const Nature = {
       ...common, clearance: isleClear,
       count: mobile ? 900 : 2600,
       seed: 611,
-      bounds: { x0: -50, x1: 50, z0: -650, z1: -550 },  // SPREAD=4: island CZ -150 -> -600
+      bounds: ISLE,   // STAGE 2: from PLAN_SITES.cythera, not a literal
       accept: (x, z, clump) => clump > 0.52,
       blade: { height: 0.42, width: 0.019, segments: 3, planes: 2, flare: 1.9 },
       colors: { root: 0x314c1d, tip: 0xcc6472, rootB: 0x354c20, tipB: 0xd8bc5e, back: 0xe0c898 },
@@ -1196,7 +1273,10 @@ export const Nature = {
     // sward round the palace and the court, and nowhere else.
     // SPREAD = 4 (2026-09-17, DECISIONS.md 54): x4 so it still covers the
     // palace (-82, 0) and the court (-76, 80), both now much further out.
-    const palaceField = (x, z) => x > -176 && x < -12 && z > -72 && z < 120;
+    // STAGE 2: the palace moved 3 145 m north, so the box that says "round the
+    // palace and the court" moves with it. Shifted, not re-typed.
+    const [plx, plz] = shiftOf('palace');
+    const palaceField = (x, z) => x > -176 + plx && x < -12 + plx && z > -72 + plz && z < 120 + plz;
     const fieldDrift = (seed, thr, tip, tipB, back, scale) => createMeadowField({
       ...common, count: mobile ? 220 : 620, seed,
       accept: (x, z, clump) => palaceField(x, z) && clump > thr,

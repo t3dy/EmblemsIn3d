@@ -3,11 +3,11 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=290';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=308';
 import { VaultsScene } from './scenes/VaultsScene.js?v=14';
-import { DreamMode } from './systems/DreamMode.js?v=8';
-import { DREAM_STOPS } from './data/hp_dream.js?v=4';
-import { DREAM_REACTIONS } from './data/hp_reactions.js?v=2';
+import { DreamMode } from './systems/DreamMode.js?v=9';
+import { DREAM_STOPS } from './data/hp_dream.js?v=7';
+import { DREAM_REACTIONS } from './data/hp_reactions.js?v=3';
 import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=9';
 // The ladder of the metals, for the roll-up HUD's gauge and its countdown.
 // Imported rather than retyped: METALS is the single sourced copy (hp.db
@@ -47,7 +47,18 @@ const state = {
 // ─── Renderer ─────────────────────────────────────────────────────────────────
 
 const canvas = document.getElementById('three-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+// STAGE 2 (2026-09-20): a logarithmic depth buffer. The world was 300 m across
+// and a near/far of 0.1/1400 had depth to spare. It is 13.7 km now, with a
+// pyramid 790 m tall that must read from the palm plain 2.3 km away, and the
+// far plane has to follow — at which point a linear 24-bit depth buffer puts
+// its precision all in the first few metres and everything beyond a kilometre
+// z-fights. The log buffer spends precision by ORDER OF MAGNITUDE instead, so a
+// hedge at 3 m and a cliff at 4 km are both resolved. It costs a per-fragment
+// write of gl_FragDepth on hardware without EXT_frag_depth; every target this
+// runs on has it.
+const renderer = new THREE.WebGLRenderer({
+  canvas, antialias: true, alpha: true, logarithmicDepthBuffer: true,
+});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
@@ -2288,17 +2299,21 @@ window._hp = { renderer, composer, state, clock, aerial };
 // It is a debugging affordance, not a mode: it uses the same launcher the
 // chooser does and leaves the reader's lens settings alone.
 window.hpWalk = (x, z = null, yaw = 0) => {
-  // The world is already built by the time the chooser is on screen — the boot
-  // launches it and the chooser is an overlay over it — so this does not
-  // launch anything. It takes down the two panels and puts the walker where it
-  // is told. (It used to `await launchHPWorld`, which hung: launching a second
-  // time while the first is live never resolves.)
-  if (!state.activeScene) return 'the world is not built yet — wait and call again';
-  showHPMode(false);
-  setHidden(document.getElementById('tour-flavor-chooser'), true);
-  showHint('');
-  if (typeof x === 'string') return window.hpGoTo(x);
-  return window.hpGoTo([x, z], yaw);
+  const go = () => {
+    showHPMode(false);
+    setHidden(document.getElementById('tour-flavor-chooser'), true);
+    showHint('');
+    return typeof x === 'string' ? window.hpGoTo(x) : window.hpGoTo([x, z], yaw);
+  };
+  if (state.activeScene) return go();
+  // The world is NOT built until a mode is chosen, so the first call has to
+  // build it — and the build is synchronous for most of its length, so simply
+  // CALLING `launchHPWorld` blocks the thread for half a minute before it ever
+  // returns a promise. Awaiting it hung a console evaluation; so did not
+  // awaiting it. It goes on a timeout, so this returns at once and the build
+  // happens after, with `go` arranged to run when it finishes.
+  setTimeout(() => { launchHPWorld({ chooser: false }).then(go); }, 0);
+  return 'building the world — the view will be there in a few seconds';
 };
 
 window.hpDiag = async function hpDiag(frames = 60) {

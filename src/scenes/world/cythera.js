@@ -11,20 +11,34 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { CYTHERA_CLIMBERS, SPECIES } from './constants.js?v=9';
+import { CYTHERA_CLIMBERS, SPECIES, PLAN_SITES } from './constants.js?v=14';
 
 export const Cythera = {
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
 
   _buildCythera() {
     const S = this.style;
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
-    // true-scale, item 4): the shore is CONNECTIVE ground between the
-    // mainland and an island that just moved from z -150 to -600, so both
-    // planes' sizes AND positions grow x4, like the approach corridor. Pier,
-    // rails and boat position x4 with them so the crossing still lines up.
-    // The sea now runs all the way to the island (its material breathes in update)
-    const sea = this._m(new THREE.PlaneGeometry(680, 740), S.waterMat(), 0, 0.03, -504, { rx: -Math.PI / 2, cast: false });
+    // ── THE SEA IS SIZED FROM THE PLAN (2026-09-20) ───────────────────────
+    //
+    // It used to be a 680 x 740 plane at z -504: four times the size it was
+    // before SPREAD, sized by hand to reach an island that then sat at -600.
+    // Stage 2 moved the shore 5.9 km north and the island 7.3 km, and the two
+    // did not move by the same amount — the plan puts 1 110 m of open water
+    // between them, six stadia, which is the CROSSING and is a precinct of its
+    // own (its size note: "no distance is given, but the DURATION is the fact
+    // — the crossing fills a whole chapter of song"). A hand-sized sea left a
+    // 500 m hole between the last wave and the beach of Cythera.
+    //
+    // So it is measured: from this precinct's own north edge to the island's
+    // south, at the crossing's stated width. Nothing here needs touching again
+    // when stage 3 moves either end.
+    const SH = PLAN_SITES.shore, CY = PLAN_SITES.cythera, CR = PLAN_SITES.crossing;
+    const [shx, shz] = SH.shift;
+    const seaZ0 = SH.zNorth - shz;                 // local: the beach
+    const seaZ1 = (CY.centre[1] - CY.depth / 2) - shz;  // local: past the island's far shore
+    const seaD = Math.abs(seaZ1 - seaZ0), seaC = (seaZ0 + seaZ1) / 2;
+    const sea = this._m(new THREE.PlaneGeometry(CR.width, seaD), S.waterMat(), -shx, 0.03, seaC,
+      { rx: -Math.PI / 2, cast: false });
     if (sea.material.transparent) this._sea = { mat: sea.material, base: sea.material.opacity };
     // Sand strip
     const sandMat = S.key === 'woodcut' ? S.mat({ tone: 0.02, rim: 0 }) : S.mat({ color: 0x9a8a64, roughness: 0.95 });
@@ -439,11 +453,9 @@ export const Cythera = {
     // them the last stride of every flight would be a teleport.
     for (let q = 0; q < 4; q++) {
       const t0 = q * Math.PI / 2 + 0.17, t1 = q * Math.PI / 2 + Math.PI / 2 - 0.17;
-      this.walker.floors.push(
-        { kind: 'ring', cx: CX, cz: CZ, r0: 14.0, r1: 18.0, y: 2.10, a0: t0, a1: t1 },
-        { kind: 'ring', cx: CX, cz: CZ, r0: 11.0, r1: 14.0, y: 1.40, a0: t0, a1: t1 },
-        { kind: 'ring', cx: CX, cz: CZ, r0:  8.0, r1: 11.0, y: 0.70, a0: t0, a1: t1 },
-      );
+      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0: 14.0, r1: 18.0, y: 2.10, a0: t0, a1: t1 });
+      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0: 11.0, r1: 14.0, y: 1.40, a0: t0, a1: t1 });
+      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0:  8.0, r1: 11.0, y: 0.70, a0: t0, a1: t1 });
     }
     const terraceMat = lit ? S.mat({ color: 0x8a7a5a, roughness: 0.9 }) : S.mat({ tone: 0.08 });
     if (lit) this._dress(terraceMat, this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 4, courses: 3, repeat: 3 }), 0.3);
@@ -518,8 +530,7 @@ export const Cythera = {
       // the walk drops to the sward the moment it steps off a stair.
       const G = 0.19;                                    // half the road, in radians
       for (const [r0, r1, y] of [[14.60, 17.60, 2.10], [11.60, 13.40, 1.40], [8.60, 10.40, 0.70]]) {
-        this.walker.floors.push({ kind: 'ring', cx: CX, cz: CZ, r0, r1, y,
-                                  a0: a - G, a1: a + G });
+        this._floor({ kind: 'ring', cx: CX, cz: CZ, r0, r1, y, a0: a - G, a1: a + G });
         // and the road surface itself, so the landing is seen as well as felt
         const rm = (r0 + r1) / 2;
         this._m(new THREE.PlaneGeometry(3.4, r1 - r0), isleTrack,
@@ -1448,7 +1459,7 @@ export const Cythera = {
         x + Math.cos(a) * Math.abs(dr) / 2, y - Math.abs(dy) / 2, z + Math.sin(a) * Math.abs(dr) / 2,
         { ry: -a, cast: false });
       // and the floor for each tread, so the walk actually rises with it
-      this.walker.floors.push({
+      this._floor({
         kind: 'ring', cx: CX, cz: CZ,
         r0: Math.min(r0 + dr * i, r0 + dr * (i + 1)),
         r1: Math.max(r0 + dr * i, r0 + dr * (i + 1)),

@@ -2,6 +2,35 @@
 
 *Last updated: 2026-09-20. This is the operational roadmap for stages 2–4, organized by precinct and narrative priority. Cross-reference with COVERAGE.md for full feature details and SOURCES.md for scholarship.*
 
+> ## STAGE 2 IS BUILT (2026-09-20) — read `HANDOVER_STAGE2.md`
+>
+> Ted took the whole of it: **full stage 2**, **the pyramid square**, and then the screens, the
+> spring, the triumph fixes and Polia's staging. What that leaves on this page:
+>
+> | line below | state |
+> |---|---|
+> | Portal — **pyramid at true scale (BLOCKER)** | **done.** 1,139.6 m square, 1,410 courses, ~965 m to the nymph. The valley's neck is derived from it. |
+> | Wooded Country — spring that divides right/left | **done** — it moves here with the fields, where ch. VI puts it |
+> | Wooded Country — mountain ring | **done** — an ellipse at the plan's own width and depth, with a mouth at each end |
+> | Cypress Avenue — avenue + citrus hedge | **done** — four stadia, periwinkle floor, one gate |
+> | Cypress Avenue — periwinkle floor + azure flowers | **done** |
+> | Green Enclosure — three-sided citrus hedge | **done** (east and west; the south side IS the avenue's closing hedge and is built once) |
+> | Green Enclosure — windows cut in hedge | **done** — `_citrusRun`, and the hedge reads as architecture |
+> | Polia's Garden — meeting + recognition staging | **done** — she walks the arbour to meet you, torch in hand, and stops at arm's length |
+> | Polia's Garden — interior monologue (eyes vs. appetite) | **done** — dream stop `polia_quarrel` + its reaction |
+> | Triumphs — fix car materials | **done** — all four, each from the two stones the book names |
+> | Triumphs — fix riders' liveries | **done**, and the fourth car's riders are REMOVED: the book withholds them |
+> | Triumphs — Bacchus car's urn | **done** — the eagles, the jacinth vessel, the topaz vine, the ash, and the golden vine that roofs the team |
+>
+> **Still open here, and now the top of the queue:** everything under "the monuments grown into
+> the room it makes". Only the pyramid has grown. Cythera is a 50 m island in a 1,400 m precinct;
+> the colossus is a tenth of his sixty paces. And **the palace does not yet close the green
+> enclosure's north side**, which is what the book says it is — that one is now visible from
+> inside the room, which is the best kind of bug report.
+>
+> Stage 3 moves a precinct by editing `scripts/plan_sites.py` and re-running it. Nothing inside a
+> builder is ever re-typed again; see `HANDOVER_STAGE2.md` §1.
+
 ## The principle: screens before scatter
 
 The book's own rule (DIRECTIONS.md §5): **nothing is approached across open ground with the destination in view**. Every monument is glimpsed through trees, hidden behind a wall, or closes a valley. Stage 1's sparseness (the 4× spread) is intentional. Before scattering more objects, **build the screens** — the wooded rings, the hedged enclosures, the mountain walls — that make approach meaningful.

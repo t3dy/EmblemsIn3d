@@ -11,6 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
+import { PLAN_SITES } from './constants.js?v=14';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
@@ -157,6 +158,18 @@ export const Materials = {
   // what keeps the AABB wall colliders exact. Any other angle would need a new
   // collider kind, so it is refused here rather than silently approximated.
   //
+  // ── It NESTS (2026-09-20) ──────────────────────────────────────────────
+  //
+  // Stage 2 of the true-scale plan wraps whole precincts in a `_placeAt` of
+  // their own (see plan_sites.js), and several of the builders inside them —
+  // the elephant, the colossus — already use one. The old `finally` did
+  // `delete this._wallCol`, which removes the OWN property and re-exposes the
+  // prototype's: an inner call returning would strip the outer call's patch,
+  // and every collider registered after it would land unshifted while its
+  // geometry moved. Silent, and exactly the class of bug that leaves a wall
+  // you cannot see standing in a field a mile from its building. The saved
+  // values are restored instead, so any depth of nesting composes.
+  //
   // Returns the group, so a caller can hide or fold it (DECISIONS.md 49).
   _placeAt(cx, cz, turn, build) {
     if (turn !== Math.round(turn)) throw new Error('_placeAt: turn must be a whole number of quarter turns');
@@ -171,7 +184,10 @@ export const Materials = {
                          : q === 1 ? [cx + z, cz - x]
                          : q === 2 ? [cx - x, cz - z]
                                    : [cx - z, cz + x]);
-    const realScene = this.scene, realWall = this._wallCol, realCirc = this._circleCol;
+    const realScene = this.scene;
+    const realWall = this._wallCol, realCirc = this._circleCol, realFloor = this._floor;
+    const ownWall = Object.hasOwn(this, '_wallCol'), ownCirc = Object.hasOwn(this, '_circleCol');
+    const ownFloor = Object.hasOwn(this, '_floor');
     this.scene = g;
     this._wallCol = (x0, x1, z0, z1) => {
       const a = map(x0, z0), b = map(x1, z1);
@@ -179,17 +195,60 @@ export const Materials = {
                           Math.min(a[1], b[1]), Math.max(a[1], b[1]));
     };
     this._circleCol = (x, z, r) => { const w = map(x, z); return realCirc.call(this, w[0], w[1], r); };
+    // A FLOOR is world-space too, and it is the one registrar `_placeAt` never
+    // carried — so Cythera's terraces, the only floors in the world, would have
+    // stayed at the old origin while the island moved. A ring or disc keeps its
+    // radii and gains the quarter turn on its arc; a rect maps both corners.
+    this._floor = (f) => {
+      if (f.kind === 'rect') {
+        const a = map(f.x0, f.z0), b = map(f.x1, f.z1);
+        return realFloor.call(this, { ...f,
+          x0: Math.min(a[0], b[0]), x1: Math.max(a[0], b[0]),
+          z0: Math.min(a[1], b[1]), z1: Math.max(a[1], b[1]) });
+      }
+      const c = map(f.cx, f.cz);
+      const spin = f.a0 === undefined ? {} : { a0: f.a0 - q * Math.PI / 2, a1: f.a1 - q * Math.PI / 2 };
+      return realFloor.call(this, { ...f, cx: c[0], cz: c[1], ...spin });
+    };
     try { build(); } finally {
       this.scene = realScene;
-      delete this._wallCol;
-      delete this._circleCol;
+      if (ownWall) this._wallCol = realWall; else delete this._wallCol;
+      if (ownCirc) this._circleCol = realCirc; else delete this._circleCol;
+      if (ownFloor) this._floor = realFloor; else delete this._floor;
     }
     return g;
+  },
+
+  // ── Where a precinct's own centre is, in the frame a builder works in ────
+  //
+  // A precinct group's origin is NOT its centre. For a precinct that already
+  // existed, the origin is wherever the old world's origin landed after the
+  // shift, and the builder's authored coordinates are relative to that — which
+  // is the whole point, because it means nothing inside had to be re-typed. For
+  // a greenfield precinct the origin IS the centre, because there was nothing
+  // to preserve.
+  //
+  // A builder that wants to draw something about the MIDDLE of its precinct —
+  // a ring of mountain, a boundary, anything sized from the plan rather than
+  // from the old layout — needs the centre in its own local frame, which is
+  // `centre - shift`. Getting this wrong is quiet: the wooded country's ring
+  // was first drawn about the group origin and came out 256 m north of where
+  // it belonged, far enough to stand in the cypress avenue.
+  _precinctLocal(key) {
+    const s = PLAN_SITES[key];
+    if (!s) throw new Error(`_precinctLocal: no precinct named "${key}"`);
+    return [s.centre[0] - s.shift[0], s.centre[1] - s.shift[1]];
   },
 
   _circleCol(x, z, r) { const c = { x, z, r }; this.walker.colliders.push(c); return c; },
 
   _wallCol(x0, x1, z0, z1) { this.walker.walls.push({ x0, x1, z0, z1 }); },
+
+  // The one way a builder may raise the ground under the walk. Going through
+  // `this.walker.floors.push` directly works and is what cythera.js used to do,
+  // but it steps round `_placeAt`, so the floor stays behind when the precinct
+  // moves. See _placeAt.
+  _floor(f) { this.walker.floors.push(f); return f; },
 
   // Place a named NPC: registers for idle sway and the npcs registry
   _npc(key, group, x, z, faceYaw = 0, { label = null, sub = '', labelY = 2.0, sway = 0.05 } = {}) {

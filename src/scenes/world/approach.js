@@ -12,7 +12,9 @@
 
 import * as THREE from 'three';
 import { Walker } from '../../systems/Walker.js?v=6';
-import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES } from './constants.js?v=9';
+import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES,
+         PYRAMID_W, PYRAMID_CLEAR, VALLEY_Z0, VALLEY_Z1, VALLEY_LEN,
+         PLAN_EXTENT, PLAN_SITES } from './constants.js?v=14';
 
 export const Approach = {
   // ── Ground, paths ─────────────────────────────────────────────────────────
@@ -39,35 +41,77 @@ export const Approach = {
       for (const m of [groundMat, pathMat]) { m.roughnessMap = null; m.roughness = 1.0; }
     }
 
-    // The sward is a plane with two holes in it, both at the Polyandrion: the
-    // grated oculus of the ciborium and the stair-pit of the crypt door. The
-    // crypt is genuinely underground (ch. XIX, p. 247: "a blind, sloping little
-    // stair descending"), so the ground has to open for it.
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
-    // true-scale, item 4): the sward, the crosspaths and the fences are the
-    // GROUND ITSELF under the whole "north of the portal" cluster, so they
-    // grow x4, not just translate -- otherwise the walker steps off the edge
-    // of the world between the spread-out precincts. The holes follow the
-    // Polyandrion, whose own anchor (PX, PZ) moved 30,-27 -> 120,-108 (see
-    // tombs.js _buildPolyandrion; the second hole is PX+5.3, PZ-1.0, so it
-    // becomes 125.3,-109); hole RADII are a size and stay.
-    this._m(this._holedGround(520, 520, 0, -8, [[120, -108, 0.8], [125.3, -109.0, 1.15, 0.52]]), groundMat, 0, 0, -8, { rx: -Math.PI / 2, cast: false });
-    // The approach's meadow takes the SAME material, or the two planes meet at
-    // z = 54 in a straight seam of two different greens.
-    this._groundMat = groundMat;
+    // ── STAGE 2: ONE sward, the size of the plan (2026-09-20) ──────────────
+    //
+    // There used to be four ground planes: a 520 m square under the garden, a
+    // 1 200 x 688 under the approach, a 1 120 x 280 beyond the wood, and a
+    // gravel circle on the palm plain — each sized by hand to the cluster above
+    // it, each grown x4 at stage 1, and every one of them a place the walker
+    // could step off the world if a precinct moved and its floor did not.
+    //
+    // At 13.7 km that bookkeeping is not worth doing. The ground is a property
+    // of the PLAN, so it is laid once from PLAN_EXTENT with a margin, and every
+    // precinct that moves moves over ground that is already there. A plane is
+    // two triangles and one draw call whatever its size; the cost of this is
+    // nil and the class of bug it removes is the one that cost a session.
+    //
+    // The two HOLES stay local to the Polyandrion — they are the grated oculus
+    // of the ciborium and the stair-pit of the crypt door (ch. XIX, p. 247: "a
+    // blind, sloping little stair descending"), so the ground has to open for
+    // them and a 14 km plane cannot carry a 1 m hole. They are cut in a 240 m
+    // apron that rides the Polyandrion's own precinct group, a centimetre above
+    // the world sward.
+    // The paths are a SKIN on the sward, 3 cm above it, and at 13.7 km with a
+    // logarithmic depth buffer 3 cm is below the depth resolution most of the
+    // way down the itinerary: the processional axis came out as a ladder of
+    // stripes where the two planes traded places pixel by pixel. Raising the
+    // path would put a visible lip on it. Polygon offset is the right tool —
+    // it biases the path's depth at rasterisation without moving the geometry,
+    // so the strip stays flush with the ground it is worn into and still wins.
+    // Every overlay on the sward needs it, which is why it is set on the shared
+    // material rather than per mesh.
+    pathMat.polygonOffset = true;
+    pathMat.polygonOffsetFactor = -4;
+    pathMat.polygonOffsetUnits = -4;
 
-    // Main processional axis (wood → shore), two cross paths to the courts
-    this._m(new THREE.PlaneGeometry(3.4, 344), pathMat, 0, 0.012, 28, { rx: -Math.PI / 2, cast: false });
+    const M = 400;                                     // margin beyond the plan's own edges
+    const GW = PLAN_EXTENT.widthMax + M * 2;
+    const GD = (PLAN_EXTENT.zSouth - PLAN_EXTENT.zNorth) + M * 2;
+    const GZ = (PLAN_EXTENT.zSouth + PLAN_EXTENT.zNorth) / 2;
+    this._m(new THREE.PlaneGeometry(GW, GD), groundMat, 0, -0.02, GZ, { rx: -Math.PI / 2, cast: false });
+    this._groundMat = groundMat;
+    this._pathMat = pathMat;
+
+    // The processional axis: the itinerary itself, wood to shore, one strip the
+    // length of the plan. It used to be 344 m long because the world was.
+    this._m(new THREE.PlaneGeometry(3.4, GD), pathMat, 0, 0.012, GZ, { rx: -Math.PI / 2, cast: false });
+
+    // The fences that keep the walker on the ground he has. South of the Great
+    // Portal it is the valley's cliffs that hold him; everywhere else it is
+    // these two, now at the plan's own width rather than at 600 m.
+    const EDGE = GW / 2 - 8;
+    this._wallCol(EDGE, EDGE + 400, PLAN_EXTENT.zNorth - M, PLAN_EXTENT.zSouth + M);
+    this._wallCol(-(EDGE + 400), -EDGE, PLAN_EXTENT.zNorth - M, PLAN_EXTENT.zSouth + M);
+    this._wallCol(-(EDGE + 400), EDGE + 400, PLAN_EXTENT.zNorth - M - 400, PLAN_EXTENT.zNorth - M);
+    this._wallCol(-(EDGE + 400), EDGE + 400, PLAN_EXTENT.zSouth + M, PLAN_EXTENT.zSouth + M + 400);
+  },
+
+  // The cross paths and the two roundels of the palace precinct, which used to
+  // be laid with the world's ground and are local to the palace now.
+  _buildPalacePaths() {
+    const pathMat = this._pathMat;
     this._m(new THREE.PlaneGeometry(152, 2.8), pathMat, 0, 0.012, 0, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.PlaneGeometry(152, 2.8), pathMat, 0, 0.012, 80, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(7, 40), pathMat, 0, 0.014, 0, { rx: -Math.PI / 2, cast: false });
     this._m(new THREE.CircleGeometry(8.5, 40), pathMat, 0, 0.014, -80, { rx: -Math.PI / 2, cast: false });
+  },
 
-    // The garden's sward is now 520 m square. Two fences keep the walker on
-    // the ground he has: south of the Great Portal the world is the valley,
-    // and it is the cliffs that hold him; north of it, it is these.
-    this._wallCol(248, 600, -832, 176);
-    this._wallCol(-600, -248, -832, 176);
+  // The Polyandrion's apron, with the two holes cut in it. Built inside that
+  // precinct's group, so it moves with the tombs it belongs to.
+  _buildTombApron() {
+    this._m(this._holedGround(240, 240, 120, -108,
+      [[120, -108, 0.8], [125.3, -109.0, 1.15, 0.52]]),
+      this._groundMat, 120, 0.0, -108, { rx: -Math.PI / 2, cast: false });
   },
 
   _buildWood() {
@@ -230,38 +274,24 @@ export const Approach = {
   // `pyramid-true-scale`. What this pass buys is the approach: 188 m of walking
   // with the thing in view the whole way, and a valley that is shut.
 
-  _buildApproach() {
-    const S = this.style, woodcut = S.key === 'woodcut';
-    const W = WOOD;
+  // ── The approach, split into its three precincts (2026-09-20) ───────────
+  //
+  // This was one `_buildApproach` covering the great oak, the palm plain and
+  // the valley together. Stage 2 of the true-scale plan moves those three by
+  // 2 211 m, 1 804 m and 0 m respectively — they are three precincts with three
+  // shifts — so a single builder could no longer be wrapped in one `_placeAt`.
+  // Nothing inside has moved: the three pieces are the same code under three
+  // headings, and HPWorldScene now calls each inside its own precinct's group.
+  //
+  // The connective GROUND is no longer built here at all. At 13.7 km the strip
+  // between precincts is a property of the plan, not of the approach, so it is
+  // laid once by `_buildGround` from PLAN_EXTENT. See approach.js's old note
+  // about the walker "falling off the world between them" — that is now the
+  // world sward's job.
+
+  // The great oak, in a spacious green mead (ch. I end).
+  _buildGreatOak() {
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
-
-    // ── The ground of the whole southern region ──
-    // Three surfaces, because the book names three: the green mead about the
-    // oak, the "sandie or grauelly plaine, yet bespotted with greene tuffes" of
-    // the palm, and the flowered plain the dream opens on.
-    const meadMat = this._groundMat;
-    const gravelMat = woodcut ? S.mat({ tone: 0.05, rim: 0 })
-      : S.mat({ color: 0x6e6248, roughness: 1.0 });
-    if (!woodcut) {
-      this._dress(gravelMat, this._surfaceTexture({ base: '#6e6446', dark: '#3e3826', light: '#8e8260', blobs: 60, speckle: 5200, repeat: 20 }), 0.3);
-      gravelMat.roughnessMap = null; gravelMat.roughness = 1.0;
-    }
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54; ticket plan-resite-precincts-
-    // true-scale, item 4): the approach corridor is CONNECTIVE GROUND, not a
-    // sized precinct, so both its planes' positions AND their own extents grow
-    // x4 -- it has to cover four times the walk between the portal and the
-    // wood, or the walker falls off the world between them.
-    // the valley floor and the mead, from the portal to the wood
-    this._m(new THREE.PlaneGeometry(1200, 688), meadMat, 0, 0.004, 560, { rx: -Math.PI / 2, cast: false });
-    // the sandy plain of the palm, inside the valley mouth
-    this._m(new THREE.CircleGeometry(31, 26), gravelMat, -24, 0.010, 520, { rx: -Math.PI / 2, cast: false });
-    // the spacious plain the dream opens on, beyond the wood (grows with the
-    // spread too -- item 4; position stays tied to WOOD so it always meets it)
-    this._m(new THREE.PlaneGeometry(1120, 280), meadMat, 0, 0.004, W.z1 + 28, { rx: -Math.PI / 2, cast: false });
-
-    // ── The cliffs that close the valley ──
-    this._valleyCliffs();
-
     // ── The great oak, in a spacious green mead (ch. I end) ──
     // "vnder a broade and mightye Oke full of Acornes, standing in the middest
     // of a spatious and large green meade, extending forth his thicke and
@@ -281,16 +311,41 @@ export const Approach = {
         18 + rnd(i, 43) * 8, i % 2 ? 'ash' : 'oak', 900 + i * 31);
     }
 
-    // ── The delicate valley of the second dream (ch. II) ──
+  },
+
+  // The valley of the approach (ch. II-III): ten stadia of closed floor between
+  // the palm plain and the court before the porch, and the rock walls that
+  // close it. `valley` takes a ZERO shift in stage 2 — its north edge is the
+  // court's mouth at z 148.4 and already is — so what stage 2 does to it is
+  // LENGTH: _valleyCliffs now runs the plan's full 1 850 m rather than the 552
+  // it ran at SPREAD = 4.
+  _buildValley() {
+    this._valleyCliffs();
+  },
+
+  // The sandy plain of the palm, and the wolf that crosses it (ch. II).
+  _buildPalmPlain() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
+    // "a sandie or grauelly plaine, yet bespotted with greene tuffes"
+    const gravelMat = woodcut ? S.mat({ tone: 0.05, rim: 0 })
+      : S.mat({ color: 0x6e6248, roughness: 1.0 });
+    if (!woodcut) {
+      this._dress(gravelMat, this._surfaceTexture({ base: '#6e6446', dark: '#3e3826', light: '#8e8260', blobs: 60, speckle: 5200, repeat: 20 }), 0.3);
+      gravelMat.roughnessMap = null; gravelMat.roughness = 1.0;
+    }
+    this._m(new THREE.CircleGeometry(31, 26), gravelMat, -24, 0.010, 520, { rx: -Math.PI / 2, cast: false });
+
+    // ── the palm and its tufts ──
     // "a delicate valley, in the which did rise a small mounting of no great
     // height, sprinkled heare and there with young Okes, Ashes, Palme trees
     // broadleaued, Aesculies, Holme, Chestnut, Sugerchist, Poplars, wilde
     // Oliue… Thus walking solitarily betwixt the trees, GROWING DISTANTLY ONE
     // FROM ANOTHER" (Dall. p. 23). Open and sunlit — the exact opposite of the
     // wood, and the contrast is the point.
-    // Position (offset AND scatter range) x4 with SPREAD -- this corridor is
-    // connective ground, so it grows rather than merely translating; see the
-    // note at the ground planes above.
+    // Position and scatter range went x4 with SPREAD (2026-09-17). They stay as
+    // they are in stage 2: the whole plain is one precinct now and moves under
+    // a single `_placeAt`, so these are local coordinates within it.
     const VALLEY = ['oak', 'ash', 'laurel', 'olive', 'plane', 'oak', 'olive', 'ash'];
     for (let i = 0; i < 34; i++) {
       const x = -312 + rnd(i, 51) * 624;
@@ -742,25 +797,46 @@ export const Approach = {
     // are POSITIONS (they move the wall out with everything else it flanks) so
     // both are x4; the RATE (0.42, a slope, dx/dz) is untouched, because a
     // uniform scale multiplies both x and z by 4 and the ratio is unchanged.
-    const gap = (z) => 96 + Math.max(0, z - 160) * 0.42;
-    // How high the wall stands. It used to be 26 m at the portal, chosen "so the
-    // building is not dwarfed at the moment of arrival" — with a 38 m pyramid on
-    // a 12 m base there is no longer any danger of that, and a valley the book
-    // calls shut needs walls that look like they could shut it.
+    // ── STAGE 2: the neck is set by the building that has to fill it ────────
     //
-    // A vertical SIZE, so it does NOT grow with the spread: divide z by 4 first
-    // so the formula still reads the original (pre-spread) position along the
-    // corridor and produces the same 44-85 m range as before.
-    const high = (z) => 44 + Math.max(0, z / 4 - 40) * 0.30;
+    // The half-width used to be 96 m at the portal, which fitted a 40 m
+    // pyramid. The pyramid is now the book's own: 1 139.6 m wide, six stadia
+    // plus twenty paces of plinth. Dallington leaves TEN PACES of clearance to
+    // the rock on each side (research/plan.json, pyramid.size_source), so the
+    // valley's floor at the porch is 1 139.6 + 2 x 14.8 = 1 169.2 m across and
+    // its half-width is exactly that clearance line. It is derived from the
+    // building, not chosen — if the pyramid is ever re-measured the valley
+    // follows, and a neck narrower than the gate would put rock through stone.
+    //
+    // South of the porch it opens, but gently: the plan gives the valley
+    // 1 850 m of length and the same 1 139.6 m of width as the pyramid, and a
+    // valley the book calls SHUT should not fan out into a plain. 0.06 takes it
+    // from 584.6 m of half-width at the neck to 695.6 at the palm plain.
+    const NECK = PYRAMID_W / 2 + PYRAMID_CLEAR;          // 584.6
+    const gap = (z) => NECK + Math.max(0, z - VALLEY_Z1) * 0.06;
+    // How high the wall stands. 44 m was chosen against a 38 m pyramid; against
+    // 785 m of it a 44 m cliff is a kerbstone, and the valley stops reading as
+    // shut at the very moment the gate becomes worth shutting. The walls are
+    // tallest at the neck, where the book has them "continued in building from
+    // the one and the other of the mountaines" (Dall. p. 27), and fall away
+    // southward toward the open plain the dreamer came from. The jitter below
+    // takes the tallest stack to about 1.86x this, so 340 at the neck puts the
+    // ridge line at ~630 m against a pyramid whose cube sits at 785: the gate
+    // is the tallest thing in the valley, which is the whole point of it.
+    const high = (z) => 340 - Math.min(1, Math.max(0, z - VALLEY_Z1) / VALLEY_LEN) * 220;
 
     let n = 0;
     for (const side of [-1, 1]) {
-      for (let z = 152; z <= 704; z += 28) {
+      // STAGE 2: 152 -> 704 became 152 -> 1998 (the plan's south edge for the
+      // valley), and the step from 28 m to 64, so the block count rises from
+      // 120 to 176 rather than to 400. The blocks themselves are four times
+      // wider to match: a 30 m boulder on a 600 m cliff is gravel.
+      for (let z = VALLEY_Z1 + 3.6; z <= VALLEY_Z0; z += 64) {
         const g0 = gap(z), h0 = high(z);
         // the wall itself: a stack of two blocks, jittered, so the face breaks
         for (let k = 0; k < 3; k++) {
           const i = n++;
-          const w = 26 + rnd(i, 1) * 16;
+          const w = 104 + rnd(i, 1) * 64;
           const hh = h0 * (0.62 + k * 0.5) * (0.85 + rnd(i, 2) * 0.3);
           const x = side * (g0 + w * 0.5 + k * 5 + rnd(i, 3) * 4);
           const blk = this._m(this._indexed(new THREE.DodecahedronGeometry(1, 0)), rockMat,
@@ -772,13 +848,13 @@ export const Approach = {
         // and it is a WALL: you cannot walk through the mountain. The "far"
         // placeholder is bumped to 2000 (from 200): SPREAD = 4 lets gap(z)
         // itself pass 200 near the wood end, which would invert the range.
-        this._wallCol(side > 0 ? gap(z) : -2000, side > 0 ? 2000 : -gap(z), z - 3.6, z + 3.6);
+        this._wallCol(side > 0 ? gap(z) : -4000, side > 0 ? 4000 : -gap(z), z - 32, z + 32);
         // conifers on the lower slope — fir, larch and silver fir are the
         // mountain's trees (1499 l. 2813), not the dark wood's
         for (let t = 0; t < 2; t++) {
           const i = n++;
           if (rnd(i, 9) > 0.62) continue;
-          this._tree(side * (gap(z) + 2 + rnd(i, 11) * 9), z + (rnd(i, 12) - 0.5) * 7,
+          this._tree(side * (gap(z) + 4 + rnd(i, 11) * 26), z + (rnd(i, 12) - 0.5) * 58,
             1.5 + rnd(i, 13) * 1.7, rnd(i, 14) > 0.45 ? 'fir' : (rnd(i, 15) > 0.5 ? 'pine' : 'cypress'));
         }
       }
@@ -805,15 +881,21 @@ export const Approach = {
     // SPREAD = 4 (2026-09-17, DECISIONS.md 54): the whole closing wall is
     // POSITION (z range, x offset), so x4; the rock BLOCK sizes (scale.set)
     // are untouched.
+    // STAGE 2: this closing wall used to stand at z 704-800, at the old south
+    // end. It now stands at the plan's south edge for the valley and is set at
+    // the gap the formula gives there, so it meets the two flanking walls
+    // instead of floating 250 m inside them.
+    const CLOSE = gap(VALLEY_Z0);
     for (const side of [-1, 1]) {
-      for (let z = 704; z <= 800; z += 32) {
+      for (let z = VALLEY_Z0; z <= VALLEY_Z0 + 96; z += 32) {
         const i = n++;
         const blk = this._m(this._indexed(new THREE.DodecahedronGeometry(1, 0)), rockMat,
-          side * (344 + rnd(i, 21) * 10), 22 + rnd(i, 22) * 14, z, { cast: true });
-        blk.scale.set(16 + rnd(i, 23) * 10, 26 + rnd(i, 24) * 14, 9 + rnd(i, 25) * 6);
+          side * (CLOSE + rnd(i, 21) * 10), 60 + rnd(i, 22) * 40, z, { cast: true });
+        blk.scale.set(48 + rnd(i, 23) * 30, 78 + rnd(i, 24) * 42, 27 + rnd(i, 25) * 18);
         blk.rotation.y = rnd(i, 26) * 0.7;
       }
-      this._wallCol(side > 0 ? 304 : -2000, side > 0 ? 2000 : -304, 688, 816);
+      this._wallCol(side > 0 ? CLOSE - 40 : -4000, side > 0 ? 4000 : -(CLOSE - 40),
+                    VALLEY_Z0 - 16, VALLEY_Z0 + 112);
     }
   },
 

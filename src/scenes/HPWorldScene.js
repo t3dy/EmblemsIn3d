@@ -33,24 +33,27 @@ import { buildLitter } from '../systems/Litter.js?v=6';
 import { isVariant } from '../systems/AssetVariants.js?v=12';
 import { createStyle, addSkyDome } from '../shaders/HPStyles.js?v=6';
 import { getEnvMap } from '../systems/EnvMap.js?v=1';
-import { createMeadowField, attachShade } from '../systems/Meadow.js?v=6';
+import { createMeadowField, attachShade } from '../systems/Meadow.js?v=7';
 // The world's shared tables. Lifted out 2026-09-09; see world/constants.js.
 import {
   HP_STATIONS, EYE, METALS, DOORS, ELEMENTS, SENSE_NYMPHS,
   TRIUMPH_LIVERY, TRIUMPH_RELIEFS, TRIUMPHS, isDescendantOf,
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
-} from './world/constants.js?v=9';
-import { Materials } from './world/materials.js?v=7';
-import { Nature } from './world/nature.js?v=14';
-import { Approach } from './world/approach.js?v=11';
-import { Portal } from './world/portal.js?v=25';
-import { Palace } from './world/palace.js?v=20';
-import { Triumphs } from './world/triumphs.js?v=10';
-import { Tombs } from './world/tombs.js?v=8';
-import { Temple } from './world/temple.js?v=4';
-import { Cythera } from './world/cythera.js?v=9';
-import { Rollup } from './world/rollup.js?v=9';
+  PLAN_SITES, PLAN_EXTENT, shiftOf,
+} from './world/constants.js?v=14';
+import { Materials } from './world/materials.js?v=9';
+import { Nature } from './world/nature.js?v=16';
+import { Approach } from './world/approach.js?v=13';
+import { Portal } from './world/portal.js?v=26';
+import { Palace } from './world/palace.js?v=23';
+import { Triumphs } from './world/triumphs.js?v=15';
+import { Tombs } from './world/tombs.js?v=9';
+import { Temple } from './world/temple.js?v=5';
+import { Cythera } from './world/cythera.js?v=11';
+import { Rollup } from './world/rollup.js?v=10';
+// The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
+import { Screens } from './world/screens.js?v=5';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
@@ -69,7 +72,13 @@ export class HPWorldScene {
     // far was 260, which was a whole world's worth when the world was 100 m
     // across. The approach of ch. II-III needs the pyramid visible from a
     // quarter-kilometre away, "vnperfectlie appearing" (DIRECTIONS.md 3).
-    this.camera   = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.1, 1400);
+    // STAGE 2 (2026-09-20): far 1400 -> 9000. The plan is 13.7 km long and the
+    // pyramid is 790 m tall; at 1400 the whole of it was clipped away from
+    // anywhere you could see the whole of it. The near plane goes 0.1 -> 0.25
+    // (a walker's eye is 1.7 m up and nothing is ever nearer than a hand) and
+    // main.js turns on the logarithmic depth buffer, which is what actually
+    // makes this range usable.
+    this.camera   = new THREE.PerspectiveCamera(58, window.innerWidth / window.innerHeight, 0.25, 9000);
     this.camera.rotation.order = 'YXZ';
     this.onStation = null;         // callback(station | null) as the player nears a wonder
 
@@ -185,8 +194,18 @@ export class HPWorldScene {
     // in one frame: at 0.0034 the portal 130 m off was already white.
     // "the forme of a tower of an incredible heygth, with a spyre vnperfectlie
     // appearing" (Dall. p. 24). Leonardo's rule is unchanged; the world moved.
+    // STAGE 2 (2026-09-20): 0.0022 -> 0.00035. Leonardo's rule is a RATIO of
+    // haze to distance, so it has been re-tuned at every scale this world has
+    // had: 0.0082 when nothing stood further off than 60 m, 0.0022 at SPREAD=4.
+    // At 0.0022 the visible depth is about 450 m and the pyramid, whose north
+    // face is now 1 140 m behind its south one, would have faded to white
+    // inside its own mass. 0.00035 puts the porch at about half-veiled seen
+    // from the palm plain 2.3 km away, which is the book's own description of
+    // the first sight of it — "the forme of a tower of an incredible heygth,
+    // with a spyre vnperfectlie appearing" (Dall. p. 24) — and leaves the
+    // valley's walls a kilometre off still legible as rock.
     this.scene.fog = lit
-      ? new THREE.FogExp2(this.AIR, 0.0022)
+      ? new THREE.FogExp2(this.AIR, 0.00035)
       : new THREE.FogExp2(S.fog.color, S.fog.density);
 
     this.renderer.shadowMap.enabled = true;
@@ -238,76 +257,124 @@ export class HPWorldScene {
       this._dress(this._hedgeMat, hedgeTex, 0.25);
     }
 
+    // ══ STAGE 2: the world is built precinct by precinct ══════════════════
+    //
+    // DECISIONS.md call 54 chose true scale, staged. Stage 1 multiplied every
+    // station position by four and re-typed a hundred literals in the builders
+    // to match. Stage 2 is 13.7 km and does not re-type anything: each precinct
+    // is built inside a `_placeAt` group carrying the rigid shift that
+    // `scripts/plan_sites.py` computes from research/plan.json, so a builder's
+    // interior coordinates stay exactly as they were authored and the precinct
+    // arrives on the plan underneath them. Geometry, wall and circle colliders,
+    // walker floors and NPCs all ride the group (see materials.js `_placeAt`,
+    // which was made to nest and to carry floors for this).
+    //
+    // `_in('palace', ...)` reads as what it is: everything in this callback
+    // belongs to the palace precinct and moves with it. Adding a builder to a
+    // precinct is now a matter of putting the call in the right block, and
+    // stage 3 moves a precinct by re-running the script.
+    const _in = (key, build) => {
+      const [dx, dz] = shiftOf(key);
+      this._precincts[key] = (dx || dz) ? this._placeAt(dx, dz, 0, build) : (build(), null);
+    };
+    this._precincts = {};
+
+    // The ground of the whole plan, and the witness who walks it: neither
+    // belongs to a precinct. `_buildGround` reads PLAN_EXTENT directly.
     this._buildGround();
-    this._buildWood();
-    this._buildApproach();
-    this._buildSpaciousPlain();   // where the dream opens (DECISIONS 2026-09-09 call 2)
-    this._buildArtificialGardens();   // glass, silk and the faked scent (call 4)
-    this._buildWitness();             // Poliphilo, acting out his reactions
-    // The four-square court of thirtie paces that stands BEFORE the porch
-    // (Dall. p. 37), with its two areostyle colonnades and the wildwood at
-    // their foot. Built before the portal so the pavement is laid before
-    // anything is set on it. DECISIONS.md 51.
-    this._buildPiazza();
-    this._buildGreatPortal();
-    // ch. IV: the altar-like pedestal on the porch's right hand, and the forge
-    // of Vulcan cut on its alabaster face. See world/portal.js.
-    this._buildPorchStylobate();
-    this._buildBridge();
-    this._buildRiverPlants();
-    this._buildRills();
-    this._buildShadedWalk();
-    this._buildCourt();
-    this._buildPoliaGarden();
-    // The book's most copied image, and it was missing from the world: set
-    // just north of Polia's garden, facing the dreamer who arrives from the
-    // portal (woodcut_catalog #19; see _buildNymphFountain).
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (19, 27.5) -> (76, 110).
-    this._buildNymphFountain(76, 110, 0);
-    this._buildDoorsWall();
-    this._buildColossalHorse();
-    // The elephant stands in the PIAZZA now, not at the world origin: the
-    // book's court before the porch, "not farre distant from the horse straight
-    // forward" (Dall. p. 46). _placeAt carries his plaques and his collider
-    // with him -- setting his group's position alone would not. DECISIONS.md 51.
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (7, 42) -> (28, 168).
-    this._placeAt(28, 168, 0, () => this._buildElephant());
-    this._buildPalace();
-    this._buildChessBallet();
-    this._buildQuinta();
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (0, -20) -> (0, -80).
-    this._buildGracesFountain(0, -80);   // folio 80's own fountain; ch. XXIII's stays on Cythera
-    this._buildTriumphs();
-    this._buildSecondBridge();
-    this._buildVenusTemple();
-    this._buildPolyandrion();
-    this._polyandrionMedallions();
-    this._buildRuinWeeds();
-    this._buildWaterLabyrinth();
-    // Turned a quarter and laid along the valley's west side, feet toward the
-    // arriving dreamer, head toward the porch. He used to lie east-west at
-    // (36, 4), past the Great Portal. DECISIONS.md 51.
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): (-19, 44) -> (-76, 176).
-    this._placeColossus(-76, 176);
-    this._buildPriapusRite();
-    this._buildBookTwo();
-    this._buildCythera();
+    this._buildWitness();
+
+    // ── South of the porch: the way in ──────────────────────────────────────
+    _in('plain',      () => this._buildSpaciousPlain());
+    _in('wood',       () => this._buildWood());
+    _in('great_oak',  () => this._buildGreatOak());
+    _in('palm_plain', () => this._buildPalmPlain());
+    _in('valley',     () => this._buildValley());
+
+    // ── The court before the porch (ch. III) ────────────────────────────────
+    // Built before the portal so the pavement is laid before anything is set on
+    // it (DECISIONS.md 51). The horse, the elephant and the colossus stand in
+    // it; the elephant and the colossus keep their own inner `_placeAt`, which
+    // is why that had to be made to nest.
+    _in('piazza', () => {
+      this._buildPiazza();
+      this._buildColossalHorse();
+      this._placeAt(28, 168, 0, () => this._buildElephant());
+      this._placeColossus(-76, 176);
+      this._buildWaterLabyrinth();
+      this._buildRills();
+    });
+
+    // ── The pyramid-portal (ch. III–IV) ─────────────────────────────────────
+    // Zero shift: the porch front IS the plan's origin and is already at
+    // z = 104. What stage 2 does to this precinct is SIZE — see portal.js.
+    _in('pyramid', () => {
+      this._buildGreatPortal();
+      this._buildPorchStylobate();
+    });
+
+    // ── North of the porch: the gardens ─────────────────────────────────────
+    _in('wooded_country', () => {
+      this._buildWoodedCountry();     // the ring of tree-bearing mountain
+      this._buildSecondNature();      // the fruitful fields, ch. VI
+      this._buildDividingSpring();    // the water that divides right and left
+    });
+    _in('cypress_avenue', () => this._buildCypressAvenue());
+    _in('enclosure',      () => this._buildGreenEnclosure());
+    _in('palace', () => {
+      this._buildPalacePaths();
+      this._buildCourt();
+      this._buildPalace();
+      this._buildChessBallet();
+      this._buildQuinta();
+      this._buildArtificialGardens();
+      this._buildGracesFountain(0, -80);   // folio 80's own fountain
+      this._buildShadedWalk();
+      this._buildBridge();
+      this._buildRiverPlants();
+    });
+    _in('polia_garden', () => {
+      this._buildPoliaGarden();
+      this._buildNymphFountain(76, 110, 0);
+    });
+    _in('three_doors',  () => this._buildDoorsWall());
+    _in('triumphs',     () => this._buildTriumphs());
+    _in('vertumnus',    () => this._buildPriapusRite());
+    _in('venus_temple', () => {
+      this._buildVenusTemple();
+      this._buildSecondBridge();
+    });
+    _in('polyandrion', () => {
+      this._buildTombApron();          // the sward with the crypt's two holes in it
+      this._buildPolyandrion();
+      this._polyandrionMedallions();
+      this._buildRuinWeeds();
+    });
+    _in('shore',   () => this._buildCythera());
+    _in('treviso', () => this._buildBookTwo());
+
     // The island is ~700 objects of its own. It lives in one group so that
     // when the player is deep in the mainland garden — where the haze has
     // already nearly swallowed it — it stops being drawn at all. From the
-    // shore southward it is always shown.
+    // shore southward it is always shown. Stage 2 gives that group the
+    // precinct's shift, so the two mechanisms compose rather than fight.
+    // Stage 2 gives that group the precinct's shift — but it is `_placeAt` that
+    // applies it, not `isleGroup.position`: the island registers walker floors
+    // for all its terraces and stairs, and a group's position moves geometry
+    // and nothing else. So the shift goes on the `_placeAt` INSIDE the isle
+    // group, where the floors and colliders see it too, and the isle group
+    // itself stays at the origin doing the one job it was made for.
+    const [ix, iz] = shiftOf('cythera');
     this._isleGroup = new THREE.Group();
     this.scene.add(this._isleGroup);
+    this._precincts.cythera = this._isleGroup;
     const _realScene = this.scene;
     this.scene = this._isleGroup;      // reroute every add inside the builder
-    try { this._buildCytheraIsle(); } finally { this.scene = _realScene; }
+    try { this._placeAt(ix, iz, 0, () => this._buildCytheraIsle()); }
+    finally { this.scene = _realScene; }
     this._buildTrees();
     if (lit) this._buildMotes();
     if (lit) this._buildMeadow();
-    this._buildSecondNature();
-    // ch. VI: the water that divides right and left, between the worked fields
-    // and the wood. See world/nature.js _buildDividingSpring.
-    this._buildDividingSpring();
     // The pleasures of the garden (PLEASURES.md), from what Poliphilo says when
     // he meets them: birds seen and not heard, seats of flowering turf, and the
     // fume that is the only way scent can reach a screen.
@@ -336,7 +403,13 @@ export class HPWorldScene {
     // true-scale, item 5): centre (19, 20) -> (76, 80), matching
     // _buildPoliaGarden's own CX/CZ move; the ring radii are distances against
     // OTHER stations that also moved x4, so they scale too (9 -> 36, 42 -> 168).
-    const folded = this._foldPoliaCourt(76, 80, 36, 168);
+    //
+    // STAGE 2 (2026-09-20): this is a WORLD-space query — it walks the finished
+    // scene gathering objects near a point — so it is one of the few places
+    // that has to be told the precinct's shift rather than riding it. The
+    // radii are distances and do not shift.
+    const [pgx, pgz] = shiftOf('polia_garden');
+    const folded = this._foldPoliaCourt(76 + pgx, 80 + pgz, 36, 168);
     console.info("[dream fold]", folded, "objects fold for Polia's garden,",
       this._poliaArcade ? this._poliaArcade.children.length : 0, "arcade pieces stand");
 
@@ -467,6 +540,28 @@ export class HPWorldScene {
 
     this._mergeInto(this._isleGroup, dyn);
     mark(this._isleGroup);
+
+    // ── STAGE 2: merge PER PRECINCT, then fence each one off ───────────────
+    //
+    // `_mergeInto(this.scene, ...)` traverses, so it would happily reach into
+    // the precinct groups and fold the whole world into a handful of lumps —
+    // which is what it used to do, correctly, when the world was 300 m across.
+    // At 13.7 km it is the wrong shape: one merged geometry spanning the
+    // itinerary has a bounding sphere seven kilometres wide, is therefore in
+    // the frustum from everywhere, and the renderer draws the island of
+    // Cythera while you are standing in the dark wood.
+    //
+    // Merging inside each precinct first gives every lump a bounding sphere the
+    // size of its precinct, so frustum culling drops whole precincts at once —
+    // the same trick the island group has used since it was built, now applied
+    // to all twenty-three. The scene-level merge still runs afterwards for the
+    // ground, the sky and anything else that belongs to no precinct.
+    for (const key of Object.keys(this._precincts || {})) {
+      const grp = this._precincts[key];
+      if (!grp || dyn.has(grp)) continue;
+      this._mergeInto(grp, dyn);
+      mark(grp);
+    }
     this._mergeInto(this.scene, dyn);
 
   // Every stone now knows which course of which building it belongs to. This
@@ -517,7 +612,21 @@ export class HPWorldScene {
     const guarded = (x, z) => keepOut.some(k => Math.hypot(x - k.x, z - k.z) < k.r);
     const box = new THREE.Box3();
     const take = [];
-    for (const child of this.scene.children) {
+    // STAGE 2 (2026-09-20): this used to walk `this.scene.children` alone,
+    // because every builder added straight to the scene and a direct child was
+    // the whole world. The precincts are groups now, so the scene has about
+    // twenty children and none of them is a paving slab — the fold found 0
+    // objects the first time this ran after the resite, which is the honest
+    // shape of the bug: not a crash, a silent nothing. The candidates are the
+    // scene's own children plus one level inside each precinct group, which is
+    // where a builder's meshes are.
+    this.scene.updateMatrixWorld(true);
+    const candidates = [...this.scene.children];
+    for (const key of Object.keys(this._precincts || {})) {
+      const grp = this._precincts[key];
+      if (grp) candidates.push(...grp.children);
+    }
+    for (const child of candidates) {
       if (child === g || child === this._poliaArcade) continue;
       if (!child.isMesh && !people.has(child)) continue;
       box.setFromObject(child);
@@ -1153,6 +1262,30 @@ export class HPWorldScene {
     for (const n of this._npcs) {
       if (n.g.userData && n.g.userData.billboard) continue;   // cards face the camera, not a fixed yaw
       if (n.panic) continue;                                  // running from the ball: Creatures owns her
+      // ── A figure who WALKS TO MEET YOU (2026-09-20) ────────────────────
+      //
+      // The world's people have swayed in place since it was built, which is
+      // right for a crowd and wrong for a meeting: the book's meetings are
+      // approaches, and an approach that has already happened is a tableau.
+      // A figure with an `approach` crosses her ground once, when the reader
+      // comes near enough to be the person she is walking toward, and then
+      // stays. Polia is the first (palace.js `_buildPoliaGarden`); chapters XI,
+      // XII, XXII and XXV all want the same machinery.
+      if (n.approach) {
+        const a = n.approach;
+        if (!a.armed) {
+          const pp = this.walker.player.pos;
+          if (Math.hypot(pp.x - a.trigger.x, pp.z - a.trigger.z) < a.trigger.r) a.armed = true;
+        } else if (a.t < a.dur) {
+          a.t = Math.min(a.dur, a.t + dt);
+          const u = a.t / a.dur, e = u * u * (3 - 2 * u);   // ease in and out
+          n.g.position.x = a.from[0] + (a.to[0] - a.from[0]) * e;
+          n.g.position.z = a.from[1] + (a.to[1] - a.from[1]) * e;
+          n.baseY = a.yaw0 + (a.yaw1 - a.yaw0) * e;
+          // the walk itself, so she is stepping and not gliding
+          n.g.position.y = Math.abs(Math.sin(a.t * 3.1)) * 0.035;
+        }
+      }
       n.g.rotation.y = n.baseY + Math.sin(this._t * 0.8 + n.phase) * n.sway;
       if (n.armL) {
         n.armL.rotation.z = n.aL + Math.sin(this._t * 0.9 + n.phase) * 0.05;
@@ -1270,7 +1403,13 @@ export class HPWorldScene {
       f.g.position.x = x; f.g.position.z = z;
       // teams hitched at local −z, so forward = travel tangent → yaw = π − θ
       f.g.rotation.y = Math.PI - o.theta;
-      f.col.x = x; f.col.z = z;
+      // The car's position is LOCAL to its precinct group; its collider is
+      // world-space, because the walker knows nothing about precincts. STAGE 2
+      // (2026-09-20): `f.shift` is the difference, recorded where the float was
+      // registered. Without it the five triumph cars drove round the garden and
+      // five invisible walls drove round an empty field 4.5 km away.
+      const [sx, sz] = f.shift || [0, 0];
+      f.col.x = x + sx; f.col.z = z + sz;
     }
     // Torch flames flicker
     if (this._torch) {
@@ -1319,3 +1458,4 @@ Object.assign(HPWorldScene.prototype, Tombs);
 Object.assign(HPWorldScene.prototype, Temple);
 Object.assign(HPWorldScene.prototype, Cythera);
 Object.assign(HPWorldScene.prototype, Rollup);
+Object.assign(HPWorldScene.prototype, Screens);

@@ -76,6 +76,37 @@ export const DREAM_REACTIONS = {
       { mood: 'dread', text: 'Is it truly she — or the dream wearing her face to undo me? I dare not trust so sudden a mercy.' },
     ],
   },
+  // ── The one the book writes itself (2026-09-20) ────────────────────────
+  //
+  // `BUILDINGPLAN.md`, Polia's garden: *"Interior monologue (eyes vs.
+  // appetite). Non-branching reaction-choice (hp_reactions.js). One minute."*
+  //
+  // Chapter XI does not end with her. It ends with a fight inside him, and the
+  // book stages it as a formal disputation between two faculties:
+  //
+  //   "there was straightway born a great sedition and a bitter contention...
+  //    For my various and thieving eyes commended one part as far fairer than
+  //    the others. But the appetite, carried off to another part of that divine
+  //    little body, argued and preferred that one to the rest."
+  //                                        (our p. 146; COVERAGE.md xi-eyes-
+  //                                         appetite-quarrel, was unbuilt)
+  //
+  // This is the book handing us a reaction-choice ready made — two voices, no
+  // consequence, and the dreamer stuck between them — which is exactly the
+  // form DESIGN.md specifies for this mode. So it is written as one, and the
+  // canonical option is the one the chapter actually resolves on: the eyes
+  // win, by being stubborn.
+  //
+  // It is keyed `polia_quarrel` and belongs immediately after `polia`.
+  polia_quarrel: {
+    prompt: 'She stands within reach, and you have not yet dared to say her name. Something in you starts an argument. Who wins it?',
+    options: [
+      { mood: 'eros', canonical: true, text: 'My eyes will not be governed. They steal from her one part at a time and swear each is the fairest, and I lose the argument, and my heart with it.' },
+      { mood: 'wonder', text: 'I answer them both by measuring her as I measured the gate — proportion, interval, the ratio of the parts — and for one breath I am calm.' },
+      { mood: 'melancholy', text: 'Let them quarrel. Whichever wins, she is not mine, and the beauty they are dividing between them will be gone before either has finished speaking.' },
+      { mood: 'dread', text: 'That two parts of me can sit in judgement on her and neither consult me frightens me more than the wood did.' },
+    ],
+  },
   triumphs: {
     prompt: 'Four chariots roll past — Europa, Leda, Danaë, Semele — gilded, garlanded, each drawn by six beasts. How do they strike you?',
     options: [

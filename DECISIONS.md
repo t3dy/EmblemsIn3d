@@ -11,6 +11,46 @@ Directional calls made mid-build, recorded so they don't get re-litigated. Newes
 
 ---
 
+## 2026-09-20 — 60. Stage 2 of the true scale: the world moves by precinct, not by literal
+
+*Executes call 54. Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
+
+Ted chose **full stage 2 — everything onto `research/plan.json`** and **build the pyramid square,
+and move the north.**
+
+**The method is the whole of it.** Stage 1 multiplied every station by four and re-typed a hundred
+literals inside the builders to match. Stage 2 is 13.7 km and **re-types nothing**: each precinct
+is built inside a `_placeAt` group carrying a rigid shift computed by `scripts/plan_sites.py` from
+the plan, so a builder's interior coordinates stay as authored and the precinct arrives on the plan
+underneath them. Geometry, colliders, walker floors and NPCs all ride the group.
+
+This is the answer to `HANDOVER.md` §4.3, which has now bitten in four costumes — the hand-copied
+spawn, the meadow's clearance map, **the dream mode's paths** (it had been walking the dreamer a
+quarter of the way to everything it named since stage 1), and the triumph cars' moving colliders.
+All four fixed the same way: `shiftOf(key)` and `toWorld(key, x, z)`, both generated.
+
+The pyramid is **square** — 1,139.6 m of base, 1,410 courses of 0.56, 789.6 m to the cube and about
+965 to the nymph — and the valley's neck is derived from it, so the gate can never be wider than
+the valley it shuts.
+
+## 2026-09-20 — 61. The triumph cars are four cars, not one car four times
+
+*Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
+
+Each car gets the two stones the book gives it (emerald/diamond, agate/sapphire,
+chrysolite/heliotrope, asbestos/carbuncle), each gets its own rider livery, and **the fourth gets
+no riders at all** — the book withholds them because Semele's urn is what rides that car. The urn
+is built, with its four eagles, its jacinth vessel, its topaz vine and its holy ash, and the
+golden vine that grows out of it and roofs the team.
+
+## 2026-09-20 — 62. `node --check` is not a syntax gate for ES modules
+
+*Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
+
+On node 24 it exits 0 for a genuine syntax error in a module, and it did, dozens of times, before
+one invalid object literal reached the running page. `scripts/parsecheck.mjs` replaces it by
+importing the file. **A check you have not seen fail is not a check.**
+
 ## 2026-09-17 — 54. The world is rebuilt at the book's own scale
 
 *Reverses call 3 of 2026-09-09. Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
@@ -204,8 +244,14 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*56 calls. Each links to its full text in the archive.*
+*62 calls. Each links to its full text in the archive.*
 
+
+**2026-09-20**
+
+- [60. Stage 2 of the true scale: the world moves by precinct, not by literal](decisions/2026-09.md#2026-09-20--60-stage-2-of-the-true-scale-the-world-moves-by-precinct-not-by-literal) — **executes call 54**; 13.7 km, 23 precincts, and **not one interior coordinate re-typed**; the pyramid is square at 1 139.6 m and the valley's neck is derived from it
+- [61. The triumph cars are four cars, not one car four times](decisions/2026-09.md#2026-09-20--61-the-triumph-cars-are-four-cars-not-one-car-four-times) — each car's own two stones and its own livery; **the fourth car has no riders**, because Semele's urn is what rides it, and the urn is built
+- [62. `node --check` is not a syntax gate for ES modules](decisions/2026-09.md#2026-09-20--62-node---check-is-not-a-syntax-gate-for-es-modules) — it exits 0 on a real error; use `scripts/parsecheck.mjs`. **A check you have not seen fail is not a check.**
 
 **2026-09-17**
 

@@ -8,6 +8,7 @@
 // Enter / → also advance; Esc leaves the dream and returns to free walking.
 
 import * as THREE from 'three';
+import { toWorld } from '../scenes/world/constants.js?v=14';
 
 export class DreamMode {
   constructor(world, ui, stops, reactions = {}) {
@@ -78,13 +79,20 @@ export class DreamMode {
     // Cythera is Cupid's boat, and the thirteenth stop stands on the island,
     // which no path from the shore can reach on foot. `jump: [x, z]` puts the
     // dreamer down there first; the path then continues from it as usual.
+    // STAGE 2 (2026-09-20): every coordinate in hp_dream.js is written in the
+    // ORIGINAL cramped frame — see that file's header. `toWorld` applies the
+    // two moves the world has made since (SPREAD x4, then the stop's precinct's
+    // own shift), so the authored choreography plays wherever the plan puts the
+    // wonder. A stop with no `precinct` is a programming error and `toWorld`
+    // throws rather than silently walking the dreamer to the origin.
+    const W = ([x, z]) => toWorld(st.precinct, x, z);
     if (Array.isArray(st.jump) && st.jump.length === 2) {
-      const [jx, jz] = st.jump;
-      const yaw = st.path && st.path.length ? this.world.walker.yawToward([jx, jz], st.path[0]) : p.yaw;
+      const [jx, jz] = W(st.jump);
+      const yaw = st.path && st.path.length ? this.world.walker.yawToward([jx, jz], W(st.path[0])) : p.yaw;
       this.world.walker.teleportTo(jx, jz, yaw, -0.03, 0);
       p.pos.set(jx, 0, jz);
     }
-    const pts = [[p.pos.x, p.pos.z], ...st.path]
+    const pts = [[p.pos.x, p.pos.z], ...st.path.map(W)]
       .map(([x, z]) => new THREE.Vector3(x, 0, z));
     this._curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.1);
     this._len = this._curve.getLength();
@@ -145,7 +153,7 @@ export class DreamMode {
     const st = this.stops[this.i];
     const p = this.world.walker.player;
     if (st && st.look) {
-      const yaw = this.world.walker.yawToward([p.pos.x, p.pos.z], st.look);
+      const yaw = this.world.walker.yawToward([p.pos.x, p.pos.z], toWorld(st.precinct, st.look[0], st.look[1]));
       this.world.walker.teleportTo(p.pos.x, p.pos.z, yaw, st.pitch ?? -0.03, 0.8);
     }
     if (this._guide) {

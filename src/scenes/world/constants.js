@@ -17,6 +17,10 @@
 // (no three.js import: everything in this file is plain data. If a table ever
 // needs a THREE type, import it here rather than reaching for the class.)
 
+// plan_sites.js is plain data too — generated from research/plan.json, never typed.
+import { PLAN_SITES, shiftOf } from './plan_sites.js?v=4';
+export { PLAN_SITES, PLAN_EXTENT, PLAN_ANCHOR, SPREAD, shiftOf, toWorld } from './plan_sites.js?v=4';
+
 // pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
 //
@@ -51,35 +55,35 @@
 export const HP_STATIONS = [
   // Moved 2026-09-08 from [0, 45] — eight metres from the Great Portal — into
   // the middle of the rebuilt wood, 190 m of Hercynian deep. See _buildWood.
-  { key: 'wood',             name: 'The Dark Wood',          folio: 2,
+  { key: 'wood', precinct: 'wood',             name: 'The Dark Wood',          folio: 2,
     pos: [0, 1360],    look: [0, 1272],  radius: 16 },
-  { key: 'portal',           name: 'The Great Portal',       folio: 13,
+  { key: 'portal', precinct: 'pyramid',           name: 'The Great Portal',       folio: 13,
     pos: [0, 148],     look: [0, 104],   radius: 7, pitch: 0.2 },
-  { key: 'court',            name: 'The Court of Queen Eleuterylida', folio: 62,
+  { key: 'court', precinct: 'palace',            name: 'The Court of Queen Eleuterylida', folio: 62,
     pos: [-41.6, 95.2], look: [-94, 74], radius: 9 },
-  { key: 'three_doors',      name: 'The Three Doors',        folio: 119,
+  { key: 'three_doors', precinct: 'three_doors',      name: 'The Three Doors',        folio: 119,
     pos: [0, 84],     look: [0, 48],   radius: 6, pitch: 0.05 },
   // MOVED 2026-09-09 (DECISIONS.md call 51) out of the garden and into the
   // piazza, where chapter III puts it: *"non troppo distante dal magno caballo,
   // ad libella"* (1499 l. 1385), which Dallington renders "not farre distant
   // from the horse straight forward" (p. 46). It stood at [0, 6.5], PAST the
   // Great Portal, so the tour's own order crossed the gate three times.
-  { key: 'elephant',         name: 'The Elephant & Obelisk', folio: 25,
+  { key: 'elephant', precinct: 'piazza',         name: 'The Elephant & Obelisk', folio: 25,
     pos: [28, 196],     look: [28, 168],   radius: 6 },
-  { key: 'planetary_palace', name: 'The Planetary Palace',   folio: 88,
+  { key: 'planetary_palace', precinct: 'palace', name: 'The Planetary Palace',   folio: 88,
     pos: [-46, 0],  look: [-80, 0],  radius: 9 },
-  { key: 'quinta_essentia',  name: 'The Obelisk of the Trinity', folio: 119,
+  { key: 'quinta_essentia', precinct: 'palace',  name: 'The Obelisk of the Trinity', folio: 119,
     pos: [52, 0],     look: [84, 0],   radius: 8 },
-  { key: 'fountain',         name: 'Fountain of Venus',      folio: 80,
+  { key: 'fountain', precinct: 'palace',         name: 'Fountain of Venus',      folio: 80,
     pos: [0, -42],  look: [0, -80],  radius: 8, pitch: 0.16 },
-  { key: 'cythera',          name: 'The Shore to Cythera',   folio: 193,
+  { key: 'cythera', precinct: 'shore',          name: 'The Shore to Cythera',   folio: 193,
     pos: [0, -132],    look: [0, -184],  radius: 8 },
   // Discoverable, not on the digit row:
   // Chapters XVII–XVIII, fifteen plates. It stands west of the grove with the
   // sea and Cythera behind it, which is the direction the pilgrims leave in.
-  { key: 'venus_temple',     name: 'The Temple of Venus',    folio: 205,
+  { key: 'venus_temple', precinct: 'venus_temple',     name: 'The Temple of Venus',    folio: 205,
     pos: [-120, -48], look: [-120, -84], radius: 9 },
-  { key: 'labyrinth',        name: 'The Water Labyrinth',    folio: 177,
+  { key: 'labyrinth', precinct: 'piazza',        name: 'The Water Labyrinth',    folio: 177,
     pos: [-116.8, 136], look: [-176, 136], radius: 12 },   // outside the basin, beside the viewing mount
   // MOVED AND TURNED 2026-09-09 (DECISIONS.md call 51). He used to lie EAST-WEST
   // at (36, 4), past the portal. He now lies ALONG the valley on the piazza's
@@ -87,33 +91,33 @@ export const HP_STATIONS = [
   // since Poliphilo meets "the feete thereof bare, and their soles hollowe" and
   // only "from thence" comes to the head (Dall. p. 44). The mouth opens north,
   // so the station stands between the porch and the mouth and looks back into it.
-  { key: 'colossus',         name: 'The Colossus',           folio: 34,
+  { key: 'colossus', precinct: 'piazza',         name: 'The Colossus',           folio: 34,
     pos: [-76, 140],  look: [-76, 164],  radius: 10 },
-  { key: 'priapus',          name: 'The Rite of Priapus',    folio: 185,
+  { key: 'priapus', precinct: 'vertumnus',          name: 'The Rite of Priapus',    folio: 185,
     pos: [176, -48],  look: [176, -24],   radius: 7 },
-  { key: 'book_two',         name: "Book II — Treviso",      folio: 387,
+  { key: 'book_two', precinct: 'treviso',         name: "Book II — Treviso",      folio: 387,
     pos: [176, 128],   look: [176, 88],   radius: 12 },
-  { key: 'polia',            name: "Polia's Garden",         folio: 143,
+  { key: 'polia', precinct: 'polia_garden',            name: "Polia's Garden",         folio: 143,
     pos: [58, 94], look: [76, 78], radius: 7 },
-  { key: 'triumphs',         name: 'The Four Triumphs',      folio: 158,
+  { key: 'triumphs', precinct: 'triumphs',         name: 'The Four Triumphs',      folio: 158,
     pos: [22, -18], look: [42.4, -37.6], radius: 5 },
-  { key: 'polyandrion',      name: 'The Polyandrion',        folio: 242,
+  { key: 'polyandrion', precinct: 'polyandrion',      name: 'The Polyandrion',        folio: 242,
     pos: [92, -88], look: [120, -108], radius: 9 },
   // The island itself — reached by Cupid's boat (digit 0), returned from by 9:
-  { key: 'cythera_isle',     name: 'The Gardens of Cythera', folio: 290,
+  { key: 'cythera_isle', precinct: 'cythera',     name: 'The Gardens of Cythera', folio: 290,
     pos: [0, -416], look: [0, -600], radius: 13 },
-  { key: 'cythera_theatre',  name: 'The Theatre of Venus',   folio: 358,
+  { key: 'cythera_theatre', precinct: 'cythera',  name: 'The Theatre of Venus',   folio: 358,
     pos: [0, -534], look: [0, -600], radius: 11, pitch: 0.05 },
   // The last station of Book I (ch. XXIV, our pp. 370-379). It has no woodcut,
   // which is why the tour's stop 25 pointed at the theatre's floor for months:
   // every coverage check ran off the plate catalogue. See ROUTER.md rule 6.
-  { key: 'adonis',           name: 'The Fountain of Adonis', folio: 370,
+  { key: 'adonis', precinct: 'cythera',           name: 'The Fountain of Adonis', folio: 370,
     pos: [81.36, -488.04], look: [98.76, -464.08], radius: 8 },
   // Appended after the island so the digit keys 1-9 keep their journey order.
   // The chess ballet is at signature g8r-h1r, facsimile pages 111-113 — the
   // Queen's entertainment after the banquet, and the last thing that happens
   // at her palace before Logistica and Thelemia lead the dreamer away.
-  { key: 'chess',            name: 'The Human Chess Match',  folio: 111,
+  { key: 'chess', precinct: 'palace',            name: 'The Human Chess Match',  folio: 111,
     pos: [-130, 24], look: [-160, 24], radius: 8 },
   // The first monument of the piazza. MOVED 2026-09-09 (DECISIONS.md call 51)
   // from [10.5, 22.5], which was past the Great Portal. The 1499 sites him
@@ -121,14 +125,14 @@ export const HP_STATIONS = [
   // vidi uno prodigioso caballo"* (l. 1255) -- upon this piazza, from its start
   // inward toward the gate, ten paces. The piazza runs z 70.4 -> 26, so ten
   // paces (14.8 m) in from its start is z 55.6.
-  { key: 'horse',            name: 'The Winged Horse',       folio: 22,
+  { key: 'horse', precinct: 'piazza',            name: 'The Winged Horse',       folio: 22,
     pos: [28, 248],      look: [28, 222.4],    radius: 6 },
   // Second nature (GARDENS.md 2), built 2026-09-07: the worked countryside
   // Poliphilo comes into after the vaults -- "a fayre and plentifull countrie,
   // fruitefull fieldes, and fertile groundes" (Dallington p. 90). It lies west
   // north-west of the dark wood, so that coming out of the wilderness you come
   // into worked land: first nature into second, which is Hunt's whole point.
-  { key: 'fields',           name: 'The Fruitful Fields',    folio: 90,
+  { key: 'fields', precinct: 'wooded_country',           name: 'The Fruitful Fields',    folio: 90,
     // Moved 2026-09-09. It stood at (-40, 41) facing north, which put the flank
     // of the valley mountain 2.4 m from the eye -- measured by raycast, after
     // seven sweeps missed it because they all discarded meshes over 200 m wide
@@ -144,11 +148,11 @@ export const HP_STATIONS = [
     pos: [-96, 256],  look: [-96, 208],  radius: 12 },
   // The southern approach, built 2026-09-08 (DIRECTIONS.md §3). Appended, so
   // the digit keys 1–9 keep their journey order.
-  { key: 'great_oak',        name: 'The Great Oak',          folio: 20,
+  { key: 'great_oak', precinct: 'great_oak',        name: 'The Great Oak',          folio: 20,
     pos: [36, 712],   look: [36, 772],   radius: 14 },
-  { key: 'palm_plain',       name: 'The Palm and the Wolf',  folio: 23,
+  { key: 'palm_plain', precinct: 'palm_plain',       name: 'The Palm and the Wolf',  folio: 23,
     pos: [-24, 564],  look: [-36, 512],  radius: 13 },
-  { key: 'valley',           name: 'The Valley of the Approach', folio: 24,
+  { key: 'valley', precinct: 'valley',           name: 'The Valley of the Approach', folio: 24,
     pos: [0, 416],   look: [0, 240],    radius: 14, pitch: 0.04 },
   // Where the dream opens (Dall. p. 14), and where the player now wakes —
   // DECISIONS.md 2026-09-09 call 2: *"we need to be following the novel to the
@@ -167,7 +171,7 @@ export const HP_STATIONS = [
   // Radius 26 because there is no landmark to stand at. That is the point of
   // the place: it is composed absence, and a 6 m trigger on an empty plain
   // would simply never fire.
-  { key: 'plain',            name: 'The Spacious Plain',     folio: 14,
+  { key: 'plain', precinct: 'plain',            name: 'The Spacious Plain',     folio: 14,
     pos: [0, 1792],   look: [0, 1696],   radius: 26 },
   // The gardens of glass and of silk -- chapter X, 1499 pp. 124-127, not XII-XIII
   // as this comment used to say. Built 2026-09-09 AGAINST Hunt's argument that
@@ -179,9 +183,37 @@ export const HP_STATIONS = [
   // the old siting this station's trigger circle clipped 'chess' by 0.1 m --
   // the one pair the SPREAD pass didn't clear on its own. A 2.4 m nudge away
   // from chess, not a rule change.
-  { key: 'artificial',       name: 'The Gardens of Glass and Silk', folio: 124,
+  { key: 'artificial', precinct: 'palace',       name: 'The Gardens of Glass and Silk', folio: 124,
     pos: [-119, 40], look: [-90, 38.2], radius: 9 },
 ];
+
+// ── STAGE 2: the stations ride their precincts ──────────────────────────────
+//
+// Every `pos` and `look` above is where stage 1 (SPREAD = 4) left it. Stage 2
+// does not re-type them: each station names the PRECINCT it stands in, and the
+// precinct's rigid shift — computed in scripts/plan_sites.py from
+// research/plan.json, never by hand — is added here, once, in the one place the
+// table is defined. HPWorldScene applies the same shift to that precinct's
+// geometry with `_placeAt`, so a station and the thing it looks at move
+// together by construction rather than by two people remembering to.
+//
+// This is the direct answer to HANDOVER.md §4.3 — *hand-copied constants do not
+// move when the table they were copied from moves*. There is now nothing to
+// copy: `radius` is a human-sized trigger and stays, and the literals above are
+// the authored LOCAL layout of each precinct, which stage 3 will not touch.
+//
+// One station has no home on the plan and deliberately takes a zero shift,
+// which leaves it where it is. Recorded rather than hidden:
+//   `labyrinth`  — The Water Labyrinth, ch. XX, belongs down by the polyandrion;
+//                  the world has it beside the piazza.
+// That is stage-3 work: it needs moving AND rebuilding, and a shift alone
+// would carry a wrong siting to a new address.
+for (const s of HP_STATIONS) {
+  const [dx, dz] = shiftOf(s.precinct);
+  if (!dx && !dz) continue;
+  s.pos = [s.pos[0] + dx, s.pos[1] + dz];
+  s.look = [s.look[0] + dx, s.look[1] + dz];
+}
 
 // ── THE PIAZZA (chapter III; built 2026-09-09) ───────────────────────────
 // Dallington p. 37: before the porch, "in the open ayre there was a fowre square
@@ -208,6 +240,41 @@ export const PIAZZA = {
   intercol: 22.2,  // fifteen paces
   colX: 21,        // the rows, set just inside the outermost edge
 };
+
+// ── THE PYRAMID, at the size the book sets it out at ────────────────────────
+//
+// DECISION (Ted, 2026-09-20): **build it square, and move the north.** The
+// world's pyramid was 40 m wide and 4.5 m deep — a gable, not a pyramid, and a
+// documented lie: the Three Doors stood 22 m behind it and a square pyramid of
+// any size would have swallowed them. Stage 2 moves the doors 4.1 km north, so
+// the lie is no longer needed and the mass can be what Colonna sets out.
+//
+// Every number here is stated. Bury 1998 Appendix; DIMENSIONS.md §2;
+// research/plan.json `pyramid.size_source`:
+//
+//   base       six stadia square plus twenty paces = 1 139.6 m
+//   plinth     1 110 m square, 20.7 m high
+//   pyramid    1 110 m square, 1 410 courses of 0.56 m, about 785 m to the cube
+//   total      about 865 m to the winged nymph on the obelisk's point
+//   clearance  ten paces (14.8 m) of floor to the rock on each side
+//
+// The world's OWN numbers derive from these and are not typed twice: the
+// valley's neck is PYRAMID_W / 2 + PYRAMID_CLEAR (approach.js `_valleyCliffs`),
+// and the courses are counted, not approximated (portal.js `_buildGreatPortal`).
+// 1 410 courses of 0.56 is 789.6 m; the book's own arithmetic, kept.
+export const PYRAMID_W = 1139.6;        // the base storey, six stadia + twenty paces
+export const PYRAMID_CLEAR = 14.8;      // ten paces of floor to the rock, each side
+export const PLINTH_W = 1110.0;         // the plinth the courses spring from
+export const PLINTH_H = 20.7;
+export const COURSE_H = 0.56;
+export const COURSES = 1410;
+export const PYRAMID_H = COURSES * COURSE_H;   // 789.6 m to the cube
+
+// The valley of the approach, in world z. Both ends come from the plan
+// (research/plan.json, precinct `valley`) rather than from a literal in a loop.
+export const VALLEY_Z1 = PLAN_SITES.valley.zNorth;   // 148.4 — the court's mouth
+export const VALLEY_Z0 = PLAN_SITES.valley.zSouth;   // 1998.4 — the palm plain
+export const VALLEY_LEN = VALLEY_Z0 - VALLEY_Z1;     // 1850, ten stadia
 
 export const EYE = 1.7;
 
@@ -267,6 +334,37 @@ export const SENSE_NYMPHS = [
 // (Dallington 1592; docs/HP_SOURCEBOOK.md §5.)
 export const TRIUMPH_LIVERY = [0x2a5aa0, 0x2a5aa0, 0xc02840, 0xc02840, 0x1e8a54, 0x1e8a54];
 
+// ...but THAT IS EUROPA'S CAR, and only Europa's. (2026-09-20; COVERAGE.md
+// xiv-leda-six-girls-livery and xiv-danae-six-girls-uniform, both confirmed by
+// reading the code rather than the world: `TRIUMPH_LIVERY` was one flat array
+// applied by `robe: TRIUMPH_LIVERY[i]` regardless of `t.key`, so every car's
+// riders wore the first car's colours.)
+//
+// The book dresses each car's riders itself, and does not repeat:
+//
+//   EUROPA   "the two next the Tryumph ... in blewe silke, like the collour of
+//            a Peacockes necke. The middlemost in bright Crymosen: and the two
+//            formost in an Emerald greene." (Dall.; our p. 161)
+//   LEDA     two crimson, two shining crowfoot-yellow, two violet purple
+//            (our p. 165) — a three-way rank again, but not the same three.
+//   DANAE    "uniform in dress interwoven with gold and finest dark-blue silk"
+//            (our p. 169) — NO rank at all. Six alike, which is the point: the
+//            shower of gold is the livery.
+//   BACCHUS  no riders. The fourth car's team description (our p. 172) has no
+//            "six young girls" sentence, unlike all three before it: it goes
+//            straight from the six tigers to "above which ... there was set a
+//            base of gold". The urn rides this car, and nobody else does.
+//            (COVERAGE.md xiv-fourth-car-no-riders.)
+//
+// The order is the same as the rank order above: index 0-1 nearest the car,
+// 2-3 the middle, 4-5 foremost.
+export const TRIUMPH_RIDER_LIVERY = {
+  europa:  [0x2a5aa0, 0x2a5aa0, 0xc02840, 0xc02840, 0x1e8a54, 0x1e8a54],
+  leda:    [0xc02840, 0xc02840, 0xe8c832, 0xe8c832, 0x7a4aa8, 0x7a4aa8],
+  danae:   [0x1a2a6a, 0x1a2a6a, 0x1a2a6a, 0x1a2a6a, 0x1a2a6a, 0x1a2a6a],
+  bacchus: null,      // the urn rides this one
+};
+
 // The four cars, corrected against the plates themselves (hp.db.woodcut_catalog
 // #47-48, #52-53, #57/#59, #64-65). Two were wrong:
 //
@@ -323,11 +421,42 @@ export const TRIUMPH_RELIEFS = {
 };
 
 // Positions x4 with SPREAD (2026-09-17, DECISIONS.md 54) -- see HP_STATIONS.
+// ── EACH CAR IS CUT FROM ITS OWN TWO STONES (2026-09-20) ────────────────────
+//
+// `BUILDINGPLAN.md`, the triumphs, FIRST: *"Fix car materials (distinct per
+// car). Visibility + correctness."* `_triumphCar` built all four from one
+// template — a wheel hardcoded to emerald and a body taking `color` — so the
+// three cars the book does NOT give emerald wheels had them anyway, and no
+// car had its tablets at all. (COVERAGE.md xiv-europa/leda/danae/bacchus-car-
+// materials, three of them `unbuilt` and the fourth `partial`.)
+//
+// The book names two stones for every car, and they are arguments:
+//
+//   EUROPA   wheels of Scythian emerald, tablets of Indian DIAMOND set in gold
+//            (our p. 158) — the hardest stone, for the rape that begins it all
+//   LEDA     wheels of dark agate, tablets of dark-blue eastern SAPPHIRE
+//            sparked with gold (p. 163) — night, and the gold specks are stars
+//   DANAE    wheels of Ethiopian chrysolite, tablets of green Cyprus
+//            HELIOTROPE (p. 167) — the bloodstone, green flecked with red
+//   BACCHUS  wheels of Arcadian ASBESTOS, tablets of Troglodyte CARBUNCLE
+//            (p. 170) — the stone fire cannot touch, on the car of the woman
+//            burnt to ash; and the gem the ancients thought burned of itself
+//
+// `wheel` and `tablet` are read by `_triumphCar`. Vertumnus's rustic car walks
+// and has neither, so it falls back to the old template.
 export const TRIUMPHS = [
-  { key: 'europa',  title: 'Triumph of Europa',    motif: 'bull',  team: 'centaur',  pos: [42.4, -37.6],   color: 0xc8a040 },
-  { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-42.4, -37.6],  color: 0xb0c0d8 },
-  { key: 'danae',   title: 'Triumph of Danaë',     motif: 'gold',  team: 'unicorn',  pos: [-42.4, -122.4], color: 0xe0c060 },
-  { key: 'bacchus', title: 'Festival of Bacchus',  motif: 'fire',  team: 'leopard',  pos: [42.4, -122.4],  color: 0xd86a3a },
+  { key: 'europa',  title: 'Triumph of Europa',    motif: 'bull',  team: 'centaur',  pos: [42.4, -37.6],   color: 0xc8a040,
+    wheel: { color: 0x0d7548, roughness: 0.24, metalness: 0.35, emissive: 0x06301d, emissiveIntensity: 0.35 },
+    tablet: { color: 0xeef4f8, roughness: 0.05, metalness: 0.2, emissive: 0x9fb8c8, emissiveIntensity: 0.5 } },
+  { key: 'leda',    title: 'Triumph of Leda',      motif: 'swan',  team: 'elephant', pos: [-42.4, -37.6],  color: 0xb0c0d8,
+    wheel: { color: 0x3a3028, roughness: 0.28, metalness: 0.2 },
+    tablet: { color: 0x1c2f86, roughness: 0.16, metalness: 0.45, emissive: 0x0a1442, emissiveIntensity: 0.5 } },
+  { key: 'danae',   title: 'Triumph of Danaë',     motif: 'gold',  team: 'unicorn',  pos: [-42.4, -122.4], color: 0xe0c060,
+    wheel: { color: 0x9ac83a, roughness: 0.2, metalness: 0.3, emissive: 0x2a3a08, emissiveIntensity: 0.3 },
+    tablet: { color: 0x2a5a30, roughness: 0.3, metalness: 0.25, emissive: 0x3a0a0a, emissiveIntensity: 0.45 } },
+  { key: 'bacchus', title: 'Festival of Bacchus',  motif: 'fire',  team: 'leopard',  pos: [42.4, -122.4],  color: 0xd86a3a,
+    wheel: { color: 0xcfcabb, roughness: 0.82, metalness: 0.06 },
+    tablet: { color: 0x8e1220, roughness: 0.18, metalness: 0.35, emissive: 0x6a0a10, emissiveIntensity: 0.95 } },
   // The fifth procession (#66, "Triumph of Vertumnus and Pomona: satyrs,
   // nymphs"). It did not exist in the world at all. The plate names no draught
   // beast — this is the rustic triumph, ACCOMPANIED by satyrs and nymphs on

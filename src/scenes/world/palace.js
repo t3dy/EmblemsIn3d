@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { METALS, SENSE_NYMPHS } from './constants.js?v=9';
+import { METALS, SENSE_NYMPHS, shiftOf } from './constants.js?v=14';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Palace = {
@@ -1193,14 +1193,66 @@ export const Palace = {
     const poliphilo = this.cast.figure({ name: 'Poliphilo', h: 1.0, robe: 0x3a3a5a, pose: 'reach' });
     this._npc('poliphilo', poliphilo, CX - 0.9, CZ, -Math.PI / 2, { label: 'Poliphilo', sub: 'THE DREAMER', labelY: 2.1, sway: 0.03 });
 
-    // The torch between them
-    this._m(new THREE.CylinderGeometry(0.05, 0.07, 1.1, 8), this._trunkMat, CX, 0.55, CZ - 0.8);
-    const flame = this.cast.props.fire(0.5);
-    flame.position.set(CX, 1.1, CZ - 0.8);
-    this.scene.add(flame);
+    // -- SHE APPROACHES (2026-09-20) ---------------------------------------
+    //
+    // `BUILDINGPLAN.md`, Polia's garden, FIRST: *"Meeting + recognition
+    // staging. Polia with torch, approaches, he recognizes her. Social
+    // theatre."* Both figures stood still, a metre and a half apart, for ever.
+    // Two people frozen at arm's length is not a meeting; it is a tableau of
+    // one, and the chapter is entirely about MOTION toward, and about the
+    // recognition that fails on the way:
+    //
+    //   "And behold, a Nymph, as it were notable and festive, PARTING FROM
+    //    THOSE with her burning torch in her hand, was DIRECTING HER MAIDENLY
+    //    STEPS TOWARDS ME... Whom at the first sight I suspected to be
+    //    certainly Polia; but the condition of the unaccustomed dress and place
+    //    dissuaded me."                          (our pp. 142-143)
+    //
+    // So she starts at the far end of the arbour and walks its length when the
+    // reader comes into the garden, and the torch travels with her. She stops
+    // at arm's length and stays there: the approach completes and the
+    // recognition does not. That suspension is the chapter.
+    //
+    // `approach` is read by HPWorldScene's NPC loop, which is where the
+    // machinery lives; the book stages a dozen more meetings like this one.
+    //
+    // `from` and `to` are LOCAL: she is a child of the precinct's group, so her
+    // position is read and written in the frame the group carries. The TRIGGER
+    // is not — it is compared against the walker, and the walker knows nothing
+    // about precincts — so it takes the shift. Mixing the two is the standard
+    // mistake of this whole resite (it was made here first, and the approach
+    // simply never armed), so the two lines are kept next to each other and
+    // labelled.
+    const [gx, gz] = shiftOf('polia_garden');
+    const ap = {
+      from: [CX + 7.4, CZ + 6.2],          // local: the far end of the jasmine arbour
+      to:   [CX + 0.9, CZ],                // local: arm's length, facing him
+      trigger: { x: CX + gx, z: CZ + 9 + gz, r: 13 },     // WORLD
+      yaw0: Math.PI / 2 + 0.55, yaw1: Math.PI / 2,
+      t: 0, dur: 9.5, armed: false,
+    };
+    polia.position.set(ap.from[0], 0, ap.from[1]);
+    polia.rotation.y = ap.yaw0;
+    const pn = this._npcs[this._npcs.length - 2];   // Polia, registered before Poliphilo
+    pn.baseY = ap.yaw0;
+    pn.approach = ap;
+    this._poliaApproach = ap;
+
+    // The torch is IN HER HAND, not planted between them. It used to be a stake
+    // in the ground at a fixed point, which is what you build when nobody
+    // moves; the chapter has her carrying it the whole way -- "with her burning
+    // torch in her hand" -- and a light that travels with her is what makes the
+    // approach read. The staff, the flame and the point light are parented to
+    // her, so the NPC loop moves all three by moving her.
+    const staff = this._m(new THREE.CylinderGeometry(0.045, 0.06, 1.0, 8), this._trunkMat,
+      0.26, 0.92, 0.1, { parent: polia, cast: false });
+    void staff;
+    const flame = this.cast.props.fire(0.42);
+    flame.position.set(0.26, 1.46, 0.1);
+    polia.add(flame);
     this._torch = flame;
     const tl = this.style.pointLight(0xff9040, 1.4, 6);
-    if (tl) { tl.position.set(CX, 1.6, CZ - 0.8); this.scene.add(tl); this._pulses.push({ pl: tl, base: 1.4, phase: 0.8 }); }
+    if (tl) { tl.position.set(0.26, 1.7, 0.1); polia.add(tl); this._pulses.push({ pl: tl, base: 1.4, phase: 0.8 }); }
 
     // What this meeting is, said where it happens. Enumerated 2026-09-09: the
     // world staged chapter XI's recognition scene in chapter XIV's arbour and

@@ -13,7 +13,8 @@
 import * as THREE from 'three';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
-import { DOORS, SIGNS, PIAZZA } from './constants.js?v=9';
+import { DOORS, SIGNS, PIAZZA, PYRAMID_W, PLINTH_W, PLINTH_H,
+         COURSE_H, COURSES } from './constants.js?v=14';
 
 export const Portal = {
   _buildGreatPortal() {
@@ -96,9 +97,15 @@ export const Portal = {
     // The stones are BIG here on purpose: `block: 2.0, course: 1.3` against the
     // 1.2/0.8 the piers use. A wall of this size cut in pier-sized ashlar would
     // be nine hundred stones a side and would read as brickwork.
-    const NECK = 24;                    // half-width of the valley at the portal
-    const PORCH = 9;                    // outer face of the piers
-    const BASE_TOP = 12;                // the pyramid springs from here
+    // STAGE 2 (2026-09-20): the mass is the book's own now. NECK is the valley's
+    // half-width at the portal, which `_valleyCliffs` derives from this very
+    // building (PYRAMID_W / 2 + ten paces of clearance), so the two cannot
+    // drift apart. PORCH is the human-sized gate cut through the middle of it
+    // and does NOT grow: the porch is a door, and a door 500 m wide is not a
+    // door. BASE_TOP is Colonna's base storey, a fifth of a stadium.
+    const NECK = PYRAMID_W / 2;         // 569.8 - the mass runs wall to wall
+    const PORCH = 9;                    // outer face of the piers, unchanged
+    const BASE_TOP = 37.0;              // a fifth of a stadium (DIMENSIONS.md 2)
     for (const s2 of [-1, 1]) {
       const w = NECK - PORCH;
       this._ashlar(s2 * (PORCH + w / 2), 0, Z, w, BASE_TOP, 3.2, this._stoneMat,
@@ -124,44 +131,91 @@ export const Portal = {
       // against the old cliff loop's first ring at z = 38 +/- 3.6. The cliff
       // loop in _valleyCliffs now starts at z = 152, so this wedge now runs
       // to 148.4 (152 - 3.6), not a simple x4 of 41.5.
-      this._wallCol(s2 > 0 ? NECK : -200, s2 > 0 ? 200 : -NECK, Z + 1.8, 148.4);
+      this._wallCol(s2 > 0 ? NECK : -4000, s2 > 0 ? 4000 : -NECK, Z + 1.8, 148.4);
     }
     // and the wall over the door, which ties the two halves into one mass
     this._ashlar(0, 7.6, Z, PORCH * 2, BASE_TOP - 7.6, 3.2, this._stoneMat,
       { course: 1.1, block: 2.0, name: 'the wall above the porch' });
 
-    // ── THE STEPPED PYRAMID ──────────────────────────────────────────────
+    // -- THE STEPPED PYRAMID, AT THE SIZE THE BOOK SETS IT OUT -------------
     //
-    // The book gives it 1,410 courses rising off a plinth six stadia square —
-    // 1,140 m wide and some 785 m tall, by Colonna's own setting-out. The world
-    // built it 17.5 m wide and 19 m to the cube, which is 1 : 65, and made the
-    // most stupendous object in the book a garden folly on a lawn. Ted,
-    // 2026-09-09, declined the 1 : 8 ground plan and approved rescaling the
-    // monuments where they stand, so this is 40 m wide and 26 m of pyramid on
-    // top of a 12 m base — about 1 : 28, and the first thing you see from the
-    // palm plain rather than the last.
+    // DECISION (Ted, 2026-09-20): **build it square, and move the north.**
     //
-    // The DEPTH stays modest (4.5 m against a true 1,140) and that is a lie the
-    // plan forces: the three doors stand at z = 21 and the winged horse at
-    // 22.5, so a square pyramid of any size would swallow the piazza behind it.
-    // It is a gable, seen from the south as the plates draw it. Recorded rather
-    // than hidden.
-    const COURSES = 40, RISER = 0.66;
-    for (let i = 0; i < COURSES; i++) {
-      const t = i / COURSES;
-      const w = 40 * (1 - t * 0.86);
-      const d = 4.5 * (1 - t * 0.55);
-      this._m(new THREE.BoxGeometry(w, RISER, d), this._stoneMat, 0, BASE_TOP + i * RISER, Z, { cast: i % 4 === 0 });
+    // It was 40 m wide and 4.5 m deep - a gable, and the comment that stood
+    // here called it what it was: "a lie the plan forces", because the Three
+    // Doors stood at z = 21 and a square pyramid of any size would have
+    // swallowed the piazza behind it. Stage 2 moves the Three Doors 4.1 km
+    // north, and with them everything else the mass would have buried, so the
+    // lie is not needed any more and the pyramid can be the thing Colonna sets
+    // out to the course:
+    //
+    //   base      six stadia square plus twenty paces      1 139.6 m
+    //   plinth    1 110 m square, fourteen paces high         20.7 m
+    //   courses   one thousand four hundred and ten, of 0.56  789.6 m
+    //   the cube  "a huge Cube or foure square stone of forme like a dye"
+    //   the whole to the winged nymph                     about 865 m
+    //
+    // (DIMENSIONS.md 2; Bury 1998 Appendix; research/plan.json
+    // `pyramid.size_source`. The constants live in constants.js so that the
+    // valley's own neck can be derived from them - see `_valleyCliffs`.)
+    //
+    // -- Why it is not 1 410 boxes ----------------------------------------
+    //
+    // It is a stepped pyramid and the steps are the point: the book counts
+    // them and Poliphilo climbs them. But 1 410 courses at 0.56 m are a
+    // centimetre of screen apiece from anywhere you can see the whole thing,
+    // and 1 410 boxes is 1 410 draw calls before merging and a wall of
+    // z-fighting after it. So the courses are drawn at the RATE the book gives
+    // and merged in BANDS: 94 bands of fifteen courses, each 8.4 m tall. The
+    // count, the riser and the total height are all Colonna's; what is
+    // approximated is how many separate boxes carry them, and that is a
+    // drawing decision, not a measuring one. The stair on the south face
+    // (below) gives the eye the true riser from close to.
+    const BAND_COURSES = 15;
+    const BANDS = Math.round(COURSES / BAND_COURSES);          // 94
+    const BAND_H = BAND_COURSES * COURSE_H;                    // 8.4 m
+    // Square in plan, so the mass runs NORTH from the porch face and its centre
+    // is half its own depth behind it. This is the move the whole stage-2
+    // resite was for.
+    const CZ = Z - PYRAMID_W / 2;
+    // The plinth: 1 110 m square and fourteen paces high, on the base storey.
+    this._m(new THREE.BoxGeometry(PLINTH_W, PLINTH_H, PLINTH_W), this._stoneMat,
+      0, BASE_TOP + PLINTH_H / 2, CZ, { cast: true });
+    const SPRING = BASE_TOP + PLINTH_H;                        // 57.7 m
+    for (let i = 0; i < BANDS; i++) {
+      const t = i / BANDS;
+      // The taper: 1 110 m at the spring to the cube's own width at the top.
+      // Linear, which is what a constant riser and a constant tread give.
+      const w = PLINTH_W * (1 - t * 0.965);
+      this._m(new THREE.BoxGeometry(w, BAND_H, w), this._stoneMat,
+        0, SPRING + i * BAND_H + BAND_H / 2, CZ, { cast: i % 8 === 0 });
     }
-    const TOP = BASE_TOP + COURSES * RISER;
+    const TOP = SPRING + BANDS * BAND_H;                       // ~847 m
 
-    // Everything above the pyramid is scaled with it. At the old size these were
-    // read from twenty metres away; on a 40 m pyramid seen from the palm plain
-    // a 1.9 m cube is a pebble on a hill.
-    const TS = 1.8;
+    // -- The stair on the south face ---------------------------------------
+    //
+    // "the stayres ... taking light from the Orientall Meridionall and
+    // Occidentall partes of the ayre" (Dall. p. 28). This is the one place the
+    // true riser can be seen: forty courses of the real 0.56 m cut into the
+    // face above the porch, so a reader who walks up to the building has the
+    // book's own measure under his eye even though the mass above is banded.
+    for (let i = 0; i < 40; i++) {
+      this._m(new THREE.BoxGeometry(26 - i * 0.28, COURSE_H, 1.6), this._stoneMat,
+        0, BASE_TOP + i * COURSE_H, Z + 0.9 - i * 0.02, { cast: false });
+    }
 
-    // "a huge Cube or foure square stone of forme like a dye" closes the pyramid
-    this._m(new THREE.BoxGeometry(1.9 * TS, 1.9 * TS, 1.9 * TS), this._stoneMat, 0, TOP + 0.95 * TS, Z, { outline: true });
+    // Everything above the pyramid is scaled with it. At the old size these
+    // were read from twenty metres away; on a 1 140 m pyramid seen from the
+    // palm plain a 1.9 m cube is not a pebble on a hill, it is invisible. The
+    // book puts the winged nymph about 75 m above the cube, which is what sets
+    // TS: the members below are drawn at 1.9 m and this is the ratio that
+    // carries them to the book's own figure.
+    const TS = 15.0;
+
+    // "a huge Cube or foure square stone of forme like a dye" closes the pyramid.
+    // It sits over the pyramid's own centre, CZ, not over the porch: the mass is
+    // square in plan now and its axis is 570 m north of the face.
+    this._m(new THREE.BoxGeometry(1.9 * TS, 1.9 * TS, 1.9 * TS), this._stoneMat, 0, TOP + 0.95 * TS, CZ, { outline: true });
 
     // Four harpies of cast metal at the cube's corners, "their steales and clawes
     // armed," meeting over the diagonal to make the obelisk's socket
@@ -169,21 +223,23 @@ export const Portal = {
       ? S.mat({ tone: 0.2 })
       : S.mat({ color: 0x8a6a2a, metalness: 0.9, roughness: 0.35 });
     for (const [sx, sz] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) {
-      const hx = sx * 0.72 * TS, hz = Z + sz * 0.72 * TS;
+      const hx = sx * 0.72 * TS, hz = CZ + sz * 0.72 * TS;
       // clawed foot, body, and a swept wing leaning in toward the socket
       this._m(new THREE.ConeGeometry(0.16 * TS, 0.34 * TS, 6), harpyMat, hx, TOP + 2.06 * TS, hz);
       this._m(new THREE.CapsuleGeometry(0.1 * TS, 0.26 * TS, 4, 8), harpyMat, hx, TOP + 2.42 * TS, hz);
-      const wing = this._m(new THREE.ConeGeometry(0.1 * TS, 0.6 * TS, 4), harpyMat, hx * 0.55, TOP + 2.66 * TS, Z + sz * 0.4 * TS);
+      const wing = this._m(new THREE.ConeGeometry(0.1 * TS, 0.6 * TS, 4), harpyMat, hx * 0.55, TOP + 2.66 * TS, CZ + sz * 0.4 * TS);
       wing.rotation.z = -sx * 0.55; wing.rotation.x = -sz * 0.45;
     }
     // The socket the four of them make, dressed with cast leaves and fruit
-    this._m(new THREE.CylinderGeometry(0.42 * TS, 0.52 * TS, 0.3 * TS, 12), harpyMat, 0, TOP + 2.9 * TS, Z);
+    this._m(new THREE.CylinderGeometry(0.42 * TS, 0.52 * TS, 0.3 * TS, 12), harpyMat, 0, TOP + 2.9 * TS, CZ);
 
     // The obelisk: two paces broad, seven high, of mirror-polished Theban stone
-    this._m(new THREE.CylinderGeometry(0.13 * TS, 0.42 * TS, 4.6 * TS, 4), this._stoneMat, 0, TOP + 5.35 * TS, Z, { outline: true });
-    // Its copper turning-base, and on it the winged Fortuna who spins in the wind
-    this._m(new THREE.CylinderGeometry(0.16 * TS, 0.16 * TS, 0.14 * TS, 10), harpyMat, 0, TOP + 7.72 * TS, Z);
-    this._buildFortuna(0, TOP + 7.85 * TS, Z, harpyMat, TS);
+    this._m(new THREE.CylinderGeometry(0.13 * TS, 0.42 * TS, 4.6 * TS, 4), this._stoneMat, 0, TOP + 5.35 * TS, CZ, { outline: true });
+    // Its copper turning-base, and on it the winged Fortuna who spins in the wind.
+    // TOP + 7.85 x TS is 965 m; the book's "about 865" is to the cube, and the
+    // obelisk and its nymph stand above that.
+    this._m(new THREE.CylinderGeometry(0.16 * TS, 0.16 * TS, 0.14 * TS, 10), harpyMat, 0, TOP + 7.72 * TS, CZ);
+    this._buildFortuna(0, TOP + 7.85 * TS, CZ, harpyMat, TS);
 
     // The Medusa whose gaping mouth is the door to the spiral stair. The book
     // sets her "vpon the right hand as I went" — the dreamer walks south out of
@@ -196,7 +252,7 @@ export const Portal = {
     // the cliff, so the hedges are gone (they would be buried in a wall) and
     // the obelisks stand clear of the face where they can still be seen.
     for (const s of [-1, 1]) {
-      this._obelisk(s * 13.5, Z + 4.4, 1.6, 4.6);
+      this._obelisk(s * 34, Z + 12, 4.8, 21);
     }
 
     // The dragon that drove Poliphilo through the vaults
