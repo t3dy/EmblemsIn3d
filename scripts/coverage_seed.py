@@ -82,6 +82,49 @@ PAGE_SEQ_TO_TRANSLATION = 10
 #
 # plate -> its true page_seq. Nothing goes in here that was not seen on the scan.
 PLATE_PAGE_FIXES = {
+    16:  45,   # scan p38 is unbroken text (the relief of Vulcan's forge on the altar:
+               # "Sedeua sopra uno saxo sincto, cum una pelle hircina") and carries NO
+               # woodcut. The gate with the two medallion busts in the spandrels, and
+               # the Greek pediment inscription, is the FULL-PAGE plate on scan p45 —
+               # our p.55, one of the four pages our translation holds no file for
+               # because they are full-page woodcuts. Catalogued at 38. Chapter V
+               # either way.  MEASURED 2026-09-20.
+    24:  87,   # scan p84 is unbroken text and carries the capitalised argument of
+               # chapter IX ("QVANTA INSIGNE MAIESTATE FVE QVELLA DELLA REGINA") — no
+               # woodcut at all. The zophorus/frieze of two genii among foliage, vases
+               # and a skull is on scan p87, under the text "Et in medio sopra gli
+               # uerticuli assideua una facia circunallata passamente di Puello" and
+               # above "Et cum tali & simiglianti liniamenti decoratamente se extendeua
+               # il zophoro". Catalogued at 84.  MEASURED 2026-09-20.
+    47:  152,  # the First Triumph is a DOUBLE-PAGE plate across the opening: scan p152
+               # carries the left half (the car drawn by centaurs, musicians and nymphs)
+               # under the running head "TRIVMPHVS", and p153 the right half under
+               # "PRIMVS" — the head reads across the opening. Both catalogued at 151,
+               # which is unbroken text ("Hora sopra la plana antedicta iaceua uno fatale
+               # candidissimo & benigno Tauro"). Chapter XIV either way.
+    48:  153,  # the right half of the same opening; the text under it begins the second
+               # triumph, "EL SEQVENTE triumpho nõ meno mirauiglioso del primo".
+    63:  165,  # scan p165 carries the vintage: putti treading grapes at a vat and
+               # harvesting under a pergola, under the line "Ma omni parte distinctamente
+               # p̃fecta cerneuase" and above "Fora del p̃scripto uaso, germinaua una
+               # frõdosa uite doro". Signature "l iiii" at the foot. Catalogued at 164,
+               # which in fact carries the Heliades relief (see #62 in the notes below).
+    64:  166,  # the Fourth Triumph is a DOUBLE-PAGE plate: scan p166 ("TRIVMPHVS") is
+               # the left half — the car with the great urn, drawn by the ass, Silenus
+               # among the Maenads — and p167 ("QVARTVS") the right half, the car drawn
+               # by the spotted tigers of Hyrcania with the crowd of lovers. Both
+               # catalogued at 165, which carries the vintage instead.
+    65:  167,  # the right half of that opening. Beneath it on p167 stands the
+               # capitalised argument of chapter XV ("LA MVLTITVDINE DEGLI AMANTI
+               # GIOVENI"), which is why the catalogue's Four Seasons rows were put here.
+    132: 318,  # scan p319 carries only two trophies — the NEMO tablet and the winged
+               # one with ribbons (#134, #135) — and is signed "x". The tiger/lion-skin
+               # trophy with the bull's-head crest is the LEFT trophy on scan p318,
+               # beside the text "Subsequẽte & una attolleua uno tropheo cũ p̃cipua
+               # politura". Catalogued at 319. Chapter XXII either way.
+    133: 318,  # the right trophy on that same page: the winged disk with the tablet
+               # "QVIS EVA / DET", matching its own text "Poscia una tabella cum tale
+               # scriptura maiuscula (QVIS EVADET?) subiaceua". Catalogued at 319.
     152: 386,  # scan p386 carries Polia reading while Poliphilo lies collapsed before
                # the altar; its text ends "rachiusi gli somersi ochii allato me se
                # morite" = our p.396. Catalogued at 387. Chapter XXVI either way.
@@ -92,6 +135,24 @@ PLATE_PAGE_FIXES = {
     154: 390,  # scan p390 carries the two women chained to Cupid's burning car in the
                # wood ("due dolete & siagurate fanciulle ... ad uno ignitato uehiculo")
                # = our p.400. Catalogued at 391. Chapter XXVII either way.
+    160: 416,  # scan p415 is unbroken text — it DESCRIBES the two cars ("uno Vehiculo
+               # tutto di Crystallino giazo, tracto da dui candidi & cornigeri cerui ...
+               # da dui candidi Cygni") but carries no woodcut. The plate, in two halves
+               # (the stag-car and the swan-car in the sky; Polia kneeling in her
+               # chamber), is on scan p416, under "ambi si risolseron & disparueno".
+               # Catalogued at 415. Chapter XXIX either way.
+    165: 436,  # RESOLVED 2026-09-20. bug-woodcut-catalog-page-jitter recorded that the
+               # catalogued page 435 is unbroken text signed "E" with no woodcut, and
+               # that the true page was unknown. It is scan p436: the canopied bed, the
+               # little dog, and Polia standing with the open letter, under the end of
+               # Poliphilo's letter ("& uiuo, & morto tuo sum. Vale.") and above
+               # "Credando Sacra Matrona che la Damicella, alle mie amorose parole".
+               # Chapter XXXIII either way.
+    167: 447,  # scan p448 carries ONE woodcut, Cupid with the bow drawn (= #168), and
+               # scan p449 none at all. The plate showing Cupid holding the bust of
+               # Polia, Poliphilo praying in the clouds and the sceptred Venus is on
+               # p447 — the same plate the catalogue also lists as #166. Catalogued at
+               # 448. Chapter XXXV either way.
 }
 
 # Plates whose catalogued page we opened and found ALREADY RIGHT. Worth writing down:
@@ -100,16 +161,155 @@ PLATE_PAGE_FIXES = {
 # on the scan that identifies it.
 PLATE_PAGE_CONFIRMED = {
     1:   "p4   'peruenuto nella uastissima Hercynia silua' = our p.14 (ch. I)",
+    2:   "p8   Poliphilo kneeling to drink at the rivulet among the trees; "
+         "'Hora quale animale che per la dolce esca, lo occulto dolo non perpende' = our p.18 (ch. II)",
+    3:   "p10  Poliphilo asleep under the tree, above the capitalised argument "
+         "'POLIPHILO QVIVI NARRA, CHE GLI PARVE ANCORA DI DORMIRE' = our p.20 (ch. III)",
+    4:   "p11  the palm grove with the wolf at the right, the fallen colossal head and "
+         "the overturned vessel; 'Ecco che uno affermato & carniuoro lupo alla parte "
+         "dextra, cum la bucca piena mi apparue' = our p.21 (ch. III)",
+    5:   "p16  the full-page stepped pyramid with the obelisk and the winged Fortuna; "
+         "no body text, catchword 'Ritorniamo' = our p.26 (ch. III)",
+    6:   "p22  the winged horse with the boys clambering on it; 'Sopra di q̃sta piacia ... "
+         "uidi uno p̃digioso caballo & aligero Desultore' = our p.32 (ch. IV)",
+    7:   "p23  left pedestal end, the garland with 'D· AMBIG ·D·D'; 'Nella superficie dil "
+         "basamento era infixo plumbiculatamete una plastra' = our p.33 (ch. IV)",
+    8:   "p23  right pedestal end on the same page, 'EQVVS INFOELICITATIS' in its garland",
+    18:  "p59  the hieroglyph band under 'PATIENTIA EST ORNAMENTVM CVSTODIA ET PROTECTIO "
+         "VITAE', and below it the circle, anchor and dolphin with "
+         "'ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ · Semp festina tarde' = our p.69 (ch. VII)",
+    20:  "p66  Poliphilo meeting the five nymphs with their vessels; 'Elle dunque di me "
+         "animaduertendo alhora, il Nympheo grado affermando steteron' = our p.76 (ch. VII)",
+    21:  "p71  the winged putto on the ball blowing the trumpet; 'cosa enea tenuissima "
+         "cõflata perfectamẽte ... Laquale Ala, & la Pila, & el Puello' = our p.81 (ch. VIII)",
+    23:  "p80  the full-page third fountain (the three nude figures, the griffin-heads, "
+         "the winged sphinxes); no body text, catchword 'no sci' = our p.90, one of the "
+         "four pages our translation holds no file for (ch. VIII)",
+    32:  "p105 the wheeled vessel crowned with the golden fruit-tree, drawn by a nymph; "
+         "'Ilquale stylo fermamente infixo uno conspicuo uaso di Topacio susteniua' = "
+         "our p.115 (ch. IX)",
+    39:  "p127 the matron Euclelia with the raised sword bearing the golden crown and "
+         "palm; 'Ecco sencia præstolatiõe fue patefacta, & ĩtromessi, Se fece ad nui una "
+         "Matrona chrysaora cum gli ochii atroci' = our p.137. Signature 'i' (ch. X)",
+    40:  "p129 Logistica fleeing through the arch having broken her lyre, Poliphilo among "
+         "the nymphs; 'proiecta la lyra ad terra la rumpete' = our p.139. "
+         "Signature 'i ii' (ch. X)",
+    41:  "p130 Poliphilo embraced by the nymphs among the trees; 'Et recluse le metalline "
+         "ualue, rimansi claustrato immediate tra quelle egregie Nymphe' = our p.140 (ch. X)",
+    42:  "p132 the flowering pergola with Poliphilo, the nymph approaching with her torch; "
+         "'Et ecco una come insigne & festiua Nympha dindi cum la sua ardente facola in "
+         "mano' = our p.142 (ch. XI)",
+    43:  "p139 Poliphilo and the torch-bearing nymph together before the arbour; 'Et "
+         "postala nella sua, strengerla sentiua tra calda neue' = our p.149 (ch. XII)",
+    44:  "p149 upper block, 'PRIMA TABELLA' — the triumphal car with the bull relief; "
+         "signature 'k iiii' at the foot = our p.159 (ch. XIV)",
+    45:  "p149 lower block on the same page, 'SECVNDA SINISTRA' — Europa borne over the "
+         "sea on the bull",
+    46:  "p150 'PARS ANTERIOR ET POSTERIOR TRIVMPHI' — Cupid shooting stars, and Mars "
+         "before Jove's throne with the NEMO scroll = our p.160 (ch. XIV)",
+    71:  "p185 the full-page worship of Priapus under the flowered bower, the ass led to "
+         "sacrifice; no body text = our p.195, a page our translation holds no file for "
+         "(ch. XVII)",
     72:  "p195 full-page rotunda section, signature 'n iii' only = our p.205 (ch. XVII)",
     76:  "p205 'Et ecco cum summa ueneratione ... el rituale libro' = our p.215 (ch. XVII)",
+    81:  "p212 a woodcut IS present — the great jasper vase on its stepped base hung "
+         "beneath the inverted plate; 'Questo marauiglioso sculptile era tuto di uno "
+         "solido de finissimo diaspro' = our p.222 (ch. XVII). The catalogue's "
+         "description ('Temple ceremony continuation') is a placeholder, not a reading",
+    82:  "p213 the priestess with the open ritual book before the altar, Polia and the "
+         "virgins kneeling, Poliphilo praying at the right; 'Disubito la intenta "
+         "sacerdotula admonita dirinpecto alla sacrificante Polia cum il rituale libro "
+         "aperto' = our p.223. Signature 'o iiii' (ch. XVII)",
+    87:  "p233 the obelisk on its inscribed base, beside the medallion; 'In questo loco "
+         "ananti tute cose ... mirai uno obelisco magno & excelso di rubente petra' = "
+         "our p.243 (ch. XIX)",
+    88:  "p233 the first medallion on that page: the balance with the crown, dog and "
+         "serpent, read 'IVSTITIA RECTA AMICITIA ET ODIO EVAGINATA ET NVDA'",
+    89:  "p235 'MILITARIS PRVDENTIA, SEV DISCIPLINA IMPERII EST TENACISSIMVM VINCVLVM' — "
+         "the eagle, anchor and seated soldier with the serpent = our p.245 (ch. XIX)",
+    90:  "p235 the second medallion on that page, 'DIVI IVLII VICTORIARVM ET SPOLIORVM "
+         "COPIOSISSIMVM TROPHAEVM, SEV INSIGNIA' — the trophy between the eye and the comet",
+    113: "p275 the standard with the flaming vase and the crescent, captioned 'AMOR "
+         "VINCIT OMNIA'. Signature 's iii' = our p.285 (ch. XX)",
+    114: "p281 the bark on the waves with its mast and yard; 'cum tute le altre "
+         "circũstantie disopra opportunamente descripte. cusi era' = our p.291 (ch. XXI)",
+    128: "p313 the square flower-bed with the eagle in a knot of bands lettered round "
+         "the border; 'La Aquila di serpilo, Lo excluso dagli circuntermini di polio "
+         "montano' = our p.323 (ch. XXI)",
+    130: "p317 the left trophy — helmet, cuirass and the latticed banner with the winged "
+         "genius head; 'Vnaltra era gestante dunaltro tropheo' = our p.327 (ch. XXII)",
+    131: "p317 the right trophy on that page — the tunic with the winged genius head "
+         "under a laurel wreath",
+    134: "p319 the left trophy, the tablet lettered 'NEMO' over winged volutes; "
+         "'Consequente era uno altro nobilissimo trophæo baiulato'. Signature 'x' = "
+         "our p.329 (ch. XXII)",
+    135: "p319 the right trophy on that page, the winged boss with the floating ribbons",
+    148: "p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque il "
+         "circulo obducto del suo diametro semisse, iui uno triangulo æq̃latero "
+         "cõstituito' = our p.359 (ch. XXIII)",
     149: "p363 'sopra il fonte. Nelquale ... uno serpe aureo' = our p.373 (ch. XXIV)",
+    157: "p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple; "
+         "'O il mio amoroso Poliphilo morto, ouero io in tanta inconsolabile uita "
+         "superstite?' = our p.421 (ch. XXIX)",
+    161: "p419 the priestess enthroned, Polia kneeling, Poliphilo standing, the flaming "
+         "altar at the right; 'Dinanti alla quale ello era apresentato'. Signature 'D' = "
+         "our p.429 (ch. XXX)",
     163: "p425 'sauiando, sorbiculante ... morsiunculo' = our p.435 (ch. XXXI)",
+    164: "p433 Poliphilo writing at the carved desk, the framed double portrait on the "
+         "wall; 'Per tale argumẽto cogitai di scriuerli' = our p.443 (ch. XXXII)",
+    166: "p447 Cupid holding the bust of Polia, Poliphilo praying in the clouds, the "
+         "sceptred Venus seated; 'Mira diligentemente questa spectanda imagine' = "
+         "our p.457 (ch. XXXV)",
+    168: "p448 Cupid with the bow drawn at the group in the clouds; 'manifestamente "
+         "uedendo io cum il curuo, & cum rigore incordato arco' = our p.458 (ch. XXXV)",
 }
 
-# Known-wrong but not yet resolved: #165 ("Polia reading lover's letter in bed-chamber")
-# is catalogued at page_seq 435, and scan p435 is unbroken text with no woodcut at all
-# (signature "E"). Its true page is somewhere near, and its chapter (XXXIII) is right by
-# the constant alone, so it is left as the catalogue has it rather than guessed at.
+# ── Opened, and still not resolved ───────────────────────────────────────────
+#
+# For these the catalogued page WAS opened on the scan and shown to carry something
+# else; the plate's true page has not been seen, so its catalogued page is left alone
+# rather than guessed at (the ticket's own rule: do not infer a page from surrounding
+# text). Each entry says what the catalogued page actually carries. These still count
+# as CHECKED — a reader can tell them from a page nobody has looked at.
+PLATE_PAGE_UNRESOLVED = {
+    66:  "scan p166 opened: it carries the LEFT half of the fourth (Bacchic) triumph, "
+         "not Vertumnus and Pomona. Our translation puts the triumph of Vertumnus and "
+         "Pomona on pp.190-191 = page_seq 180-181, and scan p180 is unbroken text "
+         "('per el uirente, & florido plano ... tra laltissimo Cyparisso'), so the plate "
+         "is on page_seq 181 or thereabouts — and the corpus folder holds no scan of "
+         "181-184. True page not seen.",
+    67:  "scan p167 opened: it carries the RIGHT half of the fourth (Bacchic) triumph "
+         "and, beneath it, the capitalised argument of chapter XV — no Seasons relief. "
+         "Our translation carries the four Seasons of the square altar on pp.192-193 = "
+         "page_seq 182-183; the corpus folder holds no scan of 181-184. True page not seen.",
+    68:  "as #67: the Summer relief (FLAVAE MESSI · S., our p.193) is not on scan p167.",
+    69:  "as #67: the Autumn relief (MUSTULENTO AUTUMNO · S., our p.193) is not on scan p167.",
+    70:  "as #67: the Winter relief (HYEMI AEOLIAE · S., our p.193) is not on scan p167.",
+    83:  "scan p213 opened: the page carries exactly ONE woodcut, which is #82. This is a "
+         "second catalogue row for the same page with the same placeholder description "
+         "('Temple ceremony continuation'); either it duplicates #82 or its plate is on "
+         "another page. True page not seen.",
+    86:  "scan p233 opened: it carries the obelisk (#87) and one medallion (#88), not a "
+         "view of the ruined Polyandrion among trees. Scan p234 carries two further "
+         "hieroglyph blocks (the DIVO IVLIO CAESARI band and the elephants-and-ants "
+         "medallion 'PACE AC CONCORDIA PARVAE RES CRESCVNT'), neither of them this one. "
+         "True page not seen.",
+    127: "scan p313 opened: it carries exactly ONE woodcut, the eagle flower-bed (#128). "
+         "The box-tree clipped as three peacocks is not on it. True page not seen.",
+    129: "scan p317 opened: it carries exactly TWO woodcuts, both trophies (#130, #131). "
+         "The flower-bed with two birds on a vase is not on it. True page not seen.",
+    162: "scan p419 opened: it carries exactly ONE woodcut, which is #161. This row and "
+         "#161 describe the same scene (lovers kneeling before the priestess); either it "
+         "duplicates #161 or its plate is on another page. True page not seen.",
+}
+
+# Also measured, but not near a chapter boundary and so not in the tables above:
+#   #62 "Vase relief: Jupiter and the Heliades" is catalogued at page_seq 161 and is in
+#   fact the woodcut at the foot of scan p164 — the nymphs rooting into trees before
+#   Jove, our p.174, which is exactly where our translation puts the urn-relief of "Jove
+#   and the nymphs changed into trees". It is recorded here rather than in
+#   PLATE_PAGE_FIXES because moving it is outside this ticket's scope and nothing in the
+#   ledger turns on it: page_seq 161 and 164 are both chapter XIV.
 
 # The eight attributions ticket bug-plate-page-seq-offset says were wrong, plus the two
 # regression points its acceptance names. Asserted on every run — see check_plates().
@@ -129,13 +329,48 @@ PLATE_CHAPTER_EXPECTED = {
 # Where to read each chapter. Chapters I–XVI survive in English only in
 # Dallington 1592 (public domain); XVII–XXXVIII are our own CC0 translation.
 # Godwin 1999 is in copyright and is never used — see ROUTER.md rule 2.
+#
+# CORRECTED 2026-09-20, ticket bug-dallington-page-drift. Two things had to change.
+#
+# (1) Our own CC0 translation now covers the WHOLE book, pages 1-467 (451 of 467 pages
+#     `verified` in translation/manifest.json), not only XVII onward. So Dallington is no
+#     longer the only English for chapters I-XVI; he is a second witness, and every
+#     chapter's pages_1499 is in the translation's numbering, which IS the 1499 folio.
+#
+# (2) A "Dallington p. N" citation in this ledger means the `<!-- Page N -->` marker in
+#     the corpus markdown, and those markers run 1-279 against the 1499's 1-467. The two
+#     numberings agree to within a page or two at the start of the book and then diverge
+#     steadily as he abridges. MEASURED 2026-09-20 by rare-proper-noun alignment of every
+#     Dallington page against every translation page, then read by eye at the anchors:
+#
+#       Dallington p.  80 = 1499 p.  60      Dallington p. 238 = 1499 p. 179
+#       Dallington p. 100 = 1499 p.  74      Dallington p. 240 = 1499 p. 180
+#       Dallington p. 194 = 1499 p. 136      Dallington p. 244 = 1499 p. 183
+#       Dallington p. 206 = 1499 p. 147      Dallington p. 250 = 1499 p. 188
+#       Dallington p. 210 = 1499 p. 150      Dallington p. 254 = 1499 p. 191
+#       Dallington p. 216 = 1499 p. 154      Dallington p. 256 = 1499 p. 193
+#       Dallington p. 226 = 1499 p. 165      Dallington p. 258 = 1499 p. 239
+#       Dallington p. 234 = 1499 p. 175      Dallington p. 260 = 1499 p. 241
+#
+#     The gap is ~20 pages by his p.80, ~58 by his p.194, ~62 by his p.250 — and then it
+#     jumps, because he skips 1499 pp.194-237 outright. So NO constant repairs it, and a
+#     Dallington page may never be read as a 1499 page. Confirm any Dallington citation
+#     against the header line of translation/en/page_NNN.md before you use it.
 def text_source(n):
     if n <= 16:
-        return {"edition": "Dallington 1592",
-                "file": r"C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md",
-                "note": "page markers in that file are DALLINGTON's pages, not the 1499's"}
+        return {"edition": "our translation (CC0), with Dallington 1592 as a second witness",
+                "file": "translation/en/page_NNN.md",
+                "dallington": r"C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md",
+                "note": "pages_1499 and every bare page number in this chapter are in the "
+                        "1499 numbering (= translation/en/page_NNN.md). A source written "
+                        "'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: "
+                        "his 279 pages abridge the 1499's 467, so his count falls behind by "
+                        "about 20 pages by his p.80 and about 60 by his p.250, and the two "
+                        "may never be used interchangeably. Ticket bug-dallington-page-drift."}
     return {"edition": "our translation (CC0)", "file": "translation/en/page_NNN.md",
-            "note": "page numbers ARE the 1499's, so they line up with hp.db"}
+            "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington "
+                    "1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 "
+                    "entirely; where he is present his page numbers are his own."}
 
 
 def chapter_pages():
@@ -190,12 +425,20 @@ def plates(pages_by_ch):
         seq = PLATE_PAGE_FIXES.get(num, raw)
         page = seq + PAGE_SEQ_TO_TRANSLATION if seq is not None else None
         rec = {"plate": num, "description": desc, "page_1499": seq, "page_translation": page}
+        if page is not None:
+            d = min((abs(page - x) for r in pages_by_ch.values() for x in r), default=99)
+            if d <= 3:
+                rec["near_chapter_boundary"] = d
         if num in PLATE_PAGE_FIXES:
             rec["page_corrected_from"] = raw
             rec["page_checked"] = "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         elif num in PLATE_PAGE_CONFIRMED:
             rec["page_checked"] = "scan opened 2026-09-20; catalogued page confirmed — " \
                                   + PLATE_PAGE_CONFIRMED[num]
+        elif num in PLATE_PAGE_UNRESOLVED:
+            rec["page_checked"] = "scan opened 2026-09-20; catalogued page is WRONG and the " \
+                                  "true page is NOT YET KNOWN — " + PLATE_PAGE_UNRESOLVED[num]
+            rec["page_unresolved"] = True
         placed = False
         if page is not None:
             for ch, (a, b) in pages_by_ch.items():
@@ -206,6 +449,27 @@ def plates(pages_by_ch):
         if not placed:
             unplaced.append(dict(rec, section=sect))
     return by_ch, unplaced
+
+
+def check_page_checked(by_ch, unplaced):
+    """Regression check, run on every seed. Ticket bug-woodcut-catalog-page-jitter.
+
+    Its acceptance criterion, asserted: no plate resolving within 3 pages of a chapter
+    boundary lacks `page_checked`. A plate that near a boundary can be filed in the
+    wrong chapter by the catalogue's own +/-2 jitter, so every one of them has to have
+    been SEEN on the scan — confirmed, corrected, or opened and found wrong. If this
+    fires, someone has added or moved a plate; open the scan at
+    C:\\Dev\\hypnerotomachia polyphili\\site\\images\\woodcuts_1499\\hp1499_pNNN.jpg
+    and record what is on it. Do not silence it by widening a chapter range."""
+    recs = [p for ps in by_ch.values() for p in ps] + unplaced
+    near = [p for p in recs if p.get("near_chapter_boundary") is not None]
+    bad = [p for p in near if not p.get("page_checked")]
+    if bad:
+        raise SystemExit("coverage_seed: unchecked plates near a chapter boundary:\n" +
+                         "\n".join(f"  plate #{p['plate']} on page_1499 {p['page_1499']} "
+                                   f"({p['description']})" for p in sorted(
+                                       bad, key=lambda p: p["plate"])))
+    return len(near), sum(1 for p in near if p.get("page_unresolved"))
 
 
 def check_plates(by_ch):
@@ -223,6 +487,126 @@ def check_plates(by_ch):
         raise SystemExit("coverage_seed: plate->chapter regression:\n" + "\n".join(
             f"  plate #{n}: expected chapter {want}, got {had}" for n, want, had in bad))
     return len(PLATE_CHAPTER_EXPECTED)
+
+
+# ── The collation, measured off the signatures printed on the scans ──────────
+#
+# Ticket bug-concordance-signature-quire-model. `hp.db.page_concordance.signature /
+# quire / leaf_in_quire` is a uniform RECONSTRUCTION — 29 gatherings, every one of eight
+# leaves except z and G at four, 448 pages — and it is wrong in three ways at once: it
+# omits the `u` gathering entirely, it stops nine pages short of the book, and its
+# page-to-signature mapping is consequently out on both sides of the gap. THOSE THREE
+# COLUMNS ARE NOT TO BE USED FOR ANYTHING. This table replaces them, and unlike them it
+# was read off the page.
+#
+# MEASURED 2026-09-20 by opening scans and reading the signature printed at the foot:
+#
+#   p31  'c'      p127 'i'        p195 'n iii'    p319 'x'        p419 'D'
+#   p63  'e'      p129 'i ii'     p213 'o iiii'   p337 'y ii'     p435 'E'
+#   p95  'g'      p149 'k iiii'   p275 's iii'    p387 'B'
+#                 p165 'l iiii'   p307 'u iii'    p389 'B ii'
+#
+# and confirmed negatively at p23, p59, p87 and p105, none of which carries a signature
+# and none of which this model puts on a signed leaf.
+#
+# Every one of those fits a single model: FOUR unsigned preliminary leaves, then
+# a-y in eights (with u), z in ten, A-E in eights, F in four — 4 + 176 + 10 + 40 + 4 =
+# 234 leaves = 468 pages, which is exactly the length of the book (our pp.1-467 plus a
+# final blank verso).
+#
+# THE TWO-PAGE RESIDUAL IN THE TICKET IS EXPLAINED, and this is the finding: hp.db's
+# page_seq 1 is NOT a1r. Quire a opens two pages earlier, on our p.9 — the last
+# preliminary leaf, the one carrying Poliphilo's dedication to Polia — so page_seq 1 is
+# a2r. Everything the ticket measured as "quire n two pages late" was that one leaf.
+#
+# 'u iii' on scan p307 is the direct proof that the u gathering exists, which is what
+# the ticket asked for and what hp.db denies.
+#
+# NOT DIRECTLY SEEN: z's ten leaves. No scan between page_seq 351 and 361 is in the
+# corpus folder, so z is fixed by arithmetic — y opens at 335 (scan, 'y ii' at 337) and
+# A at 371 (our p.381, "POLIPHILO BEGINS THE SECOND BOOK") — not by a signature.
+#
+# (letter, first page_seq, leaves)
+MEASURED_QUIRES = [
+    (None, -9, 4),   # the unsigned preliminary leaves, our pp.1-8
+    ("a",  -1, 8), ("b",  15, 8), ("c",  31, 8), ("d",  47, 8), ("e",  63, 8),
+    ("f",  79, 8), ("g",  95, 8), ("h", 111, 8), ("i", 127, 8), ("k", 143, 8),
+    ("l", 159, 8), ("m", 175, 8), ("n", 191, 8), ("o", 207, 8), ("p", 223, 8),
+    ("q", 239, 8), ("r", 255, 8), ("s", 271, 8), ("t", 287, 8), ("u", 303, 8),
+    ("x", 319, 8), ("y", 335, 8), ("z", 351, 10),
+    ("A", 371, 8), ("B", 387, 8), ("C", 403, 8), ("D", 419, 8), ("E", 435, 8),
+    ("F", 451, 4),
+]
+
+# signature actually read at the foot of a scan -> its page_seq. check_quires() asserts
+# the table reproduces every one of them. Do not add a line here you have not seen.
+SIGNATURES_READ = {
+    31: "c", 63: "e", 95: "g", 127: "i", 129: "i ii", 149: "k iiii", 165: "l iiii",
+    195: "n iii", 213: "o iiii", 275: "s iii", 307: "u iii", 319: "x", 337: "y ii",
+    387: "B", 389: "B ii", 419: "D", 435: "E",
+}
+UNSIGNED_READ = [23, 59, 87, 105]   # scans opened whose foot carries no signature
+
+
+def _signature_at(seq):
+    """The signature a leaf would carry under MEASURED_QUIRES, or None if unsigned.
+
+    The Aldine signs only the first half of a gathering (and, in this book, only rectos):
+    leaf 1 is the bare letter, leaves 2..n/2 the letter plus ii, iii, iiii."""
+    for letter, first, leaves in MEASURED_QUIRES:
+        if first <= seq < first + leaves * 2:
+            if letter is None or (seq - first) % 2:       # unsigned quire, or a verso
+                return None
+            leaf = (seq - first) // 2 + 1
+            if leaf > leaves // 2:
+                return None
+            return letter if leaf == 1 else f"{letter} {'i' * leaf}"
+    return None
+
+
+def check_quires():
+    """Regression check, run on every seed. Ticket bug-concordance-signature-quire-model.
+
+    The acceptance criterion, asserted: for every scan whose printed signature has been
+    read, MEASURED_QUIRES agrees with it; and the gatherings tile the book without gap
+    or overlap. If this fires, open a scan and read the foot of the page — do not edit
+    the table to make the assertion pass."""
+    bad = []
+    for seq, sig in sorted(SIGNATURES_READ.items()):
+        got = _signature_at(seq)
+        if got != sig:
+            bad.append(f"  page_seq {seq}: scan is signed {sig!r}, table says {got!r}")
+    for seq in UNSIGNED_READ:
+        got = _signature_at(seq)
+        if got is not None:
+            bad.append(f"  page_seq {seq}: scan carries no signature, table says {got!r}")
+    for (l1, a1, n1), (l2, a2, _) in zip(MEASURED_QUIRES, MEASURED_QUIRES[1:]):
+        if a1 + n1 * 2 != a2:
+            bad.append(f"  quires do not tile: {l1} opens at {a1} with {n1} leaves, "
+                       f"then {l2} at {a2}")
+    leaves = sum(n for _, _, n in MEASURED_QUIRES)
+    if leaves != 234:
+        bad.append(f"  collation is {leaves} leaves; the 1499 Hypnerotomachia has 234")
+    if bad:
+        raise SystemExit("coverage_seed: quire regression:\n" + "\n".join(bad))
+    return len(SIGNATURES_READ), leaves
+
+
+def quires():
+    """The collation, in both numberings, for the ledger."""
+    k, out = PAGE_SEQ_TO_TRANSLATION, []
+    for letter, first, leaves in MEASURED_QUIRES:
+        last = first + leaves * 2 - 1
+        out.append({
+            "signature": letter or "(unsigned preliminaries)",
+            "leaves": leaves,
+            "pages_1499": [first, last],
+            "pages_translation": [first + k, last + k],
+            "signature_read_on_scan": sorted(
+                f"page_seq {s} = {v!r}" for s, v in SIGNATURES_READ.items()
+                if first <= s <= last) or None,
+        })
+    return out
 
 
 # ── The narrative sections, measured ─────────────────────────────────────────
@@ -424,6 +808,8 @@ def main():
     by_ch, unplaced = plates(pages)
     checked = check_plates(by_ch)          # raises if the page mapping has re-broken
     plates_in_sections, n_sections = check_sections()   # raises if a plate left its section
+    n_near, n_unresolved = check_page_checked(by_ch, unplaced)  # raises if one is unlooked-at
+    sigs_read, n_leaves = check_quires()   # raises if the collation stops matching a scan
     ev = build_evidence()
 
     old = {}
@@ -501,6 +887,39 @@ def main():
                               f"narrative_section, and the {n_sections} sections asserted to "
                               f"tile page_seq 1-{LAST_PAGE_SEQ} without gap or overlap, on "
                               f"every seed (check_sections() in scripts/coverage_seed.py)",
+            "page_checked_check": f"{n_near} plates resolve within 3 pages of a chapter "
+                                  f"boundary; every one of them has had its scan opened, and "
+                                  f"check_page_checked() asserts that on every seed. "
+                                  f"{n_unresolved} of them carry page_unresolved: the "
+                                  f"catalogued page was opened and found to carry something "
+                                  f"else, and the plate's true page has not been seen, so it "
+                                  f"is left where the catalogue put it rather than guessed at. "
+                                  f"Ticket bug-woodcut-catalog-page-jitter.",
+            "dallington": "Chapters I-XVI also survive in Robert Dallington's 1592 English "
+                          "(public domain), and some sources in this ledger cite him. HIS "
+                          "PAGE NUMBERS ARE NOT THE 1499's: his 279 e-text pages abridge the "
+                          "1499's 467, so he falls behind by about 20 pages at his p.80 and "
+                          "about 60 at his p.250, with no constant that repairs it. He also "
+                          "runs FURTHER than this project long believed — past the Four "
+                          "Seasons altar to a formal FINIS at the end of chapter XVIII (1499 "
+                          "p.241) — but only by skipping 1499 pp.194-237 outright. Confirm "
+                          "any 'Dallington p. N' against the header of "
+                          "translation/en/page_NNN.md before citing it. Ticket "
+                          "bug-dallington-page-drift.",
+            "quires_caveat": "quires_1499 is MEASURED — read off the signatures printed at "
+                             "the foot of seventeen scans. hp.db.page_concordance's "
+                             "signature / quire / leaf_in_quire columns are a uniform "
+                             "reconstruction that omits the u gathering, stops nine pages "
+                             "short of the book, and mis-places quires on both sides of that "
+                             "gap; THEY ARE NOT TO BE USED FOR ANYTHING. Note that page_seq 1 "
+                             "is a2r, not a1r: quire a opens on our p.9, the last preliminary "
+                             "leaf. Never derive a page from a signature or 'correct' a plate "
+                             "page by a leaf — open the scan. Ticket "
+                             "bug-concordance-signature-quire-model.",
+            "quires_check": f"{sigs_read} signatures read off scans asserted against the "
+                            f"table, four scans asserted to be unsigned, and the gatherings "
+                            f"asserted to tile the book at {n_leaves} leaves, on every seed "
+                            f"(check_quires() in scripts/coverage_seed.py)",
         },
         "modes": ["walk", "dream", "tour", "flight", "vaults"],
         "feature_kinds": ["place", "building", "rite", "object", "creature", "inscription",
@@ -513,6 +932,7 @@ def main():
             "unknown": "nobody has checked",
         },
         "sections_1499": sections(),
+        "quires_1499": quires(),
         "build_evidence": ev,
         "plates_not_attached_to_a_chapter": unplaced,
         "chapters": chapters,

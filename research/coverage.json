@@ -21,7 +21,11 @@
     "caveat": "woodcut_catalog.page_seq is itself only good to about +/-2 pages (LLM_ASSISTED subject-matching; see its link_basis column), so a plate sitting within a page or two of a chapter boundary may still be on the wrong side of it. Plates carrying page_checked have been seen on the scan; the rest have not.",
     "regression_check": "16 plate->chapter pairs asserted on every seed (check_plates() in scripts/coverage_seed.py)",
     "sections_caveat": "sections_1499 is MEASURED — read from the text of our translation, boundary by boundary, on 2026-09-20, and no longer taken from hp.db.page_concordance.section, whose boundaries ran progressively early (BOOK_II_POLIA marked at 271 when Book II opens at 371) and were never derived from the collation at all. Every boundary carries the line that fixes it in boundary_measured_at. Two things it still cannot tell you: the episodes interleave (the great gate is sighted at page_seq 21, then the ruins woodcuts run to 31, then the gate resumes), and at two seams the boundary is set a page or two off the narrative turn to keep each section's own plates inside it. To place a CHAPTER still use chapters[].pages_1499. Ticket bug-concordance-section-drift.",
-    "sections_check": "168 plates asserted inside their own narrative_section, and the 13 sections asserted to tile page_seq 1-457 without gap or overlap, on every seed (check_sections() in scripts/coverage_seed.py)"
+    "sections_check": "168 plates asserted inside their own narrative_section, and the 13 sections asserted to tile page_seq 1-457 without gap or overlap, on every seed (check_sections() in scripts/coverage_seed.py)",
+    "page_checked_check": "63 plates resolve within 3 pages of a chapter boundary; every one of them has had its scan opened, and check_page_checked() asserts that on every seed. 10 of them carry page_unresolved: the catalogued page was opened and found to carry something else, and the plate's true page has not been seen, so it is left where the catalogue put it rather than guessed at. Ticket bug-woodcut-catalog-page-jitter.",
+    "dallington": "Chapters I-XVI also survive in Robert Dallington's 1592 English (public domain), and some sources in this ledger cite him. HIS PAGE NUMBERS ARE NOT THE 1499's: his 279 e-text pages abridge the 1499's 467, so he falls behind by about 20 pages at his p.80 and about 60 at his p.250, with no constant that repairs it. He also runs FURTHER than this project long believed — past the Four Seasons altar to a formal FINIS at the end of chapter XVIII (1499 p.241) — but only by skipping 1499 pp.194-237 outright. Confirm any 'Dallington p. N' against the header of translation/en/page_NNN.md before citing it. Ticket bug-dallington-page-drift.",
+    "quires_caveat": "quires_1499 is MEASURED — read off the signatures printed at the foot of seventeen scans. hp.db.page_concordance's signature / quire / leaf_in_quire columns are a uniform reconstruction that omits the u gathering, stops nine pages short of the book, and mis-places quires on both sides of that gap; THEY ARE NOT TO BE USED FOR ANYTHING. Note that page_seq 1 is a2r, not a1r: quire a opens on our p.9, the last preliminary leaf. Never derive a page from a signature or 'correct' a plate page by a leaf — open the scan. Ticket bug-concordance-signature-quire-model.",
+    "quires_check": "17 signatures read off scans asserted against the table, four scans asserted to be unsigned, and the gatherings asserted to tile the book at 234 leaves, on every seed (check_quires() in scripts/coverage_seed.py)"
   },
   "modes": [
     "walk",
@@ -222,6 +226,430 @@
       "note": "Ends at page_seq 457, our p.467, the errata leaf and the Aldine colophon. page_concordance stops at 448 — it is nine pages short of the book."
     }
   ],
+  "quires_1499": [
+    {
+      "signature": "(unsigned preliminaries)",
+      "leaves": 4,
+      "pages_1499": [
+        -9,
+        -2
+      ],
+      "pages_translation": [
+        1,
+        8
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "a",
+      "leaves": 8,
+      "pages_1499": [
+        -1,
+        14
+      ],
+      "pages_translation": [
+        9,
+        24
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "b",
+      "leaves": 8,
+      "pages_1499": [
+        15,
+        30
+      ],
+      "pages_translation": [
+        25,
+        40
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "c",
+      "leaves": 8,
+      "pages_1499": [
+        31,
+        46
+      ],
+      "pages_translation": [
+        41,
+        56
+      ],
+      "signature_read_on_scan": [
+        "page_seq 31 = 'c'"
+      ]
+    },
+    {
+      "signature": "d",
+      "leaves": 8,
+      "pages_1499": [
+        47,
+        62
+      ],
+      "pages_translation": [
+        57,
+        72
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "e",
+      "leaves": 8,
+      "pages_1499": [
+        63,
+        78
+      ],
+      "pages_translation": [
+        73,
+        88
+      ],
+      "signature_read_on_scan": [
+        "page_seq 63 = 'e'"
+      ]
+    },
+    {
+      "signature": "f",
+      "leaves": 8,
+      "pages_1499": [
+        79,
+        94
+      ],
+      "pages_translation": [
+        89,
+        104
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "g",
+      "leaves": 8,
+      "pages_1499": [
+        95,
+        110
+      ],
+      "pages_translation": [
+        105,
+        120
+      ],
+      "signature_read_on_scan": [
+        "page_seq 95 = 'g'"
+      ]
+    },
+    {
+      "signature": "h",
+      "leaves": 8,
+      "pages_1499": [
+        111,
+        126
+      ],
+      "pages_translation": [
+        121,
+        136
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "i",
+      "leaves": 8,
+      "pages_1499": [
+        127,
+        142
+      ],
+      "pages_translation": [
+        137,
+        152
+      ],
+      "signature_read_on_scan": [
+        "page_seq 127 = 'i'",
+        "page_seq 129 = 'i ii'"
+      ]
+    },
+    {
+      "signature": "k",
+      "leaves": 8,
+      "pages_1499": [
+        143,
+        158
+      ],
+      "pages_translation": [
+        153,
+        168
+      ],
+      "signature_read_on_scan": [
+        "page_seq 149 = 'k iiii'"
+      ]
+    },
+    {
+      "signature": "l",
+      "leaves": 8,
+      "pages_1499": [
+        159,
+        174
+      ],
+      "pages_translation": [
+        169,
+        184
+      ],
+      "signature_read_on_scan": [
+        "page_seq 165 = 'l iiii'"
+      ]
+    },
+    {
+      "signature": "m",
+      "leaves": 8,
+      "pages_1499": [
+        175,
+        190
+      ],
+      "pages_translation": [
+        185,
+        200
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "n",
+      "leaves": 8,
+      "pages_1499": [
+        191,
+        206
+      ],
+      "pages_translation": [
+        201,
+        216
+      ],
+      "signature_read_on_scan": [
+        "page_seq 195 = 'n iii'"
+      ]
+    },
+    {
+      "signature": "o",
+      "leaves": 8,
+      "pages_1499": [
+        207,
+        222
+      ],
+      "pages_translation": [
+        217,
+        232
+      ],
+      "signature_read_on_scan": [
+        "page_seq 213 = 'o iiii'"
+      ]
+    },
+    {
+      "signature": "p",
+      "leaves": 8,
+      "pages_1499": [
+        223,
+        238
+      ],
+      "pages_translation": [
+        233,
+        248
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "q",
+      "leaves": 8,
+      "pages_1499": [
+        239,
+        254
+      ],
+      "pages_translation": [
+        249,
+        264
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "r",
+      "leaves": 8,
+      "pages_1499": [
+        255,
+        270
+      ],
+      "pages_translation": [
+        265,
+        280
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "s",
+      "leaves": 8,
+      "pages_1499": [
+        271,
+        286
+      ],
+      "pages_translation": [
+        281,
+        296
+      ],
+      "signature_read_on_scan": [
+        "page_seq 275 = 's iii'"
+      ]
+    },
+    {
+      "signature": "t",
+      "leaves": 8,
+      "pages_1499": [
+        287,
+        302
+      ],
+      "pages_translation": [
+        297,
+        312
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "u",
+      "leaves": 8,
+      "pages_1499": [
+        303,
+        318
+      ],
+      "pages_translation": [
+        313,
+        328
+      ],
+      "signature_read_on_scan": [
+        "page_seq 307 = 'u iii'"
+      ]
+    },
+    {
+      "signature": "x",
+      "leaves": 8,
+      "pages_1499": [
+        319,
+        334
+      ],
+      "pages_translation": [
+        329,
+        344
+      ],
+      "signature_read_on_scan": [
+        "page_seq 319 = 'x'"
+      ]
+    },
+    {
+      "signature": "y",
+      "leaves": 8,
+      "pages_1499": [
+        335,
+        350
+      ],
+      "pages_translation": [
+        345,
+        360
+      ],
+      "signature_read_on_scan": [
+        "page_seq 337 = 'y ii'"
+      ]
+    },
+    {
+      "signature": "z",
+      "leaves": 10,
+      "pages_1499": [
+        351,
+        370
+      ],
+      "pages_translation": [
+        361,
+        380
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "A",
+      "leaves": 8,
+      "pages_1499": [
+        371,
+        386
+      ],
+      "pages_translation": [
+        381,
+        396
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "B",
+      "leaves": 8,
+      "pages_1499": [
+        387,
+        402
+      ],
+      "pages_translation": [
+        397,
+        412
+      ],
+      "signature_read_on_scan": [
+        "page_seq 387 = 'B'",
+        "page_seq 389 = 'B ii'"
+      ]
+    },
+    {
+      "signature": "C",
+      "leaves": 8,
+      "pages_1499": [
+        403,
+        418
+      ],
+      "pages_translation": [
+        413,
+        428
+      ],
+      "signature_read_on_scan": null
+    },
+    {
+      "signature": "D",
+      "leaves": 8,
+      "pages_1499": [
+        419,
+        434
+      ],
+      "pages_translation": [
+        429,
+        444
+      ],
+      "signature_read_on_scan": [
+        "page_seq 419 = 'D'"
+      ]
+    },
+    {
+      "signature": "E",
+      "leaves": 8,
+      "pages_1499": [
+        435,
+        450
+      ],
+      "pages_translation": [
+        445,
+        460
+      ],
+      "signature_read_on_scan": [
+        "page_seq 435 = 'E'"
+      ]
+    },
+    {
+      "signature": "F",
+      "leaves": 4,
+      "pages_1499": [
+        451,
+        458
+      ],
+      "pages_translation": [
+        461,
+        468
+      ],
+      "signature_read_on_scan": null
+    }
+  ],
   "build_evidence": {
     "plates_cited_in_source": [
       18,
@@ -300,9 +728,10 @@
         15
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
@@ -310,6 +739,7 @@
           "description": "Poliphilus entering the dark forest",
           "page_1499": 4,
           "page_translation": 14,
+          "near_chapter_boundary": 1,
           "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p4   'peruenuto nella uastissima Hercynia silua' = our p.14 (ch. I)"
         }
       ],
@@ -450,16 +880,19 @@
         19
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 2,
           "description": "Poliphilus kneeling by a rivulet",
           "page_1499": 8,
-          "page_translation": 18
+          "page_translation": 18,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p8   Poliphilo kneeling to drink at the rivulet among the trees; 'Hora quale animale che per la dolce esca, lo occulto dolo non perpende' = our p.18 (ch. II)"
         }
       ],
       "plates_from": "page-range",
@@ -586,28 +1019,35 @@
         29
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 3,
           "description": "Poliphilus sleeping under a tree (dream within dream)",
           "page_1499": 10,
-          "page_translation": 20
+          "page_translation": 20,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p10  Poliphilo asleep under the tree, above the capitalised argument 'POLIPHILO QVIVI NARRA, CHE GLI PARVE ANCORA DI DORMIRE' = our p.20 (ch. III)"
         },
         {
           "plate": 4,
           "description": "Poliphilus among classical ruins with wolf",
           "page_1499": 11,
-          "page_translation": 21
+          "page_translation": 21,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p11  the palm grove with the wolf at the right, the fallen colossal head and the overturned vessel; 'Ecco che uno affermato & carniuoro lupo alla parte dextra, cum la bucca piena mi apparue' = our p.21 (ch. III)"
         },
         {
           "plate": 5,
           "description": "The great pyramidic temple with obelisk",
           "page_1499": 16,
-          "page_translation": 26
+          "page_translation": 26,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p16  the full-page stepped pyramid with the obelisk and the winged Fortuna; no body text, catchword 'Ritorniamo' = our p.26 (ch. III)"
         }
       ],
       "plates_from": "page-range",
@@ -877,28 +1317,35 @@
         46
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 6,
           "description": "Colossal bronze horse on pedestal with genii",
           "page_1499": 22,
-          "page_translation": 32
+          "page_translation": 32,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p22  the winged horse with the boys clambering on it; 'Sopra di q̃sta piacia ... uidi uno p̃digioso caballo & aligero Desultore' = our p.32 (ch. IV)"
         },
         {
           "plate": 7,
           "description": "Pedestal end: garland of marjoram and ferns (D.AMBIG.D.D.)",
           "page_1499": 23,
-          "page_translation": 33
+          "page_translation": 33,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p23  left pedestal end, the garland with 'D· AMBIG ·D·D'; 'Nella superficie dil basamento era infixo plumbiculatamete una plastra' = our p.33 (ch. IV)"
         },
         {
           "plate": 8,
           "description": "Pedestal end: garland of orpine (Equus infalicitatis)",
           "page_1499": 23,
-          "page_translation": 33
+          "page_translation": 33,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p23  right pedestal end on the same page, 'EQVVS INFOELICITATIS' in its garland"
         },
         {
           "plate": 9,
@@ -1078,16 +1525,20 @@
         57
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 16,
           "description": "Ancient gate with medallion busts",
-          "page_1499": 38,
-          "page_translation": 48
+          "page_1499": 45,
+          "page_translation": 55,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 38,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -1208,9 +1659,10 @@
         67
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
@@ -1333,16 +1785,19 @@
         78
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 18,
           "description": "Emblematic devices (PATIENTIA / Anchor-Dolphin)",
           "page_1499": 59,
-          "page_translation": 69
+          "page_translation": 69,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p59  the hieroglyph band under 'PATIENTIA EST ORNAMENTVM CVSTODIA ET PROTECTIO VITAE', and below it the circle, anchor and dolphin with 'ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ · Semp festina tarde' = our p.69 (ch. VII)"
         },
         {
           "plate": 19,
@@ -1354,7 +1809,9 @@
           "plate": 20,
           "description": "Poliphilus meeting five nymphs",
           "page_1499": 66,
-          "page_translation": 76
+          "page_translation": 76,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p66  Poliphilo meeting the five nymphs with their vessels; 'Elle dunque di me animaduertendo alhora, il Nympheo grado affermando steteron' = our p.76 (ch. VII)"
         }
       ],
       "plates_from": "page-range",
@@ -1425,16 +1882,19 @@
         93
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 21,
           "description": "Weather-cock with genius blowing trumpet",
           "page_1499": 71,
-          "page_translation": 81
+          "page_translation": 81,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p71  the winged putto on the ball blowing the trumpet; 'cosa enea tenuissima cõflata perfectamẽte ... Laquale Ala, & la Pila, & el Puello' = our p.81 (ch. VIII)"
         },
         {
           "plate": 22,
@@ -1446,7 +1906,9 @@
           "plate": 23,
           "description": "Third fountain with Graces, harpies, griffins",
           "page_1499": 80,
-          "page_translation": 90
+          "page_translation": 90,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p80  the full-page third fountain (the three nude figures, the griffin-heads, the winged sphinxes); no body text, catchword 'no sci' = our p.90, one of the four pages our translation holds no file for (ch. VIII)"
         }
       ],
       "plates_from": "page-range",
@@ -1599,16 +2061,19 @@
         116
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 24,
           "description": "Frieze ornament with genii, dolphins, bull skull",
-          "page_1499": 84,
-          "page_translation": 94
+          "page_1499": 87,
+          "page_translation": 97,
+          "page_corrected_from": 84,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 25,
@@ -1656,7 +2121,9 @@
           "plate": 32,
           "description": "Magnificent vessel with gold shrub, twice nymph height",
           "page_1499": 105,
-          "page_translation": 115
+          "page_translation": 115,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p105 the wheeled vessel crowned with the golden fruit-tree, drawn by a nymph; 'Ilquale stylo fermamente infixo uno conspicuo uaso di Topacio susteniua' = our p.115 (ch. IX)"
         }
       ],
       "plates_from": "page-range",
@@ -1811,9 +2278,10 @@
         140
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
@@ -1856,19 +2324,25 @@
           "plate": 39,
           "description": "Poliphilus receives crown and palm-branch on sword",
           "page_1499": 127,
-          "page_translation": 137
+          "page_translation": 137,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p127 the matron Euclelia with the raised sword bearing the golden crown and palm; 'Ecco sencia præstolatiõe fue patefacta, & ĩtromessi, Se fece ad nui una Matrona chrysaora cum gli ochii atroci' = our p.137. Signature 'i' (ch. X)"
         },
         {
           "plate": 40,
           "description": "Poliphilus among nymphs; flight of Logistica",
           "page_1499": 129,
-          "page_translation": 139
+          "page_translation": 139,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p129 Logistica fleeing through the arch having broken her lyre, Poliphilo among the nymphs; 'proiecta la lyra ad terra la rumpete' = our p.139. Signature 'i ii' (ch. X)"
         },
         {
           "plate": 41,
           "description": "Poliphilus embraced by the nymph",
           "page_1499": 130,
-          "page_translation": 140
+          "page_translation": 140,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p130 Poliphilo embraced by the nymphs among the trees; 'Et recluse le metalline ualue, rimansi claustrato immediate tra quelle egregie Nymphe' = our p.140 (ch. X)"
         }
       ],
       "plates_from": "page-range",
@@ -2101,16 +2575,19 @@
         146
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 42,
           "description": "Poliphilus looking through bower as Polia approaches",
           "page_1499": 132,
-          "page_translation": 142
+          "page_translation": 142,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p132 the flowering pergola with Poliphilo, the nymph approaching with her torch; 'Et ecco una come insigne & festiua Nympha dindi cum la sua ardente facola in mano' = our p.142 (ch. XI)"
         }
       ],
       "plates_from": "page-range",
@@ -2290,16 +2767,19 @@
         152
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 43,
           "description": "Poliphilus and Polia retreating from bower",
           "page_1499": 139,
-          "page_translation": 149
+          "page_translation": 149,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p139 Poliphilo and the torch-bearing nymph together before the arbour; 'Et postala nella sua, strengerla sentiua tra calda neue' = our p.149 (ch. XII)"
         }
       ],
       "plates_from": "page-range",
@@ -2507,9 +2987,10 @@
         157
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -2610,40 +3091,51 @@
         176
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
         {
           "plate": 44,
           "description": "Triumphal car with Europa reliefs",
           "page_1499": 149,
-          "page_translation": 159
+          "page_translation": 159,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p149 upper block, 'PRIMA TABELLA' — the triumphal car with the bull relief; signature 'k iiii' at the foot = our p.159 (ch. XIV)"
         },
         {
           "plate": 45,
           "description": "Relief: Rape of Europa",
           "page_1499": 149,
-          "page_translation": 159
+          "page_translation": 159,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p149 lower block on the same page, 'SECVNDA SINISTRA' — Europa borne over the sea on the bull"
         },
         {
           "plate": 46,
           "description": "Reliefs: Cupid shooting stars; Jupiter and Mars",
           "page_1499": 150,
-          "page_translation": 160
+          "page_translation": 160,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p150 'PARS ANTERIOR ET POSTERIOR TRIVMPHI' — Cupid shooting stars, and Mars before Jove's throne with the NEMO scroll = our p.160 (ch. XIV)"
         },
         {
           "plate": 47,
           "description": "First Triumph of Europa: centaurs, nymphs, musicians (left)",
-          "page_1499": 151,
-          "page_translation": 161
+          "page_1499": 152,
+          "page_translation": 162,
+          "page_corrected_from": 151,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 48,
           "description": "First Triumph of Europa (right continuation)",
-          "page_1499": 151,
-          "page_translation": 161
+          "page_1499": 153,
+          "page_translation": 163,
+          "page_corrected_from": 151,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 49,
@@ -2732,26 +3224,29 @@
         {
           "plate": 63,
           "description": "Vintage scene with genii and young Bacchus",
-          "page_1499": 164,
-          "page_translation": 174
+          "page_1499": 165,
+          "page_translation": 175,
+          "near_chapter_boundary": 1,
+          "page_corrected_from": 164,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 64,
           "description": "Fourth Triumph: Festival of Bacchus, panthers (left)",
-          "page_1499": 165,
-          "page_translation": 175
-        },
-        {
-          "plate": 65,
-          "description": "Festival of Bacchus with Silenus on ass (right)",
-          "page_1499": 165,
-          "page_translation": 175
+          "page_1499": 166,
+          "page_translation": 176,
+          "near_chapter_boundary": 0,
+          "page_corrected_from": 165,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 66,
           "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
           "page_1499": 166,
-          "page_translation": 176
+          "page_translation": 176,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p166 opened: it carries the LEFT half of the fourth (Bacchic) triumph, not Vertumnus and Pomona. Our translation puts the triumph of Vertumnus and Pomona on pp.190-191 = page_seq 180-181, and scan p180 is unbroken text ('per el uirente, & florido plano ... tra laltissimo Cyparisso'), so the plate is on page_seq 181 or thereabouts — and the corpus folder holds no scan of 181-184. True page not seen.",
+          "page_unresolved": true
         }
       ],
       "plates_from": "page-range",
@@ -3131,34 +3626,56 @@
         180
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [
+        {
+          "plate": 65,
+          "description": "Festival of Bacchus with Silenus on ass (right)",
+          "page_1499": 167,
+          "page_translation": 177,
+          "near_chapter_boundary": 0,
+          "page_corrected_from": 165,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
         {
           "plate": 67,
           "description": "Four Seasons relief: Spring (Venus and Cupid)",
           "page_1499": 167,
-          "page_translation": 177
+          "page_translation": 177,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p167 opened: it carries the RIGHT half of the fourth (Bacchic) triumph and, beneath it, the capitalised argument of chapter XV — no Seasons relief. Our translation carries the four Seasons of the square altar on pp.192-193 = page_seq 182-183; the corpus folder holds no scan of 181-184. True page not seen.",
+          "page_unresolved": true
         },
         {
           "plate": 68,
           "description": "Four Seasons: Summer (Ceres with boy)",
           "page_1499": 167,
-          "page_translation": 177
+          "page_translation": 177,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — as #67: the Summer relief (FLAVAE MESSI · S., our p.193) is not on scan p167.",
+          "page_unresolved": true
         },
         {
           "plate": 69,
           "description": "Four Seasons: Autumn (Wine God with ram)",
           "page_1499": 167,
-          "page_translation": 177
+          "page_translation": 177,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — as #67: the Autumn relief (MUSTULENTO AUTUMNO · S., our p.193) is not on scan p167.",
+          "page_unresolved": true
         },
         {
           "plate": 70,
           "description": "Four Seasons: Winter (Jupiter Pluvius)",
           "page_1499": 167,
-          "page_translation": 177
+          "page_translation": 177,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — as #67: the Winter relief (HYEMI AEOLIAE · S., our p.193) is not on scan p167.",
+          "page_unresolved": true
         }
       ],
       "plates_from": "page-range",
@@ -3171,152 +3688,174 @@
       ],
       "research": {
         "status": "enumerated",
-        "enumerated_by": "hp-researcher",
-        "date": "2026-09-17",
-        "note": "Read Dallington 1592 (corpus md/Hypnerotomachia_by_Francesco_Colonna.md) end to end across the whole plausible span of this chapter, lines ~10259-11127 (the file's own <!-- Page 241 --> through <!-- Page 260 --> HTML page-markers, which is the numbering this ledger's existing 'Dallington pp. N' citations already use -- confirmed by cross-checking known citations, e.g. chapter V's 'vaults-maze' at 'Dallington pp. 82-84' lands exactly on the vaults scene at marker 82). No woodcuts fall inside coverage.json's own pages_1499=[177,180] window (nearest plates are #70 at 1499 p.167 and #71 at p.185) -- confirmed, this chapter is plate-free as billed.\n\nIMPORTANT BOUNDARY PROBLEM, flagged rather than silently resolved: coverage.json's pages_1499=[177,180] disagrees with this project's own tours.json, which tags the 'Vertumnus and Pomona' stop (the triumph, its rustic company, and the Four Seasons altar -- woodcuts #66 and #67-70, at 1499 folios 166-167) as chapter XV. Folios 166-167 fall inside coverage.json's own range for chapter XIV ([158,176]), not XV. I read the WIDER span anyway (from the close of the four-Jupiter-triumphs sequence through Dallington's literal FINIS) and enumerate everything in it, because: (a) the existing tour_stops entry on this very ledger record already carries 'Vertumnus and Pomona' under XV, so an XV entry with nothing for it would contradict the ledger's own derived field; (b) 'err toward including'; (c) whoever reconciles XIV/XV boundaries needs the full inventory in one place, not split by a guess. Features 1-6 below are the material that may actually belong to XIV -- flagged per-feature. Features 7-8 (the seaside temple and the blazon of the Nymph/Polia) are the only content that unambiguously falls after 1499 p.176 and before Dallington's stopping point, so THOSE are chapter XV under any reading.\n\nSECOND FINDING, larger than mine to fix: tours.json's 'priapus' stop (chapter XVI) states as established fact that 'on facsimile page 193, in the middle of a sentence, at the word Mustulento, Robert Dallington's 1592 English stops.' It does not. I read past 'Mustulento Autumno S.' (the Autumn altar-panel's own dedication -- the word is not a fragment, it is the end of a complete Latin tag) and the corpus md file continues for roughly 200 more lines: the Winter altar-panel, the walk to an old ruined temple by the sea, and an extended blazon of the Nymph's body and dress, ending in an explicit 'FINIS.' at real printed-book page 100 (recto-only numbering; the facsimile's own collation note reads 'A-Z4, Aa-Cc4', and the signature marks I actually saw in sequence -- Y2, Z, Bb, Bb2, Cc, Cc2 -- confirm the text runs to the last gathering, not stopping mid-Z). This is the same Bodleian facsimile (STC 5577) SOURCES.md and tours.json cite for the 'stops at p.193' claim, so either that claim is simply wrong, or it describes a different, incomplete exemplar than the one this corpus's md file was OCR'd from. I have not resolved which; I flag it because it means real, usable, non-Godwin Dallington English exists for the seaside-temple scene and the blazon of Polia (features 7-8), and probably bears on how chapter XVI's researcher should scope their own read -- 'Mustulento' is not where the trail goes cold.\n\nMeasurements: one true physical dimension in the whole chapter (the hedge height), logged below. Several bare counts appear (four satyrs draw the car, three matrons govern the virgins, four altar panels) but none converts to a distance, so per the instructions only the hedge is logged as a measurement."
+        "enumerated_by": "hp-researcher, 2026-09-20 (bug-dallington-page-drift)",
+        "date": "2026-09-20",
+        "note": "RE-ENUMERATED FROM SCRATCH, and the previous ten features re-filed rather than deleted. All ten were sourced to Dallington e-text pages 242-260 read as though they were 1499 folios; they are 1499 pp.182-241, which is chapters XVI, XVII and XVIII. Nothing that stood here described 1499 pp.177-180. Where they went: xvi-bathing-nymphs-river and xvi-lovers-grove-games (Dall. 242-248 = 1499 182-186) to chapter XVI, beside the entries that read the same passage from our translation; xvii-vertumnus-pomona-triumph, xvii-orchard-hedge-garden, xvii-hamadryad-satyr-company, xvii-vertumnus-trophy-inscription, xvii-seasons-altar and xvii-seasons-altar-inscriptions (Dall. 251-256 = 1499 189-194) to chapter XVII; xviii-seaside-ruined-temple and xviii-polia-blazon-costume (Dall. 256-260 = 1499 238-241) to chapter XVIII. Each kept its body verbatim — the build research in those notes was sound, only the chapter was wrong. This chapter is now read in our own CC0 translation pp.177-180, whose argument names what is actually in it: the multitude of young lovers, the divine amorous girls and who loved them, and the choirs of the divine poets singing. Twelve features, none verified built."
       },
       "features": [
         {
-          "id": "xv-bathing-nymphs-river",
-          "name": "The river of bathing nymphs and tame swans",
+          "id": "xv-elysian-flower-meadow",
+          "name": "The unshaded flowery field of the blessed",
           "kind": "place",
           "plate": null,
-          "source": "Dallington pp. 242-244",
+          "source": "our translation (CC0), translation/en/page_178.md (1499 p. 178)",
           "status": "unbuilt",
           "built_as": null,
           "modes": [
             "walk",
-            "tour",
-            "dream"
-          ],
-          "note": "A clear stream with graveled and soft yellow-sand banks, winding through wooded low hills, where young nymphs and their beardless lovers wade and swim, lifting their silk garments to the thigh, watching their own reflections, swimming beside tame swans, splashing water at one another, weaving garlands on the banks and giving them to their lovers with kisses. No trace in src/scenes/ (grepped for 'bathing nymph', 'swans'); not to be confused with the built Venus-temple swan sacrifice (temple.js) or the Book II stag/swan chariots (tombs.js), which are unrelated later scenes."
-        },
-        {
-          "id": "xv-lovers-grove-games",
-          "name": "The grove of courting nymphs and youths, under named trees",
-          "kind": "place",
-          "plate": null,
-          "source": "Dallington pp. 244-248",
-          "status": "unbuilt",
-          "built_as": null,
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "Flirtation set-pieces under the 'weeping sister of whited Phaeton' (poplar/Heliades), 'immortal Daphne' (laurel), pine, cypress, orange and cedar: singing love-songs, mock-fleeing and chasing with laughter, throwing flowers in pursuers' faces, giving rose-leaf kisses, play-slapping cheeks red 'like the wheels of Phoebus'. Distinct scene from the river (previous feature), same general meadow. No trace in src/scenes/."
-        },
-        {
-          "id": "xv-vertumnus-pomona-triumph",
-          "name": "The triumph of Vertumnus and Pomona",
-          "kind": "rite",
-          "plate": 66,
-          "source": "Dallington pp. 251-255 (woodcut #66, folio 166 -- inside coverage.json's own XIV range [158,176], flagged in research.note)",
-          "status": "unknown",
-          "built_as": "src/scenes/world/triumphs.js _buildTriumphs (TRIUMPHS.vertumnus, onFoot: true, team: 'satyr'); src/scenes/world/constants.js TRIUMPH_RELIEFS.vertumnus",
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "Grep of src/ shows a full implementation: Vertumnus (garland of roses, lap full of flowers) and Pomona (crowned with fruit, flaxen hair, cornucopia in each hand) walking on foot with satyrs and nymphs either side rather than drawn by beasts, exactly matching the plate's silence on a draught animal. Not verified on the live page this session -- do not promote to 'built' without loading it. Missing even if the code is live: the ancient four-wheeled cart itself (the book seats Vertumnus and Pomona IN a chariot drawn by four horned satyrs, not walking beside a car); the Clepsydra water-vessel at Pomona's feet; the two trophy-bearing nymphs walking before the car (see next feature)."
-        },
-        {
-          "id": "xv-orchard-hedge-garden",
-          "name": "The square hedged orchard where the triumph circles the altar",
-          "kind": "place",
-          "plate": null,
-          "source": "Dallington pp. 252-254",
-          "status": "unbuilt",
-          "built_as": null,
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "'A large square inclosure compassed about with broade walkes... a quick-set vpon either sides, in height one pace, of pricking iuniper thicke set togither, and mixt with box' -- a topiary hedge exactly one pace (1.48 m) tall bounding a square green mead, with palm trees in symmetrical rows bearing black, crimson and yellow fruit, interplanted with citrons, oranges, pomegranates and other fruit trees. Distinct from the (built) Cythera knot-garden hedges (cythera.js), which are a different chapter's garden. See measurements[0]."
-        },
-        {
-          "id": "xv-hamadryad-satyr-company",
-          "name": "The rustic company: fauns, satyrs, Hamadryades and Dryades in animal skins",
-          "kind": "creature",
-          "plate": null,
-          "source": "Dallington pp. 253-254",
-          "status": "partial",
-          "built_as": "triumphs.js generic satyr/nymph walkers (cast.props.satyr, cast.nymph) for TRIUMPHS.vertumnus.onFoot",
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "The book specifies the company's dress: 'basely apparrelled, some in fauns skins, painted with white spots, some in lynx skins... others in leopards', leaves bound over their nakedness, horned fauns and lascivious satyrs. The world's onFoot walkers use generic satyr/nymph liveries, not spotted animal-skin costuming."
-        },
-        {
-          "id": "xv-vertumnus-trophy-inscription",
-          "name": "The two trophy-nymphs before the car: an inscribed tablet and a bundle of rural tools",
-          "kind": "inscription",
-          "plate": null,
-          "source": "Dallington pp. 254-255",
-          "status": "unbuilt",
-          "built_as": null,
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "Two nymphs march before the chariot and its four draught satyrs. One bears a trophy with a hanging tablet reading (Latin, as printed): 'Integerrimam corporis valetudinem & stabile robur castasque mensarum delitias, & beatam animi securitatem cultoribus me offero.' A plain, non-Godwin literal rendering: 'I offer to my worshippers unblemished bodily health and steadfast strength, and the chaste delights of the table, and the soul's blessed security.' The other nymph bears a bundle of green sprigs with rural implements bound among them. Neither trophy exists in the code (grepped for 'Integerrimam', no match)."
-        },
-        {
-          "id": "xv-seasons-altar",
-          "name": "The four-sided marble altar (Chytropodus) the procession circles",
-          "kind": "object",
-          "plate": null,
-          "source": "Dallington pp. 255-256 (the four reliefs on it are woodcuts #67-70, folio 167 -- same XIV/XV boundary flag as the triumph above)",
-          "status": "partial",
-          "built_as": "constants.js TRIUMPH_RELIEFS.vertumnus (rendered as panels on the chariot itself, per the code comment 'the Seasons belong on their car')",
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "The book's altar is a FREE-STANDING square white marble stone in the middle of the mead ('a great square stone like an aulter... which the procession compasses about'), fed by fountain-streams, cut on its four faces by 'a cunning lapicidary'. The world instead paints the four seasons onto the triumph car's own panels ('the Seasons belong on their car' -- a deliberate simplification, not an oversight, per the comment at constants.js:292-294), so there is no separate altar object standing in the ground for the procession to circle. Recorded as partial rather than unbuilt because the iconography does exist, just relocated."
-        },
-        {
-          "id": "xv-seasons-altar-inscriptions",
-          "name": "The altar's four dedications and figures: Spring, Summer, Autumn, Winter",
-          "kind": "inscription",
-          "plate": null,
-          "source": "Dallington pp. 255-256",
-          "status": "unbuilt",
-          "built_as": null,
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "note": "Four panels, each a figure plus a Latin tag (given in the primary text, not Godwin): (1) a flower-girdled goddess casting roses into a censer ('Chytropodus'), a myrtle branch, a winged boy with bow beside her, two pigeons overhead -- 'Florido veri S.' ('sacred to flowering spring'). (2) A wheat-crowned maiden with a cornucopia of ripe grain, three ears of corn, a bound sheaf and a gleaning boy at her feet -- 'Flauae Messi S.' ('sacred to the golden harvest'). (3) A naked vine-crowned boy with grape clusters and a cornucopia of grapes, a shaggy goat at his feet -- 'Mustulento Autumno S.' ('sacred to must-sweet autumn' -- this is the word tours.json wrongly treats as where the translation stops, see research.note). (4) A stern, beast-skin-clad king with a scepter raised into a stormy, hail-filled sky -- 'Hiemi Aeoliae S.' ('sacred to Aeolian winter'). Code has only the English season words (VER/AESTAS/AVTVMNVS/HIEMS) and scene captions, not the Latin dedications or the attendant figures/animals (cupid+doves, gleaning boy, goat, storm)."
-        },
-        {
-          "id": "xv-seaside-ruined-temple",
-          "name": "The old decayed temple by the sea, where the two sit down",
-          "kind": "building",
-          "plate": null,
-          "source": "Dallington p. 256",
-          "status": "unbuilt",
-          "built_as": null,
-          "modes": [
-            "walk",
-            "tour",
-            "dream"
-          ],
-          "note": "'From thence the most faire and pleasant Nymph brought me towards the sea side and sandie shore, where we came to an olde decaied temple, before the which vpon the fresh and coole hearbs, vnder sweete shadie trees we sate downe and rested ourselues.' This is where Poliphilo begins the long blazon of the Nymph's body (next feature). No shoreline temple exists in src/scenes/ under any of 'decayed temple', 'ruined temple', 'seaside temple', 'shore temple' (grepped) -- the only other ruined temple in the world is the Polyandrion (tombs.js), a different building from an earlier chapter. Under coverage.json's pages_1499=[177,180], this is unambiguously chapter XV: it is the first scene after the Four Seasons altar (1499 p.~176) and well before the FINIS point."
-        },
-        {
-          "id": "xv-polia-blazon-costume",
-          "name": "The blazon of the Nymph's (Polia's) beauty and dress, at the ruined temple",
-          "kind": "person",
-          "plate": null,
-          "source": "Dallington pp. 257-260 (FINIS)",
-          "status": "unbuilt",
-          "built_as": null,
-          "modes": [
             "dream",
             "tour"
           ],
-          "note": "Poliphilo's extended gaze, sitting beside her: her forehead 'pampynulated with threds of gold', compared to the lodestone Heraclea; her feet in 'red leather cut vpon white, fastened vpon the instep with buttons of gold in loopes of blew silke'; her neck circled with a 'carkenet of orient pearle'; her breasts likened to the golden apples of the Hesperides and to Pomona's own fruit, the valley between them called 'the delicate sepulcher of my wounded hart exceeding the famous Mausolea' (a love/death, Eros/tomb figure worth flagging for the alchemical or neoplatonic commentary lens, not built out here). Poliphilo's inward monologue runs to the very edge of self-restraint before he checks himself; the passage ends 'FINIS.' -- the literal close of Dallington's translation as printed in this facsimile (see research.note on the Mustulento discrepancy). No shoe, hair-thread or necklace detail this specific appears in Cast.js (grepped for 'carkenet', 'pearl necklace', 'blue silk lace', 'gold button' -- no matches); the existing Polia figure is generic by comparison."
+          "note": "The ground the four triumphs go on circling, and a distinct place from the plain of ch. XIV: one level flowery meadow 'not hindered nor taken up by any growing shrub', which 'did not fear the burning invasions of Phoebus, since he does not run in this most pleasant place with his swiftest horses to the last west' — an eternally clear and unchanging day, the earth grass-bearing and fragrant with no season in it. Nothing in the world distinguishes this field from the ordinary meadow."
+        },
+        {
+          "id": "xv-blessed-field-flower-catalogue",
+          "name": "The named flowers of the blessed field",
+          "kind": "plant",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_178.md (1499 p. 178)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk"
+          ],
+          "note": "Named, and therefore plantable: the four kinds of violet, cowslip, melilot, anemone, cornflower, nigella, cyclamen, crowfoot, columbine, lily of the valley, amaranth, cassidony, spikenard, Celtic nard, ambrosia, wild mint, citron and clove basil, every kind of gillyflower, and the smallest hundred-leaved Persian rose-trees — 'without any human labour excellently distributed for beauty by excellent nature herself'. Cross-check against Rhizopoulou 2016 (sources/rhizopoulou/) before planting."
+        },
+        {
+          "id": "xv-mortal-girls-loved-by-gods",
+          "name": "The company of the girls the gods loved",
+          "kind": "person",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_178.md through page_179.md (1499 pp. 178-179)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The named company the nymph points out, each with her divine lover: Callisto of Arcadia with the unrecognised Diana, Antiope of Lesbos with the satyr, Issa with the dear shepherd, Antichia, Canace, Asteria, Alcmena 'gladly playing with her counterfeited husband', Aegina, Astyoche and Antigone 'solacing themselves delightfully with the flying feathers', Curisice who invented the four-horse car, the Garamantian nymph washing her feet on the bank of the Bagradas, Erigone with her lap of grapes, Melantho, Philyra with the father of Chiron, Ceres with the scaly serpent, Lara of the Tiber with the slayer of Argus, and Juturna. A roll-call the tour could speak even if the figures are never modelled."
+        },
+        {
+          "id": "xv-gods-disguised-as-beasts",
+          "name": "The gods among them in beast shape",
+          "kind": "creature",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_179.md (1499 p. 179)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk"
+          ],
+          "note": "The metamorphoses are staged as animals moving through the company, not as narration: 'a fleeing quail, and a hook-clawed eagle following', a strong bull, a shaggy and woolly ram, the scaly serpent, a swimming beast, and the swan's flying feathers. The world has birds and swans but no beast-lovers loose among figures."
+        },
+        {
+          "id": "xv-three-holy-matrons",
+          "name": "The three holy matrons before the young girls",
+          "kind": "person",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_179.md (1499 p. 179)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "'Then she showed me a venerable crowd of young girls. To whom three holy matrons stood before with divine bearing, going ahead of so great a delight.' Unnamed, and the text does not gloss them; they matter because of the rule of entry attached to them below."
+        },
+        {
+          "id": "xv-torch-rule-of-entry",
+          "name": "“No earth-born creature could enter here without a torch kindled”",
+          "kind": "rite",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_179.md (1499 p. 179)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "dream",
+            "tour"
+          ],
+          "note": "The law of this place, stated outright by the nymph: 'no earth-born creature could enter here without a torch kindled — either by ardent love and with the utmost labour, such as you see me carry burning now, or by the safe company of those three matrons.' The clearest rule of admission anywhere in the book, and the world enforces nothing like it; the burning torch is already modelled from ch. XI, so the mechanic is within reach of the existing cast."
+        },
+        {
+          "id": "xv-polia-promises-to-quench-her-torch",
+          "name": "Polia promises to quench her torch at the temple",
+          "kind": "rite",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_179.md (1499 p. 179)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "tour"
+          ],
+          "note": "'The present torch it will behove me, for your love, to quench at the holy temple (as you shall see), offering it.' A forward reference the tour can plant here and pay off at the cistern-rite of ch. XVII (plate #77), which is built — the one place a promise made in one chapter is kept in another."
+        },
+        {
+          "id": "xv-nymph-names-him-my-poliphilo",
+          "name": "“My Poliphilo” — the recognition",
+          "kind": "person",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_179.md through page_180.md (1499 pp. 179-180)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "tour",
+            "dream"
+          ],
+          "note": "The hinge of the chapter: she calls him 'My Poliphilo', and 'I was made wholly suspicious that without fail she was Polia. For which cause I felt myself, from head to foot, inwardly altered'. Not geometry — a line at a station — but it is the beat between the triumphs and the temple and it is spoken nowhere in the world."
+        },
+        {
+          "id": "xv-choirs-before-the-four-cars",
+          "name": "The choirs of the divine poets before the four cars",
+          "kind": "person",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_180.md (1499 p. 180)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The chapter's own argument promises 'the choirs of the divine poets singing', and p.180 delivers them car by car. Before the first: the holy Muses with their divine lyre-player, then Leria of Parthenope laurel-crowned, Melanthia, the Greek girl with the shining lamp, Iphianassa, Lycoris, a matron singing between two Theban brothers, and Silvia. At the second: Nemesis with Corinna of Lesbos, Delia and Neaera, with Crocale of Sicily. At the third: Quintilia and Cynthia Nauta, 'the maiden Violantilla with her dove, and the other weeping for the sparrow'. At the fourth: Lyde, Chloe of Lydia, Neobule, Phyllis, Lyce, Tiburtus and Pyrrha, and last the damsel singing with her beloved Phaon. The four cars are built (triumphs.js _buildTriumphs); the singers walking before them are not."
+        },
+        {
+          "id": "xv-lamp-of-the-greek-girl",
+          "name": "The shining lamp that shares its light",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_180.md (1499 p. 180)",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk"
+          ],
+          "note": "'She carried a shining lamp, which freely shared its light with the companions following, sweeter than the others in voice and song.' A small exact prop, and the only light in the chapter besides Polia's torch."
+        },
+        {
+          "id": "xv-torches-shrines-and-spoil-spears",
+          "name": "Torches, borne shrines and spears hung with ancient spoils",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_177.md through page_178.md (1499 pp. 177-178)",
+          "status": "unknown",
+          "built_as": null,
+          "modes": [
+            "walk"
+          ],
+          "note": "What the crowd about the cars carries: 'Many having their torches kindled and burning. Some I saw bearing shrines. Others with straight spears adorned with ancient spoils', and trophies, trumpets 'drawn out and whole', and sounding pipes. The triumph crowd is built; whether it carries any of this is UNKNOWN — nobody in this pass loaded the running page to look."
+        },
+        {
+          "id": "xv-plate-fourth-triumph-right-half",
+          "name": "Plate #65: the right half of the fourth triumph, at this chapter's head",
+          "kind": "picture",
+          "plate": 65,
+          "source": "our translation (CC0), translation/en/page_177.md (1499 p. 177)",
+          "status": "unknown",
+          "built_as": null,
+          "modes": [
+            "tour"
+          ],
+          "note": "MEASURED 2026-09-20 by opening hp1499_p167.jpg: the right half of the double-page fourth triumph — the car drawn by the spotted tigers of Hyrcania with the crowd of lovers — stands at the head of this chapter's first page, above its capitalised argument 'LA MVLTITVDINE DEGLI AMANTI GIOVENI'. It belongs to ch. XIV by subject and to ch. XV by position. The catalogue put the four Seasons reliefs on this page instead; they are not on it. See PLATE_PAGE_FIXES / PLATE_PAGE_UNRESOLVED in scripts/coverage_seed.py."
         }
       ]
     },
@@ -3329,9 +3868,10 @@
         188
       ],
       "text_source": {
-        "edition": "Dallington 1592",
-        "file": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
-        "note": "page markers in that file are DALLINGTON's pages, not the 1499's"
+        "edition": "our translation (CC0), with Dallington 1592 as a second witness",
+        "file": "translation/en/page_NNN.md",
+        "dallington": "C:\\Dev\\hypnerotomachia polyphili\\md\\Hypnerotomachia_by_Francesco_Colonna.md",
+        "note": "pages_1499 and every bare page number in this chapter are in the 1499 numbering (= translation/en/page_NNN.md). A source written 'Dallington p. N' is in HIS numbering, which is a DIFFERENT scale: his 279 pages abridge the 1499's 467, so his count falls behind by about 20 pages by his p.80 and about 60 by his p.250, and the two may never be used interchangeably. Ticket bug-dallington-page-drift."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -3455,13 +3995,42 @@
           "name": "The chapter's own tour stop (\"The Altar of the Seasons -- where the English breaks off\", station 'priapus') describes text that belongs to chapter XVII, not XVI",
           "kind": "rite",
           "plate": 71,
-          "source": "tours.json station 'priapus' (tagged chapter XVI), quoting our translation p. 194 -- but translation/en/page_194.md's own header reads 'Chapter XVII'; woodcut_catalog #71 (Worship of Priapus, 19 women + 5 men) is logged at page_seq 185, inside XVI's own folio range, so its catalogued page and its descriptive text (folio 194) disagree by about nine folios",
-          "status": "unknown",
-          "note": "Recorded here because the task brief named this chapter's tour stop explicitly. `grep -rn -i priapus src/` finds a real, detailed implementation (src/scenes/world/temple.js:1269-1350, _buildPriapusRite -- the canopy on four poles, the gold foils that rattle, old Janus led bound in flower-ropes, the ass sacrifice) that matches our translation's p. 194 text closely. That is strong code-level evidence but I have not loaded the running page this session, so per this pass's rule I am recording 'unknown' rather than promoting it to 'built' -- the next verifier should confirm live and can very likely set this to built with built_as 'temple.js _buildPriapusRite'. Separately from build status: the plate/chapter tagging mismatch (folio 185 catalogued vs. folio 194 described, station tagged XVI vs. its own quoted source headered XVII) is the same class of bug as bug-chapter-xi-tour-misattributed (closed 2026-09-09) one seam further into the book, and belongs with the XIV-XVII page-range re-audit recommended in this chapter's research.note.",
+          "source": "RESOLVED 2026-09-20 by opening hp1499_p185.jpg: plate #71 is the full-page worship of Priapus printed at page_seq 185 = our p.195, one of the four pages translation/en holds no file for because they are all woodcut",
+          "status": "declined",
+          "note": "Recorded here because the task brief named this chapter's tour stop explicitly. `grep -rn -i priapus src/` finds a real, detailed implementation (src/scenes/world/temple.js:1269-1350, _buildPriapusRite -- the canopy on four poles, the gold foils that rattle, old Janus led bound in flower-ropes, the ass sacrifice) that matches our translation's p. 194 text closely. That is strong code-level evidence but I have not loaded the running page this session, so per this pass's rule I am recording 'unknown' rather than promoting it to 'built' -- the next verifier should confirm live and can very likely set this to built with built_as 'temple.js _buildPriapusRite'. Separately from build status: the plate/chapter tagging mismatch (folio 185 catalogued vs. folio 194 described, station tagged XVI vs. its own quoted source headered XVII) is the same class of bug as bug-chapter-xi-tour-misattributed (closed 2026-09-09) one seam further into the book, and belongs with the XIV-XVII page-range re-audit recommended in this chapter's research.note.  RESOLVED 2026-09-20. The catalogue's page_seq 185 was right all along; what misled the earlier reader was reading 185 as a 1499 folio rather than a page_seq, which dropped it inside chapter XVI's range. Plate #71 and the Priapus altar it illustrates both belong to chapter XVII (our pp.194-195), where the altar is now enumerated as xvii-priapus-altar-and-rite. DECLINED as geometry — it is a defect note, kept as the record. The one error left is in src/data/tours.json, whose 'priapus' stop is tagged chapter XVI; that file is outside this pass's scope. Ticket bug-tours-priapus-stop-chapter-tag.",
           "modes": [
             "walk",
             "tour"
           ]
+        },
+        {
+          "id": "xvi-bathing-nymphs-river",
+          "name": "The river of bathing nymphs and tame swans",
+          "kind": "place",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_182.md through page_183.md (1499 pp. 182-183); Dallington 1592 e-text pp. 242-244, HIS numbering. Reads the same passage as xvi-nymphs-bathing-with-swans below; both are kept, because the two witnesses carry different detail",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ],
+          "note": "A clear stream with graveled and soft yellow-sand banks, winding through wooded low hills, where young nymphs and their beardless lovers wade and swim, lifting their silk garments to the thigh, watching their own reflections, swimming beside tame swans, splashing water at one another, weaving garlands on the banks and giving them to their lovers with kisses. No trace in src/scenes/ (grepped for 'bathing nymph', 'swans'); not to be confused with the built Venus-temple swan sacrifice (temple.js) or the Book II stag/swan chariots (tombs.js), which are unrelated later scenes.  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 242-244 is 1499 pp. 182-183, which is chapter XVI. Body unchanged; only the id and the source are corrected.]"
+        },
+        {
+          "id": "xvi-lovers-grove-games",
+          "name": "The grove of courting nymphs and youths, under named trees",
+          "kind": "place",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_183.md through page_186.md (1499 pp. 183-186); Dallington 1592 e-text pp. 244-248, HIS numbering. Overlaps xvi-lovers-garlands-and-kisses and xvi-poliphilo-doubt-polia below; kept for the named trees, which they do not carry",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Flirtation set-pieces under the 'weeping sister of whited Phaeton' (poplar/Heliades), 'immortal Daphne' (laurel), pine, cypress, orange and cedar: singing love-songs, mock-fleeing and chasing with laughter, throwing flowers in pursuers' faces, giving rose-leaf kisses, play-slapping cheeks red 'like the wheels of Phoebus'. Distinct scene from the river (previous feature), same general meadow. No trace in src/scenes/.  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 244-248 is 1499 pp. 183-186, which is chapter XVI. Body unchanged; only the id and the source are corrected.]"
         }
       ]
     },
@@ -3476,14 +4045,15 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 71,
           "description": "Worship of Priapus with nineteen female and five male figures",
           "page_1499": 185,
-          "page_translation": 195
+          "page_translation": 195,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p185 the full-page worship of Priapus under the flowered bower, the ass led to sacrifice; no body text = our p.195, a page our translation holds no file for (ch. XVII)"
         },
         {
           "plate": 72,
@@ -3545,19 +4115,26 @@
           "plate": 81,
           "description": "Temple ceremony continuation",
           "page_1499": 212,
-          "page_translation": 222
+          "page_translation": 222,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p212 a woodcut IS present — the great jasper vase on its stepped base hung beneath the inverted plate; 'Questo marauiglioso sculptile era tuto di uno solido de finissimo diaspro' = our p.222 (ch. XVII). The catalogue's description ('Temple ceremony continuation') is a placeholder, not a reading"
         },
         {
           "plate": 82,
           "description": "Temple ceremony continuation",
           "page_1499": 213,
-          "page_translation": 223
+          "page_translation": 223,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p213 the priestess with the open ritual book before the altar, Polia and the virgins kneeling, Poliphilo praying at the right; 'Disubito la intenta sacerdotula admonita dirinpecto alla sacrificante Polia cum il rituale libro aperto' = our p.223. Signature 'o iiii' (ch. XVII)"
         },
         {
           "plate": 83,
           "description": "Temple ceremony continuation",
           "page_1499": 213,
-          "page_translation": 223
+          "page_translation": 223,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p213 opened: the page carries exactly ONE woodcut, which is #82. This is a second catalogue row for the same page with the same placeholder description ('Temple ceremony continuation'); either it duplicates #82 or its plate is on another page. True page not seen.",
+          "page_unresolved": true
         }
       ],
       "plates_from": "page-range",
@@ -3570,9 +4147,9 @@
       ],
       "research": {
         "status": "enumerated",
-        "enumerated_by": "session of 2026-09-07",
-        "date": "2026-09-07",
-        "note": "Read against the world. Features below carry their citation and their build status."
+        "enumerated_by": "session of 2026-09-07; extended 2026-09-20 (bug-dallington-page-drift)",
+        "date": "2026-09-20",
+        "note": "The 2026-09-07 pass read pp.193-224 — the Temple of Venus — and stopped there. pp.189-194, the opening of the chapter, were never enumerated at all, because the Vertumnus triumph, the hedged orchard, the rural trophies, the four Seasons altar and its four dedications had been filed under chapter XV by Dallington page drift. They are re-filed here 2026-09-20 with their bodies intact, and the Priapus altar and rite of p.194 added beside them. Twelve features. The chapter's own argument (p.189) names, in order, the Vertumnus and Pomona triumph, the marvellous temple, the quenching of the torch and the entry into the shrine — so this chapter was always one whole episode longer than the ledger said."
       },
       "features": [
         {
@@ -3658,6 +4235,104 @@
             "tour"
           ],
           "note": ""
+        },
+        {
+          "id": "xvii-vertumnus-pomona-triumph",
+          "name": "The triumph of Vertumnus and Pomona",
+          "kind": "rite",
+          "plate": 66,
+          "source": "our translation (CC0), translation/en/page_190.md through page_191.md (1499 pp. 190-191), and named in the chapter's own argument at page_189.md; Dallington 1592 e-text pp. 251-255, HIS numbering",
+          "status": "unknown",
+          "built_as": "src/scenes/world/triumphs.js _buildTriumphs (TRIUMPHS.vertumnus, onFoot: true, team: 'satyr'); src/scenes/world/constants.js TRIUMPH_RELIEFS.vertumnus",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Grep of src/ shows a full implementation: Vertumnus (garland of roses, lap full of flowers) and Pomona (crowned with fruit, flaxen hair, cornucopia in each hand) walking on foot with satyrs and nymphs either side rather than drawn by beasts, exactly matching the plate's silence on a draught animal. Not verified on the live page this session -- do not promote to 'built' without loading it. Missing even if the code is live: the ancient four-wheeled cart itself (the book seats Vertumnus and Pomona IN a chariot drawn by four horned satyrs, not walking beside a car); the Clepsydra water-vessel at Pomona's feet; the two trophy-bearing nymphs walking before the car (see next feature).  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 251-255 is 1499 pp. 190-191, which is chapter XVII. Body unchanged; only the id and the source are corrected.]"
+        },
+        {
+          "id": "xvii-orchard-hedge-garden",
+          "name": "The square hedged orchard where the triumph circles the altar",
+          "kind": "place",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_190.md through page_191.md (1499 pp. 190-191); the Italian is on scan hp1499_p180.jpg, opened 2026-09-20 ('cõmensi spatii quadrati circũsepti de limiti de strate late recte quadriuie ... buxi, includendo le quadrature degli floribondi & madenti prati ... Palme sublime ... alternati cum uerdissimi Citri & Narancii, Hippomelides, pistacii, mali granati, Meli Cotoni'); Dallington 1592 e-text pp. 252-254, HIS numbering",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "'A large square inclosure compassed about with broade walkes... a quick-set vpon either sides, in height one pace, of pricking iuniper thicke set togither, and mixt with box' -- a topiary hedge exactly one pace (1.48 m) tall bounding a square green mead, with palm trees in symmetrical rows bearing black, crimson and yellow fruit, interplanted with citrons, oranges, pomegranates and other fruit trees. Distinct from the (built) Cythera knot-garden hedges (cythera.js), which are a different chapter's garden. See measurements[0].  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 252-254 is 1499 pp. 190-191, which is chapter XVII. Body unchanged; only the id and the source are corrected.]"
+        },
+        {
+          "id": "xvii-hamadryad-satyr-company",
+          "name": "The rustic company: fauns, satyrs, Hamadryades and Dryades in animal skins",
+          "kind": "creature",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_190.md through page_191.md (1499 pp. 190-191); Dallington 1592 e-text pp. 253-254, HIS numbering",
+          "status": "partial",
+          "built_as": "triumphs.js generic satyr/nymph walkers (cast.props.satyr, cast.nymph) for TRIUMPHS.vertumnus.onFoot",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The book specifies the company's dress: 'basely apparrelled, some in fauns skins, painted with white spots, some in lynx skins... others in leopards', leaves bound over their nakedness, horned fauns and lascivious satyrs. The world's onFoot walkers use generic satyr/nymph liveries, not spotted animal-skin costuming.  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 253-254 is 1499 p. 191, which is chapter XVII. Body unchanged; only the id and the source are corrected.]"
+        },
+        {
+          "id": "xvii-vertumnus-trophy-inscription",
+          "name": "The two trophy-nymphs before the car: an inscribed tablet and a bundle of rural tools",
+          "kind": "inscription",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_191.md through page_192.md (1499 pp. 191-192); Dallington 1592 e-text pp. 254-255, HIS numbering",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Two nymphs march before the chariot and its four draught satyrs. One bears a trophy with a hanging tablet reading (Latin, as printed): 'Integerrimam corporis valetudinem & stabile robur castasque mensarum delitias, & beatam animi securitatem cultoribus me offero.' A plain, non-Godwin literal rendering: 'I offer to my worshippers unblemished bodily health and steadfast strength, and the chaste delights of the table, and the soul's blessed security.' The other nymph bears a bundle of green sprigs with rural implements bound among them. Neither trophy exists in the code (grepped for 'Integerrimam', no match).  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 254-255 is 1499 pp. 191-192, which is chapter XVII. Body unchanged; only the id and the source are corrected.]"
+        },
+        {
+          "id": "xvii-seasons-altar",
+          "name": "The four-sided marble altar (Chytropodus) the procession circles",
+          "kind": "object",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_192.md through page_194.md (1499 pp. 192-194); Dallington 1592 e-text pp. 255-256, HIS numbering. Plates #67-70 are catalogued at page_seq 167, which hp1499_p167.jpg shows carries the fourth triumph instead; their true page is not yet seen (PLATE_PAGE_UNRESOLVED in scripts/coverage_seed.py)",
+          "status": "partial",
+          "built_as": "constants.js TRIUMPH_RELIEFS.vertumnus (rendered as panels on the chariot itself, per the code comment 'the Seasons belong on their car')",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "The book's altar is a FREE-STANDING square white marble stone in the middle of the mead ('a great square stone like an aulter... which the procession compasses about'), fed by fountain-streams, cut on its four faces by 'a cunning lapicidary'. The world instead paints the four seasons onto the triumph car's own panels ('the Seasons belong on their car' -- a deliberate simplification, not an oversight, per the comment at constants.js:292-294), so there is no separate altar object standing in the ground for the procession to circle. Recorded as partial rather than unbuilt because the iconography does exist, just relocated.  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 255-256 is 1499 pp. 192-194, which is chapter XVII. Body unchanged; only the id and the source are corrected.]  ALSO, from our own translation p.194: for Winter's face the sculptor 'had shrewdly chosen the marble, which — beyond its whiteness — was veined (in the requisite place) with black, to express the tenebrous, unlit and nebulous air, with falling hail' — material chosen to depict, not merely to carry. The earlier note's folio-167 boundary flag is superseded: the altar stands on 1499 pp.192-194, in chapter XVII, not near the XIV/XV seam at all."
+        },
+        {
+          "id": "xvii-seasons-altar-inscriptions",
+          "name": "The altar's four dedications and figures: Spring, Summer, Autumn, Winter",
+          "kind": "inscription",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_192.md through page_193.md (1499 pp. 192-193); Dallington 1592 e-text pp. 255-256, HIS numbering",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "Four panels, each a figure plus a Latin tag (given in the primary text, not Godwin): (1) a flower-girdled goddess casting roses into a censer ('Chytropodus'), a myrtle branch, a winged boy with bow beside her, two pigeons overhead -- 'Florido veri S.' ('sacred to flowering spring'). (2) A wheat-crowned maiden with a cornucopia of ripe grain, three ears of corn, a bound sheaf and a gleaning boy at her feet -- 'Flauae Messi S.' ('sacred to the golden harvest'). (3) A naked vine-crowned boy with grape clusters and a cornucopia of grapes, a shaggy goat at his feet -- 'Mustulento Autumno S.' ('sacred to must-sweet autumn' -- this is the word tours.json wrongly treats as where the translation stops, see research.note). (4) A stern, beast-skin-clad king with a scepter raised into a stormy, hail-filled sky -- 'Hiemi Aeoliae S.' ('sacred to Aeolian winter'). Code has only the English season words (VER/AESTAS/AVTVMNVS/HIEMS) and scene captions, not the Latin dedications or the attendant figures/animals (cupid+doves, gleaning boy, goat, storm).  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 255-256 is 1499 pp. 192-193, which is chapter XVII. Body unchanged; only the id and the source are corrected.]  CORRECTED 2026-09-20: the earlier note said 'Mustulento' is the word at which the 1592 translation stops. It is not. Dallington gives Winter's tag too ('Hiemi Æoliæ S.', corpus md line 10936) and runs on to a formal FINIS at 1499 p.241. See xviii-dallington-ends-here."
+        },
+        {
+          "id": "xvii-priapus-altar-and-rite",
+          "name": "The Priapus on the altar-flat, its flowered canopy, and the sacrifice of the ass",
+          "kind": "rite",
+          "plate": 71,
+          "source": "our translation (CC0), translation/en/page_194.md (1499 p. 194); plate #71 at page_seq 185 = our p.195, CONFIRMED by opening hp1499_p185.jpg",
+          "status": "unknown",
+          "built_as": "HPWorldScene._buildPriapusRite (station 'vertumnus')",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "On the flat of the same Seasons altar stands 'the rude simulacrum of the garden-guardian (Priapus), with all his decent and appropriated insignia', under a cupola'd little canopy carried on four poles fixed in the ground, the poles invested with fruited and flowered foliage, a burning lamp hung at each gap of its rim, and gold foils 'by the fresh and spring-bearing breezes inconstantly vexed, and sounding with metallic little rattles'. The rite at it: glass ampullae of 'the foaming gore of the immolated Ass', warm milk and scintillating unmixed wine, broken against it; libations of fruits, flowers, fronds, feast and jewels; and behind the triumph 'the little old Janus ensnared, of ropes and tresses twisted of manifold flowers', led to Talassian, Hymeneal and Fescennine songs. Ovid, Fasti I and VI, gives the reason the ass is sacrificed to Priapus. The world has a station keyed 'vertumnus' which calls _buildPriapusRite, and the full-page plate is real; STATUS UNKNOWN because nobody in this pass loaded the running page — do not promote it to built from the grep alone."
         }
       ]
     },
@@ -3672,7 +4347,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
@@ -3698,9 +4373,9 @@
       ],
       "research": {
         "status": "enumerated",
-        "enumerated_by": "session of 2026-09-07",
-        "date": "2026-09-07",
-        "note": "Read against the world. Features below carry their citation and their build status."
+        "enumerated_by": "session of 2026-09-07; extended 2026-09-20 (debt-dallington-tail-unread)",
+        "date": "2026-09-20",
+        "note": "The 2026-09-07 pass covered the swan sacrifice, the blood characters and the rose miracle. pp.238-241, the end of the chapter, were unenumerated: the arrival at the ruined seaside temple, the long survey of the country from the herbs before it, the head-to-foot blazon of Polia, and Poliphilo's refusal. Read end to end 2026-09-20 in both witnesses — our translation pp.238-241 and Dallington's corpus markdown lines 10937-11127 — and enumerated. This is where Dallington's 1592 English actually stops, at a formal FINIS, which this project had believed was forty-eight pages earlier. Of the four features: the ruined temple itself is built (as the Polyandrion of ch. XIX) but the sandy shore that leads to it is not; the other three are unbuilt."
       },
       "features": [
         {
@@ -3772,6 +4447,77 @@
             "tour"
           ],
           "note": "The bush is built; the giving of the three fruits is not staged."
+        },
+        {
+          "id": "xviii-seaside-ruined-temple",
+          "name": "The old decayed temple by the sea, where the two sit down",
+          "kind": "building",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_238.md (1499 p. 238: 'to the spacious and sandy shore, of pleasant surges rushing, washed, where was the destroyed and deserted temple, we came'); Dallington 1592 e-text p. 256, HIS numbering",
+          "status": "partial",
+          "built_as": "HPWorldScene._buildPolyandrion / _buildTombApron (the ruin only, not its shore)",
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ],
+          "note": "'From thence the most faire and pleasant Nymph brought me towards the sea side and sandie shore, where we came to an olde decaied temple, before the which vpon the fresh and coole hearbs, vnder sweete shadie trees we sate downe and rested ourselues.' This is where Poliphilo begins the long blazon of the Nymph's body (next feature). No shoreline temple exists in src/scenes/ under any of 'decayed temple', 'ruined temple', 'seaside temple', 'shore temple' (grepped) -- the only other ruined temple in the world is the Polyandrion (tombs.js), a different building from an earlier chapter. Under coverage.json's pages_1499=[177,180], this is unambiguously chapter XV: it is the first scene after the Four Seasons altar (1499 p.~176) and well before the FINIS point.  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's p. 256 is 1499 p. 238, which is chapter XVIII. Body unchanged; only the id and the source are corrected.]  CORRECTED 2026-09-20: the earlier note said 'the only other ruined temple in the world is the Polyandrion, a different building from an earlier chapter'. It is the SAME building. Read in the 1499 this passage is the end of chapter XVIII, and the argument on p.241 says so outright — 'POLIA PERSUADES POLIPHILO THAT HE GO TO SPECULATE THE ANTIQUE EPITAPHS IN THE DESTROYED TEMPLE' — which is chapter XIX, the Polyandrion, and that IS built. So the status is partial, not unbuilt: what is missing is the approach, the sandy shore of 'pleasant surges' the lovers walk along to reach it. Nothing in build_evidence names a beach, sand or surf."
+        },
+        {
+          "id": "xviii-polia-blazon-costume",
+          "name": "The blazon of the Nymph's (Polia's) beauty and dress, at the ruined temple",
+          "kind": "person",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_239.md through page_240.md (1499 pp. 239-240); Dallington 1592 e-text pp. 257-260, HIS numbering, ending at FINIS",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "dream",
+            "tour"
+          ],
+          "note": "Poliphilo's extended gaze, sitting beside her: her forehead 'pampynulated with threds of gold', compared to the lodestone Heraclea; her feet in 'red leather cut vpon white, fastened vpon the instep with buttons of gold in loopes of blew silke'; her neck circled with a 'carkenet of orient pearle'; her breasts likened to the golden apples of the Hesperides and to Pomona's own fruit, the valley between them called 'the delicate sepulcher of my wounded hart exceeding the famous Mausolea' (a love/death, Eros/tomb figure worth flagging for the alchemical or neoplatonic commentary lens, not built out here). Poliphilo's inward monologue runs to the very edge of self-restraint before he checks himself; the passage ends 'FINIS.' -- the literal close of Dallington's translation as printed in this facsimile (see research.note on the Mustulento discrepancy). No shoe, hair-thread or necklace detail this specific appears in Cast.js (grepped for 'carkenet', 'pearl necklace', 'blue silk lace', 'gold button' -- no matches); the existing Polia figure is generic by comparison.  [RE-FILED 2026-09-20, ticket bug-dallington-page-drift: this entry was in chapter XV, sourced to a Dallington page read as though it were a 1499 folio. Dallington's e-text pp. 257-260 is 1499 pp. 239-240, which is chapter XVIII. Body unchanged; only the id and the source are corrected.]  From our own translation, two details Dallington compresses: the vermilion shoes are 'moon-wise mouthed and sinuated with a phytontea (plant-like) opening' over the ivory instep, and the starry forehead is 'of gold threads becomingly vine-tendrilled' set with 'the most-beautiful part of the sky, or the shining Heraclean (star)'. This is the second of the book's two blazons; the first, ch. XI pp.143-146, is largely built, which makes this one a known quantity to build."
+        },
+        {
+          "id": "xviii-rest-before-the-temple",
+          "name": "The rest on the flowering herbs, and the survey of the country",
+          "kind": "place",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_239.md (1499 p. 239); Dallington 1592, corpus md lines 10937-11127 = his e-text pp. 256-260, ending 'FINIS.' — HIS numbering, not the 1499's",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "walk",
+            "tour",
+            "dream"
+          ],
+          "note": "They sit down 'upon the fresh and flower-bearing little herbs' before the ruin, and from there Poliphilo surveys the whole country: the most-serene sky, the salubrious and most-mild air, the delightful site, 'the pleasant and temperate hills ornated with opaque little groves', the rivers running down the wooded valley 'to the near sea precipitating', 'a most-salubrious field, and of most-pleasant grass, filled with manifold trees, canorous of the concert of little birds. Let yield here, then, the Thessalian river and field (Tempe).' Dallington keeps the Tempe comparison and glosses Thessaly in his margin. This is the one place in the book that stops and looks back at the whole landscape, and the world has no station and no viewpoint there."
+        },
+        {
+          "id": "xviii-restraint-and-the-exempla",
+          "name": "Poliphilo restrained: Deianira, the ant on the flint, the Arabian phoenix",
+          "kind": "rite",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_240.md through page_241.md (1499 pp. 240-241); Dallington 1592, corpus md lines 10937-11127 = his e-text pp. 256-260, ending 'FINIS.' — HIS numbering, not the 1499's",
+          "status": "unbuilt",
+          "built_as": null,
+          "modes": [
+            "tour",
+            "dream"
+          ],
+          "note": "The close of the chapter, and the exact point at which Dallington's whole translation stops. Poliphilo, 'with Herculean audacity', is on the edge of forcing her 'in the solitary places', and talks himself down by exempla: 'the violence done to Deianira, and to the chaste Roman (Lucretia) — badly and unhappily turned out'; time tames the fierce lions; the grain-bearing ant 'by assiduous journey — however most-tiny — in the hard flint imprints its trodden (path)'; and he resolves to hope 'as the Arabian phoenix, in the aromatic twigs, in the aspect of the ardent Sun kindled, from the arid ashes hopes to renew itself'. Polia, seeing his colour change 'more than the illustrious Tripolion, or Teucrion, that three times a day changes the colour of its flower', tempers him with her regards. The book's one explicit refusal, and the world does not mark it anywhere. The phoenix, the ant on the flint and the thrice-changing Tripolion are three ready emblems for a station, and Tripolion is in Rhizopoulou's plant list."
+        },
+        {
+          "id": "xviii-dallington-ends-here",
+          "name": "FINIS — where Dallington's 1592 English actually stops",
+          "kind": "inscription",
+          "plate": null,
+          "source": "our translation (CC0), translation/en/page_241.md (1499 p. 241); Dallington 1592, corpus md line 11127, his e-text p. 260",
+          "status": "declined",
+          "built_as": null,
+          "modes": [
+            "tour"
+          ],
+          "note": "Not a thing in the world: an edition fact, recorded because this ledger, src/data/tours.json and translation/manifest.json all state a different one. Dallington does NOT break off at 'Mustulento' on 1499 p.193. He gives Winter's tag ('Hiemi Æoliæ S.', corpus md line 10936), then SKIPS 1499 pp.194-237 outright — the Priapus rite, the whole Temple of Venus, the whole of Polia's account of the Polyandrion — and resumes at 1499 p.238, running to a formal 'FINIS.' at the end of chapter XVIII, 1499 p.241, immediately before the argument of chapter XIX. The transcriber's technical notes begin on the next line of the corpus markdown ('Note that the 1592 English translation covers just under half the Italian text'), which is what makes this the end of his book and not a chapter break. DECLINED as geometry; kept because the tour currently tells readers this English does not exist. Tickets debt-dallington-tail-unread, bug-translation-seam-note-wrong."
         }
       ]
     },
@@ -3786,38 +4532,49 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 86,
           "description": "Ruins of Temple Polyandrion with obelisk among trees",
           "page_1499": 233,
-          "page_translation": 243
+          "page_translation": 243,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p233 opened: it carries the obelisk (#87) and one medallion (#88), not a view of the ruined Polyandrion among trees. Scan p234 carries two further hieroglyph blocks (the DIVO IVLIO CAESARI band and the elephants-and-ants medallion 'PACE AC CONCORDIA PARVAE RES CRESCVNT'), neither of them this one. True page not seen.",
+          "page_unresolved": true
         },
         {
           "plate": 87,
           "description": "Obelisk with hieroglyphic devices",
           "page_1499": 233,
-          "page_translation": 243
+          "page_translation": 243,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p233 the obelisk on its inscribed base, beside the medallion; 'In questo loco ananti tute cose ... mirai uno obelisco magno & excelso di rubente petra' = our p.243 (ch. XIX)"
         },
         {
           "plate": 88,
           "description": "Hieroglyphic medallion relief (first)",
           "page_1499": 233,
-          "page_translation": 243
+          "page_translation": 243,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p233 the first medallion on that page: the balance with the crown, dog and serpent, read 'IVSTITIA RECTA AMICITIA ET ODIO EVAGINATA ET NVDA'"
         },
         {
           "plate": 89,
           "description": "Hieroglyphic medallion relief (second)",
           "page_1499": 235,
-          "page_translation": 245
+          "page_translation": 245,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p235 'MILITARIS PRVDENTIA, SEV DISCIPLINA IMPERII EST TENACISSIMVM VINCVLVM' — the eagle, anchor and seated soldier with the serpent = our p.245 (ch. XIX)"
         },
         {
           "plate": 90,
           "description": "Hieroglyphic medallion relief (third)",
           "page_1499": 235,
-          "page_translation": 245
+          "page_translation": 245,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p235 the second medallion on that page, 'DIVI IVLII VICTORIARVM ET SPOLIORVM COPIOSISSIMVM TROPHAEVM, SEV INSIGNIA' — the trophy between the eye and the comet"
         },
         {
           "plate": 91,
@@ -4106,14 +4863,16 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 113,
           "description": "Standard of Cupid's bark (blue silk with rebus)",
           "page_1499": 275,
-          "page_translation": 285
+          "page_translation": 285,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p275 the standard with the flaming vase and the crescent, captioned 'AMOR VINCIT OMNIA'. Signature 's iii' = our p.285 (ch. XX)"
         }
       ],
       "plates_from": "page-range",
@@ -4246,14 +5005,16 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 114,
           "description": "The bark of the god of love",
           "page_1499": 281,
-          "page_translation": 291
+          "page_translation": 291,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p281 the bark on the waves with its mast and yard; 'cum tute le altre circũstantie disopra opportunamente descripte. cusi era' = our p.291 (ch. XXI)"
         },
         {
           "plate": 115,
@@ -4331,13 +5092,18 @@
           "plate": 127,
           "description": "Box-tree clipped as three peacocks on altar-vase",
           "page_1499": 313,
-          "page_translation": 323
+          "page_translation": 323,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p313 opened: it carries exactly ONE woodcut, the eagle flower-bed (#128). The box-tree clipped as three peacocks is not on it. True page not seen.",
+          "page_unresolved": true
         },
         {
           "plate": 128,
           "description": "Flower-bed in shape of eagle",
           "page_1499": 313,
-          "page_translation": 323
+          "page_translation": 323,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p313 the square flower-bed with the eagle in a knot of bands lettered round the border; 'La Aquila di serpilo, Lo excluso dagli circuntermini di polio montano' = our p.323 (ch. XXI)"
         }
       ],
       "plates_from": "page-range",
@@ -4410,50 +5176,67 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 129,
           "description": "Flower-bed: two birds on a vase",
           "page_1499": 317,
-          "page_translation": 327
+          "page_translation": 327,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p317 opened: it carries exactly TWO woodcuts, both trophies (#130, #131). The flower-bed with two birds on a vase is not on it. True page not seen.",
+          "page_unresolved": true
         },
         {
           "plate": 130,
           "description": "Trophy of Roman arms with winged genius head",
           "page_1499": 317,
-          "page_translation": 327
+          "page_translation": 327,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p317 the left trophy — helmet, cuirass and the latticed banner with the winged genius head; 'Vnaltra era gestante dunaltro tropheo' = our p.327 (ch. XXII)"
         },
         {
           "plate": 131,
           "description": "Trophy: tunic with winged genius head and laurel",
           "page_1499": 317,
-          "page_translation": 327
+          "page_translation": 327,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p317 the right trophy on that page — the tunic with the winged genius head under a laurel wreath"
         },
         {
           "plate": 132,
           "description": "Trophy: tiger-skin and bull's head",
-          "page_1499": 319,
-          "page_translation": 329
+          "page_1499": 318,
+          "page_translation": 328,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 319,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 133,
           "description": "Trophy: disk with wings, tablet 'Quis evadet?'",
-          "page_1499": 319,
-          "page_translation": 329
+          "page_1499": 318,
+          "page_translation": 328,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 319,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 134,
           "description": "Trophy with gold wings and tablet 'Nemo'",
           "page_1499": 319,
-          "page_translation": 329
+          "page_translation": 329,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p319 the left trophy, the tablet lettered 'NEMO' over winged volutes; 'Consequente era uno altro nobilissimo trophæo baiulato'. Signature 'x' = our p.329 (ch. XXII)"
         },
         {
           "plate": 135,
           "description": "Trophy with gold wings and floating ribbons",
           "page_1499": 319,
-          "page_translation": 329
+          "page_translation": 329,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p319 the right trophy on that page, the winged boss with the floating ribbons"
         },
         {
           "plate": 136,
@@ -5192,14 +5975,16 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 148,
           "description": "Ground-plan of fountain of Venus",
           "page_1499": 349,
-          "page_translation": 359
+          "page_translation": 359,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque il circulo obducto del suo diametro semisse, iui uno triangulo æq̃latero cõstituito' = our p.359 (ch. XXIII)"
         }
       ],
       "plates_from": "page-range",
@@ -5540,7 +6325,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
@@ -5766,7 +6551,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -6026,7 +6811,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
@@ -6034,6 +6819,7 @@
           "description": "Polia in temple of Diana; Poliphilus prostrate (Book II)",
           "page_1499": 386,
           "page_translation": 396,
+          "near_chapter_boundary": 1,
           "page_corrected_from": 387,
           "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
@@ -6042,6 +6828,7 @@
           "description": "Polia drags prostrate Poliphilus from sanctuary",
           "page_1499": 387,
           "page_translation": 397,
+          "near_chapter_boundary": 0,
           "page_corrected_from": 389,
           "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
@@ -6390,7 +7177,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
@@ -6398,6 +7185,7 @@
           "description": "Dream of Polia: Cupid punishes two women",
           "page_1499": 390,
           "page_translation": 400,
+          "near_chapter_boundary": 2,
           "page_corrected_from": 391,
           "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
@@ -6754,7 +7542,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -6957,14 +7745,16 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 157,
           "description": "Poliphilus as dead; Polia kneels in grief",
           "page_1499": 411,
-          "page_translation": 421
+          "page_translation": 421,
+          "near_chapter_boundary": 3,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple; 'O il mio amoroso Poliphilo morto, ouero io in tanta inconsolabile uita superstite?' = our p.421 (ch. XXIX)"
         },
         {
           "plate": 158,
@@ -6981,8 +7771,11 @@
         {
           "plate": 160,
           "description": "Polia in bed-chamber; Diana vs Venus vision in sky",
-          "page_1499": 415,
-          "page_translation": 425
+          "page_1499": 416,
+          "page_translation": 426,
+          "near_chapter_boundary": 1,
+          "page_corrected_from": 415,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -7189,20 +7982,25 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 161,
           "description": "Polia kneels before Venus priestess; Poliphilus beside",
           "page_1499": 419,
-          "page_translation": 429
+          "page_translation": 429,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p419 the priestess enthroned, Polia kneeling, Poliphilo standing, the flaming altar at the right; 'Dinanti alla quale ello era apresentato'. Signature 'D' = our p.429 (ch. XXX)"
         },
         {
           "plate": 162,
           "description": "Enamoured couple kneeling before priestess",
           "page_1499": 419,
-          "page_translation": 429
+          "page_translation": 429,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p419 opened: it carries exactly ONE woodcut, which is #161. This row and #161 describe the same scene (lovers kneeling before the priestess); either it duplicates #161 or its plate is on another page. True page not seen.",
+          "page_unresolved": true
         }
       ],
       "plates_from": "page-range",
@@ -7385,7 +8183,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
@@ -7393,6 +8191,7 @@
           "description": "Priestess enthroned; lovers kissing in her presence",
           "page_1499": 425,
           "page_translation": 435,
+          "near_chapter_boundary": 0,
           "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p425 'sauiando, sorbiculante ... morsiunculo' = our p.435 (ch. XXXI)"
         }
       ],
@@ -7562,14 +8361,16 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 164,
           "description": "Poliphilus writing at carved desk",
           "page_1499": 433,
-          "page_translation": 443
+          "page_translation": 443,
+          "near_chapter_boundary": 0,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p433 Poliphilo writing at the carved desk, the framed double portrait on the wall; 'Per tale argumẽto cogitai di scriuerli' = our p.443 (ch. XXXII)"
         }
       ],
       "plates_from": "page-range",
@@ -7723,14 +8524,17 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 165,
           "description": "Polia reading lover's letter in bed-chamber",
-          "page_1499": 435,
-          "page_translation": 445
+          "page_1499": 436,
+          "page_translation": 446,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 435,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -7853,7 +8657,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -8102,26 +8906,33 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
         {
           "plate": 166,
           "description": "Poliphilus before Venus in clouds; Cupid listens",
           "page_1499": 447,
-          "page_translation": 457
+          "page_translation": 457,
+          "near_chapter_boundary": 1,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p447 Cupid holding the bust of Polia, Poliphilo praying in the clouds, the sceptred Venus seated; 'Mira diligentemente questa spectanda imagine' = our p.457 (ch. XXXV)"
         },
         {
           "plate": 167,
           "description": "Cupid with bust of Polia and arrow",
-          "page_1499": 448,
-          "page_translation": 458
+          "page_1499": 447,
+          "page_translation": 457,
+          "near_chapter_boundary": 1,
+          "page_corrected_from": 448,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 168,
           "description": "Cupid shoots arrow at bust of Polia",
           "page_1499": 448,
-          "page_translation": 458
+          "page_translation": 458,
+          "near_chapter_boundary": 2,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p448 Cupid with the bow drawn at the group in the clouds; 'manifestamente uedendo io cum il curuo, & cum rigore incordato arco' = our p.458 (ch. XXXV)"
         }
       ],
       "plates_from": "page-range",
@@ -8354,7 +9165,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -8428,7 +9239,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [],
       "plates_from": "page-range",
@@ -8555,7 +9366,7 @@
       "text_source": {
         "edition": "our translation (CC0)",
         "file": "translation/en/page_NNN.md",
-        "note": "page numbers ARE the 1499's, so they line up with hp.db"
+        "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [],
       "plates_from": "page-range",

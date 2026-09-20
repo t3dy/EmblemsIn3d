@@ -6,7 +6,7 @@
 
 ---
 
-**55 tickets** — 9 open, 2 question, 3 declined, 41 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**60 tickets** — 10 open, 2 question, 3 declined, 45 done. By kind: 25 debt, 21 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -54,48 +54,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **See.** Dallington pp. 143-160 · DECISIONS.md 2026-09-09 the dream does not have to add up
 
 
-### `bug-dallington-page-drift` — Dallington's page numbers drift out of sync with the 1499's after about chapter XIV
-
-**○ open** · bug · priority 2 · hp-researcher
- · opened 2026-09-17
-
-
-**Evidence.** Found enumerating chapter XVI, 2026-09-17. coverage.json gives XVI pages_1499 [181,188], which is right for the 1499 and is confirmed by translation/en/page_181 -page_188.md, each of which headers itself '# Page NNN -- Chapter XVI'. But the Dallington markdown's own OCR markers <!-- Page 181 --> .. <!-- Page 188 --> carry the same numbers over completely different content: the ivied hundred-arch garden and the trigonal altar with the three golden sphinxes, which is chapter XIII-XIV material and is already built (palace.js _buildPoliaArcade, and the altar around palace.js:2305). Dallington abridges to just under half the Italian, so his page count falls behind through Book I and the two numberings cannot be used interchangeably after roughly chapter XIV. Same class as the closed ticket bug-chapter-xi-tour-misattributed, one seam further in.
-
-**Acceptance.** coverage.json's text_source note for every chapter whose text_source is Dallington says which page numbering its pages_1499 field is in, and RECIPES/research-a-chapter.md tells the reader to confirm a Dallington page against the translation/en/ header before citing it. A spot check of chapters XIV, XV and XVI finds the cited passage at the cited page.
-
-**Risk.** Every source string already written against Dallington in the ledger for chapters XII-XVI may carry his page or the 1499's, and the two now differ. Do not mass-rewrite them: check each against the text before changing it, because some are right.
-
-**Files.** `research/coverage.json` · `RECIPES/research-a-chapter.md`
-
-**See.** ROUTER.md
-
-
-### `bug-concordance-signature-quire-model` — hp.db page_concordance's signature/quire columns are a uniform reconstruction that omits a whole gathering
-
-**○ open** · bug · priority 3 · hp-researcher
- · opened 2026-09-20
-
-
-**Evidence.** Split out 2026-09-20 from bug-concordance-section-drift, which carried it as 'related' and whose fix falsified the other half of the same hypothesis. page_concordance.signature / quire / leaf_in_quire is a reconstruction, and it is wrong early. Dumped: 29 quires -- a b c d e f g h i k l m n o p q r s t x y z, then A B C D E F G -- every one of eight leaves except z and G at four, totalling exactly 448 pages. Two faults, both measured against the signatures actually printed at the foot of the scans.
-
-(1) IT OMITS THE 'u' GATHERING. Its lowercase run goes ...s t x y z, with no u between t and x.
-
-(2) Its page-to-signature mapping is consequently wrong on both sides of the gap, in opposite directions: it places quire n two pages LATER than the scan does, and quire y fourteen pages EARLIER. hp1499_p195.jpg is signed 'n iii' -- leaf 3 recto, so quire n opens at page_seq 191, where the model says 193 (measured in bug-plate-page-seq-offset, which opened that scan for its full-page rotunda section). hp1499_p337.jpg is signed 'y ii', so quire y opens at 335, where the model says 321 (measured here, 2026-09-20). hp1499_p387.jpg is signed 'B' and p389 'B ii', so Book II's quire B opens at 387, where the model says 361 (measured in bug-concordance-section-drift).
-
-The three readings are self-consistent with sixteen-page gatherings AND a u quire: counting u in, n to y is nine gatherings, and 191 + 9*16 = 335 exactly; and Book II's A opening at page_seq 371 (measured: our p.381, 'POLIPHILO BEGINS THE SECOND BOOK') puts B at 387, exactly where the scan signs it. The residual two pages before quire n are NOT explained by this, and want one more scan carrying a visible signature somewhere in quires a-m.
-
-The table also stops at page_seq 448 while the book runs to at least 457 -- our p.467, the errata leaf and the Aldine colophon.
-
-**Acceptance.** Either a measured quire table beside coverage_seed.py, keyed to signatures actually read off the scans, or a plain statement in the ledger that hp.db's signature / quire / leaf_in_quire columns are not to be used for anything. Machine-checkable: for every scan whose signature has been read, the table agrees with it -- at least the four already measured, page_seq 195 'n iii', 337 'y ii', 387 'B', 389 'B ii'. The corpus at C:\Dev\hypnerotomachia polyphili is read-only from here, so no fix may be written into hp.db.
-
-**Risk.** Low while nothing reads those columns, and nothing in this repo does today. It matters indirectly: woodcut_catalog.page_seq was placed by subject-matching against the woodcuts table, which carries these same signature labels (see its link_basis), so every plate page inherits whatever the quire model got wrong -- which is already why plate pages travel with a +/-2 caveat. The danger is anyone deriving a page from a signature, or 'correcting' a plate page by a leaf, instead of opening the scan.
-
-**Files.** `scripts/coverage_seed.py` · `research/coverage.json`
-
-**See.** bug-concordance-section-drift · bug-plate-page-seq-offset
-
-
 ### `bug-early-chapter-tags-drift-from-1499-pagination` — tours.json's chapter tags for chapters I-III put Dallington content on the wrong 1499 chapter, so no page range can be added without inventing one
 
 **○ open** · bug · priority 3 · hp-researcher
@@ -115,38 +73,25 @@ Unlike chapter X, this is not just a resolution gap: the chapter TAGS tours.json
 **See.** ticket debt-reading-station-is-chapter-grained · ticket bug-dallington-page-drift · ticket bug-chapter-xi-tour-misattributed
 
 
-### `bug-woodcut-catalog-page-jitter` — woodcut_catalog.page_seq is subject-matched, not observed, and is good only to about +/-2 pages
+### `bug-translation-seam-note-wrong` — translation/ says Dallington stops at 'Mustulento' on p.193; he stops at FINIS on p.241
 
 **○ open** · bug · priority 3 · hp-researcher
  · opened 2026-09-20
 
 
-**Evidence.** Found 2026-09-20 while closing bug-plate-page-seq-offset. woodcut_catalog rows were placed on pages by subject-matching against the woodcuts table, whose source_method is LLM_ASSISTED; woodcut_catalog.link_basis records it, e.g. #153 "subject match on 1499 page 389: shared terms drags, polia, poliphilus, prostrate, sanctuary", and 20 rows carry a link_basis beginning "unresolved". Opening scans shows the drift is real: #152 is printed on p386 not p387, #153 on p387 not p389, #154 on p390 not p391. Worse, #165 ("Polia reading lover's letter in bed-chamber") is catalogued at page_seq 435 and hp1499_p435.jpg is unbroken text with no woodcut on it at all (signature "E"), so that row's page is simply wrong and its true page is not yet known. The catalogue and the woodcuts table also disagree with each other outright on 13 plates (#79, #80, #81, #83, #102, #104, #107, #124, #140, #149, #154, #156, #162), by up to 11 pages. This matters for the ledger only where a plate sits within a page or two of a chapter boundary; 64 of the 168 plates do. Eight plates have now been opened on the scan: #152, #153 and #154 were corrected, and #1, #72, #76, #149 and #163 were confirmed as catalogued. Five of those eight (#1, #152, #153, #154, #163) are among the 64 sitting near a boundary; the other 59 near-boundary plates have not been looked at.
+**Evidence.** Found 2026-09-20 closing debt-dallington-tail-unread. Three files in translation/ state the seam wrongly, and they are the files a reader trusts. translation/NOTES.md: 'it stops dead partway through chapter XVII — at the word Mustulento, facsimile page 193 of 467.' translation/manifest.json range.note: 'Dallington's 1592 English covers pages 1-192 and breaks off inside page 193.' translation/en/page_193.md, in its Notes: 'Dallington's translation ends here. What follows is ours... His readers never had Winter, nor anything after.'
 
-**Acceptance.** Every plate that resolves within 3 pages of a chapter boundary has had its scan opened and its page either confirmed or corrected in PLATE_PAGE_FIXES in scripts/coverage_seed.py, with the identifying line of Italian recorded in the comment. Machine-checkable: no plate in coverage.json lacks page_checked while resolving within 3 pages of a chapter boundary. Nothing is written into hp.db, which is read-only here.
+All three are false. In the corpus copy of his English, Winter's altar-tag 'Hiemi Æoliæ S.' stands at line 10936, ten lines after Mustulento, so his readers DID have Winter. He then skips 1499 pp.194-237 entirely and resumes at p.238 ('towards the sea side and sandie shore, where we came to an olde decaied temple' = our p.238 word for word), gives the full blazon of Polia (our pp.239-240) and the restraint speech with the Arabian phoenix (our pp.240-241), and closes 'FINIS.' at line 11127 — the end of chapter XVIII, immediately before the argument of chapter XIX. Aligned page by page against translation/en; the match is verbatim at every anchor.
 
-**Risk.** The failure mode is a plate filed one chapter off, which is a research-ledger error rather than a build error -- but it is exactly the class of error that hides work, so it should not be inferred away. Do not guess a plate's page from the surrounding text or from the woodcuts table; both were already wrong here. Open the scan.
+The true statement is: Dallington covers 1499 pp.1-193 continuously and pp.238-241, and nothing between. research/coverage.json now records it (feature xviii-dallington-ends-here); translation/ does not.
 
-**Files.** `scripts/coverage_seed.py` · `research/coverage.json`
+**Acceptance.** NOTES.md, manifest.json range.note and the Notes block of translation/en/page_193.md each state the seam correctly: continuous to p.193, a gap over pp.194-237, and a resumption at pp.238-241 ending at FINIS. page_193.md's claim that 'his readers never had Winter' is removed. The CC0 translation itself needs no change — it is the notes about it that are wrong.
 
-**See.** HPTOTOURPIPELINE.md · bug-plate-page-seq-offset
+**Risk.** The seam note is the project's public account of why this translation exists, and it is quoted in the tour. Getting it wrong understates Dallington by 48 pages in one direction and overstates him by 44 in the other. NOTE: translation/manifest.json was being edited by another session on 2026-09-20 — check git status before touching it.
 
+**Files.** `translation/NOTES.md` · `translation/manifest.json` · `translation/en/page_193.md`
 
-### `debt-dallington-tail-unread` — Dallington's English runs past the Four Seasons altar to a formal FINIS -- unread and unenumerated
-
-**○ open** · debt · priority 3 · hp-researcher
- · opened 2026-09-20
-
-
-**Evidence.** Found 2026-09-20 while closing bug-tours-prose-ahead-of-geometry. tours.json had told itself Dallington's 1592 English breaks off mid-sentence at 'Mustulento' (facsimile p. 193), and that everything past that point existed in English only under copyright. It does not: in the project's corpus copy, C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md, 'Mustulento Autumno S.' is a complete altar-tag at line 10926, immediately followed by Winter's tag at line 10936, completing the Four Seasons altar. Dallington's English then runs on: the nymph leads Poliphilo 'towards the sea side and sandie shore, where we came to an olde decaied temple' (lines 10937-10947, e-text pp. 256-257), then gives a full blazon of Polia's beauty -- starry forehead, feet, neck with a pearl carkenet, breasts as a 'delicious vallie' -- (lines ~11004-11031, e-text pp. 258-259), and closes with a formal 'FINIS.' at line 11127 (e-text p. 260). The transcriber's own technical notes begin immediately after, at line 11129 ('Technical Notes and further information ... Note that the 1592 English translation covers just under half the Italian text'), confirming this FINIS is the actual end of Dallington's whole 1592 translation, not a chapter break. So there is roughly 200 lines of genuine public-domain 1592 English -- a seaside ruined temple and a complete blazon of Polia -- that this project has never read end-to-end or enumerated into research/coverage.json, and the tour has been telling readers it doesn't exist.
-
-**Acceptance.** An hp-researcher pass reads Hypnerotomachia_by_Francesco_Colonna.md lines 10926-11127 end-to-end against the corresponding 1499 Italian/our translation, enumerates the seaside ruined temple and the blazon of Polia into research/coverage.json chapter by chapter, and records whether either scene is already covered by existing built geometry (the mainland grove, an existing tomb or portrait station) or is a genuine gap.
-
-**Risk.** Closing bug-tours-prose-ahead-of-geometry by editing the Mustulento sentence alone, without opening this ticket, would have buried the fact that this stretch of public-domain English exists and has never been read by this project -- exactly the risk that ticket's own risk note warned against.
-
-**Files.** `C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md` · `research/coverage.json`
-
-**See.** bug-tours-prose-ahead-of-geometry · HPTOTOURPIPELINE.md
+**See.** debt-dallington-tail-unread · bug-dallington-page-drift
 
 
 ### `debt-plaque-subtitles-too-long` — Twenty-two plaque subtitles are longer than a stone can hold; two lines fixes 21 of them
@@ -183,6 +128,88 @@ SEPARATE OBSERVATION, not changed and left for Ted: the plaque canvas is 320x96 
 **Files.** `translation/en/` · `scripts/translation_status.py`
 
 **See.** translation/NOTES.md
+
+
+### `bug-tours-priapus-stop-chapter-tag` — tours.json tags the 'priapus' stop chapter XVI; the Priapus altar is chapter XVII
+
+**○ open** · bug · priority 4 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 resolving coverage.json's xvi-priapus-tourstop-mismatch, which had flagged the disagreement without settling it. Settled by opening hp1499_p185.jpg: plate #71, the full-page worship of Priapus, is printed at page_seq 185 = our p.195 — one of the four pages translation/en holds no file for because the leaf is all woodcut — and the altar it illustrates is described on our p.194, whose header reads Chapter XVII. The earlier reader was misled by reading the catalogue's 185 as a 1499 folio rather than a page_seq, which drops it inside chapter XVI's range [181,188]. The catalogue was right; the tour tag is wrong. coverage_seed.py's check_plates() already asserts the plate's chapter.
+
+**Acceptance.** The 'priapus' stop in src/data/tours.json carries chapter XVII, and the ledger's chapters[].tour_stops for XVI and XVII change accordingly on the next seed. No geometry moves — the station itself is in the right place.
+
+**Risk.** Cosmetic in the world, but the tour's chapter tags are what coverage_seed.py derives tour_stops from, so a wrong tag makes a chapter look covered when it is not. src/data/tours.json was outside the scope of the 2026-09-20 ledger pass.
+
+**Files.** `src/data/tours.json` · `research/coverage.json`
+
+**See.** bug-woodcut-catalog-page-jitter
+
+
+### `bug-translation-page-092-chapter-header` — translation/en/page_092.md is headed Chapter IX but page_093.md is headed Chapter VIII, so chapters VIII and IX overlap in the ledger
+
+**○ open** · bug · priority 4 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 during the plate sweep for bug-woodcut-catalog-page-jitter. coverage_seed.chapter_pages() derives every chapter's range from the 'Chapter NNN' in the first line of each translation/en/page_NNN.md, so a wrong header moves a chapter boundary. Headers run ... 091 VIII, 092 IX, 093 VIII, 094 IX ..., which gives VIII [79,93] and IX [92,116] — the only overlapping pair in the whole book (checked programmatically; the only other anomalies are the blank leaves).
+
+The scan settles it. hp1499_p084.jpg — page_seq 84 = our p.94 — carries the capitalised argument of chapter IX ('QVANTA INSIGNE MAIESTATE FVE QVELLA DELLA REGINA, ET LA CONDITIONE DELLA SVA RESIDENTIA') with its decorated initial beneath, and the line above it ends '...la Regina Eleuteryllida.' So chapter IX opens at our p.94, and pages 92 and 93 both belong to chapter VIII. page_092.md's header is the error.
+
+Note that coverage_seed.MEASURED_SECTIONS puts QUEEN_PALACE at page_seq 82 ('Chapter IX opens on page_seq 82') on the same bad evidence; that boundary wants moving to 84 at the same time.
+
+**Acceptance.** translation/en/page_092.md is headed 'Chapter VIII', coverage_seed's derived ranges give VIII [79,93] and IX [94,116] with no overlap, and MEASURED_SECTIONS' QUEEN_PALACE boundary is 84 with the scan quoted as its basis. check_sections() still passes.
+
+**Risk.** Small but real: an overlapping range means a plate on our pp.92-93 is filed by whichever chapter the dict happens to iterate first. Nothing in the ledger turns on it today. translation/ was outside the 2026-09-20 ledger pass's scope.
+
+**Files.** `translation/en/page_092.md` · `scripts/coverage_seed.py`
+
+**See.** bug-concordance-section-drift
+
+
+### `bug-woodcut-catalog-ten-unresolved-plates` — Ten plates have been opened at their catalogued page and found absent; their true pages are still unknown
+
+**○ open** · bug · priority 4 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** Split out 2026-09-20 on closing bug-woodcut-catalog-page-jitter, which opened every near-boundary plate's scan. For these ten the catalogued page WAS opened and carries something else, and the true page was not found, so each is left where the catalogue put it and stamped page_unresolved in research/coverage.json (PLATE_PAGE_UNRESOLVED in scripts/coverage_seed.py holds what each catalogued page actually carries).
+
+#66 (Vertumnus and Pomona) and #67-70 (the four Seasons reliefs) are the important ones: they are catalogued at page_seq 166-167, which the scans show carry the two halves of the fourth Bacchic triumph, and our translation puts their subjects at pp.190-193 = page_seq 180-183. Scan p180 is unbroken text, and the corpus folder holds no scan of page_seq 181-184 at all — so the plates cannot be located without a scan this project does not have. They are currently filed in chapters XIV and XV while their text is chapter XVII.
+
+#86 (ruins of the Polyandrion among trees) is catalogued at 233, which carries the obelisk and one medallion; scan p234 carries two further hieroglyph blocks and not this one.
+
+#127 (box-tree clipped as three peacocks) at 313 and #129 (flower-bed, two birds on a vase) at 317: both pages carry other plates and not these.
+
+#83 and #162 are probably not lost at all but duplicate rows — #83 repeats #82's placeholder description on a page that carries one woodcut, and #162 repeats #161's scene on a page that carries one woodcut.
+
+**Acceptance.** Each of the ten either has its true page_seq in PLATE_PAGE_FIXES with the identifying line of Italian, or is recorded as a duplicate catalogue row with the row it duplicates named. For #66-70 that needs scans of page_seq 181-184, which are not in C:\Dev\hypnerotomachia polyphili\site\images\woodcuts_1499 — fetching them is part of the work (scripts/fetch_1499_plates.py). Nothing is written into hp.db, which is read-only.
+
+**Risk.** Low and bounded: all ten already carry page_checked, so nobody can mistake them for pages that were never looked at. The live consequence is that #66-70 sit in chapters XIV and XV in the ledger while xvii-seasons-altar and xvii-vertumnus-pomona-triumph, which they illustrate, sit in XVII.
+
+**Files.** `scripts/coverage_seed.py` · `research/coverage.json`
+
+**See.** bug-woodcut-catalog-page-jitter · bug-plate-page-seq-offset
+
+
+### `debt-ledger-cites-page-seq-as-folio` — Some ledger sources give an hp.db page_seq and call it a 1499 page
+
+**○ open** · debt · priority 4 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 while sweeping plates for bug-woodcut-catalog-page-jitter. The two numberings are ten pages apart (bug-plate-page-seq-offset), and some hand-written sources in research/coverage.json give the page_seq while saying '1499 p.': chapter VIII's plate-23-third-fountain '1499 plate #23 (p. 80)', plate-24-frieze-genii '(p. 84)' and plate-25-planetary-wall '(p. 88)' are page_seq 80, 84 and 88 = our pp. 90, 94 and 98 — and 94 and 98 are chapter IX, not VIII. Chapter IV's porch-medallion-busts '1499 plate #16 (p. 38)', porch-hieroglyph-casket '#15 (p. 31)' and porch-sarcophagus-queen '#14 (p. 30)' are the same pattern, and #16's page has since been corrected to page_seq 45 anyway. This is exactly the conflation that produced xvi-priapus-tourstop-mismatch.
+
+Not fixed in the 2026-09-20 pass because bug-dallington-page-drift's risk note forbids mass-rewriting sources without checking each one, and these lie outside the chapters that pass was asked to spot-check.
+
+**Acceptance.** Every source string in research/coverage.json that gives a plate's page says which numbering it is in, in the form used by the entries written on and after 2026-09-20 ('page_seq NNN = our p. NNN'). Each is checked against the plate's page in chapters[].plates before it is touched — no sweep-and-replace. Features that move chapter as a result are moved.
+
+**Risk.** The failure mode is a feature filed one chapter off, which is the class of error that hides work. Low urgency because chapters[].plates is derived and already correct; it is the prose beside it that lies.
+
+**Files.** `research/coverage.json`
+
+**See.** bug-plate-page-seq-offset · bug-dallington-page-drift
 
 
 ---
@@ -670,6 +697,25 @@ Nothing under src/ was touched and no hpDiag or live-page check applies to a res
 **See.** HPTOTOURPIPELINE.md · bug-plate-page-seq-offset · bug-concordance-signature-quire-model
 
 
+### `bug-dallington-page-drift` — Dallington's page numbers drift out of sync with the 1499's after about chapter XIV
+
+**✅ done** · bug · priority 2 · hp-researcher
+ · opened 2026-09-17, closed 2026-09-20
+
+
+**Evidence.** Found enumerating chapter XVI, 2026-09-17. coverage.json gives XVI pages_1499 [181,188], which is right for the 1499 and is confirmed by translation/en/page_181 -page_188.md, each of which headers itself '# Page NNN -- Chapter XVI'. But the Dallington markdown's own OCR markers <!-- Page 181 --> .. <!-- Page 188 --> carry the same numbers over completely different content: the ivied hundred-arch garden and the trigonal altar with the three golden sphinxes, which is chapter XIII-XIV material and is already built (palace.js _buildPoliaArcade, and the altar around palace.js:2305). Dallington abridges to just under half the Italian, so his page count falls behind through Book I and the two numberings cannot be used interchangeably after roughly chapter XIV. Same class as the closed ticket bug-chapter-xi-tour-misattributed, one seam further in.
+
+**Acceptance.** coverage.json's text_source note for every chapter whose text_source is Dallington says which page numbering its pages_1499 field is in, and RECIPES/research-a-chapter.md tells the reader to confirm a Dallington page against the translation/en/ header before citing it. A spot check of chapters XIV, XV and XVI finds the cited passage at the cited page.
+
+**Risk.** Every source string already written against Dallington in the ledger for chapters XII-XVI may carry his page or the 1499's, and the two now differ. Do not mass-rewrite them: check each against the text before changing it, because some are right.
+
+**Resolution.** MEASURED, then fixed — and the spot check found chapter XV wholly mis-filed, not merely drifting. (1) The drift was measured, not guessed: every one of Dallington's 279 e-text pages was aligned against every one of the 467 translation pages by rare-proper-noun overlap, and sixteen anchors then read by eye. He falls behind by about 20 pages at his p.80 (= 1499 p.60), about 58 at his p.194 (= 1499 p.136) and about 62 at his p.250 (= 1499 p.188), and then the gap jumps because he skips 1499 pp.194-237 outright. NO CONSTANT repairs it. The table is in scripts/coverage_seed.py above text_source(). (2) text_source() now tells every chapter I-XVI which numbering its pages_1499 is in, and says outright that a 'Dallington p. N' source is on a different scale; it also records that our own CC0 translation now covers the WHOLE book (451 of 467 pages verified), so Dallington is a second witness, not the only English. (3) RECIPES/research-a-chapter.md now sends the reader to translation/en for every chapter and requires a Dallington page to be confirmed against the page_NNN.md header before it is cited. (4) THE SPOT CHECK. XIV: sound — its features cite translation pages and the centaurs (p.161), elephants (p.165), unicorns (p.169) and Hyrcanian tigers (p.172) are each on the page cited. XVI: sound — 'p. 182' is the ring of shrubby hills, as cited. XV: ALL TEN FEATURES WERE IN THE WRONG CHAPTER. They were sourced to Dallington e-text pp. 242-260, which is 1499 pp. 182-241 — chapters XVI, XVII and XVIII. Nothing filed under XV described 1499 pp.177-180. They were re-filed with their bodies verbatim (the build research in those notes was sound; only the chapter was wrong): two to XVI, six to XVII, two to XVIII. Chapter XV was then read in our translation and enumerated from scratch — twelve features, including the book's clearest rule of admission, 'no earth-born creature could enter here without a torch kindled'. XVII gained a whole unenumerated episode (pp.189-194: the Vertumnus and Pomona triumph, the hedged orchard, the rural trophies, the four Seasons altar and its four dedications, and the Priapus rite). Per the risk note, the existing sources for XII-XVI were checked one by one and NOT mass-rewritten: XII's were already right and were left alone; XVI's three Dallington-witness pages were appended, not replaced.
+
+**Files.** `research/coverage.json` · `RECIPES/research-a-chapter.md`
+
+**See.** ROUTER.md
+
+
 ### `bug-fields-dark-wedge` — The fields station stands 2.4 m from the flank of the valley mountain
 
 **✅ done** · bug · priority 2 · hp-builder
@@ -1002,6 +1048,71 @@ The first attempt at the fold broke the decision's own rule and was caught by me
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLING.md#1
+
+
+### `bug-concordance-signature-quire-model` — hp.db page_concordance's signature/quire columns are a uniform reconstruction that omits a whole gathering
+
+**✅ done** · bug · priority 3 · hp-researcher
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Split out 2026-09-20 from bug-concordance-section-drift, which carried it as 'related' and whose fix falsified the other half of the same hypothesis. page_concordance.signature / quire / leaf_in_quire is a reconstruction, and it is wrong early. Dumped: 29 quires -- a b c d e f g h i k l m n o p q r s t x y z, then A B C D E F G -- every one of eight leaves except z and G at four, totalling exactly 448 pages. Two faults, both measured against the signatures actually printed at the foot of the scans.
+
+(1) IT OMITS THE 'u' GATHERING. Its lowercase run goes ...s t x y z, with no u between t and x.
+
+(2) Its page-to-signature mapping is consequently wrong on both sides of the gap, in opposite directions: it places quire n two pages LATER than the scan does, and quire y fourteen pages EARLIER. hp1499_p195.jpg is signed 'n iii' -- leaf 3 recto, so quire n opens at page_seq 191, where the model says 193 (measured in bug-plate-page-seq-offset, which opened that scan for its full-page rotunda section). hp1499_p337.jpg is signed 'y ii', so quire y opens at 335, where the model says 321 (measured here, 2026-09-20). hp1499_p387.jpg is signed 'B' and p389 'B ii', so Book II's quire B opens at 387, where the model says 361 (measured in bug-concordance-section-drift).
+
+The three readings are self-consistent with sixteen-page gatherings AND a u quire: counting u in, n to y is nine gatherings, and 191 + 9*16 = 335 exactly; and Book II's A opening at page_seq 371 (measured: our p.381, 'POLIPHILO BEGINS THE SECOND BOOK') puts B at 387, exactly where the scan signs it. The residual two pages before quire n are NOT explained by this, and want one more scan carrying a visible signature somewhere in quires a-m.
+
+The table also stops at page_seq 448 while the book runs to at least 457 -- our p.467, the errata leaf and the Aldine colophon.
+
+**Acceptance.** Either a measured quire table beside coverage_seed.py, keyed to signatures actually read off the scans, or a plain statement in the ledger that hp.db's signature / quire / leaf_in_quire columns are not to be used for anything. Machine-checkable: for every scan whose signature has been read, the table agrees with it -- at least the four already measured, page_seq 195 'n iii', 337 'y ii', 387 'B', 389 'B ii'. The corpus at C:\Dev\hypnerotomachia polyphili is read-only from here, so no fix may be written into hp.db.
+
+**Risk.** Low while nothing reads those columns, and nothing in this repo does today. It matters indirectly: woodcut_catalog.page_seq was placed by subject-matching against the woodcuts table, which carries these same signature labels (see its link_basis), so every plate page inherits whatever the quire model got wrong -- which is already why plate pages travel with a +/-2 caveat. The danger is anyone deriving a page from a signature, or 'correcting' a plate page by a leaf, instead of opening the scan.
+
+**Resolution.** A MEASURED QUIRE TABLE, built and guarded, and the ticket's unexplained residual explained. MEASURED_QUIRES and check_quires() are now in scripts/coverage_seed.py and the collation is emitted as coverage.json quires_1499 in both numberings. Twelve new signatures were read off scans this pass — p31 'c', p63 'e', p95 'g', p127 'i', p129 'i ii', p149 'k iiii', p165 'l iiii', p213 'o iiii', p275 's iii', p307 'u iii', p319 'x', p419 'D' — joining the four the ticket already had (p195 'n iii', p337 'y ii', p387 'B', p389 'B ii') and p435 'E', which bug-woodcut-catalog-page-jitter had recorded in passing. Seventeen readings in all, plus four scans (p23, p59, p87, p105) confirmed to carry NO signature. SCAN p307 IS SIGNED 'u iii', which is the direct proof the ticket asked for that the u gathering exists and hp.db is simply missing it. The model that fits all seventeen with nothing left over: four unsigned preliminary leaves, then a-y in EIGHTS (u included), z in TEN, A-E in eights, F in four = 4 + 176 + 10 + 40 + 4 = 234 leaves = 468 pages, exactly the length of the book (our pp.1-467 plus a final blank verso). THE TWO-PAGE RESIDUAL BEFORE QUIRE n IS NOW EXPLAINED, and the explanation is not a fudge: hp.db's page_seq 1 is NOT a1r. Quire a opens two pages earlier, on our p.9 — the last preliminary leaf, the one carrying Poliphilo's dedication to Polia — so page_seq 1 is a2r. That single leaf is the whole of the discrepancy the ticket measured at quire n, and it also fixes i at 127 (not 129) where the scan signs it. z's ten leaves are the one thing NOT seen directly: the corpus folder holds no scan between page_seq 349 and 363, so z is fixed by arithmetic between y at 335 (scan) and A at 371 (measured text) rather than by a signature. Recorded as such in the source. The ledger also now says in terms, under page_numbering.quires_caveat, that hp.db's signature / quire / leaf_in_quire columns are not to be used for anything, and that a page must never be derived from a signature. Nothing was written into hp.db.
+
+**Files.** `scripts/coverage_seed.py` · `research/coverage.json`
+
+**See.** bug-concordance-section-drift · bug-plate-page-seq-offset
+
+
+### `bug-woodcut-catalog-page-jitter` — woodcut_catalog.page_seq is subject-matched, not observed, and is good only to about +/-2 pages
+
+**✅ done** · bug · priority 3 · hp-researcher
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 while closing bug-plate-page-seq-offset. woodcut_catalog rows were placed on pages by subject-matching against the woodcuts table, whose source_method is LLM_ASSISTED; woodcut_catalog.link_basis records it, e.g. #153 "subject match on 1499 page 389: shared terms drags, polia, poliphilus, prostrate, sanctuary", and 20 rows carry a link_basis beginning "unresolved". Opening scans shows the drift is real: #152 is printed on p386 not p387, #153 on p387 not p389, #154 on p390 not p391. Worse, #165 ("Polia reading lover's letter in bed-chamber") is catalogued at page_seq 435 and hp1499_p435.jpg is unbroken text with no woodcut on it at all (signature "E"), so that row's page is simply wrong and its true page is not yet known. The catalogue and the woodcuts table also disagree with each other outright on 13 plates (#79, #80, #81, #83, #102, #104, #107, #124, #140, #149, #154, #156, #162), by up to 11 pages. This matters for the ledger only where a plate sits within a page or two of a chapter boundary; 64 of the 168 plates do. Eight plates have now been opened on the scan: #152, #153 and #154 were corrected, and #1, #72, #76, #149 and #163 were confirmed as catalogued. Five of those eight (#1, #152, #153, #154, #163) are among the 64 sitting near a boundary; the other 59 near-boundary plates have not been looked at.
+
+**Acceptance.** Every plate that resolves within 3 pages of a chapter boundary has had its scan opened and its page either confirmed or corrected in PLATE_PAGE_FIXES in scripts/coverage_seed.py, with the identifying line of Italian recorded in the comment. Machine-checkable: no plate in coverage.json lacks page_checked while resolving within 3 pages of a chapter boundary. Nothing is written into hp.db, which is read-only here.
+
+**Risk.** The failure mode is a plate filed one chapter off, which is a research-ledger error rather than a build error -- but it is exactly the class of error that hides work, so it should not be inferred away. Do not guess a plate's page from the surrounding text or from the woodcuts table; both were already wrong here. Open the scan.
+
+**Resolution.** SWEPT. All 61 near-boundary plates that had not been looked at have now had their scan opened — 57 distinct scans opened this pass — and the acceptance criterion is asserted on every seed by the new check_page_checked() in scripts/coverage_seed.py: no plate resolving within 3 pages of a chapter boundary may lack page_checked. Counting the five already done, 63 plates now resolve within 3 pages of a boundary and all 63 carry page_checked: 41 CONFIRMED on the catalogued page (#2 #3 #4 #5 #6 #7 #8 #18 #20 #21 #23 #32 #39 #40 #41 #42 #43 #44 #45 #46 #71 #81 #82 #87 #88 #89 #90 #113 #114 #128 #130 #131 #134 #135 #148 #157 #161 #164 #166 #168, each with its identifying line of Italian recorded in PLATE_PAGE_CONFIRMED); 12 CORRECTED into PLATE_PAGE_FIXES (#16 38->45, #24 84->87, #47 151->152, #48 151->153, #63 164->165, #64 165->166, #65 165->167, #132 319->318, #133 319->318, #160 415->416, #165 435->436, #167 448->447 — fifteen rows in the table, of which twelve are near-boundary plates; #24, #47 and #48 were corrected too and their new pages carry them clear of any boundary); and 10 OPENED AND STILL UNRESOLVED, recorded in the new PLATE_PAGE_UNRESOLVED and stamped page_unresolved in the ledger (#66 #67 #68 #69 #70 #83 #86 #127 #129 #162). For those the catalogued page was opened and found to carry something else, and the plate's true page has NOT been seen, so it is left where the catalogue put it rather than guessed at — see bug-woodcut-catalog-ten-unresolved-plates. Two results worth naming. #165, which this ticket recorded as known-wrong with its true page unknown, IS RESOLVED: it is on scan p436, the canopied bed with the little dog and Polia standing with the open letter. And four catalogued pages turned out to carry NO WOODCUT AT ALL, like the #165 case the ticket described: page_seq 38, 84, 151 and 415 are unbroken text. Five new double-page plates were identified, whose running heads read across the opening ('TRIVMPHVS PRIMVS' at 152-153, 'TRIVMPHVS QVARTVS' at 166-167), which is why the catalogue's left/right pairs sat on one page. Also measured in passing but outside this ticket's scope because it is nowhere near a boundary: #62 'Jupiter and the Heliades' is catalogued at page_seq 161 and is in fact the woodcut at the foot of scan p164, the nymphs rooting into trees before Jove.
+
+**Files.** `scripts/coverage_seed.py` · `research/coverage.json`
+
+**See.** HPTOTOURPIPELINE.md · bug-plate-page-seq-offset
+
+
+### `debt-dallington-tail-unread` — Dallington's English runs past the Four Seasons altar to a formal FINIS -- unread and unenumerated
+
+**✅ done** · debt · priority 3 · hp-researcher
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 while closing bug-tours-prose-ahead-of-geometry. tours.json had told itself Dallington's 1592 English breaks off mid-sentence at 'Mustulento' (facsimile p. 193), and that everything past that point existed in English only under copyright. It does not: in the project's corpus copy, C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md, 'Mustulento Autumno S.' is a complete altar-tag at line 10926, immediately followed by Winter's tag at line 10936, completing the Four Seasons altar. Dallington's English then runs on: the nymph leads Poliphilo 'towards the sea side and sandie shore, where we came to an olde decaied temple' (lines 10937-10947, e-text pp. 256-257), then gives a full blazon of Polia's beauty -- starry forehead, feet, neck with a pearl carkenet, breasts as a 'delicious vallie' -- (lines ~11004-11031, e-text pp. 258-259), and closes with a formal 'FINIS.' at line 11127 (e-text p. 260). The transcriber's own technical notes begin immediately after, at line 11129 ('Technical Notes and further information ... Note that the 1592 English translation covers just under half the Italian text'), confirming this FINIS is the actual end of Dallington's whole 1592 translation, not a chapter break. So there is roughly 200 lines of genuine public-domain 1592 English -- a seaside ruined temple and a complete blazon of Polia -- that this project has never read end-to-end or enumerated into research/coverage.json, and the tour has been telling readers it doesn't exist.
+
+**Acceptance.** An hp-researcher pass reads Hypnerotomachia_by_Francesco_Colonna.md lines 10926-11127 end-to-end against the corresponding 1499 Italian/our translation, enumerates the seaside ruined temple and the blazon of Polia into research/coverage.json chapter by chapter, and records whether either scene is already covered by existing built geometry (the mainland grove, an existing tomb or portrait station) or is a genuine gap.
+
+**Risk.** Closing bug-tours-prose-ahead-of-geometry by editing the Mustulento sentence alone, without opening this ticket, would have buried the fact that this stretch of public-domain English exists and has never been read by this project -- exactly the risk that ticket's own risk note warned against.
+
+**Resolution.** READ END TO END and enumerated — and the tail turns out to be in a different place than the ticket supposed. Corpus md lines 10890-11127 were read whole and aligned page by page against our own translation. Dallington does not merely continue past 'Mustulento': he gives Winter's tag (Hiemi Æoliæ S., line 10936, completing the four Seasons on 1499 p.193), then SKIPS 1499 pp.194-237 ENTIRELY — the Priapus rite, the whole Temple of Venus, the whole of Polia's account of the Polyandrion, about 44 pages — and resumes at 1499 p.238, running to his 'FINIS.' at the end of chapter XVIII, 1499 p.241, immediately before the argument of chapter XIX. So his 1592 English reaches chapter XVIII, not XVII, and the seaside temple and the blazon are NOT chapter XV material as the ledger had them. Enumerated: chapter XVIII gained four entries — xviii-seaside-ruined-temple (re-filed from XV, status raised unbuilt -> PARTIAL: the 'destroyed and deserted temple' on the 'spacious and sandy shore' IS the Polyandrion of ch. XIX, which is built as HPWorldScene._buildPolyandrion; what is missing is the shore, and nothing in build_evidence names a beach, sand or surf), xviii-rest-before-the-temple (the Tempe survey of the whole country from the herbs — the one composed viewpoint in the book, UNBUILT, no station there), xviii-polia-blazon-costume (re-filed from XV and re-read against the 1499: starry forehead vine-tendrilled with gold threads, vermilion shoes moon-mouthed over the ivory instep, the pearl carcanet, the 'delicious little valley' with the sepulchre of his soul beyond Mausolus — UNBUILT, though the book's other blazon at ch. XI is largely built), and xviii-restraint-and-the-exempla (Deianira, the chaste Roman, the lions tamed by time, the ant wearing its path in the flint, the Arabian phoenix, and Polia's face-colour compared to the thrice-changing Tripolion — the book's one explicit refusal, UNBUILT). A fifth entry, xviii-dallington-ends-here, records the edition fact as DECLINED, because tours.json and translation/manifest.json both still tell readers this English does not exist — see ticket bug-translation-seam-note-wrong.
+
+**Files.** `C:\Dev\hypnerotomachia polyphili\md\Hypnerotomachia_by_Francesco_Colonna.md` · `research/coverage.json`
+
+**See.** bug-tours-prose-ahead-of-geometry · HPTOTOURPIPELINE.md
 
 
 ### `debt-reading-station-is-chapter-grained` — The reading mode places a page by its CHAPTER, so a long chapter strands the reader at one station
