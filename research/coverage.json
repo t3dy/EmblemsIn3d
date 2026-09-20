@@ -20,7 +20,8 @@
     "shape": "one constant across the whole book — not a step function, and with no break at the Book I/II seam. Measured 2026-09-20 at eight scan/page pairs spanning chapters I, XVII, XXI, XXIV, XXVI, XXXI and XXXIII; the measurements are listed in scripts/coverage_seed.py.",
     "caveat": "woodcut_catalog.page_seq is itself only good to about +/-2 pages (LLM_ASSISTED subject-matching; see its link_basis column), so a plate sitting within a page or two of a chapter boundary may still be on the wrong side of it. Plates carrying page_checked have been seen on the scan; the rest have not.",
     "regression_check": "16 plate->chapter pairs asserted on every seed (check_plates() in scripts/coverage_seed.py)",
-    "sections_caveat": "sections_1499 comes from page_concordance.section, whose boundaries drift progressively early past page_seq ~167 — BOOK_II_POLIA is marked at 271 when Book II opens at 371. Shifting it by the offset does not repair it. Use chapters[].pages_1499 to place a chapter, never a section. Ticket bug-concordance-section-drift."
+    "sections_caveat": "sections_1499 is MEASURED — read from the text of our translation, boundary by boundary, on 2026-09-20, and no longer taken from hp.db.page_concordance.section, whose boundaries ran progressively early (BOOK_II_POLIA marked at 271 when Book II opens at 371) and were never derived from the collation at all. Every boundary carries the line that fixes it in boundary_measured_at. Two things it still cannot tell you: the episodes interleave (the great gate is sighted at page_seq 21, then the ruins woodcuts run to 31, then the gate resumes), and at two seams the boundary is set a page or two off the narrative turn to keep each section's own plates inside it. To place a CHAPTER still use chapters[].pages_1499. Ticket bug-concordance-section-drift.",
+    "sections_check": "168 plates asserted inside their own narrative_section, and the 13 sections asserted to tile page_seq 1-457 without gap or overlap, on every seed (check_sections() in scripts/coverage_seed.py)"
   },
   "modes": [
     "walk",
@@ -51,157 +52,174 @@
   "sections_1499": [
     {
       "section": "PRELIMINARIES",
-      "pages_1499": [
-        1,
-        3
-      ],
+      "pages_1499": null,
       "pages_translation": [
-        11,
-        13
-      ]
+        1,
+        10
+      ],
+      "boundary_measured_at": "The five unsigned preliminary leaves, our pp.1-10: title page, Aldus's and Crasso's matter, the half-title, Poliphilo's dedication to Polia. They are BEFORE page_seq 1 and have no page_seq at all — page_concordance calls page_seq 1-3 'PRELIMINARIES', but our p.11 = page_seq 1 is already Chapter I."
     },
     {
       "section": "DARK_FOREST",
       "pages_1499": [
-        4,
-        15
+        1,
+        11
       ],
       "pages_translation": [
-        14,
-        25
-      ]
+        11,
+        21
+      ],
+      "boundary_measured_at": "Chapter I opens on page_seq 1 (our p.11), the first page of the signed book.",
+      "note": "The wood itself is entered four pages in, page_seq 4 (our p.14), 'peruenuto nella uastissima Hercynia silua' — the scan opened for bug-plate-page-seq-offset. The first woodcut is on that page."
     },
     {
       "section": "PYRAMID_RUINS",
       "pages_1499": [
-        16,
-        37
+        12,
+        36
       ],
       "pages_translation": [
-        26,
-        47
-      ]
+        22,
+        46
+      ],
+      "boundary_measured_at": "our p.22 (page_seq 12): 'lifting my eyes towards that quarter where the wooded hills appeared to join, saw far off, in a deep recess, an incredible height in the figure of a tower' — the pyramid comes into view."
     },
     {
       "section": "DRAGON_PORTAL",
       "pages_1499": [
-        38,
-        62
+        37,
+        59
       ],
       "pages_translation": [
-        48,
-        72
-      ]
+        47,
+        69
+      ],
+      "boundary_measured_at": "Chapter V opens on page_seq 37 (our p.47): 'POLIPHILO, HAVING MADE SUFFICIENT DEMONSTRATION OF THE SYMMETRY OF THE GREAT GATE, GOES ON TO DESCRIBE ITS ORNAMENT' — the gate has the book to itself from here to the dark tunnel.",
+      "note": "Approximate, and early: the gate is first sighted at page_seq 21 (our p.31) and its symmetry argued from page_seq ~32. The boundary is put at the chapter opening because the ruins woodcuts run to page_seq 31."
     },
     {
       "section": "FIVE_SENSES",
       "pages_1499": [
-        63,
-        79
+        60,
+        81
       ],
       "pages_translation": [
-        73,
-        89
-      ]
+        70,
+        91
+      ],
+      "boundary_measured_at": "Chapter VII opens on page_seq 58 (our p.68): 'HAVING COME OUT OF THAT HORRENDOUS pit, and from those inner darknesses' — out of the dragon's tunnel, into the country of the fountain and the five damsels.",
+      "note": "Boundary set at 60, two pages after that opening, because plate #18 (the anchor and dolphin, 'Always make haste slowly') is on page_seq 59 — our p.69, the bridge parapet — and is tagged DRAGON_PORTAL in woodcut_catalog. The tag is loose: the bridge is already past the tunnel."
     },
     {
       "section": "QUEEN_PALACE",
       "pages_1499": [
-        80,
-        105
+        82,
+        106
       ],
       "pages_translation": [
-        90,
-        115
-      ]
+        92,
+        116
+      ],
+      "boundary_measured_at": "Chapter IX opens on page_seq 82 (our p.92) — Queen Eleuterylida's palace."
     },
     {
       "section": "JOURNEY_DOORS",
       "pages_1499": [
-        106,
-        148
+        107,
+        147
       ],
       "pages_translation": [
-        116,
-        158
-      ]
+        117,
+        157
+      ],
+      "boundary_measured_at": "Chapter X opens on page_seq 107 (our p.117) — the nymphs lead him out to the three doors."
     },
     {
       "section": "PROCESSION",
       "pages_1499": [
-        149,
-        167
+        148,
+        178
       ],
       "pages_translation": [
-        159,
-        177
-      ]
+        158,
+        188
+      ],
+      "boundary_measured_at": "Chapter XIV opens on page_seq 148 (our p.158) — the triumphal cars."
     },
     {
       "section": "VENUS_TEMPLE",
       "pages_1499": [
-        168,
-        185
+        179,
+        231
       ],
       "pages_translation": [
-        178,
-        195
-      ]
+        189,
+        241
+      ],
+      "boundary_measured_at": "Chapter XVII opens on page_seq 179 (our p.189); its own argument names the temple: 'in the said temple, at the warning of the priestess, the Nymph with much ceremony put out her torch, showing herself to Poliphilo to be his Polia... having entered with the sacrificing priestess into the holy shrine'."
     },
     {
       "section": "POLYANDRION",
       "pages_1499": [
-        186,
-        215
+        232,
+        273
       ],
       "pages_translation": [
-        196,
-        225
-      ]
+        242,
+        283
+      ],
+      "boundary_measured_at": "Chapter XIX opens on page_seq 232 (our p.242): 'go licitly to see these deserted temples, collapsed by devouring and obsolete old age'.",
+      "note": "All twenty-seven Polyandrion plates fall inside this one chapter."
     },
     {
       "section": "CYTHERA_VOYAGE",
       "pages_1499": [
-        216,
-        220
+        274,
+        281
       ],
       "pages_translation": [
-        226,
-        230
-      ]
+        284,
+        291
+      ],
+      "boundary_measured_at": "Chapter XX opens on page_seq 274 (our p.284) with AMOR VINCIT OMNIA and Cupid's bark."
     },
     {
       "section": "CYTHERA_GARDENS",
       "pages_1499": [
-        221,
-        255
+        282,
+        337
       ],
       "pages_translation": [
-        231,
-        265
-      ]
+        292,
+        347
+      ],
+      "boundary_measured_at": "our p.292 (page_seq 282): 'as, gliding to the most pleasant place, we put in' — the landing on Cythera."
     },
     {
       "section": "VENUS_FOUNTAIN",
       "pages_1499": [
-        256,
-        270
+        338,
+        370
       ],
       "pages_translation": [
-        266,
-        280
-      ]
+        348,
+        380
+      ],
+      "boundary_measured_at": "SCAN OPENED. hp1499_p336.jpg is our p.346 — 'paulatinamente puenissimo ad uno proscenio, oue era una conspicua... porta hiante... di uno mirabilissimo amphitheatro' — the procession reaches the gate of the theatre of Venus.",
+      "note": "Boundary set at 338, two pages later, because the same scan shows the Triumph of Cupid woodcut filling the foot of page_seq 336, and hp1499_p337.jpg (our p.347) its right-hand continuation. Both halves are catalogued at page_seq 337 and tagged CYTHERA_GARDENS; #143 is in fact on 336. The catalogue's +/-2 jitter, measured for once."
     },
     {
       "section": "BOOK_II_POLIA",
       "pages_1499": [
-        271,
-        448
+        371,
+        457
       ],
       "pages_translation": [
-        281,
-        458
-      ]
+        381,
+        467
+      ],
+      "boundary_measured_at": "Chapter XXV opens on page_seq 371 (our p.381): 'POLIPHILO BEGINS THE SECOND BOOK OF HIS HYPNEROTOMACHIA'. page_concordance puts this at 271.",
+      "note": "Ends at page_seq 457, our p.467, the errata leaf and the Aldine colophon. page_concordance stops at 448 — it is nine pages short of the book."
     }
   ],
   "build_evidence": {
@@ -5309,13 +5327,14 @@
           "kind": "rite",
           "plate": null,
           "source": "translation/en/page_361.md (p. 361)",
-          "status": "unbuilt",
-          "note": "This is the chapter's hinge action and its allegory is named outright in the translation notes (Synesia = understanding, Philedia = love-of-pleasure). Grep for 'Synesia' finds the name only in triumphs.js, leading a DIFFERENT procession (the golden car of Cupid, an earlier chapter); 'Philedia' appears nowhere in src/. No arrow object, no handoff, no choice or animation exists at the Cythera fountain -- the curtain is simply pre-torn (see xxiii-curtain-of-hymen).",
+          "status": "built",
+          "note": "Built 2026-09-20 from translation/en/page_361.md (ours, CC0). Synesia and Philedia stand either side of the approach to the torn curtain, 1.15 m out from the axis and 1.55 m clear of the basin collider, each labelled with the allegory our translator's note names (σύνεσις understanding, φιληδία love of pleasure): 'SHE OFFERS, AND POLIA WILL NOT' against 'SHE OFFERS, AND HE DOES'. The golden arrow hangs between their hands at y 1.05, laid along x so it points the way Cupid redirects it — the handover itself, not either end of it. Gated on `enclosure` so it does NOT appear at the mainland folio-80 fountain, which _buildFountain also serves. VERIFIED on the running page at main.js?v=416 by scene probe, not by eye: both NPCs present and visible at the designed coordinates with their label sprites; exactly two matching npc keys, so the enclosure gate holds; and three downward raycasts along the shaft all strike at y 1.066 (the top of an 0.018 r cylinder centred at 1.05) while two control rays 0.6 m away strike nothing. The arrow is invisible to a position census because it merges into the gold bucket — HANDOVER §4.2. NOT verified by screenshot or draw-call reading: the render loop was stalled (drawCalls 0, fps 1000, stalled true) because the app window was behind another window. Static census after the pass: 6 380 meshes; this pass adds 23 objects (18 nymph meshes, 2 label sprites, 3 arrow meshes), 0.36 %.",
           "modes": [
             "walk",
             "tour",
             "dream"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildFountain (src/scenes/world/temple.js), the `if (enclosure)` branch — Cythera's fountain only"
         },
         {
           "id": "xxiii-venus-revealed",

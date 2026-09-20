@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=308';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=310';
 import { VaultsScene } from './scenes/VaultsScene.js?v=14';
 import { DreamMode } from './systems/DreamMode.js?v=9';
 import { DREAM_STOPS } from './data/hp_dream.js?v=7';
@@ -16,7 +16,7 @@ import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=9';
 // invention waiting to drift. The ?v= must match the other importers of
 // RollUp.js (scenes/HPWorldScene.js, scenes/world/rollup.js) or the browser
 // loads a second, separate copy of the module.
-import { METALS, WEDDING } from './systems/RollUp.js?v=11';
+import { METALS, WEDDING } from './systems/RollUp.js?v=12';
 import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=12';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -1365,13 +1365,15 @@ window.hpVaults = () => { showHPMode(false); launchVaults({ depth: 1, lamps: 0 }
 // other because of that last line; the gauge is only the same claim laid flat.
 //
 // Why this lives in main.js rather than in RollUp.js: RollUp.js is imported by
-// scenes/HPWorldScene.js and scenes/world/rollup.js, and on 2026-09-20 both of
-// those files were mid-edit by another pass (the Stage 2 precinct work), so
-// their `RollUp.js?v=11` could not be bumped without staging someone else's
-// unfinished work. Keeping the per-frame logic here means the HUD, the
-// pull-back and the restart all arrive with main.js?v=, which IS bumped, and a
-// browser holding a stale RollUp.js loses only `tune.camBase`/`camScale` and
-// falls back to a full rebuild for "roll again" (see window.hpRollAgain).
+// scenes/HPWorldScene.js and scenes/world/rollup.js. Earlier on 2026-09-20 both
+// of those files were mid-edit by another pass (the Stage 2 precinct work), so
+// `RollUp.js?v=11` could not be bumped without staging someone else's
+// unfinished work; both were clean by the roll-shed-by-area pass later the
+// same day, so the chain went to `?v=12` cleanly across all three importers.
+// Keeping the per-frame logic here still means the HUD, the pull-back and the
+// restart all arrive with main.js?v=, which IS bumped, and a browser holding a
+// stale RollUp.js loses only its dials and falls back to a full rebuild for
+// "roll again" (see window.hpRollAgain).
 const ROLL_HUD = { built: false, lastR: -1, wed: null };
 
 // Metres → a fraction of the bar, linearly.
@@ -1597,10 +1599,11 @@ window.hpRoll = async () => {
 // card also keeps window.hpRoll() beside this — that one rebuilds the world and
 // its census, so everything is standing again, at the price of a few seconds.
 //
-// The `restart` check is not defensive noise: RollUp.js?v=11 could not be
-// bumped in this pass (its two importers were mid-edit by another pass), so a
-// browser may briefly hold the older module. When it does, this falls back to
-// the full rebuild rather than half-resetting a ball.
+// The `restart` check is not defensive noise: earlier the same day RollUp.js's
+// importers were mid-edit by another pass and the chain could not be bumped,
+// so a browser could briefly hold an older module (fixed at `?v=12`, see the
+// comment above). When a stale module IS held, this falls back to the full
+// rebuild rather than half-resetting a ball.
 window.hpRollAgain = () => {
   const sc = state.activeScene;
   const roll = sc && sc.roll;

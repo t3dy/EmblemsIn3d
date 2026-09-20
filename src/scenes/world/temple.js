@@ -925,6 +925,56 @@ export const Temple = {
     this._plaque({ main: 'ΩΣΠΕΡ ΣΠΙΝΘΗΡ ΚΗΛΗΘΜΟΣ', sub: 'AS A SPARK, SO ENCHANTMENT' },
       1.3, 0.28, FX, KERB * 0.62, FZ + R + 0.62, 0, true);
 
+    // ── The arrow-passing rite (ch. XXIII) ────────────────────────────────
+    //
+    // Cythera's fountain only — this is chapter XXIII's own hinge and has
+    // nothing to do with the mainland folio-80 fountain, which is gated out
+    // above by the same flag.
+    //
+    //   "the divine lord Cupid gave the golden arrow to the nymph Synesia, and
+    //    shrewdly made her a sign that she should offer it to Polia ... But
+    //    Polia ... seemed unpractised, and refused to consent. The lord in that
+    //    same moment, smiling, charged the nymph Synesia that she should hand
+    //    it to the nymph Philedia, and that she should then present it to me"
+    //                            — translation/en/page_361.md (ours, CC0)
+    //
+    // The allegory is exact and our translator's note refuses to flatten it:
+    // σύνεσις is understanding, φιληδία is love of pleasure. Understanding
+    // offers the arrow and Polia will not take it; Love-of-Pleasure offers the
+    // same arrow to Poliphilo, and he does — and tears the veil that the two
+    // panels above are already hanging apart from.
+    //
+    // So the two stand either side of the approach to the torn curtain, and the
+    // arrow is caught in the air BETWEEN their hands: the handover itself, not
+    // either end of it. The curtain behind them is the consequence, and the two
+    // read as one sentence when you walk up to the fountain from the north.
+    if (enclosure) {
+      const RITE_Z = FZ + R + 1.55;   // clear of the basin collider at R + 0.85
+      const RITE_X = 1.15;            // either side of the line to the curtain
+      const HAND_Y = 1.05;            // where a nymph of h 0.95 holds something
+
+      const synesia = this.cast.nymph({ name: 'Synesia', robe: 0x5a6fb0, pose: 'offer' });
+      this._npc('fount_synesia', synesia, FX - RITE_X, RITE_Z, Math.PI * 0.62,
+        { label: 'Synesia', sub: 'VNDERSTANDING · SHE OFFERS, AND POLIA WILL NOT',
+          labelY: 1.95, sway: 0.02 });
+
+      const philedia = this.cast.nymph({ name: 'Philedia', robe: 0xb05a72, pose: 'offer' });
+      this._npc('fount_philedia', philedia, FX + RITE_X, RITE_Z, Math.PI * 1.38,
+        { label: 'Philedia', sub: 'LOVE OF PLEASVRE · SHE OFFERS, AND HE DOES',
+          labelY: 1.95, sway: 0.02 });
+
+      // The golden arrow in the air between them, laid along x so it points from
+      // Synesia's hand toward Philedia's — the direction Cupid redirects it.
+      const SHAFT = RITE_X * 2 - 0.5;
+      this._m(new THREE.CylinderGeometry(0.018, 0.018, SHAFT, 6), gold,
+        FX, HAND_Y, RITE_Z, { rz: Math.PI / 2 });
+      this._m(new THREE.ConeGeometry(0.05, 0.17, 8), gold,
+        FX + SHAFT / 2 + 0.08, HAND_Y, RITE_Z, { rz: -Math.PI / 2, outline: true });
+      // the nock and its fletching, at Synesia's end
+      this._m(new THREE.ConeGeometry(0.045, 0.2, 4), gold,
+        FX - SHAFT / 2 - 0.06, HAND_Y, RITE_Z, { rz: Math.PI / 2 });
+    }
+
     // ── The water ────────────────────────────────────────────────────────
     //
     // There were four jets arcing down from about y=2 — from nothing, out of
