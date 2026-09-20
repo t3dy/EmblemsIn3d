@@ -6,7 +6,7 @@
 
 ---
 
-**69 tickets** — 5 open, 2 question, 3 declined, 59 done. By kind: 28 debt, 26 bug, 9 infra, 3 question, 2 perf, 1 feat.
+**69 tickets** — 3 open, 2 question, 3 declined, 61 done. By kind: 28 debt, 26 bug, 9 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -54,23 +54,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **See.** bug-plate-images-bound-to-page-seq-plus-eight
 
 
-### `debt-chapters-xv-and-xvi-have-no-tour-stop` — chapters XV (pp.177-180) and XVI (pp.181-188) have no tour stop at all; their reading pages inherit 'triumphs'
-
-**○ open** · debt · priority 5 · hp-researcher
- · opened 2026-09-20
-
-
-**Evidence.** Opened 2026-09-20 closing bug-tours-triumphs-xv-stop-is-chapter-xvii, which carries the first half of this in its own evidence. Moving 'priapus' to XVII left XVI empty; moving 'Vertumnus and Pomona' to XVII, where its lede has always been set, now leaves XV empty too. Neither is a regression -- both chapters were being covered by a stop that describes another chapter's pages -- but the gap is real and is now visible in coverage.json's chapters[].tour_stops. XV is the nymph's discourse on the multitude of lovers; XVI is the close of that triumph, a second garden of streams and dryads, and Poliphilo's long interior torment (our pp.186-188 are the blazon of the demi-goddess and the speech he rehearses and rejects). Both chapters' features are already enumerated in the ledger and all unbuilt, so there is something for a stop to speak about.
-
-**Acceptance.** Either each of XV and XVI carries a stop in tours.json with a page range read off the English (not off the tour prose), or research/coverage.json records for each, with a reason, that it is deliberately without one -- and coverage_seed.py is re-run either way so chapters[].tour_stops reflects the file.
-
-**Risk.** Needs new interpretive copy, which means the citation discipline of project rule 2 and a reading of the chapter first; and it needs coverage.json, which was outside the closing pass's scope.
-
-**Files.** `src/data/tours.json` · `research/coverage.json`
-
-**See.** bug-tours-triumphs-xv-stop-is-chapter-xvii · bug-tours-priapus-stop-chapter-tag
-
-
 ### `debt-reading-plate-captions-come-from-a-jittery-column` — reading.json's plate captions are bound by woodcuts.page_1499, which disagrees with the corrected woodcut_catalog on 44 of the 159 plate pages; no caption has been checked against its own scan
 
 **○ open** · debt · priority 5 · hp-researcher
@@ -86,23 +69,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **Files.** `scripts/build_reading.py` · `src/data/reading.json`
 
 **See.** bug-plate-images-bound-to-page-seq-plus-eight · bug-woodcut-catalog-page-jitter
-
-
-### `debt-coverage-json-stale-after-the-triumphs-retag` — coverage.json still files the Vertumnus and Pomona stop under chapter XV; tours.json now has it at XVII
-
-**○ open** · debt · priority 6 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** Opened 2026-09-20 closing bug-tours-triumphs-xv-stop-is-chapter-xvii. chapters[].tour_stops in research/coverage.json is DERIVED from tours.json by coverage_seed.py, and both coverage.json and coverage_seed.py were outside that pass's scope, so the ledger now lags the file it is derived from: XV still lists {'station': 'triumphs', 'title': 'Vertumnus and Pomona'}, XVII lists only priapus and venus_temple. Nothing hand-written is wrong; it is one re-run of the seed. COVERAGE.md is rendered from it and is stale in the same way.
-
-**Acceptance.** coverage_seed.py re-run: chapter XV's tour_stops is empty, XVII's includes the Vertumnus and Pomona stop, and COVERAGE.md is re-rendered from the result.
-
-**Risk.** Low. Do it in the same pass as debt-chapters-xv-and-xvi-have-no-tour-stop, which needs the same re-run, rather than twice.
-
-**Files.** `research/coverage.json` · `COVERAGE.md`
-
-**See.** bug-tours-triumphs-xv-stop-is-chapter-xvii
 
 
 ---
@@ -1554,6 +1520,44 @@ It matters because build_reading.py takes each page's chapter from the MANIFEST,
 **Files.** `translation/manifest.json` · `src/data/reading.json`
 
 **See.** bug-translation-page-092-chapter-header
+
+
+### `debt-chapters-xv-and-xvi-have-no-tour-stop` — chapters XV (pp.177-180) and XVI (pp.181-188) have no tour stop at all; their reading pages inherit 'triumphs'
+
+**✅ done** · debt · priority 5 · hp-researcher
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Opened 2026-09-20 closing bug-tours-triumphs-xv-stop-is-chapter-xvii, which carries the first half of this in its own evidence. Moving 'priapus' to XVII left XVI empty; moving 'Vertumnus and Pomona' to XVII, where its lede has always been set, now leaves XV empty too. Neither is a regression -- both chapters were being covered by a stop that describes another chapter's pages -- but the gap is real and is now visible in coverage.json's chapters[].tour_stops. XV is the nymph's discourse on the multitude of lovers; XVI is the close of that triumph, a second garden of streams and dryads, and Poliphilo's long interior torment (our pp.186-188 are the blazon of the demi-goddess and the speech he rehearses and rejects). Both chapters' features are already enumerated in the ledger and all unbuilt, so there is something for a stop to speak about.
+
+**Acceptance.** Either each of XV and XVI carries a stop in tours.json with a page range read off the English (not off the tour prose), or research/coverage.json records for each, with a reason, that it is deliberately without one -- and coverage_seed.py is re-run either way so chapters[].tour_stops reflects the file.
+
+**Risk.** Needs new interpretive copy, which means the citation discipline of project rule 2 and a reading of the chapter first; and it needs coverage.json, which was outside the closing pass's scope.
+
+**Resolution.** READ both chapters in full against translation/en/ (pp.177-180 for XV, pp.181-188 for XVI) and checked every builder name in src/scenes/world/*.js (read-only, no code touched) before deciding. XV (pp.177-180) is the Nymph's discourse on the multitude of lovers: four unvisited six-horse cars 'surrounded' by countless nymphs and their lovers bearing torches, shrines and spoil-spears; an Elysian flower-meadow with a long named flower-catalogue; a roll-call of mortal girls the gods loved in disguise (Callisto, Antiope, Erigone, Ceres and the serpent, and many more); the Nymph's key speech that no earth-born creature may enter 'without a torch kindled' either by love and labour or by the company of three holy matrons, and her promise to quench hers at the temple; the 'My Poliphilo' recognition moment; and choirs of the ancient poets' mistresses (Lycoris, Nemesis, Delia, Corinna, Cynthia, and Sappho's Phaon among them) singing before each of the four cars. XVI (pp.181-188) opens with half a page closing that same triumph, then the Nymph leads Poliphilo to a SECOND garden -- a ring-shaped meadow of crystal streams closed round by wooded hills where nymphs bathe and wade with tame swans, weave garlands, kiss and mock-slap in play under named mythological shade trees (the Heliades' poplars, Daphne's laurel, the mulberry of Pyramus and Thisbe) -- then seven pages resolve into Poliphilo's long interior torment: doubting whether this is illusion, whether the Nymph is Polia, a vow to endure any labour to win her, a catalogue of self-torment similes (Tityus, Milo, the labyrinth, Actaeon's hounds, the ichneumon and crocodile), and a second, cautionary catalogue of mortals punished for presuming on the gods (Syrinx, Echo, Ulysses's men, Orion, Aesculapius/Phaethusa). DECISION, for both: NO STOP ADDED, in each case with a distinct reason recorded in research/coverage.json's chapters[].research.note (hand-edited field, preserved by coverage_seed.py). XV: the only built geometry anywhere nearby is _buildTriumphs (triumphs.js) -- chapter XIV's four cars of Jupiter's loves, already carrying their OWN tour stop at the 'triumphs' station (pp.158-176) whose lede already accounts for the generic riding nymph-musicians. XV's specific content -- named mistresses, the flower catalogue, the torch-rule speech -- is a different, wholly unbuilt scene playing out around the same built cars; a stop would have repeated the exact 'prose describes what the geometry does not' failure this project closed twice today (bug-tours-prose-ahead-of-geometry, bug-tours-triumphs-xv-stop-is-chapter-xvii). XVI: seven of its eight pages describe a locale -- the ring-shaped second garden -- that exists nowhere in the built world (grep for a ring of streams, bathing nymphs, swans, or any of the named trees/myths finds nothing; no plan.json precinct answers to it); a stop here would be the plain case the acceptance criterion itself names: pointing the tour at empty ground. Neither chapter's tours.json entry was touched (git status confirms it, unlike coverage.json). Both chapters' features (12 for XV, 11 for XVI) remain enumerated and unbuilt in the ledger, ready for whenever either scene is built. Re-ran coverage_seed.py after the coverage.json edit and confirmed chapters[].tour_stops for XV and XVI are both still empty and the research notes survived the re-seed (a hand-edited field, preserved from the prior ledger by chapter id). COVERAGE.md re-rendered. No hpDiag/live verification applies -- data/ledger-only pass, tours.json unchanged.
+
+**Files.** `src/data/tours.json` · `research/coverage.json`
+
+**See.** bug-tours-triumphs-xv-stop-is-chapter-xvii · bug-tours-priapus-stop-chapter-tag
+
+
+### `debt-coverage-json-stale-after-the-triumphs-retag` — coverage.json still files the Vertumnus and Pomona stop under chapter XV; tours.json now has it at XVII
+
+**✅ done** · debt · priority 6 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Opened 2026-09-20 closing bug-tours-triumphs-xv-stop-is-chapter-xvii. chapters[].tour_stops in research/coverage.json is DERIVED from tours.json by coverage_seed.py, and both coverage.json and coverage_seed.py were outside that pass's scope, so the ledger now lags the file it is derived from: XV still lists {'station': 'triumphs', 'title': 'Vertumnus and Pomona'}, XVII lists only priapus and venus_temple. Nothing hand-written is wrong; it is one re-run of the seed. COVERAGE.md is rendered from it and is stale in the same way.
+
+**Acceptance.** coverage_seed.py re-run: chapter XV's tour_stops is empty, XVII's includes the Vertumnus and Pomona stop, and COVERAGE.md is re-rendered from the result.
+
+**Risk.** Low. Do it in the same pass as debt-chapters-xv-and-xvi-have-no-tour-stop, which needs the same re-run, rather than twice.
+
+**Resolution.** Re-seeded and confirmed. `python scripts/coverage_seed.py` re-run: chapter XV's tour_stops is now empty (it no longer lists the Vertumnus/Pomona stop) and chapter XVII's tour_stops correctly includes it, alongside 'priapus' and 'venus_temple'. COVERAGE.md re-rendered from the result. Done in the same pass as debt-chapters-xv-and-xvi-have-no-tour-stop, whose tours.json research (no change made) and coverage.json research-note edits were re-seeded a second time afterward to confirm nothing regressed.
+
+**Files.** `research/coverage.json` · `COVERAGE.md`
+
+**See.** bug-tours-triumphs-xv-stop-is-chapter-xvii
 
 
 ---
