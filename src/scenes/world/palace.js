@@ -30,11 +30,57 @@ export const Palace = {
                          : S.mat({ color: 0xc9a244, metalness: 0.9, roughness: 0.26 });
 
     // The court is Eleuterylida's palace, "of gold and gems" — it was an open
-    // slab. It now has a floor of banded courses, a peristyle of Corinthian
-    // columns round three sides, and a screen wall behind the throne, so the
+    // slab. It now has a floor of banded courses, a colonnade of Corinthian
+    // columns down its two long sides, and the throne wall at its head, so the
     // Queen holds court inside a building rather than on a paving stone.
-    this._m(new THREE.BoxGeometry(15.4, 0.22, 12.4), this._darkStoneMat, CX - 1, 0.11, CZ, { cast: false });
-    this._m(new THREE.BoxGeometry(14.6, 0.14, 11.6), this._stoneMat, CX - 1, 0.29, CZ, { cast: false, outline: true });
+    //
+    // ── THE COURT AT THE BOOK'S OWN SIZE (2026-09-20) ─────────────────────
+    // Ticket bug-court-has-no-room-left, and it was a scale bug, not clutter.
+    // Dallington p. 135 (corpus `md/Hypnerotomachia_by_Francesco_Colonna.md`
+    // ll. 5615–5617): "Of whiche moste excellent Court, euerie side was eight
+    // and twentie paces. In this sort stood this synarie open Court, all
+    // compassed about with fine golde, a worke rather to bee wondered at, then
+    // spoken off." Twenty-eight paces is 41.4 m (DIMENSIONS.md §3, and
+    // research/plan.json `palace.size_source`, which names this ticket as
+    // "this number"). The court was built 15.4 × 12.4 — a third of the book's
+    // width — and so the banquet's seven tables, the throne, the chess
+    // pavement, the five sense-nymphs and the bath left nowhere on the slab
+    // with a metre of clear ground: measured 2026-09-09 and re-measured
+    // 2026-09-20, peak surface clearance 0.85 m over the whole slab and 0.00 m
+    // a metre in from its edge. The wheeled fountain of plate #32 had to be
+    // set OUTSIDE the north wall for want of anywhere to put it.
+    //
+    // The same page sets out the bay, and it closes the arithmetic exactly:
+    // "The Pilastrelles were discrepant fowre paces one from an other, with a
+    // iust partition of seuen (a number gratefull to nature)". Four paces is
+    // 5.9 m; seven of them make the twenty-eight. So BAY below is the book's
+    // own module and the eight posts a side are its own count — not a guess.
+    //
+    // What the book does NOT give is the height of the order: it describes the
+    // pilasters' carving at length and never their measure, so PH is ours and
+    // modest. What it does give is that the throne's side stands higher than
+    // the rest — "The seuenth Mediane quarter, was the forefront directlye
+    // placed against the seuenth Iewell, representing the Planet Soll, whiche
+    // was set vp more higher then the rest, by reason of the Queenes Throne"
+    // (p. 135) — which is why WH clears the colonnade.
+    //
+    // NOT BUILT, and said here rather than left to be discovered: the book
+    // compasses the court about on every side, and this builds two colonnades
+    // and the throne wall, leaving the east front open where Poliphilo comes
+    // in and where the `court` station stands to look in. A third and fourth
+    // range at this size would be ~1 400 more meshes, a fifth of the whole
+    // world's budget, for architecture the reader stands outside of (rule 7).
+    //
+    // The court's CENTRE does not move — the station keeps its address and the
+    // banquet keeps the middle it is laid in ("in the middest of this
+    // admirable and stupendious Court", p. 147). Everything below is QX/QZ- or
+    // WX-relative, so the interior composition stays rigid while the shell
+    // grows around it.
+    const SIDE = 41.4, HALF = SIDE / 2, BAY = 5.9;
+    const QX = CX - 1, QZ = CZ;            // the centre of the open court
+    const WX = QX - HALF - 0.3, WH = 8.6;  // the throne wall, at the court's head
+    this._m(new THREE.BoxGeometry(SIDE + 2.6, 0.22, SIDE + 2.6), this._darkStoneMat, QX, 0.11, QZ, { cast: false });
+    this._m(new THREE.BoxGeometry(SIDE + 1.8, 0.14, SIDE + 1.8), this._stoneMat, QX, 0.29, QZ, { cast: false, outline: true });
     // Dallington p. 133: "a space of sixtie foure Squadrates of three foote …
     // one was of Iasper, of the colour of Corall, and the other greene,
     // powdered with drops of blood … set togither in manner of a Chesse-boord.
@@ -44,76 +90,92 @@ export const Palace = {
     // blood-green jasper, the pace-wide border, the knot pavement outside it.
     const coral = woodcut ? S.mat({ tone: 0.06 }) : S.mat({ color: 0xc8604a, roughness: 0.5 });
     const bloodG = woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2f5a3a, roughness: 0.5 });
-    const SQ = 0.78;
+    // At the court's true size the pavement comes off p. 133's own measures
+    // too, where it used to be shrunk to fit: three foot is 0.89 m, the border
+    // "the breadth of one pace" is 1.48 m a side, and the knot paving "three
+    // paces broad" is 4.44 m a side. So the whole composition is
+    // 8 × 0.89 + 2 × 1.48 + 2 × 4.44 = 18.96 m square, laid on the court's
+    // centre. (It was a 6.24 m board inside a 14.2 × 11.2 rug.)
+    const SQ = 0.89;                       // "Squadrates of three foote"
+    const BORD = 1.48, KNOT = 4.44;        // one pace, and three paces
     for (let f = 0; f < 8; f++) for (let r = 0; r < 8; r++) {
-      this._m(new THREE.BoxGeometry(SQ, 0.03, SQ), (f + r) % 2 ? coral : bloodG, CX - 1 + (f - 3.5) * SQ, 0.375, CZ + (r - 3.5) * SQ, { cast: false });
+      this._m(new THREE.BoxGeometry(SQ, 0.03, SQ), (f + r) % 2 ? coral : bloodG, QX + (f - 3.5) * SQ, 0.375, QZ + (r - 3.5) * SQ, { cast: false });
     }
-    this._m(new THREE.BoxGeometry(8 * SQ + 1.4, 0.02, 8 * SQ + 1.4), gold, CX - 1, 0.362, CZ, { cast: false });
+    this._m(new THREE.BoxGeometry(8 * SQ + 2 * BORD, 0.02, 8 * SQ + 2 * BORD), gold, QX, 0.362, QZ, { cast: false });
     if (!woodcut) {
       const km = new THREE.MeshStandardMaterial({ map: this._knotTexture(), roughness: 0.9 }); this._disp.push(km);
-      this._m(new THREE.PlaneGeometry(14.2, 11.2), km, CX - 1, 0.355, CZ, { rx: -Math.PI / 2, cast: false });
+      const KW = 8 * SQ + 2 * BORD + 2 * KNOT;
+      // …and it goes ON the upper course, not inside it. The plane was at
+      // 0.355 and the course it lies on spans 0.22–0.36, so the knot paving
+      // has been buried in the stone since it was built: invisible, and paid
+      // for every frame. 0.363 clears the course and still passes under the
+      // gold border (0.352–0.372) and the chess squares (0.36–0.39).
+      this._m(new THREE.PlaneGeometry(KW, KW), km, QX, 0.363, QZ, { rx: -Math.PI / 2, cast: false });
     }
     // "Settles, of the wood of Palme Trees … couered ouer with greene Veluet
     // … fastened to the same with tatch Nayles of Golde", along the sides
     const palmWood = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0xa8843a, roughness: 0.7 });
     const velvet = woodcut ? S.mat({ tone: 0.22 }) : S.mat({ color: 0x1f5a2e, roughness: 0.95 });
+    // — one to a bay, set just inside the colonnade, seven down either side
     for (const sz of [-1, 1]) {
-      for (let i = 0; i < 4; i++) {
-        const x = CX - 5.2 + i * 2.8, z = CZ + sz * 4.55;
-        this._m(new THREE.BoxGeometry(2.2, 0.36, 0.55), palmWood, x, 0.54, z, { cast: false, outline: true });
-        this._m(new THREE.BoxGeometry(2.1, 0.14, 0.5), velvet, x, 0.79, z, { cast: false });
-        for (let k = 0; k < 6; k++) this._m(new THREE.SphereGeometry(0.02, 6, 5), gold, x - 0.95 + k * 0.38, 0.73, z + sz * 0.27, { cast: false });
-        this._wallCol(x - 1.1, x + 1.1, z - 0.3, z + 0.3);
+      for (let i = 0; i < 7; i++) {
+        const x = QX - HALF + BAY / 2 + i * BAY, z = QZ + sz * (HALF - 1.9);
+        this._m(new THREE.BoxGeometry(3.2, 0.36, 0.55), palmWood, x, 0.54, z, { cast: false, outline: true });
+        this._m(new THREE.BoxGeometry(3.1, 0.14, 0.5), velvet, x, 0.79, z, { cast: false });
+        for (let k = 0; k < 6; k++) this._m(new THREE.SphereGeometry(0.02, 6, 5), gold, x - 1.4 + k * 0.56, 0.73, z + sz * 0.27, { cast: false });
+        this._wallCol(x - 1.6, x + 1.6, z - 0.3, z + 0.3);
       }
     }
 
-    // peristyle: columns down the two long sides and across the open east end
-    const PH = 3.6, py = 0.36;
+    // The colonnade, on the book's own bay: eight posts to a side, four paces
+    // (5.9 m) one from another, "with a iust partition of seuen" (p. 135).
+    const PH = 7.4, py = 0.36;
     const post = (x, z) => {
       const gc = new THREE.Group(); gc.position.y = py; this.scene.add(gc);
-      this._column(x, z, PH, { order: 'corinthian', r: 0.2, parent: gc });
+      this._column(x, z, PH, { order: 'corinthian', r: 0.38, parent: gc });
     };
-    for (let i = 0; i < 6; i++) {
-      const x = CX - 6.4 + i * 2.3;
-      post(x, CZ - 5.2); post(x, CZ + 5.2);
+    for (let i = 0; i < 8; i++) {
+      const x = QX - HALF + i * BAY;
+      post(x, QZ - HALF); post(x, QZ + HALF);
     }
-    for (const z of [CZ - 2.9, CZ, CZ + 2.9]) post(CX + 6.5, z);
-    for (const z of [CZ - 5.2, CZ + 5.2]) this._entablature(CX - 1, py + PH, z, 13.6, 0.8);
-    this._entablature(CX + 6.5, py + PH, CZ, 11.2, 0.8, { ry: Math.PI / 2 });
+    for (const z of [QZ - HALF, QZ + HALF]) this._entablature(QX, py + PH, z, SIDE + 1.2, 1.1);
 
-    // the screen wall behind the throne, with pilasters and a doorway
-    const WX = CX - 7.4, WH = 4.6;
-    this._m(new THREE.BoxGeometry(0.55, WH, 11.4), this._stoneMat, WX, py + WH / 2, CZ, { outline: true });
-    this._wallCol(WX - 0.28, WX + 0.28, CZ - 5.7, CZ + 5.7);
-    for (let i = 0; i < 5; i++) {
-      const z = CZ - 4.4 + i * 2.2;
-      this._m(new THREE.BoxGeometry(0.2, WH - 0.5, 0.42), this._darkStoneMat, WX + 0.34, py + (WH - 0.5) / 2, z, { cast: false });
+    // the throne wall at the head of the court, with its eight pilasters and
+    // the door in the void interstice at the middle — "the doore except,
+    // whiche did occupie an emptie voyde interstice" (p. 135)
+    this._m(new THREE.BoxGeometry(0.6, WH, SIDE + 1.2), this._stoneMat, WX, py + WH / 2, QZ, { outline: true });
+    this._wallCol(WX - 0.3, WX + 0.3, QZ - HALF - 0.6, QZ + HALF + 0.6);
+    for (let i = 0; i < 8; i++) {
+      const z = QZ - HALF + i * BAY;
+      this._m(new THREE.BoxGeometry(0.22, WH - 0.8, 0.62), this._darkStoneMat, WX + 0.38, py + (WH - 0.8) / 2, z, { cast: false });
     }
-    this._doorway(WX + 0.3, py, CZ, 1.8, 2.9, { ry: Math.PI / 2 });
+    this._doorway(WX + 0.32, py, QZ, 3.0, 4.6, { ry: Math.PI / 2 });
     // p. 134: the walls "couered ouer with Plates of beaten Golde", and in
     // lozenges "rounde Iewels, bearing out and swelling beyond the plaine
     // leuell of the wall … compassed about with greene"
-    for (let i = 0; i < 5; i++) {
-      const z = CZ - 4.4 + i * 2.2;
-      if (Math.abs(z - CZ) < 1.2) continue;
-      this._m(new THREE.BoxGeometry(0.05, 1.5, 1.5), gold, WX + 0.31, py + 2.9, z, { cast: false, ry: 0 }).rotation.x = Math.PI / 4;
-      this._m(new THREE.TorusGeometry(0.3, 0.05, 8, 20), woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2f6a3a, roughness: 0.6 }), WX + 0.36, py + 2.9, z, { cast: false, ry: Math.PI / 2 });
-      this._m(new THREE.SphereGeometry(0.26, 14, 10), woodcut ? S.mat({ tone: 0.08 }) : S.mat({ color: [0xb3243c, 0x1e3f96, 0x0d7548, 0xdca62c][i % 4], roughness: 0.15, metalness: 0.3 }),
-        WX + 0.42, py + 2.9, z, { cast: false }).scale.set(0.45, 1, 1);
+    // — one to each of the seven interstices, except the one the door has
+    const JY = py + WH * 0.56;
+    for (let i = 0; i < 7; i++) {
+      const z = QZ - HALF + BAY / 2 + i * BAY;
+      if (Math.abs(z - QZ) < 2.0) continue;
+      this._m(new THREE.BoxGeometry(0.05, 2.6, 2.6), gold, WX + 0.35, JY, z, { cast: false, ry: 0 }).rotation.x = Math.PI / 4;
+      this._m(new THREE.TorusGeometry(0.52, 0.08, 8, 20), woodcut ? S.mat({ tone: 0.2 }) : S.mat({ color: 0x2f6a3a, roughness: 0.6 }), WX + 0.4, JY, z, { cast: false, ry: Math.PI / 2 });
+      this._m(new THREE.SphereGeometry(0.45, 14, 10), woodcut ? S.mat({ tone: 0.08 }) : S.mat({ color: [0xb3243c, 0x1e3f96, 0x0d7548, 0xdca62c][i % 4], roughness: 0.15, metalness: 0.3 }),
+        WX + 0.5, JY, z, { cast: false }).scale.set(0.45, 1, 1);
     }
-    this._entablature(WX, py + WH - 0.2, CZ, 11.6, 0.7, { ry: Math.PI / 2 });
+    this._entablature(WX, py + WH - 0.3, QZ, SIDE + 1.6, 1.0, { ry: Math.PI / 2 });
 
     // ── the throne ──
     // a stepped dais, a seat with arms and a high back, and a baldachin over it
     // Cloths on the screen wall behind the throne (Lefaivre ch. 8). Hung in
     // the queen's own colours, and set to frame the throne rather than to
     // cover the wall evenly — the point of the clothing is that it POINTS.
-    for (const [dz, col, sw] of [[-3.4, 0xa8324a, false], [-1.15, 0x7a4a9a, true],
-                                 [1.15, 0x7a4a9a, true], [3.4, 0xa8324a, false]]) {
-      this._drape(WX + 0.42, py + 2.5, CZ + dz, 1.9, 3.2, col, { ry: Math.PI / 2, swag: sw });
+    for (const [dz, col, sw] of [[-5.9, 0xa8324a, false], [-2.0, 0x7a4a9a, true],
+                                 [2.0, 0x7a4a9a, true], [5.9, 0xa8324a, false]]) {
+      this._drape(WX + 0.46, py + 4.4, QZ + dz, 3.0, 6.0, col, { ry: Math.PI / 2, swag: sw });
     }
 
-    const TX = CX - 5.0;
+    const TX = WX + 2.9;
     for (let i = 0; i < 3; i++) {
       this._m(new THREE.CylinderGeometry(2.1 - i * 0.32, 2.25 - i * 0.32, 0.17, 20), this._stoneMat,
         TX, py + 0.085 + i * 0.17, CZ, { cast: false });
@@ -138,14 +200,14 @@ export const Palace = {
     this._m(new THREE.SphereGeometry(0.14, 12, 9), gold, TX, py + 4.24, CZ);
     this._circleCol(TX, CZ, 1.9);
     const queen = this.cast.nymph({ name: 'Eleuterylida', h: 1.0, robe: 0xc8a030, pose: 'offer', crowned: true });
-    this._npc('queen', queen, CX - 4.35, CZ, Math.PI / 2, { label: 'Eleuterylida', sub: 'QUEEN · FREE WILL', labelY: 2.1, sway: 0.02 });
+    this._npc('queen', queen, TX + 0.65, QZ, Math.PI / 2, { label: 'Eleuterylida', sub: 'QUEEN · FREE WILL', labelY: 2.1, sway: 0.02 });
     queen.position.y = 0.36 + 0.51 + 0.55;   // seated on the throne's cushion
 
     // The five nymphs of the senses, arced before the throne, each carrying the
     // attribute the book gives her (harp, glass, casket, casting bottle).
     SENSE_NYMPHS.forEach((n, i) => {
       const a = (-0.65 + (i / 4) * 1.3);
-      const x = CX - 4.5 + Math.cos(a) * 3.6, z = CZ + Math.sin(a) * 3.6;
+      const x = TX + 0.5 + Math.cos(a) * 3.6, z = QZ + Math.sin(a) * 3.6;
       const g = this.cast.nymph({
         name: n.name, robe: n.robe, h: 0.95,
         pose: n.pose || 'stand', attribute: n.attribute,
@@ -157,26 +219,34 @@ export const Palace = {
 
     // The banquet (ch. X, Dallington pp. 143-158), laid in the court itself:
     // "in the middest of this admirable and stupendious Court" (p. 147)
-    this._buildBanquet(CX, CZ);
+    this._buildBanquet(CX, CZ, WX);
 
-    // The bath of the nymphs — the eight-sided bath-house of the book
+    // The bath of the nymphs — the eight-sided bath-house of the book.
+    // (Chapter VII's bath, and the plan gives it a precinct of its own,
+    // `fountain_house`; it is folded in here. Out of scope for this pass, but
+    // at the court's true size it is no longer what crowds the place out.)
     this._buildBath(CX + 3.5, CZ + 2.8);
 
-    // The second wheeled fountain of the banquet (plate #32), standing just
-    // OUTSIDE the court's north wall rather than in it.
+    // The second wheeled fountain of the banquet (plate #32), AT the banquet
+    // at last — ticket bug-court-has-no-room-left, closed 2026-09-20.
     //
-    // Not a fudge, and measured before it was moved. The court has no room at
-    // all: surface clearance across the whole slab peaks at 0.40 m, because the
-    // banquet's seven tables, the throne, the chess pavement and the bath are
-    // already in it. The first placement, chosen off a probe that measured
-    // distance to object CENTRES rather than to their surfaces, put the fountain
-    // inside a wall -- clearance 0.00.
+    // It stood outside the court's north wall from 2026-09-09, because there
+    // was nowhere inside: surface clearance across the whole 15.4 × 12.4 slab
+    // peaked at 1.42 m (0.85 m by the box method the ticket used), and the
+    // fountain's own footprint is 1.65 × 0.90, so it needs 1.94 m of clearance
+    // to stand with a metre round it and there was nowhere on the slab that
+    // had it. That was the court being a third of the book's width, not the
+    // furniture being thick — see the note on SIDE above.
     //
-    // Outside, at (-24, 33), there is 7.4 m. And the object's own conceit makes
-    // that the right place: it is founded on an axle-tree with two wheels, which
-    // is banquet furniture WHEELED IN with a course. A wheeled fountain standing
-    // by the court door, waiting to be brought in, is what the thing is for.
-    this._buildWheeledFountain(CX - 5, CZ + 13);
+    // At twenty-eight paces there is room. It stands on the open floor east of
+    // the knot pavement, on the court's axis, where a reader coming in at the
+    // open front meets it first. Measured after the move, 2026-09-20: 5.15 m
+    // of clear ground all round it, and the court's peak clearance is 10.4 m
+    // with 74 % of the floor carrying a clear metre.
+    //
+    // It rides at the court floor (0.36), not at the earth: the third argument
+    // is the level its wheels stand on.
+    this._buildWheeledFountain(QX + 13, QZ, py);
 
     // Fountain jets over the bath (lit sparkle)
     const stream = new ParticleStream({
@@ -253,7 +323,12 @@ export const Palace = {
   // THE CORAL TREE (pp. 156–157, plate #31): after the tables, five nymphs in
   // blue silk and gold bring a chalice of gold whose cover is a mountain with
   // a coral tree a cubit high, flowered with sapphire, jacinth and beryl.
-  _buildBanquet(CX, CZ) {
+  // WX is the court's throne wall — the musicians stand seven a side of its
+  // jasper door, and the Queen's own table stands straight before her throne,
+  // so both are wall-relative rather than centre-relative. They were the same
+  // thing until 2026-09-20, when the court grew to the book's twenty-eight
+  // paces and the head of the court parted company with its middle.
+  _buildBanquet(CX, CZ, WX) {
     const S = this.style, woodcut = S.key === 'woodcut';
     const FLOOR = 0.36;
     const M = (c, e = {}, t = 0.08) => woodcut ? S.mat({ tone: t }) : S.mat({ color: c, ...e });
@@ -277,7 +352,7 @@ export const Palace = {
     ];
     // where the seven stand: the Queen's straight before her, the six about
     // the pavement, clear of the nymphs' arc, the bath and the perfuming vessel
-    const SEATS = [[CX - 3.2, CZ], [CX - 0.4, CZ - 2.6], [CX + 1.7, CZ - 1.4], [CX + 2.4, CZ + 1.2],
+    const SEATS = [[WX + 6.4, CZ], [CX - 0.4, CZ - 2.6], [CX + 1.7, CZ - 1.4], [CX + 2.4, CZ + 1.2],
                    [CX - 0.4, CZ + 2.7], [CX + 1.4, CZ - 3.6], [CX - 2.4, CZ + 3.4]];
 
     const ORD = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh'];
@@ -494,19 +569,19 @@ export const Palace = {
       1.5, 0.3, KX - 0.7, FLOOR + 0.12, KZ, Math.PI / 2, true);
 
     // ── the fourteen musicians, seven a side of the jasper door (p. 143) ────
-    const WX = CX - 7.4 + 0.95;
+    const MX = WX + 1.25;
     for (const side of [-1, 1]) {
       for (let k = 0; k < 7; k++) {
         const z = CZ + side * (2.7 + k * 0.42);
         const mus = this.cast.nymph({ name: 'musician', robe: [0x9a6ab8, 0x6a8ab8, 0xb88a6a][k % 3], h: 0.9, pose: 'carry', attribute: k % 2 ? 'harp' : null });
-        mus.position.set(WX, FLOOR, z);
+        mus.position.set(MX, FLOOR, z);
         mus.rotation.y = Math.PI / 2;
         this.scene.add(mus);
         this._npcs.push({ g: mus, phase: k * 0.6 + (side > 0 ? 3 : 0), baseY: Math.PI / 2, sway: 0.015 });
       }
     }
     this._plaque({ main: 'SEVEN VPON A SIDE', sub: 'YOONG DAMOSELS MVSITIANS, WHICH AT EVERY CHANGE OF SERVICE DID ALTER THEIR MVSICKE AND INSTRVMENTS · MVTE HERE: THE SITE IS SILENT BY DECISION · P. 143' },
-      1.7, 0.3, WX + 0.5, FLOOR + 1.9, CZ - 5.0, Math.PI / 2, true);
+      1.7, 0.3, MX + 0.5, FLOOR + 1.9, CZ - 5.0, Math.PI / 2, true);
   },
 
   // ── Quinta Essentia (f.164) — east court ──────────────────────────────────
@@ -1918,7 +1993,11 @@ export const Palace = {
   //
   // Height: the plate is glossed in this file as "twice a nymph's height", and
   // the world's nymphs stand about 1.6 m, so the whole reaches about 3.4.
-  _buildWheeledFountain(FX, FZ) {
+  // FY is the level its wheels stand on — 0 on the earth, 0.36 on the court
+  // floor. Every other height in here derives from AY, so the one term carries
+  // the whole object up. Added 2026-09-20 when the fountain came in off the
+  // grass and into the court (ticket bug-court-has-no-room-left).
+  _buildWheeledFountain(FX, FZ, FY = 0) {
     const S = this.style;
     const woodcut = S.key === 'woodcut';
     const FT = 0.296;                       // the Roman foot
@@ -1930,7 +2009,7 @@ export const Palace = {
     const rnd = (i, k) => { const v = Math.sin(i * 71.3 + k * 187.1) * 43758.5453; return v - Math.floor(v); };
 
     // the axle-tree, and the two wheels that turn on it
-    const WR = 0.30, AY = WR;
+    const WR = 0.30, AY = FY + WR;
     const axle = this._m(new THREE.CylinderGeometry(0.045, 0.045, LONG + 0.34, 8), dark, FX, AY, FZ);
     axle.rotation.z = Math.PI / 2;
     for (const sx of [-1, 1]) {
@@ -2019,6 +2098,10 @@ export const Palace = {
       m: this._m(new THREE.CircleGeometry(BROAD * 0.58, 12), water, FX, v2 + 0.185, FZ, { rx: -Math.PI / 2, cast: false }),
       rate: 0.13,
     });
+
+    // Standing in the court now, it is something you walk round rather than
+    // through: the axle with its two wheels is 1.23 m across the long way.
+    this._circleCol(FX, FZ, 0.75);
 
     this._plaque({ main: 'FONS PERPETVVS',
                    sub: 'THE RVNNING FOVNTAINE ON AN AXLE-TREE · A HARPY AT EVERY ANGLE · DALL. PP. 158-159' },

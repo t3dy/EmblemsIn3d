@@ -6,36 +6,13 @@
 
 ---
 
-**71 tickets** — 4 open, 2 question, 3 declined, 62 done. By kind: 29 debt, 27 bug, 9 infra, 3 question, 2 perf, 1 feat.
+**71 tickets** — 3 open, 2 question, 3 declined, 63 done. By kind: 29 debt, 27 bug, 9 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
-
-### `bug-court-has-no-room-left` — The Court of Eleuterylida is full: nothing more of the banquet can be put in it
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** Measured 2026-09-09 while placing the wheeled fountain of plate #32. Surface clearance -- distance to the nearest mesh BOX, not to object centres -- across the whole court slab (x -27.5..-12.5, z 14..26) peaks at 0.40 m. There is nowhere in the court with a metre of clear ground. The banquet's seven tables, the throne, the chess pavement, the five sense-nymphs and the eight-sided bath are already in it.
-
-The consequence is immediate: the fountain the book puts AT the banquet had to be set outside the court's north wall, where there is 7.4 m, and it now reads as the Water Labyrinth's furniture rather than the banquet's.
-
-Chapter X has more of the same still unbuilt -- the pierced gold balls stuffed with amber paste given to every guest, and the rest of the seven changes -- and none of it has anywhere to go.
-
-DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticket -- they went to the palace's flanks, which is where the book puts them. What remains is the court's own furniture. And the underlying cause is SCALE, not clutter: the court is built 15.4 x 12.4 m, and Dallington p. 135 gives the queen's open court 28 paces a side, which is 41.4 m (DIMENSIONS.md). It is a third of the book's width. Any fix that does not change that is rearranging furniture in a room built too small.
-
-**Acceptance.** A new piece of the banquet's furniture can be placed inside the court with at least a metre of clear ground around it, and the wheeled fountain of plate #32 stands at the banquet rather than beside the labyrinth.
-
-**Risk.** The same shape of problem as Polia's garden, and the same three answers: displace what is there, extend the court, or let the world fold. The fold is now built (DECISIONS.md 2026-09-09, 'The dream does not have to add up') and the court is precisely the thing it already folds away for Polia's arcade -- so the machinery to make the court bigger while you are in it exists and has been verified once.
-
-**Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js`
-
-**See.** Dallington pp. 143-160 · DECISIONS.md 2026-09-09 the dream does not have to add up
-
 
 ### `bug-reading-raises-a-plate-frame-on-leaves-that-carry-no-woodcut` — images/woodcuts_1499/ holds a pNNN.jpg for 38 leaves the corrected catalogue puts no cut on, and at least three of them are solid type; Read mode frames a page of text as a woodcut
 
@@ -610,6 +587,43 @@ Nothing under src/ was touched and no hpDiag or live-page check applies to a res
 **Files.** `scripts/coverage_seed.py` · `research/coverage.json`
 
 **See.** HPTOTOURPIPELINE.md · bug-plate-page-seq-offset · bug-concordance-signature-quire-model
+
+
+### `bug-court-has-no-room-left` — The Court of Eleuterylida is full: nothing more of the banquet can be put in it
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-09, closed 2026-09-20
+
+
+**Evidence.** Measured 2026-09-09 while placing the wheeled fountain of plate #32. Surface clearance -- distance to the nearest mesh BOX, not to object centres -- across the whole court slab (x -27.5..-12.5, z 14..26) peaks at 0.40 m. There is nowhere in the court with a metre of clear ground. The banquet's seven tables, the throne, the chess pavement, the five sense-nymphs and the eight-sided bath are already in it.
+
+The consequence is immediate: the fountain the book puts AT the banquet had to be set outside the court's north wall, where there is 7.4 m, and it now reads as the Water Labyrinth's furniture rather than the banquet's.
+
+Chapter X has more of the same still unbuilt -- the pierced gold balls stuffed with amber paste given to every guest, and the rest of the seven changes -- and none of it has anywhere to go.
+
+DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticket -- they went to the palace's flanks, which is where the book puts them. What remains is the court's own furniture. And the underlying cause is SCALE, not clutter: the court is built 15.4 x 12.4 m, and Dallington p. 135 gives the queen's open court 28 paces a side, which is 41.4 m (DIMENSIONS.md). It is a third of the book's width. Any fix that does not change that is rearranging furniture in a room built too small.
+
+**Acceptance.** A new piece of the banquet's furniture can be placed inside the court with at least a metre of clear ground around it, and the wheeled fountain of plate #32 stands at the banquet rather than beside the labyrinth.
+
+**Risk.** The same shape of problem as Polia's garden, and the same three answers: displace what is there, extend the court, or let the world fold. The fold is now built (DECISIONS.md 2026-09-09, 'The dream does not have to add up') and the court is precisely the thing it already folds away for Polia's arcade -- so the machinery to make the court bigger while you are in it exists and has been verified once.
+
+**Resolution.** FIXED 2026-09-20 by ENLARGING the court, which is what this ticket's own root-cause note asked for. palace.js _buildCourt now builds the open court at SIDE = 41.4 m square -- Dallington p. 135, "Of whiche moste excellent Court, euerie side was eight and twentie paces" (corpus md/Hypnerotomachia_by_Francesco_Colonna.md ll. 5615-5617; DIMENSIONS.md §3; research/plan.json palace.size_source, which names this ticket as "this number") -- instead of 15.4 x 12.4. The same page gives the bay and it closes the arithmetic: "The Pilastrelles were discrepant fowre paces one from an other, with a iust partition of seuen", so 7 bays of 5.9 m make the 28 paces and there are 8 posts a side. The court's CENTRE did not move, so the station address and the banquet's middle are untouched; the throne wall, the throne, the queen, the five sense-nymphs, the fourteen musicians and the Queen's own table are keyed to the wall and went out to the new head of the court together. Nothing else in the palace precinct had to move: a clash sweep of the new 44 x 44 m footprint found it empty but for the fountain itself (the bridge and its watercourse are 9 m clear of the east edge, and the `court` station at [-41.6, 95.2] still stands outside the court looking in).
+
+CLEARANCE, re-measured on the running page. The method had to change and the change is the honest part: the box test this ticket used is defeated at the new size, because _compileDrawCalls merges meshes by material per precinct and a merged lump's bounding box then covers the whole court, so any box test reads ~0 everywhere. Clearance is now taken from TRIANGLES -- every triangle in the scene whose vertical extent overlaps the band 0.41-2.56 m above the court floor (i.e. what a person or a metre-class object would strike, excluding the paving below it and the entablature you walk under) is rasterised into a 0.15 m grid and an exact Euclidean distance transform is run over it. Both states were measured this way, by swapping the pre-change palace.js back in and reloading, so the two numbers are the same measurement:
+  BEFORE  peak 1.42 m over the whole slab, 1.73 % of it with a clear metre (and the old box test still reproduced this ticket's own 0.85 / 1.02 / 0.02 exactly, so nothing was lost in the change of method).
+  AFTER   peak 10.40 m, 73.95 % of the court with a clear metre; 10.05 m and 77.73 % at a 1 m inset; 9.70 m and 82.26 % at a 2 m inset.
+
+THE WHEELED FOUNTAIN IS IN THE COURT. _buildWheeledFountain(QX + 13, QZ, py) puts plate #32 on the open floor east of the knot pavement, on the court's axis, standing on the court floor rather than on the earth (the builder took a third argument, the level its wheels stand on; every other height in it derives from AY). Its own footprint in the obstacle band is 1.65 x 0.90 m, so it needs 1.94 m of clearance to stand with a metre round it and there was nowhere on the old slab with that. Measured after the move by deleting its own cells from the grid and re-running the distance transform: 5.15 m of clear ground at the tightest point on its surface. It also gained a collider (_circleCol r 0.75), being something you now walk round.
+
+Two things were fixed in passing, both inside the same pavement. The chess pavement is now laid on the book's own measures rather than shrunk to fit -- squares of three foot (0.89 m), a border one pace (1.48 m) and the knot paving three paces (4.44 m) broad, Dallington p. 133, so 18.96 m square against the old 6.24 m board in a 14.2 x 11.2 rug. And the knot paving was INVISIBLE: its plane sat at y 0.355 inside the upper course, which spans 0.22-0.36, so it had been buried in the stone since it was built and paid for every frame. It is at 0.363 now and shows.
+
+NOT DONE, and said rather than left to be found: the book compasses the court about on every side and this builds two colonnades and the throne wall, leaving the east front open where Poliphilo comes in and where the station stands. A third and fourth range at this size is ~1 400 more meshes -- a fifth of the world's budget -- for architecture the reader stands outside of. And the eight-sided bath is still folded into this court though the plan gives it a precinct of its own (`fountain_house`, ch. VI-VII); at 41.4 m it is no longer what crowds the place out, so it is a siting question rather than a room one.
+
+hpDiag, same spawn camera, before -> after: drawCalls 5402 -> 5406 (+0.07 %), meshes 6590 -> 6594, triangles 4 381 680 -> 4 396 716 (+0.34 %), geometries 6580 -> 6584, materials 3350 -> 3354, textures 366 -> 366. Under the regression budget by two orders of magnitude: the colonnade went from 15 columns to 16 because the three token posts across the east end were dropped for the open front. Verified live in walk mode at http://localhost:3457/src/index.html (main.js?v=426): the fountain stands in the court on the pavement with open floor all round it, and the knot paving reads.
+
+**Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js`
+
+**See.** Dallington pp. 143-160 · DECISIONS.md 2026-09-09 the dream does not have to add up
 
 
 ### `bug-dallington-page-drift` — Dallington's page numbers drift out of sync with the 1499's after about chapter XIV
