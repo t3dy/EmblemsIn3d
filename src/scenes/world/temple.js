@@ -1036,6 +1036,189 @@ export const Temple = {
         FX - SHAFT / 2 - 0.06, HAND_Y, RITE_Z, { rz: Math.PI / 2 });
     }
 
+    // ── The tableau of p. 363: the steps, the donors, the Graces, the doves ──
+    //
+    // Cythera only, for the same reason as the rest of the chapter-XXIII
+    // programme. Everything here is one continuous passage of our own CC0
+    // translation (translation/en/page_363.md) and it is built in the order the
+    // page gives it, because the page is composing a single picture.
+    if (enclosure) {
+      const gemAgate = woodcut ? S.mat({ tone: 0.24 })
+        : S.mat({ color: 0x241c22, roughness: 0.28, metalness: 0.2 });
+
+      // -- The six little steps of dark agate ------------------------------
+      //
+      //   "from the topmost step, upon which the columns stood, six little
+      //    steps more went down to the lip of the fountain, of dark agate"
+      //
+      // NOT FULLY FAITHFUL, and the ledger says so: the book puts the waterline
+      // at the edge of the FOURTH step with the others standing clear. Our basin
+      // is only 0.97 m deep against a fountain whose own steps are the width of
+      // a man, so at this depth two stand clear, not three. Deepening the basin
+      // would move the goddess, who is sited to take the water at the flanks
+      // (p. 362), so the steps yield and the figure does not.
+      for (let k = 0; k < 6; k++) {
+        const rOut = R - 0.02 - k * 0.15, rIn = rOut - 0.15;
+        const y = KERB - 0.03 - k * 0.14;
+        if (rIn <= 0.2) break;
+        this._m(new THREE.RingGeometry(rIn, rOut, 36), gemAgate, FX, y, FZ,
+          { rx: -Math.PI / 2, cast: false });
+        this._m(new THREE.CylinderGeometry(rIn, rIn, 0.14, 36, 1, true), gemAgate,
+          FX, y - 0.07, FZ, { cast: false });
+      }
+
+      // -- Bacchus and Ceres, the two donors -------------------------------
+      //
+      //   "above the upper step there sat at his ease a wanton figure in the
+      //    shape of a man, the god Nyctelius ... He leaned upon two most swift
+      //    tigers. And on the left in the same manner sat ... a most beautiful
+      //    and nourishing matron ... rested upon two scaled serpents. And each
+      //    of the two held a spherical ball ... they dripped into the fountain,
+      //    drop by drop, a most sweet, foaming and potent liquor."
+      //
+      // This closes a prose-ahead-of-geometry gap: tours.json already tells the
+      // reader "the water dripped from Bacchus and Ceres beside her" and there
+      // has never been any such geometry. Ticket bug-tours-prose-ahead-of-geometry.
+      //
+      // Their meaning is not decorative either. The pairing is the adage *sine
+      // Cerere et Baccho friget Venus* -- without bread and wine love grows cold
+      // -- and Hand E read exactly this pair alchemically in the margin of his
+      // copy (hp.db folio_descriptions c6v): "Bacchus et Ceres id est sol [et
+      // luna]", which makes their dripping the feeding of the bath of the
+      // chemical wedding. So the plaques name both readings.
+      //
+      // Bacchus takes the dreamer's RIGHT (+x, he faces south from the north
+      // entrance -- see the coniunctio note above); Ceres the left, as the page
+      // orders them.
+      const SIT_Y = KERB + 0.34, SIT_R = R - 0.55;
+      const donors = [
+        { key: 'bacchus', sx: 1, name: 'Nyctelius',
+          sub: 'BACCHVS · HORNED, VINE-BOVND, VPON TWO BEASTS · SOL, BY HAND E',
+          robe: 0x7a2f4a, beast: 'lion', beasts: 2 },
+        { key: 'ceres', sx: -1, name: 'Ceres',
+          sub: 'WHEAT-CROWNED, VPON TWO SCALED SERPENTS · LVNA, BY HAND E',
+          robe: 0xc9a54e, beast: 'serpent', beasts: 2 },
+      ];
+      for (const d of donors) {
+        const dx = FX + d.sx * SIT_R, dz = FZ;
+        const g = this.cast.figure({ h: 0.52, robe: d.robe, pose: 'offer', crowned: true });
+        g.position.set(dx, SIT_Y, dz);
+        g.rotation.y = d.sx > 0 ? -Math.PI / 2 : Math.PI / 2;   // facing the water
+        this.scene.add(g);
+        this._npcs.push({ g, phase: d.sx * 1.3, baseY: g.rotation.y, sway: 0.012 });
+        // the two beasts he or she leans upon, one either side
+        for (const s2 of [-1, 1]) {
+          // NO TIGER EXISTS IN THIS BESTIARY. Colonna's are tigers; Cast.js has
+          // wolf, lion, stag, bull, goat, serpent and the rest, and the nearest
+          // big cat is the lion. Built as a lion and flagged in the ledger
+          // rather than passed off as a tiger. ANIMALS.md is where a tiger would
+          // be added if one is ever wanted.
+          const beast = this.cast.animal(d.beast, 0.34);
+          beast.position.set(dx + d.sx * 0.12, KERB + 0.04, dz + s2 * 0.42);
+          beast.rotation.y = d.sx > 0 ? -Math.PI / 2 : Math.PI / 2;
+          this.scene.add(beast);
+        }
+        // the spherical ball with its nippled opening, and the drip itself
+        this._m(new THREE.SphereGeometry(0.1, 12, 10),
+          woodcut ? S.mat({ tone: 0.05 }) : S.mat({ color: 0xf2e6d2, roughness: 0.55 }),
+          dx - d.sx * 0.16, SIT_Y + 0.3, dz, { outline: true });
+        this._m(new THREE.ConeGeometry(0.022, 0.05, 6),
+          woodcut ? S.mat({ tone: 0.05 }) : S.mat({ color: 0xf2e6d2, roughness: 0.55 }),
+          dx - d.sx * 0.24, SIT_Y + 0.26, dz, { rz: d.sx * 0.9, cast: false });
+        // the falling drop, registered with the waters so it moves
+        const drop = this._m(new THREE.SphereGeometry(0.018, 8, 6),
+          woodcut ? S.glowMat() : S.mat({ color: 0xf6f0e2, roughness: 0.2, emissive: 0xfff4e0, emissiveIntensity: 0.4 }),
+          dx - d.sx * 0.28, SIT_Y - 0.02, dz, { cast: false });
+        this._waters.push({ m: drop, rate: 0.9 });
+
+        this._plaque({ main: d.name.toUpperCase(), sub: d.sub },
+          1.15, 0.3, dx, SIT_Y + 0.62, dz + 0.3, 0, true);
+      }
+      this._plaque({ main: 'SINE CERERE ET BACCHO FRIGET VENVS',
+                     sub: 'WITHOVT BREAD AND WINE, LOVE GROWES COLD · P. 363' },
+        1.45, 0.28, FX, KERB * 0.62, FZ - R - 0.62, Math.PI, true);
+
+      // -- The Three Graces, outside the fountain on the right -------------
+      //
+      //   "outside the fountain, upon the stone floor where Peristeria stood, at
+      //    the right side, three other divine girls stood naked ... inseparably
+      //    embraced: two of them, Eurydomene and Eurymone, showing their maiden
+      //    faces toward us; the third, Eurymeduse, turned with her whitest
+      //    shoulders to us"
+      //
+      // Two frontal and one from behind is the canonical antique Three Graces
+      // group, so this is a statue type Colonna's readers knew by sight and the
+      // pose is the citation. These are NOT the Aglaia/Euphrosyne/Thalia trio at
+      // the mainland fountain -- a different set of Graces under different names,
+      // and the two are deliberately kept apart.
+      const GR = R + 1.55;                       // clear of the collider at R+0.85
+      const graces = [
+        { n: 'Eurydomene', turn: 0,       ox: -0.34 },
+        { n: 'Eurymone',   turn: 0,       ox:  0.34 },
+        { n: 'Eurymeduse', turn: Math.PI, ox:  0.0  },
+      ];
+      graces.forEach((gr, gi) => {
+        const g = this.cast.figure({ h: 0.9, robe: null, pose: 'stand' });
+        this._npc('fount_grace_' + gi, g, FX + GR + gr.ox, FZ + (gi === 2 ? -0.42 : 0.2),
+          Math.PI + gr.turn,
+          { label: gr.n, sub: gi === 2 ? 'TVRNED AWAY · HER HIPS VEILED BY HER HAIR'
+                                       : 'HER MAIDEN FACE TOWARD VS', labelY: 1.9, sway: 0.014 });
+      });
+
+      // -- Peristeria, and the doves she ministers -------------------------
+      //
+      //   "in a circle about the goddess certain small white doves fluttered ...
+      //    dipping their golden bills in the most spotless waters, they
+      //    mysteriously bedewed the little Cytherean body ... Close by stood the
+      //    nymph Peristeria"
+      //
+      // peristera is the dove: the dove-nymph attends the doves, and the pun is
+      // the reason she is there at all.
+      const per = this.cast.nymph({ name: 'Peristeria', robe: 0xe8e2d6, pose: 'offer' });
+      this._npc('fount_peristeria', per, FX + R + 0.95, FZ + 1.15, Math.PI * 1.2,
+        { label: 'Peristeria', sub: 'THE DOVE-NYMPH · SHE ATTENDS THE SERVICES OF VENVS',
+          labelY: 1.95, sway: 0.02 });
+      for (let i = 0; i < 6; i++) {
+        const a2 = (i / 6) * Math.PI * 2 + 0.3;
+        const dove = this.cast.animal('bird', 0.22);
+        dove.position.set(FX + Math.sin(a2) * (R * 0.62), WATER_Y + 0.34 + (i % 2) * 0.16,
+                          FZ + Math.cos(a2) * (R * 0.62));
+        dove.rotation.y = a2 + Math.PI;
+        this.scene.add(dove);
+        // Deliberately in NO animator. `_vanes` is Fortuna's registry and
+        // ROUTER.md is explicit that a second thing turning through it writes
+        // NaN across both; a dove is not a weathervane anyway. They hold their
+        // attitudes, which is what the woodcut does too.
+      }
+
+      // -- Adonis, thelygonon and arsenogonon, at the inner rim ------------
+      //
+      //   "flowering, purple Adonis sprang up among its kindred leaves ...
+      //    kept just clear of the water; and on the left side likewise
+      //    thelygonon flowered with its pale grape-clusters, and on the right
+      //    arsenogonon"
+      //
+      // The purple flower is the anemone sprung from Adonis's blood, so planting
+      // him at Venus's water is the myth made horticulture. Thelygonon and
+      // arsenogonon are Pliny's herbs for conceiving girls and boys: at the
+      // fountain of generation Colonna plants the two sexes as botany, which is
+      // the coniunctio of the columns said a second way, in leaves.
+      const bloom = (hex) => woodcut ? S.mat({ tone: 0.1 }) : S.mat({ color: hex, roughness: 0.7 });
+      const leaf = woodcut ? S.mat({ tone: 0.16 }) : S.mat({ color: 0x35562c, roughness: 0.9 });
+      const plant = (a2, hex, n) => {
+        for (let i = 0; i < n; i++) {
+          const aa = a2 + (i - n / 2) * 0.052;
+          const px = FX + Math.sin(aa) * (R - 0.16), pz = FZ + Math.cos(aa) * (R - 0.16);
+          this._m(new THREE.CylinderGeometry(0.008, 0.012, 0.2, 4), leaf, px, WATER_Y + 0.1, pz, { cast: false });
+          this._m(new THREE.SphereGeometry(0.035, 8, 6), bloom(hex), px, WATER_Y + 0.21, pz, { cast: false })
+            .scale.set(1, 0.6, 1);
+        }
+      };
+      plant(Math.PI, 0x8e2f6e, 7);            // Adonis, purple, at the south rim
+      plant(Math.PI * 1.5, 0xc9d6a8, 5);      // thelygonon, pale, on the left (-x)
+      plant(Math.PI * 0.5, 0xd8c98a, 5);      // arsenogonon, on the right (+x)
+    }
+
     // ── The water ────────────────────────────────────────────────────────
     //
     // There were four jets arcing down from about y=2 — from nothing, out of
