@@ -52,7 +52,11 @@ import io
 import json
 import os
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from coverage_seed import PAGE_SEQ_TO_TRANSLATION   # the ONE measured constant
 
 ROOT = Path(__file__).resolve().parent.parent
 EN = ROOT / "translation" / "en"
@@ -61,7 +65,18 @@ TOURS = ROOT / "src" / "data" / "tours.json"
 PLATES = ROOT / "images" / "woodcuts_1499"
 OUT = ROOT / "src" / "data" / "reading.json"
 HPDB = Path(r"C:\Dev\hypnerotomachia polyphili\db\hp.db")
-PAGE_OFFSET = 8      # db page_seq + 8 = this edition's page; see fetch_1499_plates.py
+# db page_seq + 10 = this edition's page. NOT a private copy of the number: it is
+# imported from coverage_seed.py, which carries the measurement — eight scan/page
+# pairs read word for word against translation/en/ across chapters I, XVII, XXI,
+# XXIV, XXVI, XXXI and XXXIII, one constant with no step at the Book I/II seam.
+# It was 8 here until 2026-09-20 (bug-plate-images-bound-to-page-seq-plus-eight),
+# derived from hp.db's page_concordance signatures, which bug-concordance-
+# signature-quire-model has since shown to be an invented reconstruction that
+# omits the u gathering and is not to be used for anything. The consequence of
+# the 8 was that every one of the 162 plates came up two pages early — the dark
+# wood, scan p4, stood on our p.12 where Poliphilo is still awake on his bed,
+# instead of our p.14, "peruenuto nella uastissima Hercynia silua".
+PAGE_OFFSET = PAGE_SEQ_TO_TRANSLATION
 
 DASH = re.compile(r"\s*[–—-]\s*")          # en dash, em dash, hyphen
 

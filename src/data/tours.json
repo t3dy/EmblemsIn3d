@@ -89,7 +89,7 @@
         }
       ]
     },
-    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world in order, one wonder at a time — the whole book, both of its parts: from the empty plain the dream opens on to the unveiling of Venus on Cythera, and then through Book II, in which Polia takes the telling away from Poliphilo and gives her own account of the same events. Halfway along, Dallington's 1592 English runs out mid-sentence — and from the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
+    "intro": "The *Hypnerotomachia Poliphili* is a dream told as a journey. This tour walks that journey through the 3-D world in order, one wonder at a time — the whole book, both of its parts: from the empty plain the dream opens on to the unveiling of Venus on Cythera, and then through Book II, in which Polia takes the telling away from Poliphilo and gives her own account of the same events. Halfway along, Robert Dallington's 1592 English gives out — not mid-word, as is often said, but by his own choosing: he runs continuously to 1499 p.193, finishing the four-Seasons altar with Winter's tag, then skips pp.194–237 altogether and returns for four last pages at pp.238–241 to close with a formal FINIS. From the Temple of Venus onward every word is our own new translation. Each stop links to its chapter in the parallel edition. Use ← → to move between stops.",
     "stops": [
       {
         "station": "plain",
@@ -1069,8 +1069,9 @@
       {
         "station": "triumphs",
         "chapter": "XIV",
+        "pages": [158, 176],
         "half": "dallington",
-        "lede": "Four triumphal chariots roll past in procession, celebrating the loves of Jupiter — Europa on her bull, Leda and her swan, Danaë in her golden rain, Semele in her fire — each car drawn by six beasts and ringed with riding nymph-musicians. It is the book's most sustained vision of the antique triumph, gilded and garlanded and exact. It is also the last great set-piece Dallington's Elizabethan English ever reaches: a few pages on, in the next chapter, his translation stops mid-word.",
+        "lede": "Four triumphal chariots roll past in procession, celebrating the loves of Jupiter — Europa on her bull, Leda and her swan, Danaë in her golden rain, Semele in her fire — each car drawn by six beasts and ringed with riding nymph-musicians. It is the book's most sustained vision of the antique triumph, gilded and garlanded and exact. Dallington's Elizabethan English still has a way to run from here: it carries on continuously to 1499 p.193, three chapters ahead, finishing the four-Seasons altar with Winter's tag, and then — having skipped pp.194–237 — returns for four last pages at pp.238–241 and closes with a formal FINIS. He does not stop mid-word; he stops where he decided to.",
         "notes": [
           {
             "type": "context",
@@ -1105,7 +1106,8 @@
       {
         "station": "triumphs",
         "title": "Vertumnus and Pomona",
-        "chapter": "XV",
+        "chapter": "XVII",
+        "pages": [189, 193],
         "half": "dallington",
         "lede": "A fifth procession follows the four triumphs of Jove, and it is unlike them. No exotic team draws it: Vertumnus, god of the turning year, and Pomona of the orchards ride a car heaped with fruit, accompanied on foot by satyrs and nymphs, with rustic sacrifice and song. On its panels are the four Seasons — Spring as Venus and Cupid, Summer as Ceres, Autumn as the wine-god with his ram, Winter as Jupiter Pluvius. After the gods' adulteries, the year itself is given a triumph.",
         "wc": [],
@@ -1116,11 +1118,11 @@
           },
           {
             "type": "context",
-            "text": "The plate names the company exactly — *Triumph of Vertumnus and Pomona: satyrs, nymphs* (woodcut 66, folio 166) — and names no draught beast. The car in this world therefore walks, with its satyrs and nymphs beside it, rather than being drawn."
+            "text": "The plate names the company exactly — *Triumph of Vertumnus and Pomona: satyrs, nymphs* (woodcut 66, page_seq 181 = our p.191, signed *m iiii* at the foot; the catalogue's folio 166 is the left half of the Bacchic triumph instead) — and names no draught beast. The car in this world therefore walks, with its satyrs and nymphs beside it, rather than being drawn."
           },
           {
             "type": "allegory",
-            "text": "The four Seasons on its panels (woodcuts 67–70, folio 167) are the argument of the whole procession: love as the year's own motion, and generation as a thing that happens on a calendar rather than by divine caprice."
+            "text": "The four Seasons on its panels (woodcuts 67–70, catalogued at folio 167 and in fact spread over three leaves: Spring at page_seq 182 = our p.192, Summer and Autumn at page_seq 183 = our p.193, Winter at page_seq 184 = our p.194, on the next stop's page) are the argument of the whole procession: love as the year's own motion, and generation as a thing that happens on a calendar rather than by divine caprice."
           },
           {
             "type": "gloss",
@@ -1140,7 +1142,7 @@
         "station": "priapus",
         "title": "The Altar of the Seasons — the hand-off to our translation",
         "chapter": "XVII",
-        "pages": [189, 195],
+        "pages": [194, 195],
         "half": "dallington",
         "lede": "The rustic triumphs move on toward the rites; the offerings are prepared; the procession approaches the altar of the Seasons. Robert Dallington's 1592 English does not break off here: *Mustulento Autumno S.* is a complete Latin dedication under the altar's Autumn face, not a severed sentence, and his English runs on afterward for some pages yet, through a seaside ruined temple and a full blazon of Polia's beauty, before it closes with a formal **FINIS** — a deliberate stop, not an abandonment, and the reason his 1592 edition covers under half of Colonna's Italian. That stretch of his public-domain English, between this altar and his actual FINIS, is still unread by this project (see the open research ticket). **The next stop is still the first sentence of our own translation** — this project's choice of hand-off point, not the point where Dallington's manuscript gave out.",
         "wc": [],
@@ -1181,7 +1183,7 @@
         "chapter": "XVII",
         "pages": [196, 224],
         "half": "ours",
-        "lede": "Here the four-century gap in the English closes. Dallington broke off mid-sentence at the word *Mustulento*; from this round Temple of Venus onward, every word you read is newly translated. Poliphilo lifts his eyes to the sky-reaching cupola, then cannot describe it — the nymph's beauty keeps pulling his gaze away, and he stops to beg the reader's pardon for it. Over the temple door, cut into two tablets of lodestone, the stone that draws iron carries the creed of the whole place.",
+        "lede": "Here the four-century gap in the English closes. Dallington did not break off mid-sentence at *Mustulento*: his 1592 English runs continuously to p.193, four-Seasons altar and Winter's tag complete, and then skips pp.194–237 — the rite of Priapus, this whole temple, and the Polyandrion — before returning for four pages at pp.238–241 to close with a formal FINIS. It is that 44-page skip the last stop handed over at, and from this round Temple of Venus onward every word you read is newly translated. Poliphilo lifts his eyes to the sky-reaching cupola, then cannot describe it — the nymph's beauty keeps pulling his gaze away, and he stops to beg the reader's pardon for it. Over the temple door, cut into two tablets of lodestone, the stone that draws iron carries the creed of the whole place.",
         "quote": "Each is drawn by his own pleasure.",
         "quoteAttr": "TRAHIT SUA QUEMQUE VOLUPTAS — carved in lodestone above the Temple door (ch. XVII)",
         "wc": [
