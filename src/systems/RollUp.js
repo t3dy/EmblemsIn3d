@@ -162,6 +162,7 @@ export class RollUp {
     this.walker = walker;
     this.onEat = onEat;
 
+    this.r0 = r0;          // where the work begins, so it can begin again
     this.r = r0;
     this.pos = new THREE.Vector3(0, r0, 6);
     this.count = 0;
@@ -190,6 +191,32 @@ export class RollUp {
       sinkFloor: SINK_FLOOR,  // 1 = things vanish into the ball; below 1 they stay proud
       crust: CRUST,           // how many stay stuck on the outside
       ceiling: CEILING,       // the ball can never exceed this
+
+      // ── The camera's distance curve: dist = camBase + r * camScale ──────
+      //
+      // Added 2026-09-20 for `question-roll-camera-curve`
+      // (research/tickets.json), which is TED'S CALL, not the builder's: these
+      // are the dials, not a new feel. The defaults are exactly the curve that
+      // has been in the mode since it was written — camBase 0, camScale 6, so
+      // `dist = r * 6` — which is purely proportional, and therefore holds the
+      // ball at the same fraction of the frame at 0.22 m as at 18 m. You can
+      // see that you are eating bigger things; you cannot see that you have
+      // become bigger.
+      //
+      // ROLLMODEPLAN.md §1.1 asks instead for { camBase: 1.2, camScale: 2.0 },
+      // which is SUB-proportional: the camera falls behind the growth, so the
+      // ball swells in frame — 1.6 m back at 0.22, 37 m back at 18 against
+      // today's 108 — which is how Katamari reads "I have become massive". It
+      // also shows much less of the garden at the moment the garden has
+      // finally opened to you, which cuts both ways. Both are read at their use
+      // sites, so the two curves can be flipped between MID-ROLL:
+      //
+      //   window._hp.state.activeScene.roll.tune.camBase  = 1.2
+      //   window._hp.state.activeScene.roll.tune.camScale = 2.0
+      //
+      // HANDOVER_ROLLMODE.md §2.1. Do not change the defaults without Ted.
+      camBase: 0,
+      camScale: 6,
     };
     this.spin = new THREE.Quaternion();      // the ball's accumulated rotation
 
@@ -364,8 +391,9 @@ export class RollUp {
     this._onKU = (e) => this._keys.delete(e.code);
     this._onWheel = (e) => {
       if (!this.active) return;
+      const want = this._camWant();
       this.cam.dist = THREE.MathUtils.clamp(this.cam.dist + Math.sign(e.deltaY) * this.r * 0.4,
-        this.r * 2.0, this.r * 14);
+        want / 3, want * (7 / 3));
     };
     this._onPD = (e) => {
       if (!this.active) return;
@@ -409,12 +437,63 @@ export class RollUp {
 
   _key(x, z) { return `${Math.floor(x / this.CELL)},${Math.floor(z / this.CELL)}`; }
 
+  // Where the camera wants to be, and the band the wheel may move it inside.
+  //
+  // The three clamps used to be written as bare multiples of the radius —
+  // `r * 6` on start, `[r * 2.4, r * 9]` after every bite, `[r * 2.0, r * 14]`
+  // on the wheel. They are ratios of the WANTED distance now, so that a
+  // different curve (tune.camBase / tune.camScale above) carries its own band
+  // with it instead of being fought by a band written for the old one. With the
+  // defaults the numbers are unchanged: 0.4 × 6 = 2.4, 1.5 × 6 = 9,
+  // ⅓ × 6 = 2, 7⁄3 × 6 = 14.
+  _camWant() { return this.tune.camBase + this.r * this.tune.camScale; }
+
   start(x = 0, z = 6) {
     this.pos.set(x, this.r, z);
     this.active = true;
     this.group.visible = true;
-    this.cam.dist = this.r * 6;
+    this.cam.dist = this._camWant();
     this._sync();
+  }
+
+  // ── Begin the work again, in place ──────────────────────────────────────
+  //
+  // The score card's "roll again" (debt-roll-wedding-not-a-moment,
+  // research/tickets.json 2026-09-20): back to lead at r0 with no page reload
+  // and no scene rebuild. The crust is shed the way `_crust` sheds it when the
+  // ball is over its count, the ladder is rewound to Saturn, and the clock and
+  // the tallies go back to nothing.
+  //
+  // What it does NOT do is put back what you ate — `takeRollable` in
+  // scenes/world/rollup.js has already removed those meshes from the world, and
+  // un-eating them would mean rebuilding the census. That is exactly what
+  // `window.hpRoll()` does, and it is why the card keeps BOTH buttons: this one
+  // is instant in the garden you have left standing, the other is a whole
+  // garden again at the price of a rebuild.
+  restart(r0 = this.r0) {
+    for (const s of this._stuck) {
+      s.holder.removeFromParent();
+      s.holder.traverse(o => { if (o.isMesh && o.geometry) o.geometry.dispose(); });
+    }
+    this._stuck.length = 0;
+    this._bump = 0;
+    this._rolled = 0;
+    this.r = r0;
+    this.pos.y = r0;
+    this.vel.set(0, 0, 0);
+    this.spin.identity();
+    this.count = 0;
+    this.grass = 0;
+    this.t = 0;
+    this.stage = 0;
+    this.done = false;
+    this.ball.material.color.setHex(METALS[0].tint);   // lead again
+    this.active = true;
+    this.group.visible = true;
+    this.cam.dist = this._camWant();
+    this.cam.pitch = 0.42;
+    this._sync();
+    return this;
   }
   stop() { this.active = false; this.group.visible = false; }
 
@@ -688,7 +767,8 @@ export class RollUp {
     const grown = Math.cbrt(this.r ** 3 + (e.r ** 3) * this.tune.packing);
     this.r = Math.min(grown, this.tune.ceiling);
     this.count++;
-    this.cam.dist = THREE.MathUtils.clamp(this.cam.dist, this.r * 2.4, this.r * 9);
+    const camWant = this._camWant();
+    this.cam.dist = THREE.MathUtils.clamp(this.cam.dist, camWant * 0.4, camWant * 1.5);
     this.onEat?.(e.name, this.count, this.r);
   }
 

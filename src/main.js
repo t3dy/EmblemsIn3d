@@ -8,7 +8,15 @@ import { VaultsScene } from './scenes/VaultsScene.js?v=14';
 import { DreamMode } from './systems/DreamMode.js?v=8';
 import { DREAM_STOPS } from './data/hp_dream.js?v=4';
 import { DREAM_REACTIONS } from './data/hp_reactions.js?v=2';
-import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=8';
+import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=9';
+// The ladder of the metals, for the roll-up HUD's gauge and its countdown.
+// Imported rather than retyped: METALS is the single sourced copy (hp.db
+// .alchemical_symbols, after Taylor 1951 and Russell 2014 — see the header of
+// RollUp.js), and a second hand-written list of the signs would be a rule-2
+// invention waiting to drift. The ?v= must match the other importers of
+// RollUp.js (scenes/HPWorldScene.js, scenes/world/rollup.js) or the browser
+// loads a second, separate copy of the module.
+import { METALS, WEDDING } from './systems/RollUp.js?v=11';
 import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=12';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -1330,6 +1338,144 @@ async function launchVaults({ depth = 1, lamps = 0, seed = null } = {}) {
 
 window.hpVaults = () => { showHPMode(false); launchVaults({ depth: 1, lamps: 0 }); };
 
+// ─── Roll Up: the HUD, the ladder, and the wedding ──────────────────────────
+//
+// The gauge (debt-roll-size-gauge), the countdown (debt-roll-stage-countdown)
+// and the wedding cinematic (debt-roll-wedding-not-a-moment), all opened
+// 2026-09-20 in research/tickets.json.
+//
+// Everything here is DISPLAY. Not one number is invented: METALS is imported
+// from src/systems/RollUp.js, which takes the seven signs, names, metals and
+// tints out of hp.db.alchemical_symbols — Saturn's lead "the base metal, the
+// starting point of transmutation", Sol "the king of metals", Luna "the queen",
+// and the Hermaphrodite "the product of the chemical wedding: union of Sol and
+// Luna" — sourced there to Taylor 1951 and Russell 2014 on the annotating hands
+// of the Buffalo copy. The ball wears the Sun on one face and the Moon on the
+// other because of that last line; the gauge is only the same claim laid flat.
+//
+// Why this lives in main.js rather than in RollUp.js: RollUp.js is imported by
+// scenes/HPWorldScene.js and scenes/world/rollup.js, and on 2026-09-20 both of
+// those files were mid-edit by another pass (the Stage 2 precinct work), so
+// their `RollUp.js?v=11` could not be bumped without staging someone else's
+// unfinished work. Keeping the per-frame logic here means the HUD, the
+// pull-back and the restart all arrive with main.js?v=, which IS bumped, and a
+// browser holding a stale RollUp.js loses only `tune.camBase`/`camScale` and
+// falls back to a full rebuild for "roll again" (see window.hpRollAgain).
+const ROLL_HUD = { built: false, lastR: -1, wed: null };
+
+// Metres → a fraction of the bar, linearly.
+//
+// Linear and not, as the first draft of this had it, cube-rooted. The point of
+// the ticket is that "nothing shows how far 18 m is" — a curved ruler answers
+// a different question, and flatters: the cube root put the ball 65 % along the
+// bar at 5 m of 18, and 23 % along it before it had eaten anything at all. The
+// cost of the honest ruler is that four of the seven transmutations fall inside
+// the first 2.6 m and so crowd the left-hand seventh of the bar (0, 3.3, 7.8,
+// 14.4, 25, 41.7, 61 %), which is why the bar is drawn wide and the signs
+// small. That crowding is not a defect of the display: it is the shape of the
+// ladder, which is steep at the bottom and long at the top by design
+// (METALS, stretched 2026-09-09 so the gold is genuinely earned).
+function rollGaugeX(m) {
+  return Math.max(0, Math.min(m, WEDDING)) / WEDDING;
+}
+
+const rollHex = (n) => `#${n.toString(16).padStart(6, '0')}`;
+const rollM = (m) => (m < 1 ? m.toFixed(2) : m.toFixed(1));
+
+// One mark per metal, plus the wedding at the far end. Built once; the DOM
+// survives leaving and re-entering roll mode.
+function buildRollGauge() {
+  const marks = document.getElementById('roll-marks');
+  if (!marks || ROLL_HUD.built) return;
+  marks.textContent = '';
+  const mk = (x, sign, label, tint, extra) => {
+    const d = document.createElement('div');
+    d.className = 'rh-mark' + (extra || '');
+    d.style.left = `${(x * 100).toFixed(2)}%`;
+    d.style.color = rollHex(tint);          // only shows once .on — see the CSS
+    d.title = label;
+    const i = document.createElement('i'); i.textContent = sign;
+    const u = document.createElement('u');
+    d.append(i, u);
+    marks.appendChild(d);
+    return d;
+  };
+  ROLL_HUD.marks = METALS.map(m =>
+    mk(rollGaugeX(m.at), m.sign, `${m.name} · ${m.metal} — ${m.at} m`, m.tint));
+  // The wedding is not a metal: it is Sol and Luna at once, which is what the
+  // ball has been carrying on its two faces the whole run.
+  ROLL_HUD.wedMark = mk(1, '☉☽', `The Chemical Wedding — ${WEDDING} m`,
+    0xe8c96a, ' rh-wed');
+  ROLL_HUD.built = true;
+}
+
+// The whole readout for a given radius: the size, the bar, which signs have
+// been reached, and how far the next transmutation is.
+function updateRollHud(r, force) {
+  if (!Number.isFinite(r)) return;
+  if (!force && Math.abs(r - ROLL_HUD.lastR) < 1e-4) return;
+  ROLL_HUD.lastR = r;
+  buildRollGauge();
+
+  const z = document.getElementById('roll-size');
+  if (z) z.textContent = r < 1 ? `${Math.round(r * 100)} cm` : `${r.toFixed(2)} m`;
+
+  const fill = document.getElementById('roll-fill');
+  if (fill) fill.style.width = `${(rollGaugeX(r) * 100).toFixed(2)}%`;
+
+  if (ROLL_HUD.marks) {
+    for (let i = 0; i < METALS.length; i++) {
+      ROLL_HUD.marks[i].classList.toggle('on', r >= METALS[i].at);
+    }
+    ROLL_HUD.wedMark?.classList.toggle('on', r >= WEDDING);
+  }
+
+  // The countdown. METALS[7] does not exist — the seventh rung is Sol, and
+  // above Sol there is no eighth metal, there is the wedding — so the last
+  // stage counts to WEDDING (18 m) rather than to `undefined.at`, which is the
+  // off-by-one this ticket was written around and shows on screen as NaN.
+  let k = 0;
+  for (let i = 0; i < METALS.length; i++) if (r >= METALS[i].at) k = i;
+  const cur = METALS[k], next = METALS[k + 1];
+  const goal = next ? next.at : WEDDING;
+  const el = document.getElementById('roll-metal');
+  if (el) el.innerHTML = `${cur.sign} ${cur.metal} &mdash; ${rollM(Math.min(r, goal))} / ${rollM(goal)} m`;
+}
+
+// Driven from animate(), so the gauge answers the ball growing rather than only
+// the moment a stage fires — including a radius set straight from the console,
+// which is how the tickets ask for this to be checked:
+//   window._hp.state.activeScene.roll.r = 5.0
+// The DOM is written only when the radius has actually moved.
+function rollTick(dt) {
+  const roll = state.activeScene && state.activeScene.roll;
+  if (!roll) return;
+  updateRollHud(roll.r);
+
+  // ── The wedding: two seconds of camera before the card ─────────────────
+  const w = ROLL_HUD.wed;
+  if (!w) return;
+  w.t += dt;
+  const k = Math.min(1, w.t / w.dur);
+  const e = 1 - Math.pow(1 - k, 3);          // ease-out: it falls away, then settles
+  roll.cam.dist = w.from + (w.to - w.from) * e;
+  roll.cam.pitch = w.pitch0 + (w.pitch1 - w.pitch0) * e;
+  if (k >= 1 && !w.shown) { w.shown = true; showRollCard(w.stats); }
+}
+
+// The score card itself, unchanged in substance — every word of it is out of
+// hp.db.alchemical_symbols; see src/index.html #roll-done.
+function showRollCard(r) {
+  const mm = Math.floor(r.seconds / 60), ss = Math.round(r.seconds % 60);
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+  set('rd-size', `${r.r.toFixed(1)} m`);
+  set('rd-count', r.count.toLocaleString());
+  set('rd-grass', r.grass.toLocaleString());
+  set('rd-time', `${mm}:${String(ss).padStart(2, '0')}`);
+  const d = document.getElementById('roll-done');
+  setHidden(d, false); d?.classList.add('on');
+}
+
 // ─── Roll Up ────────────────────────────────────────────────────────────────
 //
 // Ted, 2026-09-08. The scene has to be REBUILT for this, because the roll-up
@@ -1353,21 +1499,31 @@ window.hpRoll = async () => {
   const sc = state.activeScene;
   if (!sc) return;
   const hud = document.getElementById('roll-hud');
-  setHidden(hud, false);
+  // 'block', not setHidden's default 'flex'. The generic helper forces
+  // `display: flex` on whatever it reveals, and #roll-hud's CSS is written for
+  // stacked children — the name over the gauge over the row over the controls,
+  // each centred. As a flex ROW the four ran side by side and the HUD measured
+  // 1167 px on a 1024 px viewport, starting at x = -71: the name was off the
+  // left edge and the gauge was squeezed to half its width. Found 2026-09-20
+  // while fitting the gauge in; it has been that way since the HUD was written.
+  // CLAUDE.md: never fix a layout bug in CSS alone when the JS can enforce it —
+  // here the JS was the cause.
+  setHidden(hud, false, 'block');
   // whatever the walk raised on the way in comes down: a ball reads no footnotes
   hideWalkNotes();
   dismissWalkNotes();
   sc.onRollExit = () => window.hpRollExit();
   setHidden(document.getElementById('roll-done'), true);
   document.getElementById('roll-done')?.classList.remove('on');
+  ROLL_HUD.wed = null; ROLL_HUD.lastR = -1;      // a fresh ball, a fresh gauge
   sc.startRoll({
     onEat: (name, count, r) => {
       const n = document.getElementById('roll-name');
       const c = document.getElementById('roll-count');
-      const z = document.getElementById('roll-size');
       if (n) n.textContent = name;
       if (c) c.textContent = String(count);
-      if (z) z.textContent = r < 1 ? `${Math.round(r * 100)} cm` : `${r.toFixed(2)} m`;
+      // the size, the gauge and the countdown all come off the radius together
+      updateRollHud(r, true);
       const nn = document.getElementById('roll-name');
       if (nn) { nn.classList.remove('pop'); void nn.offsetWidth; nn.classList.add('pop'); }
     },
@@ -1375,8 +1531,8 @@ window.hpRoll = async () => {
   // The ladder of the metals, and the wedding at the top of it. Both come
   // straight out of hp.db.alchemical_symbols — see the header of RollUp.js.
   sc.roll.onStage = (m) => {
-    const el = document.getElementById('roll-metal');
-    if (el) el.innerHTML = `${m.sign} ${m.metal}`;
+    // the line itself is written by updateRollHud, which carries the countdown
+    updateRollHud(sc.roll.r, true);
     showHint(`${m.sign}  ${m.name} — ${m.metal}.  ${m.note}`);
   };
   sc.roll.onScheme = (tank) => {
@@ -1386,21 +1542,71 @@ window.hpRoll = async () => {
       : 'W A S D roll &middot; Q E Z C the diagonals &middot; right button held rolls the way you look &middot; drag or &#9650;&#9660; to look &middot; Space quick turn &middot; Shift dash &middot; T two-stick scheme &middot; Esc stop';
     showHint(tank ? 'Two-stick: WASD is the left hand, IJKL the right. Both forward to roll; one forward to turn.' : 'Single-stick: roll the way the camera looks.');
   };
+  // ── The chemical wedding is a moment, not a dialogue box ────────────────
+  //
+  // debt-roll-wedding-not-a-moment: the score card was instantaneous — the ball
+  // stopped and a card appeared over it — and this is the one moment in the
+  // mode where the alchemy and the mechanic coincide, the union of the Sol and
+  // the Luna the ball has carried on its two faces the whole run. So the
+  // camera falls away and lifts for two seconds first, over a ball that has
+  // stopped rolling (RollUp._transmute has already cleared `active`, so nothing
+  // fights the camera), and only then does the card come up.
+  //
+  // The fanfare goes through the EXISTING AlchemicalAudio and nowhere else. It
+  // is silent, and deliberately: DECISIONS.md 2026-09-04 (evening, final) —
+  // "no sound of any kind… on any page" — outranks the ticket's request for a
+  // sounding fanfare, and RECIPES/verify-live.md proves that silence by
+  // proxying AudioContext. The call site is built so that turning it on is one
+  // function body in AlchemicalAudio.js, on Ted's say-so and no one else's.
   sc.roll.onWedding = (r) => {
-    const mm = Math.floor(r.seconds / 60), ss = Math.round(r.seconds % 60);
-    const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
-    set('rd-size', `${r.r.toFixed(1)} m`);
-    set('rd-count', r.count.toLocaleString());
-    set('rd-grass', r.grass.toLocaleString());
-    set('rd-time', `${mm}:${String(ss).padStart(2, '0')}`);
-    const d = document.getElementById('roll-done');
-    setHidden(d, false); d?.classList.add('on');
+    AlchemicalAudio.fanfare('wedding');
+    const roll = sc.roll;
+    // pull back from wherever the wheel has left the camera, but never less
+    // than twice the curve's own distance, so a radius forced from the console
+    // (r.r = 18.1) pulls back as far as a rolled one does
+    const from = roll.cam.dist;
+    const want = Math.max(from, roll.tune?.camBase != null
+      ? roll.tune.camBase + roll.r * roll.tune.camScale
+      : roll.r * 6);
+    ROLL_HUD.wed = {
+      t: 0, dur: 2.0, shown: false, stats: r,
+      from, to: want * 2.0,
+      pitch0: roll.cam.pitch, pitch1: Math.max(roll.cam.pitch, 0.9),
+    };
+    updateRollHud(roll.r, true);
   };
+  updateRollHud(sc.roll.r, true);      // lead, 0.22 / 0.60 m, and the empty bar
   showHint('W A S D / arrows roll · drag to swing the view · wheel to pull back · Esc to stop rolling');
+};
+
+// ── Roll again ────────────────────────────────────────────────────────────
+//
+// Restarts the ball at r0 where it stands: no page reload, no scene rebuild,
+// instant (RollUp.restart). The garden stays as you ate it, which is why the
+// card also keeps window.hpRoll() beside this — that one rebuilds the world and
+// its census, so everything is standing again, at the price of a few seconds.
+//
+// The `restart` check is not defensive noise: RollUp.js?v=11 could not be
+// bumped in this pass (its two importers were mid-edit by another pass), so a
+// browser may briefly hold the older module. When it does, this falls back to
+// the full rebuild rather than half-resetting a ball.
+window.hpRollAgain = () => {
+  const sc = state.activeScene;
+  const roll = sc && sc.roll;
+  ROLL_HUD.wed = null;
+  if (!roll || typeof roll.restart !== 'function') return window.hpRoll();
+  roll.restart();
+  const d = document.getElementById('roll-done');
+  setHidden(d, true); d?.classList.remove('on');
+  const n = document.getElementById('roll-name'); if (n) n.innerHTML = '&nbsp;';
+  const c = document.getElementById('roll-count'); if (c) c.textContent = '0';
+  updateRollHud(roll.r, true);
+  showHint('Lead again. The work begins over, in the garden you have left standing.');
 };
 
 window.hpRollExit = () => {
   const sc = state.activeScene;
+  ROLL_HUD.wed = null;
   sc?.endRoll?.();
   state.wantRoll = false;
   setHidden(document.getElementById('roll-hud'), true);
@@ -1980,6 +2186,9 @@ function animate() {
   // Keep the mobile controls in sync with whatever world/mode is up
   if (++_tcTick % 15 === 0) { refreshTouchControls(); refreshLookCtl(); }
 
+  // the roll-up gauge, its countdown, and the wedding's pull-back
+  if (state.activeScene && state.activeScene.roll) rollTick(dt);
+
   if (state.activeScene) {
     state.activeScene.update(dt);
     if (composer.passes[0]) {
@@ -2066,6 +2275,32 @@ window._hp = { renderer, composer, state, clock, aerial };
 // byte identical to another and could be one shared instance. Three.js batches
 // nothing across distinct material objects, so every duplicate is a guaranteed
 // separate draw call and a guaranteed uniform upload.
+// ── hpWalk: one call from a blank page to standing somewhere ────────────────
+//
+// Added 2026-09-20, while verifying the stage-2 resite. Getting a camera to a
+// place in this world took four round trips — open the chooser, click the mode,
+// click through the flavour panel, then `hpGoTo` — and at 13.7 km a session
+// does that twenty times. This is the same path with the two panels skipped:
+//
+//   window.hpWalk(0, -2400, 0)      // x, z, yaw (0 is north, PI is south)
+//   window.hpWalk('portal')         // or a station key
+//
+// It is a debugging affordance, not a mode: it uses the same launcher the
+// chooser does and leaves the reader's lens settings alone.
+window.hpWalk = (x, z = null, yaw = 0) => {
+  // The world is already built by the time the chooser is on screen — the boot
+  // launches it and the chooser is an overlay over it — so this does not
+  // launch anything. It takes down the two panels and puts the walker where it
+  // is told. (It used to `await launchHPWorld`, which hung: launching a second
+  // time while the first is live never resolves.)
+  if (!state.activeScene) return 'the world is not built yet — wait and call again';
+  showHPMode(false);
+  setHidden(document.getElementById('tour-flavor-chooser'), true);
+  showHint('');
+  if (typeof x === 'string') return window.hpGoTo(x);
+  return window.hpGoTo([x, z], yaw);
+};
+
 window.hpDiag = async function hpDiag(frames = 60) {
   const sc = state.activeScene;
   if (!sc || !sc.scene) return { error: 'no scene — enter a world first (hpExplore())' };

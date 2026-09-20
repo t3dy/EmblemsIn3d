@@ -6,7 +6,7 @@
 
 ---
 
-**48 tickets** — 15 open, 1 question, 3 declined, 29 done. By kind: 22 debt, 13 bug, 8 infra, 2 perf, 2 question, 1 feat.
+**49 tickets** — 12 open, 2 question, 3 declined, 32 done. By kind: 22 debt, 13 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -126,44 +126,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **See.** ROUTER.md
 
 
-### `debt-roll-size-gauge` — Roll mode shows the ball's size as a bare number, so the ladder of the seven metals is invisible while you climb it
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** Read out of the code 2026-09-20. #roll-size (src/index.html:1202) prints '22 cm' then '1.40 m'. That is the ball's size, but not its PROGRESS: nothing shows how far 18 m is, and nothing shows where the seven transmutations fall along the way. The transmutation from lead to gold is the mode's whole narrative arc -- see the header of src/systems/RollUp.js on why the ball is a Sol/Luna rebis -- and a player currently learns the arc exists only when a stage happens to fire.
-
-The data needed is already in place and already sourced: METALS (src/systems/RollUp.js:115) carries sign, name, metal, tint and a cited note for each of the seven, with transmutation points at 0, 0.6, 1.4, 2.6, 4.5, 7.5 and 11 m, and WEDDING at 18. Nothing new needs sourcing; this is display only.
-
-Note the earlier handover claimed 'No HUD'. That was false -- #roll-hud exists and shows Size, Things and Metal -- and a session acting on it would have rebuilt what is there. The gap is the gauge specifically.
-
-**Acceptance.** On the running page in roll mode, a gauge is visible that fills from 0 to 18 m as the ball grows, carries the seven metal signs from METALS at their `at` values as markers, and tints each marker with that metal's `tint` once reached. Check by driving the ball's radius from the console -- `const r = window._hp.state.activeScene.roll; r.r = 5.0;` -- and confirming the gauge and the passed markers move with it. `await hpDiag()` before and after, both in the commit message; a HUD is DOM, so the draw-call count must not move at all.
-
-**Files.** `src/index.html` · `src/main.js` · `src/systems/RollUp.js`
-
-**See.** ROLLMODEPLAN.md#31-ball-size-indicator-critical · HANDOVER_ROLLMODE.md#22-the-size-gauge-31--the-largest-genuine-gap
-
-
-### `debt-roll-wedding-not-a-moment` — The wedding at 18 m hands you a score card, but the world does not mark the moment the work completes
-
-**○ open** · debt · priority 2 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** 2026-09-20. _transmute (src/systems/RollUp.js:563) sets done, sets active false, and calls onWedding with count, grass, seconds and radius; main.js:1389 fills #roll-done with final size, things, grass and time, and shows it. So there IS an ending and a score screen -- the earlier handover's 'No ending = run just stops' was false.
-
-What is missing is that the ending is instantaneous: the ball simply stops and a card appears over it. ROLLMODEPLAN.md section 4.3 asks for a camera pull-back and a fanfare, and it is right to -- this is the chemical wedding, the union of Sol and Luna that the ball has been carrying on its two faces the whole run, and it is the one moment in the mode where the alchemy and the mechanic coincide. Ending it with a UI card alone is the decoration failure CLAUDE.md names.
-
-There is an audio system already: src/systems/AlchemicalAudio.js. Roll mode does not reference it -- grep finds no audio call in RollUp.js or scenes/world/rollup.js. Do not write a second sound system, and do not copy the bare sine-wave C-major arpeggio from the Atalanta mock, which is unsourced.
-
-**Acceptance.** Reaching 18 m pulls the camera back over roughly two seconds before the score card appears, and a fanfare plays through AlchemicalAudio rather than a new AudioContext (grep: no `new AudioContext` or `webkitAudioContext` added under src/). The card gains a 'roll again' that restarts at r0 without a page reload -- verify by taking it twice in one session. Force the ending from the console with `window._hp.state.activeScene.roll.r = 18.1` rather than rolling for it.
-
-**Files.** `src/systems/RollUp.js` · `src/main.js` · `src/index.html` · `src/systems/AlchemicalAudio.js`
-
-**See.** ROLLMODEPLAN.md#43-level-endings--level-progression · HANDOVER_ROLLMODE.md#24-the-wedding-as-a-cinematic-43
-
-
 ### `infra-doc-growth` — Documentation is growing faster than the archiving is shrinking it
 
 **○ open** · infra · priority 2 · hp-builder
@@ -219,23 +181,6 @@ Verified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 
 **Files.** `scripts/build_reading.py` · `src/data/tours.json` · `src/data/reading.json`
 
 **See.** ticket bug-chapter-xi-tour-misattributed · COVERAGE.md ch. X
-
-
-### `debt-roll-stage-countdown` — The metal display names where you are but not how far the next transmutation is
-
-**○ open** · debt · priority 3 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** 2026-09-20. #roll-metal (src/index.html:1204) is set by onStage (src/main.js:1377) to the current metal's sign and name -- '♂ Iron' -- and the cited note is raised as a hint at the moment of transmutation. Both are good. Neither tells you that Venus is at 2.6 m and you are at 1.8.
-
-This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to hand at the point where the display is written, and the ball's radius is already being pushed to #roll-size on every swallow.
-
-**Acceptance.** In roll mode the metal line reads as current sign, metal, and progress to the next -- e.g. 'Mars · Iron — 1.8 / 2.6 m' -- and updates as the ball grows, not only on transmutation. At Sol, the last rung, it counts to the wedding at 18 m rather than to a metal that does not exist (METALS[7] is undefined; an off-by-one here shows as 'NaN' on screen, so check it by setting `r.r = 12` from the console).
-
-**Files.** `src/main.js` · `src/index.html`
-
-**See.** ROLLMODEPLAN.md#33-current-stage--metal-display-high · HANDOVER_ROLLMODE.md#23-countdown-to-the-next-stage-33
 
 
 ### `roll-shed-by-area` — The crust sheds by count, not by surface area
@@ -309,11 +254,30 @@ Two consequences worth knowing before choosing. The plan's curve is far tighter 
 
 The wheel clamp at :691 is written in radii and would have to move with any change, or the wheel would fight the new curve.
 
+2026-09-20, later: the dials now EXIST. roll.tune.camBase and roll.tune.camScale are read at every use site, so the curve can be flipped mid-roll from the console — `roll.tune.camBase = 1.2; roll.tune.camScale = 2.0` for the plan's curve, 0 and 6 for today's. The defaults are unchanged and were checked to be bit-for-bit today's feel: on the running page cam.dist on start/restart is exactly r * 6, and the two clamps that were written as bare radii are now ratios of the wanted distance that come out at the same numbers (0.4 and 1.5 of 6r = 2.4r and 9r; 1/3 and 7/3 of 6r = 2r and 14r). _camWant() at r = 3 returns 18 with the defaults and 7.2 with the plan's pair. What is left is Ted rolling both and the call being written into DECISIONS.md.
+
 **Acceptance.** tune.camBase and tune.camScale exist on the instance so the two curves can be flipped between mid-roll from the console, Ted has rolled both, and his call is written into DECISIONS.md. Until then the default stays r * 6 -- do not change the feel of a mode he has played without asking.
 
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLMODEPLAN.md#11-dynamic-camera-distance-primary · HANDOVER_ROLLMODE.md#21-the-camera-formula--a-directional-call-not-a-bug
+
+
+### `question-roll-wedding-fanfare` — Should the chemical wedding be the one sound on a site that is silent by decision?
+
+**? question** · question · priority 3 · ted
+ · opened 2026-09-20
+
+
+**Evidence.** Raised 2026-09-20 while closing debt-roll-wedding-not-a-moment, whose acceptance asked for 'a fanfare through AlchemicalAudio'. It could not be given one, because the site is silent by a standing call of Ted's that outranks a ticket: DECISIONS.md 2026-09-04 (evening, final), 'No music, no ambient bed, no sound of any kind — not during the guided tours, not in Poliphilo's Dream, not in the Atalanta worlds, not on any page... Do not add audio to this project without Ted asking for it.' Two earlier attempts at a soundtrack both ended as noise in his speakers, and RECIPES/verify-live.md now proves the silence at release by proxying AudioContext.
+
+So the wedding calls AlchemicalAudio.fanfare('wedding') and that function does nothing. The question is whether ONE cue — four or five seconds at the single moment the work completes, nowhere else on the site, off by default — is the exception, or whether silence means silence. If it is wanted, the whole of the work is one function body in src/systems/AlchemicalAudio.js; the gain-staged ambient implementation is still in git at ab5f82b. It would want sourcing like everything else here rather than the unsourced sine-wave arpeggio the Atalanta mock used.
+
+**Acceptance.** Ted has said yes or no, and it is written into DECISIONS.md. If yes: a cue plays at the wedding and nowhere else, it is built inside AlchemicalAudio.js with no second AudioContext anywhere under src/, it is off unless asked for, and RECIPES/verify-live.md is updated so its silence check knows about the one exception.
+
+**Files.** `src/systems/AlchemicalAudio.js` · `DECISIONS.md` · `RECIPES/verify-live.md`
+
+**See.** DECISIONS.md · ROLLMODEPLAN.md#43-level-endings--level-progression
 
 
 ---
@@ -728,6 +692,56 @@ WHAT IS NOT FIXED: the belt still overlaps the mountain and the glass garden. Gi
 **See.** DECISIONS.md 2026-09-09 the Great Portal at scale · DIRECTIONS.md
 
 
+### `debt-roll-size-gauge` — Roll mode shows the ball's size as a bare number, so the ladder of the seven metals is invisible while you climb it
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Read out of the code 2026-09-20. #roll-size (src/index.html:1202) prints '22 cm' then '1.40 m'. That is the ball's size, but not its PROGRESS: nothing shows how far 18 m is, and nothing shows where the seven transmutations fall along the way. The transmutation from lead to gold is the mode's whole narrative arc -- see the header of src/systems/RollUp.js on why the ball is a Sol/Luna rebis -- and a player currently learns the arc exists only when a stage happens to fire.
+
+The data needed is already in place and already sourced: METALS (src/systems/RollUp.js:115) carries sign, name, metal, tint and a cited note for each of the seven, with transmutation points at 0, 0.6, 1.4, 2.6, 4.5, 7.5 and 11 m, and WEDDING at 18. Nothing new needs sourcing; this is display only.
+
+Note the earlier handover claimed 'No HUD'. That was false -- #roll-hud exists and shows Size, Things and Metal -- and a session acting on it would have rebuilt what is there. The gap is the gauge specifically.
+
+**Acceptance.** On the running page in roll mode, a gauge is visible that fills from 0 to 18 m as the ball grows, carries the seven metal signs from METALS at their `at` values as markers, and tints each marker with that metal's `tint` once reached. Check by driving the ball's radius from the console -- `const r = window._hp.state.activeScene.roll; r.r = 5.0;` -- and confirming the gauge and the passed markers move with it. `await hpDiag()` before and after, both in the commit message; a HUD is DOM, so the draw-call count must not move at all.
+
+**Resolution.** Built. #roll-gauge in src/index.html is a bar filling 0 → 18 m with eight markers built by main.js from the imported METALS array — the seven signs at their own `at` values, each tinted with that metal's own `tint` once reached, plus ☉☽ for the wedding at the far end. Nothing is retyped: METALS is imported rather than copied, so the sourced list stays the only one. The axis is LINEAR in metres, not cube-rooted as the first draft had it: the ticket's complaint is that nothing shows how far 18 m is, and a curved ruler flatters (the cube root put the ball 65 % along at 5 m and 23 % along before it had eaten anything). The cost is that Saturn, Jupiter, Mars and Venus crowd the first seventh, so the bar is drawn wide and the signs small; measured on the page, no two glyphs overlap. Verified at localhost:3458: r = 5.0 → fill 27.78 % (= 5/18) with five signs lit in rgb(110,112,118), (178,186,194), (107,101,96), (184,115,51), (201,205,210) — exactly METALS' 6e7076, b2bac2, 6b6560, b87333, c9cdd2 — and the three unreached dim. Draw calls 2578 before and 2578 after, on a pinned camera; the scene census is identical.
+
+One pre-existing bug was found and fixed in passing: setHidden() forces `display: flex` on whatever it reveals, so #roll-hud had always laid out as a flex ROW — name, row and controls side by side, 1167 px wide on a 1024 px viewport, starting at x = -71. The HUD is revealed with 'block' now, which is what its CSS was written for.
+
+**Files.** `src/index.html` · `src/main.js` · `src/systems/RollUp.js`
+
+**See.** ROLLMODEPLAN.md#31-ball-size-indicator-critical · HANDOVER_ROLLMODE.md#22-the-size-gauge-31--the-largest-genuine-gap
+
+
+### `debt-roll-wedding-not-a-moment` — The wedding at 18 m hands you a score card, but the world does not mark the moment the work completes
+
+**✅ done** · debt · priority 2 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** 2026-09-20. _transmute (src/systems/RollUp.js:563) sets done, sets active false, and calls onWedding with count, grass, seconds and radius; main.js:1389 fills #roll-done with final size, things, grass and time, and shows it. So there IS an ending and a score screen -- the earlier handover's 'No ending = run just stops' was false.
+
+What is missing is that the ending is instantaneous: the ball simply stops and a card appears over it. ROLLMODEPLAN.md section 4.3 asks for a camera pull-back and a fanfare, and it is right to -- this is the chemical wedding, the union of Sol and Luna that the ball has been carrying on its two faces the whole run, and it is the one moment in the mode where the alchemy and the mechanic coincide. Ending it with a UI card alone is the decoration failure CLAUDE.md names.
+
+There is an audio system already: src/systems/AlchemicalAudio.js. Roll mode does not reference it -- grep finds no audio call in RollUp.js or scenes/world/rollup.js. Do not write a second sound system, and do not copy the bare sine-wave C-major arpeggio from the Atalanta mock, which is unsourced.
+
+**Acceptance.** Reaching 18 m pulls the camera back over roughly two seconds before the score card appears, and a fanfare plays through AlchemicalAudio rather than a new AudioContext (grep: no `new AudioContext` or `webkitAudioContext` added under src/). The card gains a 'roll again' that restarts at r0 without a page reload -- verify by taking it twice in one session. Force the ending from the console with `window._hp.state.activeScene.roll.r = 18.1` rather than rolling for it.
+
+**Resolution.** Built, with one clause of the acceptance deliberately NOT met — see below.
+
+The camera: onWedding no longer shows the card. It starts a 2.0 s ease-out that pulls the camera from wherever it stands to twice the curve's own distance and lifts the pitch to 0.9, driven from animate(); the card is shown only when that ramp completes. Verified at localhost:3458 by forcing roll.r = 18.1 from the console: the distance climbed 28.8 → 111 → 163 → 196 → 217 with the card still hidden, and the card appeared at 217.
+
+Roll again: RollUp.restart() rewinds the ball to r0 in place — crust shed and disposed, r, count, grass, clock and stage to zero, `done` cleared, the material back to METALS[0]'s lead. The card's new first button calls it. Taken TWICE in one session without a reload: after the first wedding the ball read r 0.22, count 0, grass 0, stage 0, colour #6e7076, gauge 1.22 % with only Saturn lit; the second wedding then ran its own pull-back and showed a card reading 18.1 m / 0 things / 0 grass / 0:00. The old 'begin again' is kept beside it as 'Begin again in a whole garden', because restart() cannot un-eat what takeRollable has already removed from the world and a scene rebuild can.
+
+THE FANFARE IS SILENT, ON PURPOSE. The call site is built and goes through the existing system — AlchemicalAudio.fanfare('wedding'), a new documented no-op on the stub — and nothing under src/ constructs an AudioContext: verified by proxying window.AudioContext and webkitAudioContext before forcing the wedding twice, counter 0 both times. But a SOUNDING fanfare is refused, because DECISIONS.md 2026-09-04 (evening, final) is Ted's and outranks this ticket: 'No music, no ambient bed, no sound of any kind — not during the guided tours, not in Poliphilo's Dream... Do not add audio to this project without Ted asking for it.' RECIPES/verify-live.md checks exactly that at release. Turning it on is one function body in AlchemicalAudio.js and is Ted's call: see question-roll-wedding-fanfare.
+
+**Files.** `src/systems/RollUp.js` · `src/main.js` · `src/index.html` · `src/systems/AlchemicalAudio.js`
+
+**See.** ROLLMODEPLAN.md#43-level-endings--level-progression · HANDOVER_ROLLMODE.md#24-the-wedding-as-a-cinematic-43
+
+
 ### `feat-colossus-interior` — The colossus is entered through the mouth, and ours cannot be entered
 
 **✅ done** · feat · priority 2 · hp-builder
@@ -916,6 +930,25 @@ The first attempt at the fold broke the decision's own rule and was caught by me
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLING.md#1
+
+
+### `debt-roll-stage-countdown` — The metal display names where you are but not how far the next transmutation is
+
+**✅ done** · debt · priority 3 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** 2026-09-20. #roll-metal (src/index.html:1204) is set by onStage (src/main.js:1377) to the current metal's sign and name -- '♂ Iron' -- and the cited note is raised as a hint at the moment of transmutation. Both are good. Neither tells you that Venus is at 2.6 m and you are at 1.8.
+
+This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to hand at the point where the display is written, and the ball's radius is already being pushed to #roll-size on every swallow.
+
+**Acceptance.** In roll mode the metal line reads as current sign, metal, and progress to the next -- e.g. 'Mars · Iron — 1.8 / 2.6 m' -- and updates as the ball grows, not only on transmutation. At Sol, the last rung, it counts to the wedding at 18 m rather than to a metal that does not exist (METALS[7] is undefined; an off-by-one here shows as 'NaN' on screen, so check it by setting `r.r = 12` from the console).
+
+**Resolution.** Built. #roll-metal now reads e.g. '☿ Quicksilver — 5.0 / 7.5 m', written by updateRollHud() in src/main.js, which is driven from animate() every frame the radius has actually moved — so it answers the ball growing, not only a stage firing, and it answers a radius set straight from the console. The off-by-one is handled explicitly: METALS[7] does not exist, so above Sol the target is WEDDING. Verified on the running page at localhost:3458 on a worktree carrying exactly this change: r = 5.0 gave '☿ Quicksilver — 5.0 / 7.5 m'; r = 12 gave '☉ Gold — 12.0 / 18.0 m' with no NaN and no 'undefined'; r = 0.22 gives '♄ Lead — 0.22 / 0.60 m'.
+
+**Files.** `src/main.js` · `src/index.html`
+
+**See.** ROLLMODEPLAN.md#33-current-stage--metal-display-high · HANDOVER_ROLLMODE.md#23-countdown-to-the-next-stage-33
 
 
 ### `feat-artificial-gardens` — The three artificial gardens - glass, silk, and the counterfeit scent

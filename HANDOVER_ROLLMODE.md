@@ -69,7 +69,11 @@ were false. A session acting on them rebuilds what is already here.
 
 ## 2. What Phase 1 actually leaves to build
 
-Five items, narrower than the original brief, in payoff order.
+**Updated 2026-09-20 (third pass).** Three of the five below are BUILT and shipped — §2.2 the size gauge, §2.3 the countdown, §2.4 the wedding cinematic — and their tickets are closed in `research/tickets.json` with the readings that closed them. §2.1 the camera formula now has its dials (`tune.camBase`, `tune.camScale`, defaults unchanged) and is still Ted's call. §2.5 was already done. See DECISIONS.md 58. **The one thing that was asked for and deliberately NOT built is the sounding fanfare**: the site is silent by the call of 2026-09-04 and the cue is filed as `question-roll-wedding-fanfare`.
+
+Note for whoever bumps `RollUp.js?v=`: there are **three** importers now — `scenes/HPWorldScene.js`, `scenes/world/rollup.js` and `main.js`, which imports `METALS` and `WEDDING` for the HUD.
+
+The original five, in payoff order, kept for the reasoning:
 
 ### 2.1 The camera formula — *a directional call, not a bug* (§1.1)
 

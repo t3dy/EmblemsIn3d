@@ -411,6 +411,51 @@
       35%  { opacity: 1; }
       100% { transform: scale(1) translateY(0); color: #f0e0b4; opacity: 1; }
     }
+    /* ── The gauge: the ladder of the metals, 0 → 18 m ──────────────────
+       The axis is linear in metres, so the bar answers the question the ticket
+       asks — how far 18 m is — rather than flattering it. The consequence is
+       that Saturn, Jupiter, Mars and Venus all fall inside the first seventh
+       (0, 3.3, 7.8, 14.4 %), so the bar is drawn as wide as the HUD allows and
+       the signs as small as they can be read, and the tick under each sign is
+       a hairline so that two neighbouring rungs are still told apart when the
+       glyphs above them nearly touch. */
+    #roll-hud .rh-gauge {
+      position: relative; width: min(34rem, 86vw); margin: 0.5rem auto 0.1rem;
+      height: 1.45rem; pointer-events: none;
+    }
+    #roll-hud .rh-track {
+      position: absolute; left: 0; right: 0; bottom: 0.52rem; height: 3px;
+      /* dark under the gold, because the garden is a BRIGHT one: a 16 %-alpha
+         gold hairline over sunlit grass could not be seen at all */
+      background: rgba(8,6,4,0.55); border-radius: 2px; overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(232,201,106,0.22);
+    }
+    #roll-hud .rh-fill {
+      position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+      background: linear-gradient(90deg, #6e7076 0%, #b87333 45%, #e4e8ee 75%, #e0b74e 100%);
+      box-shadow: 0 0 7px rgba(224,183,78,0.55);
+      transition: width 0.18s linear;
+    }
+    #roll-hud .rh-marks { position: absolute; inset: 0; }
+    /* one sign per metal, sitting on its own point of the bar */
+    #roll-hud .rh-mark {
+      position: absolute; bottom: 0; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; line-height: 1;
+    }
+    #roll-hud .rh-mark i {
+      font-style: normal; font-size: 0.74rem; color: #4a4030;
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    #roll-hud .rh-mark u {
+      text-decoration: none; display: block; width: 1px; height: 0.42rem;
+      margin-top: 0.1rem; background: rgba(232,201,106,0.30);
+    }
+    /* a sign lights in its own metal's tint once the ball has reached it; the
+       tint is set on the .rh-mark by main.js, straight off METALS */
+    #roll-hud .rh-mark.on i { color: inherit; text-shadow: 0 0 8px rgba(0,0,0,0.9); }
+    #roll-hud .rh-mark.on u { background: currentColor; }
+    /* the wedding at the far end is not a metal: it is the two of them at once */
+    #roll-hud .rh-mark.rh-wed i { font-size: 0.64rem; letter-spacing: 0.04em; }
     #roll-hud .rh-row {
       margin-top: 0.35rem; display: flex; gap: 0.5rem 1.1rem; justify-content: center;
       align-items: baseline; font-size: 0.86rem; color: #e8c96a; white-space: nowrap;
@@ -1198,6 +1243,15 @@
        name gets the room and the numbers get the corner. -->
   <div id="roll-hud" hidden>
     <div class="rh-name" id="roll-name">&nbsp;</div>
+    <!-- The ladder of the metals, drawn: lead at the left, gold at 11 m, the
+         chemical wedding at 18. The seven signs, their names and their tints
+         are METALS in src/systems/RollUp.js, out of hp.db.alchemical_symbols;
+         main.js fills the row from that array, so nothing is typed twice and
+         nothing here is invented. debt-roll-size-gauge, 2026-09-20. -->
+    <div class="rh-gauge" id="roll-gauge">
+      <div class="rh-track"><div class="rh-fill" id="roll-fill"></div></div>
+      <div class="rh-marks" id="roll-marks"></div>
+    </div>
     <div class="rh-row">
       <span class="rh-k">Size</span><span id="roll-size">22 cm</span>
       <span class="rh-k">Things</span><span id="roll-count">0</span>
@@ -1227,8 +1281,15 @@
         <div><span id="rd-grass">0</span><em>blades of grass</em></div>
         <div><span id="rd-time">0:00</span><em>from lead to gold</em></div>
       </div>
+      <!-- Two ways to begin again, and they are not the same thing.
+           "Roll again" restarts the ball at r0 where it stands, instantly and
+           without a page reload (RollUp.restart) — but the garden stays as you
+           ate it. "In a whole garden" rebuilds the world and its census, which
+           puts everything back and costs a few seconds.
+           debt-roll-wedding-not-a-moment, 2026-09-20. -->
       <div class="rd-btns">
-        <button onclick="window.hpRoll()">Begin the work again</button>
+        <button onclick="window.hpRollAgain()">Roll again</button>
+        <button onclick="window.hpRoll()">Begin again in a whole garden</button>
         <button onclick="window.hpRollExit()">Leave the garden standing</button>
       </div>
     </div>
@@ -1307,6 +1368,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=390"></script>
+  <script type="module" src="./main.js?v=391"></script>
 </body>
 </html>
