@@ -225,27 +225,175 @@ def check_plates(by_ch):
     return len(PLATE_CHAPTER_EXPECTED)
 
 
+# ── The narrative sections, measured ─────────────────────────────────────────
+#
+# `hp.db.page_concordance.section` used to be the source of this table and is NOT
+# used any more. Its boundaries agree with the plates through PROCESSION and then
+# run progressively early — VENUS_TEMPLE by 17 pages, POLYANDRION by 47,
+# CYTHERA_GARDENS by 74, BOOK_II_POLIA by 116 — and no constant repairs it.
+# Ticket bug-concordance-section-drift.
+#
+# THE WORKING HYPOTHESIS IN THAT TICKET IS FALSE, and this is the useful finding:
+# the drift is NOT an artefact of the quire model. Dumped, the quire model is a
+# uniform reconstruction — 27 gatherings of eight leaves plus z(4) and G(4), 448
+# pages in all — but the section boundaries do not fall on its quire boundaries
+# anywhere (sections start at 80, 168, 186, 216, 256, 271; quires at 81, 177, 193,
+# 209, 257, 273). The sections were never derived from the collation at all. Their
+# lengths are simply invented: the middle of Book I is compressed about 2:1 and
+# BOOK_II_POLIA is given 178 pages — everything left over — to make the total come
+# out at the model's 448. No number of scans repairs a guess; the boundaries had to
+# be measured from the text, which is what the table below is.
+#
+# MEASURED 2026-09-20, in our own translation (whose page numbers are page_seq + 10,
+# established at ten scan/page pairs — see PAGE_SEQ_TO_TRANSLATION) and, at the one
+# boundary the text alone could not settle, by opening the scan.
+#
+# TWO CAVEATS THE TABLE CANNOT REMOVE, both measured:
+#
+#  1. The episodes INTERLEAVE. Poliphilo first sights the great gate on our p.31
+#     (page_seq 21) — "above all I beheld a most beautiful gate" — then turns aside
+#     to the elephant, the sarcophagi and the hieroglyphs, whose woodcuts run to
+#     page_seq 31, and only then returns to the gate. Any [start, end] partition of
+#     this book is therefore an index, not a description of its structure.
+#  2. Where the text's transition and the plates disagree by a page or two, the
+#     boundary is set to keep each section's own plates inside it (that is the
+#     ticket's acceptance check), and `note` records where the text actually turns.
+#
+# section, first page_seq, basis for that boundary.
+MEASURED_SECTIONS = [
+    ("PRELIMINARIES", None,
+     "The five unsigned preliminary leaves, our pp.1-10: title page, Aldus's and "
+     "Crasso's matter, the half-title, Poliphilo's dedication to Polia. They are "
+     "BEFORE page_seq 1 and have no page_seq at all — page_concordance calls "
+     "page_seq 1-3 'PRELIMINARIES', but our p.11 = page_seq 1 is already Chapter I.",
+     None),
+    ("DARK_FOREST", 1,
+     "Chapter I opens on page_seq 1 (our p.11), the first page of the signed book.",
+     "The wood itself is entered four pages in, page_seq 4 (our p.14), "
+     "'peruenuto nella uastissima Hercynia silua' — the scan opened for "
+     "bug-plate-page-seq-offset. The first woodcut is on that page."),
+    ("PYRAMID_RUINS", 12,
+     "our p.22 (page_seq 12): 'lifting my eyes towards that quarter where the wooded "
+     "hills appeared to join, saw far off, in a deep recess, an incredible height in "
+     "the figure of a tower' — the pyramid comes into view.",
+     None),
+    ("DRAGON_PORTAL", 37,
+     "Chapter V opens on page_seq 37 (our p.47): 'POLIPHILO, HAVING MADE SUFFICIENT "
+     "DEMONSTRATION OF THE SYMMETRY OF THE GREAT GATE, GOES ON TO DESCRIBE ITS "
+     "ORNAMENT' — the gate has the book to itself from here to the dark tunnel.",
+     "Approximate, and early: the gate is first sighted at page_seq 21 (our p.31) "
+     "and its symmetry argued from page_seq ~32. The boundary is put at the chapter "
+     "opening because the ruins woodcuts run to page_seq 31."),
+    ("FIVE_SENSES", 60,
+     "Chapter VII opens on page_seq 58 (our p.68): 'HAVING COME OUT OF THAT "
+     "HORRENDOUS pit, and from those inner darknesses' — out of the dragon's tunnel, "
+     "into the country of the fountain and the five damsels.",
+     "Boundary set at 60, two pages after that opening, because plate #18 (the "
+     "anchor and dolphin, 'Always make haste slowly') is on page_seq 59 — our p.69, "
+     "the bridge parapet — and is tagged DRAGON_PORTAL in woodcut_catalog. The tag "
+     "is loose: the bridge is already past the tunnel."),
+    ("QUEEN_PALACE", 82,
+     "Chapter IX opens on page_seq 82 (our p.92) — Queen Eleuterylida's palace.",
+     None),
+    ("JOURNEY_DOORS", 107,
+     "Chapter X opens on page_seq 107 (our p.117) — the nymphs lead him out to the "
+     "three doors.", None),
+    ("PROCESSION", 148,
+     "Chapter XIV opens on page_seq 148 (our p.158) — the triumphal cars.", None),
+    ("VENUS_TEMPLE", 179,
+     "Chapter XVII opens on page_seq 179 (our p.189); its own argument names the "
+     "temple: 'in the said temple, at the warning of the priestess, the Nymph with "
+     "much ceremony put out her torch, showing herself to Poliphilo to be his "
+     "Polia... having entered with the sacrificing priestess into the holy shrine'.",
+     None),
+    ("POLYANDRION", 232,
+     "Chapter XIX opens on page_seq 232 (our p.242): 'go licitly to see these "
+     "deserted temples, collapsed by devouring and obsolete old age'.",
+     "All twenty-seven Polyandrion plates fall inside this one chapter."),
+    ("CYTHERA_VOYAGE", 274,
+     "Chapter XX opens on page_seq 274 (our p.284) with AMOR VINCIT OMNIA and "
+     "Cupid's bark.", None),
+    ("CYTHERA_GARDENS", 282,
+     "our p.292 (page_seq 282): 'as, gliding to the most pleasant place, we put in' "
+     "— the landing on Cythera.", None),
+    ("VENUS_FOUNTAIN", 338,
+     "SCAN OPENED. hp1499_p336.jpg is our p.346 — 'paulatinamente puenissimo ad uno "
+     "proscenio, oue era una conspicua... porta hiante... di uno mirabilissimo "
+     "amphitheatro' — the procession reaches the gate of the theatre of Venus.",
+     "Boundary set at 338, two pages later, because the same scan shows the Triumph "
+     "of Cupid woodcut filling the foot of page_seq 336, and hp1499_p337.jpg (our "
+     "p.347) its right-hand continuation. Both halves are catalogued at page_seq 337 "
+     "and tagged CYTHERA_GARDENS; #143 is in fact on 336. The catalogue's +/-2 "
+     "jitter, measured for once."),
+    ("BOOK_II_POLIA", 371,
+     "Chapter XXV opens on page_seq 371 (our p.381): 'POLIPHILO BEGINS THE SECOND "
+     "BOOK OF HIS HYPNEROTOMACHIA'. page_concordance puts this at 271.",
+     "Ends at page_seq 457, our p.467, the errata leaf and the Aldine colophon. "
+     "page_concordance stops at 448 — it is nine pages short of the book."),
+]
+LAST_PAGE_SEQ = 457   # our p.467, the errata leaf. The last page our translation holds.
+
+
 def sections():
     """Narrative sections, in BOTH numberings — they are ten pages apart, and giving
     only the hp.db one beside chapter ranges that are in the translation's numbering
     is how the two got conflated in the first place.
 
-    These boundaries are NOT trustworthy past page_seq ~167, and neither number will
-    fix that: `page_concordance.section` drifts progressively earlier than the
-    material it names. Checked 2026-09-20 against the pages of the plates that belong
-    to each section: DARK_FOREST through PROCESSION agree exactly, VENUS_TEMPLE is 17
-    pages early, POLYANDRION 47, CYTHERA_GARDENS 74, and BOOK_II_POLIA is marked as
-    beginning at page_seq 271 when Book II in fact opens at page_seq 371 (our p.381,
-    "POLIPHILO BEGINS THE SECOND BOOK"). Do not use a section boundary to decide where
-    a chapter is; use chapters[].pages_1499. Ticket bug-concordance-section-drift.
+    Measured; `page_concordance.section` is no longer read. See MEASURED_SECTIONS
+    above for every boundary and the line of text that fixes it, and for the two
+    caveats no table of this shape can remove. Ticket bug-concordance-section-drift.
     """
+    k, out = PAGE_SEQ_TO_TRANSLATION, []
+    starts = [s for _, s, _, _ in MEASURED_SECTIONS]
+    for i, (name, a, basis, note) in enumerate(MEASURED_SECTIONS):
+        nxt = next((s for s in starts[i + 1:] if s is not None), None)
+        if a is None:                      # the unsigned preliminary leaves
+            rec = {"section": name, "pages_1499": None, "pages_translation": [1, k]}
+        else:
+            b = (nxt - 1) if nxt else LAST_PAGE_SEQ
+            rec = {"section": name, "pages_1499": [a, b], "pages_translation": [a + k, b + k]}
+        rec["boundary_measured_at"] = basis
+        if note:
+            rec["note"] = note
+        out.append(rec)
+    return out
+
+
+def check_sections():
+    """Regression check, run on every seed. Ticket bug-concordance-section-drift.
+
+    The acceptance criterion, asserted: for every narrative_section in
+    woodcut_catalog, the measured section's page range contains the pages of all its
+    plates. It is not a tautology — the ranges come from the text of our translation
+    and the plate pages from the catalogue (plus PLATE_PAGE_FIXES), so moving either
+    can break it. If it fires, open the scan for the offending plate; do not widen a
+    boundary to make the assertion pass.
+    """
+    ranges = {r["section"]: r["pages_1499"] for r in sections() if r["pages_1499"]}
     con = sqlite3.connect(HPDB)
-    rows = con.execute("select section, min(page_seq), max(page_seq) from page_concordance "
-                       "group by section order by min(page_seq)").fetchall()
+    rows = con.execute("select catalog_number, page_seq, narrative_section, description "
+                       "from woodcut_catalog").fetchall()
     con.close()
-    k = PAGE_SEQ_TO_TRANSLATION
-    return [{"section": s, "pages_1499": [a, b], "pages_translation": [a + k, b + k]}
-            for s, a, b in rows]
+    bad, n = [], 0
+    for num, raw, sect, desc in rows:
+        seq = PLATE_PAGE_FIXES.get(num, raw)
+        if seq is None:
+            continue
+        n += 1
+        rng = ranges.get(sect)
+        if rng is None:
+            bad.append(f"  plate #{num}: section {sect!r} is not in MEASURED_SECTIONS")
+        elif not (rng[0] <= seq <= rng[1]):
+            bad.append(f"  plate #{num} ({desc}) is on page_seq {seq}, outside its section "
+                       f"{sect} {rng}")
+    # the ranges themselves must tile the book, in order, with no gap or overlap
+    seq_ranges = [r["pages_1499"] for r in sections() if r["pages_1499"]]
+    for (a1, b1), (a2, b2) in zip(seq_ranges, seq_ranges[1:]):
+        if a2 != b1 + 1:
+            bad.append(f"  sections do not tile: [{a1},{b1}] then [{a2},{b2}]")
+    if bad:
+        raise SystemExit("coverage_seed: section regression:\n" + "\n".join(bad))
+    return n, len(seq_ranges)
 
 
 def build_evidence():
@@ -275,6 +423,7 @@ def main():
     stops = tour_stops()
     by_ch, unplaced = plates(pages)
     checked = check_plates(by_ch)          # raises if the page mapping has re-broken
+    plates_in_sections, n_sections = check_sections()   # raises if a plate left its section
     ev = build_evidence()
 
     old = {}
@@ -335,12 +484,23 @@ def main():
                       "scan; the rest have not.",
             "regression_check": f"{checked} plate->chapter pairs asserted on every seed "
                                 f"(check_plates() in scripts/coverage_seed.py)",
-            "sections_caveat": "sections_1499 comes from page_concordance.section, whose "
-                               "boundaries drift progressively early past page_seq ~167 — "
-                               "BOOK_II_POLIA is marked at 271 when Book II opens at 371. "
-                               "Shifting it by the offset does not repair it. Use "
-                               "chapters[].pages_1499 to place a chapter, never a section. "
+            "sections_caveat": "sections_1499 is MEASURED — read from the text of our "
+                               "translation, boundary by boundary, on 2026-09-20, and no "
+                               "longer taken from hp.db.page_concordance.section, whose "
+                               "boundaries ran progressively early (BOOK_II_POLIA marked at "
+                               "271 when Book II opens at 371) and were never derived from "
+                               "the collation at all. Every boundary carries the line that "
+                               "fixes it in boundary_measured_at. Two things it still cannot "
+                               "tell you: the episodes interleave (the great gate is sighted "
+                               "at page_seq 21, then the ruins woodcuts run to 31, then the "
+                               "gate resumes), and at two seams the boundary is set a page or "
+                               "two off the narrative turn to keep each section's own plates "
+                               "inside it. To place a CHAPTER still use chapters[].pages_1499. "
                                "Ticket bug-concordance-section-drift.",
+            "sections_check": f"{plates_in_sections} plates asserted inside their own "
+                              f"narrative_section, and the {n_sections} sections asserted to "
+                              f"tile page_seq 1-{LAST_PAGE_SEQ} without gap or overlap, on "
+                              f"every seed (check_sections() in scripts/coverage_seed.py)",
         },
         "modes": ["walk", "dream", "tour", "flight", "vaults"],
         "feature_kinds": ["place", "building", "rite", "object", "creature", "inscription",
