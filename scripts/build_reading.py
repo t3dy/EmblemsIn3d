@@ -42,6 +42,19 @@ the tour's own chapter tag would have put it.
 Pages with no station of their own inherit the last one that had one, so the
 world never jumps back to nowhere in the middle of a chapter.
 
+WHICH LEAVES ARE EMITTED. Every page the manifest tracks, except one that is
+genuinely blank. `status` will not tell you which those are: it is derived from
+disk by translation_status.py, which calls any page with a zero-byte Italian
+source "blank", and four pages have none — 55, 90, 195 and 380. Only 380 is
+really empty (the turn before the Book II title page). The other three are
+entirely picture: the great gate, the tiered fountain, and the full-page worship
+of Priapus, the book's most explicit cut. Skipping all four lost three plates
+from Read mode — invisible, not misplaced, which is worse. The manifest now
+carries `"leaf": "full-page-woodcut" | "blank"` beside the status, and this
+script emits a woodcut leaf with an empty body, its plate, and the manifest's
+own `note` as the editorial line. Ticket bug-reading-drops-the-full-page-
+woodcut-leaves, 2026-09-20.
+
 The English is taken from translation/en/page_NNN.md with the page heading and
 the whole Notes section stripped: the reading mode shows the BOOK, and the
 commentary is what the other panel is for. The parenthetical editorial note is
@@ -126,6 +139,11 @@ def station_for_page(n, ch, ranges, ch2st):
 
 EDITORIAL = re.compile(r"^\*\((.*?)\)\*\s*$", re.M | re.S)
 
+# Fallback for a leaf the manifest marks `"leaf": "full-page-woodcut"` but for which
+# nobody has yet written a `note`. The three that exist today all have one.
+FULL_PAGE_WOODCUT_NOTE = ("This leaf of the 1499 is a full-page woodcut: the cut is printed "
+                          "to the frame and there is no text on the page to translate.")
+
 
 def body_of(path):
     """(paragraphs, editorial note) for one page.
@@ -184,10 +202,18 @@ def main():
 
     for n in sorted(int(k) for k in man["pages"]):
         rec = man["pages"][str(n)]
-        if rec.get("status") == "blank":
+        # A LEAF THAT IS ENTIRELY PICTURE IS NOT A BLANK LEAF. `status` is derived
+        # from disk by translation_status.py and turns every zero-byte Italian
+        # source into "blank", so pp.55, 90 and 195 — the great gate, the tiered
+        # fountain and the full-page Priapus — were dropped here along with p.380,
+        # which really is a blank turn before the Book II title page. The manifest
+        # now says which is which in `leaf`; see its `leaf_values`.
+        # (bug-reading-drops-the-full-page-woodcut-leaves, 2026-09-20.)
+        leaf = rec.get("leaf")
+        if rec.get("status") == "blank" and leaf != "full-page-woodcut":
             continue
         f = EN / f"page_{n:03d}.md"
-        if not f.exists():
+        if not f.exists() and leaf != "full-page-woodcut":
             continue
         ch = rec.get("chapter") or ""
         hit = station_for_page(n, ch, ranges, ch2st)
@@ -195,7 +221,15 @@ def main():
             last_station = hit["station"]
         elif ch:
             missing.add(ch)
-        paras, note = body_of(f)
+        if f.exists():
+            paras, note = body_of(f)
+        else:
+            # A full-page-woodcut leaf with no translation/en/ file at all. The
+            # editorial line IS the page: it says what the reader is looking at and
+            # why there is nothing to read. Written in the manifest, not here, so a
+            # future such leaf is a data change rather than a code change.
+            paras = []
+            note = rec.get("note") or FULL_PAGE_WOODCUT_NOTE
         rec_out = {
             "n": n,
             "ch": ch,

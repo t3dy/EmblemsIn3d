@@ -6,9 +6,10 @@
     "first_page": 1,
     "last_page": 467,
     "why": "Dallington's 1592 English runs continuously only to page 193 (chapter XVII), then gaps over pages 194-237, resumes for four pages at 238-241, and closes FINIS at the end of chapter XVIII, before chapter XIX's argument.",
-    "note": "The whole book. Dallington's 1592 English covers pages 1-193 continuously, then skips pages 194-237 entirely, and resumes for four more pages at 238-241, closing FINIS at the end of chapter XVIII (immediately before chapter XIX's argument) -- nothing of his covers page 242 onward. This edition renders every page, so pages 1-193 and 238-241 exist here as a second, modern English beside his, and pages 194-237 and 242-467 exist in English for the first time. The front matter (pages 1-10) was added 2026-09-09. Pages 55, 90, 195 and 380 are blank leaves."
+    "note": "The whole book. Dallington's 1592 English covers pages 1-193 continuously, then skips pages 194-237 entirely, and resumes for four more pages at 238-241, closing FINIS at the end of chapter XVIII (immediately before chapter XIX's argument) -- nothing of his covers page 242 onward. This edition renders every page, so pages 1-193 and 238-241 exist here as a second, modern English beside his, and pages 194-237 and 242-467 exist in English for the first time. The front matter (pages 1-10) was added 2026-09-09. Pages 55, 90, 195 and 380 hold no Italian source text. Only 380 is a blank leaf (the turn before the Book II title page); 55, 90 and 195 are FULL-PAGE WOODCUTS, printed to the frame with no text on them -- see `leaf_values`."
   },
   "status_values": [
+    "blank",
     "unfetched",
     "fetched",
     "drafted",
@@ -36,6 +37,9 @@
     "195": {
       "chapter": "XVII",
       "status": "blank",
+      "leaf": "full-page-woodcut",
+      "note": "A full-page woodcut, not a blank leaf, and the most explicit image in the book. The whole page is given to the worship of Priapus: the herm on its altar beneath a leafy bower hung with lamps, a press of nymphs and men with lighted torches on either side, and in the foreground the garlanded ass led up to the sacrifice with basin and knife. There is no printed text on the leaf to translate.",
+      "leaf_basis": "Scan hp1499_p185.jpg opened 2026-09-20 (page_seq 185 + 10). Picture to the frame, no body text. woodcut_catalog #71.",
       "words": 0,
       "sha1": "da39a3ee5e6b"
     },
@@ -1708,9 +1712,11 @@
     "380": {
       "chapter": "XXIV",
       "status": "blank",
+      "leaf": "blank",
+      "note": "blank leaf before Book II title page",
+      "leaf_basis": "The one genuinely empty leaf of the four: the blank verso before the Book II title page. No woodcut answers to it in woodcut_catalog and images/woodcuts_1499/ holds no p380.jpg.",
       "words": 0,
-      "sha1": "da39a3ee5e6b",
-      "note": "blank leaf before Book II title page"
+      "sha1": "da39a3ee5e6b"
     },
     "381": {
       "chapter": "XXV",
@@ -3027,9 +3033,11 @@
     "55": {
       "chapter": "V",
       "status": "blank",
+      "leaf": "full-page-woodcut",
+      "note": "A full-page woodcut, not a blank leaf. The whole page is given to the great gate: a pedimented aedicule with paired Corinthian columns on high pedestals, a medallion bust in each spandrel, and a Greek inscription cut across the pediment. There is no printed text on the leaf to translate.",
+      "leaf_basis": "Scan hp1499_p045.jpg opened 2026-09-20 (page_seq 45 + 10). Picture to the frame; the only ink outside it is the signature at the foot. woodcut_catalog #16, whose page this ticket's predecessor corrected from 38 to 45.",
       "words": 0,
-      "sha1": "da39a3ee5e6b",
-      "confidence_note": "Source page is empty (0 bytes). A blank leaf in the facsimile; nothing to translate."
+      "sha1": "da39a3ee5e6b"
     },
     "56": {
       "chapter": "V",
@@ -3374,9 +3382,11 @@
     "90": {
       "chapter": "VIII",
       "status": "blank",
+      "leaf": "full-page-woodcut",
+      "note": "A full-page woodcut, not a blank leaf. The whole page is given to a tiered fountain: a wide lipped basin, three winged sphinx-figures supporting the lower bowl, a second bowl ringed with lion masks and dragon heads, and a double figure at the top from which the jets spring and fall. There is no printed text on the leaf to translate.",
+      "leaf_basis": "Scan hp1499_p080.jpg opened 2026-09-20 (page_seq 80 + 10). Picture to the frame; the only ink outside it is the catchword at the foot. woodcut_catalog #23.",
       "words": 0,
-      "sha1": "da39a3ee5e6b",
-      "confidence_note": "Source page is empty (0 bytes). A blank leaf in the facsimile; nothing to translate."
+      "sha1": "da39a3ee5e6b"
     },
     "91": {
       "chapter": "VIII",
@@ -4398,5 +4408,10 @@
       "en_words": 193,
       "confidence": "unstated"
     }
+  },
+  "leaf_values": {
+    "note": "`status` is derived from what is on disk by scripts/translation_status.py, and a page with a zero-byte Italian source becomes `blank` there whatever it actually is. `leaf` is the editorial fact that status cannot carry, and is hand-maintained: it survives a reconcile because reconcile() only ever writes status, en_words, uncertain and confidence. Added 2026-09-20, ticket bug-reading-drops-the-full-page-woodcut-leaves: pp.55, 90 and 195 are not blank, they are entirely picture, and calling them blank made three of the book's plates -- the full-page Priapus among them -- invisible in Read mode.",
+    "full-page-woodcut": "The leaf is a woodcut printed to the frame with no body text on it. Nothing to translate, but there is something to SHOW, so build_reading.py emits the page with its plate and this record's `note` as the editorial line.",
+    "blank": "The leaf is genuinely empty -- a book-division turn. Nothing to translate and nothing to show; build_reading.py skips it."
   }
 }
