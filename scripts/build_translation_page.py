@@ -198,7 +198,15 @@ def main():
             it = italian_html(it_file.read_text(encoding="utf-8")) if it_file.exists() else ""
             body, notes = md_to_html(en_file.read_text(encoding="utf-8"))
             notes_html = f'<div class="notes"><h4>Notes</h4>{notes}</div>' if notes.strip() else ""
-            badge = "verified" if rec["status"] == "verified" else "drafted"
+            # tr-verified-overclaims: "verified" on a green badge reads as
+            # "checked, confirmed accurate" to anyone who has not read the
+            # Method paragraph, but the status field only ever means "no
+            # [?...] marker left" -- the confidence census showed 180 of
+            # these 450 pages carry no stated confidence at all. The badge
+            # now says only what it measures; the separate confidence pill
+            # beside it is where an editorial judgement, if any, is stated.
+            badge_cls = "clear" if rec["status"] == "verified" else "drafted"
+            badge_label = "no queries" if rec["status"] == "verified" else "drafted"
             conf = rec.get("confidence", "unstated")
             conf_html = (
                 f'<span class="conf conf-{conf}" title="'
@@ -208,7 +216,7 @@ def main():
             rows.append(
                 f'<div class="spread" id="p{n}">'
                 f'<div class="folio">p. {n}<span class="folio-r">{conf_html}'
-                f'<span class="badge {badge}">{badge}</span></span></div>'
+                f'<span class="badge {badge_cls}">{badge_label}</span></span></div>'
                 f'<div class="cols"><div class="it" lang="it">{it}</div>'
                 f'<div class="en">{body}{notes_html}</div></div></div>'
             )
@@ -319,7 +327,7 @@ def main():
   .conf-low{{color:#d08a5a;border-color:#7a4a28}}
   .conf-unstated{{color:#5a4632;border-color:var(--rule)}}
   .badge{{font-size:.58rem;padding:.15rem .5rem;border:1px solid}}
-  .badge.verified{{color:#9dbb82;border-color:#4f6a3a}}
+  .badge.clear{{color:#9dbb82;border-color:#4f6a3a}}
   .badge.drafted{{color:var(--gold);border-color:var(--gold-dk)}}
   .badge.todo{{color:#5a4632;border-color:var(--rule)}}
   .cols{{display:grid;grid-template-columns:1fr 1fr;gap:0}}
@@ -387,8 +395,12 @@ def main():
   unproofread, so where it looks corrupt we check the facsimile and the 1545
   Aldine reprint before translating rather than rendering a scanner error into
   English. Readings still in doubt are marked
-  <span class="unsure">[?like this]</span> and explained in the notes; a page is
-  only <span class="badge verified">verified</span> once none remain.</p>
+  <span class="unsure">[?like this]</span> and explained in the notes; a page
+  carries the badge <span class="badge clear">no queries</span> once none
+  remain. That says only that no marker is left in the text — not that a
+  second reader has checked the page against the facsimile. Where that
+  editorial judgement has been made, it is stated separately, on the
+  confidence pill beside it.</p>
   <p style="margin-top:.9rem"><strong>Register.</strong> Modern but formal. We do
   not imitate Dallington — a reader should be able to tell at a glance which
   English is 1592 and which is ours. The formality comes from vocabulary and

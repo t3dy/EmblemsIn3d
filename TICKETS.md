@@ -6,7 +6,7 @@
 
 ---
 
-**52 tickets** — 12 open, 2 question, 3 declined, 35 done. By kind: 23 debt, 15 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**53 tickets** — 12 open, 2 question, 3 declined, 36 done. By kind: 24 debt, 15 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -194,6 +194,21 @@ Verified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 
 **See.** ROLLING.md#3
 
 
+### `tr-confidence-unstated-180` — 180 of 463 englished pages carry no stated confidence at all
+
+**○ open** · debt · priority 3 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** Follow-on from tr-verified-overclaims (closed 2026-09-20), which fixed the badge's wording but not the underlying gap it exposed: of 463 pages, the confidence census reads high 48, medium 232, low 3, UNSTATED 180 (scripts/translation_status.py --next 0). Those 180 pages have a translation and carry no [?...] markers, so they show the "no queries" badge (post-fix) with no confidence pill value beside it -- a reader still cannot tell whether the translator was in fact confident or simply never wrote the **Confidence:** line the other 283 pages carry.
+
+**Acceptance.** Every one of the 180 pages listed by `python scripts/translation_status.py` under confidence unstated is read against the facsimile (or the translator's own working notes, where the judgement was simply never transcribed) and given a stated high/medium/low **Confidence:** line, so that a re-run of translation_status.py reports 0 unstated among drafted+verified pages.
+
+**Files.** `translation/en/` · `scripts/translation_status.py`
+
+**See.** translation/NOTES.md
+
+
 ### `tr-front-matter-review` — The ten front-matter pages have never been read by anyone but their translator
 
 **○ open** · debt · priority 3 · hp-researcher
@@ -207,19 +222,6 @@ Verified live at main.js?v=382: reading.json p. 119 resolves to `labyrinth`, p. 
 **Files.** `translation/en/page_001.md` · `translation/en/page_002.md` · `translation/en/page_008.md`
 
 **See.** translation/NOTES.md
-
-
-### `tr-verified-overclaims` — "verified" in the translation manifest means less than it sounds
-
-**○ open** · infra · priority 3 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** translation_status.py sets status=verified for any page with no [?...] markers left. 450 of 463 pages carry that label. The legend in the script and the paragraph on the parallel-text page both define it correctly, but the word on the green badge does not, and the confidence census tells the real story: high 48, medium 232, low 3, UNSTATED 180.
-
-**Acceptance.** Either the badge is renamed to what it measures (`no queries`, say), or every page carries a stated confidence so the badge and the census cannot disagree.
-
-**Files.** `scripts/translation_status.py` · `scripts/build_translation_page.py`
 
 
 ---
@@ -1057,6 +1059,21 @@ This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to han
 **Files.** `ROUTER.md`
 
 **See.** ENGINEERING.md#2c
+
+
+### `tr-verified-overclaims` — "verified" in the translation manifest means less than it sounds
+
+**✅ done** · infra · priority 3 · hp-builder
+ · opened 2026-09-09, closed 2026-09-20
+
+
+**Evidence.** translation_status.py sets status=verified for any page with no [?...] markers left. 450 of 463 pages carry that label. The legend in the script and the paragraph on the parallel-text page both define it correctly, but the word on the green badge does not, and the confidence census tells the real story: high 48, medium 232, low 3, UNSTATED 180.
+
+**Acceptance.** Either the badge is renamed to what it measures (`no queries`, say), or every page carries a stated confidence so the badge and the census cannot disagree.
+
+**Resolution.** Renamed the badge, not the manifest. The manifest's internal status field ("verified" = no [?...] marker left) and the script's docstring legend were already correct, and the Method paragraph on research/translation.html already stated the criterion correctly in prose -- the ticket's own evidence said so. What overclaimed was the two-letter word rendered on the per-page green pill, read alone, without the paragraph above it. build_translation_page.py now renders that pill as "no queries" (class .badge.clear) instead of "verified", and the Method paragraph's own sentence was rewritten to name the badge by its new word and to say explicitly that it is not the same claim as the confidence pill beside it. Verified by rebuilding: page 12 (confidence: unstated, one of the 180) now shows badge "no queries" next to pill "confidence: unstated" -- no page can show a badge that claims a check the confidence pill denies. `grep -c 'badge verified' research/translation.html` is 0; `grep -c 'no queries'` is 451 (450 pages + the one instance in the Method paragraph's own example). Option (b) -- giving all 180 UNSTATED pages a real confidence judgement -- was considered and declined for this pass: it requires reading each page against the facsimile, the same second-reader work tr-front-matter-review already asks for on 10 pages, at eighteen times the size. Doing it badly (rubber-stamping a confidence level without reading the page) would leave the badge lying in a different way, so it is filed as its own ticket (tr-confidence-unstated-180) for a future research pass rather than half-done here. No hpDiag applies: research/translation.html is generated but is not part of the deployed HP world (it is not reachable from src/index.html or main.js, and the 3-D site reads no translation-manifest data), so there is no live-site rendering surface to verify against; the fix was verified by rebuilding the static page and grepping the output, per the task's own instruction on when hpDiag does not apply.
+
+**Files.** `scripts/translation_status.py` · `scripts/build_translation_page.py`
 
 
 ---

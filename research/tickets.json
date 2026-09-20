@@ -656,7 +656,7 @@
       "id": "tr-verified-overclaims",
       "title": "\"verified\" in the translation manifest means less than it sounds",
       "kind": "infra",
-      "status": "open",
+      "status": "done",
       "priority": 3,
       "evidence": "translation_status.py sets status=verified for any page with no [?...] markers left. 450 of 463 pages carry that label. The legend in the script and the paragraph on the parallel-text page both define it correctly, but the word on the green badge does not, and the confidence census tells the real story: high 48, medium 232, low 3, UNSTATED 180.",
       "acceptance": "Either the badge is renamed to what it measures (`no queries`, say), or every page carries a stated confidence so the badge and the census cannot disagree.",
@@ -666,7 +666,9 @@
       ],
       "role": "hp-builder",
       "refs": [],
-      "opened": "2026-09-09"
+      "opened": "2026-09-09",
+      "closed": "2026-09-20",
+      "resolution": "Renamed the badge, not the manifest. The manifest's internal status field (\"verified\" = no [?...] marker left) and the script's docstring legend were already correct, and the Method paragraph on research/translation.html already stated the criterion correctly in prose -- the ticket's own evidence said so. What overclaimed was the two-letter word rendered on the per-page green pill, read alone, without the paragraph above it. build_translation_page.py now renders that pill as \"no queries\" (class .badge.clear) instead of \"verified\", and the Method paragraph's own sentence was rewritten to name the badge by its new word and to say explicitly that it is not the same claim as the confidence pill beside it. Verified by rebuilding: page 12 (confidence: unstated, one of the 180) now shows badge \"no queries\" next to pill \"confidence: unstated\" -- no page can show a badge that claims a check the confidence pill denies. `grep -c 'badge verified' research/translation.html` is 0; `grep -c 'no queries'` is 451 (450 pages + the one instance in the Method paragraph's own example). Option (b) -- giving all 180 UNSTATED pages a real confidence judgement -- was considered and declined for this pass: it requires reading each page against the facsimile, the same second-reader work tr-front-matter-review already asks for on 10 pages, at eighteen times the size. Doing it badly (rubber-stamping a confidence level without reading the page) would leave the badge lying in a different way, so it is filed as its own ticket (tr-confidence-unstated-180) for a future research pass rather than half-done here. No hpDiag applies: research/translation.html is generated but is not part of the deployed HP world (it is not reachable from src/index.html or main.js, and the 3-D site reads no translation-manifest data), so there is no live-site rendering surface to verify against; the fix was verified by rebuilding the static page and grepping the output, per the task's own instruction on when hpDiag does not apply."
     },
     {
       "id": "read-bind-plate-to-text",
@@ -1085,6 +1087,24 @@
       "refs": [
         "HPTOTOURPIPELINE.md",
         "bug-plate-page-seq-offset"
+      ],
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "tr-confidence-unstated-180",
+      "title": "180 of 463 englished pages carry no stated confidence at all",
+      "kind": "debt",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Follow-on from tr-verified-overclaims (closed 2026-09-20), which fixed the badge's wording but not the underlying gap it exposed: of 463 pages, the confidence census reads high 48, medium 232, low 3, UNSTATED 180 (scripts/translation_status.py --next 0). Those 180 pages have a translation and carry no [?...] markers, so they show the \"no queries\" badge (post-fix) with no confidence pill value beside it -- a reader still cannot tell whether the translator was in fact confident or simply never wrote the **Confidence:** line the other 283 pages carry.",
+      "acceptance": "Every one of the 180 pages listed by `python scripts/translation_status.py` under confidence unstated is read against the facsimile (or the translator's own working notes, where the judgement was simply never transcribed) and given a stated high/medium/low **Confidence:** line, so that a re-run of translation_status.py reports 0 unstated among drafted+verified pages.",
+      "files": [
+        "translation/en/",
+        "scripts/translation_status.py"
+      ],
+      "role": "hp-researcher",
+      "refs": [
+        "translation/NOTES.md"
       ],
       "opened": "2026-09-20"
     }
