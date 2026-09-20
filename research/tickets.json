@@ -1386,7 +1386,7 @@
       "id": "infra-data-v-not-bumped-for-plate-reoffset",
       "title": "reading.json and tours.json were re-exported but DATA_V in src/main.js is still 48, so a returning reader keeps the two-pages-early plates",
       "kind": "infra",
-      "status": "open",
+      "status": "done",
       "priority": 3,
       "evidence": "Opened 2026-09-20 closing bug-plate-images-bound-to-page-seq-plus-eight, bug-tours-dallington-seam-note-wrong, bug-tours-triumphs-xv-stop-is-chapter-xvii and bug-manifest-page-092-chapter-disagrees-with-header. That pass rewrote src/data/reading.json (every plate binding moves two pages, p.92's chapter, five pages' stations) and src/data/tours.json (three ledes, one chapter tag, three page ranges), and src/main.js was explicitly outside its scope. Both files are fetched as ./data/NAME.json?v=${DATA_V}, and DATA_V is the single const at src/main.js:119, still '48'. A reader who has the site cached therefore keeps the old data with the new images -- the worst of the two states, since images/woodcuts_1499/ has been renamed under it.",
       "acceptance": "src/main.js's DATA_V is 49 or higher, and a hard-reloaded live page shows the dark-wood plate on Read-mode p.14 (not p.12) and p.92 headed chapter VIII. This is the browser verification the closing pass could not do.",
@@ -1398,7 +1398,9 @@
       "refs": [
         "bug-plate-images-bound-to-page-seq-plus-eight"
       ],
-      "opened": "2026-09-20"
+      "opened": "2026-09-20",
+      "closed": "2026-09-20",
+      "resolution": "DATA_V bumped 48->49 in src/main.js:119. Verified live: hard-reloaded https://t3dy.github.io/EmblemsIn3d/src/index.html after deploy, confirmed data/reading.json?v=49 and data/tours.json?v=49 fetched, and Read mode p.14 shows the dark-wood plate (woodcuts_1499/p014.jpg, was p012.jpg) and p.92 is headed Chapter VIII."
     },
     {
       "id": "bug-reading-drops-the-full-page-woodcut-leaves",

@@ -116,7 +116,10 @@ function setProgress(pct, text) {
 // and stopped being fine the moment the reading mode fetched reading.json on
 // demand, hours after load. Hoisted so there is one number, not two that can
 // drift. CLAUDE.md: "Data files use the single const V in main.js loadData()."
-const DATA_V = '48';   // bump when data files are re-exported
+const DATA_V = '49';   // bump when data files are re-exported
+// Bumped 2026-09-20: reading.json's plate bindings moved by the +10 fix
+// (bug-plate-images-bound-to-page-seq-plus-eight) and tours.json changed three
+// ledes, a chapter tag and page ranges. infra-data-v-not-bumped-for-plate-reoffset.
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');

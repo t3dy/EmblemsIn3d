@@ -6,7 +6,7 @@
 
 ---
 
-**69 tickets** — 6 open, 2 question, 3 declined, 58 done. By kind: 28 debt, 26 bug, 9 infra, 3 question, 2 perf, 1 feat.
+**69 tickets** — 5 open, 2 question, 3 declined, 59 done. By kind: 28 debt, 26 bug, 9 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -35,23 +35,6 @@ DECOUPLED 2026-09-13: the gardens of glass and silk no longer wait on this ticke
 **Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js`
 
 **See.** Dallington pp. 143-160 · DECISIONS.md 2026-09-09 the dream does not have to add up
-
-
-### `infra-data-v-not-bumped-for-plate-reoffset` — reading.json and tours.json were re-exported but DATA_V in src/main.js is still 48, so a returning reader keeps the two-pages-early plates
-
-**○ open** · infra · priority 3 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** Opened 2026-09-20 closing bug-plate-images-bound-to-page-seq-plus-eight, bug-tours-dallington-seam-note-wrong, bug-tours-triumphs-xv-stop-is-chapter-xvii and bug-manifest-page-092-chapter-disagrees-with-header. That pass rewrote src/data/reading.json (every plate binding moves two pages, p.92's chapter, five pages' stations) and src/data/tours.json (three ledes, one chapter tag, three page ranges), and src/main.js was explicitly outside its scope. Both files are fetched as ./data/NAME.json?v=${DATA_V}, and DATA_V is the single const at src/main.js:119, still '48'. A reader who has the site cached therefore keeps the old data with the new images -- the worst of the two states, since images/woodcuts_1499/ has been renamed under it.
-
-**Acceptance.** src/main.js's DATA_V is 49 or higher, and a hard-reloaded live page shows the dark-wood plate on Read-mode p.14 (not p.12) and p.92 headed chapter VIII. This is the browser verification the closing pass could not do.
-
-**Risk.** Low to make, high to forget: the whole point of the plate fix is a visible one, and an unbumped DATA_V makes it invisible to exactly the readers who have been here before.
-
-**Files.** `src/main.js`
-
-**See.** bug-plate-images-bound-to-page-seq-plus-eight
 
 
 ### `bug-reading-drops-the-full-page-woodcut-leaves` — pp.55, 90 and 195 are full-page woodcuts but are marked 'blank' in manifest.json, so build_reading.py skips them and three plates -- the full-page Priapus among them -- never appear in Read mode
@@ -1267,6 +1250,25 @@ This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to han
 **Files.** `ATALANTA_ANIMATION_STRATEGIES.md` · `ATALANTA_INTEGRATION.md` · `ATALANTA_SUMMARY.md`
 
 **See.** CLAUDE.md rule 4 · ENGINEERING.md#2b
+
+
+### `infra-data-v-not-bumped-for-plate-reoffset` — reading.json and tours.json were re-exported but DATA_V in src/main.js is still 48, so a returning reader keeps the two-pages-early plates
+
+**✅ done** · infra · priority 3 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Opened 2026-09-20 closing bug-plate-images-bound-to-page-seq-plus-eight, bug-tours-dallington-seam-note-wrong, bug-tours-triumphs-xv-stop-is-chapter-xvii and bug-manifest-page-092-chapter-disagrees-with-header. That pass rewrote src/data/reading.json (every plate binding moves two pages, p.92's chapter, five pages' stations) and src/data/tours.json (three ledes, one chapter tag, three page ranges), and src/main.js was explicitly outside its scope. Both files are fetched as ./data/NAME.json?v=${DATA_V}, and DATA_V is the single const at src/main.js:119, still '48'. A reader who has the site cached therefore keeps the old data with the new images -- the worst of the two states, since images/woodcuts_1499/ has been renamed under it.
+
+**Acceptance.** src/main.js's DATA_V is 49 or higher, and a hard-reloaded live page shows the dark-wood plate on Read-mode p.14 (not p.12) and p.92 headed chapter VIII. This is the browser verification the closing pass could not do.
+
+**Risk.** Low to make, high to forget: the whole point of the plate fix is a visible one, and an unbumped DATA_V makes it invisible to exactly the readers who have been here before.
+
+**Resolution.** DATA_V bumped 48->49 in src/main.js:119. Verified live: hard-reloaded https://t3dy.github.io/EmblemsIn3d/src/index.html after deploy, confirmed data/reading.json?v=49 and data/tours.json?v=49 fetched, and Read mode p.14 shows the dark-wood plate (woodcuts_1499/p014.jpg, was p012.jpg) and p.92 is headed Chapter VIII.
+
+**Files.** `src/main.js`
+
+**See.** bug-plate-images-bound-to-page-seq-plus-eight
 
 
 ### `infra-doc-token-headers` — No document states what it costs to read
