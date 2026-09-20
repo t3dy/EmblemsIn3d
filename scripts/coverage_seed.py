@@ -117,6 +117,56 @@ PLATE_PAGE_FIXES = {
     65:  167,  # the right half of that opening. Beneath it on p167 stands the
                # capitalised argument of chapter XV ("LA MVLTITVDINE DEGLI AMANTI
                # GIOVENI"), which is why the catalogue's Four Seasons rows were put here.
+    66:  181,  # RESOLVED 2026-09-20, ticket bug-woodcut-catalog-ten-unresolved-plates.
+               # The Triumph of Vertumnus and Pomona is on scan page_seq 181, signed
+               # "m iiii" at the foot — which is m4r on the measured collation below, an
+               # independent check on the page. The cut shows the car with Vertumnus and
+               # Pomona seated, drawn by four horned fauns, a lyre-player and standard-
+               # bearers beside; the text above it reads "Sedendo ouante sopra una
+               # ueterrima Veha, da quatro cornigeri Fauni tirata", and printed beneath
+               # the cut is the tablet the ledger already quotes: "INTEGERRIMAM CORPOR.
+               # VALITVDINEM, ET STABILE ROBVR, CASTASQVE MEMSAR. DELITIAS, ET BEATAM
+               # ANIMI SECVRITATEM CVLTORIB. M. OFFERO." = our p.191, chapter XVII.
+               # Catalogued at 166, which carries the left half of the Bacchic triumph.
+    67:  182,  # Spring. Scan page_seq 182 carries ONE Seasons relief, the flower-girdled
+               # goddess casting flowers into a flaming Chytropode with the winged boy and
+               # two doves, captioned "FLORIDO VERI .S."; the text set round it reads "La
+               # prima era una pulcherrima Dea cum uolante trece cincte de rose & daltri
+               # fiori" = our p.192, chapter XVII. Catalogued at 167.  MEASURED 2026-09-20.
+    68:  183,  # Summer. Scan page_seq 183 carries TWO reliefs; the upper is the corn-
+               # crowned damsel with the cornucopia of grain, three bearded ears and the
+               # gleaning boy at her feet, captioned "FLAVAE MESSI.S.", under the text "Nel
+               # proximo latere, uidi de miranda celatura, una Damigella nel aspecto
+               # uirgineo" = our p.193, chapter XVII. Catalogued at 167.  MEASURED 2026-09-20.
+    69:  183,  # Autumn, the lower relief on that same page: the nude vine-crowned youth
+               # with grape-clusters and the shaggy goat at his feet, captioned
+               # "MVSTVLENTO AVTVMNO .S.", under "Nel tertio fronte era uno Diuo simulachro
+               # nudo ... de uno infante coronato de Botryi de uua".  MEASURED 2026-09-20.
+    70:  184,  # Winter. Page_seq 183 gives Winter's DESCRIPTION and its tag in the tapering
+               # colophon at its foot, but not the cut; the relief is at the head of scan
+               # page_seq 184 — the bearded king in a beast-skin, sceptre raised into a
+               # hail-streaked sky, captioned "HYEMI AEOLIAE.S." — beside the text "Ad questo
+               # nobile figmento el praestante artifice, electo solertemente el marmoro
+               # hauea, che oltra la candidecia sua era uenato (al requisito loco) de nigro"
+               # = our p.194, chapter XVII, the same page that carries the Priapus altar.
+               # Catalogued at 167.  MEASURED 2026-09-20.
+    127: 312,  # RESOLVED 2026-09-20. The box clipped as peacocks stands on scan page_seq
+               # 312, not 313: a tall cut at the right of the page showing the altar with
+               # its laurel-wreath panel, the four-handled amphora on it, and the clipped
+               # box carrying birds with their tails let down among the spheres — beside
+               # the text "Sopra laquale iaceua uno antiquario uaso amphorale ... Fora
+               # dilquale usciua uno perpollito buxo ... sopra ciascuna uno pauone, cum le
+               # code demisse" = our p.322, chapter XXI. Page_seq 313, where it was
+               # catalogued, carries one cut and that cut is #128, the eagle flower-bed.
+    129: 314,  # RESOLVED 2026-09-20. The bed with two birds on a vase is on scan page_seq
+               # 314, not 317: the square knot-bed at the head of the page with an eagle and
+               # a pheasant beak to beak, footed on the lips of a vase, the border lettered
+               # round with SVPERNAE ALITIS BENIGNITAS — the device our p.324 spells out.
+               # Its text runs from our p.323 ("In the circling were two birds: on the one
+               # part an Eagle, and on the other, facing, a Pheasant ... Upon the lips of a
+               # vase they footed") onto p.324, beside which the cut is printed. Chapter XXI
+               # either way. Page_seq 317, where it was catalogued, carries the two trophies
+               # #130 and #131 and nothing else.
     132: 318,  # scan p319 carries only two trophies — the NEMO tablet and the winged
                # one with ribbons (#134, #135) — and is signed "x". The tiger/lion-skin
                # trophy with the bull's-head crest is the LEFT trophy on scan p318,
@@ -264,43 +314,62 @@ PLATE_PAGE_CONFIRMED = {
          "uedendo io cum il curuo, & cum rigore incordato arco' = our p.458 (ch. XXXV)",
 }
 
-# ── Opened, and still not resolved ───────────────────────────────────────────
+# ── Opened, and still not resolved ─────────────────────────────────
 #
 # For these the catalogued page WAS opened on the scan and shown to carry something
-# else; the plate's true page has not been seen, so its catalogued page is left alone
-# rather than guessed at (the ticket's own rule: do not infer a page from surrounding
-# text). Each entry says what the catalogued page actually carries. These still count
-# as CHECKED — a reader can tell them from a page nobody has looked at.
-PLATE_PAGE_UNRESOLVED = {
-    66:  "scan p166 opened: it carries the LEFT half of the fourth (Bacchic) triumph, "
-         "not Vertumnus and Pomona. Our translation puts the triumph of Vertumnus and "
-         "Pomona on pp.190-191 = page_seq 180-181, and scan p180 is unbroken text "
-         "('per el uirente, & florido plano ... tra laltissimo Cyparisso'), so the plate "
-         "is on page_seq 181 or thereabouts — and the corpus folder holds no scan of "
-         "181-184. True page not seen.",
-    67:  "scan p167 opened: it carries the RIGHT half of the fourth (Bacchic) triumph "
-         "and, beneath it, the capitalised argument of chapter XV — no Seasons relief. "
-         "Our translation carries the four Seasons of the square altar on pp.192-193 = "
-         "page_seq 182-183; the corpus folder holds no scan of 181-184. True page not seen.",
-    68:  "as #67: the Summer relief (FLAVAE MESSI · S., our p.193) is not on scan p167.",
-    69:  "as #67: the Autumn relief (MUSTULENTO AUTUMNO · S., our p.193) is not on scan p167.",
-    70:  "as #67: the Winter relief (HYEMI AEOLIAE · S., our p.193) is not on scan p167.",
-    83:  "scan p213 opened: the page carries exactly ONE woodcut, which is #82. This is a "
-         "second catalogue row for the same page with the same placeholder description "
-         "('Temple ceremony continuation'); either it duplicates #82 or its plate is on "
-         "another page. True page not seen.",
-    86:  "scan p233 opened: it carries the obelisk (#87) and one medallion (#88), not a "
-         "view of the ruined Polyandrion among trees. Scan p234 carries two further "
-         "hieroglyph blocks (the DIVO IVLIO CAESARI band and the elephants-and-ants "
-         "medallion 'PACE AC CONCORDIA PARVAE RES CRESCVNT'), neither of them this one. "
-         "True page not seen.",
-    127: "scan p313 opened: it carries exactly ONE woodcut, the eagle flower-bed (#128). "
-         "The box-tree clipped as three peacocks is not on it. True page not seen.",
-    129: "scan p317 opened: it carries exactly TWO woodcuts, both trophies (#130, #131). "
-         "The flower-bed with two birds on a vase is not on it. True page not seen.",
-    162: "scan p419 opened: it carries exactly ONE woodcut, which is #161. This row and "
-         "#161 describe the same scene (lovers kneeling before the priestess); either it "
-         "duplicates #161 or its plate is on another page. True page not seen.",
+# else, and the plate's true page has not been seen, so its catalogued page is left
+# alone rather than guessed at (the ticket's own rule: do not infer a page from
+# surrounding text). Each entry says what the catalogued page actually carries. These
+# still count as CHECKED — a reader can tell them from a page nobody has looked at.
+#
+# EMPTY since 2026-09-20, when ticket bug-woodcut-catalog-ten-unresolved-plates closed
+# the ten rows that stood here. Seven of them got a true page (now in PLATE_PAGE_FIXES:
+# #66-70, #127, #129) and three turned out not to be lost plates at all (#83, #162 are
+# duplicate rows, #86 answers to no woodcut — see the two tables below). The table is
+# kept, and the branch in plates() that reads it with it, because the next plate that
+# cannot be placed belongs here and not in a guess.
+PLATE_PAGE_UNRESOLVED = {}
+
+# ── Catalogue rows that duplicate another row ──────────────────────────
+#
+# RESOLVED 2026-09-20, ticket bug-woodcut-catalog-ten-unresolved-plates. The catalogued
+# page was opened and found to carry FEWER cuts than the rows claiming it, and the
+# surplus row describes a cut another row already answers to. A duplicate row is a
+# finding, not a gap: it means the catalogue's 168 rows are not 168 woodcuts.
+# plate -> (the row it duplicates, the evidence)
+PLATE_DUPLICATE_ROWS = {
+    83:  (82, "scan page_seq 213 carries exactly ONE woodcut, the priestess with the open "
+              "ritual book before the altar, which is #82 (confirmed on the scan for ticket "
+              "bug-woodcut-catalog-page-jitter). #81, #82 and #83 all carry the SAME "
+              "placeholder description, the string 'Temple ceremony continuation', and #81 "
+              "is on page_seq 212 and #82 on 213; #83 is a third row for a page that has "
+              "one cut. It duplicates #82."),
+    162: (161, "scan page_seq 419 opened 2026-09-20: it carries exactly ONE woodcut — the "
+               "mitred priestess enthroned at the left, Poliphilo standing, Polia kneeling "
+               "with her hands raised, the flaming altar-vase on its stepped base at the "
+               "right — under the text 'Dinanti alla quale ello era apresentato', and signed "
+               "'D' at the foot. That one cut answers both #161 ('Polia kneels before Venus "
+               "priestess; Poliphilus beside') and #162 ('Enamoured couple kneeling before "
+               "priestess'): they describe the same scene. #162 duplicates #161."),
+}
+
+# ── A catalogue row with no woodcut behind it ─────────────────────────
+#
+# The inverse of the rule this whole ledger exists for. "The plates are an index, not an
+# inventory" says the book describes more than it draws; this says the catalogue can also
+# list more than the book draws, because its rows were made by subject-matching the TEXT
+# (woodcut_catalog.link_basis, source_method LLM_ASSISTED) and a vivid passage with no cut
+# can win a row of its own.
+PLATE_NO_WOODCUT = {
+    86: "scan page_seq 233 opened 2026-09-20: it carries exactly TWO woodcuts — the plain "
+        "obelisk on its stepped base at the right, and the round IVSTITIA medallion (the "
+        "balance with the crown, the dog and the serpent) at the left. Those are #87 and "
+        "#88, and neither is a view of ruins among trees. The ruined temple overgrown with "
+        "ground-ivy and thorns that #86 describes is the TEXT of page_seq 232 ('quelle deuii "
+        "aggeri, di fastigiato & uasto cumulo & ruina, i la magiore parte occupate di "
+        "chamaeciso, & di terrambula & di spini implicita'), and scan page_seq 232 was opened "
+        "the same day and is unbroken text under a knotwork initial, with no cut on it at "
+        "all. No woodcut in the book answers to this row.",
 }
 
 # Also measured, but not near a chapter boundary and so not in the tables above:
@@ -314,6 +383,12 @@ PLATE_PAGE_UNRESOLVED = {
 # The eight attributions ticket bug-plate-page-seq-offset says were wrong, plus the two
 # regression points its acceptance names. Asserted on every run — see check_plates().
 PLATE_CHAPTER_EXPECTED = {
+    # Added 2026-09-20, ticket bug-woodcut-catalog-ten-unresolved-plates: the five plates
+    # of the Vertumnus triumph and the Seasons altar, measured off the scans at page_seq
+    # 181-184 and so moved out of XIV/XV into XVII, where their own text and the ledger's
+    # xvii-vertumnus-pomona-triumph and xvii-seasons-altar entries already sat.
+    66: "XVII", 67: "XVII", 68: "XVII", 69: "XVII", 70: "XVII",
+    127: "XXI", 129: "XXI",   # the peacock box and the eagle-and-pheasant flower-bed
     149: "XXIV",   # Fountain of Venus, water from the sarcophagus of Adonis
     150: "XXIV",   # Statue of Venus on the tomb of Adonis
     152: "XXVI",   # Polia in the temple of Diana, Poliphilo prostrate
@@ -435,6 +510,15 @@ def plates(pages_by_ch):
         elif num in PLATE_PAGE_CONFIRMED:
             rec["page_checked"] = "scan opened 2026-09-20; catalogued page confirmed — " \
                                   + PLATE_PAGE_CONFIRMED[num]
+        elif num in PLATE_DUPLICATE_ROWS:
+            dup, why = PLATE_DUPLICATE_ROWS[num]
+            rec["page_checked"] = (f"scan opened 2026-09-20; DUPLICATE catalogue row — this "
+                                   f"row and #{dup} answer to one and the same woodcut. {why}")
+            rec["duplicates_plate"] = dup
+        elif num in PLATE_NO_WOODCUT:
+            rec["page_checked"] = ("scan opened 2026-09-20; NO WOODCUT answers to this "
+                                   "catalogue row — " + PLATE_NO_WOODCUT[num])
+            rec["no_woodcut"] = True
         elif num in PLATE_PAGE_UNRESOLVED:
             rec["page_checked"] = "scan opened 2026-09-20; catalogued page is WRONG and the " \
                                   "true page is NOT YET KNOWN — " + PLATE_PAGE_UNRESOLVED[num]
@@ -676,9 +760,18 @@ MEASURED_SECTIONS = [
      "anchor and dolphin, 'Always make haste slowly') is on page_seq 59 — our p.69, "
      "the bridge parapet — and is tagged DRAGON_PORTAL in woodcut_catalog. The tag "
      "is loose: the bridge is already past the tunnel."),
-    ("QUEEN_PALACE", 82,
-     "Chapter IX opens on page_seq 82 (our p.92) — Queen Eleuterylida's palace.",
-     None),
+    ("QUEEN_PALACE", 84,
+     "SCAN OPENED. hp1499_p084.jpg — page_seq 84 = our p.94 — carries the capitalised "
+     "argument of chapter IX ('QVANTA INSIGNE MAIESTATE FVE QVELLA DELLA REGINA, ET LA "
+     "CONDITIONE DELLA SVA RESIDENTIA') with its decorated initial beneath, and the line "
+     "above it ends '...la Regina Eleuteryllida.' Chapter IX therefore opens on page_seq "
+     "84 (our p.94) — Queen Eleuterylida's palace.",
+     "Was 82 until 2026-09-20, taken from translation/en/page_092.md's header, which read "
+     "'Chapter IX' in error — our pp.92 and 93 both carry on chapter VIII's third fountain "
+     "and its colonnade, and chapter IX's own argument ('How great and notable was the "
+     "majesty of the Queen...') stands on p.94. The header is corrected, and the derived "
+     "ranges VIII [79,93] and IX [94,116] no longer overlap. Ticket "
+     "bug-translation-page-092-chapter-header."),
     ("JOURNEY_DOORS", 107,
      "Chapter X opens on page_seq 107 (our p.117) — the nymphs lead him out to the "
      "three doors.", None),
@@ -743,6 +836,28 @@ def sections():
     return out
 
 
+# —— Plates whose catalogued narrative_section is wrong ——
+#
+# A plate's narrative_section in woodcut_catalog was assigned from the page the catalogue
+# THOUGHT it was on. Correct the page and the section tag can come with it, or fail to.
+# These five were measured onto page_seq 181-184 for ticket
+# bug-woodcut-catalog-ten-unresolved-plates; the catalogue had them at 166-167 and so
+# tagged PROCESSION, but 181-184 is inside VENUS_TEMPLE, which opens with chapter XVII at
+# page_seq 179. check_sections() reads this table in place of the catalogue's tag.
+#
+# This is NOT a boundary widened to make an assertion pass, which that check forbids. The
+# boundary is untouched; the five rows carry a tag derived from a page now known to be
+# wrong, and the correction is recorded here with the scan that settled it. Note that the
+# catalogue's instinct was not silly — the Vertumnus and Pomona car IS the last of the
+# processional triumphs, and the section table's own caveat says the episodes interleave
+# and that any [start, end] partition of this book is an index rather than a description
+# of its structure. What the scans settle is only the PAGE.
+PLATE_SECTION_CORRECTED = {
+    66: "VENUS_TEMPLE", 67: "VENUS_TEMPLE", 68: "VENUS_TEMPLE",
+    69: "VENUS_TEMPLE", 70: "VENUS_TEMPLE",
+}
+
+
 def check_sections():
     """Regression check, run on every seed. Ticket bug-concordance-section-drift.
 
@@ -764,6 +879,7 @@ def check_sections():
         if seq is None:
             continue
         n += 1
+        sect = PLATE_SECTION_CORRECTED.get(num, sect)
         rng = ranges.get(sect)
         if rng is None:
             bad.append(f"  plate #{num}: section {sect!r} is not in MEASURED_SECTIONS")

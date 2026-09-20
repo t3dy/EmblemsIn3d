@@ -1,4 +1,4 @@
-# Page 92 — Chapter IX
+# Page 92 — Chapter VIII
 
 roughly carved between, and without the gnawing obstinacy of the hardest emery, such triglyphs so
 excellently expressed. But with fit chisels and gravers of such a tempering as our modern craftsmen

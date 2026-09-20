@@ -19,10 +19,10 @@
     "offset": 10,
     "shape": "one constant across the whole book — not a step function, and with no break at the Book I/II seam. Measured 2026-09-20 at eight scan/page pairs spanning chapters I, XVII, XXI, XXIV, XXVI, XXXI and XXXIII; the measurements are listed in scripts/coverage_seed.py.",
     "caveat": "woodcut_catalog.page_seq is itself only good to about +/-2 pages (LLM_ASSISTED subject-matching; see its link_basis column), so a plate sitting within a page or two of a chapter boundary may still be on the wrong side of it. Plates carrying page_checked have been seen on the scan; the rest have not.",
-    "regression_check": "16 plate->chapter pairs asserted on every seed (check_plates() in scripts/coverage_seed.py)",
+    "regression_check": "23 plate->chapter pairs asserted on every seed (check_plates() in scripts/coverage_seed.py)",
     "sections_caveat": "sections_1499 is MEASURED — read from the text of our translation, boundary by boundary, on 2026-09-20, and no longer taken from hp.db.page_concordance.section, whose boundaries ran progressively early (BOOK_II_POLIA marked at 271 when Book II opens at 371) and were never derived from the collation at all. Every boundary carries the line that fixes it in boundary_measured_at. Two things it still cannot tell you: the episodes interleave (the great gate is sighted at page_seq 21, then the ruins woodcuts run to 31, then the gate resumes), and at two seams the boundary is set a page or two off the narrative turn to keep each section's own plates inside it. To place a CHAPTER still use chapters[].pages_1499. Ticket bug-concordance-section-drift.",
     "sections_check": "168 plates asserted inside their own narrative_section, and the 13 sections asserted to tile page_seq 1-457 without gap or overlap, on every seed (check_sections() in scripts/coverage_seed.py)",
-    "page_checked_check": "63 plates resolve within 3 pages of a chapter boundary; every one of them has had its scan opened, and check_page_checked() asserts that on every seed. 10 of them carry page_unresolved: the catalogued page was opened and found to carry something else, and the plate's true page has not been seen, so it is left where the catalogue put it rather than guessed at. Ticket bug-woodcut-catalog-page-jitter.",
+    "page_checked_check": "61 plates resolve within 3 pages of a chapter boundary; every one of them has had its scan opened, and check_page_checked() asserts that on every seed. 0 of them carry page_unresolved: the catalogued page was opened and found to carry something else, and the plate's true page has not been seen, so it is left where the catalogue put it rather than guessed at. Ticket bug-woodcut-catalog-page-jitter.",
     "dallington": "Chapters I-XVI also survive in Robert Dallington's 1592 English (public domain), and some sources in this ledger cite him. HIS PAGE NUMBERS ARE NOT THE 1499's: his 279 e-text pages abridge the 1499's 467, so he falls behind by about 20 pages at his p.80 and about 60 at his p.250, with no constant that repairs it. He also runs FURTHER than this project long believed — past the Four Seasons altar to a formal FINIS at the end of chapter XVIII (1499 p.241) — but only by skipping 1499 pp.194-237 outright. Confirm any 'Dallington p. N' against the header of translation/en/page_NNN.md before citing it. Ticket bug-dallington-page-drift.",
     "quires_caveat": "quires_1499 is MEASURED — read off the signatures printed at the foot of seventeen scans. hp.db.page_concordance's signature / quire / leaf_in_quire columns are a uniform reconstruction that omits the u gathering, stops nine pages short of the book, and mis-places quires on both sides of that gap; THEY ARE NOT TO BE USED FOR ANYTHING. Note that page_seq 1 is a2r, not a1r: quire a opens on our p.9, the last preliminary leaf. Never derive a page from a signature or 'correct' a plate page by a leaf — open the scan. Ticket bug-concordance-signature-quire-model.",
     "quires_check": "17 signatures read off scans asserted against the table, four scans asserted to be unsigned, and the gatherings asserted to tile the book at 234 leaves, on every seed (check_quires() in scripts/coverage_seed.py)"
@@ -105,11 +105,11 @@
       "section": "FIVE_SENSES",
       "pages_1499": [
         60,
-        81
+        83
       ],
       "pages_translation": [
         70,
-        91
+        93
       ],
       "boundary_measured_at": "Chapter VII opens on page_seq 58 (our p.68): 'HAVING COME OUT OF THAT HORRENDOUS pit, and from those inner darknesses' — out of the dragon's tunnel, into the country of the fountain and the five damsels.",
       "note": "Boundary set at 60, two pages after that opening, because plate #18 (the anchor and dolphin, 'Always make haste slowly') is on page_seq 59 — our p.69, the bridge parapet — and is tagged DRAGON_PORTAL in woodcut_catalog. The tag is loose: the bridge is already past the tunnel."
@@ -117,14 +117,15 @@
     {
       "section": "QUEEN_PALACE",
       "pages_1499": [
-        82,
+        84,
         106
       ],
       "pages_translation": [
-        92,
+        94,
         116
       ],
-      "boundary_measured_at": "Chapter IX opens on page_seq 82 (our p.92) — Queen Eleuterylida's palace."
+      "boundary_measured_at": "SCAN OPENED. hp1499_p084.jpg — page_seq 84 = our p.94 — carries the capitalised argument of chapter IX ('QVANTA INSIGNE MAIESTATE FVE QVELLA DELLA REGINA, ET LA CONDITIONE DELLA SVA RESIDENTIA') with its decorated initial beneath, and the line above it ends '...la Regina Eleuteryllida.' Chapter IX therefore opens on page_seq 84 (our p.94) — Queen Eleuterylida's palace.",
+      "note": "Was 82 until 2026-09-20, taken from translation/en/page_092.md's header, which read 'Chapter IX' in error — our pp.92 and 93 both carry on chapter VIII's third fountain and its colonnade, and chapter IX's own argument ('How great and notable was the majesty of the Queen...') stands on p.94. The header is corrected, and the derived ranges VIII [79,93] and IX [94,116] no longer overlap. Ticket bug-translation-page-092-chapter-header."
     },
     {
       "section": "JOURNEY_DOORS",
@@ -754,11 +755,6 @@
           "station": "wood",
           "title": "The Dark Wood",
           "notes": 12
-        },
-        {
-          "station": "great_oak",
-          "title": "The Great Oak",
-          "notes": 3
         }
       ],
       "research": {
@@ -898,14 +894,14 @@
       "plates_from": "page-range",
       "tour_stops": [
         {
+          "station": "great_oak",
+          "title": "The Great Oak",
+          "notes": 3
+        },
+        {
           "station": "wood",
           "title": "The Deeper Dream",
           "notes": 6
-        },
-        {
-          "station": "palm_plain",
-          "title": "The Palm and the Wolf",
-          "notes": 3
         },
         {
           "station": "valley",
@@ -1053,29 +1049,14 @@
       "plates_from": "page-range",
       "tour_stops": [
         {
+          "station": "palm_plain",
+          "title": "The Palm and the Wolf",
+          "notes": 3
+        },
+        {
           "station": "valley",
           "title": "The Valley of the Approach",
           "notes": 3
-        },
-        {
-          "station": "horse",
-          "title": "The Winged Horse of Unhappiness",
-          "notes": 14
-        },
-        {
-          "station": "colossus",
-          "title": "The Colossus",
-          "notes": 3
-        },
-        {
-          "station": "elephant",
-          "title": "The Elephant & Obelisk",
-          "notes": 10
-        },
-        {
-          "station": "elephant",
-          "title": "Reading the Hieroglyphs",
-          "notes": 10
         }
       ],
       "research": {
@@ -1393,6 +1374,26 @@
       "plates_from": "page-range",
       "tour_stops": [
         {
+          "station": "horse",
+          "title": "The Winged Horse of Unhappiness",
+          "notes": 14
+        },
+        {
+          "station": "colossus",
+          "title": "The Colossus",
+          "notes": 3
+        },
+        {
+          "station": "elephant",
+          "title": "The Elephant & Obelisk",
+          "notes": 10
+        },
+        {
+          "station": "elephant",
+          "title": "Reading the Hieroglyphs",
+          "notes": 10
+        },
+        {
           "station": "portal",
           "title": "The Great Portal",
           "notes": 12
@@ -1473,25 +1474,11 @@
           "built_as": "world/triumphs.js _reliefScene (the forge), on world/portal.js _buildPorchStylobate"
         },
         {
-          "id": "porch-medallion-busts",
-          "kind": "picture",
-          "plate": 16,
-          "name": "The ancient gate with medallion busts",
-          "source": "1499 plate #16 (p. 38)",
-          "status": "partial",
-          "note": "Attached to this chapter in the plate index. Grepping portal.js for medallion returns nothing, so the busts are probably absent, but the plate has not been read against the built gate and this is marked unknown rather than unbuilt on purpose -- the recipe's rule.\n\nChecked 2026-09-09, and this one was nearer than expected: approach.js already builds a MEDALLION WALL, referred to twice by name, with planting in its cracks. So a wall of medallions on the approach exists. What is unverified is whether it carries BUSTS and whether it reads as the ancient gate this plate draws. Partial until somebody stands in front of it.",
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "built_as": "world/approach.js, the medallion wall"
-        },
-        {
           "id": "porch-hieroglyph-casket",
           "kind": "inscription",
           "plate": 15,
           "name": "Hieroglyphic devices with a decorated casket",
-          "source": "1499 plate #15 (p. 31)",
+          "source": "1499 plate #15, page_seq 31 = our p. 41 (translation/en/page_041.md, headed Chapter IV). The earlier source read '1499 plate #15 (p. 31)', giving the hp.db page_seq while saying '1499 p.'; the two numberings are ten pages apart. Page checked against chapters[].plates and the page's own header: the chapter is right and only the wording was wrong. Ticket debt-ledger-cites-page-seq-as-folio.",
           "status": "partial",
           "note": "Attached to this chapter in the plate index and not yet read against the world. The world builds hieroglyphs elsewhere (_hiero, the ant and the elephant), so the vocabulary exists; whether THIS set is among them is unchecked.\n\nChecked 2026-09-09. The world does build hieroglyphs -- tombs.js keeps `_hiero` with the ant and the elephant -- so the vocabulary is there and the register is established. The plate's decorated casket among its devices is NOT there: the only casket in the world is Osfressia's attribute, the smell-nymph's, which is a different object doing a different job.",
           "modes": [
@@ -1505,7 +1492,7 @@
           "kind": "object",
           "plate": 14,
           "name": "A sarcophagus with a nude queen figure",
-          "source": "1499 plate #14 (p. 30)",
+          "source": "1499 plate #14, page_seq 30 = our p. 40 (translation/en/page_040.md, headed Chapter IV). The earlier source read '1499 plate #14 (p. 30)', which is the page_seq, not a 1499 folio. Checked against chapters[].plates and the page's own header: chapter unchanged. Ticket debt-ledger-cites-page-seq-as-folio.",
           "status": "partial",
           "note": "Attached to this chapter in the plate index, unread against the world. The tombs module builds sarcophagi; whether this one is among them is unchecked.\n\nChecked 2026-09-09. tombs.js builds sarcophagi and an open grave among the half-buried colossus and the obelisk of Caesar, so the OBJECT TYPE is in the world. What is not matched is the plate's own subject -- a nude queen figure on the chest. Partial, not built: a sarcophagus existing is not this sarcophagus existing.",
           "modes": [
@@ -1647,6 +1634,20 @@
             "vaults"
           ],
           "note": "The crawl has corridors and pillars but no vaulted halls or buttressed chambers."
+        },
+        {
+          "id": "porch-medallion-busts",
+          "kind": "picture",
+          "plate": 16,
+          "name": "The ancient gate with medallion busts",
+          "source": "1499 plate #16, page_seq 45 = our p. 55 — a full-page woodcut, one of the four pages translation/en holds no file for. The earlier source read '1499 plate #16 (p. 38)': 38 was the CATALOGUED page_seq, quoted as though it were a 1499 folio. Both halves of that were wrong. The page was corrected to 45 by opening the scans (hp1499_p038.jpg is unbroken text with no woodcut; the gate with the two medallion busts in its spandrels and the Greek pediment inscription is the full-page cut on hp1499_p045.jpg — see PLATE_PAGE_FIXES in scripts/coverage_seed.py), and our p.55 falls in chapter V [47,57], whose own argument is the ORNAMENT of the great gate. Ticket debt-ledger-cites-page-seq-as-folio.",
+          "status": "partial",
+          "note": "Attached to this chapter in the plate index. Grepping portal.js for medallion returns nothing, so the busts are probably absent, but the plate has not been read against the built gate and this is marked unknown rather than unbuilt on purpose -- the recipe's rule.\n\nChecked 2026-09-09, and this one was nearer than expected: approach.js already builds a MEDALLION WALL, referred to twice by name, with planting in its cracks. So a wall of medallions on the approach exists. What is unverified is whether it carries BUSTS and whether it reads as the ancient gate this plate draws. Partial until somebody stands in front of it. [RE-FILED 2026-09-20 from chapter IV to chapter V, ticket debt-ledger-cites-page-seq-as-folio. This is a plate-index feature — its own note opens 'Attached to this chapter in the plate index' — so it follows its plate, and plate #16 is on our p.55, which is chapter V. Body and build assessment unchanged.]",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "world/approach.js, the medallion wall"
         }
       ]
     },
@@ -1907,7 +1908,7 @@
           "description": "Third fountain with Graces, harpies, griffins",
           "page_1499": 80,
           "page_translation": 90,
-          "near_chapter_boundary": 2,
+          "near_chapter_boundary": 3,
           "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p80  the full-page third fountain (the three nude figures, the griffin-heads, the winged sphinxes); no body text, catchword 'no sci' = our p.90, one of the four pages our translation holds no file for (ch. VIII)"
         }
       ],
@@ -2013,7 +2014,7 @@
           "kind": "object",
           "plate": 23,
           "name": "The third fountain, with Graces, harpies and griffins",
-          "source": "1499 plate #23 (p. 80)",
+          "source": "1499 plate #23, page_seq 80 = our p. 90 — one of the four pages translation/en holds no file for, because the leaf is the full-page third fountain with no body text; CONFIRMED on hp1499_p080.jpg. The earlier source read '1499 plate #23 (p. 80)', which is the page_seq. Our p.90 is inside chapter VIII [79,93], so this one does NOT move. Ticket debt-ledger-cites-page-seq-as-folio.",
           "status": "built",
           "note": "Attached to this chapter in the plate index; not yet read against the world.\n\nBUILT, confirmed 2026-09-09. temple.js carries a dedicated `_buildGracesFountain` whose comments quote the passage -- the graces of fine gold, the water falling on the opened crown, every jet named in the text made a jet here -- and a mesh census on the running page finds 92 meshes within 6 m of its coordinates, topping 6.03 m. The evidence is the census and the named builder rather than a screenshot, which is worth saying plainly.",
           "modes": [
@@ -2021,34 +2022,6 @@
             "tour"
           ],
           "built_as": "world/temple.js _buildGracesFountain"
-        },
-        {
-          "id": "plate-24-frieze-genii",
-          "kind": "picture",
-          "plate": 24,
-          "name": "A frieze of genii, dolphins and a bull's skull",
-          "source": "1499 plate #24 (p. 84)",
-          "status": "built",
-          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.\n\nChecked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.\n\nBUILT 2026-09-09 at main.js?v=370 and seen on the running page from the palace's east front. A bucranium swagged between two dolphins with a winged genius at either end -- the commonest grammar of quattrocento ornament, and the world had no bull's skull anywhere until now.\n\nSet on the east front because that is the face the dreamer arrives at, and measured before placing, since two placements earlier in the session went into walls: the front is four meshes spanning z -6.68..6.69 with its face at x = -12.93, a top at 2.01 m, and 5.16 m of clear ground before it. The relief repeats five times along the band -- five tiles of 2.64 x 1.0 against a texture drawn 512 x 192 -- so each tile keeps very nearly the proportion it was drawn at rather than being smeared the length of the wall.\n\nHonest about what reads: the frieze GRAMMAR is legible at walking distance (genius, dolphin, centre, dolphin, genius) and the bucranium itself is small within its tile. Cost +2 meshes and +4 triangles.",
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "built_as": "world/palace.js _buildPalaceFrieze, drawn by world/triumphs.js _reliefScene"
-        },
-        {
-          "id": "plate-25-planetary-wall",
-          "kind": "inscription",
-          "plate": 25,
-          "name": "The panelled wall in the Queen's palace with the planetary names",
-          "source": "1499 plate #25 (p. 88)",
-          "status": "partial",
-          "note": "Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.\n\nChecked 2026-09-09. palace.js drives panelling off the METALS table and the tour lede describes walls panelled room by room with the names of the planets, and a census finds 32 meshes at the Planetary Palace station. So planetary panelling exists. Whether it matches THIS plate's panelled wall is unverified, so partial.",
-          "modes": [
-            "walk",
-            "tour"
-          ],
-          "built_as": "world/palace.js, the METALS panelling"
         }
       ]
     },
@@ -2057,7 +2030,7 @@
       "n": 9,
       "book": 1,
       "pages_1499": [
-        92,
+        94,
         116
       ],
       "text_source": {
@@ -2072,6 +2045,7 @@
           "description": "Frieze ornament with genii, dolphins, bull skull",
           "page_1499": 87,
           "page_translation": 97,
+          "near_chapter_boundary": 3,
           "page_corrected_from": 84,
           "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
@@ -2266,6 +2240,34 @@
             "walk",
             "tour"
           ]
+        },
+        {
+          "id": "plate-24-frieze-genii",
+          "kind": "picture",
+          "plate": 24,
+          "name": "A frieze of genii, dolphins and a bull's skull",
+          "source": "1499 plate #24, page_seq 87 = our p. 97 (translation/en/page_097.md, headed Chapter IX). The earlier source read '1499 plate #24 (p. 84)': 84 was the catalogued page_seq, quoted as a 1499 folio. The page was corrected to 87 by opening the scans — hp1499_p084.jpg carries the capitalised argument of chapter IX and no woodcut at all, while the frieze of two genii among foliage, vases and a skull is on hp1499_p087.jpg under 'Et in medio sopra gli uerticuli assideua una facia circunallata passamente di Puello' (see PLATE_PAGE_FIXES). Our p.97 is chapter IX. Ticket debt-ledger-cites-page-seq-as-folio.",
+          "status": "built",
+          "note": "Attached to this chapter in the plate index; not yet read against the world. A candidate for a NAMED relief scene now that _reliefScene exists -- genii, dolphins and a bucranium are describable enough to draw rather than seed.\n\nChecked 2026-09-09 and absent. The only genii in the world are the two that hold the circle at its centre in portal.js -- MEDIVM TENVERE BEATI, which is plate #36, a different device. There is no bucranium anywhere and no dolphin frieze. This is the strongest candidate for the next NAMED relief scene now that _reliefScene exists: genii, dolphins and a bull's skull are describable enough to draw rather than seed, and a texture costs nothing.\n\nBUILT 2026-09-09 at main.js?v=370 and seen on the running page from the palace's east front. A bucranium swagged between two dolphins with a winged genius at either end -- the commonest grammar of quattrocento ornament, and the world had no bull's skull anywhere until now.\n\nSet on the east front because that is the face the dreamer arrives at, and measured before placing, since two placements earlier in the session went into walls: the front is four meshes spanning z -6.68..6.69 with its face at x = -12.93, a top at 2.01 m, and 5.16 m of clear ground before it. The relief repeats five times along the band -- five tiles of 2.64 x 1.0 against a texture drawn 512 x 192 -- so each tile keeps very nearly the proportion it was drawn at rather than being smeared the length of the wall.\n\nHonest about what reads: the frieze GRAMMAR is legible at walking distance (genius, dolphin, centre, dolphin, genius) and the bucranium itself is small within its tile. Cost +2 meshes and +4 triangles. [RE-FILED 2026-09-20 from chapter VIII to chapter IX, ticket debt-ledger-cites-page-seq-as-folio. A plate-index feature follows its plate, and both the plate and the zophorus text it illustrates are on our p.97, inside chapter IX [94,116]. Body and build assessment unchanged.]",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "world/palace.js _buildPalaceFrieze, drawn by world/triumphs.js _reliefScene"
+        },
+        {
+          "id": "plate-25-planetary-wall",
+          "kind": "inscription",
+          "plate": 25,
+          "name": "The panelled wall in the Queen's palace with the planetary names",
+          "source": "1499 plate #25, page_seq 88 = our p. 98 (translation/en/page_098.md, headed Chapter IX). The earlier source read '1499 plate #25 (p. 88)', giving the page_seq while saying '1499 p.'. Checked against chapters[].plates: our p.98 is chapter IX, not VIII. Ticket debt-ledger-cites-page-seq-as-folio.",
+          "status": "partial",
+          "note": "Attached to this chapter in the plate index. The world builds a Planetary Palace with METALS and planets, so the vocabulary is there; whether this panelled wall is among it is unchecked.\n\nChecked 2026-09-09. palace.js drives panelling off the METALS table and the tour lede describes walls panelled room by room with the names of the planets, and a census finds 32 meshes at the Planetary Palace station. So planetary panelling exists. Whether it matches THIS plate's panelled wall is unverified, so partial. [RE-FILED 2026-09-20 from chapter VIII to chapter IX, ticket debt-ledger-cites-page-seq-as-folio. The feature's own NAME had already said where it belonged — 'the panelled wall in the Queen's palace' — and Queen Eleuterylida's palace is chapter IX, which opens on our p.94. Body and build assessment unchanged.]",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "built_as": "world/palace.js, the METALS panelling"
         }
       ]
     },
@@ -3238,15 +3240,6 @@
           "near_chapter_boundary": 0,
           "page_corrected_from": 165,
           "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
-        },
-        {
-          "plate": 66,
-          "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
-          "page_1499": 166,
-          "page_translation": 176,
-          "near_chapter_boundary": 0,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p166 opened: it carries the LEFT half of the fourth (Bacchic) triumph, not Vertumnus and Pomona. Our translation puts the triumph of Vertumnus and Pomona on pp.190-191 = page_seq 180-181, and scan p180 is unbroken text ('per el uirente, & florido plano ... tra laltissimo Cyparisso'), so the plate is on page_seq 181 or thereabouts — and the corpus folder holds no scan of 181-184. True page not seen.",
-          "page_unresolved": true
         }
       ],
       "plates_from": "page-range",
@@ -3640,42 +3633,6 @@
           "near_chapter_boundary": 0,
           "page_corrected_from": 165,
           "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
-        },
-        {
-          "plate": 67,
-          "description": "Four Seasons relief: Spring (Venus and Cupid)",
-          "page_1499": 167,
-          "page_translation": 177,
-          "near_chapter_boundary": 0,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p167 opened: it carries the RIGHT half of the fourth (Bacchic) triumph and, beneath it, the capitalised argument of chapter XV — no Seasons relief. Our translation carries the four Seasons of the square altar on pp.192-193 = page_seq 182-183; the corpus folder holds no scan of 181-184. True page not seen.",
-          "page_unresolved": true
-        },
-        {
-          "plate": 68,
-          "description": "Four Seasons: Summer (Ceres with boy)",
-          "page_1499": 167,
-          "page_translation": 177,
-          "near_chapter_boundary": 0,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — as #67: the Summer relief (FLAVAE MESSI · S., our p.193) is not on scan p167.",
-          "page_unresolved": true
-        },
-        {
-          "plate": 69,
-          "description": "Four Seasons: Autumn (Wine God with ram)",
-          "page_1499": 167,
-          "page_translation": 177,
-          "near_chapter_boundary": 0,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — as #67: the Autumn relief (MUSTULENTO AUTUMNO · S., our p.193) is not on scan p167.",
-          "page_unresolved": true
-        },
-        {
-          "plate": 70,
-          "description": "Four Seasons: Winter (Jupiter Pluvius)",
-          "page_1499": 167,
-          "page_translation": 177,
-          "near_chapter_boundary": 0,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — as #67: the Winter relief (HYEMI AEOLIAE · S., our p.193) is not on scan p167.",
-          "page_unresolved": true
         }
       ],
       "plates_from": "page-range",
@@ -3875,13 +3832,7 @@
       },
       "plates": [],
       "plates_from": "page-range",
-      "tour_stops": [
-        {
-          "station": "priapus",
-          "title": "The Altar of the Seasons — the hand-off to our translation",
-          "notes": 7
-        }
-      ],
+      "tour_stops": [],
       "research": {
         "status": "enumerated",
         "enumerated_by": "hp-researcher session, 2026-09-17",
@@ -4049,6 +4000,48 @@
       },
       "plates": [
         {
+          "plate": 66,
+          "description": "Triumph of Vertumnus and Pomona: satyrs, nymphs",
+          "page_1499": 181,
+          "page_translation": 191,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 166,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
+          "plate": 67,
+          "description": "Four Seasons relief: Spring (Venus and Cupid)",
+          "page_1499": 182,
+          "page_translation": 192,
+          "near_chapter_boundary": 3,
+          "page_corrected_from": 167,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
+          "plate": 68,
+          "description": "Four Seasons: Summer (Ceres with boy)",
+          "page_1499": 183,
+          "page_translation": 193,
+          "page_corrected_from": 167,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
+          "plate": 69,
+          "description": "Four Seasons: Autumn (Wine God with ram)",
+          "page_1499": 183,
+          "page_translation": 193,
+          "page_corrected_from": 167,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
+          "plate": 70,
+          "description": "Four Seasons: Winter (Jupiter Pluvius)",
+          "page_1499": 184,
+          "page_translation": 194,
+          "page_corrected_from": 167,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
           "plate": 71,
           "description": "Worship of Priapus with nineteen female and five male figures",
           "page_1499": 185,
@@ -4133,12 +4126,17 @@
           "page_1499": 213,
           "page_translation": 223,
           "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p213 opened: the page carries exactly ONE woodcut, which is #82. This is a second catalogue row for the same page with the same placeholder description ('Temple ceremony continuation'); either it duplicates #82 or its plate is on another page. True page not seen.",
-          "page_unresolved": true
+          "page_checked": "scan opened 2026-09-20; DUPLICATE catalogue row — this row and #82 answer to one and the same woodcut. scan page_seq 213 carries exactly ONE woodcut, the priestess with the open ritual book before the altar, which is #82 (confirmed on the scan for ticket bug-woodcut-catalog-page-jitter). #81, #82 and #83 all carry the SAME placeholder description, the string 'Temple ceremony continuation', and #81 is on page_seq 212 and #82 on 213; #83 is a third row for a page that has one cut. It duplicates #82.",
+          "duplicates_plate": 82
         }
       ],
       "plates_from": "page-range",
       "tour_stops": [
+        {
+          "station": "priapus",
+          "title": "The Altar of the Seasons — the hand-off to our translation",
+          "notes": 7
+        },
         {
           "station": "venus_temple",
           "title": "The Temple of Venus",
@@ -4541,8 +4539,8 @@
           "page_1499": 233,
           "page_translation": 243,
           "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p233 opened: it carries the obelisk (#87) and one medallion (#88), not a view of the ruined Polyandrion among trees. Scan p234 carries two further hieroglyph blocks (the DIVO IVLIO CAESARI band and the elephants-and-ants medallion 'PACE AC CONCORDIA PARVAE RES CRESCVNT'), neither of them this one. True page not seen.",
-          "page_unresolved": true
+          "page_checked": "scan opened 2026-09-20; NO WOODCUT answers to this catalogue row — scan page_seq 233 opened 2026-09-20: it carries exactly TWO woodcuts — the plain obelisk on its stepped base at the right, and the round IVSTITIA medallion (the balance with the crown, the dog and the serpent) at the left. Those are #87 and #88, and neither is a view of ruins among trees. The ruined temple overgrown with ground-ivy and thorns that #86 describes is the TEXT of page_seq 232 ('quelle deuii aggeri, di fastigiato & uasto cumulo & ruina, i la magiore parte occupate di chamaeciso, & di terrambula & di spini implicita'), and scan page_seq 232 was opened the same day and is unbroken text under a knotwork initial, with no cut on it at all. No woodcut in the book answers to this row.",
+          "no_woodcut": true
         },
         {
           "plate": 87,
@@ -5091,11 +5089,11 @@
         {
           "plate": 127,
           "description": "Box-tree clipped as three peacocks on altar-vase",
-          "page_1499": 313,
-          "page_translation": 323,
-          "near_chapter_boundary": 2,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p313 opened: it carries exactly ONE woodcut, the eagle flower-bed (#128). The box-tree clipped as three peacocks is not on it. True page not seen.",
-          "page_unresolved": true
+          "page_1499": 312,
+          "page_translation": 322,
+          "near_chapter_boundary": 3,
+          "page_corrected_from": 313,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 128,
@@ -5104,6 +5102,15 @@
           "page_translation": 323,
           "near_chapter_boundary": 2,
           "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p313 the square flower-bed with the eagle in a knot of bands lettered round the border; 'La Aquila di serpilo, Lo excluso dagli circuntermini di polio montano' = our p.323 (ch. XXI)"
+        },
+        {
+          "plate": 129,
+          "description": "Flower-bed: two birds on a vase",
+          "page_1499": 314,
+          "page_translation": 324,
+          "near_chapter_boundary": 1,
+          "page_corrected_from": 317,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -5179,15 +5186,6 @@
         "note": "page numbers ARE the 1499's, so they line up with hp.db. Dallington 1592 reaches chapter XVIII, but only by skipping 1499 pp.194-237 entirely; where he is present his page numbers are his own."
       },
       "plates": [
-        {
-          "plate": 129,
-          "description": "Flower-bed: two birds on a vase",
-          "page_1499": 317,
-          "page_translation": 327,
-          "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p317 opened: it carries exactly TWO woodcuts, both trophies (#130, #131). The flower-bed with two birds on a vase is not on it. True page not seen.",
-          "page_unresolved": true
-        },
         {
           "plate": 130,
           "description": "Trophy of Roman arms with winged genius head",
@@ -7999,8 +7997,8 @@
           "page_1499": 419,
           "page_translation": 429,
           "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan p419 opened: it carries exactly ONE woodcut, which is #161. This row and #161 describe the same scene (lovers kneeling before the priestess); either it duplicates #161 or its plate is on another page. True page not seen.",
-          "page_unresolved": true
+          "page_checked": "scan opened 2026-09-20; DUPLICATE catalogue row — this row and #161 answer to one and the same woodcut. scan page_seq 419 opened 2026-09-20: it carries exactly ONE woodcut — the mitred priestess enthroned at the left, Poliphilo standing, Polia kneeling with her hands raised, the flaming altar-vase on its stepped base at the right — under the text 'Dinanti alla quale ello era apresentato', and signed 'D' at the foot. That one cut answers both #161 ('Polia kneels before Venus priestess; Poliphilus beside') and #162 ('Enamoured couple kneeling before priestess'): they describe the same scene. #162 duplicates #161.",
+          "duplicates_plate": 161
         }
       ],
       "plates_from": "page-range",
