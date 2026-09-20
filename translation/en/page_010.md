@@ -30,7 +30,9 @@ love; and, for this, your kind favour. Farewell.
 
 ## Notes
 
-**Confidence: high** for the sense. The syntax is the book's own — subject and verb held apart
+**Confidence: high.** Read against the facsimile by a second reader, 2026-09-20 (Siena
+O.III.38, f. 5v): the transcription is faithful, including *comsumpto* and *unica clavigera*,
+and no reading needed changing. The syntax is the book's own — subject and verb held apart
 across four or five subordinate clauses — and the English here keeps the suspension rather than
 tidying it, because the difficulty is the style Crasso defends on page 2 and not an artefact of
 translation.
@@ -48,7 +50,8 @@ translation.
   doing, therefore every fault in it is hers too: *you shall be the one accused*. It is a love
   letter and a disclaimer at once.
 - **"Leaving the style I began in and translating it into this one at your instance."** A claim
-  that the work was begun in some other manner — Latin is the usual reading — and turned into
+  that the work was begun in some other manner — Latin is the obvious candidate, though the
+  text does not say so and this edition has found nobody in the corpus who does — and turned into
   this hybrid vernacular at Polia's asking. Whether that is biography or fiction, it is the book
   accounting for its own strange language, and it puts the responsibility on a woman who is dead
   before the story starts.

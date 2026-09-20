@@ -24,7 +24,7 @@
 > Meadows, gardens and Cytherean orchards,
 >    in the middle a fair theatre laid out there,
 >    where he triumphs with his Cupids.
-> The fountain of the Paphian, conquered by this,
+> The fountain of the Paphian, [?joined to this],
 >    with her venerable and beautiful form,
 >    and the tomb of Adonis, driven from life —
 > who was so loved in the world by her
@@ -50,8 +50,23 @@
 
 ## Notes
 
-**Confidence: high.**
+**Confidence: medium.** Read against the facsimile by a second reader, 2026-09-20 (Siena
+O.III.38, f. 4r). The verse is secure except for one phrase, *a questo evinto*, which the first
+pass rendered literally and did not flag; it is now marked in the text and argued below. Start
+there.
 
+- **Uncertain reading: *a questo evinto* (flagged 2026-09-20, second reader).** The facsimile
+  prints *El fonte della paphia a questo euinto*, so the transcription is sound and the trouble
+  is the word itself. The first pass gave "conquered by this", from *evincere*, to overcome —
+  literal, silent, and pointing at nothing in the book. Two readings are open and the page
+  should not pretend otherwise. (a) *evinto* = overcome, won over: the fountain outdone by, or
+  won to, the theatre named in the tercet before it. (b) *evinto* for *avvinto* = bound or
+  fastened to, a spelling this book's Latinising orthography makes easy. (b) fits the
+  topography, because the Fountain of Venus stands **in the middle of** the theatre — *In cuius
+  medio curva theatra patent*, the Latin elegy on page 4, and the whole of chapter XXIII — and
+  (a) fits nothing that happens. The text carries "joined to this" and the marker; the other
+  reading is recorded here. **Not settled**, and it would take a fifteenth-century Venetian
+  lexicon we do not have on this machine to settle it.
 - **"Wretched little Venus."** *Venus mischinella* — a diminutive of pity, and the single warmest
   word in the whole front matter. The goddess is not grand here; she is a woman keeping the
   anniversary of a dead lover, year after year. Chapter XXIV, the last station of Book I, is

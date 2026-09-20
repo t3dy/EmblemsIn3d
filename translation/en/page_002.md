@@ -7,14 +7,14 @@ LEONARDO CRASSO OF VERONA SENDS MUCH GREETING TO GUIDO, MOST ILLUSTRIOUS DUKE OF
 
 Since I have always honoured and regarded you, most unconquered Duke, for the singular virtues
 and the fame of your name — and most of all since my brother served under your auspices at the
-siege of [?Bibbiena] — whatever was then bestowed by you upon him (and he often recalls it was
+siege of Bibbiena — whatever was then bestowed by you upon him (and he often recalls it was
 much, reporting your kindness and humanity toward him), all of that we have reckoned to belong
 to all the Crassi; and what one received, we all count as received by us from you, nor do we
 now concede to him that he is more yours than we all are. But my brothers await an occasion to
 expose for your sake not only all they have, but their lives as well.
 
 I myself, who so far as my strength allows think often — and shall go on thinking, until I have
-done it — by what means I may [?open myself to] you, now come into some hope of my wish. For since
+done it — by what means I may open myself to you, now come into some hope of my wish. For since
 I know that with you one can do no more by the goods of fortune than (as the saying goes) by
 water with the sea, and that letters and virtues alone have power with you, I have tried
 letters as a ford, for a way of approach to you.
@@ -24,7 +24,7 @@ name given to the book), which — that it should not lie hidden any longer in d
 should profit mortals in good time — I have seen to the printing and publishing of at my own
 expense. But lest that book, bereft of its parent, should seem to be like a ward without
 guardian or any patronage, I have chosen you as its present patron, in whose name it might go
-forth [?a little more boldly]: so that as I now use it as the servant and messenger of my love and
+forth a little bolder: so that as I now use it as the servant and messenger of my love and
 regard toward you, so you may often use it as a companion to your studies and your manifold
 learning.
 
@@ -57,7 +57,10 @@ part I have attained what I had wished for.
 
 ## Notes
 
-**Confidence: high** for the sense; **medium** for a few clauses of the Latin, flagged below.
+**Confidence: high.** Read against the facsimile by a second reader, 2026-09-20: the three
+readings the first pass queried are confirmed, and the queries are cleared from the text. What
+remains uncertain is not the Latin but a fact of history — which siege of Bibbiena is meant —
+and that is argued in the notes rather than marked in the translation.
 
 - **Who is writing, and why it matters.** Leonardo Crasso of Verona paid for this book. Aldus
   Manutius printed it in December 1499, but the money, the privilege on page 1 and the risk were
@@ -84,7 +87,33 @@ part I have attained what I had wished for.
   beside John Dixon Hunt's argument that the three artificial gardens are *not* illustrated on
   purpose (see `GARDENS.md` §3): the book's own publisher thinks pictures explain, and the book
   withholds them exactly where explanation would spoil the point.
-- **Uncertain readings.** *Quo nam pacto me tibi aperiam* — "by what means I may open myself to
-  you", i.e. make himself known; possibly "commend myself". *Audaculus* is a rare diminutive of
-  *audax*, "a little bolder", rendered here as "a little more boldly". The Bibbiena siege is
-  presumably the Florentine action of 1498, in which Guidobaldo commanded.
+- **The three queries, resolved (second reader, 2026-09-20).** All three were checked word by
+  word against the facsimile — Siena O.III.38, f. 1v, `site/images/siena/O.III.38_0001v.jpg` —
+  which reads exactly as the Wikisource transcription does. None of them was ever a textual
+  doubt; all three were doubts about sense.
+  - *Quo nam pacto me tibi aperiam*, "by what means I may open myself to you". **Confirmed.**
+    *Aperire se alicui* is to disclose oneself, to make oneself known, and the next sentence
+    settles which way to take it: *literis aditum ad te tanquam vadum tentavi* — "I have tried
+    letters as a ford, for a way of approach to you". Crasso is hunting for a way *in*, and the
+    metaphor of access runs straight on from the verb. "Commend myself" would say the same
+    thing less literally and throw the image away. (*Pro virili mea*, in the same clause, is the
+    idiom *pro virili parte*, "for my own part, as far as in me lies"; "so far as my strength
+    allows" carries it.)
+  - *Audaculus*. **Confirmed**, and printed plainly: *in cuius nomen audaculus prodiret*. It is
+    a diminutive of *audax* in *-culus*, the softening kind, and it is an adjective of the book,
+    not an adverb of its going: the fatherless ward goes out under a patron's name *a little
+    bolder* than it would go out alone. The figure around it — *parente orbatus*, *veluti
+    pupillus sine tutela* — fixes the sense past argument. The English is changed from "a little
+    more boldly" to "a little bolder" so that the word stays attached to the book.
+  - *Bibienae obsidione*. The **place is certain** — the facsimile reads *Bibienæ*, and *Bibiena*
+    is the Latin and the period Italian for Bibbiena in the Casentino — so the query on the name
+    is cleared. The **event** is a different matter, and the first pass's gloss is wrong in one
+    particular. The siege of Bibbiena belongs to the Casentino campaign of 1498, in the war
+    Venice fought against Florence, and Guidobaldo was then in **Venetian** service, not
+    Florentine — which is also why a Veronese, a subject of the Signory whose privilege stands
+    on page 1, was serving under his auspices. **Nothing in this corpus documents that
+    campaign**, so the date and the side are inferences from Guidobaldo's career and not a
+    sourced identification; they should not be repeated as though they were. The lead worth
+    following is Rosemary Trippe's note 3 (*Renaissance Quarterly* 55.4, in the corpus at
+    `md/`), which sends a reader to Oettinger 15–46 for Guidobaldo's dealings with Venice and
+    the dedication of this book to him. Oettinger is not on this machine.

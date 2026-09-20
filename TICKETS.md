@@ -6,7 +6,7 @@
 
 ---
 
-**55 tickets** — 11 open, 2 question, 3 declined, 39 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**55 tickets** — 10 open, 2 question, 3 declined, 40 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -198,21 +198,6 @@ SEPARATE OBSERVATION, not changed and left for Ted: the plaque canvas is 320x96 
 **Acceptance.** Every one of the 180 pages listed by `python scripts/translation_status.py` under confidence unstated is read against the facsimile (or the translator's own working notes, where the judgement was simply never transcribed) and given a stated high/medium/low **Confidence:** line, so that a re-run of translation_status.py reports 0 unstated among drafted+verified pages.
 
 **Files.** `translation/en/` · `scripts/translation_status.py`
-
-**See.** translation/NOTES.md
-
-
-### `tr-front-matter-review` — The ten front-matter pages have never been read by anyone but their translator
-
-**○ open** · debt · priority 3 · hp-researcher
- · opened 2026-09-09
-
-
-**Evidence.** Pages 1-10 were translated 2026-09-09 from the Wikisource transcription of the 1499 Aldine. Four readings are marked [?...] and explained in the notes (Crasso's `quo nam pacto me tibi aperiam`, `audaculus`, the Bibbiena siege, and Marone's run-together `quid eritnoscetur`). The other six pages carry no flagged doubt, which under this project's definition makes them `verified` -- and that word means only 'no marker left', not 'checked against the facsimile by a second reader'.
-
-**Acceptance.** Someone other than the translator reads pages 1-10 against the facsimile and either clears the four marked readings or replaces them with better ones.
-
-**Files.** `translation/en/page_001.md` · `translation/en/page_002.md` · `translation/en/page_008.md`
 
 **See.** translation/NOTES.md
 
@@ -1123,6 +1108,31 @@ This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to han
 **Files.** `src/systems/RollUp.js`
 
 **See.** ROLLING.md#3
+
+
+### `tr-front-matter-review` — The ten front-matter pages have never been read by anyone but their translator
+
+**✅ done** · debt · priority 3 · hp-researcher
+ · opened 2026-09-09, closed 2026-09-20
+
+
+**Evidence.** Pages 1-10 were translated 2026-09-09 from the Wikisource transcription of the 1499 Aldine. Four readings are marked [?...] and explained in the notes (Crasso's `quo nam pacto me tibi aperiam`, `audaculus`, the Bibbiena siege, and Marone's run-together `quid eritnoscetur`). The other six pages carry no flagged doubt, which under this project's definition makes them `verified` -- and that word means only 'no marker left', not 'checked against the facsimile by a second reader'.
+
+**Acceptance.** Someone other than the translator reads pages 1-10 against the facsimile and either clears the four marked readings or replaces them with better ones.
+
+**Resolution.** READ by a second reader, all ten pages, against the 1499 facsimile -- Siena, Biblioteca Comunale degli Intronati, O.III.38, ff. 1r-5v, in the read-only corpus at 'site/images/siena/'. Folio-to-page mapping confirmed by opening every leaf: our page N is folio ceil(N/2) recto (odd N) or verso (even N), so pages 1-10 are ff. 1r, 1v, 2r, 2v, 3r, 3v, 4r, 4v, 5r, 5v. Godwin 1999 was not opened, quoted or paraphrased at any point; nothing in the corpus is Godwin.
+
+THE FOUR FLAGGED READINGS. Three confirmed, one confirmed and improved; all four markers cleared from the text. (1) Crasso's 'quo nam pacto me tibi aperiam' (p.2) CONFIRMED -- the facsimile reads exactly as the transcription does, and the decisive evidence is the next sentence, 'literis aditum ad te tanquam vadum tentavi', which continues the same metaphor of access: Crasso is looking for a way in, so 'open myself to you' is right and 'commend myself' would lose the image. (2) 'audaculus' (p.2) CONFIRMED and printed plainly ('in cuius nomen audaculus prodiret'); it is a -culus diminutive of audax and an adjective of the book, not an adverb, so the English is changed from 'a little more boldly' to 'a little bolder'; the surrounding figure (parente orbatus, veluti pupillus sine tutela) fixes the sense. (3) The Bibbiena siege (p.2): the PLACE is certain -- the facsimile reads 'Bibienae', and that is the Latin for Bibbiena in the Casentino -- so the marker is cleared, but the first pass's gloss was wrong on the EVENT and is corrected: the siege belongs to the Casentino campaign of 1498 and Guidobaldo was then in VENETIAN service, not Florentine, which is also why a Veronese served under his auspices. Nothing in this corpus documents that campaign, so the note now says so in terms and records the one lead the corpus does give (Trippe, Renaissance Quarterly 55.4, note 3, citing Oettinger 15-46, which is not on this machine). (4) Marone's 'quid eritnoscetur' (p.8) CONFIRMED, and it turns out never to have been a conjecture at all: the 1499 PUNCTUATES it. Aldus's question mark in this fount appears five times in the same eight lines (after musa, Vestrum, titulus, Poliphilus, cur), and it stands between 'erit' and 'noscetur' and again after 'sin minus'. The Wikisource transcriber dropped an unfamiliar glyph; the printer's own division is 'Si parcet, quid erit? noscetur. sin minus? haud uos ...'. The English is improved with it: 'quid erit' is the idiom 'what then?', not 'what will he be?'.
+
+WHAT THE UNFLAGGED PAGES TURNED UP -- two mistranslations and one unflagged doubt, none of them visible without reading the Latin. (a) PAGE 8, the second epigram, the worst of them: the last line had agent and patient reversed. 'Te dum Poliphilus somno iacet obrutus alto, / Pervigilare facit docta per ora virum' was rendered 'you make the man keep watch, through learned lips', making Polia the actor. Te is accusative and cannot be the subject of facit, and virum is the syncopated genitive plural of vir in the tag 'per ora virum' (Ennius's epitaph 'volito vivus per ora virum'; Virgil, Georgics 3.9) -- the standard Latin figure for outliving death by being spoken of. It reads: while Poliphilo lies buried in sleep, HE keeps HER awake, in the learned mouths of men. That is what the couplet above it promises (vivis mortua, sed melius) and it restores the book's own somno/pervigilare pun. Corrected. (b) PAGE 4, the last couplet of the anonymous elegy: 'Annua per Venerem, Naiadasque leges' had been read twice over, as both the verb leges and the noun leges, producing 'yearly by Venus -- and you shall read the Naiads' laws', and there are no Naiads' laws in the book. The facsimile puts the comma after Venerem, so per governs both nouns and leges is the future of lego: you will read what annual rites are kept at Adonis's tomb by Venus and the Naiads. The proof is internal and contemporary -- the Italian terza rima on p.7, which is this same elegy translated in 1499, reads 'celebrato gli e lo anniversario / per le Naiade e Venus mischinella'. Corrected. (c) PAGE 7, NEW FLAG: 'a questo evinto', of the fountain of the Paphian, was translated literally and silently as 'conquered by this'. Two readings are open -- evinto from evincere (overcome) or evinto for avvinto (bound to) -- and only the second fits the topography, since the Fountain of Venus stands in the middle of the theatre. Now marked '[?joined to this]' with both readings argued, and page 7 drops from confidence high to medium and from verified to drafted. It is the only marker left in pages 1-10.
+
+SMALLER FINDS, all from the facsimile and all fixed in the notes: the 1499 sets ATQVE OBITER as one word on both title pages (the transcription splits it 'ob iter'); the privilege's last word is broken IMPPRIME/RE with a doubled p, which modern texts normalise away; p.9's tapering block is EIGHT lines, not the six the notes claimed; p.3's 'summo ... Polo' is heaven, not 'the highest Pole', as the vernacular version's 'dal ciel demissi' proves, and the English is changed; p.8 line 2 had dropped 'Vestrum?' ('Yours?'), restored; p.3's Scita line 8 prints 'sed' where Pozzi-Ciapponi emend to 'se<u>', now recorded with the emendation attributed to them and the wording ours; p.1's confidence line said 'nine words of Latin' for nineteen. The Siena copy also carries a contemporary marginal gloss 'Pugna Amoris' beside the half-title on f.5r -- the earliest reading of the title we can watch happening -- noted on p.9 as copy-specific.
+
+WHAT IS NOT SETTLED, and is now said on the page instead of being left silent: the identity of the Bibbiena campaign (inference from Guidobaldo's career, not sourced in this corpus), and 'a questo evinto' (would need a fifteenth-century Venetian lexicon we do not have). Every one of the ten pages now opens its Notes with a dated second-reader line naming the folio checked, so 'read by someone other than the translator' is a recorded fact and not an inference from an absent marker -- which is the distinction sibling ticket tr-verified-overclaims exists to fix, and which this ticket does not pretend to have fixed. translation/manifest.json is deliberately NOT updated (out of scope for this pass): its status field is derived, so the next run of scripts/translation_status.py will move page 7 to drafted and pages 2 and 8 to verified by itself. No live-page verification applies -- this is a translation and research-ledger change with no rendering surface.
+
+**Files.** `translation/en/page_001.md` · `translation/en/page_002.md` · `translation/en/page_003.md` · `translation/en/page_004.md` · `translation/en/page_005.md` · `translation/en/page_006.md` · `translation/en/page_007.md` · `translation/en/page_008.md` · `translation/en/page_009.md` · `translation/en/page_010.md`
+
+**See.** translation/NOTES.md
 
 
 ### `tr-verified-overclaims` — "verified" in the translation manifest means less than it sounds

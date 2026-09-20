@@ -27,8 +27,8 @@
 >    in the middle of which curved theatres lie open.
 > And here you may behold the triumph of Cupid.
 >    Here is the fountain, and the venerable form of the Paphian Goddess;
-> and what is celebrated around the tomb of beloved Adonis
->    yearly by Venus — and you shall read the Naiads' laws.
+> and you will read what yearly rites are kept around the tomb
+>    of beloved Adonis, by Venus and by the Naiads.
 > This is the series of matters contained in the first volume:
 >    these are the new dreams of the divine Poliphilo.
 > Where she was born, of what stock, of what parents sprung,
@@ -48,7 +48,9 @@
 
 ## Notes
 
-**Confidence: high.**
+**Confidence: high.** Read against the facsimile by a second reader, 2026-09-20 (Siena
+O.III.38, f. 2v). The Adonis couplet was mistranslated by the first pass and has been
+corrected; everything else on the page stands.
 
 - **The last couplet is the best thing in the front matter**, and it is pure Aldine swagger:
   *if you get nothing from this book, the fault is yours.* Set it against Crasso's careful
@@ -68,6 +70,18 @@
   latroni* likewise. See `CHESSBOARD.md`.
 - **"More perfect than any art."** *Omni perfectius arte*, of the Temple of Venus Physizoa —
   the building Colonna gives as a *rule* rather than a size (`DIMENSIONS.md` §4).
+- **"Naiadasque leges" — corrected 2026-09-20.** The first pass read the last word of the elegy
+  twice over, as the verb *leges* ("you will read") and as the noun *leges* ("laws") at once,
+  and produced "yearly by Venus — and you shall read the Naiads' laws". There are no Naiads'
+  laws anywhere in the book to point at, which is the first sign something is wrong. The
+  facsimile puts the comma after *Venerem*: *Annua per Venerem, Naiadas'que leges.* So *per*
+  governs both nouns — the rites are kept **by Venus and the Naiads** — and *leges* is the
+  second-person future of *lego*, the main verb the whole couplet has been waiting for: **you
+  will read** what annual rites are kept at Adonis's tomb. The proof is on page 7, because the
+  Italian terza rima is this elegy translated by a contemporary: *che hor celebrato gli è lo
+  anniversario / per le Naiade e Venus mischinella* — celebrated for him by the Naiads and poor
+  little Venus. Both lines point at the same scene, chapter XXIV, where the nymphs tell
+  Poliphilo about the anniversary.
 - **The appendix.** The *long appendix* is Book II, in which Polia takes over the telling. The
   elegist treats it as an addendum; Polia's own account is a third of the work and contradicts
   Poliphilo's on several points, which is one reason the two-book structure has been read as

@@ -33,7 +33,7 @@ liberal arts and in pontifical law.**
 **An anonymous elegy to the reader.**
 
 > Candid reader, listen to Poliphilo
->    telling his dreams — dreams sent from the highest Pole.
+>    telling his dreams — dreams sent down from the height of heaven.
 > You will not waste your labour, nor will it irk you to have heard these things:
 >    the work abounds in wonders, with matters so various.
 > If, grave and stern, you despise the erotic, then learn, I beg,
@@ -56,7 +56,8 @@ liberal arts and in pontifical law.**
 
 **Confidence: high.** Verse is rendered line for line and plainly, without rhyme or metre:
 forcing either would put words in the poet's mouth, which is the one thing this edition may not
-do.
+do. Read against the facsimile by a second reader, 2026-09-20 (Siena O.III.38, f. 2r); one line
+of the elegy changed, and one of Scita's discussed, below.
 
 - **What Scita's poem is actually saying**, and it is the sharpest thing in the front matter:
   **the book was already dying.** It "lay buried in neglect, already dreading Lethe close at
@@ -81,3 +82,15 @@ do.
   continues into page 4 with *symmetria*.
 - **Giovanni Battista Scita** of Verona was a friend of Crasso's. His poem and the anonymous
   elegy were both printed here rather than composed for the author, whom nobody names.
+- **"Down from the height of heaven" — changed 2026-09-20.** *Summo … Polo*, capitalised in the
+  1499. *Polus* is the pole of the sky, and so the sky itself. The first pass gave "from the
+  highest Pole", which in English reads as a place or a person, and in a book with a Polia and a
+  Poliphilo in it that is a trap. The vernacular terza rima on page 6 — this same elegy done
+  over again in Italian for readers without Latin — translates the line *dal ciel demissi*, sent
+  down from heaven, and settles it. Whether the printer's capital is also a nudge toward *Polia*
+  is a guess, and stays one: capitals in this book are erratic.
+- **Scita's eighth line.** The 1499 prints *Vitam tu quoq;, sed necem repellis*, and "you too /
+  have given it life, and more: you drive off its death" renders that *sed*. The modern critical
+  edition in the corpus (Pozzi–Ciapponi, 1980) emends to *se<u>*, "or rather", reaching the same
+  sense by conjecture. The emendation is theirs, the wording here is ours, and nothing in the
+  argument turns on which is right.

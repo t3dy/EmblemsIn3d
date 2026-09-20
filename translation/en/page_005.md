@@ -42,7 +42,9 @@ worthy accessories and corollaries, at the song of the nightingale he awoke. Far
 ## Notes
 
 **Confidence: high.** The Italian is uncharacteristically plain — this page is the one place in
-the book where somebody explains it in ordinary words.
+the book where somebody explains it in ordinary words. Read against the facsimile by a second
+reader, 2026-09-20 (Siena O.III.38, f. 3r): the transcription is faithful and nothing needed
+changing.
 
 - **This is the most useful page in the front matter**, and it is worth setting beside
   `COVERAGE.md`: it is a contemporary inventory of what the book contains, written by someone who
@@ -65,3 +67,10 @@ the book where somebody explains it in ordinary words.
   who did not know them either.
 - **The nightingale.** The whole dream ends *al canto dilla philomela* — at the song of the
   nightingale, Philomela. The last page of Book II keeps it.
+- **"The strife of love in a dream," and what that costs (second reader, 2026-09-20).** The
+  summary gives the Greek title in Italian as *pugna d'amor in somno*, and we render it with
+  Dallington's phrase so that the title reads the same wherever it appears (pages 1, 5, 9).
+  Worth saying plainly what is given up: the Italian is *in somno*, **in sleep**, and this
+  edition's standing rule is to keep Colonna's *somno*/*somnio* pair apart, because the book
+  puns on it (`translation/NOTES.md`). Here the received English title wins on consistency, and
+  the literal reading is recorded rather than hidden.

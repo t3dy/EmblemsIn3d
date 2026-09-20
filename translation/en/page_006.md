@@ -53,7 +53,9 @@ Latin — which is itself an argument about who the book was for. It runs over o
 ## Notes
 
 **Confidence: high.** Rendered line for line without rhyme. Terza rima in English costs either
-accuracy or dignity, and this edition will not pay either.
+accuracy or dignity, and this edition will not pay either. Read against the facsimile by a
+second reader, 2026-09-20 (Siena O.III.38, f. 3v): the transcription is faithful and no line
+needed changing.
 
 - **Why this page exists at all.** It is the anonymous Latin elegy of pages 3–4, translated into
   Italian verse and printed immediately after it. The front matter therefore addresses two
@@ -74,3 +76,8 @@ accuracy or dignity, and this edition will not pay either.
   which suggests one hand behind them, or one reading.
 - **"A game of robbers."** *Gioco de latroni*, matching the Latin *chorea latronum* on page 4 —
   the human chess match of chapter XI. See `CHESSBOARD.md`.
+- **This page settles a line on page 3.** Because the terza rima is the Latin elegy translated
+  by a contemporary, it is the best gloss we have on the Latin's harder phrases — the closest
+  thing to a fifteenth-century crib. *Dal ciel demissi* here fixes *summo … Polo* there as
+  heaven and not a Pole; and the tercet on page 7 about the anniversary fixes *per Venerem,
+  Naiadasque* on page 4. Both corrections were made on this evidence, 2026-09-20.

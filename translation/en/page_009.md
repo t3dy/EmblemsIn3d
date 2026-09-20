@@ -12,7 +12,8 @@ DREAM, AND ALONG THE WAY RECOUNTS VERY MANY THINGS THOROUGHLY WORTHY OF KNOWING.
 
 ## Notes
 
-**Confidence: high.**
+**Confidence: high.** Read against the facsimile by a second reader, 2026-09-20 (Siena
+O.III.38, f. 5r). The translation stands; one description in the notes was wrong and is fixed.
 
 - **One word is different from page 1, and it is the verb.** The title page has *docet* — "he
   **teaches** that all human things are nothing but a dream". Here it is *ostendit* — "he
@@ -21,9 +22,17 @@ DREAM, AND ALONG THE WAY RECOUNTS VERY MANY THINGS THOROUGHLY WORTHY OF KNOWING.
   plates, and Crasso's letter on page 2 praises it for doing both.
 - **The word order also flips**: *Hypnerotomachia Poliphili* on page 1, *Poliphili
   Hypnerotomachia* here.
-- **The tapering block** — six lines cut to a downward triangle, closed by four asterisks in a
-  3-and-1 figure. Page 1 uses the same device with six. This is the shape the book is famous for
-  and the one Aldus's imitators copied for a century.
+- **The tapering block** — **eight** lines cut to a downward triangle, closed by four asterisks
+  in a 3-and-1 figure. (The notes said six until a second reader counted them on the facsimile,
+  2026-09-20; the last three lines are the single word *COM-* / *MEMO-* / *RAT.* broken across
+  three, which is how the triangle is brought to its point.) Page 1 uses the same device in six
+  lines and six asterisks. This is the shape the book is famous for and the one Aldus's
+  imitators copied for a century.
+- **A reader got there first.** The Siena copy carries a contemporary hand in the margin beside
+  this half-title: *Pugna Amoris* — the strife of love. Someone with the book new in his hands
+  reached for the gloss the Italian summary gives on page 5, *pugna d'amor in somno*, and wrote
+  it against the Greek. Copy-specific, not part of the edition, but it is the earliest reading
+  of the title we can actually watch happening.
 - **Immediately overleaf** is Poliphilo's own dedication of the work to Polia (page 10), so this
   half-title marks the seam between the *publisher's* front matter — Crasso, Scita, the elegist,
   Marone, all of them writing about the book — and the *author's*, where the fiction begins and
