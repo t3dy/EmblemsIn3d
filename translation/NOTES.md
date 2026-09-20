@@ -6,13 +6,19 @@
 ## Why this exists
 
 Dallington's *Strife of Loue in a Dreame* (London, 1592) is the only
-public-domain English Hypnerotomachia, and it stops dead partway through
-chapter XVII — at the word *Mustulento*, facsimile page 193 of 467. Everything
-after that has existed in English only under copyright. So the Dream Garden can
-quote the book freely for its first half and then goes silent exactly where it
-gets most spectacular: the temple rites, the ruined polyandrion, the whole of
-Cythera with its circular gardens and the Fountain of Venus, the awakening, and
-all of Book II in which Polia tells her own side.
+public-domain English Hypnerotomachia. He translates continuously to
+facsimile page 193 of 467 — completing the four-Seasons altar, including
+Winter's tag, at and just after the word *Mustulento* — then skips 1499
+pp.194–237 entirely (the Priapus rite, the whole Temple of Venus, and Polia's
+account of the Polyandrion) and resumes for four more pages at p.238, closing
+"FINIS." at the end of chapter XVIII, p.241, immediately before chapter XIX's
+argument. Everything else — the 44-page gap, and all of chapter XIX onward —
+has existed in English only under copyright. So the Dream Garden can quote the
+book freely through most of chapter XVII and again for four pages of chapter
+XVIII, and otherwise goes silent almost exactly where it gets most
+spectacular: the temple rites, the ruined polyandrion, the whole of Cythera
+with its circular gardens and the Fountain of Venus, the awakening, and all of
+Book II in which Polia tells her own side.
 
 This translation closes that gap.
 
@@ -170,9 +176,12 @@ first:
    narrative.
 
 **COMPLETE: 273/273 pages, 90,646/90,646 source words (100%) as of 2026-09-02.**
-The entire remainder of the Hypnerotomachia — every page from the Dallington seam
-(p.193, at *Mustulento*) to the Aldine colophon (p.467) — is now in English for
-the first time. Book I: the four-Seasons altar, the Temple of Venus Physizoa and
+The entire remainder of the Hypnerotomachia — from 1499 p.194 (just past
+Dallington's continuous coverage, which ends at p.193 with the four-Seasons
+altar complete) to the Aldine colophon at p.467, including the four pages
+(238–241) where Dallington briefly resumes and which are rendered here too for
+a consistent modern voice — is now in English for the first time except for
+that four-page span. Book I: the four-Seasons altar, the Temple of Venus Physizoa and
 the lovers' union, the Polyandrion and its love-epitaphs, the marine crossing,
 Cythera with its gardens/terraces/parterres and the triumph of Cupid, the theatre
 and Fountain of Venus, the Adonis polyandrion, and the awakening (XVII–XXIV,

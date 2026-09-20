@@ -5,8 +5,8 @@
   "range": {
     "first_page": 1,
     "last_page": 467,
-    "why": "Dallington's 1592 English stops at page 193, mid-chapter XVII.",
-    "note": "The whole book. Dallington's 1592 English covers pages 1-192 and breaks off inside page 193; this edition renders every page, so the first half exists here as a second, modern English beside his, and the second half exists in English for the first time. The front matter (pages 1-10) was added 2026-09-09. Pages 55, 90, 195 and 380 are blank leaves."
+    "why": "Dallington's 1592 English runs continuously only to page 193 (chapter XVII), then gaps over pages 194-237, resumes for four pages at 238-241, and closes FINIS at the end of chapter XVIII, before chapter XIX's argument.",
+    "note": "The whole book. Dallington's 1592 English covers pages 1-193 continuously, then skips pages 194-237 entirely, and resumes for four more pages at 238-241, closing FINIS at the end of chapter XVIII (immediately before chapter XIX's argument) -- nothing of his covers page 242 onward. This edition renders every page, so pages 1-193 and 238-241 exist here as a second, modern English beside his, and pages 194-237 and 242-467 exist in English for the first time. The front matter (pages 1-10) was added 2026-09-09. Pages 55, 90, 195 and 380 are blank leaves."
   },
   "status_values": [
     "unfetched",

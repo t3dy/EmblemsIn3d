@@ -1,9 +1,11 @@
 # Page 193 — Chapter XVII
 
 *(This page is the seam. Robert Dallington's 1592 English — the only prior public-domain
-translation — stops within it, at the word* Mustulento *below. Everything from that word to the
-end of the book is here rendered into English for the first time. The whole page is given, so the
-join can be checked.)*
+translation — carries continuously through this whole page, completing the four-Seasons altar,
+Winter's tag included. He then skips 1499 pp.194–237 entirely and resumes for four more pages at
+p.238, closing "FINIS." at the end of chapter XVIII, p.241. What follows on the next page — and
+everything until p.238 — is here rendered into English for the first time. The whole page is
+given, so the join can be checked.)*
 
 On the next side, I saw, of wondrous carving, a Damsel, virginal in aspect, indicating a matronal
 majesty in the figment, with the utmost praise of the artificer. Crowned with corn-ears, with an
@@ -21,14 +23,18 @@ he-goat, with this writing carved:
 
 > **MUSTULENTO AUTUMNO · S.** — "To the must-laden autumn. Sacred."
 
-*(— Dallington's translation ends here. What follows is ours.)*
-
 The last part had a regal image of conspicuous carving, ruddy in aspect and rigid, holding in the
 left a sceptre, gazing toward the sky — in the dark, turbulent and stormy air — and with the other
 touching the hail-clouds. Behind, likewise, the rainy and cloud-bearing air. Clad in a pelt-
 covering over the nude, shod with antique sandals, and subscribed with this title:
 
 > **HYEMI AEOLIAE · S.** — "To Aeolian winter. Sacred."
+
+*(— Dallington's continuous translation ends here, having carried through Winter's tag. He then
+skips 1499 pp.194–237 entirely — the Priapus rite, the whole Temple of Venus, and Polia's account
+of the Polyandrion — before resuming for four more pages at p.238, closing "FINIS." at the end of
+chapter XVIII, p.241. What follows from the next page is ours, until Dallington's brief return at
+p.238.)*
 
 ---
 
@@ -40,11 +46,15 @@ covered page), **Summer** (Ceres, *Flavae Messi*), **Autumn** (the infant Bacchu
 Autumno*), and **Winter** (a sceptred, pelt-clad king, *Hyemi Aeoliae*). The Latin tags are read
 straight from the woodcut. All secure.
 
-- **The exact seam.** Dallington's *Strife of Loue in a Dreame* (London, 1592) breaks off inside
-  this page, at *Mustulento*. His readers never had Winter, nor anything after — the temple of
-  Venus, the polyandrion, all of Cythera, the awakening, and the whole of Book II. This page is
-  where the four-century gap in the English Hypnerotomachia begins, and where this translation
-  picks it up. (See [translation/NOTES.md](translation/NOTES.md).)
+- **The exact seam.** Dallington's *Strife of Loue in a Dreame* (London, 1592) carries
+  continuously through this whole page, completing the four-Seasons altar — his readers did
+  have Winter. He then skips 1499 pp.194–237 entirely (the Priapus rite, the whole Temple of
+  Venus, and Polia's account of the Polyandrion) and resumes for four more pages at p.238,
+  closing "FINIS." at the end of chapter XVIII, p.241, immediately before chapter XIX's
+  argument — after which his readers never had anything more: all of Cythera, the awakening,
+  and the whole of Book II. The next page is where the four-century gap in the English
+  Hypnerotomachia begins, and where this translation picks it up (resuming again, briefly,
+  where Dallington's own does at p.238). (See [translation/NOTES.md](translation/NOTES.md).)
 - **The four Seasons as dedications.** Each figure is an altar-face inscribed "S." (*sacrum*,
   "sacred/dedicated"): the harvest-maiden Ceres, the grape-crowned infant of the *mustum* (new
   wine), the storm-king of Aeolian (windy) winter. A tidy antique personification-set — the kind

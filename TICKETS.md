@@ -6,7 +6,7 @@
 
 ---
 
-**60 tickets** — 9 open, 2 question, 3 declined, 46 done. By kind: 25 debt, 21 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**61 tickets** — 9 open, 2 question, 3 declined, 47 done. By kind: 25 debt, 22 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -73,25 +73,25 @@ Unlike chapter X, this is not just a resolution gap: the chapter TAGS tours.json
 **See.** ticket debt-reading-station-is-chapter-grained · ticket bug-dallington-page-drift · ticket bug-chapter-xi-tour-misattributed
 
 
-### `bug-translation-seam-note-wrong` — translation/ says Dallington stops at 'Mustulento' on p.193; he stops at FINIS on p.241
+### `bug-tours-dallington-seam-note-wrong` — tours.json's intro and two stop ledes still say Dallington 'stops mid-word'/'mid-sentence' at Mustulento; other stops in the same file already correct this
 
 **○ open** · bug · priority 3 · hp-researcher
  · opened 2026-09-20
 
 
-**Evidence.** Found 2026-09-20 closing debt-dallington-tail-unread. Three files in translation/ state the seam wrongly, and they are the files a reader trusts. translation/NOTES.md: 'it stops dead partway through chapter XVII — at the word Mustulento, facsimile page 193 of 467.' translation/manifest.json range.note: 'Dallington's 1592 English covers pages 1-192 and breaks off inside page 193.' translation/en/page_193.md, in its Notes: 'Dallington's translation ends here. What follows is ours... His readers never had Winter, nor anything after.'
+**Evidence.** Found 2026-09-20 while closing bug-translation-seam-note-wrong (read-only check of src/data/tours.json, which that ticket's risk note barred from editing this round). Three spots still state the false seam: (1) the 'novel' tour's top-level 'intro' field — 'Halfway along, Dallington's 1592 English runs out mid-sentence — and from the Temple of Venus onward every word is our own new translation.' (2) the 'triumphs' stop (chapter XIV) 'lede' — 'It is also the last great set-piece Dallington's Elizabethan English ever reaches: a few pages on, in the next chapter, his translation stops mid-word.' (3) the 'venus_temple' stop (chapter XVII) 'lede' — 'Dallington broke off mid-sentence at the word Mustulento; from this round Temple of Venus onward, every word you read is newly translated.'
 
-All three are false. In the corpus copy of his English, Winter's altar-tag 'Hiemi Æoliæ S.' stands at line 10936, ten lines after Mustulento, so his readers DID have Winter. He then skips 1499 pp.194-237 entirely and resumes at p.238 ('towards the sea side and sandie shore, where we came to an olde decaied temple' = our p.238 word for word), gives the full blazon of Polia (our pp.239-240) and the restraint speech with the Arabian phoenix (our pp.240-241), and closes 'FINIS.' at line 11127 — the end of chapter XVIII, immediately before the argument of chapter XIX. Aligned page by page against translation/en; the match is verbatim at every anchor.
+All three are false for the reasons recorded in bug-translation-seam-note-wrong and coverage.json's xviii-dallington-ends-here: Dallington runs continuous to 1499 p.193 (Winter's tag included), skips pp.194-237, resumes for four pages at pp.238-241, and closes FINIS before chapter XIX — he does not stop mid-word or mid-sentence anywhere near Mustulento.
 
-The true statement is: Dallington covers 1499 pp.1-193 continuously and pp.238-241, and nothing between. research/coverage.json now records it (feature xviii-dallington-ends-here); translation/ does not.
+Notably, tours.json is internally inconsistent: elsewhere in the same file (the chapter-XIV notes block including the 'context' note quoting L. E. Semler and the note beginning 'This was not an abandonment', plus a following note about 'a fitness in cutting over here anyway') the correct, more careful account already appears — 'Mustulento Autumno S. is a complete Latin dedication... his English runs on afterward for some pages yet, through a seaside ruined temple and a full blazon of Polia's beauty, before it closes with a formal FINIS'. So the fix has already been made once in this file and not propagated to the intro or to the two ledes quoted above.
 
-**Acceptance.** NOTES.md, manifest.json range.note and the Notes block of translation/en/page_193.md each state the seam correctly: continuous to p.193, a gap over pp.194-237, and a resumption at pp.238-241 ending at FINIS. page_193.md's claim that 'his readers never had Winter' is removed. The CC0 translation itself needs no change — it is the notes about it that are wrong.
+**Acceptance.** The 'novel' tour's intro, the 'triumphs' stop's lede, and the 'venus_temple' stop's lede each state the seam the same way the chapter-XIV notes block already does: continuous coverage to p.193 (not mid-word/mid-sentence), a gap over pp.194-237, and a resumption at pp.238-241 ending FINIS before chapter XIX.
 
-**Risk.** The seam note is the project's public account of why this translation exists, and it is quoted in the tour. Getting it wrong understates Dallington by 48 pages in one direction and overstates him by 44 in the other. NOTE: translation/manifest.json was being edited by another session on 2026-09-20 — check git status before touching it.
+**Risk.** Public-facing copy: a reader who reads the intro or either lede gets the false account, even though the notes a few clicks away already correct it. Low technical risk, real interpretive-fidelity risk (project rule 2, cite don't invent).
 
-**Files.** `translation/NOTES.md` · `translation/manifest.json` · `translation/en/page_193.md`
+**Files.** `src/data/tours.json`
 
-**See.** debt-dallington-tail-unread · bug-dallington-page-drift
+**See.** bug-translation-seam-note-wrong
 
 
 ### `debt-plaque-subtitles-too-long` — Twenty-two plaque subtitles are longer than a stone can hold; two lines fixes 21 of them
@@ -1060,6 +1060,29 @@ The table also stops at page_seq 448 while the book runs to at least 457 -- our 
 **Files.** `scripts/coverage_seed.py` · `research/coverage.json`
 
 **See.** bug-concordance-section-drift · bug-plate-page-seq-offset
+
+
+### `bug-translation-seam-note-wrong` — translation/ says Dallington stops at 'Mustulento' on p.193; he stops at FINIS on p.241
+
+**✅ done** · bug · priority 3 · hp-researcher
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 closing debt-dallington-tail-unread. Three files in translation/ state the seam wrongly, and they are the files a reader trusts. translation/NOTES.md: 'it stops dead partway through chapter XVII — at the word Mustulento, facsimile page 193 of 467.' translation/manifest.json range.note: 'Dallington's 1592 English covers pages 1-192 and breaks off inside page 193.' translation/en/page_193.md, in its Notes: 'Dallington's translation ends here. What follows is ours... His readers never had Winter, nor anything after.'
+
+All three are false. In the corpus copy of his English, Winter's altar-tag 'Hiemi Æoliæ S.' stands at line 10936, ten lines after Mustulento, so his readers DID have Winter. He then skips 1499 pp.194-237 entirely and resumes at p.238 ('towards the sea side and sandie shore, where we came to an olde decaied temple' = our p.238 word for word), gives the full blazon of Polia (our pp.239-240) and the restraint speech with the Arabian phoenix (our pp.240-241), and closes 'FINIS.' at line 11127 — the end of chapter XVIII, immediately before the argument of chapter XIX. Aligned page by page against translation/en; the match is verbatim at every anchor.
+
+The true statement is: Dallington covers 1499 pp.1-193 continuously and pp.238-241, and nothing between. research/coverage.json now records it (feature xviii-dallington-ends-here); translation/ does not.
+
+**Acceptance.** NOTES.md, manifest.json range.note and the Notes block of translation/en/page_193.md each state the seam correctly: continuous to p.193, a gap over pp.194-237, and a resumption at pp.238-241 ending at FINIS. page_193.md's claim that 'his readers never had Winter' is removed. The CC0 translation itself needs no change — it is the notes about it that are wrong.
+
+**Risk.** The seam note is the project's public account of why this translation exists, and it is quoted in the tour. Getting it wrong understates Dallington by 48 pages in one direction and overstates him by 44 in the other. NOTE: translation/manifest.json was being edited by another session on 2026-09-20 — check git status before touching it.
+
+**Resolution.** Closed 2026-09-20. Re-verified the corpus directly (not just the ticket's account): read Hypnerotomachia_by_Francesco_Colonna.md lines 10900-11140 whole. Confirms Winter's tag 'Hiemi Æoliæ S.' stands ten lines after 'Mustulento Autumno S.', immediately followed by the seaside/old-decayed-temple passage that opens our p.238, then the blazon and restraint speech (Deianira, the tame lions, the ant, the Arabian phoenix), closing 'FINIS.' right before what would be chapter XIX's argument. All three files corrected to state: Dallington continuous to 1499 p.193 (four-Seasons altar complete, Winter included), a gap over pp.194-237, a resumption for four pages at pp.238-241, ending FINIS before chapter XIX. translation/NOTES.md: rewrote the 'Why this exists' paragraph and the COMPLETE-summary paragraph. translation/manifest.json: rewrote range.why and range.note (JSON re-validated). translation/en/page_193.md: rewrote the opening italic seam note, moved and rewrote the inline '(— Dallington's translation ends here...)' aside to sit after the Winter paragraph (where the true break falls) instead of before it, and rewrote the 'The exact seam' Notes bullet, removing 'his readers never had Winter, nor anything after' and replacing with the correct account (his readers never had anything past FINIS at p.241). No translated prose touched. tours.json still repeats the false claim in three places (intro text, the 'triumphs' stop's lede, and the 'venus_temple' stop's lede) even though two other stops in the same file ('priapus'-area notes around chapter XIV/XVII, i.e. the pre-existing 'triumph' notes block and the 'venus_temple' notes list) already state it correctly — filed as bug-tours-dallington-seam-note-wrong rather than edited, since a sibling agent owns tours.json this round.
+
+**Files.** `translation/NOTES.md` · `translation/manifest.json` · `translation/en/page_193.md`
+
+**See.** debt-dallington-tail-unread · bug-dallington-page-drift
 
 
 ### `bug-woodcut-catalog-page-jitter` — woodcut_catalog.page_seq is subject-matched, not observed, and is good only to about +/-2 pages
