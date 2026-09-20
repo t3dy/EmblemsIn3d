@@ -79,13 +79,31 @@ const BITE = 0.48;
 // age -- a column stands proud for a few seconds and is absorbed; a coin rides
 // the skin for half a minute -- and the largest thing standing proud makes the
 // ball BUMP as it rolls, because a katamari with a column in it does not roll
-// smoothly. The cap is by count still, but the shedding takes the smallest of
-// the oldest, so a big thing is never dropped to make room for a leaf.
+// smoothly. The shedding takes the smallest of the oldest, so a big thing is
+// never dropped to make room for a leaf.
+//
+// Closes `roll-shed-by-area` (2026-09-20). The cap used to be by COUNT alone
+// (CRUST, below) — a flat 2 000 things whatever the ball's size. A sphere's
+// surface goes as R^2, so from 0.3 m to 12 m the radius grows 40-fold and the
+// surface 1600-fold while the count cap didn't move: 2 000 things over 1810 m²
+// is nearly bare, so the ball got balder as it grew. CRUST.md §4: a ball has
+// 4*pi*R^2 of skin and a stuck thing takes about pi*size^2 of it, so shed by
+// SUMMED CROSS-SECTION against that area instead — see CRUST_LAYERS below.
+// CRUST stays, but only as the absolute ceiling behind the area rule (CRUST.md
+// §6.3), so a very large ball still can't try to draw an unbounded count.
 // Raised from 650 on 2026-09-09. 650 was a draw-call budget, and the draw-call
 // budget is the thing Ted looked at and declined to optimise for (DECISIONS.md
 // 2026-09-09 call 1; DRAWCALLS.md). A run eats ten thousand objects, so at 650
 // the ball late in a run was mostly bare sphere — the opposite of the intent.
 const CRUST = 2000;
+
+// How many layers deep the heap of stuck things may be, by summed
+// cross-section against the ball's own surface (CRUST.md §4): 1.0 is a single
+// skin with no overlap, 3 is a proper knobbly heap, 6 is a rolling avalanche.
+// CRUST.md's own guess, not yet swept and confirmed by measurement
+// (CRUST.md §6.1) — Ted's eye, like camBase/camScale (tune.camBase comment,
+// below), can move it live via `roll.tune.crustLayers`.
+const CRUST_LAYERS = 3;
 const SINK_BIG = 6.0;     // seconds for a big thing (over a fifth of the ball) to settle
 const SINK_SMALL = 32.0;  // seconds for a small one to settle
 
@@ -189,7 +207,8 @@ export class RollUp {
       bite: BITE,             // largest thing you may eat, as a fraction of r
       packing: PACKING,       // how much of a swallowed volume becomes ball
       sinkFloor: SINK_FLOOR,  // 1 = things vanish into the ball; below 1 they stay proud
-      crust: CRUST,           // how many stay stuck on the outside
+      crust: CRUST,           // absolute ceiling on how many stay stuck (backstop, not the rule)
+      crustLayers: CRUST_LAYERS, // how many skins deep the heap may be, by area (see _swallow)
       ceiling: CEILING,       // the ball can never exceed this
 
       // ── The camera's distance curve: dist = camBase + r * camScale ──────
@@ -745,12 +764,26 @@ export class RollUp {
     holder.add(took);
     this.spinner.add(holder);
     this._stuck.push({ holder, dir: local, size: e.r, t0: this.t, big: e.r > this.r * 0.2 });
-    // shed to the cap -- the smallest of the oldest, never a big thing for a leaf
-    while (this._stuck.length > this.tune.crust) {
+    // Shed by AREA, not by count -- roll-shed-by-area (2026-09-20), CRUST.md §4.
+    // A ball has 4*pi*R^2 of skin; a stuck thing takes about pi*size^2 of it
+    // (its own cross-section -- `size` is the mean half-extent from _census,
+    // so this is a fair radius for a compact thing and a bit generous for a
+    // long thin one, CRUST.md §6.2). `crustLayers` says how many times over
+    // that skin may be covered before the heap has to shed -- a person can
+    // picture "3 layers deep" where "2 000 things" means nothing on its own.
+    // `tune.crust` stays as the absolute ceiling behind it, so a huge ball
+    // can't try to draw an unbounded count even at a high crustLayers.
+    // Shedding itself is unchanged: the smallest of the sixty oldest, never a
+    // big thing dropped to make room for a leaf.
+    let used = 0;
+    for (const s of this._stuck) used += Math.PI * s.size * s.size;
+    const room = 4 * Math.PI * this.r * this.r * this.tune.crustLayers;
+    while (this._stuck.length && (used > room || this._stuck.length > this.tune.crust)) {
       const head = this._stuck.slice(0, 60);
       let k = 0;
       for (let i = 1; i < head.length; i++) if (head[i].size < head[k].size) k = i;
       const [old] = this._stuck.splice(k, 1);
+      used -= Math.PI * old.size * old.size;
       old.holder.removeFromParent();
       old.holder.traverse(o => { if (o.isMesh && o.geometry) o.geometry.dispose(); });
     }

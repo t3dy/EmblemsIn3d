@@ -11,7 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { MAX_EDIBLE } from '../../systems/RollUp.js?v=11';
+import { MAX_EDIBLE } from '../../systems/RollUp.js?v=12';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { HP_STATIONS, isDescendantOf } from './constants.js?v=14';
 

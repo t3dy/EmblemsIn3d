@@ -6,7 +6,7 @@
 
 ---
 
-**55 tickets** — 12 open, 2 question, 3 declined, 38 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
+**55 tickets** — 11 open, 2 question, 3 declined, 39 done. By kind: 24 debt, 17 bug, 8 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -185,21 +185,6 @@ SEPARATE OBSERVATION, not changed and left for Ted: the plaque canvas is 320x96 
 **Files.** `src/scenes/world/cythera.js` · `src/scenes/world/palace.js` · `src/scenes/world/temple.js` · `src/scenes/world/nature.js` · `src/scenes/world/materials.js`
 
 **See.** DECISIONS.md 2026-09-10 Release Version 6
-
-
-### `roll-shed-by-area` — The crust sheds by count, not by surface area
-
-**○ open** · debt · priority 3 · hp-builder
- · opened 2026-09-09
-
-
-**Evidence.** tune.crust is a flat 2000 whatever the ball's size. The honest rule is that a ball has 4*pi*R^2 of surface and only so many things fit on it, so a small ball should carry few and a huge one thousands -- which is the density curve Katamari's visuals actually follow. Explained in full in CRUST.md. The arithmetic: a sphere's surface goes as R squared, so from 0.3 m to 12 m the radius grows 40-fold and the area 1600-fold, while the cap of 2000 THINGS does not move -- 2000 objects on 1810 square metres is bare. The ball therefore gets balder the bigger it gets, which is backwards. The replacement dial is `crustLayers`, how many layers deep the heap is, which is a number a person can picture.
-
-**Acceptance.** The crust sheds when the summed cross-section of what is stuck exceeds a multiple of 4*pi*R^2; a 0.5 m ball carries visibly fewer things than a 6 m one.
-
-**Files.** `src/systems/RollUp.js`
-
-**See.** ROLLING.md#3
 
 
 ### `tr-confidence-unstated-180` — 180 of 463 englished pages carry no stated confidence at all
@@ -1121,6 +1106,23 @@ This is the cheapest item in the Phase 1 brief: METALS[k+1].at is already to han
 **Files.** `ROUTER.md`
 
 **See.** ENGINEERING.md#2c
+
+
+### `roll-shed-by-area` — The crust sheds by count, not by surface area
+
+**✅ done** · debt · priority 3 · hp-builder
+ · opened 2026-09-09, closed 2026-09-20
+
+
+**Evidence.** tune.crust is a flat 2000 whatever the ball's size. The honest rule is that a ball has 4*pi*R^2 of surface and only so many things fit on it, so a small ball should carry few and a huge one thousands -- which is the density curve Katamari's visuals actually follow. Explained in full in CRUST.md. The arithmetic: a sphere's surface goes as R squared, so from 0.3 m to 12 m the radius grows 40-fold and the area 1600-fold, while the cap of 2000 THINGS does not move -- 2000 objects on 1810 square metres is bare. The ball therefore gets balder the bigger it gets, which is backwards. The replacement dial is `crustLayers`, how many layers deep the heap is, which is a number a person can picture.
+
+**Acceptance.** The crust sheds when the summed cross-section of what is stuck exceeds a multiple of 4*pi*R^2; a 0.5 m ball carries visibly fewer things than a 6 m one.
+
+**Resolution.** _swallow's shed loop (RollUp.js) now sheds on summed cross-section, not count alone: `used = sum(pi*size^2)` over `_stuck`, `room = 4*pi*r^2*tune.crustLayers` (new dial, default 3, CRUST.md's own guess -- not yet swept and confirmed by measurement, live-tunable at roll.tune.crustLayers same as camBase/camScale), and the while sheds (smallest of the sixty oldest, unchanged) while `used > room` OR the count exceeds `tune.crust` (2000, kept as the absolute backstop CRUST.md #6.3 asked for, so a very large ball still can't try to draw an unbounded count). Verified on the running page (localhost:3457/src/index.html, main.js?v=415): entered roll mode, then for each of roll.r = 0.5 and roll.r = 6 fed 5000 synthetic 0.15 m edibles through the real _swallow path with r pinned after each call (so growth didn't confound the reading) and read `_stuck.length` after. 0.5 m ball settled at 133 stuck (used 9.40 m^2 against room 9.42 m^2 -- the area rule bound first, matching CRUST.md #4's own worked table of ~130 at 3 layers/0.15 m average); the 6 m ball settled at 2000 (used only 141 m^2 against a room of 1357 m^2 -- the count backstop bound first, as CRUST.md #4 predicts happens once the area-implied cap runs into the tens of thousands). So the 6 m ball carries 15x what the 0.5 m ball carries, satisfying the acceptance criterion directly. Cache chain bumped cleanly: both of RollUp.js's other importers (scenes/HPWorldScene.js, scenes/world/rollup.js) were untouched by any other in-progress session at the time, so the chain went RollUp.js?v=11->12, world/rollup.js?v=10->11 (its import line changed), HPWorldScene.js?v=308->309 (ditto), main.js?v=414->415 in src/index.html. hpDiag() read 162 draw calls on a fresh roll-mode entry both before and after the synthetic test (cleaned up after), and the new shed rule can only ever hold LESS OR EQUAL crust than the old flat 2000 cap at every radius the area rule binds, so no regression is possible by construction.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** ROLLING.md#3
 
 
 ### `tr-verified-overclaims` — "verified" in the translation manifest means less than it sounds
