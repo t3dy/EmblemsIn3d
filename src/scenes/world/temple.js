@@ -233,22 +233,35 @@ export const Temple = {
     }
     // "A scaled cupola resided" — the courses are drawn as diminishing rings,
     // which is what a scaled dome is: overlapping courses of stone.
-    // The dome springs 0.30 under the last surface of the upper binding, so its
-    // lowest course laps the corona and there is no seam to see. (Same number
-    // as before — WALL_H + 0.95 — but said as what it is, a lap under the
-    // cornice, so it follows the cornice when the cornice moves.)
-    const DOME_Y = PLAT_Y + CORNICE_Y - 0.30;
-    // "The rule of the descent of the roof ought not to be neglected: one takes
-    // the intercapace from wall to wall … and reduced into two perfect squarings
-    // as much as they can come; and, the diagonal extended, cutting the line,
-    // discriminating the two squares — thence, beautifully, the slope is
-    // exacted" (p. 204). Wall to wall is D; two perfect squares in it stand R
-    // high each; that diagonal rises R in a run of D — one in two — and over the
-    // half-span R it lifts R / 2. (It was R * 0.52, near enough by accident and
-    // uncited; it is the rule now.) Crown at 11.07 over the temple floor against
-    // a diameter of 12.4: p. 197's universal rule is made up by the lantern,
-    // which is where a rotunda of this family always makes it up.
-    const DOME_RISE = R / 2;
+    // The dome springs OFF the last surface of the upper binding — the cornice
+    // is the dome's floor, which is what "the height of the binding above the
+    // peristyle" is for. No lap is needed under it: the lowest course is a band
+    // centred on the springing line, so half of it (0.45) hangs over the corona
+    // by itself and there is no seam to see.
+    const DOME_Y = PLAT_Y + CORNICE_Y;
+    // ── THE RISE: p. 197 GOVERNS (DECISIONS.md 66, 2026-09-20) ────────────
+    //
+    // p. 204's other rule — the roof slope off the diagonal of a double square
+    // struck in the intercapace from wall to wall, one in two, R / 2 over the
+    // half-span — left the crown at 11.07 over the temple floor against a
+    // diameter of 12.4, so p. 197's "as much as the diametral line found, so
+    // much did it render its height" held only if the lantern was counted.
+    // Called on Ted's standing delegation ("as the designer you might have to go
+    // beyond the text … and make sure that our points of view deliver
+    // spectacular experiences such as Poliphilo is describing") and on his
+    // complaint that the roof is too low: the CROWN is set on the diameter, and
+    // the roof is what is left of it above the cornice. Both readings are the
+    // book's own; this is the one that answers the complaint, and it is one
+    // constant to reverse. APEX therefore lands at PLAT_Y + D exactly.
+    const DOME_RISE = D - CORNICE_Y;          // 4.133 = D / 3
+    // The courses are bands of fixed height spaced along a sine, so their height
+    // has to come off the RISE or the dome opens up as it steepens: at this rise
+    // the lowest pair space out by 0.717 against the old fixed 0.696 and a ring
+    // of daylight appears at the springing. The spacing of the widest step is
+    // RISE · sin(π / 2 SC); a quarter more than that laps every joint. (The
+    // number this replaces, R * 0.46 / SC * 2.2, was this same expression at the
+    // old rise to within 0.4 % — it was right, it just could not follow.)
+    const COURSE_SPAN = (rise, n) => rise * Math.sin(Math.PI / (2 * n)) * 1.25;
     // The courses are open-ended shells, so they must be DOUBLE-sided or the
     // dome is invisible from underneath and you stand in the temple looking at
     // open sky through your own roof. (Found by looking up, not by reading.)
@@ -261,7 +274,7 @@ export const Temple = {
       const t = i / SC, t2 = (i + 1) / SC;
       const r0 = R * Math.cos(t * Math.PI / 2) * 1.02;
       const r1 = R * Math.cos(t2 * Math.PI / 2) * 1.02;
-      domeCourses.push(this._m(new THREE.CylinderGeometry(r1, r0, R * 0.46 / SC * 2.2, 32, 1, true),
+      domeCourses.push(this._m(new THREE.CylinderGeometry(r1, r0, COURSE_SPAN(DOME_RISE, SC), 32, 1, true),
         i % 2 ? domeA : domeB,
         TX, DOME_Y + Math.sin(t * Math.PI / 2) * DOME_RISE, TZ, { cast: false }));
     }

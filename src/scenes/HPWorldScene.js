@@ -49,7 +49,7 @@ import { Portal } from './world/portal.js?v=28';
 import { Palace } from './world/palace.js?v=26';
 import { Triumphs } from './world/triumphs.js?v=15';
 import { Tombs } from './world/tombs.js?v=9';
-import { Temple } from './world/temple.js?v=15';
+import { Temple } from './world/temple.js?v=16';
 import { Cythera } from './world/cythera.js?v=17';
 import { Rollup } from './world/rollup.js?v=13';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
