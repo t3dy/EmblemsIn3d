@@ -1332,43 +1332,50 @@
           "plate": 9,
           "description": "Pedestal side: two-faced youths and nymphs dancing",
           "page_1499": 24,
-          "page_translation": 34
+          "page_translation": 34,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p24  the chorea of matrons and youths on the horse's pedestal, the word TEMPVS printed under the cut = our p.34 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[34]"
         },
         {
           "plate": 10,
           "description": "Pedestal side: youth distributing flowers",
           "page_1499": 25,
-          "page_translation": 35
+          "page_translation": 35,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p25  the second pedestal relief, the youths gathering flowers and the nymphs snatching them (AMISSIO) = our p.35 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[35]"
         },
         {
           "plate": 11,
           "description": "Elephant saddle-cloth with Greek and Arabic inscription",
           "page_1499": 27,
-          "page_translation": 37
+          "page_translation": 37,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p27  the elephant's caparison lettered GONOS KAI EUTHUIA over four words of Arabic = our p.37 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[37]"
         },
         {
           "plate": 12,
           "description": "Colossal elephant of black stone bearing obelisk",
           "page_1499": 28,
-          "page_translation": 38
+          "page_translation": 38,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p28  the full-page elephant bearing the obelisk, under the head-line 'deua ad intrare nella Elephantina machina exuiscerata' = our p.38 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[38]"
         },
         {
           "plate": 13,
           "description": "Sarcophagus with nude King figure",
           "page_1499": 29,
-          "page_translation": 39
+          "page_translation": 39,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p29  the King's sepulchre, the trilingual epigram ending 'NVDVS ESSEM, BESTIA NI ME TEXISSET' = our p.39 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[39]"
         },
         {
           "plate": 14,
           "description": "Sarcophagus with nude Queen figure",
           "page_1499": 30,
-          "page_translation": 40
+          "page_translation": 40,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p30  the Queen's sepulchre, 'QVISQVIS ES ... AVFER CAPVT. CORPVS NE TANGITO' = our p.40 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[40]"
         },
         {
           "plate": 15,
           "description": "Hieroglyphic devices with decorated casket",
           "page_1499": 31,
-          "page_translation": 41
+          "page_translation": 41,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p31  the hieroglyph band ending in the closed ark, glossed 'EX LABORE DEO NATVRAE SACRIFICA LIBERALITER' = our p.41 (ch. IV). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[41]"
         }
       ],
       "plates_from": "page-range",
@@ -1670,7 +1677,8 @@
           "plate": 17,
           "description": "Poliphilus fleeing the dragon",
           "page_1499": 52,
-          "page_translation": 62
+          "page_translation": 62,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p52  Poliphilo fleeing the dragon into the dark portal, 'Et sencia mora conuerse le spalle nella obscuritate intrado' = our p.62 (ch. VI). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[62]"
         }
       ],
       "plates_from": "page-range",
@@ -1804,7 +1812,8 @@
           "plate": 19,
           "description": "Sleeping nymph fountain with satyrs",
           "page_1499": 63,
-          "page_translation": 73
+          "page_translation": 73,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p63  the full-page fountain of the sleeping nymph, the Greek PANTON TOKADI cut in type below the block = our p.73 (ch. VII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[73]"
         },
         {
           "plate": 20,
@@ -1901,7 +1910,8 @@
           "plate": 22,
           "description": "Part of second fountain",
           "page_1499": 75,
-          "page_translation": 85
+          "page_translation": 85,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p75  the second bath-fountain, its frieze lettered GELOIASTOS and the word repeated in the text below = our p.85 (ch. VIII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[85]"
         },
         {
           "plate": 23,
@@ -2053,43 +2063,50 @@
           "plate": 25,
           "description": "Panelled wall in Queen's palace with planetary names",
           "page_1499": 88,
-          "page_translation": 98
+          "page_translation": 98,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p88  the panelled wall of the Queen's hall, the planets lettered in their roundels VENVS, SOL, MARS, IVPITER = our p.98 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[98]"
         },
         {
           "plate": 26,
           "description": "Poliphilus before Queen Eleuterylida enthroned",
           "page_1499": 90,
-          "page_translation": 100
+          "page_translation": 100,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p90  the Queen enthroned with VENVS on the hanging, 'Cómota dicio la mellea Regina, me fece subleuare' = our p.100 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[100]"
         },
         {
           "plate": 27,
           "description": "Medallion in canopy: youth with nimbus and eagle",
           "page_1499": 92,
-          "page_translation": 102
+          "page_translation": 102,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p92  the medallion of the canopy, the beardless youth borne on an eagle = our p.102 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[102]"
         },
         {
           "plate": 28,
           "description": "Richly ornamented tripod",
           "page_1499": 93,
-          "page_translation": 103
+          "page_translation": 103,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p93  the jasper tripod with winged stipites, 'Et quiui primariamente dinanti la Regina furono affermati tripodi' = our p.103 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[103]"
         },
         {
           "plate": 29,
           "description": "Golden basin upon wheels",
           "page_1499": 94,
-          "page_translation": 104
+          "page_translation": 104,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p94  the fountain-vase on its four little wheels, run along the tables for the washing of hands = our p.104 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[104]"
         },
         {
           "plate": 30,
           "description": "Tripod with three naked boys on lion-footed pedestal",
           "page_1499": 95,
-          "page_translation": 105
+          "page_translation": 105,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p95  the perfuming vessel of the triangular base on three HARPY's feet (the catalogue says lion's), signature 'g' = our p.105 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[105]"
         },
         {
           "plate": 31,
           "description": "Vessel surmounted by coral-tree",
           "page_1499": 102,
-          "page_translation": 112
+          "page_translation": 112,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p102 the vessel crowned with the coral tree, 'sopra esso acconciamente questo spectando Coralio reteniua' = our p.112 (ch. IX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[112]"
         },
         {
           "plate": 32,
@@ -2290,37 +2307,43 @@
           "plate": 33,
           "description": "Triangular obelisk of mystic Trinity with sphinxes",
           "page_1499": 119,
-          "page_translation": 129
+          "page_translation": 129,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p119 the triangular obelisk of the Trinity, its faces lettered O, Omega and N = our p.129 (ch. X). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[129]"
         },
         {
           "plate": 34,
           "description": "Cameo: Jupiter with cornucopia and vanquished giants",
           "page_1499": 122,
-          "page_translation": 132
+          "page_translation": 132,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p122 the jewel of Jupiter enthroned with the cornucopia over the earth-born = our p.132 (ch. X). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[132]"
         },
         {
           "plate": 35,
           "description": "Woman with tortoise and wings (Velocitatem sedendo)",
           "page_1499": 123,
-          "page_translation": 133
+          "page_translation": 133,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p123 the right-hand bridge tablet, the winged matron with wings and tortoise = our p.133 (ch. X). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[133]"
         },
         {
           "plate": 36,
           "description": "Circular bas-relief: two genii holding apple (Medium tenuere beati)",
           "page_1499": 124,
-          "page_translation": 134
+          "page_translation": 134,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p124 the left-hand bridge tablet, the roundel of two genii glossed 'Mediu tenuere beati' = our p.134 (ch. X). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[134]"
         },
         {
           "plate": 37,
           "description": "Poliphilus at three gates: GLORIA DEI, MATER AMORIS, GLORIA MUNDI",
           "page_1499": 125,
-          "page_translation": 135
+          "page_translation": 135,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p125 the three gates in the rock, titled in four scripts GLORIA DEI, MATER AMORIS, GLORIA MVNDI = our p.135 (ch. X). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[135]"
         },
         {
           "plate": 38,
           "description": "Poliphilus meets venerable matron with six attendants",
           "page_1499": 126,
-          "page_translation": 136
+          "page_translation": 136,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p126 Theude and her six attendants at the smoky cottage lettered PYLVRANIA = our p.136 (ch. X). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[136]"
         },
         {
           "plate": 39,
@@ -4081,19 +4104,22 @@
           "plate": 73,
           "description": "Nude winged female half-figure with foliage",
           "page_1499": 197,
-          "page_translation": 207
+          "page_translation": 207,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p197 the winged half-figure of the lamp-chains, signature 'n iiii' = our p.207 (ch. XVII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[207]"
         },
         {
           "plate": 74,
           "description": "Globular lamp hung in chains",
           "page_1499": 198,
-          "page_translation": 208
+          "page_translation": 208,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p198 the globular crystal lamp hung in four chains, 'nel centro el lume della lampada ardeua' = our p.208 (ch. XVII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[208]"
         },
         {
           "plate": 75,
           "description": "Crowning of lantern in cupola with bells",
           "page_1499": 201,
-          "page_translation": 211
+          "page_translation": 211,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p201 the crown of the lantern, the brazen pila hung with bells under the eagle and crescent = our p.211 (ch. XVII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[211]"
         },
         {
           "plate": 76,
@@ -4106,7 +4132,8 @@
           "plate": 77,
           "description": "Polia's torch extinguished in altar-fountain",
           "page_1499": 207,
-          "page_translation": 217
+          "page_translation": 217,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p207 Polia's torch quenched in the cistern, 'in la cisternale aq̃ ifundédo exhaurite dilla benedicta aqua', signature 'o' = our p.217 (ch. XVII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[217]"
         },
         {
           "plate": 78,
@@ -4637,25 +4664,29 @@
           "plate": 94,
           "description": "Cupola above entrance to the crypt",
           "page_1499": 237,
-          "page_translation": 247
+          "page_translation": 247,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p237 the little domed cupola over the way down into the crypt = our p.247 (ch. XIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[247]"
         },
         {
           "plate": 95,
           "description": "Sarcophagus: Interna Plotoni",
           "page_1499": 238,
-          "page_translation": 248
+          "page_translation": 248,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p238 the underworld altar, 'INTERNO PLOTONI TRICORPORI ET CARAE OXORI PROSERPINAE TRICIPITIQ. CERBERO' = our p.248 (ch. XIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[248]"
         },
         {
           "plate": 96,
           "description": "Mosaic of Hell on crypt ceiling (after Dante)",
           "page_1499": 241,
-          "page_translation": 251
+          "page_translation": 251,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p241 the infernal mosaic of the crypt vault, signature 'q ii' = our p.251 (ch. XIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[251]"
         },
         {
           "plate": 97,
           "description": "Sepulchral monument with masks",
           "page_1499": 243,
-          "page_translation": 253
+          "page_translation": 253,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p243 the broken sepulchre with urn and masks, its epitaph mutilated with the stone, signature 'q iii' = our p.253 (ch. XIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[253]"
         },
         {
           "plate": 98,
@@ -4741,7 +4772,8 @@
           "plate": 109,
           "description": "Sepulchral monument with laurel wreath",
           "page_1499": 254,
-          "page_translation": 264
+          "page_translation": 264,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p254 the monument of the laurel wreath, 'QVISQVIS LECTVRVS ACCEDIS ... IN REM TVAM MATVRE PROPERA. VALE' = our p.264 (ch. XIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[264]"
         },
         {
           "plate": 110,
@@ -5109,19 +5141,22 @@
           "plate": 120,
           "description": "Box-tree clipped as mushroom",
           "page_1499": 297,
-          "page_translation": 307
+          "page_translation": 307,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p297 the box-tree clipped as a mushroom on its stepped plinth = our p.307 (ch. XXI). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[307]"
         },
         {
           "plate": 121,
           "description": "Peristyle in pleasure-ground of island of Venus",
           "page_1499": 298,
-          "page_translation": 308
+          "page_translation": 308,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p298 the peristyle of the pleasure-ground with its vases and topiary = our p.308 (ch. XXI). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[308]"
         },
         {
           "plate": 122,
           "description": "Plan of the island of Venus",
           "page_1499": 301,
-          "page_translation": 311
+          "page_translation": 311,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p301 the lettered circular plan of the island — LITTORE, CLAVSVRA DE MYRTO, BOSCO, THEATRO, PERISTYLIO = our p.311 (ch. XXI). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[311]"
         },
         {
           "plate": 123,
@@ -5385,7 +5420,8 @@
           "plate": 147,
           "description": "The Amphitheatre in island of Venus",
           "page_1499": 341,
-          "page_translation": 351
+          "page_translation": 351,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p341 the amphitheatre in elevation with the topiary above, signature 'y iiii' = our p.351 (ch. XXII). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[351]"
         }
       ],
       "plates_from": "page-range",
@@ -7841,13 +7877,15 @@
           "plate": 158,
           "description": "Poliphilus revived in Polia's lap; embracing",
           "page_1499": 412,
-          "page_translation": 422
+          "page_translation": 422,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p412 Poliphilo revived in Polia's lap, 'Quali nel Hermetico Caduceo gli intrichatamente conuoluti serpi' = our p.422 (ch. XXIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[422]"
         },
         {
           "plate": 159,
           "description": "Priestesses drive lovers from Temple of Diana",
           "page_1499": 413,
-          "page_translation": 423
+          "page_translation": 423,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p413 the priestesses driving the lovers from the temple with rods and oak branches = our p.423 (ch. XXIX). Opened in the caption sweep; the line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[423]"
         },
         {
           "plate": 160,

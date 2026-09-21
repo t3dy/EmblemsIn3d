@@ -6,37 +6,7 @@
 
 ---
 
-**77 tickets** — 1 open, 3 declined, 73 done. By kind: 31 bug, 31 debt, 9 infra, 3 question, 2 perf, 1 feat.
-
----
-
-## The queue — pick from the top
-
-*Nothing blocks these but doing them.*
-
-### `debt-corroborated-plate-captions-were-never-opened` — 65 of reading.json's 149 plate captions rest on two LLM-assisted columns agreeing, and three of the leaves that tier captioned turned out to be wrong when somebody finally opened them
-
-**○ open** · debt · priority 5 · hp-researcher
- · opened 2026-09-20
-
-
-**Evidence.** Opened 2026-09-20 closing debt-reading-plate-captions-come-from-a-jittery-column. plate_captions() in scripts/build_reading.py resolves in three tiers. Tier 1 is PLATE_CAPTION_CHECKED, 102 leaves whose scan somebody opened. Tier 2 captions a leaf from woodcut_catalog.description where exactly one catalogue row resolves to it AND woodcuts.page_1499 independently agrees that that row is on that leaf. That tier carries 65 of the 149 captions and nobody has looked at any of those leaves.
-
-The tier was built on the reasoning that two separately-derived columns agreeing is real corroboration. The caption sweep has now shown that it is weaker than it looks, because the two columns are not independent where it matters: the jitter that moves a row in one moves it in the other, so they agree and are both wrong together. THREE tier-2 leaves were opened incidentally during the sweep and all three were captioned with the wrong cut:
-  our p.164 — carries TABELLA DEXTRA (Leda brought to bed) and TABELLA SINISTRA (the eggs offered before Apollo, 'VNI GRATVM MARE ALTERVM GRATVM MARI'), catalogue #49 and #50. Both columns put #51 here. #51 is on p.165.
-  our p.168 — carries TABELLA DEXTRA (Acrisius and the brazen tower) and SECVNDA SINISTRA (Perseus and Pegasus), #54 and #55. Both columns put #56 here. #56 is on p.169.
-  our p.270 — carries NO WOODCUT AT ALL, only text, and that text describes the cut printed on p.271. Both columns put #112 here, so a page of solid type was being framed as a plate and captioned 'Sepulchral portal: narrow gates of life and death'.
-
-Three for three is not a sample, but it is not nothing either, and all three fell in runs the sweep independently measured as drifting. The 65 unopened leaves are mostly in the first half of the book (chapters I-XIII) and in the Cythera garden, both of which the sweep touched only where a leaf was contested.
-
-**Acceptance.** Either every plate in reading.json takes its caption from a leaf somebody has opened — PLATE_CAPTION_CHECKED covers all 149 — or the tier-2 leaves that are NOT opened are demoted to no caption. Machine-checkable: plate_captions() reports 0 corroborated captions. Each leaf opened adds an entry in the form the 102 existing ones use, carrying the identifying line of Italian, the running head, the inscription or the gathering signature.
-
-**Risk.** This is reader-facing copy under project rule 2, and the failure mode is silent: a confident caption on the wrong picture reads exactly like a right one. Do not resolve a leaf from the catalogue, from the neighbouring text, or from the two columns agreeing — that is the mechanism being distrusted. Note also that opening these leaves will keep moving catalogue rows, so PLATE_PAGE_FIXES and PLATE_PAGE_CONFIRMED in scripts/coverage_seed.py have to be kept in step, and a row that moves near a chapter boundary re-files a plate.
-
-**Files.** `scripts/build_reading.py` · `scripts/coverage_seed.py` · `src/data/reading.json`
-
-**See.** debt-reading-plate-captions-come-from-a-jittery-column · bug-reading-raises-a-plate-frame-on-leaves-that-carry-no-woodcut · bug-woodcut-catalog-page-jitter
-
+**77 tickets** — 3 declined, 74 done. By kind: 31 bug, 31 debt, 9 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -1674,6 +1644,44 @@ It matters because build_reading.py takes each page's chapter from the MANIFEST,
 **Files.** `src/data/tours.json` · `research/coverage.json`
 
 **See.** bug-tours-triumphs-xv-stop-is-chapter-xvii · bug-tours-priapus-stop-chapter-tag
+
+
+### `debt-corroborated-plate-captions-were-never-opened` — 65 of reading.json's 149 plate captions rest on two LLM-assisted columns agreeing, and three of the leaves that tier captioned turned out to be wrong when somebody finally opened them
+
+**✅ done** · debt · priority 5 · hp-researcher
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Opened 2026-09-20 closing debt-reading-plate-captions-come-from-a-jittery-column. plate_captions() in scripts/build_reading.py resolves in three tiers. Tier 1 is PLATE_CAPTION_CHECKED, 102 leaves whose scan somebody opened. Tier 2 captions a leaf from woodcut_catalog.description where exactly one catalogue row resolves to it AND woodcuts.page_1499 independently agrees that that row is on that leaf. That tier carries 65 of the 149 captions and nobody has looked at any of those leaves.
+
+The tier was built on the reasoning that two separately-derived columns agreeing is real corroboration. The caption sweep has now shown that it is weaker than it looks, because the two columns are not independent where it matters: the jitter that moves a row in one moves it in the other, so they agree and are both wrong together. THREE tier-2 leaves were opened incidentally during the sweep and all three were captioned with the wrong cut:
+  our p.164 — carries TABELLA DEXTRA (Leda brought to bed) and TABELLA SINISTRA (the eggs offered before Apollo, 'VNI GRATVM MARE ALTERVM GRATVM MARI'), catalogue #49 and #50. Both columns put #51 here. #51 is on p.165.
+  our p.168 — carries TABELLA DEXTRA (Acrisius and the brazen tower) and SECVNDA SINISTRA (Perseus and Pegasus), #54 and #55. Both columns put #56 here. #56 is on p.169.
+  our p.270 — carries NO WOODCUT AT ALL, only text, and that text describes the cut printed on p.271. Both columns put #112 here, so a page of solid type was being framed as a plate and captioned 'Sepulchral portal: narrow gates of life and death'.
+
+Three for three is not a sample, but it is not nothing either, and all three fell in runs the sweep independently measured as drifting. The 65 unopened leaves are mostly in the first half of the book (chapters I-XIII) and in the Cythera garden, both of which the sweep touched only where a leaf was contested.
+
+**Acceptance.** Either every plate in reading.json takes its caption from a leaf somebody has opened — PLATE_CAPTION_CHECKED covers all 149 — or the tier-2 leaves that are NOT opened are demoted to no caption. Machine-checkable: plate_captions() reports 0 corroborated captions. Each leaf opened adds an entry in the form the 102 existing ones use, carrying the identifying line of Italian, the running head, the inscription or the gathering signature.
+
+**Risk.** This is reader-facing copy under project rule 2, and the failure mode is silent: a confident caption on the wrong picture reads exactly like a right one. Do not resolve a leaf from the catalogue, from the neighbouring text, or from the two columns agreeing — that is the mechanism being distrusted. Note also that opening these leaves will keep moving catalogue rows, so PLATE_PAGE_FIXES and PLATE_PAGE_CONFIRMED in scripts/coverage_seed.py have to be kept in step, and a row that moves near a chapter boundary re-files a plate.
+
+**Resolution.** CLOSED BY OPENING ALL 65, not by the demote fallback. Every leaf the corroborated tier captioned was opened one scan at a time in images/woodcuts_1499/pNNN.jpg, and each is now an entry in PLATE_CAPTION_CHECKED carrying the line of Italian, the inscription, the head-line or the gathering signature that settles it. PLATE_CAPTION_CHECKED went from 102 to 167 entries; plate_captions() now reports 167 pages opened, 0 corroborated, and reading.json carries 149 captions on 149 plates — every caption on a leaf somebody has looked at, and none demoted. The machine-checkable acceptance (0 corroborated captions) holds.
+
+THE TIER'S VERDICTS WERE RIGHT AND STILL WERE NOT EVIDENCE. All 65 leaves turned out to carry the cut the two columns agreed on, which is the opposite of the three for three the ticket opened on — and is consistent with it: the three wrong ones (pp.164, 168, 270) all fell in the triumph sequence, whose rows the first sweep had already re-measured into PLATE_PAGE_FIXES, so the leaves left to this pass were the ones the jitter had not reached. The warrant was still bad; it simply was not costing anything here.
+
+WHAT THE SCANS CHANGED ANYWAY. A caption can be on the right cut and still say the wrong thing, because woodcut_catalog.description is a short subject label written away from the leaf: #30's 'three naked boys on lion-footed pedestal' stands on three HARPY's feet and the text beside it says so ('tre rapaci pedi di fœda Harpyia'); #95's 'Sarcophagus: Interna Plotoni' is cut INTERNO PLOTONI TRICORPORI ET CARAE OXORI PROSERPINAE TRICIPITIQ. CERBERO, vernacular spellings and all; #41's 'Poliphilus embraced by the nymph' is Thelemia's farewell kiss; #39's 'Poliphilus receives crown and palm-branch on sword' is Euclelia holding them out on her drawn sword, not Poliphilo receiving them. Captions now follow the leaf. Where the cut carries lettering the caption quotes it: TEMPVS and AMISSIO on the horse's pedestal, ΓΟΝΟΣ ΚΑΙ ΕΥΘΥΙΑ on the elephant's caparison, ΠΑΝΤΩΝ ΤΟΚΑΔΙ under the sleeping nymph, ΓΕΛΟΙΑΣΤΟΣ on the laughing-boy fountain, MEDIVM TENVERE BEATI on the bridge roundel, the four-script gate titles, AMOR VINCIT OMNIA on Cupid's standard.
+
+THE EAGLE PARTERRE, p.323, READ. The border of catalogue #128 is lettered in four runs which the text beside it counts out as bare letter-groups ('quatro. TAOP. Nel altro tre. TIM ... due. IO. Nel propinquo due. VI') without ever saying what they spell. Each side reads left to right when turned to the foot — ALESMA | GNADICA | TAOPTIM | IOVI — and round from the left side that is ALES MAGNA DICATA OPTIM[O] IOVI, the great bird dedicated to Jupiter the Best. Its neighbour on p.324 is already recorded as SVPERNAE ALITIS BENIGNITAS, so the parterres of this quarter of the garden are a dedicatory series, not ornament.
+
+SIDE-EFFECTS, kept out of step with each other on purpose. No plate moved: all 65 leaves confirmed the page the corrected catalogue already gave, so PLATE_PAGE_FIXES is untouched and no row re-files across a chapter boundary. 38 catalogue rows that nobody had yet confirmed on their catalogued page were added to PLATE_PAGE_CONFIRMED (54 -> 92) as one-line pointers into PLATE_CAPTION_CHECKED rather than as a second copy of the evidence. coverage_seed.py re-run: 38 chapters, 168 plates attached, 0 unattached, and the only change in research/coverage.json is 38 new page_checked stamps.
+
+Two things the scans turned up that are not captions. (1) The gathering signatures read straight off the leaves — 'c' on p.41, 'e' on p.73, 'g' on p.105, 'i' on p.137, 'n iii' on p.205, 'o' on p.217, 'q ii' on p.251, 'y iiii' on p.351 — fall on a single model: quires of 8 leaves beginning at our p.9, so a1r is our p.9 and hp.db's page_seq 1 (our p.11) is a2r, NOT a1r as the comment in build_reading.py and fetch_1499_plates.py says. The +10 constant is unaffected; only the sentence explaining it is wrong. Worth a ticket of its own alongside bug-concordance-signature-quire-model, and note the observed run includes the u and x gatherings the concordance omits. (2) Two of the 65 blocks carry the cutter's small '·b·' inside the picture — p.20 (Poliphilo asleep, lower right) and p.41 (the hieroglyph band, lower left) — recorded as observation, with no attribution claimed.
+
+NOT VERIFIED LIVE. reading.json is a player-facing surface and this pass rewrote 65 of its captions; no browser was opened in this session, so the deployed Read mode is unconfirmed.
+
+**Files.** `scripts/build_reading.py` · `scripts/coverage_seed.py` · `src/data/reading.json`
+
+**See.** debt-reading-plate-captions-come-from-a-jittery-column · bug-reading-raises-a-plate-frame-on-leaves-that-carry-no-woodcut · bug-woodcut-catalog-page-jitter
 
 
 ### `debt-plate-pages-measured-in-the-caption-pass-are-not-in-plate-page-fixes` — ten plate pages were measured on the scans while fixing the captions, but coverage_seed.py was out of that pass's scope, so the research ledger still files them wrong

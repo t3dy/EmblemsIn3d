@@ -199,12 +199,27 @@ def body_of(path):
 #   2. Otherwise, woodcut_catalog.description — the corrected source's own words,
 #      the same binding the image uses — but ONLY where exactly one catalogue row
 #      resolves to the page AND `woodcuts.page_1499` independently agrees that
-#      that same catalogue row is on that same page. Two columns derived
-#      separately, agreeing, is real corroboration; it is the 95-page majority,
-#      and the ticket's own spot checks (p.14 the dark forest, p.38 the elephant)
-#      are in it.
+#      that same catalogue row is on that same page. THIS TIER IS NOW EMPTY and
+#      is kept only as the fallback of last resort: it supplies 0 of the 149
+#      captions and plate_captions() reports so.
 #   3. Otherwise NO CAPTION. An uncaptioned plate is a small loss; a confident
 #      caption on the wrong picture is the defect being closed.
+#
+# WHY TIER 2 IS EMPTY — debt-corroborated-plate-captions-were-never-opened,
+# closed 2026-09-20. Tier 2 was built on the reasoning that two separately
+# derived columns agreeing is real corroboration, and it carried 65 of the 149
+# captions on leaves nobody had opened. The reasoning is wrong where it matters:
+# the columns are not independent, so the jitter that moves a row in one moves it
+# the same way in the other, and three tier-2 leaves opened incidentally during
+# the first caption sweep (our pp.164, 168 and 270) were all captioned with the
+# wrong cut — p.270 being a page of solid type framed as a plate. All 65 were
+# then opened, one scan at a time, and promoted into the table above. Every one
+# of them turned out to carry the cut the catalogue named, which is worth saying
+# plainly: the tier's verdicts in this stretch of the book were right, and they
+# were still not evidence. Several captions did change wording once the leaf was
+# read — the perfuming vessel on p.105 stands on harpy's feet, not the lion's
+# feet the catalogue gives it, and p.248's altar reads INTERNO PLOTONI ... ET
+# CARAE OXORI, vernacular spellings and all.
 #
 # Rows coverage_seed.py has already measured as junk — no woodcut answers to them
 # (PLATE_NO_WOODCUT), or they duplicate another row (PLATE_DUPLICATE_ROWS), or
@@ -213,6 +228,32 @@ def body_of(path):
 #
 # page -> (caption or None, the evidence that settles it)
 PLATE_CAPTION_CHECKED = {
+    14:  ("Poliphilo lost in the Hercynian wood",
+          "The cut stands at the head of the leaf; the text below it opens 'Per "
+          "laquale cosa, principiai poscia ragioneuolmente suspicare & credere "
+          "peruenuto nella uastissima Hercynia silua'. Catalogue #1, whose catalogued "
+          "page PLATE_PAGE_CONFIRMED already records."),
+    18:  ("Poliphilo kneeling to drink at the rivulet",
+          "The cut at the head: Poliphilo on both knees at a stream on the edge of the "
+          "wood. The text below opens 'Hora quale animale che per la dolce esca, lo "
+          "occulto dolo non perpende'. Catalogue #2."),
+    20:  ("Poliphilo asleep under the tree: the dream within the dream",
+          "The cut at the head, with the cutter's small mark '·b·' inside the block at "
+          "the lower right. Below it the capitalised argument of chapter III, "
+          "'POLIPHILO QVIVI NARRA, CHE GLI PARVE ANCORA DI DORMIRE, ET ALTRONDE IN "
+          "SOMNO RITROVARSE IN VNA CONVALLE'. Catalogue #3."),
+    21:  ("Poliphilo in the palm grove: the wolf, the fallen colossal head, the "
+          "antique well-head",
+          "The cut stands at the FOOT of the leaf and the line immediately above it "
+          "reads 'Ecco che uno affermato & carniuoro lupo alla parte dextra, cum la "
+          "bucca piena mi apparue'. Catalogue #4."),
+    26:  ("The great pyramid with the obelisk, the winged Fortuna turning above it",
+          "Full-page cut, printed to the frame, no body text; the catchword "
+          "'Ritorniamo' at the lower right. Catalogue #5."),
+    32:  ("The colossal winged horse, the boys thrown from its back",
+          "The cut at the foot. The text above it reads 'Sopra di q̃sta piacia, dal "
+          "initio itro uerso la porta .x. passi, uidi uno p̃digioso caballo & aligero "
+          "Desultore'; catchword 'Nella'. Catalogue #6."),
     33:  ("Two pedestal ends: the garland with D. AMBIG. D.D., and the garland with EQVVS "
           "INFOELICITATIS",
           "TWO cuts side by side, the two ends of the horse's pedestal: a garland of "
@@ -220,6 +261,46 @@ PLATE_CAPTION_CHECKED = {
           "enclosing 'EQVVS INFOELICITATIS'. The text between them reads 'Nellaquale "
           "inscalpta teniua tale scriptura di maiuscule Latine'. Catalogue #7 and #8, "
           "both already confirmed on this leaf by coverage_seed."),
+    34:  ("Relief on the horse's pedestal: the chorea of matrons and youths — TEMPVS",
+          "The text above the cut ends 'La chorea prædicta in una figura di dui "
+          "semicirculi, & una interposita partitione, egregiamente era incisa', and "
+          "the line under the cut gives the word cut beneath the stone: 'Sotto laquale "
+          "Hemiale figura uidi tale parola inscripta. TEMPVS.' Catalogue #9."),
+    35:  ("The second relief of the pedestal: the youths gathering flowers, the nymphs "
+          "snatching them away — AMISSIO",
+          "The cut at the head of the leaf. Its word is given at the foot of p.34, 'di "
+          "sotto la figura erano alcune Maiuscule incauate, che diceuano q̃sta unica "
+          "parola AMISSIO'; the text under the cut turns from the horse to the "
+          "elephant, 'Stupefacto dunque non poco, ruminando ... mi soccorse il "
+          "sfortuneuole cauallo Seiano'. Catalogue #10."),
+    37:  ("The elephant's caparison, lettered ΓΟΝΟΣ ΚΑΙ ΕΥΘΥΙΑ over four words of "
+          "Arabic",
+          "The text above the cut reads 'Nella planitie dilquale (di foliatura "
+          "undiculare circundata) uidi alcune littere Ionice, & Arabe, lequale cusi "
+          "diceuano'. The Greek is transcribed here exactly as the block cuts it. "
+          "Catalogue #11."),
+    38:  ("The colossal elephant of black stone bearing the obelisk",
+          "Full-page cut under a single head-line of type, 'deua ad intrare nella "
+          "Elephantina machina exuiscerata'. Catalogue #12."),
+    39:  ("Inside the elephant: the sepulchre of the King — NVDVS ESSEM, BESTIA NI ME "
+          "TEXISSET, QVAERE, ET INVENIES. ME SINITO",
+          "The text above the cut reads 'mirai uno antiquario sepulchro cõcesso alla "
+          "propria petra, cum una p̃fecta imagine uirile & nuda'. Beside the cut the "
+          "epigram stands in three tongues — Hebrew, the Greek 'ΓΥΜΝΟΣ ΗΝ, ΕΙ ΜΗ ΑΝ "
+          "ΘΗΡΙΟΝ ΕΜΕ ΚΑΛΥΨΕΝ. ΖΗΤΕΙ. ΕΥΡΗΣΗ ΔΕ. ΕΑΣΟΝ ΜΕ', and the Latin. Catalogue "
+          "#13."),
+    40:  ("The sepulchre of the Queen — QVISQVIS ES, QVANTVNCVNQVE LIBVERIT HVIVS "
+          "THESAVRI SVME AT MONEO. AVFER CAPVT. CORPVS NE TANGITO",
+          "The text above the cut reads 'statua supra stante di tutto, quale laltra, "
+          "Senó che era regina', and 'Nella q̃le etiam iscripto era tale epigramma in "
+          "tri idiomi' — Hebrew, Greek and the Latin quoted. Catalogue #14."),
+    41:  ("The hieroglyph band of the porphyry base, ending in the closed ark",
+          "The text above enumerates the signs, 'Primo uno capitale osso cornato di "
+          "boue, cum dui instrumenti agricultorii'; under the cut, 'Lequale "
+          "uetustissime & sacre scripture pensiculante, cusi io le interpretai', then "
+          "EX LABORE DEO NATVRAE SACRIFICA LIBERA LITER, PAVLATIM REDVCES ANIMVM DEO "
+          "SVBIECTVM. The block carries the cutter's '·b·' at the lower left; the "
+          "letter 'c' stands at the foot of the leaf. Catalogue #15."),
     48:  (None,
           "Scan opened: unbroken text, NO woodcut on the leaf — the relief of Vulcan's forge "
           "described in prose, 'Sedeua sopra uno saxo sincto, cum una pelle hircina'. The old "
@@ -229,6 +310,39 @@ PLATE_CAPTION_CHECKED = {
           "paired Corinthian columns on high pedestals, a medallion bust in each spandrel and "
           "a Greek inscription across the pediment. Catalogue #16. The old column called this "
           "leaf 'Ruins of the Temple'."),
+    62:  ("Poliphilo fleeing the dragon into the dark portal",
+          "The text above the cut ends 'ciascuna diuina potentia tremendo & "
+          "perterrefacto diuotamente inuocai'; below it, 'Et sencia mora conuerse le "
+          "spalle nella obscuritate intrado, alla presta fuga me cõmisi'. Catalogue "
+          "#17."),
+    69:  ("Two hieroglyph tablets: PATIENTIA EST ORNAMENTVM CVSTODIA ET PROTECTIO "
+          "VITAE, and the circle, anchor and dolphin — ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ, Semper "
+          "festina tarde",
+          "The title is set in capitals directly over the block and the second reading "
+          "printed under it: 'Dalaltra parte tale elegante scalptura mirai. Vno "
+          "circulo. Vna ancora. Sopra la stangula dillaq̃le se rouoluea uno Delphino'. "
+          "Catalogue #18, whose page PLATE_PAGE_CONFIRMED already records."),
+    73:  ("The fountain of the sleeping nymph: the satyr drawing back the veil, two "
+          "putti — ΠΑΝΤΩΝ ΤΟΚΑΔΙ",
+          "Full-page cut with the Greek cut in type immediately beneath the block, and "
+          "under that 'Per laquale cosa io non saperei definire, si la diuturna & "
+          "tanta acre sete pridiana tolerata ad bere trahendo me prouocasse'. The "
+          "letter 'e' stands at the foot. Catalogue #19."),
+    76:  ("Poliphilo meets the five nymphs with their vessels",
+          "The text below the cut opens 'Elle dunque di me animaduertendo alhora, il "
+          "Nympheo grado affermando steteron, uacabonde dal suo dolce canto'. "
+          "Catalogue #20."),
+    81:  ("The weather-vane: the winged putto on the ball, sounding the trumpet",
+          "The cut runs down the outer half of the leaf beside the type. The text "
+          "reads 'Laquale Ala, & la Pila, & el Puello, cum il figmento o uulto in acto "
+          "di sonare, cum il uacuato occipitio, uerso el flato uetale ... Oue intro "
+          "spirabile la tuba, tubaua'. The same leaf gives the bath its Greek title, "
+          "'ΑΣΑΜΙΝΘΟΣ'. Catalogue #21."),
+    85:  ("The second bath-fountain: two nymphs and the puer, the frieze lettered "
+          "ΓΕΛΟΙΑΣΤΟΣ",
+          "The word is cut into the frieze of the block and repeated in the text "
+          "below: 'nel Zophorulo era inscripto elegante di Atthice formule questo "
+          "titulo. ΓΕΛΟΙΑΣΤΟΣ.' Catalogue #22."),
     90:  ("Tiered fountain with winged sphinxes, lion masks and dragon heads",
           "Full-page cut, printed to the frame, no body text but the catchword. Catalogue #23."),
     94:  (None,
@@ -242,10 +356,118 @@ PLATE_CAPTION_CHECKED = {
           "simiglianti liniamenti decoratamente se extendeua il zophoro'. Catalogue #24, whose "
           "page a sibling ticket corrected 84->87. Note the `woodcuts` title for #24 is 'Queen "
           "Eleuterylida's Palace', which is not what is printed here."),
+    98:  ("The panelled wall of the Queen's hall, the planets in roundels — VENVS, "
+          "SOL, MARS, IVPITER",
+          "Each roundel is lettered in the block. The line below the cut reads 'In "
+          "laspecto mediano allincontro del nostro ingresso, Sopra uno gradato & regio "
+          "throno'. Catalogue #25."),
+    100: ("Queen Eleuterylida enthroned, Poliphilo brought before her; VENVS on the "
+          "hanging",
+          "The text above the cut opens 'Ad tanto dunque imperiale & sublime cõspecto "
+          "uenerabondi, & ad terra geniculati'; below it, 'Cómota dicio la mellea "
+          "Regina, me fece subleuare, & il mio nome iteso, Cusi affabilmente pricipio "
+          "di dire. Poliphile sta di bono animo'. Catalogue #26."),
+    102: ("Medallion in the canopy over the throne: the beardless youth with the "
+          "seven-rayed diadem, borne on an eagle",
+          "The cut is set into the type at the head of the leaf, and the text beside "
+          "it reads 'La corona che sopra il throno di encaustica pigmentura, Vna "
+          "uenusta imagine imberbe cæsariata di flaua capillatura continiua ... sopra "
+          "le passe ale duna Aquila'. Catalogue #27."),
+    103: ("The tripod of jasper with its winged stipites, set before the Queen",
+          "The text beside the cut opens 'Et quiui primariamente dinanti la Regina "
+          "furono affermati tripodi di tale factura. Sopra una rotundatione di optimo "
+          "diaspro'. Catalogue #28."),
+    104: ("The wheeled fountain-vase that ran along the tables for the washing of hands",
+          "The text beside the cut reads 'Il sparso & lato uaso di questa fontana, "
+          "fondato fue artificiosamente sopra quattro rotule, & conduceuano discurrédo "
+          "sopra le mense ad lauare habilissimamente le mano di tutti gli "
+          "discumbenti'. Catalogue #29."),
+    105: ("The perfuming vessel of the triangular base, three naked genii bearing it "
+          "upon three harpy's feet",
+          "The text beside the cut reads 'In medio di questa stupenda area, fue "
+          "exposito uno mirando uaso da suffumigio ... Cum Lanteride sopra tre rapaci "
+          "pedi di fœda Harpyia ... tre spiritelli nudi assisteuano'. The catalogue "
+          "calls the feet lion's; the leaf, and the block, say harpy's. Signature 'g' "
+          "at the foot. Catalogue #30."),
+    112: ("The vessel crowned with the coral tree",
+          "The text beside the cut reads 'Laquale iuuencula riuerente geniculata a "
+          "terra, cú il dextro genochio, laltro riseruando leuato, sopra esso "
+          "acconciamente questo spectando Coralio reteniua'. Catalogue #31."),
+    115: ("The tall fountain-vessel with the golden fruit-tree, a nymph standing by it "
+          "for scale",
+          "The text below the cut reads 'Ilquale stylo fermamente infixo uno conspicuo "
+          "uaso di Topacio susteniua, di antiquaria forma'. Catalogue #32, whose page "
+          "PLATE_PAGE_CONFIRMED already records."),
+    129: ("The triangular obelisk of the Trinity on its sphinx-base, the three faces "
+          "lettered O, Ω and N",
+          "The text beside the cut reads 'In qualunque fronte era inscalpto uno "
+          "circulo tanto, & di sopra il circulo una litera græca. O. Nella laltra "
+          "facia uno circulo, & sopra una littera. Ω. Nella tertia planitie uno "
+          "circulo, & sopra se una litera. N.', and closes 'DIVINAE INFINITAEQVE "
+          "TRINITATI VNIVS ESSENTIAE'. The same leaf carries the Greek 'ΔΥΣ Α ΛΩΤΟΣ' "
+          "in its opening paragraph. Catalogue #33."),
+    132: ("The jewel: Jupiter enthroned in the clouds with the cornucopia, the "
+          "earth-born beneath him",
+          "The text above the cut reads 'Per sua infinita bontate lo immortale Iupiter "
+          "ad gli terrigeni fa sembiante che possino al uoto, quello che delle due "
+          "mane gli talenta liberaméte eligere'. Catalogue #34."),
+    133: ("The right-hand tablet of the bridge: the winged matron seated, a pair of "
+          "wings in one hand and a tortoise in the other",
+          "The text beside the cut reads 'Nella dextra al nostro transito, uidi una "
+          "matróa duno serpente instrophiolata, Solú cú una nate sedente, & cum laltra "
+          "gamba in acto de leuarse, Cú la máo dilla sua sessione, uno paro di ale, & "
+          "nel altro dl leuar se una testudie teniua'. Its motto is given on the next "
+          "leaf. Catalogue #35."),
+    134: ("The left-hand tablet: the roundel of two winged genii holding the ring — "
+          "MEDIVM TENVERE BEATI",
+          "Logistica's gloss stands beside the cut: 'El circulo dice. Mediú tenuere "
+          "beati. Laltro. Velocitatem sedendo, Tarditatem tempera surgendo.' Catalogue "
+          "#36."),
+    135: ("The three gates in the rock, titled in four scripts: THEODOXIA · GLORIA "
+          "DEI, EROTOTROPHOS · MATER AMORIS, COSMODOXIA · GLORIA MVNDI",
+          "The titles are cut in the block in Arabic, Hebrew, Greek and Roman, and the "
+          "text below confirms them: 'Sopra qualúque delle quale, di charactere "
+          "Ionico. Romano. Hebræo. & Arabo, uidi el titulo che la Diua Regina "
+          "Eleuterilyda haueami prædicto'. Catalogue #37."),
+    136: ("Theude at the door of her smoky cottage with her six attendants",
+          "The text below the cut reads 'Et ecco che ad nui, una donna grádæua se "
+          "psentoe, di aspecto cœlibe, Laquale fora di una craticea casuncula cum "
+          "fumido tecto & parieti fumigati per la pusilla porta egressa (Laquale sopra "
+          "se hauea notato PYLVRANIA)', and names the six: Parthenia, Edosia, "
+          "Hypocolinia, Pinotidia, Tapinosa, Ptochina. Catalogue #38."),
+    137: ("Euclelia with the raised sword, the golden crown and palm hung upon it, and "
+          "her six maidens",
+          "The text below the cut reads 'Se fece ad nui una Matrona chrysaora cum "
+          "gliochii atroci ... In medio della quale, una corolla doro, & uno ramo di "
+          "palmula itrauersato suspesa pendeua'. Signature 'i' at the foot. Catalogue "
+          "#39, whose page PLATE_PAGE_CONFIRMED already records."),
+    139: ("Logistica breaks her lyre and goes; Poliphilo stays among the nymphs",
+          "The text above the cut ends 'proiecta la lyra ad terra la rumpete ... "
+          "uoltate le spalle, sospirosa, properamente cursitabonda, uscite fora'. "
+          "Signature 'i ii'. Catalogue #40."),
+    140: ("Thelemia takes her leave, kissing and embracing Poliphilo among the nymphs",
+          "The text above the cut ends 'columbinamente basciantime & strictamente "
+          "amplexantime, da me chiedete licentia & cum meato'; below it, 'Et recluse "
+          "le metalline ualue, rimansi claustrato immediate tra quelle egregie "
+          "Nymphe'. Catalogue #41."),
+    142: ("Poliphilo at the flowering bower; the nymph with the burning torch comes "
+          "out to meet him",
+          "The text below the cut reads 'Et ecco una come insigne & festiua Nympha "
+          "dindi cum la sua ardente facola in mano despartitosi da quelli, uerso me "
+          "dirigendo tendeua gli uirginei passi'. Catalogue #42."),
+    149: ("Poliphilo and the torch-bearing nymph walking out from the bower",
+          "The text below the cut opens 'Et postala nella sua, strengerla sentiua tra "
+          "calda neue, & in fra coagulo lacteo'. Catalogue #43."),
     159: ("PRIMA TABELLA: the car with the bull relief; below, SECVNDA SINISTRA: Europa "
           "borne over the sea",
           "TWO cuts, each with its title cut in capitals above it. Signature 'k iiii' at "
           "the foot. Catalogue #44 and #45."),
+    160: ("PARS ANTERIOR ET POSTERIOR TRIVMPHI: Cupid shooting among the stars; the "
+          "NEMO banner before the enthroned god",
+          "TWO panels in one frame, the title cut in capitals across the head of the "
+          "leaf; the right panel carries the scroll lettered NEMO. The text below "
+          "begins 'Questa figura di carro era q̃drágula di dui q̃drati p̃fecti'. "
+          "Catalogue #46."),
     161: (None,
           "Scan opened: unbroken text under the running head TRIVMPHVS, NO woodcut. The old "
           "column put the third triumphal car here; the car is on p.162."),
@@ -355,11 +577,32 @@ PLATE_CAPTION_CHECKED = {
           "hail-streaked sky",
           "Captioned on the cut, 'HYEMI AEOLIAE.S.' Catalogue #70. Plate from the second "
           "facsimile; see p.191."),
+    195: ("The sacrifice to Priapus: the garlanded ass led before the herm under its "
+          "bower",
+          "Full-page cut, printed to the frame, no body text. The rite it belongs to "
+          "is described on the leaves either side. Catalogue #71, whose page "
+          "PLATE_PAGE_CONFIRMED already records."),
     200: (None,
           "Scan opened: unbroken text, NO woodcut."),
+    205: ("Section and ground-plan of the round temple of Venus",
+          "Full-page cut, printed to the frame, no body text; signature 'n iii' at the "
+          "foot. Catalogue #72, whose page PLATE_PAGE_CONFIRMED already records."),
+    207: ("The winged half-figure with the horned head-dress, from the lamp-chains of "
+          "the cupola",
+          "The text beside the cut reads 'Nellordine oue se ricontrauano le sinuose & "
+          "laciniate fronde, de una & dellaltra puella era impacto atergo uno inuncato "
+          "Harpagulo'. Signature 'n iiii'. Catalogue #73."),
+    208: ("The globular crystal lamp hung in four chains",
+          "The text beside the cut reads 'Ilquale tanto regularmente intromisso "
+          "pendeua, che nel centro el lume della lampada ardeua'. Catalogue #74."),
     210: (None,
           "Scan opened: unbroken text, NO woodcut — the eight wind-figures on the cupola "
           "and the gutturnium above them, described and not drawn."),
+    211: ("The crown of the lantern: the brazen pila hung with bells, the eagle on the "
+          "crescent above",
+          "The text beside the cut reads 'Le dicte catenule sopra la mediana "
+          "corpulentia della ænea Pila æqualmente deriuando, ciascuna nel extremo se "
+          "cum inuinculato retiniuano uno æreo Chodono'. Catalogue #75."),
     214: ("Two inscribed tablets: the Greek ΠΑΝ ΔΕΙ ΠΟΙΕΙΝ ΚΑΤΑ ΤΗΝ ΑΥΤΟΥ ΦΥΣΙΝ, and "
           "TRAHIT SVA QVENQVE VOLVPTAS",
           "TWO cuts, one at each side of the text: moulded tablets, each hung with a "
@@ -367,6 +610,17 @@ PLATE_CAPTION_CHECKED = {
           "applied — the only row the old column put here is #83, which coverage_seed has "
           "measured as a duplicate of #82. The tablets are printed here all the same, so "
           "the caption is taken from them."),
+    215: ("The seven virgins carry the vessels of the rite to the altar-fountain",
+          "The text below the cut tells them over one by one: 'Et ecco cum summa "
+          "ueneratione maturatamente, Vna portaua cum registrato processo el rituale "
+          "libro ... La sexta baiulaua una aurea Mitra, cum richissimi Lennisci "
+          "dependuli'. Catalogue #76."),
+    217: ("Polia's torch quenched in the cistern, the priestess beside her and the "
+          "great orb behind",
+          "The text below the cut reads 'Nó cusi præsto questo sancto iusso feci, Che "
+          "essa tollédo il p̃tioso lepista iacynthino, & cú una cordicella doro ... in "
+          "la cisternale aq̃ ifundédo exhaurite dilla benedicta aqua'. Signature 'o' "
+          "at the foot. Catalogue #77."),
     218: ("Temple ceremony at the round font, the priestess with the open book",
           "The cut shows a great round wellhead on a stepped base, its drum carved with dancing "
           "figures. The text above it ends 'la sacrificatrice Presule cum le altre astante, da "
@@ -442,14 +696,37 @@ PLATE_CAPTION_CHECKED = {
           "di Bubone, & una uetusta lucerna ... VITAE LETHIFER NVNTIVS'. Catalogue #93, "
           "whose catalogued page is right; #91 and #92, also filed here, are not on this "
           "leaf."),
+    247: ("The little domed cupola over the way down into the crypt",
+          "The text beside the cut reads 'Ecco che in uno marmoreo pilone comminuto "
+          "tuto meno circa dui passi, Inuestito di una obstinata & flexipeda hedera, "
+          "Dallaquale quasi tuta trouai occupata lapertione di una porticula'. "
+          "Catalogue #94."),
+    248: ("The altar-tomb of the underworld: INTERNO PLOTONI TRICORPORI ET CARAE OXORI "
+          "PROSERPINAE TRICIPITIQ. CERBERO",
+          "The text above the cut reads 'Dallaltra parte dilla p̃dicta ara trouai di "
+          "litere romane excauate exquisitamente questo titulo'. The inscription is "
+          "transcribed exactly as cut, PLOTONI and OXORI included. Catalogue #95."),
     250: (None,
           "Scan opened: unbroken text, NO woodcut — the painted Hell described, 'lanime "
           "che allardente incendio, dãnate erano'; catchword 'Dunque'."),
+    251: ("The infernal mosaic of the crypt vault: the burning abyss and the bridge of "
+          "the damned",
+          "The text below the cut opens 'Dunque chi accuratamente tale expressura "
+          "consideraua facilmente coniecturare cusi essere il poteua'. Signature 'q "
+          "ii'. Catalogue #96."),
     252: ("The four-square altar: ARAM DEVM INFER. VIATOR HIC CAESAM LAODIAM PVBLIAM INSPICE",
           "ONE cut. The text above it reads 'In questo loco uidi una quadrata ara, Nella "
           "facia ouero fronte dillaquale di maiuscule p̃fecte questo titulo trouai "
           "inscripto'. NO catalogue row resolves to this leaf; the caption is taken from "
           "the inscription."),
+    253: ("The broken sepulchre with the urn and two masks, D · M, and its mutilated "
+          "epitaph",
+          "The text below the cut reads 'Proximo a questo solistimo iacente, uidi & "
+          "questo elegante epitaphio, in una tabula prophyrica ... Per che ad gli ambi "
+          "lateri, continua per fractura appareua' — and the block prints the loss: "
+          "the line-beginnings are gone with the stone, leaving ...ANNIRAE / PVCILLAE "
+          "/ ELLAE IN COMP. / DIDVS AE / MVLATRICI / MOESTISS. PARENTES. P. Signature "
+          "'q iii'. Catalogue #97."),
     254: ("The gladiator's epitaph: D.M. GLADIATORI MEO AMORE CVIVS EXTREME PERVSTA",
           "ONE cut, a tall framed tablet filling the upper half of the leaf. The text "
           "below begins 'Daposcia che io hebbi questi dui epitaphii accuratamente "
@@ -493,6 +770,12 @@ PLATE_CAPTION_CHECKED = {
     263: ("The full-page monument: O LECTOR INFOELIX HOC MONVMENT. ADES DVM TE VOCAT",
           "An aedicule with acroteria, a draped panel carrying the long epitaph of "
           "Chrysanthus and the serpent. Catalogue #108."),
+    264: ("The monument of the laurel wreath: QVISQVIS LECTVRVS ACCEDIS. CAVE SIAMAS "
+          "... IN REM TVAM MATVRE PROPERA. VALE",
+          "The wreath in the block is filled with the epitaph and the last line is set "
+          "under the cornice. The text above reads 'Dequi ancora súme contento "
+          "partitome, nó molti passi facédo mi occorse una nobile tabula di marmoro "
+          "tetragona'. Catalogue #109."),
     267: ("The monument of Artemisia drinking the ashes of Mausolus",
           "A full-page aedicule: the crowned queen enthroned in the niche, the roundel "
           "'ΕΡΩΤΟΣ ΚΑΤΟΠΤΡΟΝ' over the pediment and the tablet 'ΑΡΤΕΜΙΣΙΔΟΣ ΒΑΣΙΛΙΔΟΣ "
@@ -523,6 +806,16 @@ PLATE_CAPTION_CHECKED = {
     280: (None,
           "Scan opened: unbroken text, NO woodcut — the sea-gods' procession, Melantho, "
           "the tritons and the nereids."),
+    285: ("The standard of Cupid's bark: the rebus ensign — AMOR VINCIT OMNIA",
+          "The motto is set in capitals under the cut. The text beside it opens 'Il "
+          "diuino Nauclero io cú riuerenti, & cú decenti risguardi uolétilo "
+          "uolentiera'. Signature 's iii'. Catalogue #113, whose page "
+          "PLATE_PAGE_CONFIRMED already records."),
+    291: ("The bark of the god of love upon the water",
+          "The text above the cut ends 'Et sopra il linito dil la fragrante & "
+          "nigerrima picatura nitente & speculare, & di aurea trituratione, di syriaco "
+          "liniamento per tuto spectatissimamente designata ... cusi era'. Catalogue "
+          "#114, whose page PLATE_PAGE_CONFIRMED already records."),
     301: ("The fountain in the peristyle: the three golden hydra-heads spouting into the shell",
           "ONE cut: a colonnaded tabernacle on a round stepped base under a ribbed canopy "
           "with birds at its apex. The text beside it opens 'Nello intersito mediano "
@@ -541,6 +834,26 @@ PLATE_CAPTION_CHECKED = {
           "this leaf, which carries one cut, so the caption is taken from the leaf. The "
           "corpus's woodcut photographs hold NO file for this page; the plate comes from "
           "the second facsimile (fetch_1499_plates.py, IA_FALLBACK)."),
+    307: ("The box-tree clipped as a mushroom upon its stepped plinth",
+          "The cut runs down the outer half of the leaf. The text beside it reads 'Le "
+          "capse erano di faberrima arte expresse ... Sotto le opere topiarie, & "
+          "pergule, le strate silicate erano di piu excellente silicato di factura'. "
+          "Catalogue #120."),
+    308: ("The peristyle of the pleasure-ground, its parapet set with vases and topiary",
+          "The text below the cut opens 'il socco & cimatio, undulato & gululato "
+          "correspondenti. Lo itercolúnio hauea gli spatii alli interualli di due "
+          "colúne & una quarta parte', and further down 'Questo mirando peristylio "
+          "hauea gli muruli, & supracolumnio tuto di nobilissimo alabastrite "
+          "diaphana'. Catalogue #121."),
+    311: ("The plan of the island of Venus: LITTORE, the myrtle, wood and orange "
+          "enclosures, BOSCO, SILICATO, THEATRO, the meadows and the ring of the "
+          "PERISTYLIO",
+          "The plan is lettered in the block — LITTORE, CLAVSVRA DE MYRTO, CLAVSVRA DE "
+          "NEMORI, CLAVSVRA DE NARANCETO, BOSCO·P·XX·, SILICATO·P·XXIIII·, "
+          "THEATRO·P·XXV·, PRIMI PRATI, PERISTYLIO, FLVME, SEMITERTIO·P·CLXVI — and "
+          "the text below opens 'Per piu euidente dimonstratione, Il circuito di "
+          "questa delitiosa & amœnissima insula di circúmensuratione constaua di tre "
+          "milliarii'. Catalogue #122."),
     317: ("A circular flower-bed: rhombs within circles, circles within rhombs",
           "ONE cut, running off the fore-edge at the right. The text beside it reads 'Tra "
           "le recensuite strate intersticiamente circũsepte erano le p̃scripte figure. "
@@ -562,6 +875,16 @@ PLATE_CAPTION_CHECKED = {
           "amphora, out of which rises the clipped box. The text above names it, 'Sopra "
           "laquale iaceua uno ãtiquario uaso amphorale, cum quatro anse æquidiuise ... "
           "sopra ciascuna uno pauone, cum le code demisse'. Catalogue #127."),
+    323: ("The parterre of the eagle, its border lettered ALES MAGNA DICATA OPTIM(O) "
+          "IOVI",
+          "The text beside the cut counts the letter-groups off the bed itself: 'cum "
+          "il medesimo modo & locatione quatro. TAOP. Nel altro tre. TIM. Nella "
+          "extrema uerso gli gradi, cum il præfato ordine, & al scriuere seruato, due. "
+          "IO. Nel propinquo due. VI.' Each side of the border reads left to right "
+          "when turned to the foot — ALESMA | GNADICA | TAOPTIM | IOVI — and read "
+          "round from the left side that is ALES MAGNA DICATA OPTIM[O] IOVI, the great "
+          "bird dedicated to Jupiter the Best. Catalogue #128, whose page "
+          "PLATE_PAGE_CONFIRMED already records."),
     324: ("Flower-bed of two birds on a vase, the border lettered SVPERNAE ALITIS BENIGNITAS",
           "ONE cut: an eagle and a pheasant beak to beak, footed on the lips of a vase "
           "within a square knot. Catalogue #129."),
@@ -618,6 +941,16 @@ PLATE_CAPTION_CHECKED = {
           "ONE cut. The text beside it reads 'Tra una proiectura & laltra, nel ordine "
           "dilla porta nella parte mediana dil zophoro'. Signature 'y iii'. Catalogue "
           "#145; #146, also filed here, is not on this leaf."),
+    351: ("The amphitheatre of the island: the two orders of arcades, the topiary above",
+          "The text above the cut reads 'Area continiua per diametro passi .xxxii. La "
+          "crassitudine dil composito passi octo. La partitione dilla columnatione "
+          "ambiente, era quadrifaria diuisa sopra la circunferentia'. Signature 'y "
+          "iiii'. Catalogue #147."),
+    359: ("The heptagonal plan of the fountain of Venus",
+          "The text beside the cut reads 'la septima sola & singularmente era "
+          "hexagonia di lympidissimo beryllo ... Vno angulo obuia nel mediano "
+          "dellintercalato di dui'. Catalogue #148, whose page PLATE_PAGE_CONFIRMED "
+          "already records."),
     373: ("The Fountain of Venus: water from the sarcophagus of Adonis",
           "The roundel set in the rose trellis reads ADONIA, and the text below the cut opens "
           "'sopra il fonte. Nelquale aptamente era infixo uno serpe aureo ... euomeua largamente "
@@ -655,6 +988,20 @@ PLATE_CAPTION_CHECKED = {
           "ONE cut. The text below begins 'O spectaculo di icredibile acerbitate, & di "
           "crudelitate insigne'. Signature 'B iiii'. Catalogue #156, whose catalogued "
           "page is right."),
+    421: ("Polia kneeling over Poliphilo, who lies as dead on the temple pavement",
+          "The text above the cut reads 'O il mio amoroso Poliphilo morto, ouero io in "
+          "tanta inconsolabile uita superstite?'; below it, 'Et alquanto postali "
+          "lamano sopra del suo freddo pecto, io sentiui in esso uno pauculo & "
+          "surditato pulso rebullire'. Catalogue #157, whose page PLATE_PAGE_CONFIRMED "
+          "already records."),
+    422: ("Poliphilo revived in Polia's lap, the two locked in an embrace",
+          "The text above the cut ends 'gli offersi blandicula uno lasciuo & "
+          "mustulento basio, Ambi dui serati, & constrecti in amorosi amplexi, Quali "
+          "nel Hermetico Caduceo gli intrichatamente conuoluti serpi'. Catalogue #158."),
+    423: ("The priestesses drive the lovers from the temple with rods and oak branches",
+          "The text above the cut ends 'Alcune cum uirgule, & altre cum rami di "
+          "querciolo, ad nui improbando, & grauemente minabonde, & percotendo "
+          "dissociorono il nostro dolce amplexamento perturbantilo'. Catalogue #159."),
     425: (None,
           "Scan opened: unbroken text, NO woodcut. This leaf DESCRIBES the two cars that "
           "are drawn on p.426, 'uno Vehiculo tutto di Crystallino giazo, tracto da dui "
@@ -662,12 +1009,29 @@ PLATE_CAPTION_CHECKED = {
     426: ("The stag-car and the swan-car dissolving in the air; Polia kneeling in her chamber",
           "ONE cut in two halves, divided by the chamber wall. The text above ends 'ambi "
           "si risolseron & disparueno'. Catalogue #160."),
+    429: ("Polia kneeling before the priestess of Venus, Poliphilo standing, the "
+          "flaming altar-vase at the right",
+          "The text above the cut reads 'Cum summa opera di cõfirmare & stabilire per "
+          "medio della riuerenda Antista, Dinanti alla quale ello era apresentato'; "
+          "below it the prayer begins 'Celebre & sacra Matrona, si meritano di essere "
+          "auditi gli supplici & diuoti seruitori'. Signature 'D' at the foot. "
+          "Catalogue #161 — and see p.431, the other, different audience, where BOTH "
+          "kneel and there is no altar."),
     431: ("Poliphilo and Polia kneeling together before the enthroned priestess",
           "ONE cut: both kneel on the pavement, the mitred priestess sits with four "
           "nymphs standing behind her, the chamber panelled and with no altar in it — a "
           "different scene from p.429, where Poliphilo STANDS, Polia kneels alone and the "
           "flaming altar-vase is at the right. Signature 'D ii'. Catalogue #162, the row "
           "coverage_seed had recorded as a duplicate of #161."),
+    435: ("The priestess enthroned among her nymphs, the lovers kissing at the left",
+          "The text above the cut ends 'sauiando, sorbiculante, cum incursante obuio "
+          "mutuamente dilinguario morsiunculo zachariissime'; below it, 'Hora hauendo "
+          "solpaceamente esso basiato, & ello probamente me Sauiato'. Signature 'D "
+          "iiii'. Catalogue #163, whose page PLATE_PAGE_CONFIRMED already records."),
+    443: ("Poliphilo writing his letter at the carved desk",
+          "The text above the cut ends 'Per tale arguméto cogitai di scriuerli, & di "
+          "tétare, quale si fusse lanimo di si nobile & Ingenua Nympha'. Catalogue "
+          "#164, whose page PLATE_PAGE_CONFIRMED already records."),
     445: (None,
           "Scan opened: unbroken text, NO woodcut; signature 'E'. Poliphilo's letter, "
           "which ends immediately above the cut on p.446, is still running here."),
@@ -713,7 +1077,10 @@ def plate_captions():
     p.244 the DIVO IVLIO band) and it claims leaves that do not (p.270, which is
     solid type and which both columns agreed to put the sepulchral portal on). Only
     the opened scan outranks both, which is why the checked table is consulted first
-    and why 66 leaves were opened to close this.
+    and why 66 leaves were opened to close this — and 65 more the day after, to empty
+    the corroborated tier (debt-corroborated-plate-captions-were-never-opened). The
+    second return value of `stats` is the count of captions still resting on the two
+    columns agreeing. It is 0, and it is meant to stay 0.
     """
     out, has_cut = {}, set()
     checked = 0

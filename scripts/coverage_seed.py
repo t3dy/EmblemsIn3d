@@ -407,19 +407,97 @@ PLATE_PAGE_CONFIRMED = {
     7:   "p23  left pedestal end, the garland with 'D· AMBIG ·D·D'; 'Nella superficie dil "
          "basamento era infixo plumbiculatamete una plastra' = our p.33 (ch. IV)",
     8:   "p23  right pedestal end on the same page, 'EQVVS INFOELICITATIS' in its garland",
+    9:   "p24  the chorea of matrons and youths on the horse's pedestal, the word TEMPVS "
+         "printed under the cut = our p.34 (ch. IV). Opened in the caption sweep; the line "
+         "of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[34]",
+    10:  "p25  the second pedestal relief, the youths gathering flowers and the nymphs "
+         "snatching them (AMISSIO) = our p.35 (ch. IV). Opened in the caption sweep; the "
+         "line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[35]",
+    11:  "p27  the elephant's caparison lettered GONOS KAI EUTHUIA over four words of "
+         "Arabic = our p.37 (ch. IV). Opened in the caption sweep; the line of Italian "
+         "that settles it is in build_reading.py PLATE_CAPTION_CHECKED[37]",
+    12:  "p28  the full-page elephant bearing the obelisk, under the head-line 'deua ad "
+         "intrare nella Elephantina machina exuiscerata' = our p.38 (ch. IV). Opened in "
+         "the caption sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[38]",
+    13:  "p29  the King's sepulchre, the trilingual epigram ending 'NVDVS ESSEM, BESTIA NI "
+         "ME TEXISSET' = our p.39 (ch. IV). Opened in the caption sweep; the line of "
+         "Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[39]",
+    14:  "p30  the Queen's sepulchre, 'QVISQVIS ES ... AVFER CAPVT. CORPVS NE TANGITO' = "
+         "our p.40 (ch. IV). Opened in the caption sweep; the line of Italian that settles "
+         "it is in build_reading.py PLATE_CAPTION_CHECKED[40]",
+    15:  "p31  the hieroglyph band ending in the closed ark, glossed 'EX LABORE DEO "
+         "NATVRAE SACRIFICA LIBERALITER' = our p.41 (ch. IV). Opened in the caption sweep; "
+         "the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[41]",
+    17:  "p52  Poliphilo fleeing the dragon into the dark portal, 'Et sencia mora conuerse "
+         "le spalle nella obscuritate intrado' = our p.62 (ch. VI). Opened in the caption "
+         "sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[62]",
     18:  "p59  the hieroglyph band under 'PATIENTIA EST ORNAMENTVM CVSTODIA ET PROTECTIO "
          "VITAE', and below it the circle, anchor and dolphin with "
          "'ΑΕΙ ΣΠΕΥΔΕ ΒΡΑΔΕΩΣ · Semp festina tarde' = our p.69 (ch. VII)",
+    19:  "p63  the full-page fountain of the sleeping nymph, the Greek PANTON TOKADI cut "
+         "in type below the block = our p.73 (ch. VII). Opened in the caption sweep; the "
+         "line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[73]",
     20:  "p66  Poliphilo meeting the five nymphs with their vessels; 'Elle dunque di me "
          "animaduertendo alhora, il Nympheo grado affermando steteron' = our p.76 (ch. VII)",
     21:  "p71  the winged putto on the ball blowing the trumpet; 'cosa enea tenuissima "
          "cõflata perfectamẽte ... Laquale Ala, & la Pila, & el Puello' = our p.81 (ch. VIII)",
+    22:  "p75  the second bath-fountain, its frieze lettered GELOIASTOS and the word "
+         "repeated in the text below = our p.85 (ch. VIII). Opened in the caption sweep; "
+         "the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[85]",
     23:  "p80  the full-page third fountain (the three nude figures, the griffin-heads, "
          "the winged sphinxes); no body text, catchword 'no sci' = our p.90, one of the "
          "four pages our translation holds no file for (ch. VIII)",
+    25:  "p88  the panelled wall of the Queen's hall, the planets lettered in their "
+         "roundels VENVS, SOL, MARS, IVPITER = our p.98 (ch. IX). Opened in the caption "
+         "sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[98]",
+    26:  "p90  the Queen enthroned with VENVS on the hanging, 'Cómota dicio la mellea "
+         "Regina, me fece subleuare' = our p.100 (ch. IX). Opened in the caption sweep; "
+         "the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[100]",
+    27:  "p92  the medallion of the canopy, the beardless youth borne on an eagle = our "
+         "p.102 (ch. IX). Opened in the caption sweep; the line of Italian that settles it "
+         "is in build_reading.py PLATE_CAPTION_CHECKED[102]",
+    28:  "p93  the jasper tripod with winged stipites, 'Et quiui primariamente dinanti la "
+         "Regina furono affermati tripodi' = our p.103 (ch. IX). Opened in the caption "
+         "sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[103]",
+    29:  "p94  the fountain-vase on its four little wheels, run along the tables for the "
+         "washing of hands = our p.104 (ch. IX). Opened in the caption sweep; the line of "
+         "Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[104]",
+    30:  "p95  the perfuming vessel of the triangular base on three HARPY's feet (the "
+         "catalogue says lion's), signature 'g' = our p.105 (ch. IX). Opened in the "
+         "caption sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[105]",
+    31:  "p102 the vessel crowned with the coral tree, 'sopra esso acconciamente questo "
+         "spectando Coralio reteniua' = our p.112 (ch. IX). Opened in the caption sweep; "
+         "the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[112]",
     32:  "p105 the wheeled vessel crowned with the golden fruit-tree, drawn by a nymph; "
          "'Ilquale stylo fermamente infixo uno conspicuo uaso di Topacio susteniua' = "
          "our p.115 (ch. IX)",
+    33:  "p119 the triangular obelisk of the Trinity, its faces lettered O, Omega and N = "
+         "our p.129 (ch. X). Opened in the caption sweep; the line of Italian that settles "
+         "it is in build_reading.py PLATE_CAPTION_CHECKED[129]",
+    34:  "p122 the jewel of Jupiter enthroned with the cornucopia over the earth-born = "
+         "our p.132 (ch. X). Opened in the caption sweep; the line of Italian that settles "
+         "it is in build_reading.py PLATE_CAPTION_CHECKED[132]",
+    35:  "p123 the right-hand bridge tablet, the winged matron with wings and tortoise = "
+         "our p.133 (ch. X). Opened in the caption sweep; the line of Italian that settles "
+         "it is in build_reading.py PLATE_CAPTION_CHECKED[133]",
+    36:  "p124 the left-hand bridge tablet, the roundel of two genii glossed 'Mediu "
+         "tenuere beati' = our p.134 (ch. X). Opened in the caption sweep; the line of "
+         "Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[134]",
+    37:  "p125 the three gates in the rock, titled in four scripts GLORIA DEI, MATER "
+         "AMORIS, GLORIA MVNDI = our p.135 (ch. X). Opened in the caption sweep; the line "
+         "of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[135]",
+    38:  "p126 Theude and her six attendants at the smoky cottage lettered PYLVRANIA = our "
+         "p.136 (ch. X). Opened in the caption sweep; the line of Italian that settles it "
+         "is in build_reading.py PLATE_CAPTION_CHECKED[136]",
     39:  "p127 the matron Euclelia with the raised sword bearing the golden crown and "
          "palm; 'Ecco sencia præstolatiõe fue patefacta, & ĩtromessi, Se fece ad nui una "
          "Matrona chrysaora cum gli ochii atroci' = our p.137. Signature 'i' (ch. X)",
@@ -447,7 +525,20 @@ PLATE_PAGE_CONFIRMED = {
          "sacrifice; no body text = our p.195, a page our translation holds no file for "
          "(ch. XVII)",
     72:  "p195 full-page rotunda section, signature 'n iii' only = our p.205 (ch. XVII)",
+    73:  "p197 the winged half-figure of the lamp-chains, signature 'n iiii' = our p.207 "
+         "(ch. XVII). Opened in the caption sweep; the line of Italian that settles it is "
+         "in build_reading.py PLATE_CAPTION_CHECKED[207]",
+    74:  "p198 the globular crystal lamp hung in four chains, 'nel centro el lume della "
+         "lampada ardeua' = our p.208 (ch. XVII). Opened in the caption sweep; the line of "
+         "Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[208]",
+    75:  "p201 the crown of the lantern, the brazen pila hung with bells under the eagle "
+         "and crescent = our p.211 (ch. XVII). Opened in the caption sweep; the line of "
+         "Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[211]",
     76:  "p205 'Et ecco cum summa ueneratione ... el rituale libro' = our p.215 (ch. XVII)",
+    77:  "p207 Polia's torch quenched in the cistern, 'in la cisternale aq̃ ifundédo "
+         "exhaurite dilla benedicta aqua', signature 'o' = our p.217 (ch. XVII). Opened in "
+         "the caption sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[217]",
     81:  "p212 a woodcut IS present — the great jasper vase on its stepped base hung "
          "beneath the inverted plate; 'Questo marauiglioso sculptile era tuto di uno "
          "solido de finissimo diaspro' = our p.222 (ch. XVII). The catalogue's "
@@ -470,6 +561,19 @@ PLATE_PAGE_CONFIRMED = {
          "MISERABVNDIS POLYANDRION'; the text below reads it, 'Vno uolucre decapitato, "
          "arbitrai fusse di Bubone, & una uetusta lucerna ... VITAE LETHIFER NVNTIVS' = "
          "our p.246 (ch. XIX)",
+    94:  "p237 the little domed cupola over the way down into the crypt = our p.247 (ch. "
+         "XIX). Opened in the caption sweep; the line of Italian that settles it is in "
+         "build_reading.py PLATE_CAPTION_CHECKED[247]",
+    95:  "p238 the underworld altar, 'INTERNO PLOTONI TRICORPORI ET CARAE OXORI "
+         "PROSERPINAE TRICIPITIQ. CERBERO' = our p.248 (ch. XIX). Opened in the caption "
+         "sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[248]",
+    96:  "p241 the infernal mosaic of the crypt vault, signature 'q ii' = our p.251 (ch. "
+         "XIX). Opened in the caption sweep; the line of Italian that settles it is in "
+         "build_reading.py PLATE_CAPTION_CHECKED[251]",
+    97:  "p243 the broken sepulchre with urn and masks, its epitaph mutilated with the "
+         "stone, signature 'q iii' = our p.253 (ch. XIX). Opened in the caption sweep; the "
+         "line of Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[253]",
     99:  "p245 the sacrifice relief: the old man pouring at the altar lettered 'HAVE "
          "LERIA OMNIVM AMANTISS. VALE', the faun with the double pipes at the right, the "
          "matron with the reversed torch, the little satyr with the serpent. Signed "
@@ -477,10 +581,24 @@ PLATE_PAGE_CONFIRMED = {
     106: "p251 the only cut on the leaf: the sarcophagus with the imbricated lid, 'D M "
          "P. CORNELIA ANNIA, NE IN DESOLATA ORBITATE SVPERVIVEREM' = our p.261 (ch. XIX). "
          "#105, which the catalogue also files here, is on p250 (corrected above)",
+    109: "p254 the monument of the laurel wreath, 'QVISQVIS LECTVRVS ACCEDIS ... IN REM "
+         "TVAM MATVRE PROPERA. VALE' = our p.264 (ch. XIX). Opened in the caption sweep; "
+         "the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[264]",
     113: "p275 the standard with the flaming vase and the crescent, captioned 'AMOR"
          "VINCIT OMNIA'. Signature 's iii' = our p.285 (ch. XX)",
     114: "p281 the bark on the waves with its mast and yard; 'cum tute le altre "
          "circũstantie disopra opportunamente descripte. cusi era' = our p.291 (ch. XXI)",
+    120: "p297 the box-tree clipped as a mushroom on its stepped plinth = our p.307 (ch. "
+         "XXI). Opened in the caption sweep; the line of Italian that settles it is in "
+         "build_reading.py PLATE_CAPTION_CHECKED[307]",
+    121: "p298 the peristyle of the pleasure-ground with its vases and topiary = our p.308 "
+         "(ch. XXI). Opened in the caption sweep; the line of Italian that settles it is "
+         "in build_reading.py PLATE_CAPTION_CHECKED[308]",
+    122: "p301 the lettered circular plan of the island — LITTORE, CLAVSVRA DE MYRTO, "
+         "BOSCO, THEATRO, PERISTYLIO = our p.311 (ch. XXI). Opened in the caption sweep; "
+         "the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[311]",
     128: "p313 the square flower-bed with the eagle in a knot of bands lettered round "
          "the border; 'La Aquila di serpilo, Lo excluso dagli circuntermini di polio "
          "montano' = our p.323 (ch. XXI)",
@@ -506,6 +624,9 @@ PLATE_PAGE_CONFIRMED = {
          "corners and the round medallion of the sacrifice at the flaming altar; 'Tra una "
          "proiectura & laltra, nel ordine dilla porta nella parte mediana dil zophoro' = "
          "our p.349 (ch. XXIII). #146, also filed here, is not on this leaf",
+    147: "p341 the amphitheatre in elevation with the topiary above, signature 'y iiii' = "
+         "our p.351 (ch. XXII). Opened in the caption sweep; the line of Italian that "
+         "settles it is in build_reading.py PLATE_CAPTION_CHECKED[351]",
     148: "p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque il"
          "circulo obducto del suo diametro semisse, iui uno triangulo æq̃latero "
          "cõstituito' = our p.359 (ch. XXIII)",
@@ -517,6 +638,13 @@ PLATE_PAGE_CONFIRMED = {
     157: "p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple;"
          "'O il mio amoroso Poliphilo morto, ouero io in tanta inconsolabile uita "
          "superstite?' = our p.421 (ch. XXIX)",
+    158: "p412 Poliphilo revived in Polia's lap, 'Quali nel Hermetico Caduceo gli "
+         "intrichatamente conuoluti serpi' = our p.422 (ch. XXIX). Opened in the caption "
+         "sweep; the line of Italian that settles it is in build_reading.py "
+         "PLATE_CAPTION_CHECKED[422]",
+    159: "p413 the priestesses driving the lovers from the temple with rods and oak "
+         "branches = our p.423 (ch. XXIX). Opened in the caption sweep; the line of "
+         "Italian that settles it is in build_reading.py PLATE_CAPTION_CHECKED[423]",
     161: "p419 the priestess enthroned, Polia kneeling, Poliphilo standing, the flaming "
          "altar at the right; 'Dinanti alla quale ello era apresentato'. Signature 'D' = "
          "our p.429 (ch. XXX)",
