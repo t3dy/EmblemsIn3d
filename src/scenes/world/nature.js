@@ -14,7 +14,7 @@ import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 import { attachShade, createMeadowField } from '../../systems/Meadow.js?v=7';
-import { TRIUMPHS, HERBS, SPECIES, PLAN_SITES, shiftOf } from './constants.js?v=15';
+import { TRIUMPHS, HERBS, SPECIES, PLAN_SITES, shiftOf, toWorld } from './constants.js?v=15';
 
 export const Nature = {
   // ── The pleasures of the garden (PLEASURES.md) ───────────────────────────
@@ -985,37 +985,156 @@ export const Nature = {
     return g;
   },
 
+  // ── The garden's planting, per precinct (STAGE 2, 2026-09-20) ────────────
+  //
+  // This was one function called once, outside every precinct group, with
+  // coordinates authored in the ORIGINAL cramped frame (before SPREAD = 4 and
+  // before stage 2's shifts) -- so the grove of Venus, the citrus of the green
+  // enclosure and the cypresses "the way to the palace" stood at the world's
+  // origin, in the Great Portal's court and inside the pyramid's footprint,
+  // 2.7-5.3 km from the precincts whose text placed them, and two hedges with
+  // wall colliders sat invisibly in the piazza (ticket
+  // bug-garden-trees-never-placed; HANDOVER.md 4.3 in a fifth costume).
+  //
+  // The fix is the one DECISIONS.md 60 names: stop carrying the number. Each
+  // group below belongs to a precinct and is hung on that precinct's own shift
+  // through `_placeAt`, so colliders and geometry ride it together. Not one
+  // coordinate is re-typed as a world position.
+  //
+  // What stage 1 did (2026-09-17) was move ANCHORS by x4 and leave sizes alone
+  // -- "positions scale, sizes don't". A ring of trees round a fountain, or a
+  // pair either side of a walk, is a size: it is measured in the metres of a
+  // person standing under it, and x4 would throw the citrus of a 88.8 m room
+  // out through its own hedge (x 13.5 -> 54, the wall is at 44.4). So each
+  // group keeps its authored layout in real metres ABOUT ITS ANCHOR, and only
+  // the anchor is converted -- through `toWorld(key, x, z)`, which is exactly
+  // the x4-then-shift that `_meadowClearance`'s `at(key)` does to the same
+  // points. Where the anchor moved for a reason of its own it says so.
+  //
+  // `_placeAt` maps colliders but NOT `_shadeSpots`, which `_tree` pushes in the
+  // group's local frame; `plant` adds the shift back so the entries are world
+  // coordinates. (The baked shade canvas itself still covers only the old 132 m
+  // square at the origin -- ticket bug-shade-map-covers-only-the-old-origin --
+  // so a correct spot there is what a later fix reads, not yet what is drawn.)
   _buildTrees() {
-    const put = (x, z, s = 1, species = null) => this._tree(x, z, s, species);
+    // `plant(key, build)`: build a group in `key`'s precinct. The builders it
+    // hands over take WORLD metres, so every call site reads as a toWorld result
+    // plus an offset, and the shift back to the group's local frame is done once.
+    const plant = (key, build) => {
+      const [dx, dz] = shiftOf(key);
+      const n0 = this._shadeSpots.length;
+      const g = this._placeAt(dx, dz, 0, () => build({
+        tree: (wx, wz, s = 1, species = null) => this._tree(wx - dx, wz - dz, s, species),
+        hedge: (wx, wz, w, d) => {
+          const x = wx - dx, z = wz - dz;
+          this._hedge(x, 0.45, z, w, 0.9, d);
+          this._wallCol(x - w / 2, x + w / 2, z - d / 2, z + d / 2);
+        },
+      }));
+      for (let i = n0; i < this._shadeSpots.length; i++) {
+        this._shadeSpots[i].x += dx; this._shadeSpots[i].z += dz;
+      }
+      // registered so the per-precinct merge (HPWorldScene, DECISIONS.md 60)
+      // folds it inside its own bounding sphere, not the world's
+      this._precincts[`trees:${key}`] = g;
+      return g;
+    };
 
-    // the grove about the fountain of Venus: myrtle, her own plant, and laurel
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      if (Math.abs(a - Math.PI / 2) < 0.38) continue;
-      if (Math.abs(a - Math.PI * 1.5) < 0.38) continue;   // open toward the shore too
-      put(Math.cos(a) * 11.5, -20 + Math.sin(a) * 11.5, 1.1, i % 3 ? 'myrtle' : 'laurel');
-    }
-    // the way to the palace, "set on either sides with Cyprus Trees" (ch. VII)
-    for (const z of [15.5, 24.5]) { put(-5.2, z, 1, 'cypress'); put(5.2, z, 1, 'cypress'); }
-    // and the enclosure "altogither of Cytrons, Orenges and Lymonds"
-    for (const s of [-1, 1]) {
-      put(s * 9, 5.4, 1, 'orange'); put(s * 9, -5.4, 1, 'citron');
-      put(s * 13.5, 5.8, 0.9, 'lemon'); put(s * 13.5, -5.8, 0.9, 'orange');
-    }
-    put(-29, 7, 1.2, 'plane');
-    // Moved west from (-29, -7): the Temple of Venus now stands at (-30, -21)
-    // and this tree sat squarely in its approach, filling the whole front of
-    // the building from the only angle a walker arrives at.
-    put(-25.5, -7, 1.2, 'plane');
-    put(28, 8, 1.2, 'oak'); put(28, -8, 1.2, 'plane');
-    put(-27, 15, 1.0, 'olive'); put(27, 14.5, 1.0, 'olive');
+    // ── the green enclosure: the grove of Venus and the citrus ────────────
+    //
+    // The mainland grove of myrtle -- "her own plant" -- and laurel was set
+    // about the folio-80 fountain of the Graces, at the old frame's (0, -20).
+    // That fountain no longer stands there: it was MOVED to the middle of the
+    // green enclosure's open court on 2026-09-20 (palace.js `_buildEnclosureCourt`,
+    // pp. 88-90), so the grove follows the fountain, not the old coordinate.
+    // The enclosure is a greenfield precinct whose frame has its origin at the
+    // fountain, so the anchor is (0, 0) there.
+    //
+    // The ring's radius was 11.5. The court's porphyry pavement is 11.2 (kerb
+    // at 11.33), so a trunk at 11.5 would stand ON the kerb with its crown over
+    // the pavement; it is set 3 m clear of it, at 14.2, so the trees stand about
+    // the fountain and not against it.
+    plant('enclosure', ({ tree }) => {
+      const [fx, fz] = toWorld('enclosure', 0, 0);
+      const RING = 11.2 + 3;
+      for (let i = 0; i < 12; i++) {
+        const a = (i / 12) * Math.PI * 2;
+        // open along the enclosure's one walk: south to the green door, north
+        // to the palace (the old ring was "open toward the shore too")
+        if (Math.abs(a - Math.PI / 2) < 0.38) continue;
+        if (Math.abs(a - Math.PI * 1.5) < 0.38) continue;
+        tree(fx + Math.cos(a) * RING, fz + Math.sin(a) * RING, 1.1, i % 3 ? 'myrtle' : 'laurel');
+      }
+      // and the enclosure "altogither of Cytrons, Orenges and Lymonds" (Dall.
+      // p. 124). The hedge itself is `_citrusRun`; these are the loose trees
+      // that stood inside it. They were authored about the old frame's (0, 0),
+      // which lay 20 m from the old fountain at (0, -20): that relation is kept
+      // in metres, so they stand 14-26 m from the fountain between it and the
+      // closing hedge -- clear of the pavement, inside the wall.
+      const OLD_FOUNTAIN = [0, -20];
+      const cit = (x, z, s, sp) => tree(fx + (x - OLD_FOUNTAIN[0]), fz + (z - OLD_FOUNTAIN[1]), s, sp);
+      for (const s of [-1, 1]) {
+        cit(s * 9, 5.4, 1, 'orange'); cit(s * 9, -5.4, 1, 'citron');
+        cit(s * 13.5, 5.8, 0.9, 'lemon'); cit(s * 13.5, -5.8, 0.9, 'orange');
+      }
+    });
 
-    // (Only the northern hedge pair remains: the southern pair stood exactly
-    // on the triumphs' processional circuit and was garden fabric, not book.)
-    for (const [x, z, w, d] of [[-8.5, 8.8, 6, 0.5], [8.5, 8.8, 6, 0.5]]) {
-      this._hedge(x, 0.45, z, w, 0.9, d);
-      this._wallCol(x - w / 2, x + w / 2, z - d / 2, z + d / 2);
-    }
+    // ── the palace: where the axis crosses the upper cross path ───────────
+    //
+    // "the way to the palace, set on either sides with Cyprus Trees" (ch. VII).
+    // The old pair stood at z 15.5 and 24.5, either side of the cross path at
+    // z 20 -- which is `_buildPalacePaths`' path at palace-local z 80, and the
+    // one `_meadowClearance` masks as `pal.rect(-19.5, 19.5, 18.35, 21.65)`. So
+    // the anchor is that crossing, four cypresses at its corners, 4.5 m either
+    // side of the path and 5.2 m either side of the axis.
+    //
+    // The hedges are the northern pair that survived (the southern pair stood
+    // on the triumphs' processional circuit and was garden fabric, not book).
+    // They stood 8.8 m from the LOWER cross path -- the one with the roundel at
+    // its centre, of radius 7 -- at 8.5 m either side of the axis: clear of the
+    // roundel (10.4 m at the nearest corner) and framing it. Anchored there.
+    plant('palace', ({ tree, hedge }) => {
+      const [cx, cz] = toWorld('palace', 0, 20);
+      for (const dz of [-4.5, 4.5]) { tree(cx - 5.2, cz + dz, 1, 'cypress'); tree(cx + 5.2, cz + dz, 1, 'cypress'); }
+      const [hx, hz] = toWorld('palace', 0, 0);
+      for (const sx of [-8.5, 8.5]) hedge(hx + sx, hz + 8.8, 6, 0.5);
+    });
+
+    // ── the Temple of Venus: the planes, oaks and olives about it ─────────
+    //
+    // Nothing in the book places these singly -- they are garden fabric, ours --
+    // so they are kept as they were laid out about the temple, which stood at the
+    // old frame's (-30, -21): the anchor is the temple itself, and `toWorld` gives
+    // the point `_buildVenusTemple`'s own (TX, TZ) default is.
+    //
+    // THE APPROACH, REDONE IN THE NEW FRAME. One plane was once nudged aside
+    // because it "sat squarely in the temple's approach, filling the whole front
+    // of the building from the only angle a walker arrives at." That was worked
+    // out for a station 9 m from the temple. Stage 1 put the station at 36 m
+    // (`venus_temple`, pos (-120, -48) against the temple at (-120, -84)) and
+    // left these trees 14-36 m from the temple, so now THREE of them stood on the
+    // axis between the reader and the building -- an olive exactly on the station
+    // -- and the nudge had done nothing. The rule is therefore stated, not a
+    // number for one tree: keep the axis clear for A = 9 m either side (the
+    // station's own radius) from the temple out to the station and past it, and
+    // where a tree falls in that strip it takes the nearest edge of it, the
+    // three of them alternating sides so the approach is framed and not walled.
+    plant('venus_temple', ({ tree }) => {
+      const OLD_TEMPLE = [-30, -21];
+      const [tx, tz] = toWorld('venus_temple', OLD_TEMPLE[0], OLD_TEMPLE[1]);
+      const A = 9;
+      let side = -1;
+      const put = (x, z, s, sp) => {
+        let ox = x - OLD_TEMPLE[0];
+        const oz = z - OLD_TEMPLE[1];
+        if (oz > 0 && Math.abs(ox) < A) { ox = side * A; side = -side; }   // in front, on the axis
+        tree(tx + ox, tz + oz, s, sp);
+      };
+      put(-29, 7, 1.2, 'plane');
+      put(-25.5, -7, 1.2, 'plane');
+      put(28, 8, 1.2, 'oak'); put(28, -8, 1.2, 'plane');
+      put(-27, 15, 1.0, 'olive'); put(27, 14.5, 1.0, 'olive');
+    });
   },
 
   // ── The meadow — instanced grass and flower drifts over the open sward ────

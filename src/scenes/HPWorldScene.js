@@ -43,7 +43,7 @@ import {
   PLAN_SITES, PLAN_EXTENT, shiftOf,
 } from './world/constants.js?v=15';
 import { Materials } from './world/materials.js?v=11';
-import { Nature } from './world/nature.js?v=18';
+import { Nature } from './world/nature.js?v=19';
 import { Approach } from './world/approach.js?v=14';
 import { Portal } from './world/portal.js?v=29';
 import { Palace } from './world/palace.js?v=30';
