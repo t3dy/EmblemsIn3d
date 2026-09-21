@@ -1440,28 +1440,39 @@ export const Cythera = {
   // by a road under a vaulted pergola, inside by a peristyle and the river."
   // The peristyle was named in both and built in neither: the middle ring just
   // ended at the water. It is a colonnade, so it uses the shared members.
-  _cytheraPeristyle(CX, CZ) {
-    const R = 23.4;                       // just outside the river's outer bank
-    const N = 24;                         // a column every 15°
+  // 2026-09-20: the radius comes from the caller. At the island's own size the
+  // peristyle stands at 206.4 m — two semitertii in from the rim, which is the
+  // inner boundary of the prati (p. 298) — and it is 1,297 m of colonnade, so
+  // the count is derived from an intercolumniation rather than typed. SIX bays
+  // to each of the twenty divisions, 10.8 m apart: the book's own colonnade
+  // spacing on the mainland is 15 paces, 22.2 m (Dall. p. 38, DIMENSIONS §2),
+  // and half of that is as wide as a stone architrave can be drawn without
+  // reading as a plank. The shaft is nine diameters, which is the rule p. 298
+  // gives for the domes of the same garden.
+  _cytheraPeristyle(CX, CZ, R = 23.4) {
+    const big = R > 60;
+    const N = big ? 120 : 24;
+    const H = big ? 6.0 : 3.1, CR = big ? H / 18 : 0.19;   // nine diameters
     const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
+    const open = big ? 0.045 : 0.16, openBay = big ? 0.06 : 0.24;
     for (let i = 0; i < N; i++) {
       const a = (i / N) * Math.PI * 2;
       // the four crossroads stay open — the chariots pass through them
       if (Math.min(...[0, 1, 2, 3].map(q =>
-        Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.16) continue;
+        Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < open) continue;
       const [x, z] = pos(a, R);
-      this._column(x, z, 3.1, { order: 'corinthian', r: 0.19 });
-      this._circleCol(x, z, 0.42);
+      this._column(x, z, H, { order: 'corinthian', r: CR, flutes: big ? 8 : 16 });
+      this._circleCol(x, z, CR * 2.2);
     }
     // the circular architrave, in bays, skipping the four openings
     for (let i = 0; i < N; i++) {
       const a0 = (i / N) * Math.PI * 2, a1 = ((i + 1) / N) * Math.PI * 2;
       const am = (a0 + a1) / 2;
       if (Math.min(...[0, 1, 2, 3].map(q =>
-        Math.abs(((am - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.24) continue;
+        Math.abs(((am - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < openBay) continue;
       const [mx, mz] = pos(am, R);
       const span = 2 * R * Math.sin(Math.PI / N);
-      this._entablature(mx, 3.2, mz, span + 0.26, 0.62, { ry: -am });
+      this._entablature(mx, H + 0.1, mz, span + 0.26, big ? 1.1 : 0.62, { ry: -am, dentils: !big });
     }
   },
 
@@ -1478,8 +1489,10 @@ export const Cythera = {
   // captured arms hung on a post, so that is what these are: a stripped trunk,
   // a crossbar, and the spoils of a god hung on it — lining the north road the
   // procession comes up from the landing.
-  _cytheraTrophies(CX, CZ) {
+  _cytheraTrophies(CX, CZ, R0 = 27, R1 = 44) {
     const S = this.style;
+    // half the width of the road they line: 5 paces (p. 298) plus a shoulder
+    const OFF = (R1 - R0) > 40 ? 5.2 : 2.9;
     const woodcut = S.key === 'woodcut';
     const gold = woodcut ? S.mat({ tone: 0.02 })
                          : S.mat({ color: 0xc9a244, metalness: 0.85, roughness: 0.28 });
@@ -1523,19 +1536,25 @@ export const Cythera = {
       }
     };
 
+    // `t` is the fraction of the way in along the road, 1 outermost. The road
+    // is 90 m long at the island's own size instead of 17, so the seven plates
+    // are spread over it rather than typed as radii — they are a SEQUENCE seen
+    // one after another on the walk up (woodcut_catalog #130-#136, folios
+    // 317-321, seven plates in a row), and the spacing is the sequence.
     const TROPHIES = [
-      { r: 44.0, side: -1, kind: 'arms',    label: 'ARMA',        sub: 'ROMAN ARMS · WINGED GENIUS' },
-      { r: 40.0, side:  1, kind: 'tunic',   label: 'TVNICA',      sub: 'THE TUNIC, WITH LAUREL' },
-      { r: 36.0, side: -1, kind: 'hide',    label: 'EXVVIAE',     sub: "TIGER-SKIN AND BULL'S HEAD" },
-      { r: 31.0, side: -1, kind: 'quis',    label: 'QVIS EVADET', sub: 'WHO ESCAPES?' },
-      { r: 31.0, side:  1, kind: 'nemo',    label: 'NEMO',        sub: 'NO ONE' },
-      { r: 27.0, side:  1, kind: 'ribbons', label: 'SPOLIA',      sub: 'GOLD WINGS AND RIBBONS' },
-      { r: 27.0, side: -1, kind: 'wreath',  label: 'CVPIDO',      sub: 'THE LAUREL WREATH, GAINED BY SPEAR' },
+      { t: 1.00, side: -1, kind: 'arms',    label: 'ARMA',        sub: 'ROMAN ARMS · WINGED GENIUS' },
+      { t: 0.76, side:  1, kind: 'tunic',   label: 'TVNICA',      sub: 'THE TUNIC, WITH LAUREL' },
+      { t: 0.53, side: -1, kind: 'hide',    label: 'EXVVIAE',     sub: "TIGER-SKIN AND BULL'S HEAD" },
+      { t: 0.24, side: -1, kind: 'quis',    label: 'QVIS EVADET', sub: 'WHO ESCAPES?' },
+      { t: 0.24, side:  1, kind: 'nemo',    label: 'NEMO',        sub: 'NO ONE' },
+      { t: 0.00, side:  1, kind: 'ribbons', label: 'SPOLIA',      sub: 'GOLD WINGS AND RIBBONS' },
+      { t: 0.00, side: -1, kind: 'wreath',  label: 'CVPIDO',      sub: 'THE LAUREL WREATH, GAINED BY SPEAR' },
     ];
 
-    for (const t of TROPHIES) {
-      // the north road: pos(π/2, r) — the way up from the landing
-      const x = CX + t.side * 2.9, z = CZ + t.r;
+    for (const tr of TROPHIES) {
+      const t = { ...tr, r: R0 + tr.t * (R1 - R0) };
+      // the south road: pos(π/2, r) — the way up from the landing
+      const x = CX + t.side * OFF, z = CZ + t.r;
       const g = new THREE.Group();
       g.position.set(x, 0.08, z);
       g.rotation.y = t.side > 0 ? -0.32 : 0.32;      // turned to face the road
