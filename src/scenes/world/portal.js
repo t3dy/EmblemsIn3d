@@ -1172,31 +1172,42 @@ export const Portal = {
   // what this toolkit can do. So: a head that is a dome with a doorway for a
   // mouth, a chest that is a barrel-vaulted hall, and limbs that are low
   // vaults, all in verdigris bronze; and inside, the organs as labelled cells.
-  // RESCALED 2026-09-09 (feat-monuments-true-scale, the second of three). It was
-  // 17 m from crown to heel against Dallington p. 44's "three score paces" — 88.8 m
-  // — a ratio of 1 : 5.2, the worst in the world after the portal. It is now 28 m
-  // long and half again as thick: L stretches it along its own axis, G swells it.
+  // RESCALED TWICE. 2026-09-09 (feat-monuments-true-scale) took him from 17 m
+  // crown to heel to 28, and stopped there with this reason written down:
+  // "the mainland ground is 132 m across and the corridor this figure lies in is
+  // clear only from x = 36 to the eastern edge at 66. At 89 m the colossus IS the
+  // island." That was true of the island. It has not been true since
+  // DECISIONS.md call 60 (2026-09-20) moved him onto the true-scale plan: he now
+  // lies in the Valley of the Approach, which research/plan.json gives 1 139.6 m
+  // of width and 1 850 m of depth, and every probe over the ground he would grow
+  // into returns open valley floor. The cap outlived its cause, which is the
+  // usual way a cap survives.
   //
-  // Why not 89 m: the mainland ground is 132 m across and the corridor this figure
-  // lies in is clear only from x = 36 to the eastern edge at 66. At 89 m the
-  // colossus IS the island. DECISIONS.md call 3 asked for the monuments to be
-  // brought TOWARD their stated size in the plan they already occupy, and 28 m is
-  // as far as that plan goes: 1 : 3.2, up from 1 : 5.2, and now by a long way the
-  // largest figure in the world.
+  // RESCALED TO THE BOOK'S OWN NUMBER, 2026-09-20 (feat-colossus-true-scale).
+  // DECISIONS.md call 54 reversed call 3 and chose true scale staged, its third
+  // stage being "then the monuments grow into the room the plan made". This is
+  // that stage, for this monument. He is 88.8 m from crown to heel — see the
+  // measure and its two sources at the head of _buildColossus — and he grows
+  // SOUTHWARD, down the valley, so the head and the mouth-porch do not move a
+  // metre and the station at (-76, 140) still stands between the porch and the
+  // mouth looking back into it.
   //
-  // The gain that is not about ratios: at 1.0 the mouth was a hole 0.9 x 1.5 m and
-  // no one could have walked into it. At G = 1.55 it is 1.4 x 2.3 — a door. The
-  // book's colossus is entered through the mouth; until now ours could only be
-  // looked at, which made the object a sculpture and the whole point is that it is
-  // not one.
+  // What the size buys, and it is not a ratio: the mouth was a hole 0.9 x 1.5 m
+  // at L = G = 1 and a 1.4 x 2.3 m door at G = 1.55. At true scale it is a gate
+  // 4.1 m wide and 6.9 m high, which is simply what a man of eighty-nine metres
+  // has for a mouth, and the hall behind it is 10.6 m across and 11.4 m to the crown
+  // of the chest vault. Poliphilo does not visit a statue, he visits a building,
+  // and no other reading of Lefaivre's "hybrid sculpture/building" survives at
+  // this size.
   // Lay the colossus ALONG the valley rather than across it.
   //
-  // He is 32 m from crown to sole and 19 m across with the female beside him,
-  // and the valley's neck is 44 m wide -- the width of the piazza itself. Lying
-  // east-west he could only fit by crossing the whole floor; lying north-south
-  // he lies down one side of it, which is also what the book describes, since
-  // Poliphilo has to leave the paved court and climb "vppon a heape of
-  // ruinated, broken and downe-fallen marbles" to reach him (Dall. p. 44).
+  // He is 88.8 m from crown to sole and 43 m across the arms, with the female
+  // beside him reaching to x = -35.7, fourteen metres clear of the fallen west
+  // colonnade at x = -21. Lying east-west he would cross the court's whole
+  // floor; lying north-south he lies down one side of it, which is also what
+  // the book describes, since Poliphilo has to leave the paved court and climb
+  // "vppon a heape of ruinated, broken and downe-fallen marbles" to reach him
+  // (Dall. p. 44).
   //
   // The quarter turn also gets the APPROACH right, which the old east-west
   // placement had backwards. The builder lays him out head-first along +x, so
@@ -1211,17 +1222,84 @@ export const Portal = {
   },
 
   _buildColossus(KX = 36, KZ = 4) {
-    const L = 1.65;   // along the axis: 17 m of figure becomes 28
-    const G = 1.55;   // girth and height, and with them the doorways
+    // ── THE MEASURE ───────────────────────────────────────────────────────
+    //
+    // The 1499 states it outright, and it is not one of Colonna's derived or
+    // irrational figures: "Il quale iaceva decumbendo supino ... cum la bucca,
+    // di suspirare et gemere indicante, hiante; DI PROCERITATE PASSI 60"
+    // (f. b5v-b6r; Pozzi-Ciapponi, corpus file
+    // md/Francesco_Colonna_Rino_Avesani_Giuseppe_Billanovich_Mirella_Ferrari_Giovanni_Poz.md).
+    // Dallington p. 44 englishes the same clause "his length was three score
+    // paces". The two texts agree, so no reconstruction is involved.
+    //
+    // A pace is five Roman feet, 1.48 m (DIMENSIONS.md S1), so sixty paces is
+    // 88.8 m from crown to heel -- which is how DIMENSIONS.md S2 tables it, and
+    // it is the second-largest single object in Book I after the pyramid.
+    //
+    // He has NO WOODCUT. The horse (catalog #6) and the elephant (#12) both do;
+    // searching hp.db.woodcut_catalog for "colos" returns those two and nothing
+    // for the recumbent figure. He is here on the strength of the text alone,
+    // which is rule 6 -- the plates are an index, not an inventory.
+    //
+    // ONE scalar carries the base figure to that number, and it is applied to
+    // what the geometry ACTUALLY spans, not to the nominal 17 the old comment
+    // quoted. Measured off the builders below: the crown of the head is the
+    // back of the dome at -2.2 G and the soles are the far ends of the leg
+    // vaults at 14 L + 6.5 L / 2 = 17.25 L, so the man occupies 19.45 units
+    // and not 17. Scaling 17 to 88.8 would have produced a figure 100 m long
+    // that then failed its own verification -- the sort of error a Box3 on the
+    // running page catches and arithmetic in a comment does not.
+    //
+    // L and G are EQUAL now: the 2026-09-09 pass ran L = 1.65 against G = 1.55,
+    // which made him six per cent slimmer than a man, and no source asks for
+    // that. A body enlarged is a body; it is not a body stretched.
+    const SPAN = 2.2 + 17.25;   // crown of the dome to the ends of the legs
+    const L = 88.8 / SPAN;      // 4.5656 -- along the axis, three score paces
+    const G = L;                // -- and in girth and height, the same man
+    // Fixtures the VISITOR handles do not grow with him. DIMENSIONS.md S5 sets
+    // the rule for the whole world -- "the plan is surveyed, the furniture is
+    // full-size" -- and the book asks for it by name here: to the wound heap of
+    // bowels "there was a conuenient comming vnto and entrance in" (Dall. p. 45),
+    // convenient for a man, inside a giant. So the six organ doors, the plaques
+    // over them, the heart's plaque and the threshold under the mouth keep the
+    // size they had at G = 1.55, where they were measured and walk-tested
+    // (ticket feat-colossus-interior). HUMAN is that frozen value and OVER is
+    // how many times the body now overtops it.
+    const HUMAN = 1.55, OVER = G / HUMAN;
     const S = this.style;
     const lit = S.key !== 'woodcut';
     const bronze = lit ? S.mat({ color: 0x4f7a5a, metalness: 0.7, roughness: 0.55 }) : S.mat({ tone: 0.16 });
+    // DOUBLE-SIDED, 2026-09-20, and it is the rescale that forced it. The body
+    // is built from half-cylinder vaults and a hemisphere, which are SHELLS,
+    // and a front-side shell does not exist when you are inside it. At G = 1.55
+    // that cost nothing: the chest's crown was 3.88 m over your head, the ribs
+    // and the shell's own edges framed the view, and the wickets ticket could
+    // honestly report "a passage". At 11.4 m the same shell is far enough away
+    // that what fills the frame is SKY -- measured, not looked at: a ray cast
+    // straight up from (-76, 1.7, 200) passed through the chest and hit nothing
+    // until the sky dome at 187 m. A man standing in the heart of the colossus
+    // could see out through his chest.
+    //
+    // One flag fixes it, adds no mesh and no triangle, and leaves the exterior
+    // silhouette exactly as it was -- which the feat-colossus-interior ticket
+    // requires. Backfaces on the solid-reading members were already hidden
+    // behind their own front faces, so nothing outside changes.
+    if (lit) bronze.side = THREE.DoubleSide;
     const dark   = lit ? S.mat({ color: 0x2c3a30, metalness: 0.5, roughness: 0.7 }) : S.mat({ tone: 0.3 });
     const sand   = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
-    // The figure lies along +x with its head at KX and its feet at KX + 17L,
-    // 28 m away. Since 2026-09-09 it is built at the origin and placed by
-    // _placeColossus, which turns it a quarter so it lies ALONG the valley.
-    this._m(new THREE.CircleGeometry(16, 30), sand, KX + 14, 0.03, KZ, { rx: -Math.PI / 2, cast: false });
+    // The figure lies along +x: the crown of the head at KX - 2.2 G, the heels
+    // at KX + 17.25 L, 88.8 m apart. Since 2026-09-09 it is built at the origin
+    // and placed by _placeColossus, which turns it a quarter so it lies ALONG
+    // the valley -- head to the north, feet to the south, which is the order
+    // the book meets him in.
+    //
+    // The sand he lies supine in was a bare 16 m disc centred on a bare 14, so
+    // at true scale it would have been a puddle under his chest. It is written
+    // against the figure now and sized to cover him CROWN TO SOLE -- centre at
+    // the mid-point of that span, radius a little over half of it -- which is
+    // what "iaceva decumbendo supino" asks for: a man lying in sand, not a man
+    // standing on a patch of it.
+    this._m(new THREE.CircleGeometry(10.3 * L, 30), sand, KX + 7.5 * L, 0.03, KZ, { rx: -Math.PI / 2, cast: false });
     const half = (r, x, z, sx, sy, sz) => {
       const m = this._m(new THREE.SphereGeometry(r, 18, 12, 0, Math.PI * 2, 0, Math.PI / 2), bronze, x, 0, z, { outline: true });
       m.scale.set(sx, sy, sz);
@@ -1243,7 +1321,11 @@ export const Portal = {
     // as a building with a face, which is the whole claim of the object.
     for (const sz of [-1, 1]) this._column(KX - 3.0 * G, KZ + sz * 0.95 * G, 1.9 * G, { order: 'doric', r: 0.11 * G, mat: bronze });
     this._entablature(KX - 3.0 * G, 1.9 * G, KZ, 2.6 * G, 0.6 * G, { ry: Math.PI / 2, dentils: false, mat: bronze });
-    this._m(new THREE.BoxGeometry(0.9 * G, 0.12 * G, 2.6 * G), dark, KX - 3.0 * G, 0.06 * G, KZ, { cast: false });
+    // The threshold is as WIDE as the mouth and as HIGH as a doorstep: at G it
+    // would be a 0.55 m kerb across the entrance, and the walker has no floor
+    // here and no step-up, so he would wade through it. HUMAN, per the split
+    // above -- this is the one member of the gate a man's leg has to clear.
+    this._m(new THREE.BoxGeometry(0.9 * G, 0.12 * HUMAN, 2.6 * G), dark, KX - 3.0 * G, 0.06 * HUMAN, KZ, { cast: false });
     // ribs along the vaults, so the body reads as built and not as blown
     for (const [x0, len, hh] of [[KX + 4.6 * L, 5.4 * L, 2.5 * G], [KX + 9.0 * L, 3.6 * L, 1.8 * G]]) {
       const step = 0.9 * L;
@@ -1258,8 +1340,12 @@ export const Portal = {
     for (const sz of [-1, 1]) vault(KX + 14.0 * L, KZ + sz * 1.3 * G, 1.0 * G, 0.95 * G, 6.5 * L);
     // the arms, laid along the sides
     for (const sz of [-1, 1]) vault(KX + 5.5 * L, KZ + sz * 3.9 * G, 0.85 * G, 0.8 * G, 7.0 * L);
+    // and the six collider blocks that make each arm solid. Their half-extents
+    // were the bare 1 and 0.9, which at the old L and G happened to be 0.61 L
+    // and 0.58 G; written that way they follow the arm instead of becoming six
+    // pebbles lying along a fifty-metre limb.
     for (const dx of [2.5, 4.5, 6.5, 8.5, 10.5, 12.5]) {
-      for (const sz of [-1, 1]) this._wallCol(KX + dx * L - 1, KX + dx * L + 1, KZ + sz * 3.9 * G - 0.9, KZ + sz * 3.9 * G + 0.9);
+      for (const sz of [-1, 1]) this._wallCol(KX + dx * L - 0.61 * L, KX + dx * L + 0.61 * L, KZ + sz * 3.9 * G - 0.58 * G, KZ + sz * 3.9 * G + 0.58 * G);
     }
     // ── THE INTERIOR ────────────────────────────────────────────────────
     //
@@ -1282,20 +1368,34 @@ export const Portal = {
     // the walls are.
     const bodyZ0 = KZ - 3.4 * G, bodyZ1 = KZ + 3.4 * G;
     const inX0 = KX + 2 * L;
-    // The passage stops before the LEGS. Their vaults are 1.47 m to the crown
-    // inside -- you would be crawling -- and they begin at x = 53.7. Measured,
-    // not guessed: leg vault h = 0.95 * G, centred x = KX + 14 * L, length
-    // 6.5 * L.
+    // The passage stops before the LEGS. Their vaults are 0.95 G to the crown
+    // inside -- 1.47 m at G = 1.55, which is a crawl -- and they begin at
+    // KX + 10.75 L. Measured, not guessed: leg vault h = 0.95 * G, centred
+    // x = KX + 14 * L, length 6.5 * L. At true scale that crown is 4.34 m and
+    // the leg WOULD be walkable, but the book does not send him down the legs;
+    // it sends him from the throat to the stomach and "de qui cum latebrosi
+    // ducti ad tutte l'altre parte delle interne viscere" (f. b6r). The stop
+    // stays where the text puts it.
     // RELATIVE to KX since 2026-09-09, and it has to be: this was the bare
     // absolute 53.5, which was right only while the head stood at KX = 36. When
     // _placeColossus started calling this builder with KX = 0 the passage wall
     // ran from the chest to z = 97.5 -- a fifty-metre invisible wall sticking
     // twenty-five metres out of the soles into the open valley. Measured off
     // walker.walls, not guessed.
-    const inX1 = KX + 17.5;
-    const IN_W = 1.8;               // half-width of the passage: 3.6 m across
-    const HGAP = 0.85;              // the throat is narrower than the chest
-    const heartX = KX + 3.4 * L, CH = 1.6;
+    //
+    // TRUE SCALE, 2026-09-20: every one of these was an absolute metre count
+    // taken at G = 1.55, and an absolute number inside a builder that scales is
+    // a bug waiting for the next rescale -- the 53.5 recorded above is the same
+    // mistake one revision earlier. They are re-expressed as the multiples of
+    // L and G they already were, so the passage is exactly what it is today
+    // when G = 1.55 and grows with the body from here on: 17.5 = 10.6 L,
+    // 1.8 = 1.161 G, 0.85 = 0.55 G, 1.6 = 1.032 G. At the book's own size the
+    // hall inside the chest comes out 10.6 m across and 11.4 m to the crown,
+    // which is the room the text's "commoda aditio" to every organ needs.
+    const inX1 = KX + 10.6 * L;
+    const IN_W = 1.161 * G;         // half-width of the passage
+    const HGAP = 0.55 * G;          // the throat is narrower than the chest
+    const heartX = KX + 3.4 * L, CH = 1.032 * G;
 
     // the head: two flanks with the mouth between them, instead of one circle
     const headX0 = KX - 2.4 * G;
@@ -1309,7 +1409,7 @@ export const Portal = {
     // the heart chamber is a room you can stand in, so its own outer skin has to
     // stop you -- without this the one doorway in the flank is a way OUT of the
     // colossus, which would make the whole figure walk-through-able
-    this._wallCol(heartX - CH, heartX + CH, bodyZ0 - 0.4, bodyZ0 + 0.4);
+    this._wallCol(heartX - CH, heartX + CH, bodyZ0 - 0.258 * G, bodyZ0 + 0.258 * G);
     // and the legs close the far end
     this._wallCol(inX1, KX + 17 * L, bodyZ0, bodyZ1);
     // the organs, as the book has them: a chamber each, its name above it and
@@ -1320,8 +1420,11 @@ export const Portal = {
     // with walker.collide(), not assumed. See ticket feat-colossus-interior.
     const ORGANS = [
       // spacing compressed from 3.6-11.0 so that all six land INSIDE the
-      // passage, which ends at 53.5 where the legs begin. The order is the
-      // book's and is unchanged; only the intervals give way.
+      // passage, which ends at 10.6 L where the legs begin (the last door is
+      // at 9.9). The order is the book's and is unchanged; only the intervals
+      // give way. Dall. p. 45 has the names in three tongues, Chaldee, Greek
+      // and Latin; ours are Latin with an English gloss -- coverage.json
+      // colossus-three-tongues, still PARTIAL.
       ['COR',      'THE HEART · WHERE LOVE IS BORN · THE CVRES WRITTEN IN CHALDEAN, NOT DIVVLGED', 3.4],
       ['PVLMONES', 'THE LVNGS · PLEVRISY · SHORTNESS OF BREATH', 4.7],
       ['HEPAR',    'THE LIVER · CHOLER · THE IAVNDICE', 6.0],
@@ -1332,13 +1435,21 @@ export const Portal = {
     // The doors now face the PASSAGE, not the open field. They were on the
     // outside flank, behind the arm, where the nearest a walker could get was
     // beyond the arm -- readable at a distance and enterable never.
+    //
+    // HUMAN, not G (2026-09-20). These are the "conuenient comming vnto and
+    // entrance in" of Dall. p. 45, and a convenience is measured on the man who
+    // uses it. Scaled with the body they would be 3.2 x 5.2 m leaves under
+    // 6.8 m signboards, and the one thing that tells a player he is inside a
+    // giant -- an ordinary door in an enormous wall -- would be gone. Their
+    // SPACING still runs in L, so they stay spread down the body; only their
+    // size is frozen.
     for (const [name, sick, dx] of ORGANS) {
       const ox = KX + dx * L;
       // the heart alone is not a door but a doorway: the wall is open there
       if (name !== 'COR') {
-        this._m(new THREE.BoxGeometry(0.62 * G, 1.0 * G, 0.2 * G), dark, ox, 0.5 * G, KZ - IN_W + 0.11, { cast: false });
+        this._m(new THREE.BoxGeometry(0.62 * HUMAN, 1.0 * HUMAN, 0.2 * HUMAN), dark, ox, 0.5 * HUMAN, KZ - IN_W + 0.11, { cast: false });
       }
-      this._plaque({ main: name, sub: sick }, 1.3 * G, 0.34 * G, ox, 1.35 * G, KZ - IN_W + 0.12, 0, true);
+      this._plaque({ main: name, sub: sick }, 1.3 * HUMAN, 0.34 * HUMAN, ox, 1.35 * HUMAN, KZ - IN_W + 0.12, 0, true);
     }
     // ── The loop-holes and wickets ──────────────────────────────────────
     //
@@ -1355,9 +1466,17 @@ export const Portal = {
     // Pierced through the CROWN of the vaults, where daylight would actually
     // fall, and set alternately off the axis so the light rakes across the
     // organ doors on the south wall instead of pooling down the middle. Their
-    // heights follow the vaults they pierce -- the chest's crown is 3.88 m
-    // inside and the belly's 2.79, measured off the vault radii (2.5 * G and
-    // 1.8 * G), so a wicket sits a little under each.
+    // heights follow the vaults they pierce -- measured off the vault radii
+    // (2.5 * G and 1.8 * G), so a wicket sits a little under each crown. Those
+    // heights were written 3.60 and 2.50, which were the right numbers only
+    // while G was 1.55; at true scale they would have been buried in the floor
+    // of a 13 m vault. They are the same fractions of the same radii, now said
+    // that way: 2.32 G is 93% of the chest's crown, 1.61 G is 90% of the
+    // belly's. The openings and their offsets travel with the fabric they
+    // pierce, and the lamp behind each one has to carry 23.6 m instead of 8, so
+    // its range goes with G and its intensity with the SQUARE of the growth --
+    // the renderer is in physical units under ACES and illuminance falls off
+    // as 1/r^2, so a range trebled on an unchanged candela is a dark tube.
     // `lit`, not `woodcut`: this builder names its register flag the other way
     // round from its neighbours, and copying the neighbour's idiom cost a
     // ReferenceError that node --check cannot see.
@@ -1368,20 +1487,22 @@ export const Portal = {
       wicketM.emissive = new THREE.Color(0xf2e6c2);
       wicketM.emissiveIntensity = 0.95;
     }
+    const WY_CHEST = 2.32 * G, WY_BELLY = 1.61 * G;   // 3.60 / 2.50 at G = 1.55
+    const OFF_C = 0.355 * G, OFF_B = 0.29 * G;        // 0.55 / 0.45 at G = 1.55
     const WICKETS = [
-      [KX + 3.0 * L, 3.60, -0.55], [KX + 4.6 * L, 3.60, 0.55],
-      [KX + 6.2 * L, 3.60, -0.55], [KX + 7.6 * L, 3.60, 0.55],
-      [KX + 9.2 * L, 2.50, -0.45], [KX + 10.4 * L, 2.50, 0.45],
+      [KX + 3.0 * L, WY_CHEST, -OFF_C], [KX + 4.6 * L, WY_CHEST, OFF_C],
+      [KX + 6.2 * L, WY_CHEST, -OFF_C], [KX + 7.6 * L, WY_CHEST, OFF_C],
+      [KX + 9.2 * L, WY_BELLY, -OFF_B], [KX + 10.4 * L, WY_BELLY, OFF_B],
     ];
     WICKETS.forEach(([wx, wy, off], i) => {
-      this._m(new THREE.PlaneGeometry(0.46, 0.30), wicketM, wx, wy, KZ + off,
+      this._m(new THREE.PlaneGeometry(0.297 * G, 0.194 * G), wicketM, wx, wy, KZ + off,
         { rx: Math.PI / 2, cast: false });
       // every other wicket carries a lamp; six point lights inside one figure
       // would cost more than the light is worth, and the shafts read from the
       // emissive alone
       if (i % 2 === 0) {
-        const pl = S.pointLight(0xffe9c4, 1.15, 8);
-        if (pl) { pl.position.set(wx, wy - 0.7, KZ + off); this.scene.add(pl); }
+        const pl = S.pointLight(0xffe9c4, 1.15 * OVER * OVER, 5.16 * G);
+        if (pl) { pl.position.set(wx, wy - 0.45 * G, KZ + off); this.scene.add(pl); }
       }
     });
 
@@ -1389,15 +1510,27 @@ export const Portal = {
     // exist, are written, and are withheld, so the chamber says exactly that
     // and gives nothing -- the one place in the world where a plaque is a
     // refusal rather than a gloss.
+    // HUMAN: it is read by a man standing in the chamber, so it hangs where a
+    // man's eye is. Its POSITION rides bodyZ0, which grows with the body.
     this._plaque({ main: 'NON DIVVLGO', sub: 'THE CVRES FOR THE SICKNESSES OF LOVE · WRITTEN HERE IN CHALDEAN · POLIPHILO WILL NOT SAY THEM' },
-      2.0 * G, 0.4 * G, heartX, 1.5 * G, bodyZ0 + 0.45, 0, true);
+      2.0 * HUMAN, 0.4 * HUMAN, heartX, 1.5 * HUMAN, bodyZ0 + 0.29 * G, 0, true);
     this._plaque({ main: 'COLOSSVS', sub: 'A SCVLPTVRE THAT IS A BVILDING · ENTERED BY THE MOVTH · LEFAIVRE PP. 52–53' },
       2.4 * G, 0.42 * G, KX - 2.4 * G, 2.6 * G, KZ, -Math.PI / 2, true);
     // The female colossus beside him, more buried, and with NO door. She grows
     // less than he does (FG, FL) because the book gives her less, and her whole
     // body moves two metres south — the male's flank came out to meet her when he
     // swelled, and the path the organ doors open onto would otherwise be 1 m wide.
-    const FL = 1.5, FG = 1.35, FZ = KZ - 11.0;
+    //
+    // Her three scalars were 1.5, 1.35 and a flat 11 m of offset, which stood
+    // to the male's 1.65/1.55 as 0.909, 0.871 and 7.097 G. Said that way she
+    // keeps exactly the proportion and the clearance she has today while both
+    // figures grow: at true scale she is 53 m long to his 88.8, and the lane
+    // between his arm and her flank widens from 0.9 m to 2.8 rather than
+    // closing. The 1499 gives her less than that even -- only "una fronte di
+    // testa foeminea tra li ruinamenti alquanto detecta, il residuo dalle
+    // maxime rupture sepulta", a forehead uncovered and the rest buried
+    // (f. b6r; Dall. pp. 45-46) -- see coverage.json female-colossus-buried.
+    const FL = 0.909 * L, FG = 0.871 * G, FZ = KZ - 7.097 * G;
     half(1.8 * FG, KX + 1.0 * FL, FZ, 1, 0.55, 1.1).position.y = -0.3 * FG;
     vault(KX + 5.2 * FL, FZ, 2.6 * FG, 1.5 * FG, 5.0 * FL).position.y = -0.55 * FG;
     vault(KX + 10.0 * FL, FZ, 2.0 * FG, 1.1 * FG, 4.0 * FL).position.y = -0.5 * FG;
