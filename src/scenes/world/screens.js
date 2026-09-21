@@ -276,16 +276,17 @@ export const Screens = {
         const i = Math.round(z) * 2 + (sx > 0 ? 1 : 0);
         // `leaves` and `cone`: see _tree. At avenue scale a cypress drawn with
         // its species' own card count is a halo of specks round a bare pole.
-        // RAISED 2026-09-20, from 4.6 (a 14.6 m tree, measured on the running
-        // page) to about seven, which is 22–26 m. Two reasons, and the second
-        // is the operative one. A cypress is 20–30 m in life and the book calls
-        // these "straight and lofty". And the enclosure's hedge is "as high as
-        // the lofty cypresses of the way" (p. 88), so the cypress sets the
-        // hedge, and the hedge has to be a wall the palace front can stand over
-        // — at 14.6 m the whole chain was set by an under-scaled tree. See
-        // palace.js `_buildPalaceFront`, "HOW HIGH, AND WHY NOT HIGHER".
+        // 4.6 is a 14.6 m tree, measured on the running page — short for a
+        // cypress, which is 20–30 m in life, and the book calls these "straight
+        // and lofty". RAISED to ~7.5 on 2026-09-20 and PUT BACK the same hour,
+        // on the measurement: `_canopyCards` (nature.js) does not take the card
+        // count it is handed, it derives one from the crown's VOLUME — "a big
+        // crown gets MORE cards, not bigger ones" — so a cypress's leaf cards
+        // go 546 → 1,454 between 4.6 and 7.5, and 136 of them down this avenue
+        // cost **247,000 triangles**, a quarter of this whole job's budget for
+        // one species. Ticket debt-cypress-avenue-under-scaled.
         this._tree(sx * (HALF - 3.2) + (rnd(i, 4) - 0.5) * 0.8, z + (rnd(i, 5) - 0.5) * 0.9,
-          7.0 + rnd(i, 6) * 1.1, 'cypress', { leaves: 2.6, cone: true });
+          4.6 + rnd(i, 6) * 0.9, 'cypress', { leaves: 2.6, cone: true });
       }
       // and they are a WALL: you may not step out of the avenue between them
       this._wallCol(HALF - 4.6, HALF + 40, z - STEP / 2, z + STEP / 2);

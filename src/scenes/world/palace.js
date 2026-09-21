@@ -1066,14 +1066,8 @@ export const Palace = {
     // lilies in the four corners the round leaves over, and a tessellated
     // fillet between. Laid at 0.17 over the sward's 0.12, with the polygon
     // offset the avenue's own path needs at 13.7 km.
-    const paveMat = woodcut ? S.mat({ tone: 0.05, rim: 0 })
-      : S.mat({ color: 0xffffff, roughness: 0.42, metalness: 0.03 });
-    if (!woodcut && !paveMat.map) this._dress(paveMat, this._courtPavementTexture(), 0.16);
-    paveMat.polygonOffset = true;
-    paveMat.polygonOffsetFactor = -3;
-    paveMat.polygonOffsetUnits = -3;
     this._m(new THREE.PlaneGeometry(PLAN_SITES.enclosure.width, PLAN_SITES.enclosure.depth),
-      paveMat, 0, 0.17, 0, { rx: -Math.PI / 2, cast: false });
+      this._courtPaveMat(), 0, 0.17, 0, { rx: -Math.PI / 2, cast: false });
 
     // ── the pavement of porphyry, "lined with well-polished little waves" ──
     // Radius is ours: 11.2 m gives the fountain a platform about a quarter of
@@ -1124,6 +1118,25 @@ export const Palace = {
     this._plaque({ main: 'SPOVTING ON HIGH ALMOST TO THE TOP OF THE GREENE ENCLOSVRE',
                    sub: 'A BASIN OF THE FINEST AMETHYST, THE DIAMETER THREE PACES · FOVRE HARPIES OF GOLD, AND THE THREE GRACES · OVR PP. 88–89 · PLATE 23' },
       9.0, 1.05, 0, 1.5, PAVE + 2.6, Math.PI, true);
+  },
+
+  // One pavement material for the enclosed court and for the gate-house floor
+  // behind the notable door, because p. 94 says they are the same floor: "The
+  // cleanest paving, like that outside in the enclosed court." They are built
+  // in two different precincts, so it is cached here rather than passed.
+  _courtPaveMat() {
+    if (this._courtPaveM) return this._courtPaveM;
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const m = woodcut ? S.mat({ tone: 0.05, rim: 0 })
+      : S.mat({ color: 0xffffff, roughness: 0.42, metalness: 0.03 });
+    if (!woodcut && !m.map) this._dress(m, this._courtPavementTexture(), 0.16);
+    // the polygon offset the avenue's own path needs: at 13.7 km a centimetre
+    // of separation does not survive the depth buffer
+    m.polygonOffset = true;
+    m.polygonOffsetFactor = -3;
+    m.polygonOffsetUnits = -3;
+    this._courtPaveM = m;
+    return m;
   },
 
   // The court's pavement, p. 92, drawn tile by tile: "a stone pavement of
@@ -1341,17 +1354,25 @@ export const Palace = {
   //   the citrus hedge      13.6 m  (screens.js, the book's own "as high as
   //                                  the lofty cypresses")
   //   the fountain's jets   12.4 m  (`_buildEnclosureCourt`)
-  //   the avenue's cypress  14.6 m  — RAISED in the same pass to 22.4, because
-  //                                  a front that has to out-top a 13.6 m
-  //                                  hedge cannot also duck under a 14.6 m
-  //                                  tree, and 14.6 was the under-scaled
-  //                                  number, not the palace.
+  //   the avenue's cypress  14.6 m
   //
-  // So from inside the court the front stands five and a half metres over the
-  // green walls and fills the whole north side; from the south end of the
-  // avenue its upper storey shows above the hedge between the cypresses and
-  // nothing else does, which is the promise DIRECTIONS.md §5 asks for and not
-  // the reveal.
+  // The brief for this pass asked the front to stay UNDER the cypresses so the
+  // avenue's line would still close on it. It does not, and the reason is
+  // measured rather than argued. That instruction assumed cypresses of 25–30 m;
+  // on the running page they are 14.6, and two full orders on a podium cannot
+  // be got under fourteen metres — the lower order alone is 7.4 and the podium
+  // 1.45. Raising the cypresses instead was tried and reverted within the hour:
+  // `_canopyCards` derives a tree's leaf-card count from its crown VOLUME, so
+  // 4.6 → 7.5 takes a cypress from 546 cards to 1,454, and 136 of them down the
+  // avenue cost 247,000 triangles — a quarter of this job's whole budget, spent
+  // on one species. Ticket debt-cypress-avenue-under-scaled.
+  //
+  // So: from inside the court the front stands 5.65 m over the green walls and
+  // fills the whole north side. From the avenue its two upper storeys show
+  // above the hedge, rising past the cypress tops at the vanishing point — a
+  // crown at the end of four stadia, and still not the front, which is what
+  // DIRECTIONS.md §5 actually asks for (the destination is not IN VIEW; its
+  // skyline is).
   //
   // ── THE COORDINATE FRAME, which has caught two builders ─────────────────
   //
@@ -1542,6 +1563,45 @@ export const Palace = {
       this._m(new THREE.BoxGeometry(THK + 2.2, 0.46, RET), stone, rx, Y1T + 1.02, WZ - THK / 2 - RET / 2, { cast: false });
     }
 
+    // ── the gate-house behind the door ────────────────────────────────────
+    //
+    // p. 93 asks "what gate-house, or vestibule", and then describes its
+    // ceiling: "the marvellous ceiling, most beautifully coffered, with little
+    // coffers between the wavings, covered with foliage, **set in square and
+    // round**. Adorned with exquisite lineaments, **gilded of pure gold and of
+    // a dark blue colouring**, and elegantly painted." Its floor is p. 94's
+    // "the cleanest paving, like that outside in the enclosed court", so it is
+    // literally the court's own pavement carried through. And at its far end
+    // stands the SECOND curtain, Indalomena's: "another veiling of most noble
+    // artifice and composition, and varied with every tincture. In which were
+    // signs, shapes, plants and animals of a singular reweaving."
+    //
+    // It is also the fix for what the gate looked like before it existed: the
+    // door opened on daylight and empty field, because nothing is built behind
+    // this front yet. Nothing here takes a collider, so the way through stays
+    // walkable — you part the second curtain as Poliphilo does.
+    const VD = 7.2;                                    // the vestibule's depth
+    const VZ = WZ - THK / 2 - VD / 2;
+    const vault = woodcut ? S.mat({ tone: 0.16 })
+      : S.mat({ color: 0xffffff, roughness: 0.55, metalness: 0.25 });
+    if (!vault.map) vault.map = this._cofferTexture();
+    vault.side = THREE.DoubleSide;
+    const v = this._m(new THREE.CylinderGeometry(ARCH_R - 0.06, ARCH_R - 0.06, VD, 20, 1, true, 0, Math.PI),
+      vault, 0, POD + SPRING, VZ, { cast: false, receive: false });
+    v.rotation.set(Math.PI / 2, 0, 0);
+    for (const sg of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.5, SPRING, VD), stone, sg * (ARCH_R - 0.2), POD + SPRING / 2, VZ, { cast: false });
+    }
+    this._m(new THREE.PlaneGeometry(GATE, VD), this._courtPaveMat(), 0, POD + 0.02, VZ, { rx: -Math.PI / 2, cast: false });
+    // the dark of the inner rooms, so no daylight comes round the curtain
+    this._m(new THREE.BoxGeometry(GATE + 0.6, POD + CROWN, 0.5), dark, 0, (POD + CROWN) / 2, VZ - VD / 2 - 0.2, { cast: false });
+    // the second curtain, drawn across
+    const veil = woodcut ? S.mat({ tone: 0.1 })
+      : S.mat({ color: 0xffffff, roughness: 0.78 });
+    if (!veil.map) veil.map = this._secondVeilTexture();
+    veil.side = THREE.DoubleSide;
+    this._m(new THREE.PlaneGeometry(GATE - 0.3, POD + CROWN - 0.4), veil, 0, (POD + CROWN - 0.4) / 2, VZ - VD / 2 + 0.05, { cast: false });
+
     this._plaque({ main: 'A WONDERFVL AND MOST AMPLE PALLAICE',
                    sub: 'EXCELLENT IN ITS SYMMETRIED ARCHITECTVRE · THE FOVRTH WALL OF THE LEAFY ENCLOSVRE, OF A LENGTH OF SIXTIE PACES · NVMIDIAN, CLAVDIAN, SIMIADIC AND THISTIAN, DIVIDED IN EQVALL NVMBER · OVR PP. 88, 92–93' },
       11.0, 1.25, -20.4, 2.5, FACE + 0.16, 0, true);
@@ -1615,6 +1675,99 @@ export const Palace = {
       this._m(new THREE.RingGeometry(lr * 0.72, lr, 12, 1, 0, Math.PI), stone,
         x + sx * (lr + 0.11), spring - R * 0.62, face + 0.1, { cast: false });
     }
+  },
+
+  // The gate-house ceiling, p. 93: "most beautifully coffered, with little
+  // coffers between the wavings, covered with foliage, set in square and
+  // round. Adorned with exquisite lineaments, gilded of pure gold and of a
+  // dark blue colouring." Square coffers and round ones alternating, gold
+  // lineaments on dark blue, a rosette in each.
+  _cofferTexture() {
+    if (this._coffer) return this._coffer;
+    const N = 256, c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.fillStyle = '#c9a63e'; x.fillRect(0, 0, N, N);           // the gilding
+    const K = N / 4;
+    for (let j = 0; j < 4; j++) for (let i = 0; i < 4; i++) {
+      const ox = i * K, oy = j * K, p = K * 0.15, s = K - 2 * p;
+      const round = (i + j) % 2 === 0;                          // "set in square and round"
+      x.fillStyle = '#1f2f5e';                                  // the dark blue
+      if (round) { x.beginPath(); x.arc(ox + K / 2, oy + K / 2, s / 2, 0, 7); x.fill(); }
+      else x.fillRect(ox + p, oy + p, s, s);
+      x.strokeStyle = '#e6c86a'; x.lineWidth = 3;
+      if (round) { x.beginPath(); x.arc(ox + K / 2, oy + K / 2, s / 2, 0, 7); x.stroke(); }
+      else x.strokeRect(ox + p, oy + p, s, s);
+      // the rosette of foliage in the coffer
+      x.strokeStyle = '#d8b44e'; x.lineWidth = 2.2;
+      for (let k = 0; k < 8; k++) {
+        const a = k * Math.PI / 4;
+        x.beginPath();
+        x.moveTo(ox + K / 2, oy + K / 2);
+        x.quadraticCurveTo(ox + K / 2 + Math.cos(a + 0.4) * s * 0.2, oy + K / 2 + Math.sin(a + 0.4) * s * 0.2,
+                           ox + K / 2 + Math.cos(a) * s * 0.3, oy + K / 2 + Math.sin(a) * s * 0.3);
+        x.stroke();
+      }
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(4, 3);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    this._coffer = t;
+    return t;
+  },
+
+  // Indalomena's curtain, the second of the three (p. 93): "another veiling of
+  // most noble artifice and composition, and varied with every tincture. In
+  // which were signs, shapes, plants and animals of a singular reweaving."
+  // Varied with every tincture is the operative phrase — it is the one of the
+  // three that is many-coloured, where the first is gold and the third is
+  // drawn in bindings and holdfasts. The three keepers are the inner faculties
+  // in order — Cynosia watchfulness, Indalomena image-making, Mnemosyne memory
+  // — and this is the IMAGE-MAKING one, which is why it carries signs, shapes,
+  // plants and animals and nothing discursive.
+  _secondVeilTexture() {
+    if (this._veil2) return this._veil2;
+    const W = 256, H = 320, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const TINCT = ['#7a2440', '#245a52', '#3a3a7a', '#7a5a1e', '#5a2a6a', '#2a5a2a'];
+    x.fillStyle = '#4a2f4e'; x.fillRect(0, 0, W, H);
+    // the weave, varied with every tincture
+    for (let j = 0; j < 20; j++) for (let i = 0; i < 16; i++) {
+      x.fillStyle = TINCT[(i * 3 + j * 5) % 6];
+      x.globalAlpha = 0.45 + ((i + j) % 3) * 0.16;
+      x.fillRect(i * (W / 16), j * (H / 20), W / 16, H / 20);
+    }
+    x.globalAlpha = 1;
+    // signs, shapes, plants and animals, in rows
+    const rnd = (i, k) => { const v = Math.sin(i * 83.1 + k * 27.7) * 43758.5453; return v - Math.floor(v); };
+    for (let i = 0; i < 40; i++) {
+      const px = 22 + rnd(i, 1) * (W - 44), py = 22 + rnd(i, 2) * (H - 44), s = 7 + rnd(i, 3) * 7;
+      x.strokeStyle = 'rgba(240,226,190,0.8)'; x.fillStyle = 'rgba(240,226,190,0.6)'; x.lineWidth = 2;
+      const kind = i % 4;
+      x.save(); x.translate(px, py);
+      if (kind === 0) {                       // a sign
+        x.beginPath(); x.moveTo(-s, -s); x.lineTo(s, s); x.moveTo(s, -s); x.lineTo(-s, s); x.stroke();
+        x.beginPath(); x.arc(0, 0, s * 0.6, 0, 7); x.stroke();
+      } else if (kind === 1) {                // a shape
+        x.beginPath(); x.moveTo(0, -s); x.lineTo(s, s); x.lineTo(-s, s); x.closePath(); x.stroke();
+      } else if (kind === 2) {                // a plant
+        x.beginPath(); x.moveTo(0, s); x.quadraticCurveTo(s * 0.4, 0, 0, -s); x.stroke();
+        for (const sg of [-1, 1]) { x.beginPath(); x.moveTo(0, 0); x.quadraticCurveTo(sg * s, -s * 0.4, sg * s * 0.5, -s * 0.9); x.stroke(); }
+      } else {                                // an animal
+        x.beginPath(); x.ellipse(0, 0, s, s * 0.55, 0, 0, 7); x.stroke();
+        x.beginPath(); x.arc(s * 0.9, -s * 0.45, s * 0.3, 0, 7); x.stroke();
+        x.beginPath(); x.moveTo(-s * 0.6, s * 0.5); x.lineTo(-s * 0.6, s); x.moveTo(s * 0.5, s * 0.5); x.lineTo(s * 0.5, s); x.stroke();
+      }
+      x.restore();
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    this._veil2 = t;
+    return t;
   },
 
   // The curtain at the notable door (p. 93): "all of golden thread, and
