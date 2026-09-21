@@ -26,7 +26,7 @@ import { ParticleStream } from '../systems/Particles.js?v=3';
 import { Walker } from '../systems/Walker.js?v=6';
 import { makeCast } from '../systems/Cast.js?v=57';
 import { DragonFlight } from '../systems/DragonFlight.js?v=3';
-import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=13';
+import { RollUp, MAX_EDIBLE } from '../systems/RollUp.js?v=14';
 import { Creatures } from '../systems/Creatures.js?v=3';
 import { Masonry } from '../systems/Masonry.js?v=8';
 import { buildLitter } from '../systems/Litter.js?v=6';
@@ -51,7 +51,7 @@ import { Triumphs } from './world/triumphs.js?v=15';
 import { Tombs } from './world/tombs.js?v=9';
 import { Temple } from './world/temple.js?v=13';
 import { Cythera } from './world/cythera.js?v=11';
-import { Rollup } from './world/rollup.js?v=12';
+import { Rollup } from './world/rollup.js?v=13';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
 import { Screens } from './world/screens.js?v=5';
 
@@ -93,7 +93,25 @@ export class HPWorldScene {
       // SPREAD = 4 (2026-09-17, DECISIONS.md 54): every bound x4, so the
       // walkable box still reaches the plain (station z 1792 + 26 radius)
       // and the shore rails (z -384).
-      bounds: { minX: -560, maxX: 560, minZ: -824, maxZ: 1848 },
+      //
+      // STAGE 2 (fixed 2026-09-20, while auditing the keys for the Controls
+      // card). The x4 above was the last time this box was touched, and stage
+      // 2 moved the precincts onto research/plan.json without it: the plan is
+      // 13 728.8 m long and the box was 2 672 m, so TWENTY-TWO of the
+      // twenty-eight stations stood outside it. Press 1-9 or 0 -- documented
+      // on the mode card, in the entry hint and in the touch Wonders menu --
+      // and the teleport landed you correctly, because Walker.teleportTo
+      // writes player.pos directly; then the first step you took ran through
+      // Walker.collide, which clamps to this box, and threw you back to its
+      // edge. Measured on the live page: 0 (sail to Cythera) put the walker at
+      // z = -7 701.4 and one press of W snapped it to z = -824, 6 877 m away.
+      //
+      // The numbers are the plan's OWN extent -- research/plan.json `extent`
+      // (z_north -8 689.4, z_south 5 039.4, width_max 1 850) and the Treviso
+      // precinct, which sits off the spine at x 1 400 and is 740 m wide -- with
+      // 60 m of margin, so it cannot go stale against the plan again without
+      // the plan itself moving.
+      bounds: { minX: -1000, maxX: 1840, minZ: -8760, maxZ: 5110 },
       onDigit: (n) => {
         if (n === 0) { this.teleport('cythera_isle'); return; }   // Cupid ferries the willing
         const st = HP_STATIONS[n - 1];
@@ -1069,7 +1087,21 @@ export class HPWorldScene {
     this.flight = new DragonFlight(this.renderer, dragon, {
       // SPREAD = 4 (2026-09-17, DECISIONS.md 54): x/z bounds x4; minY/maxY are
       // altitude, a size, and stay.
-      bounds: { minX: -240, maxX: 240, minZ: -832, maxZ: 216, minY: 0.9, maxY: 48 },
+      //
+      // STAGE 2 (fixed 2026-09-20): the same staleness as the walker's box
+      // above, and worse, because the dragon is the one mode whose whole point
+      // is the length of the plan. The box was 480 x 1 048 m inside a world
+      // 13.7 km long: measured live, one press of W from the spawn drove
+      // straight into the z clamp in a second, and "1-9 swoop to a wonder" --
+      // on the flight card since it was written -- delivered the dragon to the
+      // corner of the box instead of the wonder. The x/z figures are the
+      // walker's, so the two modes share one world.
+      //
+      // maxY was the other half of it: 48 m, in front of a pyramid 790 m tall
+      // (see the far-plane note at the head of this file). You could not fly
+      // over the one thing in the book you are meant to fly over. 900 clears
+      // it with the apex in view.
+      bounds: { minX: -1000, maxX: 1840, minZ: -8760, maxZ: 5110, minY: 0.9, maxY: 900 },
       onDigit: (n) => { if (n === 0) this.teleport('cythera_isle'); else { const st = HP_STATIONS[n - 1]; if (st) this.teleport(st.key); } },
       onLand: () => { this.endFlight(); this.onLand?.(); },
     });

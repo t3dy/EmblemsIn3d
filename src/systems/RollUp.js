@@ -580,8 +580,15 @@ export class RollUp {
     want.set(0, 0, 0);
     if (mv.lengthSq() > 0) {
       mv.normalize();
-      // a bigger ball covers more ground, or the late game drags
-      const v = this.speed * (0.7 + 0.5 * Math.sqrt(this.r)) * (K.has('ShiftLeft') ? 1.7 : 1);
+      // a bigger ball covers more ground, or the late game drags.
+      // Either Shift dashes. It used to be ShiftLeft alone, which made the
+      // "Shift dash" printed under the HUD false for anyone whose hand was on
+      // the right of the keyboard -- and Walker.js and DragonFlight.js both
+      // take either, so roll mode was the odd one out. Found 2026-09-20 by
+      // measuring both: ShiftLeft 7.42 m in 90 frames, ShiftRight 5.44 m, the
+      // same as no Shift at all.
+      const dash = K.has('ShiftLeft') || K.has('ShiftRight');
+      const v = this.speed * (0.7 + 0.5 * Math.sqrt(this.r)) * (dash ? 1.7 : 1);
       want.copy(mv).multiplyScalar(v);
     }
     const tau = 0.30 + 0.075 * this.r;

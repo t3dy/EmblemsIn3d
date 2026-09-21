@@ -588,17 +588,36 @@
     }
     #vault-over button:hover { border-color: #c8a040; color: #fff4dc; }
 
-    /* ── The flight's key cards ──────────────────────────────────────
-       The keys used to live only in the hint toast, which is no use once it
-       has faded. They are cards now, each with its own × and its own toggle
-       in the top bar (Ted, 2026-09-07). Bottom-right, opposite the notes. */
+    /* ── The Controls card ──────────────────────────────────────────
+       One card for every mode, filled from CONTROLS in main.js, toggled by
+       the one "Controls" button in the top bar (Ted, 2026-09-20).
+
+       It began (2026-09-07) as two hard-written cards for the dragon alone,
+       because the keys had lived only in a hint toast that is no use once it
+       has faded. Every other mode still had the toast — and roll mode had a
+       permanent wall of small text under its HUD that could be neither
+       dismissed nor called back. The card was the right answer; it is now the
+       only answer, and the markup below is a single empty shell.
+
+       It sits bottom-right, ABOVE #look-ctl (right 1.1rem, bottom 3.4rem,
+       76 px tall), which the old bottom: 1.2rem ran straight through whenever
+       a card was open in flight. main.js re-asserts these offsets inline —
+       this file is not cache-busted and Pages serves it with max-age=600
+       (RECIPES/ship-a-release.md), and the rule it used to carry,
+       `@media (max-width:520px){#ctl-stack{display:none}}`, is exactly the
+       kind of stale CSS that would go on hiding the panel on a phone. */
     #ctl-stack {
-      position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 30;
+      position: fixed; right: 1.2rem; bottom: 9rem; z-index: 33;
       display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end;
       pointer-events: none;
     }
+    /* the tour rail owns 390px of the right edge — step clear of it, as the
+       world-nav does */
+    body.tour-open #ctl-stack { right: calc(min(390px, 92vw) + 1.2rem); }
+    @media (max-width: 900px) { body.tour-open #ctl-stack { right: 1.2rem; bottom: 60vh; } }
     .ctl-card {
-      pointer-events: all; width: min(300px, 52vw);
+      pointer-events: all; width: min(320px, calc(100vw - 2.4rem));
+      max-height: calc(100vh - 11rem); display: flex; flex-direction: column;
       background: linear-gradient(180deg, rgba(10,7,3,0.93), rgba(6,4,2,0.97));
       border: 1px solid rgba(139,69,19,0.45); border-right: 2px solid #c8a040;
       backdrop-filter: blur(3px); font-family: 'Georgia', serif;
@@ -606,6 +625,7 @@
     .ctl-card .ctl-head {
       display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
       padding: 0.5rem 0.7rem; border-bottom: 1px solid rgba(139,69,19,0.25);
+      flex: 0 0 auto;
     }
     .ctl-card .ctl-title {
       font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: #d8a24a;
@@ -615,13 +635,38 @@
       font-size: 0.8rem; line-height: 1; padding: 0 0.2rem;
     }
     .ctl-card .ctl-close:hover { color: #f0e8d8; }
+    .ctl-card .ctl-body { overflow-y: auto; flex: 1 1 auto; }
+    .ctl-card .ctl-body::-webkit-scrollbar { width: 7px; }
+    .ctl-card .ctl-body::-webkit-scrollbar-track { background: rgba(0,0,0,0.25); }
+    .ctl-card .ctl-body::-webkit-scrollbar-thumb { background: rgba(200,160,64,0.34); }
+    .ctl-card .ctl-body { scrollbar-width: thin; scrollbar-color: rgba(200,160,64,0.4) rgba(0,0,0,0.25); }
+    /* a mode with more than one bank of controls — the dragon has its flight
+       and its camera; roll mode has its two schemes — gets them as sections of
+       the one card rather than as cards of their own */
+    .ctl-card .ctl-sec {
+      font-size: 0.56rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: #8a7a54; padding: 0.55rem 0.8rem 0; margin: 0;
+    }
+    .ctl-card .ctl-sec + dl { padding-top: 0.3rem; }
     .ctl-card dl {
       margin: 0; padding: 0.55rem 0.75rem;
       display: grid; grid-template-columns: auto 1fr; gap: 0.3rem 0.7rem;
     }
     .ctl-card dt { color: #e8c96a; font-size: 0.72rem; letter-spacing: 0.04em; white-space: nowrap; }
     .ctl-card dd { margin: 0; color: #9a8a70; font-size: 0.72rem; line-height: 1.45; }
-    @media (max-width: 520px) { #ctl-stack { display: none; } }
+    .ctl-card .ctl-foot {
+      flex: 0 0 auto; padding: 0.45rem 0.8rem 0.6rem; font-size: 0.64rem;
+      line-height: 1.5; color: #7a6a4e; font-style: italic;
+      border-top: 1px solid rgba(139,69,19,0.2);
+    }
+    /* Phones keep the panel — they need the reference MORE than a desktop
+       does, because the thumb-stick tells you nothing about what T or Esc do.
+       It only gets smaller and stands clear of the taller touch look-buttons. */
+    @media (max-width: 640px) {
+      #ctl-stack { right: 0.7rem; bottom: 12rem; }
+      .ctl-card { width: min(320px, calc(100vw - 1.4rem)); max-height: calc(100vh - 14rem); }
+      .ctl-card dt, .ctl-card dd { font-size: 0.68rem; }
+    }
 
     /* ── Free-walk commentary ────────────────────────────────────────
        In free walk there are no stops to click, so the notes come to the
@@ -1070,8 +1115,14 @@
     <button id="btn-tours" onclick="window.switchWorld('TOURS')">Tours</button>
     <button id="btn-gallery" onclick="window.switchWorld('GALLERY')">Gallery</button>
     <button id="btn-comments" class="nav-toggle active" onclick="window.toggleComments()" title="The commentary that meets you at each wonder">Commentary</button>
-    <button id="btn-flightctl" class="nav-toggle" style="display:none" onclick="window.toggleFlightCtl()">Flight Controls</button>
-    <button id="btn-camctl" class="nav-toggle" style="display:none" onclick="window.toggleCamCtl()">Camera Controls</button>
+    <!-- One Controls button for every mode. It replaces the two the dragon
+         used to have to itself, so the bar is a button shorter than it was.
+         It lives HERE because #world-nav is the only chrome that is on screen
+         in every mode: checked live on 2026-09-20 in the mode chooser, in
+         Walk Freely, in Roll Up and in the Vaults, where the roll HUD, the
+         vault HUD, the read panel and the tour rail each come and go but the
+         bar never does. main.js shows it only once a mode is running. -->
+    <button id="btn-controls" class="nav-toggle" style="display:none" onclick="window.toggleControls()" title="The keys and the mouse for whatever you are playing">Controls</button>
     <button onclick="window.openGraphics()" title="Choose how each asset is drawn">Graphics</button>
     <a class="wn-link" href="../research/translation.html" title="The parallel Italian/English edition">Translation</a>
     <a class="wn-link" href="../research/lexicon.html" title="The book's own vocabulary, by topic">Lexicon</a>
@@ -1257,7 +1308,11 @@
       <span class="rh-k">Things</span><span id="roll-count">0</span>
       <span class="rh-k">Metal</span><span id="roll-metal">&#9796; Lead</span>
     </div>
-    <div class="rh-foot" id="roll-foot">W A S D roll &middot; Q E Z C the diagonals &middot; right button held rolls the way you look &middot; drag or &#9650;&#9660; to look &middot; Space quick turn &middot; Shift dash &middot; T two-stick scheme &middot; Esc stop</div>
+    <!-- A cue, not a manual. This was a wall of nine clauses of 0.62rem text
+         that could be neither dismissed nor called back once read; the keys
+         themselves are on the Controls card now, and this line says which
+         scheme the ball is on and where to find them (Ted, 2026-09-20). -->
+    <div class="rh-foot" id="roll-foot">Single-stick &mdash; W A S D rolls the way you look &middot; <b>Controls</b> in the bar above for the rest</div>
   </div>
 
   <!-- The work finished: the chemical wedding. Every word of this is from
@@ -1312,33 +1367,18 @@
     </div>
   </div>
 
-  <!-- The flight's keys, as cards rather than a toast that fades away -->
+  <!-- The one Controls card. Empty here on purpose: its title, its rows and
+       its footnote are written by renderControls() in main.js from the
+       CONTROLS table, which holds one entry per mode. Nothing about any
+       mode's keys is typed in this file. -->
   <div id="ctl-stack">
-    <div id="flight-ctl" class="ctl-card" hidden>
+    <div id="ctl-panel" class="ctl-card" hidden>
       <div class="ctl-head">
-        <span class="ctl-title">Flight controls</span>
-        <button class="ctl-close" onclick="window.toggleFlightCtl()" title="Hide">&#10005;</button>
+        <span class="ctl-title" id="ctl-panel-title">Controls</span>
+        <button class="ctl-close" onclick="window.toggleControls(false)" title="Hide">&#10005;</button>
       </div>
-      <dl>
-        <dt>W / S</dt><dd>faster, slower</dd>
-        <dt>A / D</dt><dd>turn left, right &mdash; or &larr; &rarr;</dd>
-        <dt>R / F</dt><dd>climb, dive &mdash; or &uarr; &darr;</dd>
-        <dt>Shift</dt><dd>a burst of speed</dd>
-        <dt>1&ndash;9</dt><dd>swoop to a wonder</dd>
-        <dt>0</dt><dd>away to Cythera</dd>
-        <dt>Esc</dt><dd>land where you are</dd>
-      </dl>
-    </div>
-    <div id="cam-ctl" class="ctl-card" hidden>
-      <div class="ctl-head">
-        <span class="ctl-title">Camera controls</span>
-        <button class="ctl-close" onclick="window.toggleCamCtl()" title="Hide">&#10005;</button>
-      </div>
-      <dl>
-        <dt>Drag</dt><dd>swing the camera round the dragon</dd>
-        <dt>Wheel</dt><dd>closer or further off &mdash; or + and &minus;</dd>
-        <dt>C</dt><dd>back to behind and a little above</dd>
-      </dl>
+      <div class="ctl-body" id="ctl-panel-body"></div>
+      <div class="ctl-foot" id="ctl-panel-foot"></div>
     </div>
   </div>
 
@@ -1368,6 +1408,6 @@
     }
   }
   </script>
-  <script type="module" src="./main.js?v=427"></script>
+  <script type="module" src="./main.js?v=428"></script>
 </body>
 </html>

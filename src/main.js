@@ -3,7 +3,7 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { AerialPass } from './shaders/AerialPerspective.js?v=3';
-import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=320';
+import { HPWorldScene, HP_STATIONS } from './scenes/HPWorldScene.js?v=321';
 import { VaultsScene } from './scenes/VaultsScene.js?v=14';
 import { DreamMode } from './systems/DreamMode.js?v=9';
 import { DREAM_STOPS } from './data/hp_dream.js?v=7';
@@ -16,7 +16,7 @@ import { AlchemicalAudio } from './systems/AlchemicalAudio.js?v=9';
 // invention waiting to drift. The ?v= must match the other importers of
 // RollUp.js (scenes/HPWorldScene.js, scenes/world/rollup.js) or the browser
 // loads a second, separate copy of the module.
-import { METALS, WEDDING } from './systems/RollUp.js?v=13';
+import { METALS, WEDDING } from './systems/RollUp.js?v=14';
 import { ASSETS, variantOf, setVariant, resetVariants, isPending } from './systems/AssetVariants.js?v=12';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -190,7 +190,8 @@ function showGalleryOverlay() {
   state.inGallery = false;
   const el = document.getElementById('gallery-overlay');
   if (el) { el.style.display = 'block'; el.scrollTop = 0; }
-  showHint('A gallery of the sources · click any plate to read its provenance · Esc to close');
+  refreshControlsBtn();
+  showHint('A gallery of the sources · click any plate to read its provenance · everything else is on “Controls”, top right');
 }
 
 function hideGalleryOverlay() {
@@ -289,6 +290,7 @@ async function startTour(id) {
   hideToursMenu();
   state.tour = { ...tour, stops: resolveTourStops(tour) };
   state.tourStop = 0;
+  refreshControlsBtn();
   // let the reader choose their commentary before the tour begins
   if (tourFlavorSet(state.tour).length > 1) {
     showFlavorChooser({ title: state.tour.title,
@@ -384,7 +386,8 @@ async function tourGoto(i) {
       state.activeScene.teleport(stop.station);
     } else {
       await launchHPWorld({ station: stop.station, chooser: false });
-      showHint('Drag to look around · W A S D to walk · ← → move between stops');
+      refreshControlsBtn();
+      showHint('Drag to look around · W A S D to walk · ← → move between stops · everything else is on “Controls”, top right');
     }
     // The tour rail carries all the text, so silence the world's own station
     // HUD and the auto-surfacing marginalia while a tour is running.
@@ -844,21 +847,291 @@ window.toggleComments = () => {
   if (_walkStation) renderWalkNotes();
   else if (near) showWalkNotes(near);
 };
-function ctlToggle(cardId, btnId, on) {
-  const el = document.getElementById(cardId);
-  if (!el) return;
-  const show = (on === undefined) ? !!el.hidden : !!on;
-  setHidden(el, !show, 'block');
-  setNavToggle(btnId, show);
+// ─── The Controls button, and the one card behind it ──────────────────────
+//
+// Ted, 2026-09-20: "I want to make sure that there are keyboard commands and
+// mouse inputs and that there is a button for 'controls' that brings up a
+// panel that explains the controls that you can toggle on and off. Make sure
+// the interface makes sense."
+//
+// Before this the keys were documented in three incompatible ways. Walk, the
+// Vaults, reading, the tour and roll mode each got a `showHint()` toast, which
+// fades in five seconds and cannot be called back. Roll mode ALSO carried a
+// permanent nine-clause wall of 0.62rem text under its HUD that could not be
+// dismissed. And the dragon alone had the right thing — two real `.ctl-card`s
+// with their own two buttons in the top bar. So: one button, one card, and a
+// table with one entry per mode, which is the only place any key is written.
+//
+// EVERY ROW BELOW WAS TESTED, not transcribed. The old hint strings were
+// treated as claims to check against the listener that implements them —
+// `Walker._onKeyDown`/`update`, `RollUp._onKD`/`update`,
+// `DragonFlight._onKeyDown`/`_update`, `DreamMode._onKey` and the `keydown`
+// handler at the foot of this file — by dispatching each key at the live page
+// and measuring what moved. Three claims failed and are corrected here:
+//
+//   · Poliphilo's Dream does NOT take the walk keys. `DreamMode.start()` sets
+//     `walker.locked = true`, which `Walker.update` obeys and which also gates
+//     the drag-to-look and the digit teleports. The dream is Space/Enter/→,
+//     Esc, and the four mood buttons — nothing else does anything at all.
+//   · The arrow keys are not a second WASD in the walk: ↑↓ go forward and
+//     back, but ←→ TURN ON THE SPOT where A and D sidestep.
+//   · Shift in roll mode was documented flat as "dash" and only ShiftLeft
+//     dashed. Fixed in RollUp.js rather than documented around.
+//
+// A mode whose entry has two banks of keys gets them as `sec` sections of the
+// one card — the dragon's flight and its camera, which used to be the two
+// separate cards, and roll mode's two schemes.
+const CONTROLS = {
+  walk: {
+    title: 'Walking the garden',
+    groups: [{ rows: [
+      ['W / S', 'walk forward, back — or ↑ ↓'],
+      ['A / D', 'step to the side'],
+      ['← / →', 'turn on the spot'],
+      ['Shift', 'run'],
+      ['Drag', 'look around'],
+      ['▲ ▼', 'look up, down (the buttons, lower right)'],
+      ['1 – 9', 'go to a wonder, in the book’s order'],
+      ['0', 'sail to Cythera'],
+      ['Wheel', 'nothing — the walk has no zoom'],
+    ] }],
+    foot: 'The Dream Garden button in the bar above returns you to the seven modes.',
+  },
+  dream: {
+    title: 'Poliphilo’s Dream',
+    groups: [{ rows: [
+      ['Space', 'go on — or Enter, or →'],
+      ['Click', 'choose how Poliphilo meets the wonder'],
+      ['1 – 4', 'choose that mood from the keyboard'],
+      ['Esc', 'wake, and leave the dream'],
+    ] }],
+    foot: 'The dream walks him for you: the walk keys, the drag and the 1–9 teleports are all switched off until it ends.',
+  },
+  flight: {
+    title: 'Flying as the dragon',
+    groups: [
+      { sec: 'The dragon', rows: [
+        ['W / S', 'faster, slower'],
+        ['A / D', 'turn left, right — or ← →'],
+        ['R / F', 'climb, dive — or ↑ ↓'],
+        ['Shift', 'a burst of speed'],
+        ['1 – 9', 'swoop to a wonder'],
+        ['0', 'away to Cythera'],
+        ['Esc', 'land where you are'],
+      ] },
+      { sec: 'The camera', rows: [
+        ['Drag', 'swing the camera round the dragon'],
+        ['Wheel', 'closer or further off — or + and −'],
+        ['C', 'back to behind and a little above'],
+        ['▲ ▼', 'raise, lower the camera'],
+      ] },
+    ],
+  },
+  vaults: {
+    title: 'The vaults',
+    groups: [{ rows: [
+      ['W / S', 'feel your way forward, back — or ↑ ↓'],
+      ['A / D', 'step to the side'],
+      ['← / →', 'turn on the spot'],
+      ['Shift', 'run — and run into a pit'],
+      ['Drag', 'look around'],
+      ['▲ ▼', 'look up, down (the buttons, lower right)'],
+      ['Esc', 'leave the vaults'],
+    ] }],
+    foot: 'Light the lamps, keep off the vaults in the floor, and find the little wicket before the dragon finds you. The map at the left fills in as you walk.',
+  },
+  roll: {
+    title: 'Rolling up the dream',
+    groups: [
+      { sec: 'Single-stick — the default', rows: [
+        ['W A S D', 'roll, the way the camera looks — or the arrows'],
+        ['Q E Z C', 'the four diagonals'],
+        ['Right button', 'held, rolls the way you look'],
+        ['Drag', 'swing the view round the ball'],
+        ['Wheel', 'pull the camera back, or in'],
+      ] },
+      { sec: 'Two-stick — press T', rows: [
+        ['W A S D', 'the left hand'],
+        ['I J K L', 'the right hand — or the arrows'],
+        ['', 'both forward rolls; one forward turns'],
+        ['Drag', 'turns the ball itself, not just the view'],
+        ['C', 'camera back behind the way you are going'],
+      ] },
+      { sec: 'Either scheme', rows: [
+        ['Shift', 'dash'],
+        ['Space', 'quick turn — right about face'],
+        ['T', 'change scheme'],
+        ['▲ ▼', 'raise, lower the camera'],
+        ['Esc', 'stop rolling'],
+      ] },
+    ],
+    foot: 'The numeral keys do not teleport a ball: you have to roll there.',
+  },
+  read: {
+    title: 'Reading the whole book',
+    groups: [
+      { sec: 'The book', rows: [
+        ['[  and  ]', 'turn the page back, forward'],
+        ['‹ Back  Next ›', 'the same, at the foot of the panel'],
+        ['The number box', 'type a 1499 page, then Go'],
+        ['Esc', 'close the book'],
+      ] },
+      { sec: 'The world, meanwhile', rows: [
+        ['W / S', 'walk forward, back — or ↑ ↓'],
+        ['A / D', 'step to the side'],
+        ['← / →', 'turn on the spot'],
+        ['Drag', 'look around'],
+        ['1 – 9', 'go to a wonder'],
+      ] },
+    ],
+    foot: 'The arrows are deliberately NOT the page keys: you can still look about between pages.',
+  },
+  tour: {
+    title: 'The guided tour',
+    groups: [{ rows: [
+      ['← / →', 'the stop before, the stop after'],
+      ['↓ / ↑', 'the same as → and ←'],
+      ['W A S D', 'walk about at the stop you are on'],
+      ['Drag', 'look around'],
+      ['Click', 'a woodcut, to open it full size'],
+      ['Esc', 'leave the tour'],
+    ] }],
+    foot: 'With a woodcut open, the arrows page the woodcuts instead and Esc closes it.',
+  },
+  gallery: {
+    title: 'The gallery',
+    groups: [{ rows: [
+      ['Click', 'a plate, to read its provenance'],
+      ['← / →', 'the plate before, the plate after — with one open'],
+      ['Esc', 'close the plate; again, leave the gallery'],
+    ] }],
+  },
+};
+
+// Which entry of CONTROLS is live. The order is the order the modes shadow
+// one another in: reading and the tour both keep a walker underneath them, and
+// roll and flight both lock the one they are standing on.
+function currentControlMode() {
+  const sc = state.activeScene;
+  if (state.vaults) return 'vaults';
+  if (sc && sc.roll) return 'roll';
+  if (sc && sc.flight) return 'flight';
+  if (sc && sc.dream) return 'dream';
+  if (state.tour) return 'tour';
+  if (state.reading) return 'read';
+  if (state.inGallery || document.getElementById('gallery-overlay')?.style.display === 'block') return 'gallery';
+  if (sc && sc.walker && !isHPModeChooserUp()) return 'walk';
+  return null;
 }
-window.toggleFlightCtl = () => ctlToggle('flight-ctl', 'btn-flightctl');
-window.toggleCamCtl    = () => ctlToggle('cam-ctl', 'btn-camctl');
-// the two cards, and their buttons, belong to the flight
+function isHPModeChooserUp() {
+  const el = document.getElementById('hp-mode');
+  return !!el && getComputedStyle(el).display !== 'none';
+}
+
+let _ctlMode = null;            // the entry the card is currently showing
+function renderControls(key) {
+  const spec = CONTROLS[key];
+  const body = document.getElementById('ctl-panel-body');
+  const title = document.getElementById('ctl-panel-title');
+  const foot = document.getElementById('ctl-panel-foot');
+  if (!spec || !body) return;
+  if (title) title.textContent = spec.title;
+  body.innerHTML = spec.groups.map(g =>
+    (g.sec ? `<p class="ctl-sec">${g.sec}</p>` : '')
+    + '<dl>' + g.rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('') + '</dl>'
+  ).join('');
+  if (foot) { foot.textContent = spec.foot || ''; foot.style.display = spec.foot ? '' : 'none'; }
+  _ctlMode = key;
+}
+
+// #ctl-stack's offsets are written inline as well as in the stylesheet. All of
+// this app's CSS is inline in src/index.html, which no ?v= covers and which
+// Pages serves with a fixed max-age=600 — so a returning reader can hold the
+// old stylesheet, whose `@media (max-width:520px){#ctl-stack{display:none}}`
+// hid this panel on every phone. An inline style outranks it. Standing rule,
+// RECIPES/ship-a-release.md: never fix a layout bug in CSS alone.
+function placeCtlStack() {
+  const st = document.getElementById('ctl-stack');
+  if (!st) return;
+  const narrow = window.innerWidth <= 640;
+  const W = window.innerWidth, H = window.innerHeight;
+  st.style.display = 'flex';
+  // above the tour rail, which is z-index 32 and would otherwise bury this
+  st.style.zIndex = '33';
+
+  // The corner is shared. Three things can be in it and all three are
+  // MEASURED rather than assumed, because the first cut of this guessed and
+  // was wrong twice in ten minutes: an inline `right: 1.2rem` overrode the
+  // stylesheet's own tour-open rule and put the card underneath the rail.
+  //
+  //   #look-ctl    the ▲▼ buttons, 76px tall at bottom 3.4rem (94px at 5.2rem
+  //                under 640px), same corner, present in walk/roll/flight/vaults
+  //   #tour-panel  390px of the right edge on a wide window; a full-width
+  //                sheet across the BOTTOM under 900px
+  //   #world-nav   wraps to two rows at 800px and to four on a phone
+  const rail = document.getElementById('tour-panel');
+  const rr = rail && getComputedStyle(rail).display !== 'none'
+    ? rail.getBoundingClientRect() : null;
+  const railIsColumn = !!rr && rr.width > 0 && rr.height > H * 0.7 && rr.right > W - 8;
+  const railIsSheet  = !!rr && rr.width > 0 && !railIsColumn;
+
+  st.style.right = railIsColumn ? Math.round(rr.width) + 18 + 'px'
+                                : (narrow ? '0.7rem' : '1.2rem');
+  st.style.bottom = railIsSheet ? Math.round(rr.height) + 14 + 'px'
+                                : (narrow ? '12rem' : '9rem');
+
+  const card = document.getElementById('ctl-panel');
+  if (!card) return;
+  const nav = document.getElementById('world-nav');
+  const navBottom = nav ? nav.getBoundingClientRect().bottom : 56;
+  const gap = parseFloat(st.style.bottom) || 0;
+  card.style.maxHeight = Math.max(140, H - gap - navBottom - 12) + 'px';
+}
+
+// Toggle, not toast. `on` undefined flips it; true/false force it.
+window.toggleControls = (on) => {
+  const el = document.getElementById('ctl-panel');
+  if (!el) return;
+  const key = currentControlMode();
+  const show = (on === undefined) ? !!el.hidden : !!on;
+  if (show && !key) return;                 // nothing is running; nothing to show
+  if (show && key !== _ctlMode) renderControls(key);
+  placeCtlStack();
+  setHidden(el, !show, 'flex');
+  setNavToggle('btn-controls', show);
+  try { localStorage.setItem('hp_ctl_open', show ? '1' : '0'); } catch (_) {}
+};
+
+// Polled from the render loop beside refreshTouchControls/refreshLookCtl. The
+// card's CONTENT changes only when the MODE changes, never on a mode's own
+// internal events — so roll mode's seven stage transitions, the tour's page
+// turns and the reader's page keys all leave an open card exactly as it was.
+function refreshControlsBtn() {
+  const key = currentControlMode();
+  const btn = document.getElementById('btn-controls');
+  if (btn) btn.style.display = key ? '' : 'none';
+  const el = document.getElementById('ctl-panel');
+  if (!el) return;
+  if (!key) {                                // back at the chooser: put it away
+    if (!el.hidden) { setHidden(el, true, 'flex'); setNavToggle('btn-controls', false); }
+    _ctlMode = null;
+    return;
+  }
+  if (key !== _ctlMode) renderControls(key);
+  // re-measured while it is open: the nav bar wraps to a different number of
+  // rows as the window changes, and the tour rail slides the whole corner
+  if (!el.hidden) placeCtlStack();
+}
+
+// The dragon used to own two cards and two buttons of its own; both are gone,
+// and entering or leaving the flight is now just another mode change. Kept as
+// a named call because startFlight/onLand read better for it.
 function showFlightCards(on) {
-  for (const [btnId, cardId] of [['btn-flightctl', 'flight-ctl'], ['btn-camctl', 'cam-ctl']]) {
-    const b = document.getElementById(btnId);
-    if (b) b.style.display = on ? '' : 'none';
-    ctlToggle(cardId, btnId, on);
+  refreshControlsBtn();
+  if (on) {
+    let want = true;
+    try { want = localStorage.getItem('hp_ctl_open') !== '0'; } catch (_) {}
+    if (want) window.toggleControls(true);   // the dragon is the one mode nobody can guess
   }
 }
 
@@ -951,6 +1224,7 @@ window.exitTour  = () => {
   closeTourWoodcut();
   const fc = document.getElementById('tour-flavor-chooser'); setHidden(fc, true);
   clearTour(); showToursMenu();
+  refreshControlsBtn();
 };
 
 // The 1499 woodcut for the current tour moment — called up on demand.
@@ -1231,10 +1505,11 @@ async function launchHPWorld({ station = null, style = null, spawn = null, choos
   } else if (chooser && !station && !spawn) {
     showHPMode(true);
   } else {
-    showHint('W A S D / arrows walk · Shift run · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
+    showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · everything else is on “Controls”, top right');
   }
   refreshTouchControls();
   refreshLookCtl();
+  refreshControlsBtn();
 }
 
 
@@ -1345,9 +1620,11 @@ async function launchVaults({ depth = 1, lamps = 0, seed = null } = {}) {
   vaultHud(depth, scene.lamps);
   setHidden(document.getElementById('vault-hud'), false, 'block');
   drawVaultMap(scene.mapState());
-  showHint('W A S D to feel your way · Shift to run · find the lamps, then the little wicket · Esc to leave');
+  refreshControlsBtn();
+  showHint('W A S D to feel your way · find the lamps, then the little wicket · Esc to leave · everything else is on “Controls”, top right');
   refreshTouchControls();
   refreshLookCtl();
+  refreshControlsBtn();
 }
 
 window.hpVaults = () => { showHPMode(false); launchVaults({ depth: 1, lamps: 0 }); };
@@ -1551,11 +1828,17 @@ window.hpRoll = async () => {
     updateRollHud(sc.roll.r, true);
     showHint(`${m.sign}  ${m.name} — ${m.metal}.  ${m.note}`);
   };
+  // T changes the scheme, and the footer says WHICH scheme you are on — it no
+  // longer tries to be the manual. Both schemes are set out side by side on
+  // the Controls card, which does not need re-rendering here: the mode has not
+  // changed, only its state, and an open card must survive that (Ted's brief,
+  // 2026-09-20). The toast still fires, because a scheme change is exactly the
+  // transient, one-off learning moment showHint is good at.
   sc.roll.onScheme = (tank) => {
     const f = document.getElementById('roll-foot');
     if (f) f.innerHTML = tank
-      ? 'TWO-STICK: W A S D the left hand &middot; I J K L or arrows the right &middot; both forward rolls, one forward turns, both aside turns &middot; drag turns the ball &middot; C camera behind &middot; Space quick turn &middot; T single-stick &middot; Esc stop'
-      : 'W A S D roll &middot; Q E Z C the diagonals &middot; right button held rolls the way you look &middot; drag or &#9650;&#9660; to look &middot; Space quick turn &middot; Shift dash &middot; T two-stick scheme &middot; Esc stop';
+      ? 'Two-stick &mdash; W A S D the left hand, I J K L the right &middot; <b>Controls</b> in the bar above for the rest'
+      : 'Single-stick &mdash; W A S D rolls the way you look &middot; <b>Controls</b> in the bar above for the rest';
     showHint(tank ? 'Two-stick: WASD is the left hand, IJKL the right. Both forward to roll; one forward to turn.' : 'Single-stick: roll the way the camera looks.');
   };
   // ── The chemical wedding is a moment, not a dialogue box ────────────────
@@ -1592,7 +1875,8 @@ window.hpRoll = async () => {
     updateRollHud(roll.r, true);
   };
   updateRollHud(sc.roll.r, true);      // lead, 0.22 / 0.60 m, and the empty bar
-  showHint('W A S D / arrows roll · drag to swing the view · wheel to pull back · Esc to stop rolling');
+  refreshControlsBtn();
+  showHint('W A S D / arrows roll · drag to swing the view · Esc to stop · everything else is on “Controls”, top right');
 };
 
 // ── Roll again ────────────────────────────────────────────────────────────
@@ -1630,6 +1914,7 @@ window.hpRollExit = () => {
   const d = document.getElementById('roll-done');
   setHidden(d, true); d?.classList.remove('on');
   showHPMode(true);
+  refreshControlsBtn();
 };
 window.hpVaultsDeeper = () => {
   const n = state.vaultNext || { depth: 2, lamps: 0 };
@@ -1637,6 +1922,7 @@ window.hpVaultsDeeper = () => {
 };
 window.hpVaultsExit = () => {
   state.vaults = false;
+  refreshControlsBtn();
   setHidden(document.getElementById('vault-hud'), true);
   setHidden(document.getElementById('vault-over'), true);
   launchHPWorld({ chooser: false, station: 'portal' });
@@ -1671,9 +1957,10 @@ window.hpExplore = () => {
   showFlavorChooser({
     kicker: 'Walking the Dream Garden freely', begin: 'Start walking',
     onDone: () => {
-      showHint('W A S D / arrows walk · Shift run · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
+      showHint('W A S D / arrows walk · Shift run · drag to look · 1–9 the wonders · everything else is on “Controls”, top right');
       refreshTouchControls();
       refreshLookCtl();
+      refreshControlsBtn();
     },
   });
 };
@@ -1786,6 +2073,7 @@ window.hpReadGo = (n) => {
 window.hpReadExit = () => {
   setHidden(document.getElementById('read-panel'), true);
   state.reading = false;
+  refreshControlsBtn();
   renderWalkPlate();          // the frame goes back to the station's plate
 };
 
@@ -1819,10 +2107,11 @@ window.hpRead = async () => {
   renderRead();
   readSync();
   renderWalkPlate();
-  showHint('Reading the whole book · [ and ] turn the page · the world follows · Esc to stop reading');
+  refreshControlsBtn();
+  showHint('Reading the whole book · [ and ] turn the page · the world follows · everything else is on “Controls”, top right');
 };
 
-const FLY_HINT = 'The dragon has you — the keys are on the Flight Controls and Camera Controls cards, toggled from the bar at the top.';
+const FLY_HINT = 'The dragon has you — W faster, A D to turn, R F to climb and dive · everything else is on “Controls”, top right.';
 window.hpFly = () => {
   showHPMode(false);
   const sc = state.activeScene;
@@ -1832,15 +2121,17 @@ window.hpFly = () => {
     onDone: () => {
       sc.onLand = () => {
         showFlightCards(false);
-        showHint('Landed. W A S D / arrows walk · drag or the ▲▼ buttons to look · 1–9 the wonders · 0 sails to Cythera');
+        showHint('Landed. W A S D / arrows walk · drag to look · 1–9 the wonders · everything else is on “Controls”, top right');
         refreshTouchControls();
         refreshLookCtl();
+        refreshControlsBtn();
       };
       sc.startFlight();
       showFlightCards(true);
       showHint(FLY_HINT);
       refreshTouchControls();
       refreshLookCtl();
+      refreshControlsBtn();
     },
   });
 };
@@ -2016,6 +2307,7 @@ function startDream() {
   scene.walker.player.pitch = -0.02;
   scene.dream = new DreamMode(scene, dreamUI, DREAM_STOPS, DREAM_REACTIONS);
   scene.dream.start();
+  refreshControlsBtn();
 }
 
 window.dreamNext   = () => state.activeScene?.dream?.advance();
@@ -2111,8 +2403,25 @@ function showMessage(title, msg) {
 // ─── Keyboard navigation ──────────────────────────────────────────────────────
 
 window.addEventListener('keydown', (e) => {
-  // Poliphilo's Dream owns the keyboard (Space/Enter advance, Esc wakes)
-  if (state.activeScene?.dream) return;
+  // Poliphilo's Dream owns the keyboard (Space/Enter advance, Esc wakes).
+  //
+  // …with one addition, 2026-09-20. The reaction-choice — the one decision the
+  // game asks you to make, four times thirteen — could ONLY be made with the
+  // mouse: DreamMode binds Space, Enter, → and Esc and nothing else, so a
+  // reader playing on the keyboard had to reach for the pointer at every
+  // wonder and nowhere else. 1–4 pick the moods in the order they are drawn.
+  // It CLICKS the button rather than calling dream.choose(i), so the index can
+  // never run past the options actually on screen — `choose` treats an index
+  // it has no option for as a stale click and skips the stop.
+  if (state.activeScene?.dream) {
+    const d = e.code.match(/^Digit([1-4])$/);
+    if (d) {
+      const btns = document.querySelectorAll('#dream-choices.on .dp-choice');
+      const b = btns[+d[1] - 1];
+      if (b) { e.preventDefault(); b.click(); }
+    }
+    return;
+  }
   // In the vaults the only key that is not the crawl's own is the way out
   if (state.vaults) {
     if (e.key === 'Escape') { e.preventDefault(); window.hpVaultsExit(); }
@@ -2172,7 +2481,22 @@ window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') { e.preventDefault(); galleryStep(1); }
       if (e.key === 'ArrowLeft')  { e.preventDefault(); galleryStep(-1); }
       if (e.key === 'Escape')     closeGalleryImg();
-    } else if (e.key === 'Escape' || e.key === 'g' || e.key === 'G') {
+    } else if (e.key === 'Escape') {
+      // The gallery's own entry hint has said "Esc to close" since it was
+      // written, and this branch was an EMPTY BLOCK: Esc shut the lightbox and
+      // then, at the grid, did nothing at all. Found 2026-09-20 while checking
+      // every documented key against the listener behind it.
+      //
+      // It hides the overlay rather than calling switchWorld('HP'), because
+      // entering the gallery never disposed the scene — the Dream Garden is
+      // still standing behind it, and a rebuild here would cost half a minute
+      // to arrive at a world that was never taken down.
+      e.preventDefault();
+      hideGalleryOverlay();
+      state.world = 'HP';
+      state.inGallery = false;
+      setActiveWorldBtn('btn-hp');
+      refreshControlsBtn();
     }
     return;
   }
@@ -2181,7 +2505,7 @@ window.addEventListener('keydown', (e) => {
 
 // ─── Resize ───────────────────────────────────────────────────────────────────
 
-window.addEventListener('resize', resizeAll);
+window.addEventListener('resize', () => { resizeAll(); placeCtlStack(); });
 
 // ResizeObserver catches iframe resize events that don't fire 'resize' on window
 if (typeof ResizeObserver !== 'undefined') {
@@ -2201,7 +2525,7 @@ function animate() {
   if (w !== _lastW) { _lastW = w; resizeAll(); }
 
   // Keep the mobile controls in sync with whatever world/mode is up
-  if (++_tcTick % 15 === 0) { refreshTouchControls(); refreshLookCtl(); }
+  if (++_tcTick % 15 === 0) { refreshTouchControls(); refreshLookCtl(); refreshControlsBtn(); }
 
   // the roll-up gauge, its countdown, and the wedding's pull-back
   if (state.activeScene && state.activeScene.roll) rollTick(dt);
