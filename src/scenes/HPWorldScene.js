@@ -45,12 +45,12 @@ import {
 import { Materials } from './world/materials.js?v=10';
 import { Nature } from './world/nature.js?v=16';
 import { Approach } from './world/approach.js?v=13';
-import { Portal } from './world/portal.js?v=26';
+import { Portal } from './world/portal.js?v=28';
 import { Palace } from './world/palace.js?v=26';
 import { Triumphs } from './world/triumphs.js?v=15';
 import { Tombs } from './world/tombs.js?v=9';
-import { Temple } from './world/temple.js?v=13';
-import { Cythera } from './world/cythera.js?v=11';
+import { Temple } from './world/temple.js?v=15';
+import { Cythera } from './world/cythera.js?v=14';
 import { Rollup } from './world/rollup.js?v=13';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
 import { Screens } from './world/screens.js?v=5';

@@ -42,7 +42,14 @@ export const Temple = {
   //
   //   THE FABRIC — dry-jointed ashlar of white marble, "without iron and
   //   timber" (p. 209): mortarless stereotomy, so nothing here is pinned or
-  //   pegged. The wall is pierced in eight bays.
+  //   pegged. The wall is pierced in eight bays — which is one reading short:
+  //   the book has eight WINDOWS (p. 211) inside TEN radial divisions (p. 197,
+  //   p. 198), the two remaining parts being the door and the golden valves of
+  //   the adytum opposite it, "whence, in sum, eight windows there were —
+  //   because one part the door of the temple occupied, and, directly opposite
+  //   … another part" (p. 199). Eight bays total makes only six windows and
+  //   loses the decad that governs the whole plan. Filed, not silently
+  //   rebuilt: ticket bug-temple-drum-eight-bays-not-ten.
   //
   //   THE FLOOR — porphyry and ophite banding round the pilasters and the
   //   well; ten inlaid roundels stepping inward toward the cistern in red
@@ -97,8 +104,45 @@ export const Temple = {
     const bronze  = M(0x8a6a34, { metalness: 0.85, roughness: 0.38, tone: 0.12 });
     const lode    = M(0x24242c, { metalness: 0.4, roughness: 0.7, tone: 0.36 });
 
-    const R = 6.2;            // the drum
-    const WALL_H = 5.2;
+    // ── THE SETTING-OUT (p. 197, p. 204) ─────────────────────────────────
+    //
+    // This is the one building in the book given as a RULE rather than a size
+    // (DIMENSIONS.md, "The Temple of Venus Physizoa"), so its absolute size is
+    // ours and every proportion in it is Colonna's. Until 2026-09-20 the rule
+    // was nowhere in this code: R and WALL_H were two picked numbers standing
+    // side by side, and the wall came out at 0.42 of the diameter — less than
+    // half of what the text asks. Ted, walking the live site: "we have some
+    // places where the roof is too low and is not the sky."
+    //
+    //   p. 197, of the temple itself: "as much as the diametral line found, so
+    //   much did it render its height". The height of a round temple IS its
+    //   diameter.
+    //
+    //   p. 204 then qualifies its own universal rule and hands over the two
+    //   that can actually be built to: "it is not completable to have only
+    //   concluded this universal rule — that a round temple raises itself as
+    //   much as is its diameter. But it concurs, regularly, to find the height
+    //   of the binding above the peristyle (that is, of the topmost line of the
+    //   cornice): for, the line deduced from the centre to the circumference of
+    //   the first circuit, so much presents that height. Then, all the diameter
+    //   divided into six divisions, four of those rectified will likewise give
+    //   the last surface of the upper binding."
+    //
+    // Two bindings, then, and two heights: the INNER cornice over the peristyle
+    // at the radius (6.2 — that peristyle is the ambulatory of the ten arches,
+    // p. 198, which this drum does not yet have: ticket
+    // bug-temple-drum-eight-bays-not-ten), and the LAST SURFACE OF THE UPPER
+    // binding — the cornice this drum does carry — at four sixths of the
+    // diameter. The wall is therefore what is left of 4/6 D under the
+    // entablature, and not a number anyone chose.
+    const R = 6.2;                        // the drum: the one free choice, from the 2026-09-05 build
+    const D = 2 * R;                      // 12.4 — the module every height here comes off
+    const CORNICE_Y = D * 4 / 6;          // 8.27: "four of those [six divisions] … the last surface of the upper binding"
+    const ENTAB_H = 1.25;                 // what `_entablature` stacks above the y it is given (portal.js)
+    const WALL_H = CORNICE_Y - ENTAB_H;   // 7.02 — was 5.2, picked. The wall carries the binding TO its height.
+    // pp. 211–212: the wall is 1½ ft thick and the pilasters usurp 3 ft of it
+    // beyond the cornice — 0.89 m at the book's foot of 0.2957, which is what
+    // this already was. Left alone: measured and found right.
     const PIER = 0.9;
 
     // ── the seven porphyry steps, and the propylaeum ──────────────────────
@@ -162,6 +206,23 @@ export const Temple = {
         k === 0 ? marble : shadow, bx, PLAT_Y + 0.55, bz, { cast: false });
       sill.rotation.y = b;
       if (k === 0 || k === 4) sill.visible = false;     // the door, and the sacello opposite it
+      // THE OVERDOOR, both of them. p. 199 counts the parts of the wall: eight
+      // are windows, "because one part the door of the temple occupied, and,
+      // directly opposite … another part" — the door and the golden valves of
+      // the adytum. A part occupied by a door is still wall above that door.
+      // At WALL_H = 5.2 this was moot: the doorcase (top at 4.06) all but
+      // reached the spandrel, and the sliver left over was invisible. Raising
+      // the wall to the book's 4/6 D opened two metres of daylight over the
+      // jasper case — from the meadow you could see the crystal lamp burning
+      // through the hole above the door — so the wall is carried over both
+      // openings, from the case's cornice to the soffit of the spandrel.
+      // Found by walking outside and looking at the front, not by reading.
+      if (k === 0 || k === 4) {
+        const y0 = PLAT_Y + 4.05, y1 = PLAT_Y + WALL_H - 0.9;
+        const over = this._m(new THREE.BoxGeometry(4.0, y1 - y0, 0.9), marble,
+          bx, (y0 + y1) / 2, bz, { cast: false });
+        over.rotation.y = b;
+      }
     }
 
     // the entablature ring and the scaled cupola
@@ -172,7 +233,22 @@ export const Temple = {
     }
     // "A scaled cupola resided" — the courses are drawn as diminishing rings,
     // which is what a scaled dome is: overlapping courses of stone.
-    const DOME_Y = PLAT_Y + WALL_H + 0.95;
+    // The dome springs 0.30 under the last surface of the upper binding, so its
+    // lowest course laps the corona and there is no seam to see. (Same number
+    // as before — WALL_H + 0.95 — but said as what it is, a lap under the
+    // cornice, so it follows the cornice when the cornice moves.)
+    const DOME_Y = PLAT_Y + CORNICE_Y - 0.30;
+    // "The rule of the descent of the roof ought not to be neglected: one takes
+    // the intercapace from wall to wall … and reduced into two perfect squarings
+    // as much as they can come; and, the diagonal extended, cutting the line,
+    // discriminating the two squares — thence, beautifully, the slope is
+    // exacted" (p. 204). Wall to wall is D; two perfect squares in it stand R
+    // high each; that diagonal rises R in a run of D — one in two — and over the
+    // half-span R it lifts R / 2. (It was R * 0.52, near enough by accident and
+    // uncited; it is the rule now.) Crown at 11.07 over the temple floor against
+    // a diameter of 12.4: p. 197's universal rule is made up by the lantern,
+    // which is where a rotunda of this family always makes it up.
+    const DOME_RISE = R / 2;
     // The courses are open-ended shells, so they must be DOUBLE-sided or the
     // dome is invisible from underneath and you stand in the temple looking at
     // open sky through your own roof. (Found by looking up, not by reading.)
@@ -187,9 +263,9 @@ export const Temple = {
       const r1 = R * Math.cos(t2 * Math.PI / 2) * 1.02;
       domeCourses.push(this._m(new THREE.CylinderGeometry(r1, r0, R * 0.46 / SC * 2.2, 32, 1, true),
         i % 2 ? domeA : domeB,
-        TX, DOME_Y + Math.sin(t * Math.PI / 2) * R * 0.52, TZ, { cast: false }));
+        TX, DOME_Y + Math.sin(t * Math.PI / 2) * DOME_RISE, TZ, { cast: false }));
     }
-    const APEX = DOME_Y + R * 0.52;
+    const APEX = DOME_Y + DOME_RISE;
     // the cupola is a load, and every pier under it takes a share
     if (piers.length) {
       const dome = this.masonry.carry(piers[0], domeCourses);
