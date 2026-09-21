@@ -1,0 +1,702 @@
+{
+  "note": "The ground BETWEEN the stations, gap by gap: what is open, what the book says lies there, what Renaissance practice would put there where the book is silent, the view sequence to protect, and what it costs. Written 2026-09-20 in answer to Ted's live test ('I don't want a bunch of mostly empty spaces between our buildings'). Prose and reasoning: RETHINK.md. Subordinate to research/coverage.json, which remains the ledger of what the book has and the world does not; nothing here promotes a feature's status. Every element carries a `provenance`: `book` (cited to a 1499 page), `ours, after <named precedent>` (a precedent contemporary with or earlier than 1499, or a classical source the humanists read), or `ours, unsupported`.",
+  "compiled": "2026-09-20",
+  "compiled_by": "research-and-design pass, no src/ edits",
+  "frame": {
+    "plan_z_to_world_z": "world z = plan z + PLAN_ANCHOR (104.0)",
+    "compass": "+z SOUTH, -z NORTH, +x EAST, -x WEST (declared at src/scenes/world/constants.js:34)",
+    "stadium_m": 185.0,
+    "pace_m": 1.48,
+    "roman_foot_m": 0.296,
+    "note_on_spans": "The plan separates consecutive precincts by exactly ONE STADIUM (185 m) almost everywhere, and by two at polia_garden->three_doors. The `open_span_z_m` column is precinct BOX edge to BOX edge, from src/scenes/world/plan_sites.js zSouth/zNorth. The boxes for precincts marked `sized: ours` are plan allocations, not built extents: the geometry actually inside them is authored in stage-1 (x4) coordinates and is in most cases far smaller than its box. So `open_span_z_m` is a LOWER BOUND on the open ground, and the true figure at the Temple of Venus, the Polyandrion and Vertumnus is substantially larger. This was not measured live (see RETHINK.md 'Where this plan is thin')."
+  },
+  "budget": {
+    "rule": "ENGINEERING.md / CLAUDE.md rule 7. The gate is regression, not an absolute.",
+    "world_triangles_cap": "+15 % over the hpDiag world-total measured at the START of the first infill ticket. That number is not in this file because no live reading was taken this pass; the first builder records it in the commit message before touching anything.",
+    "per_view_cap": "No single view's draw calls may rise more than 25 % (rule 7).",
+    "why_per_view_matters_more": "DRAWCALLS.md: cost is a property of the VIEW, not of the world. None of these eight gaps is ever in the same frustum as the pyramid's north face or as Cythera, so the worst frame in the world (the dark wood, 3 124 calls / 2.92 M tris on 2026-09-09) is untouched by every proposal here.",
+    "estimated_total_triangles": 538000,
+    "estimated_total_draw_calls": 41,
+    "drop_order_if_over": ["G1", "G8", "G2", "G7", "G5", "G4", "G6", "G3"],
+    "method": "Every proposal is costed on the _isleGrove model (src/scenes/world/cythera.js:840): one InstancedMesh for trunks and one for crowns per species, so a species of any count is TWO draw calls. A tree is ~100 triangles (6-sided trunk cylinder ~36, 7x5 crown sphere ~70, or a 7-sided cone ~14). Hedges are merged box runs, ~12 triangles per 5 m segment. Water is a ribbon plane."
+  },
+
+  "gaps": [
+    {
+      "id": "G1",
+      "from": "enclosure",
+      "to": "palace",
+      "rank": 8,
+      "centre_to_centre_m": 183.2,
+      "open_span_z_m": 0.0,
+      "lateral_offset_m": 0.0,
+      "finding": "THERE IS NO GAP. enclosure.zNorth and palace.zSouth are the same number, -2974.4. The 183 m centre-to-centre in research/plan.json is half the enclosure's depth plus half the palace's; the two boxes abut, as the book requires, because the palace IS the enclosure's fourth side (DIRECTIONS.md 3, row 17). The defect here is not emptiness but a missing wall: BUILDINGPLAN.md's own open line, 'the palace does not yet close the green enclosure's north side'.",
+      "built_today": "_buildGreenEnclosure and _citrusRun (src/scenes/world/screens.js) build east and west hedges and the avenue's closing hedge to the south. The north side is open ground onto the palace precinct.",
+      "book": [
+        {
+          "page": 93,
+          "words": "to this excellent colonnade let its two hundred columns yield - Numidian, Claudian, Simiadic and Thistian, divided in equal number ... What gate-house, or vestibule; what royal portico ... the marvellous ceiling, most beautifully coffered, with little coffers between the wavings, covered with foliage, set in square and round. Adorned with exquisite lineaments, gilded of pure gold and of a dark blue colouring",
+          "file": "translation/en/page_093.md"
+        },
+        {
+          "page": 93,
+          "words": "the way in was closed by a joyful and marvellous curtain stretched across, all of golden thread ... This chief and first curtain it is granted to no one to enter without the receiving of a plain and watchful damsel doorkeeper, called Cynosia ... Here was an enclosed space, divided by another veiling ... a woman likewise careful came immediately to us, named Indalomena",
+          "file": "translation/en/page_093.md"
+        },
+        {
+          "page": 94,
+          "words": "a third matron, our hostess ... Whose name was Mnemosyne ... I saw a lofty portico, as long as the compass of the palace",
+          "file": "translation/en/page_094.md"
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G1-a",
+          "element": "The palace front as a 200-column colonnade closing the enclosure's north side",
+          "provenance": "book",
+          "source": "our p. 93 (translation/en/page_093.md)",
+          "note": "Four marbles in equal number, 50 columns each. 200 columns cannot stand in one 88.8 m run at any believable intercolumniation, so the book's 200 is the whole peristyle: the front run closing the enclosure plus the two returns and the inner court. Build the front run and declare the rest.",
+          "triangles": 22000,
+          "draw_calls": 4
+        },
+        {
+          "id": "G1-b",
+          "element": "The three curtains and their three keepers, in sequence, as the way in",
+          "provenance": "book",
+          "source": "our pp. 93-94",
+          "note": "Cynosia, Indalomena, Mnemosyne. Three successive veils each withholding the next room: the book's screen device at its purest, and it costs three planes.",
+          "triangles": 400,
+          "draw_calls": 3
+        },
+        {
+          "id": "G1-c",
+          "element": "A two-storey order for the front, lower Doric and upper Ionic, on a stylobate of three steps",
+          "provenance": "ours, after Alberti, De re aedificatoria VII-IX (the orders superimposed, the gravest below), and the Ducal Palace at Urbino's Cortile d'Onore (Laurana, 1460s)",
+          "source": "no 1499 page; the book gives the columns' marbles and not their order",
+          "note": "Answers NEXTSTEPS 0-AA's 'the roof is too low': the existing Queen's Court colonnade is 4.0 m. A two-storey front at ~11 m to the upper cornice reads as monumental against an 88.8 m room.",
+          "triangles": 8000,
+          "draw_calls": 3
+        }
+      ],
+      "spectacle": {
+        "first_seen": "the palace front, over the citrus hedge, from the gate at the avenue's north end",
+        "withheld": "the court, the pavement of 64 squares, the Queen",
+        "reveal_at": "the third curtain",
+        "sightlines_to_protect": ["the 740 m avenue axis onto the palace front - nothing may stand in it"],
+        "screens_to_build": ["the palace front itself", "the three curtains"]
+      }
+    },
+
+    {
+      "id": "G2",
+      "from": "palace",
+      "to": "polia_garden",
+      "rank": 6,
+      "centre_to_centre_m": 394.2,
+      "open_span_z_m": 185.0,
+      "lateral_offset_m": 0.0,
+      "built_today": "Inside the palace precinct: _buildArtificialGardens (glass, silk, water-labyrinth), _buildShadedWalk, _buildRills, _buildBridge, _buildQuinta. Inside polia_garden: _buildPoliaGarden, _buildPoliaArcade. Between the two boxes: the world ground plane, the 3.4 m path strip, and thin grass.",
+      "book": [
+        {
+          "page": 131,
+          "words": "this meadow flowering round about, founded and abiding in a wide and circling space, with bending shrubs of every fruit, sweet to the taste, and packed with every health, with a perpetual greenness, with the ordering of a ruled arrangement for comeliness and charm and adornment, disposed and planted",
+          "file": "translation/en/page_131.md",
+          "reading": "The ivied enclosure of the hundred arches stands in a WIDE CIRCLING SPACE of fruiting shrubs set out in a ruled arrangement. That ordered shrub ring is the fill for this stretch, and it is the book's, not ours."
+        },
+        {
+          "page": 131,
+          "words": "both of them holding me by the hands, we went out festively through the gap, or opening, of one of the arches, outside the girdle of the ivied enclosure; and going on from there through the middle of that compass",
+          "file": "translation/en/page_131.md"
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G2-a",
+          "element": "The ruled ring of fruiting shrubs round the ivied enclosure, filling the 185 m between the palace and the garden",
+          "provenance": "book",
+          "source": "our p. 131",
+          "note": "Ordered, not scattered: the page says 'the ordering of a ruled arrangement'. Concentric rings on the garden's own centre, so it reads as the garden's apron and not as landscape.",
+          "triangles": 30000,
+          "draw_calls": 4
+        },
+        {
+          "id": "G2-b",
+          "element": "The three artificial gardens spread out of the palace precinct into this stretch, one to each side of the walk",
+          "provenance": "book",
+          "source": "ch. IX, our pp. 117-131; DECISIONS.md 2026-09-09 call 4 (build them, and let the commentary say Hunt disagreed)",
+          "note": "They are built and they are crowded inside the palace box. Moving two of them out into the 185 m makes the walk a sequence of rooms rather than a lawn.",
+          "triangles": 0,
+          "draw_calls": 0
+        },
+        {
+          "id": "G2-c",
+          "element": "Low clipped box compartments between the shrub rings, with turf seats in the angles",
+          "provenance": "ours, after Pliny the Younger, Ep. V.6.16-17 (the Tuscan villa's box compartments and clipped work) and Alberti IX.4 (walks and trees in ordered rank)",
+          "source": "no 1499 page for this stretch; _buildTurfSeats and _topiary already exist",
+          "triangles": 10000,
+          "draw_calls": 2
+        }
+      ],
+      "spectacle": {
+        "first_seen": "the hundred arches as a low ring on the skyline, read through the shrub ranks",
+        "withheld": "the trigonal altar and the obelisk at the centre",
+        "reveal_at": "the arch you walk through",
+        "sightlines_to_protect": ["from the palace gate, the arch ring must read as a closed circle, not as a wall"],
+        "screens_to_build": ["the shrub rings themselves"]
+      }
+    },
+
+    {
+      "id": "G3",
+      "from": "polia_garden",
+      "to": "three_doors",
+      "rank": 1,
+      "centre_to_centre_m": 533.0,
+      "open_span_z_m": 370.0,
+      "lateral_offset_m": 0.0,
+      "finding": "THE LARGEST OPEN SPAN ON THE ITINERARY - two stadia - and the one the book fills most completely. Its centrepiece, the three-arch bridge, IS ALREADY MODELLED and is standing in the wrong precinct: _buildSecondBridge (src/scenes/world/portal.js:1635) is called inside _in('venus_temple', ...) at HPWorldScene.js:363, about 1 800 m north of where p. 133 puts it. Its hieroglyphs - the matron with wings and tortoise, the circle held by two spirits - are the ones Logistica reads on the way TO THE THREE DOORS.",
+      "built_today": "Nothing in the span. The bridge that belongs here is at the Temple of Venus. The path is a 3.4 m strip of the world-long processional plane.",
+      "book": [
+        {
+          "page": 133,
+          "words": "we came most festively to a most charming river. Upon the banks of which I saw a gracious plane-grove, besides other greenest little trees, and water shoots excellently set and placed, with lotuses set between. Where there crossed a proud stone bridge of three arches, with its ends upon the banks above the firmest foundations, with the piers keeled at their two fronts to hold the structure most firm, and with most noble parapets",
+          "file": "translation/en/page_133.md"
+        },
+        {
+          "page": 133,
+          "words": "at the middle curve of the wedge beneath the arch, here and there, there stood out, raised and well polished, a porphyry square with a gable, holding a sunk carving of hieroglyphs. On the right at our crossing I saw a matron bound with a serpent, sitting upon one haunch only ... she held a pair of wings, and in the other ... a tortoise. Opposite there was a circle, the centre of which two little spirits held",
+          "file": "translation/en/page_133.md"
+        },
+        {
+          "page": 134,
+          "words": "Which bridge was then of a moderate slope ... Which was all of most comely Hymettian marble. Having passed the bridge, we walked beneath through the cool shades, sweetly kept by the various chattering of small birds. We came to a stony and rocky place, where lofty and steep mountains rose up. And thence next to a broken and pathless and rugged mountain, all gnawed away and full of a bursting roughness. High into the air, worn down to a spur, and bare of all greenness, and dry mountains round about.",
+          "file": "translation/en/page_134.md"
+        },
+        {
+          "page": 134,
+          "words": "these hieroglyphs ... are much to the purpose for one who goes to the three doors. And therefore they are most fitly set here as a monument for those passing by. The circle says: the blessed have held to the middle. The other: temper swiftness by sitting, and slowness by rising.",
+          "file": "translation/en/page_134.md",
+          "reading": "Logistica says outright that this bridge is a monument SET ON THE ROAD TO THE DOORS. It cannot stand anywhere else."
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G3-a",
+          "element": "Move the three-arch Hymettian bridge to this gap and build it at a river's scale",
+          "provenance": "book",
+          "source": "our pp. 133-134",
+          "note": "It exists: deck 4.6 x 3.4 m, three torus arches of radius 0.55 m, two porphyry tablets, the tortoise-and-wings device already carved. At 4.6 m it is a garden bridge; over a real river it wants a ~14 m deck and a 6 m arch span. Re-site first, regrow second.",
+          "triangles": 4000,
+          "draw_calls": 5
+        },
+        {
+          "id": "G3-b",
+          "element": "The river itself, crossing the itinerary at right angles",
+          "provenance": "book",
+          "source": "our p. 133 ('a most charming river')",
+          "note": "No width is stated. 18 m is proposed as what the three arches the book DOES specify would span with keeled piers. Mark the width `ours`. _ribbon and _waterMat already exist (approach.js:1127).",
+          "triangles": 600,
+          "draw_calls": 2
+        },
+        {
+          "id": "G3-c",
+          "element": "The plane-grove on both banks, with 'water shoots' (willow/osier) and lotus beds between",
+          "provenance": "book",
+          "source": "our p. 133",
+          "note": "About 400 planes at 2 draw calls, osiers at 2, lotus pads as one instanced quad field. The plane is already a species in SPECIES (nature.js).",
+          "triangles": 46000,
+          "draw_calls": 6
+        },
+        {
+          "id": "G3-d",
+          "element": "The shaded walk beyond the bridge - 'cool shades, sweetly kept by the various chattering of small birds'",
+          "provenance": "book",
+          "source": "our p. 134",
+          "note": "_buildShadedWalk and _buildBirds already exist. This is the last screen before the rock, and it is what makes the rock's bareness land.",
+          "triangles": 14000,
+          "draw_calls": 4
+        },
+        {
+          "id": "G3-e",
+          "element": "The dry mountains: the doors' rock face continued into a ring of bare, gnawed, grassless spurs closing the north end of the gap",
+          "provenance": "book",
+          "source": "our p. 134; DIRECTIONS.md 6C ('cut in a bare rock face in stony, grassless highland - not a free-standing wall')",
+          "note": "_buildDoorsWall builds the face. The surround is missing and is what makes it a place instead of a prop. _meadowClearance already masks grass over the whole stony seat (nature.js), so the ground is ready for it.",
+          "triangles": 9000,
+          "draw_calls": 2
+        }
+      ],
+      "spectacle": {
+        "first_seen": "green country, and the river's line of planes across the way - the rock is NOT visible",
+        "withheld": "the three doors, entirely, until the bridge is crossed and the shaded walk is walked",
+        "reveal_at": "the north end of the shaded walk, where the trees stop and the bare spurs stand up at once",
+        "sightlines_to_protect": ["from the garden's arch, the eye must stop at the plane-grove", "from the bridge's crown, the two porphyry tablets must both be legible before the walker steps off"],
+        "screens_to_build": ["the plane-grove", "the shaded walk", "the ring of dry spurs"],
+        "reaction_register": "Logistica's gloss on the bridge is the book's own instruction to stop and read; the reveal beyond it is the harshest change of ground in the first book."
+      },
+      "cost_total_triangles": 73600,
+      "cost_total_draw_calls": 19
+    },
+
+    {
+      "id": "G4",
+      "from": "three_doors",
+      "to": "triumphs",
+      "rank": 3,
+      "centre_to_centre_m": 462.5,
+      "open_span_z_m": 185.0,
+      "lateral_offset_m": 0.0,
+      "finding": "The book's own withhold-and-reveal machine sits in this gap and the world has it in the wrong place. _buildJasmineArbour (src/scenes/world/palace.js:1518) is built inside the PALACE precinct; chapter XI puts the jasmine arbour AFTER the third door, on the plain where the bath-nymphs leave him, and it is the thing that hides the festival plain until he walks out from under it.",
+      "built_today": "Nothing in the span.",
+      "book": [
+        {
+          "page": 141,
+          "words": "the lovely damsels, without my noticing, left me alone, so kindled, in a most pleasant plain ... raising my eyes a little, behold, before me I see only an artful arbour of flowering jasmine, with a tall arching, painted all over with its fragrant little flowers of the three colours mingled. Entering beneath this ...",
+          "file": "translation/en/page_141.md"
+        },
+        {
+          "page": 142,
+          "words": "without noticing, I came to the end of that flowery covering; and looking, there appeared to me a countless crowd of youth of both kinds keeping high festival, with sounding voices and with the melodies of various instruments, with comely and playful dancings and clappings ... solacing themselves in troops upon a most ample plain. So that, seized by this such and welcome novelty, sitting down full of wonder, I stood in thought about going any further.",
+          "file": "translation/en/page_142.md",
+          "reading": "THE STRUCTURE IS EXPLICIT: a covered walk that shows nothing, ended by a reveal that stops him where he stands. This is the single clearest statement in the book of DIRECTIONS.md 5, and it is 185 m long in our plan, which is exactly right for it."
+        },
+        {
+          "page": 142,
+          "words": "a Nymph, as it were notable and festive, parting from those with her burning torch in her hand, was directing her maidenly steps towards me",
+          "file": "translation/en/page_142.md"
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G4-a",
+          "element": "The jasmine tunnel-arbour, 185 m, spanning the whole gap, ending on the reveal",
+          "provenance": "book",
+          "source": "our pp. 141-142",
+          "note": "'A tall arching' - so not a low pergola; 4.5-5 m to the crown, which also answers 0-AA's low-ceiling complaint at human scale. Three colours of jasmine mingled, as the page says. ~74 arches at 2.5 m, merged into one geometry; flowers and leaves as one instanced card field. The reveal is free: it is what happens when the arbour stops.",
+          "triangles": 52000,
+          "draw_calls": 4
+        },
+        {
+          "id": "G4-b",
+          "element": "The festival plain: the countless crowd of both kinds, with instruments, dancing in troops",
+          "provenance": "book",
+          "source": "our p. 142; ledger feature xi-festival-on-the-plain (unbuilt)",
+          "note": "Cast.js figures are expensive; propose distant troops as instanced billboard clusters with a dozen real figures near the arbour's mouth. The point is population, not portraiture.",
+          "triangles": 20000,
+          "draw_calls": 5
+        },
+        {
+          "id": "G4-c",
+          "element": "A stopping place at the arbour's mouth - a turf seat where he 'sat down full of wonder'",
+          "provenance": "book",
+          "source": "our p. 142",
+          "note": "_turfSeat exists (nature.js:161). One seat, sited where the reveal is best, is a reading instruction.",
+          "triangles": 300,
+          "draw_calls": 1
+        }
+      ],
+      "spectacle": {
+        "first_seen": "nothing but jasmine, for 185 m",
+        "withheld": "the festival, the four cars, the torch-bearing nymph",
+        "reveal_at": "the arbour's north mouth, in one step",
+        "sightlines_to_protect": ["from inside the arbour, no gap in the planting may leak the triumphs"],
+        "screens_to_build": ["the arbour is the screen"]
+      },
+      "cost_total_triangles": 72300,
+      "cost_total_draw_calls": 10
+    },
+
+    {
+      "id": "G5",
+      "from": "triumphs",
+      "to": "vertumnus",
+      "rank": 4,
+      "centre_to_centre_m": 486.2,
+      "open_span_z_m": 185.0,
+      "lateral_offset_m": 150.0,
+      "finding": "THE BOOK SAYS KEEP IT OPEN, and says so twice. This is the one gap where the honest answer to 'no empty spaces' is 'this one is meant to be empty of ARCHITECTURE' - but it is meant to be full of flowers and full of people, and it is neither.",
+      "built_today": "Nothing in the span. The meadow shader covers it at 0.077 blades per square metre (see reading_faults R4), so it renders as a painted plane.",
+      "book": [
+        {
+          "page": 178,
+          "words": "circling through the flowering and blessed land and happy country, and the spring fields, a place most holy, dedicated to the blessed. Not hindered nor taken up by any growing shrub. But all the flowery ground was one level meadow of fragrant herbs and flower-bearing with flowers, endless of every colouring, and most beautiful of manifold form, and sweetest of scent",
+          "file": "translation/en/page_178.md"
+        },
+        {
+          "page": 178,
+          "words": "Here the four kinds of violet, cowslip, melilot, anemones, cornflowers, nigella, cyclamen, crowfoot, columbine, lily of the valley and amaranth, cassidony, spikenard, Celtic nard, ambrosia, amaranth, wild mint, citron and clove basil ... all the kinds of gillyflower and the smallest Persian rose-trees, fruitful with fragrant little roses, and hundred-leaved, and of all colourings ... without any human labour excellently distributed for beauty by excellent nature herself, and untilled they stood",
+          "file": "translation/en/page_178.md"
+        },
+        {
+          "page": 181,
+          "words": "Thus, then, most joyfully they went circling round through the whole flowery and most pleasant plain. Some crowned with laurel, and some with myrtle, and with manifold garlands and varied adornment",
+          "file": "translation/en/page_181.md"
+        },
+        {
+          "page": 177,
+          "words": "Many having their torches kindled and burning. Some I saw bearing shrines. Others with straight spears adorned with ancient spoils",
+          "file": "translation/en/page_177.md"
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G5-a",
+          "element": "The Elysian flower field at a density that reads as flowers, over the whole 185 m",
+          "provenance": "book",
+          "source": "our p. 178; ledger features xv-elysian-flower-meadow and xv-blessed-field-flower-catalogue (both unbuilt)",
+          "note": "Named species, in the book's own list, as drifts of instanced cards. The existing createMeadowField takes an `accept` callback and already does drifts by clump noise; this is a parameter change plus one new bounds box, not a new system.",
+          "triangles": 90000,
+          "draw_calls": 6
+        },
+        {
+          "id": "G5-b",
+          "element": "The circling festival: choirs, torch-bearers, shrine-bearers, spear-bearers with ancient spoils, going round the cars",
+          "provenance": "book",
+          "source": "our pp. 177-181; ledger features xv-choirs-before-the-four-cars, xv-torches-shrines-and-spoil-spears",
+          "note": "A ring of moving troops round the triumphs is what makes the 185 m read as full without a single building in it. Instanced clusters again.",
+          "triangles": 24000,
+          "draw_calls": 6
+        },
+        {
+          "id": "G5-c",
+          "element": "An unclouded, shadowless light over this field alone - 'the air always purest ... eternally a clear and unchanging day'",
+          "provenance": "book",
+          "source": "our p. 178",
+          "note": "A lighting call, not geometry, and it is the cheapest spectacle in the whole plan. Costs nothing and needs a decision, because the world has one sun.",
+          "triangles": 0,
+          "draw_calls": 0
+        }
+      ],
+      "spectacle": {
+        "first_seen": "the four cars, already revealed at G4's mouth - this gap is the AFTERMATH, not an approach",
+        "withheld": "Vertumnus's orchard, which G6 screens",
+        "reveal_at": "n/a - this is the one stretch that is meant to be seen across",
+        "sightlines_to_protect": ["the long view across the flower field TO the cars is the point; nothing vertical may be built in it"],
+        "screens_to_build": ["none, deliberately"]
+      },
+      "cost_total_triangles": 114000,
+      "cost_total_draw_calls": 12
+    },
+
+    {
+      "id": "G6",
+      "from": "vertumnus",
+      "to": "venus_temple",
+      "rank": 2,
+      "centre_to_centre_m": 509.3,
+      "open_span_z_m": 185.0,
+      "lateral_offset_m": -350.0,
+      "finding": "The book gives a COMPLETE GARDEN here, module and planting and road width and hedge height, and the ledger has carried it as `unbuilt` under the id xvii-orchard-hedge-garden since the chapter XVII pass. It is also the screen that currently fails: the Temple of Venus is seen across open grass from the Vertumnus altar, which is the exact inversion of DIRECTIONS.md 5.",
+      "built_today": "Nothing in the span, and a 350 m lateral dog-leg with no path on it (see reading_faults R2).",
+      "book": [
+        {
+          "page": 189,
+          "words": "she led me towards a spacious shore. Which bordered upon the flower-bearing and hilly valley, where the adorned little mountains ended at this shore, and the vine-bearing hills, with their ways shut, enclosing round about this golden country, full of incredible delight. Which were of wooded groves of a notable thickness, as though the little trees had been pleasantly set in order: the yew of Corsica and of Arcady, the fruitless and resinous wild pine, tall pines, straight firs ... the burnable spruce, the spongy larch, airy torch-pines",
+          "file": "translation/en/page_189.md"
+        },
+        {
+          "page": 190,
+          "words": "among the loftiest cypress, among the spreading beeches, among the fruitful and green oaks ... and hard oaks with rough bark, and the pricking junipers that love eternity, and brittle hazels, and the ash for spear-shafts, and the berried laurel, and shady holm-oaks, and knotty hornbeams, and lime trees ... All which trees were not of a thick planting, but dispensed at the required distance, and all duly distributed in a fitting place and aspect",
+          "file": "translation/en/page_190.md"
+        },
+        {
+          "page": 190,
+          "words": "We entered, then, where there were measured square spaces hedged about with the bounds of wide, straight, four-way roads, a pace high, of dog-thorn, or thorny grape, and of ground juniper, and most thickly bound to a wall-like level of most even box, enclosing the squares of the flowering and dewy meadows. In the order of the said hedges I beheld planted symmetrically the lofty victorious palms, with their fruitful clusters of dates hanging out of their sheaths ... Which stood alternating with the greenest citrons and oranges, hawthorn-medlars, pistachios, pomegranates, quinces, tree-myrtles, and medlars, and service-trees, and many other noble fruit trees",
+          "file": "translation/en/page_190.md",
+          "reading": "A hedge one PACE high (1.48 m, a stated measure), clipped to a wall-like level, of box with dog-thorn and ground juniper; square compartments of flowering meadow; wide straight four-way roads; palms planted symmetrically alternating with citrus and fruit trees. This is a specification, not an impression."
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G6-a",
+          "element": "The quincunx orchard: a 4 x 4 grid of square compartments across the gap, box hedges 1.48 m high, four-way roads between",
+          "provenance": "book",
+          "source": "our p. 190 (hedge height, materials, roads, planting); module and road width ours",
+          "note": "Proposed module: compartments of one quarter stadium (46.25 m) square, roads of 5 paces (7.4 m). Both numbers are arithmetic on the book's own units and are marked `ours`. Alberti IX.4 puts villa trees 'in rank and file, answering one another with equal intervals' and walks between compartments; Pliny Ep. V.6 gives the box-bounded compartments the humanists actually pictured. Do NOT cite Villa d'Este or Boboli - both are half a century or more after 1499.",
+          "triangles": 9000,
+          "draw_calls": 3
+        },
+        {
+          "id": "G6-b",
+          "element": "The planting: palms alternating with citron, orange, hawthorn-medlar, pistachio, pomegranate, quince, tree-myrtle, medlar, service-tree",
+          "provenance": "book",
+          "source": "our p. 190",
+          "note": "~640 trees on the hedge lines, alternating strictly, which is what 'planted symmetrically ... alternating' asks for. On the _isleGrove model that is 2 draw calls per species; group the ten into four crown types to hold it at 8.",
+          "triangles": 70000,
+          "draw_calls": 8
+        },
+        {
+          "id": "G6-c",
+          "element": "The conifer belt and the vine-bearing hills that close this country round, 'with their ways shut'",
+          "provenance": "book",
+          "source": "our p. 189",
+          "note": "Yew, wild pine, pine, fir, spruce, larch on a ring of low hills - the same construction as _buildWoodedCountry's ellipse, which already exists and is the cheapest enclosure in the codebase.",
+          "triangles": 46000,
+          "draw_calls": 5
+        },
+        {
+          "id": "G6-d",
+          "element": "A cross-axis view corridor on one of the four-way roads, aimed at the Temple of Venus's door",
+          "provenance": "ours, after Alberti IX.4 (the villa approach that discloses its object by a directed walk) and the Urbino belvedere tradition",
+          "source": "no 1499 page; the book gives the roads and does not aim them",
+          "note": "This is what turns the orchard from a wall into a reveal: 15 of 16 compartments hide the temple, one road frames it. It also fixes the 350 m lateral dog-leg by giving it a reason.",
+          "triangles": 0,
+          "draw_calls": 0
+        }
+      ],
+      "spectacle": {
+        "first_seen": "a clipped green wall and a line of palms, with the hills beyond",
+        "withheld": "the Temple of Venus, until you reach the one road that frames it",
+        "reveal_at": "the crossing of the second four-way road",
+        "sightlines_to_protect": ["the aimed road onto the temple door", "the closing ring of hills all round the horizon of this country"],
+        "screens_to_build": ["the box hedges", "the palm ranks", "the conifer belt on the hills"]
+      },
+      "cost_total_triangles": 125000,
+      "cost_total_draw_calls": 16
+    },
+
+    {
+      "id": "G7",
+      "from": "venus_temple",
+      "to": "polyandrion",
+      "rank": 5,
+      "centre_to_centre_m": 567.3,
+      "open_span_z_m": 185.0,
+      "lateral_offset_m": 430.0,
+      "finding": "The longest real walk of the eight (567 m with a 430 m sideways jog) and the book calls the place a Tempe by name. Nothing whatever is built in it.",
+      "built_today": "Nothing in the span.",
+      "book": [
+        {
+          "page": 238,
+          "words": "to the spacious and sandy shore, of pleasant surges rushing, washed, where was the destroyed and deserted temple, we came",
+          "file": "translation/en/page_238.md",
+          "reading": "The Polyandrion stands ON the shore. The plan's 185 m of inland between them is ours, not the book's."
+        },
+        {
+          "page": 239,
+          "words": "the delightful site, the delicious fatherland, the ornate verdures, the pleasant and temperate hills ornated with opaque little groves, the clement weather and pure airs ... dignified by the rivers flowing down, irriguous, through the wooded valley, near the curved hills, to the right and left part softly running, to the near sea precipitating; a most-salubrious field, and of most-pleasant grass, filled with manifold trees, canorous of the concert of little birds. Let yield here, then, the Thessalian river and field (Tempe).",
+          "file": "translation/en/page_239.md"
+        },
+        {
+          "page": 242,
+          "words": "rose from the happy session, from under the tempered shades of laurel, and of myrtle, and among tallish cypresses (then, about the place, the honeysuckle painting its odorous flowers, where a voluble flowering jasmine, with soft shade, opaquely covered us, disseminating over us copiously its whitest flowers)",
+          "file": "translation/en/page_242.md"
+        },
+        {
+          "page": 242,
+          "words": "by those devious embankments of fastigiate and vast heap and ruin - in the greater part occupied with ground-ivy, and terrambula, and implicated with thorns",
+          "file": "translation/en/page_242.md",
+          "reading": "The way into the ruin is over banked heaps of rubble choked with ivy and thorn - a screen, and the reason the Polyandrion is a digression and not a station on the road."
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G7-a",
+          "element": "Two rivers, one right and one left, running down the wooded valley and falling to the sea",
+          "provenance": "book",
+          "source": "our p. 239",
+          "note": "This also echoes the spring that divides right and left at the bridge of ch. VI, which _buildDividingSpring already builds - the same device twice, a hundred and fifty pages apart.",
+          "triangles": 2000,
+          "draw_calls": 4
+        },
+        {
+          "id": "G7-b",
+          "element": "The curved hills with their 'opaque little groves', closing the valley to right and left down to the shore",
+          "provenance": "book",
+          "source": "our p. 239",
+          "triangles": 14000,
+          "draw_calls": 3
+        },
+        {
+          "id": "G7-c",
+          "element": "The manifold trees of the salubrious field, with birdsong",
+          "provenance": "book",
+          "source": "our p. 239; _buildBirds exists",
+          "triangles": 110000,
+          "draw_calls": 8
+        },
+        {
+          "id": "G7-d",
+          "element": "The seaside grove where Polia waits: laurel, myrtle, tall cypress, honeysuckle, and a jasmine canopy",
+          "provenance": "book",
+          "source": "our p. 242",
+          "note": "A small, specific, shaded room at the walk's end, which is where Poliphilo leaves her to go and look at the ruin. Staging as much as planting.",
+          "triangles": 9000,
+          "draw_calls": 4
+        },
+        {
+          "id": "G7-e",
+          "element": "The banked rubble heaps, ivy-choked and thorned, as the only way into the Polyandrion",
+          "provenance": "book",
+          "source": "our p. 242; _buildRuinWeeds exists",
+          "triangles": 11000,
+          "draw_calls": 2
+        }
+      ],
+      "spectacle": {
+        "first_seen": "the sea, glimpsed down the valley between the curved hills - the first sight of water since the crossing is promised",
+        "withheld": "the ruin, behind its rubble banks",
+        "reveal_at": "the top of the embankment, looking down into the tribunes",
+        "sightlines_to_protect": ["down the valley to the sea, which is the whole emotional turn of ch. XIX-XX"],
+        "screens_to_build": ["the curved hills", "the rubble banks", "the seaside grove"]
+      },
+      "cost_total_triangles": 146000,
+      "cost_total_draw_calls": 21
+    },
+
+    {
+      "id": "G8",
+      "from": "polyandrion",
+      "to": "shore",
+      "rank": 7,
+      "centre_to_centre_m": 397.1,
+      "open_span_z_m": 185.0,
+      "lateral_offset_m": -230.0,
+      "finding": "In the book this gap does not exist: the ruined temple IS on the sandy shore (p. 238) and Polia waits there for Cupid's boat while Poliphilo walks the ruin. The 185 m is a plan allocation. Treat it as the shore's apron rather than as a stretch to fill.",
+      "built_today": "_buildCythera (the exeres and the shore) inside the shore precinct; _buildPolyandrion, _buildCiborium, _buildCrypt, _buildRuinWeeds inside polyandrion.",
+      "book": [
+        {
+          "page": 238,
+          "words": "to the spacious and sandy shore, of pleasant surges rushing, washed, where was the destroyed and deserted temple, we came",
+          "file": "translation/en/page_238.md"
+        },
+        {
+          "page": 243,
+          "words": "at the rear part of this archaic temple, I beheld a great and lofty obelisk of reddening stone. And in the base quadrate, I saw, in one face, these hieroglyphs carved",
+          "file": "translation/en/page_243.md",
+          "reading": "Four hieroglyph faces, three of them read out in full on pp. 244-245: DIVO IULIO CAESARI; PACE AC CONCORDIA PARVAE RES CRESCUNT, DISCORDIA MAXIMAE DECRESCUNT (the ant growing to an elephant and two elephants shrinking to ants); the anchor with the eagle; the trophy with two palms and two cornucopias. Check whether this obelisk is built - it is not in tombs.js's method list."
+        },
+        {
+          "page": 284,
+          "words": "a golden spear, with a triumphal and imperatorial standard, of thin silken cloth, of cyan dye ... three hieroglyphs: an antique little vase, in the mouth-gap of which burned a little flame; and then was the world; joined together with a little branch of osier ... AMOR VINCIT OMNIA",
+          "file": "translation/en/page_284.md"
+        }
+      ],
+      "proposals": [
+        {
+          "id": "G8-a",
+          "element": "The obelisk of reddening stone behind the round ruin, with its four hieroglyph faces",
+          "provenance": "book",
+          "source": "our pp. 243-245",
+          "note": "NOT the same obelisk as the pyramid's (_obelisk, portal.js:330). Three of the four faces are read out; the fourth is described and not interpreted, and should be built as such. The five Polyandrion medallions stay `declined` - no reading exists in the corpus - and this is not them.",
+          "triangles": 6000,
+          "draw_calls": 3
+        },
+        {
+          "id": "G8-b",
+          "element": "The sea-gods' homage to Cupid, off the sandy shore",
+          "provenance": "book",
+          "source": "ch. XIX-XX boundary; BUILDINGPLAN.md IV names it FIRST and it is unbuilt",
+          "triangles": 18000,
+          "draw_calls": 5
+        },
+        {
+          "id": "G8-c",
+          "element": "The six-oar exeres' standard: AMOR VINCIT OMNIA in the three hieroglyphs the page names",
+          "provenance": "book",
+          "source": "our p. 284; _buildExeres exists (cythera.js:110)",
+          "triangles": 600,
+          "draw_calls": 2
+        },
+        {
+          "id": "G8-d",
+          "element": "Dune grass and a strand line, so the sand reads as a shore and not as a beige plane",
+          "provenance": "ours, unsupported",
+          "source": "no 1499 page beyond 'spacious and sandy shore'",
+          "triangles": 20000,
+          "draw_calls": 2
+        }
+      ],
+      "spectacle": {
+        "first_seen": "the sea and the boat",
+        "withheld": "Cythera, which should be a band on the horizon and no more",
+        "reveal_at": "mid-crossing, when the island's three rings begin to separate",
+        "sightlines_to_protect": ["from the shore, Cythera must read as one indistinct mass; its rings resolve only during the crossing"],
+        "screens_to_build": ["none - distance and haze are the screen here"]
+      },
+      "cost_total_triangles": 44600,
+      "cost_total_draw_calls": 12
+    }
+  ],
+
+  "approaches": [
+    {
+      "id": "A1",
+      "stretch": "valley -> pyramid",
+      "span_m": 1850,
+      "verdict": "INTENTIONAL. Build nothing in it.",
+      "reason": "Chapter II-III is the book's one long approach and it depends on emptiness: 'casting my eyes towards the wooddie mountaines, which seemed to ioyne themselues together, beeing looked vnto a farre off ... the forme of a tower of an incredible heygth, with a spyre vnperfectlie appearing', then 'by how much the more I approximated the same, by so much the more the excellencie of the woorke shewed it selfe' (DIRECTIONS.md 3, rows 7-8; Dall. pp. 25-27). Filling this gap would destroy the one piece of spectacle the world already has the room for.",
+      "what_it_does_need": [
+        "The cliffs must CONVERGE toward the porch so the valley reads as closing - the book's 'no man could go further forward or backe againe'.",
+        "Two or three mid-ground scale markers (a milestone, a single tree, the palm) so the pyramid's growth is measurable rather than merely asserted. Provenance: ours, after Alberti IX on the approach that measures itself.",
+        "bug-fields-dark-wedge's resolution notes that the valley mountain mass passes within 2.4 m of the old fields station: check that no mass stands in the sightline."
+      ]
+    },
+    {
+      "id": "A2",
+      "stretch": "shore -> crossing -> cythera",
+      "span_m": 1110,
+      "verdict": "INTENTIONAL. Build nothing on the water.",
+      "reason": "The crossing fills a whole chapter of song (ch. XX, our pp. 283-289) and its content is the singing, the standard, and Cupid at the prow. DIRECTIONS.md 3, row 24: 'No distance given - but the duration is the fact.'",
+      "what_it_does_need": [
+        "The sea-gods (G8-b).",
+        "The nymphs' six-part song staged as an event with a duration, not a caption.",
+        "Cythera resolving from one mass into three rings over the crossing - an aerial-perspective and LOD question, not new geometry."
+      ]
+    }
+  ],
+
+  "reading_faults": [
+    {
+      "id": "R1",
+      "title": "_buildTrees is never placed, so the garden trees stand inside the pyramid",
+      "evidence": "src/scenes/HPWorldScene.js:393 calls this._buildTrees() OUTSIDE every _in(...) / _placeAt group. Its coordinates (src/scenes/world/nature.js:988-1018) are the original cramped ones: the myrtle-and-laurel grove of the Fountain of Venus at (0, -20) r 11.5, the cypress pair 'the way to the palace' at z 15.5-24.5, the citron/orange/lemon enclosure at x +/-9 and +/-13.5, planes, oaks and olives out to x +/-29. With no shift those are WORLD coordinates, and the pyramid precinct spans z +104 to -1035.6 centred on x 0. So the Temple of Venus's grove and the green enclosure's citrus hedge are standing in the Great Portal's court and inside the pyramid's own footprint, between 2.7 and 5.3 km from the precincts they belong to.",
+      "ticket": "bug-garden-trees-never-placed"
+    },
+    {
+      "id": "R2",
+      "title": "The processional path runs dead straight at x = 0 while three of the last four precincts are 150-430 m off it",
+      "evidence": "src/scenes/world/approach.js:_buildGround lays ONE 3.4 m path plane the whole length of the plan at x = 0. PLAN_SITES puts vertumnus at x +150, venus_temple at x -200, polyandrion at x +230. The walker therefore steps off the path onto raw ground for the last four stations, and the dog-legs are 350 m and 430 m across nothing.",
+      "ticket": "bug-itinerary-path-misses-three-precincts"
+    },
+    {
+      "id": "R3",
+      "title": "The three-arch bridge of p. 133 is built in the venus_temple precinct",
+      "evidence": "_buildSecondBridge (src/scenes/world/portal.js:1635) is called at HPWorldScene.js:363 inside _in('venus_temple', ...). Its carved devices - the matron with wings and tortoise, the circle held by two spirits - are the ones Logistica glosses on p. 134 as 'much to the purpose for one who goes to the three doors'. It is about 1 800 m north of where the book sets it.",
+      "ticket": "bug-second-bridge-in-wrong-precinct"
+    },
+    {
+      "id": "R4",
+      "title": "The meadow's blade density fell fourfold at stage 2, so the gardens render as painted lawn",
+      "evidence": "src/scenes/world/nature.js:_buildMeadow. GARDENS bounds are x -320..320 (640 m) by z -2885.6..-5797.9 (2 912.3 m) = 1 863 872 m2. Desktop counts: grass 36 000 x DENSE 4.0 = 144 000; understorey 22 000 x 4.0 = 88 000; wildflowers 1 000 x 4.0 = 4 000. That is 0.077 grass blades per square metre - ONE BLADE PER 12.8 m2. The comment says the count rises with the bounds, and it did, by 4x; the area rose by 16.3x (the old box was 336 x 340 = 114 240 m2 at 0.315 blades/m2). This is the most likely single cause of 'a wholly empty green field' in Ted's screenshot, and no amount of infill fixes it.",
+      "ticket": "bug-meadow-density-fell-4x-at-stage-2"
+    },
+    {
+      "id": "R5",
+      "title": "The jasmine arbour is in the palace precinct; chapter XI puts it after the third door",
+      "evidence": "_buildJasmineArbour (src/scenes/world/palace.js:1518) is called inside _in('polia_garden'/'palace'). Our pp. 141-142 put the arbour on the plain where the bath-nymphs leave him, AFTER the doors, and make it the covering he walks under until the festival plain appears. Moving it is also the cheapest way to fill G4.",
+      "ticket": "feat-infill-jasmine-arbour-reveal"
+    },
+    {
+      "id": "R6",
+      "title": "The screenshot's stated bearing does not agree with the declared compass",
+      "evidence": "NEXTSTEPS 0-AA records 'From the palace precinct (x76, z-3460) looking north, the pyramid and its flanking cliffs stand as a thin sliver on the horizon.' The compass declared at src/scenes/world/constants.js:34 makes -z north, and the pyramid is at z -465.8 while the palace is at -3113.2 - so the pyramid is 2.6 km SOUTH of the camera. Either the camera was facing south, or the label is loose. It does not change the finding (an empty field between camera and horizon) but it changes WHICH gap the finding is about, and nobody should plan off it until it is re-shot.",
+      "ticket": null
+    }
+  ],
+
+  "order_of_work": [
+    { "n": 1, "ticket": "bug-meadow-density-fell-4x-at-stage-2", "file": "src/scenes/world/nature.js", "why": "Cheapest and largest visible change in the plan. Every gap below looks better on ground that reads as ground." },
+    { "n": 2, "ticket": "bug-garden-trees-never-placed", "file": "src/scenes/world/nature.js", "why": "Same file as 1, so the same writer does both in one session. Removes trees from inside the pyramid and returns them to three precincts that are currently bare." },
+    { "n": 3, "ticket": "feat-infill-bridge-grove-river", "file": "src/scenes/world/infill.js (new)", "why": "Largest open span (370 m); its centrepiece already exists and is merely mis-sited; all-book provenance. Subsumes bug-second-bridge-in-wrong-precinct." },
+    { "n": 4, "ticket": "feat-infill-orchard-quincunx", "file": "src/scenes/world/infill.js", "why": "The book's most complete garden specification, already in the ledger as unbuilt, and the screen that currently fails in front of the Temple of Venus." },
+    { "n": 5, "ticket": "feat-infill-jasmine-arbour-reveal", "file": "src/scenes/world/infill.js", "why": "The book's own withhold-then-reveal device, 185 m long, and the gap it fills is exactly 185 m." },
+    { "n": 6, "ticket": "bug-itinerary-path-misses-three-precincts", "file": "src/scenes/world/approach.js", "why": "Parallel with 3-5: different file, different writer." },
+    { "n": 7, "ticket": "feat-infill-elysian-flower-field", "file": "src/scenes/world/infill.js", "why": "After 1, because it shares the meadow system." },
+    { "n": 8, "ticket": "feat-infill-tempe-to-the-sea", "file": "src/scenes/world/infill.js", "why": "The most expensive of the eight; do it once the budget has been measured against 3-7." },
+    { "n": 9, "ticket": "feat-infill-shore-grove-and-sea-gods", "file": "src/scenes/world/infill.js" },
+    { "n": 10, "ticket": "feat-palace-front-closes-enclosure", "file": "src/scenes/world/palace.js", "why": "Owned by another session today; sequence behind whatever they land." }
+  ],
+
+  "serialization_note": "Every ticket that adds geometry must also add one call in src/scenes/HPWorldScene.js inside the right _in(...) group. That file is the serialization point for the whole programme: one writer at a time, and the infill builders live in a NEW module src/scenes/world/infill.js precisely so that palace.js, temple.js and cythera.js stay free for the builders already working them."
+}
