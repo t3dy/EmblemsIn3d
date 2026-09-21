@@ -6,28 +6,13 @@
 
 ---
 
-**86 tickets** — 5 open, 3 declined, 78 done. By kind: 35 debt, 35 bug, 9 infra, 4 question, 2 perf, 1 feat.
+**86 tickets** — 4 open, 3 declined, 79 done. By kind: 35 debt, 35 bug, 9 infra, 4 question, 2 perf, 1 feat.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
-
-### `bug-temple-crown-to-diameter` — Raise the Temple of Venus's cupola so its crown stands on the diameter (rise D/3), re-deriving the dome courses
-
-**○ open** · bug · priority 2 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** DECISIONS.md 66. DOME_RISE is R/2 (3.1 m) from p. 204's double-square slope, putting the crown at 11.07 m over a 12.4 m diameter. p. 197 governs: 12.4 - 8.267 (cornice at 4/6 D) = 4.13 = D/3. The dome courses are fixed-height cylinders spaced by sin steps; at a 4.13 rise the lowest spacing is 0.717 against a course height of 0.696, so gaps open unless the course height is re-derived in the same pass.
-
-**Acceptance.** DOME_RISE is derived as D - CORNICE_Y (not typed) in _buildVenusTemple; an upward ray from a 1.7 m eye at the drum centre meets the cupola at about 12.4 - 0.4 m on the running page rather than 11.58; no gap is visible between dome courses from inside or outside; the lantern, sacello and door overhangs still sit. hpDiag before/after.
-
-**Files.** `src/scenes/world/temple.js`
-
-**See.** DECISIONS.md#66 · bug-temple-height-not-from-diameter
-
 
 ### `debt-chapter-xxi-under-enumerated` — Chapter XXI carried three features for thirty-six pages, and none of them was the island's plan
 
@@ -782,6 +767,23 @@ The consequence is visible, not theoretical. fetch_1499_plates.py names its outp
 **Files.** `scripts/fetch_1499_plates.py` · `scripts/build_reading.py` · `src/data/reading.json` · `images/woodcuts_1499/`
 
 **See.** bug-plate-page-seq-offset · bug-concordance-signature-quire-model · bug-woodcut-catalog-ten-unresolved-plates
+
+
+### `bug-temple-crown-to-diameter` — Raise the Temple of Venus's cupola so its crown stands on the diameter (rise D/3), re-deriving the dome courses
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** DECISIONS.md 66. DOME_RISE is R/2 (3.1 m) from p. 204's double-square slope, putting the crown at 11.07 m over a 12.4 m diameter. p. 197 governs: 12.4 - 8.267 (cornice at 4/6 D) = 4.13 = D/3. The dome courses are fixed-height cylinders spaced by sin steps; at a 4.13 rise the lowest spacing is 0.717 against a course height of 0.696, so gaps open unless the course height is re-derived in the same pass.
+
+**Acceptance.** DOME_RISE is derived as D - CORNICE_Y (not typed) in _buildVenusTemple; an upward ray from a 1.7 m eye at the drum centre meets the cupola at about 12.4 - 0.4 m on the running page rather than 11.58; no gap is visible between dome courses from inside or outside; the lantern, sacello and door overhangs still sit. hpDiag before/after.
+
+**Resolution.** Built and verified 2026-09-20. DOME_RISE is derived as D - CORNICE_Y (4.133 = D/3), and the dome now springs OFF the cornice rather than 0.30 under it, so APEX lands at PLAT_Y + D exactly -- the crown is ON the diameter, 12.40 over the temple floor, not 0.30 short of it. The 0.30 lap that used to cover the springing seam is not lost: the lowest course is a band centred on the springing line and half of it (0.449) hangs over the corona by itself. The course height is re-derived in the same pass as COURSE_SPAN(rise, n) = rise * sin(PI/2n) * 1.25, replacing the fixed R*0.46/SC*2.2 -- which was that same expression at the old rise to within 0.4 per cent, so the dome looks as it did, it just follows the rise now. GAPS: a fan of upward rays from a 1.7 m eye, every 0.4 m of radius out to 5.2 m on three bearings, meets the cupola every time and not once escapes to the sky. The profile reads 13.18 over the axis, 12.93 at r 1.2 (it was 11.58), 12.26 at r 2.0, 11.47 at r 4.0 and 10.70 at r 5.2; a ray meets the lapped top course half a band above the nominal crown, which is the 13.18 against a crown of 12.82 in world y. THINGS THAT STILL SIT: the lantern floor is APEX - 0.15 = 12.670 against a dome surface of 12.659 at the lantern's own radius, the same 0.01 it stood at before; the sacello aedicule and both overdoors are wall features and did not move; looked at the springing from inside, straight up, and from the meadow outside. NO GEOMETRY ADDED -- the same nine courses, resized and lifted; temple meshes within 9.5 m of the drum centre 392 -> 391, the one being a mesh whose origin crossed the sampling radius as the dome grew. Whole-scene hpDiag either side is not comparable and is not claimed: sibling agents landed the colossus and two Cythera passes in the same tree between the two readings.
+
+**Files.** `src/scenes/world/temple.js`
+
+**See.** DECISIONS.md#66 · bug-temple-height-not-from-diameter
 
 
 ### `bug-temple-height-not-from-diameter` — The Temple of Venus was built at 0.42 of its own diameter: Colonna's height rule was nowhere in the code
