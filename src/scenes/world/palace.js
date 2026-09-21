@@ -1586,7 +1586,12 @@ export const Palace = {
       : S.mat({ color: 0xffffff, roughness: 0.55, metalness: 0.25 });
     if (!vault.map) vault.map = this._cofferTexture();
     vault.side = THREE.DoubleSide;
-    const v = this._m(new THREE.CylinderGeometry(ARCH_R - 0.06, ARCH_R - 0.06, VD, 20, 1, true, 0, Math.PI),
+    // thetaStart = π/2, not 0. `CylinderGeometry` measures theta from +Z
+    // toward +X, and `rotation.x = π/2` sends local +Z to world −Y, so a half
+    // starting at 0 is the half from DOWN round to UP through +X — a side wall,
+    // which is exactly where the vault appeared when it was first built. From
+    // π/2 to 3π/2 is +X → up → −X, which is the barrel.
+    const v = this._m(new THREE.CylinderGeometry(ARCH_R - 0.06, ARCH_R - 0.06, VD, 20, 1, true, Math.PI / 2, Math.PI),
       vault, 0, POD + SPRING, VZ, { cast: false, receive: false });
     v.rotation.set(Math.PI / 2, 0, 0);
     for (const sg of [-1, 1]) {
