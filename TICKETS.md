@@ -6,13 +6,169 @@
 
 ---
 
-**86 tickets** — 4 open, 3 declined, 79 done. By kind: 35 debt, 35 bug, 9 infra, 4 question, 2 perf, 1 feat.
+**98 tickets** — 15 open, 1 question, 3 declined, 79 done. By kind: 42 debt, 39 bug, 9 infra, 5 question, 2 perf, 1 feat.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
+
+### `bug-garden-trees-never-placed` — _buildTrees is called outside every precinct group, so the Fountain of Venus grove stands inside the pyramid
+
+**○ open** · bug · priority 1 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** READ FROM THE CODE, not seen live. src/scenes/HPWorldScene.js:393 calls this._buildTrees() with no _in(...) and no _placeAt -- it sits between the precinct block and _buildMotes/_buildMeadow. Its coordinates (src/scenes/world/nature.js:988-1018) are the ORIGINAL cramped ones and were never multiplied or shifted:
+  * the myrtle-and-laurel grove of the Fountain of Venus, a ring of radius 11.5 about (0, -20);
+  * the cypress pairs "the way to the palace, set on either sides with Cyprus Trees" at z 15.5, 24.5;
+  * the citrus enclosure "altogither of Cytrons, Orenges and Lymonds" at x +/-9 and +/-13.5, z +/-5.4;
+  * planes, oaks and olives out to x +/-29, and two hedges WITH WALL COLLIDERS at (+/-8.5, 8.8).
+
+With no shift those are WORLD coordinates. PLAN_SITES.pyramid spans z +104 to -1035.6 centred on x 0, and PLAN_SITES.piazza is z 148.4..104. So the Temple of Venus's grove, the green enclosure's citrus hedge and the palace avenue's cypresses are standing in and around the Great Portal's court and inside the pyramid's footprint, between 2.7 and 5.3 km from the precincts whose text placed them. Two of them carry wall colliders, so there are also invisible walls in the piazza.
+
+Three gaps on the itinerary are bare because their planting was left behind at the origin.
+
+This is HANDOVER.md 4.3 in a fifth costume, after the hand-copied spawn, the meadow clearance map, the dream mode's paths and the triumph cars' moving colliders (DECISIONS.md 60).
+
+**Acceptance.** A scene-graph query from the deployed page finds no tree mesh inside the pyramid precinct box (x +/-570, z +104..-1035.6) that does not belong to the valley or approach builders; the Fountain of Venus grove stands within 40 m of the temple precinct centre (-200, -5335.4); the citrus pairs stand in the green enclosure (0, -2930); and no hedge wall collider remains in the piazza. Fix by routing each group through toWorld(key, x, z) or by wrapping each in _placeAt with shiftOf(key) -- do NOT re-type the coordinates, which is the mistake stage 2 exists to prevent.
+
+**Risk.** _buildTrees mixes trees belonging to at least four precincts in one function. Splitting it is the fix, but the split must carry the species and the citations already in its comments. The comment at the plane tree records that it was moved once already to clear the Temple of Venus's approach -- that reasoning was done in the OLD frame and needs redoing in the new one.
+
+**Files.** `src/scenes/world/nature.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R1 · DECISIONS.md 60 · HANDOVER.md 4.3
+
+
+### `bug-meadow-density-fell-4x-at-stage-2` — The meadow is one grass blade per 12.8 square metres, so the gardens render as a painted plane
+
+**○ open** · bug · priority 1 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** MEASURED FROM THE CODE, not seen live. src/scenes/world/nature.js _buildMeadow sets GARDENS bounds x -320..320 (640 m) by z PLAN_SITES.enclosure.zSouth -2885.6 .. PLAN_SITES.polyandrion.zNorth -5797.9 (2912.3 m) = 1,863,872 m2. Desktop counts with DENSE = 4.0: grass 36,000 x 4 = 144,000; understorey 22,000 x 4 = 88,000; wildflowers 1,000 x 4 = 4,000.
+
+144,000 / 1,863,872 = 0.077 blades per square metre -- ONE BLADE PER 12.8 m2. A blade is 0.30 m tall and 0.019 m wide.
+
+THIS IS A REGRESSION, and the builder comment records the reasoning that produced it: "36 000 blades over 5.5 km is thin, so the count rises with it." It did rise, by 4x. The AREA rose by 16.3x -- the old default was a 336 x 340 box round (0, 38), 114,240 m2, at 0.315 blades/m2. So the sward is four times thinner than the version that was judged acceptable, over ground the walker crosses on foot for 2.9 km.
+
+This is the most likely single cause of Ted's "wholly empty green field" (NEXTSTEPS 0-AA) and no amount of infill geometry fixes it.
+
+SECOND FAULT IN THE SAME FUNCTION: the rose drift's roseBand is still written in PRE-SPREAD coordinates (x 11..27.5 and -29.5..-11, z 12..28) while its bounds are stage-2 world metres between z -2885 and -5798. Those boxes are 3 km outside the bounds, so the rose field almost certainly selects nothing at all. Check it in the same pass.
+
+**Acceptance.** Standing on the processional axis anywhere between z -3000 and -5700 on the deployed page, the ground within 30 m reads as turf rather than as a flat plane: a screenshot shows individual blades, and a scene-graph query reports the garden grass field at >= 1.0 blades per square metre over the ground the walker can actually be on. hpDiag() before and after in the commit message; grass is ONE InstancedMesh, so the added cost is triangles, not draw calls, and must stay inside rule 7. The rose drift selects a non-empty set.
+
+**Risk.** Do not simply multiply the count -- 1 blade/m2 over 1.86 Mm2 is 1.86 M instances and will not fit one InstancedMesh budget. The likely right fix is to narrow the BOUNDS to a corridor either side of the walked route (the walker never sees x +/-320 and the axis in one frame) and raise the count inside it, or to make createMeadowField distance-adaptive. Measure, do not guess.
+
+**Files.** `src/scenes/world/nature.js`
+
+**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R4 · NEXTSTEPS.md 0-AA · DRAWCALLS.md
+
+
+### `feat-infill-bridge-grove-river` — The 370 m between Polia’s garden and the three doors: the river, the plane-grove, the bridge and the dry spurs
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** THE LARGEST OPEN SPAN ON THE ITINERARY -- two stadia, polia_garden.zNorth -3577.9 to three_doors.zSouth -3947.9 -- and the one the book fills most completely. Nothing is built in it.
+
+OUR P. 133: "we came most festively to a most charming river. Upon the banks of which I saw a gracious plane-grove, besides other greenest little trees, and water shoots excellently set and placed, with lotuses set between. Where there crossed a proud stone bridge of three arches, with its ends upon the banks above the firmest foundations, with the piers keeled at their two fronts to hold the structure most firm, and with most noble parapets." The bridge carries two porphyry tablets with a gable, sunk-carved with hieroglyphs.
+
+OUR P. 134: "Which bridge was then of a moderate slope ... all of most comely Hymettian marble. Having passed the bridge, we walked beneath through the cool shades, sweetly kept by the various chattering of small birds. We came to a stony and rocky place, where lofty and steep mountains rose up. And thence next to a broken and pathless and rugged mountain, all gnawed away and full of a bursting roughness. High into the air, worn down to a spur, and bare of all greenness, and dry mountains round about."
+
+THE BRIDGE ALREADY EXISTS and is in the wrong precinct -- see bug-second-bridge-in-wrong-precinct, which this ticket subsumes.
+
+WHAT IS OURS AND MARKED SO: the river's width. No page gives it; 18 m is proposed as what three keeled-pier arches would span. research/infill_plan.json G3 carries the per-element provenance labels.
+
+COST ESTIMATE: ~74k triangles, ~19 draw calls, on the _isleGrove model (cythera.js:840). Helpers to reuse: _ribbon and _waterMat (approach.js:1127), _buildShadedWalk (palace.js:1933), _buildBirds (nature.js:69), and the plane species already in SPECIES.
+
+**Acceptance.** Walking north from Polia's garden on the deployed page: (1) the three doors are NOT visible from the garden's arch -- the plane-grove stops the eye; (2) a river crosses the route and is crossed by the three-arch bridge, whose two porphyry tablets are both legible from the crown of the deck; (3) beyond the bridge is shaded walk, and the bare spurs appear only when the trees stop; (4) hpDiag() before and after in the commit message, added triangles under 100k and added draw calls under 25 per cent of the reading taken at that position.
+
+**Risk.** Build in a NEW module src/scenes/world/infill.js so palace.js, temple.js and cythera.js stay free for the builders already in them. HPWorldScene.js is the serialization point -- one writer at a time. The rock ring must not become a second valley: p. 134 says dry, gnawed, grassless spurs, not cliffs, and _meadowClearance already masks grass over the whole stony seat.
+
+**Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 4 · research/infill_plan.json G3 · translation/en/page_133.md · translation/en/page_134.md · DIRECTIONS.md 5
+
+
+### `feat-infill-orchard-quincunx` — The hedged orchard of p. 190 — the book’s most complete garden specification, still unbuilt
+
+**○ open** · debt · priority 1 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** Ledger feature xvii-orchard-hedge-garden, status unbuilt, and it is the fill for the vertumnus -> venus_temple gap (plan z -5162 to -5347, plus a 350 m lateral jog).
+
+OUR P. 190: "We entered, then, where there were measured square spaces hedged about with the bounds of wide, straight, four-way roads, A PACE HIGH, of dog-thorn, or thorny grape, and of ground juniper, and most thickly bound to a wall-like level of most even box, enclosing the squares of the flowering and dewy meadows. In the order of the said hedges I beheld planted symmetrically the lofty victorious palms, with their fruitful clusters of dates hanging out of their sheaths ... Which stood ALTERNATING with the greenest citrons and oranges, hawthorn-medlars, pistachios, pomegranates, quinces, tree-myrtles, and medlars, and service-trees."
+
+A pace is 1.48 m (research/dimensions.json), so the hedge height is STATED. The materials, the roads, the compartments and the alternating planting are all stated.
+
+OUR P. 189, for the surround: the country is closed by "vine-bearing hills, WITH THEIR WAYS SHUT, enclosing round about this golden country", of yew, wild pine, tall pines, straight firs, spruce, larch and torch-pine.
+
+OUR P. 190 again, for the trees between: "All which trees were not of a thick planting, but dispensed at the required distance, and all duly distributed in a fitting place and aspect."
+
+OURS, AND MARKED SO: the compartment module and the road width. Proposed 46.25 m (one quarter stadium) compartments with 7.4 m (five-pace) roads -- arithmetic on the book's own units, after Alberti, De re aedificatoria IX.4 (villa trees in rank and file with walks between compartments) and Pliny the Younger, Ep. V.6 (box-bounded compartments and clipped work). NOT after Villa d'Este or Boboli, which post-date 1499 by fifty years or more and are not evidence for this book.
+
+AND ONE MORE THING OURS: aim ONE of the four-way roads at the Temple of Venus's door, so fifteen compartments hide it and one frames it. The book lays the roads and does not aim them.
+
+COST ESTIMATE: ~125k triangles, ~16 draw calls.
+
+**Acceptance.** From the Vertumnus altar on the deployed page the Temple of Venus is NOT visible across open grass; it appears when the walker reaches the aimed road, and not before. The hedges measure 1.48 m high. Palms alternate strictly with fruit trees along the hedge lines. The conifer hills close the horizon on both flanks. hpDiag() before and after in the commit message.
+
+**Risk.** Ten named fruit species at two draw calls each is twenty calls for the planting alone; group them into four crown types to hold it near eight, as _isleGrove does. The 350 m lateral jog is a separate question (question-lateral-offsets-of-the-last-four-precincts) -- build the orchard across the jog rather than waiting for that call, since the orchard is what would justify it.
+
+**Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 3 · research/infill_plan.json G6 · translation/en/page_189.md · translation/en/page_190.md · research/coverage.json xvii-orchard-hedge-garden
+
+
+### `bug-itinerary-path-misses-three-precincts` — The processional path runs dead straight at x = 0 while three of the last four precincts stand 150-430 m off it
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** src/scenes/world/approach.js _buildGround lays ONE path plane, PlaneGeometry(3.4, GD), at x = 0 for the whole length of the plan: "The processional axis: the itinerary itself, wood to shore, one strip the length of the plan."
+
+PLAN_SITES puts vertumnus at x +150, venus_temple at x -200, polyandrion at x +230. So the last four stations are reached by leaving the road and crossing 150-430 m of unmarked ground, and the dog-legs between them are 350 m (vertumnus -> venus_temple) and 430 m (venus_temple -> polyandrion). Centre to centre those three walks are 486, 509 and 567 m, not the 462, 370 and 370 that the plan's z-separations suggest.
+
+The book gives the remedy in the same stretch it describes: "wide, straight, four-way roads" bounding the square compartments (our p. 190).
+
+**Acceptance.** From the triumphs to the shore a walker can reach every station on made ground without crossing unmarked sward, and each branch reads as a road (kerb, gravel, or the book's hedged four-way road). Checked by walking the route on the deployed page, not by reading the diff.
+
+**Risk.** The path plane is one draw call and polygon-offset against the sward; branches must share pathMat and its polygonOffset settings or they will z-fight at 13.7 km under the logarithmic depth buffer -- the failure the existing comment records. An alternative fix is to reduce the lateral offsets in scripts/plan_sites.py, but those are plan data and belong to Ted (question-lateral-offsets-of-the-last-four-precincts).
+
+**Files.** `src/scenes/world/approach.js`
+
+**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R2 · translation/en/page_190.md
+
+
+### `bug-second-bridge-in-wrong-precinct` — The three-arch Hymettian bridge of p. 133 is built at the Temple of Venus, 1,800 m from the road it belongs to
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** _buildSecondBridge (src/scenes/world/portal.js:1635) is called at src/scenes/HPWorldScene.js:363 inside _in('venus_temple', ...). Its carved devices identify it beyond doubt: the matron bound with a serpent, sitting on one haunch with wings in one hand and a tortoise in the other, and opposite a circle whose centre two little spirits hold.
+
+Our p. 133 (translation/en/page_133.md) puts it on the way from the ivied garden to the three doors: "we came most festively to a most charming river ... Where there crossed a proud stone bridge of three arches ... at the middle curve of the wedge beneath the arch ... a porphyry square with a gable, holding a sunk carving of hieroglyphs. On the right at our crossing I saw a matron bound with a serpent..."
+
+And p. 134 has Logistica say outright that these hieroglyphs "are much to the purpose for ONE WHO GOES TO THE THREE DOORS. And therefore they are most fitly set here as a monument for those passing by."
+
+venus_temple is at plan z -5439; the gap between polia_garden and three_doors is plan z -3682 to -4052. The bridge is about 1,800 m north of the only place the book allows it.
+
+It is also built at garden scale: deck 4.6 x 3.4 m, three torus arches of radius 0.55 m. The book calls it a proud bridge over a river, all of Hymettian marble, with piers keeled at both fronts.
+
+**Acceptance.** The bridge stands in the polia_garden -> three_doors gap, over water, on the walked route, with both porphyry tablets legible from the crown of the deck; and no bridge remains in the venus_temple precinct unless a page is cited for one. Verified by walking it on the deployed page.
+
+**Risk.** Subsumed by feat-infill-bridge-grove-river, which needs the river anyway. Do not move the bridge without the water -- a three-arch bridge on dry grass is worse than a mis-sited one. _buildBridge (portal.js:1552), the OTHER bridge, carries the PATIENTIA and festina lente tables of Dallington p. 93 and was NOT audited here; check its siting in the same pass.
+
+**Files.** `src/scenes/world/portal.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 2 · research/infill_plan.json G3 · translation/en/page_133.md · translation/en/page_134.md
+
 
 ### `debt-chapter-xxi-under-enumerated` — Chapter XXI carried three features for thirty-six pages, and none of them was the island's plan
 
@@ -48,6 +204,60 @@
 **See.** DIMENSIONS.md#4 · RECIPES/model-an-asset.md
 
 
+### `feat-infill-jasmine-arbour-reveal` — The jasmine tunnel between the three doors and the triumphs, and the one-step reveal at its end
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** OUR P. 141: "the lovely damsels, without my noticing, left me alone, so kindled, in a most pleasant plain ... behold, before me I see only an artful arbour of flowering jasmine, with A TALL ARCHING, painted all over with its fragrant little flowers OF THE THREE COLOURS MINGLED. Entering beneath this..."
+
+OUR P. 142: "without noticing, I came to the end of that flowery covering; and looking, there appeared to me a countless crowd of youth of both kinds keeping high festival, with sounding voices and with the melodies of various instruments, with comely and playful dancings and clappings ... upon a most ample plain. So that, seized by this such and welcome novelty, SITTING DOWN FULL OF WONDER, I stood in thought about going any further."
+
+This is DIRECTIONS.md 5 stated by the book itself: a covered walk that shows nothing, ended by a reveal that stops him where he stands. The gap is 185 m, which is the right length for it.
+
+WHERE IT IS NOW: _buildJasmineArbour (src/scenes/world/palace.js:1518) is built in the palace / polia_garden precincts. Chapter XI puts the arbour AFTER the third door. Reading fault R5 in research/infill_plan.json.
+
+"A tall arching" also answers NEXTSTEPS 0-AA's low-ceiling complaint at human scale: 4.5-5 m to the crown, not a stooping pergola.
+
+Ledger features xi-festival-on-the-plain, xi-flowery-covering and xi-left-alone-on-the-plain are all unbuilt, and all three are this ticket.
+
+COST ESTIMATE: ~72k triangles, ~10 draw calls -- about 74 merged arches at 2.5 m plus one instanced flower-card field, with the distant festival as instanced clusters and a dozen real figures at the mouth.
+
+**Acceptance.** On the deployed page, from inside the arbour the triumph cars are not visible at any point; they appear in one step at the north mouth; a turf seat stands at the mouth where the book has him sit. The arbour's crown clears 4.5 m. hpDiag() before and after.
+
+**Risk.** Do not leave gaps in the planting: a tunnel that leaks the reveal is worse than no tunnel. Check by walking it, not by counting instances. _turfSeat (nature.js:161) exists; reuse it rather than modelling a bench.
+
+**Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 4 · research/infill_plan.json G4 · translation/en/page_141.md · translation/en/page_142.md · DIRECTIONS.md 5
+
+
+### `feat-palace-front-closes-enclosure` — The palace does not close the green enclosure’s north side, and its colonnade is 4.0 m high
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** PLAN_SITES: enclosure.zNorth and palace.zSouth are the SAME number, -2974.4. The two boxes abut, because the book makes the palace the enclosure's fourth side (DIRECTIONS.md 3, row 17). There is no gap here to fill -- there is a missing wall. BUILDINGPLAN.md says so in its own words: "the palace does not yet close the green enclosure's north side, which is what the book says it is."
+
+OUR P. 93 gives the front: "to this excellent colonnade let its TWO HUNDRED COLUMNS yield -- Numidian, Claudian, Simiadic and Thistian, DIVIDED IN EQUAL NUMBER ... What gate-house, or vestibule; what royal portico ... the marvellous ceiling, most beautifully coffered, with little coffers between the wavings, covered with foliage, set in square and round. Adorned with exquisite lineaments, gilded of pure gold and of a dark blue colouring." OUR P. 94: "I saw a lofty portico, AS LONG AS THE COMPASS OF THE PALACE."
+
+THE WAY IN IS THREE SCREENS, pp. 93-94: a curtain of gold thread kept by Cynosia; a second veiling kept by Indalomena; a third kept by Mnemosyne. Three successive veils each withholding the next room, and they cost three planes.
+
+HEIGHT. NEXTSTEPS 0-AA: the Queen's Court colonnade is 4.0 m, a domestic number in an 88.8 m room. OURS, AND MARKED SO, after Alberti VII-IX (superimposed orders, the gravest below) and the Cortile d'Onore at Urbino (Laurana, 1460s): a two-storey front, lower Doric and upper Ionic, on a stylobate of three steps, about 11 m to the upper cornice. No sixteenth-century precedent is used.
+
+200 columns cannot stand in one 88.8 m run at any believable intercolumniation, so the book's 200 is the whole peristyle: the front run, the two returns and the inner court. Build the front and declare the rest.
+
+**Acceptance.** On the deployed page the green enclosure is closed on all four sides, its north side by the palace front; the front's upper cornice clears 10 m; the way in passes three curtains in sequence, each hiding what is beyond it. hpDiag() before and after.
+
+**Risk.** palace.js is held by another session as of 2026-09-20. Sequence this behind whatever they land. Do not raise the existing Queen's Court colonnade in the same commit -- that is a separate height pass, and conflating them makes the measurement unreadable.
+
+**Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 3 · research/infill_plan.json G1 · translation/en/page_093.md · translation/en/page_094.md · BUILDINGPLAN.md · NEXTSTEPS.md 0-AA
+
+
 ### `bug-temple-drum-eight-bays-not-ten` — The temple drum is built on eight bays; the book's plan is a decad carrying eight windows plus the door and the adytum
 
 **○ open** · bug · priority 3 · hp-builder
@@ -78,6 +288,115 @@
 **Files.** `src/scenes/world/cythera.js`
 
 **See.** DIMENSIONS.md#4 · GARDENS.md
+
+
+### `feat-infill-elysian-flower-field` — The Elysian field of ch. XV: the one gap the book insists stays open, and it has neither flowers nor people
+
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** OUR P. 178: "circling through the flowering and blessed land and happy country, and the spring fields, a place most holy, dedicated to the blessed. NOT HINDERED NOR TAKEN UP BY ANY GROWING SHRUB. But all the flowery ground was one level meadow of fragrant herbs and flower-bearing with flowers, endless of every colouring." Then the catalogue: "the four kinds of violet, cowslip, melilot, anemones, cornflowers, nigella, cyclamen, crowfoot, columbine, lily of the valley and amaranth, cassidony, spikenard, Celtic nard, ambrosia, wild mint, citron and clove basil ... all the kinds of gillyflower and the smallest Persian rose-trees, fruitful with fragrant little roses, and hundred-leaved, and of all colourings."
+
+OUR P. 177: "Many having their torches kindled and burning. Some I saw bearing shrines. Others with straight spears adorned with ancient spoils."
+
+OUR P. 181: "most joyfully they went circling round through the whole flowery and most pleasant plain. Some crowned with laurel, and some with myrtle."
+
+SO THE ANSWER TO "no empty spaces" HERE IS NOT ARCHITECTURE. The book forbids a shrub. What the stretch wants is flowers at a density that reads, and a circling festival. Ledger features xv-elysian-flower-meadow, xv-blessed-field-flower-catalogue, xv-choirs-before-the-four-cars and xv-torches-shrines-and-spoil-spears are all unbuilt.
+
+One more thing the page gives that the world cannot yet do: "the air always purest, and every hour unveiled of clouding vapours, but eternally a clear and unchanging day". A shadowless light over this field alone is the cheapest spectacle in the whole infill plan, and it needs a directional call, because the world has one sun.
+
+COST ESTIMATE: ~114k triangles, ~12 draw calls.
+
+**Acceptance.** On the deployed page the 185 m between the triumphs and the Vertumnus altar reads as a flowering meadow with named drifts, not as lawn, and a festival circles the cars. No shrub or tree stands in it. hpDiag() before and after.
+
+**Risk.** Depends on bug-meadow-density-fell-4x-at-stage-2 -- do that first, since this reuses createMeadowField and would inherit the same density fault. Figures are the expensive part: use instanced clusters at distance, not Cast.js figures, and keep real figures to the near ground.
+
+**Files.** `src/scenes/world/infill.js` · `src/scenes/world/nature.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 2 · research/infill_plan.json G5 · translation/en/page_177.md · translation/en/page_178.md · translation/en/page_181.md
+
+
+### `feat-infill-tempe-to-the-sea` — The vale of Tempe between the Temple of Venus and the Polyandrion, with its two rivers falling to the sea
+
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** The longest real walk of the eight -- 567 m centre to centre with a 430 m lateral jog -- and nothing is built in it.
+
+OUR P. 239: "the delightful site, the delicious fatherland, the ornate verdures, the pleasant and temperate hills ornated with opaque little groves ... dignified by the rivers flowing down, irriguous, through the wooded valley, near the curved hills, TO THE RIGHT AND LEFT PART softly running, to the near sea precipitating; a most-salubrious field, and of most-pleasant grass, filled with manifold trees, canorous of the concert of little birds. LET YIELD HERE, THEN, THE THESSALIAN RIVER AND FIELD (Tempe)."
+
+OUR P. 242, for the grove at its end where Polia waits while Poliphilo walks the ruin: "from under the tempered shades of laurel, and of myrtle, and among tallish cypresses (then, about the place, the honeysuckle painting its odorous flowers, where a voluble flowering jasmine, with soft shade, opaquely covered us, disseminating over us copiously its whitest flowers)".
+
+AND THE WAY INTO THE RUIN, p. 242: "by those devious embankments of fastigiate and vast heap and ruin -- in the greater part occupied with ground-ivy, and terrambula, and implicated with thorns". A screen, and the reason the Polyandrion is a digression rather than a station on the road.
+
+The right-and-left division of the water echoes _buildDividingSpring of ch. VI -- the same device twice, a hundred and fifty pages apart, and worth a commentary note.
+
+COST ESTIMATE: ~146k triangles, ~21 draw calls. The most expensive of the eight.
+
+**Acceptance.** Walking from the Temple of Venus toward the shore on the deployed page: two rivers run down right and left and fall to the sea; the flanks are closed by curved hills with groves; the sea is glimpsed down the valley before the ruin is reached; the Polyandrion is entered over ivy-choked rubble banks and not across lawn. hpDiag() before and after.
+
+**Risk.** Do this after the three tickets above and re-measure -- it is the entry most likely to push the programme past the +15 per cent world-triangle cap. If it does, cut the manifold-trees field (G7-c, 110k of the 146k) and keep the rivers, the hills and the grove, which carry the reading.
+
+**Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 4 · research/infill_plan.json G7 · translation/en/page_238.md · translation/en/page_239.md · translation/en/page_242.md
+
+
+### `feat-infill-shore-grove-and-sea-gods` — The sandy shore where the ruined temple stands: the red obelisk, the sea-gods, and the standard AMOR VINCIT OMNIA
+
+**○ open** · debt · priority 4 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** In the book this gap does not exist. OUR P. 238: "to the spacious and sandy shore, of pleasant surges rushing, washed, where was the destroyed and deserted temple, we came." The Polyandrion IS on the shore; the plan's 185 m of inland between them is ours.
+
+WHAT IS MISSING AND IS THE BOOK'S.
+(1) OUR P. 243: "at the rear part of this archaic temple, I beheld A GREAT AND LOFTY OBELISK OF REDDENING STONE. And in the base quadrate, I saw, in one face, these hieroglyphs carved." Three of its four faces are read out on pp. 243-245: DIVO IULIO CAESARI SEMP AUG TOTIUS ORB GUBERNAT; PACE AC CONCORDIA PARVAE RES CRESCUNT, DISCORDIA MAXIMAE DECRESCUNT (the viperous caduceus, the ant growing into an elephant and two elephants shrinking into ants, the vase of fire and the shell of water); the anchor with the eagle and the knot, and the soldier fearing a serpent; and the trophy with two crossed palms and two cornucopias, an eye on one side and a comet on the other. This obelisk is NOT the pyramid's (_obelisk, portal.js:330) and does not appear in tombs.js's method list -- confirm whether it exists at all.
+(2) The sea-gods' homage to Cupid, which BUILDINGPLAN.md IV names FIRST and which is unbuilt.
+(3) OUR P. 284, the exeres' standard: "a golden spear, with a triumphal and imperatorial standard, of thin silken cloth, of cyan dye ... three hieroglyphs: an antique little vase, in the mouth-gap of which burned a little flame; and then was the world; joined together with a little branch of osier" -- AMOR VINCIT OMNIA. _buildExeres exists (cythera.js:110).
+
+The five Polyandrion medallions stay DECLINED -- no reading of them exists anywhere in the corpus -- and none of the above is them.
+
+COST ESTIMATE: ~45k triangles, ~12 draw calls. The dune grass and strand line are ours and unsupported, and are labelled so in research/infill_plan.json G8-d.
+
+**Acceptance.** On the deployed page the red obelisk stands behind the round ruin with four carved faces, three of them glossed and the fourth explicitly marked as described-but-not-interpreted; the exeres flies the three-hieroglyph standard; sea-gods break the water off the shore. hpDiag() before and after.
+
+**Risk.** Do not invent a reading for the fourth obelisk face or for the five medallions.
+
+**Files.** `src/scenes/world/infill.js` · `src/scenes/world/tombs.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 4 · research/infill_plan.json G8 · translation/en/page_238.md · translation/en/page_243.md · translation/en/page_284.md · BUILDINGPLAN.md IV
+
+
+---
+
+## Questions for Ted
+
+*Blocked on a directional call. **An agent must not decide these.***
+
+### `question-lateral-offsets-of-the-last-four-precincts` — Vertumnus, the temple and the Polyandrion are offset 150-430 m sideways from the itinerary, and no page asks for it
+
+**? question** · question · priority 3 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** PLAN_SITES: vertumnus x +150, venus_temple x -200, polyandrion x +230, shore x 0. All are marked sized "ours" or "stated+ours" in the generated table, and no source in research/plan.json states a lateral position for any of them.
+
+The effect is three dog-legs of 350, 430 and 230 m across bare ground with no path (bug-itinerary-path-misses-three-precincts), which turns three one-stadium gaps into walks of 486, 509 and 567 m.
+
+WHAT THE BOOK SAYS. The Polyandrion IS a digression -- "go licitly to see these deserted temples ... And I, in this place sitting, content, will await thee" (our p. 242) -- so an offset for IT is defensible and even right. The Temple of Venus and the Vertumnus altar are on the road, not off it: chapter XVII walks straight from the faun-feast through the hedged orchard to the temple.
+
+TWO OPTIONS, and this is Ted's call, not an agent's:
+  (a) keep the offsets and build the roads that justify them, using the book's own "wide, straight, four-way roads" (p. 190) -- more ground, more spectacle, more cost;
+  (b) put vertumnus and venus_temple back on x = 0 and leave the Polyandrion off to one side as the book's own digression. Option (b) is one edit to scripts/plan_sites.py and a re-run; nothing inside any builder moves, which is the whole point of stage 2.
+
+**Acceptance.** Ted picks (a) or (b); the call goes in DECISIONS.md; plan_sites.py is re-run if (b).
+
+**Files.** `scripts/plan_sites.py` · `research/plan.json`
+
+**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R2 · DECISIONS.md 54 · DECISIONS.md 60
 
 
 ---
