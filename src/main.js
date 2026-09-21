@@ -1082,9 +1082,14 @@ function placeCtlStack() {
 
   const card = document.getElementById('ctl-panel');
   if (!card) return;
+  if (!H) return;      // a pane with no layout yet; the next call will size it
   const nav = document.getElementById('world-nav');
   const navBottom = nav ? nav.getBoundingClientRect().bottom : 56;
-  const gap = parseFloat(st.style.bottom) || 0;
+  // getComputedStyle, NOT parseFloat(st.style.bottom): the inline value we
+  // just wrote is often '9rem', and parseFloat('9rem') is 9. That one mistake
+  // made the ceiling 135 px too generous and put the top of the card over the
+  // second row of a wrapped nav bar on the live page at 800x450.
+  const gap = parseFloat(getComputedStyle(st).bottom) || 0;
   card.style.maxHeight = Math.max(140, H - gap - navBottom - 12) + 'px';
 }
 
