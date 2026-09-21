@@ -38,7 +38,7 @@ describing and reacting to."*
 **Diagnosed live the same day, before proposing anything** (screenshots and scene-graph
 queries, `https://t3dy.github.io/EmblemsIn3d/src/`):
 
-- **The emptiness is real and severe.** From the palace precinct (x76, z−3460) looking north,
+- **The emptiness is real and severe.** From the palace precinct (x76, z−3460) looking south (toward +z; −z is north),
   the pyramid and its flanking cliffs stand as a thin sliver on the horizon behind a wholly
   empty green field — nothing built between camera and horizon. A small arcaded shrine one
   precinct further in (z−3500) is genuinely well made up close: two long facing colonnades,
