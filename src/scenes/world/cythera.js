@@ -247,9 +247,82 @@ export const Cythera = {
   _buildCytheraIsle() {
     const S = this.style;
     const lit = S.key !== 'woodcut';
-    // SPREAD = 4 (2026-09-17, DECISIONS.md 54): CZ -150 -> -600. R (the
-    // island's own radius, stated at 1499 pp. 292, 297) is a size and stays.
-    const CX = 0, CZ = -600, R = 50;
+
+    // ══ THE ISLAND AT ITS OWN SIZE (2026-09-20) ═══════════════════════════
+    //
+    // Until today this was a fifty-metre island standing in the middle of a
+    // 1 400 m precinct. DECISIONS.md call 60 said so itself, under "not done,
+    // and recorded rather than hidden": *"Cythera is a 50 m island in a
+    // 1,400 m precinct."* Stage 2 made the room; nothing had grown into it.
+    //
+    // Every radius below is the book's, off four pages of our own translation:
+    //
+    //   **The circle.** "This holy place … encircled (as I could rightly
+    //   conjecture) three miliaria" (p. 292) — 3 × 1 480 m = 4 440 m round.
+    //   Colonna then derives the diameter in the open, with his own π:
+    //   "because a circumference of circular figure is of as much measure as
+    //   are three of its diameters, and so much the more that in eleven
+    //   partitions, one diameter deducted, there are two portions" (p. 297) —
+    //   π ≈ 3 + 2/11 = 3.1818, so the diameter is ≈ 1 400 m. That is the
+    //   figure research/plan.json carries as this precinct's own width, and it
+    //   is READ from there rather than re-typed (DECISIONS.md call 60: stop
+    //   copying the number).
+    //
+    //   **The three claustri.** The middle garden is "stretched toward the
+    //   centre, of 166 paces and a half" (p. 298) — the *semitertio*, "half of
+    //   a third", 246.8 m, the depth of each of three concentric rings.
+    //   Colonna's own two figures do not quite reconcile: three semitertii is
+    //   740 m of radius where his diameter gives 700. Where they disagree the
+    //   PLAN wins for the outline (it is the stated circumference) and the
+    //   STATED RING DEPTH wins for the two outer rings, so the 6 % is absorbed
+    //   in the innermost ring — which is also where the theatre's own stated
+    //   dimensions take over. Both of his numbers are built; neither is
+    //   invented around.
+    //
+    //   **The screens.** DIRECTIONS.md §5: the island is "ringed three times
+    //   over — cypress and myrtle, then a citrus espalier eight paces high,
+    //   then a colonnade — before the theatre at the centre", and *"nothing in
+    //   this book is approached across open ground with the destination in
+    //   view."* So the growth is not "make it bigger": it is to build the
+    //   nested rings so each hides the next until you are through its gate.
+    //   Ring one hides ring two behind 11.8 m of living citrus; ring two hides
+    //   ring three behind the peristyle and the river; ring three hides the
+    //   Area behind six metres of terrace.
+    //
+    //   **The theatre.** "the central Area 32 paces across", "the built ring
+    //   8 paces thick" (p. 351) — 47.4 m and 11.8 m. DIRECTIONS.md §6.B calls
+    //   the theatre "already near-true" and exempts it from a ground rescale;
+    //   checked rather than assumed, it stood at an Area 14.8 m across, which
+    //   is 1 : 3.2 — so it grows too, but only to its stated size, and the
+    //   furniture on it (seats 6 palms high and 2½ ft deep, p. 353) stays 1:1.
+    //
+    //   **The terraces.** "each reached by a flight of seven steps", of 7 ft
+    //   (pp. 314, 353) — a terrace is 2.07 m high and a riser is one Roman
+    //   foot, 0.296 m, on the 2½-ft tread of the seats. Three terraces is
+    //   6.21 m from the Area to the ridge, and every flight built here is a
+    //   whole number of sevens for that reason.
+    //
+    // Cited: translation/en/page_292.md, _294, _297, _298, _311, _314, _320,
+    // _351, _353; research/plan.json precinct `cythera` (size_source
+    // "stated"); DIMENSIONS.md §4 Cythera; DIRECTIONS.md §5, §6.B; GARDENS.md §5.
+
+    // The centre and the radius are READ, not typed. `_precinctLocal` gives
+    // the plan's own centre in this builder's local frame — which comes out at
+    // the CZ = -600 anchor this island has always been drawn about — and the
+    // precinct's width is the stated 1 400 m diameter. If stage 3 moves or
+    // resizes the island, nothing in this file has to change.
+    const [CX, CZ] = this._precinctLocal('cythera');
+    const R = PLAN_SITES.cythera.width / 2;         // 700 — pp. 292, 297
+    const SEMI = 246.8;                             // 166 paces 10 palms, p. 298
+    const R_ESPALIER  = R - SEMI;                   // 453.2 — the citrus wall
+    const R_PERISTYLE = R - 2 * SEMI;               // 206.4 — the colonnade
+    const R_RIVER_O = R_PERISTYLE - 2.4, R_RIVER_I = R_RIVER_O - 8.0;
+    const AREA_R  = 23.7;                           // 32 paces across, p. 351
+    const THEAT_R = AREA_R + 11.8;                  // 35.5 — the built ring
+    const TER_H   = 2.07;                           // a seven-step terrace, 7 ft
+    const RIDGE_R = 65.5;                           // the outer lip of the cavea
+    const WAY     = 7.4;                            // 5 paces, the ways, p. 298
+
     const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
     // TWENTY, not twelve (2026-09-08). Our p. 294 does not merely assert the
     // number -- it gives the classical golden-section construction for
@@ -259,216 +332,362 @@ export const Cythera = {
     // orders of meadow. Everything radial on this island is therefore twenty.
     const STEP = Math.PI / 10;                      // twenty radial roads
     const rnd = (i, k) => { const v = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return v - Math.floor(v); };
-    // The sacred fountain of Adonis (ch. XXIV) takes one bosco compartment, off
-    // a road that ends at its grove. Not a cardinal: the four cardinals are the
-    // chariot roads and run clear through.
-    const ADONIS_K = 3, ADONIS_A = ADONIS_K * STEP, ADONIS_R = 42;
+    const onRoad = (a, w) => Math.min(...[0, 1, 2, 3].map(q =>
+      Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI))) < w;
 
-    // Sand rim and sward
+    // The sacred fountain of Adonis (ch. XXIV). research/plan.json puts it
+    // "in the inner ring", and so does HP_STATIONS: the `adonis` station sits
+    // at [81.36, -488.04], which is 138.4 m from this centre on a bearing of
+    // exactly 3 × 18°. It was built at r 42 on a fifty-metre island — four
+    // station-radii from where the tour teleports you. Both numbers now come
+    // out of the same geometry.
+    const ADONIS_K = 3, ADONIS_A = ADONIS_K * STEP, ADONIS_R = 138.4;
+
+    // ── The shore: sand, sward, and a coast you cannot walk off ───────────
     const sandMat = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
-    this._m(new THREE.CircleGeometry(R + 2.6, 56), sandMat, CX, 0.05, CZ, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.CircleGeometry(R + 16, 96), sandMat, CX, 0.05, CZ, { rx: -Math.PI / 2, cast: false });
     const swardMat = lit ? S.mat({ color: 0x223014, roughness: 0.98 }) : S.mat({ tone: 0.10, rim: 0 });
     if (lit) this._dress(swardMat, this._surfaceTexture({ base: '#3a5423', dark: '#1c3010', light: '#5c7e36', blobs: 80, speckle: 4200, repeat: 20 }), 0.15);
-    this._m(new THREE.CircleGeometry(R, 56), swardMat, CX, 0.07, CZ, { rx: -Math.PI / 2, cast: false });
-
-    // The coast: a ring of colliders keeps the walk on the island
-    for (let i = 0; i < 40; i++) {
-      const a = (i / 40) * Math.PI * 2;
-      const [x, z] = pos(a, 54);
-      this._circleCol(x, z, 4.6);
+    this._m(new THREE.CircleGeometry(R, 96), swardMat, CX, 0.07, CZ, { rx: -Math.PI / 2, cast: false });
+    // A ring of colliders keeps the walk on the island. Sixty of radius 42 at
+    // r = R + 38 overlap the whole way round a 4 400 m coast; the forty of
+    // radius 4.6 that were here closed a coast of 290 m and no more.
+    for (let i = 0; i < 60; i++) {
+      const [x, z] = pos((i / 60) * Math.PI * 2, R + 38);
+      this._circleCol(x, z, 42);
     }
 
-    // Radial roads. The four cardinals run all the way in (and bridge the
-    // river); the other eight stop at the river's outer bank.
+    // ── The twenty radial roads, five paces wide (p. 298) ─────────────────
     const isleTrack = lit ? S.mat({ color: 0x6a5a40, roughness: 0.92 }) : S.mat({ tone: 0.03, rim: 0 });
     if (lit) this._dress(isleTrack, this._surfaceTexture({ base: '#8a7550', dark: '#4a3a20', light: '#b8a074', blobs: 54, speckle: 3800, repeat: 8 }), 0.3);
-    // The road on the Adonis compartment stops at the sacred enclosure: the
-    // company comes to the fountain "by the paths or streets marked out among
-    // the plants of the fruit-bearing orchards" (p. 369) and the grove closes
-    // round it.
-    for (let k = 0; k < 20; k++) {
-      const a = k * STEP, cardinal = k % 5 === 0;
-      const r0 = cardinal ? 7.6 : 22.2, r1 = k === ADONIS_K ? ADONIS_R - 6.4 : 49;
+    const road = (a, r0, r1, w = WAY) => {
       const [x, z] = pos(a, (r0 + r1) / 2);
-      this._m(new THREE.PlaneGeometry(2.6, r1 - r0), isleTrack, x, 0.09, z,
+      this._m(new THREE.PlaneGeometry(w, r1 - r0), isleTrack, x, 0.09, z,
         { rx: -Math.PI / 2, rz: -a - Math.PI / 2, cast: false });
+    };
+    for (let k = 0; k < 20; k++) {
+      const a = k * STEP;
+      if (k === ADONIS_K) {
+        // "by the paths or streets marked out among the plants of the
+        // fruit-bearing orchards" (p. 369) — the road parts round the sacred
+        // enclosure and closes again beyond it.
+        road(a, RIDGE_R + 6, ADONIS_R - 26);
+        road(a, ADONIS_R + 26, R - 8);
+      } else {
+        road(a, RIDGE_R + 6, R - 8);
+      }
+    }
+    // the four transverse ways of the middle ring, drawn in the same track
+    const MEADOW = (SEMI - 4 * WAY) / 3;             // 72.4 — see the bands below
+    const bands = [];
+    for (let o = 0, r = R_ESPALIER - WAY; o < 3; o++) { bands.push([r - MEADOW, r]); r -= MEADOW + WAY; }
+    for (const rr of [R_ESPALIER - WAY / 2, bands[0][0] - WAY / 2, bands[1][0] - WAY / 2, bands[2][0] - WAY / 2]) {
+      this._m(new THREE.RingGeometry(rr - WAY / 2, rr + WAY / 2, 80), isleTrack, CX, 0.09, CZ,
+        { rx: -Math.PI / 2, cast: false });
     }
 
-    // ── Outer claustro: the bosco ─────────────────────────────────────────
-    // Twelve wedge plantations, each one kind of tree, with the cypress
-    // enclosure at the rim.
-    // "each a different tree plantation" (Segre): the twelve wedges take the
-    // species our translation names in the bosco, pp. 317–318 — cypress, pine,
-    // juniper, olive, laurel, arbutus, palm, orange — and the plane, oak, elm
-    // and citron it names elsewhere on the island.
+    // ══ RING ONE — IL BOSCO, from R in to R − 246.8 ═══════════════════════
+    //
+    // "each a different tree plantation" (Segre, GARDENS.md §5): the twenty
+    // wedges take the species our translation names in the bosco, pp. 317–318
+    // — cypress, pine, juniper, olive, laurel, arbutus, palm, orange — and the
+    // plane, oak, elm and citron it names elsewhere on the island.
     const BOSCO = ['cypress', 'pine', 'juniper', 'olive', 'laurel', 'arbutus', 'palm', 'orange',
                    'plane', 'oak', 'elm', 'citron', 'fir', 'beech', 'cedar', 'myrtle',
                    'fig', 'lemon', 'willow', 'apple'];
     for (let k = 0; k < 20; k++) {
       const a0 = k * STEP;
-      for (let t = 0; t < 5; t++) {
-        const a = a0 + (0.14 + rnd(k * 7 + t, 1) * 0.72) * STEP;
-        const r = 37 + rnd(k * 7 + t, 2) * 9.5;
-        const [x, z] = pos(a, r);
-        // the sacred grove keeps its own clearing
-        const [ax, az] = pos(ADONIS_A, ADONIS_R);
-        if (Math.hypot(x - ax, z - az) < 7.4) continue;
-        this._tree(x, z, 0.9 + rnd(k * 7 + t, 3) * 0.5, BOSCO[k]);
+      // the plantation itself, instanced — 120 trees to a wedge, 2 400 on the
+      // island, which a 40 000 m² compartment holds without crowding
+      const grove = [];
+      for (let t = 0; t < 120; t++) {
+        const a = a0 + (0.06 + rnd(k * 131 + t, 1) * 0.88) * STEP;
+        const r = R_ESPALIER + 14 + rnd(k * 131 + t, 2) * (SEMI - 34);
+        if (Math.abs(((a - a0) / STEP) - 0.5) < 0.055) continue;     // the fence line
+        // 3.6–5.8: a plane comes out 20–32 m and an oak 18–29, which is what
+        // DIRECTIONS.md §6.A asks of a wood you are inside of. 5.2–8.6 gave a
+        // fifty-metre plane — measured off the built section, not guessed.
+        grove.push([...pos(a, r), 3.6 + rnd(k * 131 + t, 3) * 2.2, rnd(k * 131 + t, 4) * 6.28]);
       }
-      // the enclosure: a cypress at mid-wedge on the rim, myrtle beneath it
-      const [ex, ez] = pos(a0 + STEP / 2, 48.2);
-      this._tree(ex, ez, 1.25, 'cypress');
-      const [mx, mz] = pos(a0 + STEP / 2 + 0.06, 47.0);
-      this._tree(mx, mz, 0.55, 'myrtle');
+      this._isleGrove(BOSCO[k], grove);
+      // and six modelled in full, standing where the road runs, so that what
+      // you walk up to is a tree and not a billboard
+      for (let t = 0; t < 4; t++) {
+        const side = t % 2 ? 1 : -1;
+        const a = a0 + (0.5 + side * (0.13 + rnd(k * 17 + t, 5) * 0.08)) * STEP;
+        const r = R_ESPALIER + 30 + (t / 4) * (SEMI - 60);
+        const [x, z] = pos(a, r);
+        this._tree(x, z, 4.4 + rnd(k * 17 + t, 6) * 2.2, BOSCO[k]);
+      }
+    }
+
+    // ── The shore rim: cypresses at three paces, a myrtle wall behind ─────
+    // "cypresses on the shore rim, spacing 3 paces … the shorn myrtle wall
+    // behind them, 1½ pace high" (p. 293 — DIMENSIONS.md §4). Three paces into
+    // 4 400 m of coast is a thousand cypresses, so they are instanced: the
+    // stated spacing is worth having and thirty thousand meshes is not.
+    const RIM_N = Math.round((2 * Math.PI * (R - 6)) / 4.44);
+    const rim = [];
+    for (let i = 0; i < RIM_N; i++) {
+      const a = (i / RIM_N) * Math.PI * 2;
+      if (onRoad(a, 0.008)) continue;
+      rim.push([...pos(a, R - 6), 4.2 + (i % 5) * 0.25, (i * 1.7) % 6.28]);
+    }
+    this._isleGrove('cypress', rim);
+    // the shorn wall: one arc to a division, the road left open between them
+    const myrtleWall = lit ? S.mat({ color: 0x1e3a12, roughness: 0.95, side: THREE.DoubleSide })
+                           : S.mat({ tone: 0.12, side: THREE.DoubleSide });
+    myrtleWall.userData.roll = 'a shorn sprig of myrtle';
+    for (let k = 0; k < 20; k++) {
+      const a0 = k * STEP + 0.016, a1 = (k + 1) * STEP - 0.016;
+      this._m(new THREE.CylinderGeometry(R - 12, R - 12, 2.22, 24, 1, true, Math.PI / 2 - a1, a1 - a0),
+        myrtleWall, CX, 1.11, CZ, { cast: false });
     }
 
     // ── The twenty fences (our p. 294) ────────────────────────────────────
     // One on each half-radius, so each compartment has a road down its middle
     // and a marble lattice on either hand, with a gate in each. Twenty fences,
-    // twenty climbers, the book's own list in the book's own order.
+    // twenty climbers, the book's own list in the book's own order. They now
+    // run the whole depth of the bosco — 246.8 m apiece, which is what "these
+    // twenty divisions were, by most noble fences, diversely latticed" means
+    // once the divisions are the size the book gives them.
     const CLIMB = CYTHERA_CLIMBERS;
     for (let k = 0; k < 20; k++) {
-      this._cytheraFence(CX, CZ, (k + 0.5) * STEP, 36.0, 48.4,
+      this._cytheraFence(CX, CZ, (k + 0.5) * STEP, R_ESPALIER + 4, R - 10,
         CLIMB[k % CLIMB.length], k);
     }
 
-    // ── Middle claustro: the prati ────────────────────────────────────────
-    // Flowery lawns, each with a fountain or a topiary at its centre and
-    // fruit trees about it; bounded inside by the bitter-orange espalier.
-    // (chords short enough to leave every radial road its full 2.6 u of way)
-    for (let i = 0; i < 20; i++) {
-      const a = (i + 0.5) * STEP;
-      const [x, z] = pos(a, 34.2);
-      this._hedge(x, 0.55, z, 6.2, 1.05, 0.5, { ry: -a + Math.PI / 2 });
-      this._circleCol(x, z, 2.2);
-      for (const s of [-1.9, 0, 1.9]) {
-        const [ox, oz] = pos(a + s / 34.2, 34.2);
-        this._m(new THREE.SphereGeometry(0.14, 8, 6),
-          lit ? S.mat({ color: 0xd8842a, roughness: 0.5 }) : S.mat({ tone: 0.06 }),
-          ox, 1.22, oz, { cast: false });
+    // ══ THE FIRST SCREEN — the citrus espalier (p. 297) ═══════════════════
+    //
+    // "there went round an excellent enclosure, of a height of eight paces and
+    // of a foot's thickness, so densely leafy that the least stem did not
+    // appear, with paired pervious windows, and, in order at the fitting
+    // places and passages, arching open gates, made and compactly conducted of
+    // orange, lemon and citron trees" (p. 297). Eight paces is 11.8 m — three
+    // times a man's height in living fruit — and it is the whole reason ring
+    // two cannot be seen from ring one. The gates take the p. 294 measure:
+    // 7 ft wide and 9 high, 2.07 × 2.66.
+    const ESP_H = 11.8, ESP_T = 0.3, GATE_W = 2.07, GATE_H = 2.66;
+    const citrusWall = lit ? S.mat({ color: 0x24421a, roughness: 0.94, side: THREE.DoubleSide })
+                           : S.mat({ tone: 0.2, side: THREE.DoubleSide });
+    citrusWall.userData.roll = 'a spray of the citrus espalier';
+    const citrusFruit = lit ? S.mat({ color: 0xe8c23a, roughness: 0.4 }) : S.mat({ tone: 0.02 });
+    const jambMat = lit ? S.mat({ color: 0x3a5a22, roughness: 0.92 }) : S.mat({ tone: 0.16 });
+    for (let k = 0; k < 20; k++) {
+      // the gate stands on the road, so the wall is cut for it at each division
+      const ga = k * STEP, half = (GATE_W / 2 + 0.4) / R_ESPALIER;
+      const a0 = ga + half, a1 = ga + STEP - half;
+      for (const rr of [R_ESPALIER - ESP_T / 2, R_ESPALIER + ESP_T / 2]) {
+        this._m(new THREE.CylinderGeometry(rr, rr, ESP_H, 20, 1, true, Math.PI / 2 - a1, a1 - a0),
+          citrusWall, CX, ESP_H / 2, CZ, { cast: false });
+      }
+      this._m(new THREE.RingGeometry(R_ESPALIER - ESP_T / 2, R_ESPALIER + ESP_T / 2, 20, 1, a0, a1 - a0),
+        citrusWall, CX, ESP_H, CZ, { rx: -Math.PI / 2, cast: false });
+      this._hedgeFringeArc(CX, CZ, R_ESPALIER + ESP_T, ESP_H, 2.2, Math.PI / 2 - a1, Math.PI / 2 - a0,
+        { density: 0.06, seed: 40 + k });
+      // "the first and mature fruits … dispersedly adorned"
+      for (let f = 0; f < 9; f++) {
+        const fa = a0 + ((f + 0.5) / 9) * (a1 - a0);
+        const [fx, fz] = pos(fa, R_ESPALIER + ESP_T);
+        this._m(new THREE.SphereGeometry(0.16, 6, 5), citrusFruit, fx, 1.4 + rnd(k * 9 + f, 7) * 9.0, fz, { cast: false });
+      }
+      // the arching open gate, cut through the living wall
+      const [gx, gz] = pos(ga, R_ESPALIER);
+      for (const s of [-1, 1]) {
+        const jx = gx - Math.sin(ga) * s * (GATE_W / 2 + 0.2);
+        const jz = gz + Math.cos(ga) * s * (GATE_W / 2 + 0.2);
+        this._m(new THREE.BoxGeometry(0.4, ESP_H, ESP_T + 0.4), jambMat, jx, ESP_H / 2, jz, { ry: -ga, cast: false });
+      }
+      const espArch = this._m(new THREE.TorusGeometry(GATE_W / 2 + 0.2, 0.18, 6, 14, Math.PI), jambMat,
+        gx, GATE_H - GATE_W / 2, gz, { cast: false });
+      espArch.rotation.y = -ga + Math.PI / 2;
+      this._m(new THREE.BoxGeometry(GATE_W + 0.9, ESP_H - GATE_H - 0.1, ESP_T), citrusWall,
+        gx, GATE_H + (ESP_H - GATE_H) / 2, gz, { ry: -ga, cast: false });
+      // you go through the gate, not through the wall
+      for (let s = 0; s < 10; s++) {
+        const sa = a0 + ((s + 0.5) / 10) * (a1 - a0);
+        const [sx, sz] = pos(sa, R_ESPALIER);
+        this._circleCol(sx, sz, (a1 - a0) * R_ESPALIER / 20 + 0.6);
       }
     }
-    for (let k = 0; k < 20; k++) {
-      const am = k * STEP + STEP / 2;
-      const [cx, cz] = pos(am, 27.5);
-      if (k % 2 === 0) {
-        // The clipped work the book says is trimmed every day — and the plates
-        // name each piece rather than leaving it generic: the box man carrying
-        // two towers and an arch (#117), the mushroom (#120), the three
-        // peacocks on their altar-vase (#127), the ring-tree on its altar
-        // (#116/#125). Six lawns, so each figure appears once or twice.
-        this._topiary(['man', 'mushroom', 'peacocks', 'ring', 'mushroom',
-                       'man', 'ring', 'peacocks', 'mushroom', 'ring'][k / 2], cx, cz, 0.95);
-      } else {
-        const pool = this.cast.props.pool(1.0);
-        pool.position.set(cx, 0.07, cz);
-        this.scene.add(pool);
-      }
-      this._circleCol(cx, cz, 1.1);
-      for (const [da, rr] of [[-0.11, 25], [0.11, 30.4]]) {
-        const [tx, tz] = pos(am + da, rr);
-        const ft = this.cast.props.tree('broad', 0.75);
-        ft.position.set(tx, 0.07, tz);
-        this.scene.add(ft);
-        this._circleCol(tx, tz, 0.45);
-      }
+    {
+      const [px, pz] = pos(0.014, R_ESPALIER - 5);
+      this._plaque({ main: 'SEPIMENTVM CITREORVM', sub: 'AN ENCLOSVRE OF EIGHT PACES · OF ORANGE, LEMON AND CITRON · P. 297' },
+        6.0, 0.8, px, 2.4, pz, -Math.PI / 2, true);
     }
 
-    // ── The river, its banks, its bridges, and the citrus pergola ─────────
+    // ══ RING TWO — I PRATI, the meadows (p. 298) ══════════════════════════
+    //
+    // "Which most admirable garden, stretched toward the centre, of 166 paces
+    // and a half, divided into meadows. Which division stood by passages
+    // straight to the centre, and circularly transverse, five paces wide. The
+    // primary meadows, in the first line of their squaring toward the
+    // enclosure, with the lateral ones, were 50 paces. But the fourth line,
+    // toward the centre, decremented" — three orders of meadow between four
+    // ways, the squaring "deformed" because the radii converge, which is what
+    // twenty trapezoidal compartments do and what Colonna admits outright.
+    //
+    // Twenty divisions by three orders is SIXTY meadows, and four fruit trees
+    // at the corners of each is Segre's 240 — a number the header of this
+    // method has quoted since the island was first built and which the island
+    // never actually laid.
+    const ORDER_FRUIT = ['apple', 'pear', 'plum'];   // Segre's own order
+    const corners = { apple: [], pear: [], plum: [] };
+    bands.forEach(([b0, b1], o) => {
+      const rm = (b0 + b1) / 2;
+      for (let k = 0; k < 20; k++) {
+        const am = (k + 0.5) * STEP;
+        const [cx, cz] = pos(am, rm);
+        // the centrepiece: clipped work, or a fountain, alternating
+        if ((k + o) % 2 === 0) {
+          this._topiary(['man', 'mushroom', 'peacocks', 'ring'][(k + o) % 4], cx, cz, 4.2);
+        } else {
+          const pool = this.cast.props.pool(5.0);
+          pool.position.set(cx, 0.08, cz);
+          this.scene.add(pool);
+        }
+        this._circleCol(cx, cz, 5.2);
+        // the four corner trees of the meadow
+        const da = (STEP / 2) * 0.72;
+        for (const sa of [-da, da]) for (const sr of [-MEADOW * 0.36, MEADOW * 0.36]) {
+          corners[ORDER_FRUIT[o]].push([...pos(am + sa, rm + sr), 4.6, (k + o) * 1.3]);
+        }
+        // the lawn edged with a low quickset on its outer arc
+        const [hx, hz] = pos(am, b1 - 1.4);
+        this._m(new THREE.BoxGeometry(2 * b1 * Math.sin(STEP * 0.44), 1.0, 0.6), this._hedgeMat,
+          hx, 0.5, hz, { ry: -am + Math.PI / 2, cast: false });
+      }
+    });
+    for (const sp of ORDER_FRUIT) this._isleGrove(sp, corners[sp]);
+    // "Which streets were pergola'd, and in each ridge was a little dome upon
+    // four Ionic columns, the shaft or their tallness being of nine diameters
+    // of their lowest thickness" (p. 298) — one at each radial road's crossing
+    // of the middle transverse way. Nine diameters of 0.5 m is a 4.5 m shaft,
+    // which is the rule read literally.
+    const domeMat = lit ? S.mat({ color: 0xe6dcc4, roughness: 0.55 }) : S.mat({ tone: 0.04 });
+    for (let k = 0; k < 20; k++) {
+      const a = k * STEP, rr = bands[1][1] + WAY / 2;
+      const [dx, dz] = pos(a, rr);
+      for (const s of [-1, 1]) for (const t of [-1, 1]) {
+        const px = dx - Math.sin(a) * s * 2.4 + Math.cos(a) * t * 2.4;
+        const pz = dz + Math.cos(a) * s * 2.4 + Math.sin(a) * t * 2.4;
+        this._column(px, pz, 4.5, { order: 'ionic', r: 0.25, mat: domeMat, flutes: 8 });
+        this._circleCol(px, pz, 0.4);
+      }
+      this._m(new THREE.SphereGeometry(3.6, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), domeMat,
+        dx, 4.7, dz, { cast: false });
+    }
+
+    // ══ THE SECOND SCREEN — the peristyle, and the river ══════════════════
+    // The prati are "bounded outside by a road under a vaulted pergola, inside
+    // by a peristyle and the river" (GARDENS.md §5; woodcut_catalog #121,
+    // folio 298, "Peristyle in pleasure-ground of island of Venus").
+    this._cytheraPeristyle(CX, CZ, R_PERISTYLE);
+
     const riverMat = S.waterMat();
     if (lit) { riverMat.color.set(0xffffff); riverMat.map = this._waterTexture(); }
     this._waters.push({
-      m: this._m(new THREE.RingGeometry(19, 21.6, 48), riverMat, CX, 0.08, CZ, { rx: -Math.PI / 2, cast: false }),
+      m: this._m(new THREE.RingGeometry(R_RIVER_I, R_RIVER_O, 120), riverMat, CX, 0.08, CZ, { rx: -Math.PI / 2, cast: false }),
       rate: 0.02,
     });
-    for (const r of [19, 21.6]) {
-      this._m(new THREE.TorusGeometry(r, 0.13, 8, 48), this._stoneMat, CX, 0.12, CZ, { rx: Math.PI / 2, cast: false });
+    for (const r of [R_RIVER_I, R_RIVER_O]) {
+      this._m(new THREE.TorusGeometry(r, 0.6, 5, 96), this._stoneMat, CX, 0.2, CZ, { rx: Math.PI / 2, cast: false });
     }
-    // keep the walk out of the water, except at the bridges
-    for (let i = 0; i < 28; i++) {
-      const a = (i / 28) * Math.PI * 2;
-      const near = Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI)));
-      if (near < 0.22) continue;
-      const [x, z] = pos(a, 20.3);
-      this._circleCol(x, z, 1.5);
+    // keep the walk out of the water, except at the four bridges
+    const RM = (R_RIVER_I + R_RIVER_O) / 2;
+    for (let i = 0; i < 96; i++) {
+      const a = (i / 96) * Math.PI * 2;
+      if (onRoad(a, 0.03)) continue;
+      const [x, z] = pos(a, RM);
+      this._circleCol(x, z, 7.0);
     }
     for (let q = 0; q < 4; q++) {
       const a = q * Math.PI / 2;
-      const [x, z] = pos(a, 20.3);
-      this._m(new THREE.BoxGeometry(2.8, 0.16, 3.6), this._stoneMat, x, 0.2, z, { ry: Math.PI / 2 - a });
+      const [x, z] = pos(a, RM);
+      this._m(new THREE.BoxGeometry(WAY, 0.4, 11.0), this._stoneMat, x, 0.3, z, { ry: Math.PI / 2 - a });
     }
-    // citrus pergola arching the river — trained trees as architecture
+    // the citrus pergola arching the river — trained trees as architecture
     const citrusLeaf = lit ? S.mat({ color: 0x2a4a1c, roughness: 0.9 }) : S.mat({ tone: 0.2 });
-    const citrusFruit = lit ? S.mat({ color: 0xe8c23a, roughness: 0.4, emissive: 0x4a3a00, emissiveIntensity: 0.3 }) : S.mat({ tone: 0.02 });
-    for (let i = 0; i < 8; i++) {
-      const a = (i + 0.5) * (Math.PI / 4);
+    for (let i = 0; i < 24; i++) {
+      const a = (i + 0.5) * (Math.PI * 2 / 24);
       const g = new THREE.Group();
-      this._m(new THREE.TorusGeometry(1.7, 0.09, 6, 14, Math.PI), this._trunkMat, 0, 0.1, 0, { parent: g });
+      this._m(new THREE.TorusGeometry(5.6, 0.22, 6, 16, Math.PI), this._trunkMat, 0, 0.1, 0, { parent: g });
       for (const phi of [0.5, 1.05, 1.57, 2.09, 2.64]) {
-        this._m(new THREE.SphereGeometry(0.34, 8, 6), citrusLeaf,
-          Math.cos(phi) * 1.7, 0.1 + Math.sin(phi) * 1.7, 0, { parent: g, cast: false });
+        this._m(new THREE.SphereGeometry(1.1, 7, 5), citrusLeaf,
+          Math.cos(phi) * 5.6, 0.1 + Math.sin(phi) * 5.6, 0, { parent: g, cast: false });
       }
       for (const phi of [0.85, 2.3]) {
-        this._m(new THREE.SphereGeometry(0.1, 8, 6), citrusFruit,
-          Math.cos(phi) * 1.55, 0.1 + Math.sin(phi) * 1.55, 0.22, { parent: g, cast: false });
+        this._m(new THREE.SphereGeometry(0.3, 6, 5), citrusFruit,
+          Math.cos(phi) * 5.2, 0.1 + Math.sin(phi) * 5.2, 0.6, { parent: g, cast: false });
       }
-      const [x, z] = pos(a, 20.3);
+      const [x, z] = pos(a, RM);
       g.position.set(x, 0, z);
       g.rotation.y = -a;
       this.scene.add(g);
     }
 
-    // The peristyle that bounds the prati on the inside (#121, folio 298)
-    this._cytheraPeristyle(CX, CZ);
+    // ══ RING THREE — the island within the island ═════════════════════════
+    //
+    // From the river inward: the spice wood, the sacred enclosure of Adonis at
+    // 138.4 m, the trophies lining the south road up from the landing, and the
+    // six metres of terrace that hide the Area until you stand on the ridge.
+    //
+    // The spice wood is Segre's innermost planting — citron, juniper,
+    // terebinth and almond, the terebinth standing as olive and the almond as
+    // laurel, the two the SPECIES table does not carry, matched by leaf and
+    // habit rather than invented.
+    const SPICE = ['citron', 'juniper', 'olive', 'laurel'];
+    const spice = { citron: [], juniper: [], olive: [], laurel: [] };
+    for (let i = 0; i < 520; i++) {
+      const a = rnd(i, 21) * Math.PI * 2;
+      const r = RIDGE_R + 18 + rnd(i, 22) * (R_RIVER_I - RIDGE_R - 32);
+      if (onRoad(a, 0.05)) continue;
+      const [x, z] = pos(a, r);
+      const [ax, az] = pos(ADONIS_A, ADONIS_R);
+      if (Math.hypot(x - ax, z - az) < 30) continue;          // the sacred grove's clearing
+      spice[SPICE[i % 4]].push([x, z, 3.2 + rnd(i, 23) * 2.0, rnd(i, 24) * 6.28]);
+    }
+    for (const sp of SPICE) this._isleGrove(sp, spice[sp]);
 
     // The trophies of the disarmed gods, lining the road up from the landing
     // (#130-#136) — including QUIS EVADET? / NEMO, which the tour has cited
     // since the commentary was written and the world did not have.
-    this._cytheraTrophies(CX, CZ);
+    this._cytheraTrophies(CX, CZ, RIDGE_R + 26, R_RIVER_I - 16);
 
-    // ── Inner claustro: three terraces rising to the theatre ──────────────
-    // Arcs with gaps at the cardinals; conifers in geometric array on the
-    // first, knot gardens on the second and third, flower-bed rings at each
-    // edge — the auditorium turned into beds, as the book turns it.
-    const knot = lit ? this._knotTexture() : null;
-    // The beds are the "kitchen-garden" bands of our p. 320: "the first band
-    // was most densely of marjoram. The second of southernwood. The third of
-    // ground-pine. The rhomb of mountain thyme … the circuit of the rose …
-    // sweet-scented violets … the circles … filled with rue … flowering primrose".
+    // ── The three terraces, falling inward to the Area ────────────────────
+    // Arcs with gaps at the cardinals; a flower-bed ring at each inner lip —
+    // the auditorium turned into beds, as the book turns it. The beds are the
+    // "kitchen-garden" bands of our p. 320: "the first band was most densely
+    // of marjoram. The second of southernwood. The third of ground-pine."
     // Rhizopoulou 2016 (u3-u6′) confirms every one of them as a plant of the
-    // book: marjoram, southernwood, ground-pine, thyme, germander, rue, primula.
-    // 2026-09-08: 0.42 / 0.84 / 1.26 -> 0.70 / 1.40 / 2.10, now that the walker
-    // has floor height and a terrace can be stood on instead of walked through.
-    // The outer ring is the ridge and the rings fall away inward to the Area,
-    // because these three rings ARE the auditorium. Its outer face reaches to
-    // r 18 so the box rampart stands on the terrace rather than beside it.
+    // book. The heights are the book's seven-step terrace of 7 ft (p. 314):
+    // 2.07, 4.14, 6.21, with the outermost ring the ridge.
+    const knot = lit ? this._knotTexture() : null;
     const tiers = [
-      { r0: 8, r1: 11, h: 0.70, bed: 0xc84a5a, herb: 'marjoram' },
-      { r0: 11, r1: 14, h: 1.40, bed: 0xe07a8a, herb: 'southernwood' },
-      { r0: 14, r1: 18, h: 2.10, bed: 0xd8a850, herb: 'groundpine' },
+      { r0: THEAT_R,      r1: THEAT_R + 9,  h: TER_H,     bed: 0xc84a5a, herb: 'marjoram' },
+      { r0: THEAT_R + 9,  r1: THEAT_R + 18, h: TER_H * 2, bed: 0xe07a8a, herb: 'southernwood' },
+      { r0: THEAT_R + 18, r1: RIDGE_R,      h: TER_H * 3, bed: 0xd8a850, herb: 'groundpine' },
     ];
     // …and they are floors you stand on -- but as FOUR ARCS each, with the
     // crossroads left out, exactly as the tops themselves are drawn. The
     // crossroads belong to the flights of steps; if the terrace floor covered
     // them the last stride of every flight would be a teleport.
     for (let q = 0; q < 4; q++) {
-      const t0 = q * Math.PI / 2 + 0.17, t1 = q * Math.PI / 2 + Math.PI / 2 - 0.17;
-      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0: 14.0, r1: 18.0, y: 2.10, a0: t0, a1: t1 });
-      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0: 11.0, r1: 14.0, y: 1.40, a0: t0, a1: t1 });
-      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0:  8.0, r1: 11.0, y: 0.70, a0: t0, a1: t1 });
+      const t0 = q * Math.PI / 2 + 0.09, t1 = q * Math.PI / 2 + Math.PI / 2 - 0.09;
+      for (const t of tiers) this._floor({ kind: 'ring', cx: CX, cz: CZ, r0: t.r0, r1: t.r1, y: t.h, a0: t0, a1: t1 });
     }
     const terraceMat = lit ? S.mat({ color: 0x8a7a5a, roughness: 0.9 }) : S.mat({ tone: 0.08 });
     if (lit) this._dress(terraceMat, this._surfaceTexture({ base: '#a7967a', dark: '#4a3a22', light: '#e6d6b0', veins: 4, courses: 3, repeat: 3 }), 0.3);
     tiers.forEach((t, ti) => {
-      const gap = 0.17;
+      const gap = 0.09;
       for (let q = 0; q < 4; q++) {
         const t0 = q * Math.PI / 2 + gap, tl = Math.PI / 2 - 2 * gap;
         const topMat = (lit && ti > 0)
           ? new THREE.MeshStandardMaterial({ map: knot, roughness: 0.9, side: THREE.DoubleSide })
           : terraceMat;
-        this._m(new THREE.RingGeometry(t.r0, t.r1, 20, 1, t0, tl), topMat, CX, t.h, CZ, { rx: -Math.PI / 2, cast: false });
-        this._m(new THREE.CylinderGeometry(t.r1, t.r1, t.h, 20, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
-        if (ti === 0) this._m(new THREE.CylinderGeometry(t.r0, t.r0, t.h, 20, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
+        this._m(new THREE.RingGeometry(t.r0, t.r1, 32, 1, t0, tl), topMat, CX, t.h, CZ, { rx: -Math.PI / 2, cast: false });
+        this._m(new THREE.CylinderGeometry(t.r1, t.r1, t.h, 32, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
+        if (ti === 0) this._m(new THREE.CylinderGeometry(t.r0, t.r0, t.h, 32, 1, true, Math.PI / 2 - (t0 + tl), tl), terraceMat, CX, t.h / 2, CZ, { cast: false });
       }
       // the flower-bed ring at the tier's inner lip: a BED, flat and flowered,
       // not a tube — the torus read as a coloured pipe once real box-work
@@ -477,120 +696,189 @@ export const Cythera = {
         ? new THREE.MeshStandardMaterial({ map: this._herbBedTexture(t.herb), roughness: 0.9 })
         : S.mat({ tone: 0.16 });
       if (lit) this._disp.push(bedMat);
-      this._m(new THREE.RingGeometry(t.r0 + 0.15, t.r0 + 0.75, 40), bedMat, CX, t.h + 0.02, CZ, { rx: -Math.PI / 2, cast: false });
-      this._m(new THREE.CylinderGeometry(t.r0 + 0.78, t.r0 + 0.78, 0.12, 40, 1, true), this._hedgeMat, CX, t.h + 0.06, CZ, { cast: false })
+      this._m(new THREE.RingGeometry(t.r0 + 0.4, t.r0 + 2.6, 56), bedMat, CX, t.h + 0.02, CZ, { rx: -Math.PI / 2, cast: false });
+      this._m(new THREE.CylinderGeometry(t.r0 + 2.8, t.r0 + 2.8, 0.5, 56, 1, true), this._hedgeMat, CX, t.h + 0.25, CZ, { cast: false })
         .material.side = THREE.DoubleSide;
-      this._hedgeFringeArc(CX, CZ, t.r0 + 0.78, t.h + 0.12, 0.12, 0, Math.PI * 2,
-        { density: 2.2, seed: Math.round(t.r0) });
+      this._hedgeFringeArc(CX, CZ, t.r0 + 2.8, t.h + 0.5, 0.5, 0, Math.PI * 2,
+        { density: 0.2, seed: Math.round(t.r0) });
     });
     // the herbs themselves stand in the beds as tufts, and the bands are named
     tiers.forEach((t, ti) => {
-      for (let k = 0; k < 40; k++) {
-        const a = k * Math.PI * 2 / 40 + ti * 0.05;
-        if (Math.abs(Math.sin(2 * a)) < 0.12) continue;                 // the four crossroads
-        this._tuft(CX + Math.cos(a) * (t.r0 + 0.45), t.h + 0.02, CZ + Math.sin(a) * (t.r0 + 0.45), t.herb, 0.34 + (k % 3) * 0.06);
+      for (let k = 0; k < 96; k++) {
+        const a = k * Math.PI * 2 / 96 + ti * 0.02;
+        if (Math.abs(Math.sin(2 * a)) < 0.07) continue;                 // the four crossroads
+        this._tuft(CX + Math.cos(a) * (t.r0 + 1.5), t.h + 0.02, CZ + Math.sin(a) * (t.r0 + 1.5), t.herb, 0.4 + (k % 3) * 0.08);
       }
     });
     this._plaque({ main: 'MARJORAM · SOVTHERNWOOD · GROVND-PINE', sub: 'THE FIRST BAND MOST DENSELY OF MARJORAM, THE SECOND OF SOVTHERNWOOD, THE THIRD OF GROVND-PINE · P. 320' },
-      2.4, 0.32, CX + 9.6, 0.70 + 0.7, CZ + 0.9, Math.PI / 2, true);
+      4.0, 0.54, CX + THEAT_R + 4.0, TER_H + 1.1, CZ + 2.4, Math.PI / 2, true);
     // The rings in Segre's order, outermost first: the conifer parterre, the
     // knot cloister, the spice wood — the first build had them inverted.
-    this._buildParterres(CX, CZ);
+    this._buildParterres(CX, CZ, { ridge: RIDGE_R, tiers });
     // terrace guards: the walk enters only by the four crossroads
-    for (let i = 0; i < 22; i++) {
-      const a = (i / 22) * Math.PI * 2;
-      const near = Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI)));
-      if (near < 0.3) continue;
-      const [gx, gz] = pos(a, 16.4);
-      this._circleCol(gx, gz, 2.1);
-      if (i % 2 === 0) { const [hx, hz] = pos(a, 9.7); this._circleCol(hx, hz, 1.7); }
+    for (let i = 0; i < 64; i++) {
+      const a = (i / 64) * Math.PI * 2;
+      if (onRoad(a, 0.13)) continue;
+      const [gx, gz] = pos(a, RIDGE_R + 1.6);
+      this._circleCol(gx, gz, 7.0);
     }
-    // corridor walls (the cardinals are axis-aligned, so AABBs serve)
-    this._wallCol(-2.1, -1.5, CZ + 7.6, CZ + 17.4); this._wallCol(1.5, 2.1, CZ + 7.6, CZ + 17.4);
-    this._wallCol(-2.1, -1.5, CZ - 17.4, CZ - 7.6); this._wallCol(1.5, 2.1, CZ - 17.4, CZ - 7.6);
-    this._wallCol(CX + 7.6, CX + 17.4, CZ - 2.1, CZ - 1.5); this._wallCol(CX + 7.6, CX + 17.4, CZ + 1.5, CZ + 2.1);
-    this._wallCol(CX - 17.4, CX - 7.6, CZ - 2.1, CZ - 1.5); this._wallCol(CX - 17.4, CX - 7.6, CZ + 1.5, CZ + 2.1);
-    // ── The flights of seven steps, at the four crossroads ───────────────
+    // ── The flights of steps, at the four crossroads ─────────────────────
     // "each reached by a flight of seven steps; the steps break at crossroads
     // marked by ornate gates for the passage of the triumphal chariots"
-    // (Segre, GARDENS.md 5). Four flights on each of the four crossroads: up
-    // from the bank onto the ridge, then down through the three rings of the
-    // auditorium to the Area. Seven risers in every one of them.
+    // (Segre, GARDENS.md §5). Every riser here is one Roman foot, 0.296 m, on
+    // the 2½-ft tread of the seats (p. 353), and every flight a whole number
+    // of sevens: three sevens from the bank up to the ridge (6.21 m), then one
+    // seven down each terrace (2.07 m apiece).
+    const TREAD = 0.74;
+    const climbR0 = RIDGE_R + 21 * TREAD;
     for (let q = 0; q < 4; q++) {
       const a = q * Math.PI / 2;
-      // The runs are long enough to be walked rather than climbed: 2.10 m over
-      // 2.8 m of run is about 37 degrees, which is a temple stair; the three
-      // garden flights are 30. Seven risers in each, whatever the run.
-      this._cytheraSteps(CX, CZ, a, 20.40, 17.60, 0,    2.10);   // the bank to the ridge
-      this._cytheraSteps(CX, CZ, a, 14.60, 13.40, 2.10, 1.40);   // then down the auditorium
-      this._cytheraSteps(CX, CZ, a, 11.60, 10.40, 1.40, 0.70);
-      this._cytheraSteps(CX, CZ, a,  8.60,  7.40, 0.70, 0);
+      this._cytheraSteps(CX, CZ, a, climbR0, RIDGE_R, 0, TER_H * 3, 21);
+      const flights = [
+        [tiers[2].r0 + 2.5, tiers[2].r0 + 2.5 - 7 * TREAD, TER_H * 3, TER_H * 2],
+        [tiers[1].r0 + 2.5, tiers[1].r0 + 2.5 - 7 * TREAD, TER_H * 2, TER_H],
+        [tiers[0].r0 + 2.5, tiers[0].r0 + 2.5 - 7 * TREAD, TER_H, 0],
+      ];
+      for (const [r0, r1, y0, y1] of flights) this._cytheraSteps(CX, CZ, a, r0, r1, y0, y1, 7);
       // …and the landings between them. A crossroad is a ROAD across the
       // terrace, level with it, not a hole between two flights: without these
       // the walk drops to the sward the moment it steps off a stair.
-      const G = 0.19;                                    // half the road, in radians
-      for (const [r0, r1, y] of [[14.60, 17.60, 2.10], [11.60, 13.40, 1.40], [8.60, 10.40, 0.70]]) {
+      const G = 0.06;                                    // half the road, in radians
+      const landings = [
+        [tiers[2].r0 + 2.5, tiers[2].r1, TER_H * 3],
+        [tiers[1].r0 + 2.5, flights[0][1], TER_H * 2],
+        [tiers[0].r0 + 2.5, flights[1][1], TER_H],
+      ];
+      for (const [r0, r1, y] of landings) {
         this._floor({ kind: 'ring', cx: CX, cz: CZ, r0, r1, y, a0: a - G, a1: a + G });
-        // and the road surface itself, so the landing is seen as well as felt
         const rm = (r0 + r1) / 2;
-        this._m(new THREE.PlaneGeometry(3.4, r1 - r0), isleTrack,
+        this._m(new THREE.PlaneGeometry(WAY, Math.abs(r1 - r0)), isleTrack,
           CX + Math.cos(a) * rm, y + 0.012, CZ + Math.sin(a) * rm,
           { rx: -Math.PI / 2, rz: -a - Math.PI / 2, cast: false });
       }
+      // the last flight lands on the theatre's own floor, at grade
+      this._floor({ kind: 'ring', cx: CX, cz: CZ, r0: AREA_R, r1: flights[2][1], y: 0, a0: a - G, a1: a + G });
     }
     // the ornate gates at the four crossroads, for the passage of the chariots
     for (let q = 0; q < 4; q++) {
       const a = q * Math.PI / 2;
-      for (const s of [-1.9, 1.9]) {
-        const [x, z] = pos(a, 18.6);
-        this._obelisk(x - Math.sin(a) * s, z + Math.cos(a) * s, 0.75, 2.1);
+      for (const s of [-4.6, 4.6]) {
+        const [x, z] = pos(a, RIDGE_R + 3.2);
+        this._obelisk(x - Math.sin(a) * s, z + Math.cos(a) * s, 0.75, 5.4);
       }
-      this._chariotGate(CX, CZ, a, 17.4, 2.10);
+      this._chariotGate(CX, CZ, a, RIDGE_R - 1.0, TER_H * 3);
     }
 
     // ── The crowning cypress arcade ───────────────────────────────────────
     // The book crowns the top of the theatre's rings with paired cypresses
-    // "trained to arch and meet over" (Colonna p.354, tr. this repo): a living
-    // colonnade ringing the auditorium. Eight pairs on the top terrace, the
-    // four cardinals left open for the crossroads. Purely decorative — off the
-    // walk, so no colliders.
-    const arcadeR = 16.4, arcH = 2.10, span = 0.5;
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      if (Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2)) - Math.PI))) < 0.34) continue;
+    // "trained to arch and meet over" (p. 354): a living colonnade ringing the
+    // auditorium, the pairs three paces apart (4.44 m, DIMENSIONS.md §4).
+    const arcadeR = RIDGE_R - 4.0, arcH = TER_H * 3, span = 2.22;
+    const arcN = Math.round(2 * Math.PI * arcadeR / (4.44 * 3));
+    for (let i = 0; i < arcN; i++) {
+      const a = (i / arcN) * Math.PI * 2;
+      if (onRoad(a, 0.13)) continue;
       const [cx, cz] = pos(a, arcadeR);
       const tx = -Math.sin(a), tz = Math.cos(a);        // ground tangent
-      const apex = arcH + 2.6;                            // cypress-top height
+      const apex = arcH + 9.0;                          // cypress-top height
       for (const s of [-span, span]) {
         const px = cx + tx * s, pz = cz + tz * s;
-        this._m(new THREE.ConeGeometry(0.3, 2.7, 8), this._leafMat, px, arcH + 1.35, pz, { cast: false });
-        this._m(new THREE.CylinderGeometry(0.07, 0.1, arcH + 0.1, 6), this._trunkMat, px, (arcH) / 2, pz, { cast: false });
+        this._m(new THREE.ConeGeometry(1.0, 9.4, 8), this._leafMat, px, arcH + 4.7, pz, { cast: false });
+        this._m(new THREE.CylinderGeometry(0.2, 0.28, arcH + 0.1, 6), this._trunkMat, px, arcH / 2, pz, { cast: false });
       }
       // the two crowns trained into an arch overhead, and a box-sphere finial
-      this._m(new THREE.TorusGeometry(span, 0.07, 6, 14, Math.PI), this._leafMat, cx, apex, cz, { ry: a + Math.PI / 2, cast: false });
-      this._m(new THREE.SphereGeometry(0.16, 8, 6), this._leafMat, cx, apex + span, cz, { outline: true, cast: false });
+      this._m(new THREE.TorusGeometry(span, 0.24, 6, 14, Math.PI), this._leafMat, cx, apex, cz, { ry: a + Math.PI / 2, cast: false });
+      this._m(new THREE.SphereGeometry(0.55, 8, 6), this._leafMat, cx, apex + span, cz, { outline: true, cast: false });
     }
 
     // ── The theatre floor, and the fountain the whole island converges on ──
-    this._m(new THREE.CircleGeometry(7.8, 40), this._darkStoneMat, CX, 0.06, CZ, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.CircleGeometry(THEAT_R, 80), this._darkStoneMat, CX, 0.06, CZ, { rx: -Math.PI / 2, cast: false });
     this._buildFountain(CX, CZ, { enclosure: true });
-    this._buildAmphitheatre(CX, CZ);
-    this._buildCupidTriumph(CX, CZ + 23);
+    this._buildAmphitheatre(CX, CZ, AREA_R);
+    this._buildCupidTriumph(CX, CZ + RIDGE_R + 34);
 
     // ── The last station of Book I (ch. XXIV) ────────────────────────────
     this._buildAdonis(CX, CZ, ADONIS_A, ADONIS_R);
 
     // ── The landing ───────────────────────────────────────────────────────
+    // The boat comes in on the island's own south shore, which the plan puts
+    // at the precinct's south edge, CZ + R. The pier used to stand at
+    // z = -99.4 — a literal left from the days when the centre was at -150,
+    // never moved when SPREAD put the centre at -600, so it lay five hundred
+    // metres out to sea.
+    const LZ = CZ + R - 4;
     for (let i = 0; i < 3; i++) {
-      this._m(new THREE.BoxGeometry(2.2, 0.12, 1.5), this._trunkMat, 0, 0.2, -99.4 - i * 1.6);
+      this._m(new THREE.BoxGeometry(2.2, 0.12, 1.5), this._trunkMat, 0, 0.2, LZ + 2 + i * 1.6);
     }
     const skiff = this.cast.props.boat(1.6);
-    skiff.position.set(2.6, 0.1, -99.2);
+    skiff.position.set(2.6, 0.1, LZ + 2.2);
     skiff.rotation.y = 0.5;
     this.scene.add(skiff);
     this._floats.push({ g: skiff, wheels: [], phase: 2.4 });
     this._plaque({ main: 'CYTHERA', sub: 'THE ISLAND OF VENUS · PRESS 9 TO RETURN' },
-      1.25, 0.32, -2.5, 1.1, -108, 0.35, true);
+      1.25, 0.32, -2.5, 1.1, LZ - 4, 0.35, true);
+  },
+
+  // ── Instanced planting, because the island is 1.5 km² ─────────────────────
+  //
+  // A `_tree` is thirty-odd meshes: a root flare, a trunk, boughs and a couple
+  // of dozen alpha-tested canopy cards. That is right for a tree you walk up
+  // to and ruinous for a wood you look across, and at its own size Cythera
+  // wants a wood in each of twenty compartments, a thousand cypresses on the
+  // shore rim at the stated three paces (p. 293), and Segre's 240 fruit trees
+  // at the meadow corners. So the far planting is instanced: two draw calls
+  // and one copy of the geometry for a whole plantation, whatever its count.
+  // Instanced meshes are skipped by `_mergeInto` and by the roll-up `_census`
+  // alike, which is what is wanted — a wood is not furniture, and a katamari
+  // should not eat a plantation.
+  //
+  // `places` is [x, z, scale, rotY], the scale in the units `_tree` takes,
+  // where 1 is a sapling. The bosco is planted at 5–9, which gives a cypress
+  // of 20–30 m and an oak of 20 m, because a 1 400 m island under three-metre
+  // trees reads as a lawn — the same finding as DIRECTIONS.md §6.A makes about
+  // the dark wood.
+  _isleGrove(species, places) {
+    if (!places || !places.length) return;
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const SP = SPECIES[species] || SPECIES.laurel;
+    const TH = SP.trunk[0], TR = SP.trunk[1];
+    const CW = SP.crown[0], CH = SP.crown[1];
+    const bark = woodcut ? this._trunkMat : S.mat({ color: SP.bark, roughness: 0.95 });
+    // The crown takes the MIDPOINT of the species' dark and light, not its
+    // dark. `_leafCardTexture` paints a card with both and the eye averages
+    // them; a solid instanced volume in SP.dark alone came out near black and
+    // the bosco read as a wall of soot from the landing. Keep the lit worlds
+    // bright (workspace note, 2026-08).
+    const mid = new THREE.Color(SP.dark).lerp(new THREE.Color(SP.light), 0.58);
+    const leaf = woodcut ? this._leafMat : S.mat({ color: mid.getHex(), roughness: 0.92 });
+    const conical = !!SP.cone || species === 'cypress' || species === 'juniper' || species === 'fir';
+    const trunkGeo = new THREE.CylinderGeometry(TR * 0.72, TR, TH, 6);
+    trunkGeo.translate(0, TH / 2, 0);
+    let crownGeo;
+    if (conical) {
+      crownGeo = new THREE.ConeGeometry(CW, CH * 2, 7);
+      crownGeo.translate(0, TH * SP.top + CH, 0);
+    } else {
+      crownGeo = new THREE.SphereGeometry(1, 7, 5);
+      crownGeo.scale(CW, CH, CW);
+      crownGeo.translate(0, TH * SP.top + CH * 0.55, 0);
+    }
+    const dummy = new THREE.Object3D();
+    for (const [geo, mat] of [[trunkGeo, bark], [crownGeo, leaf]]) {
+      const im = new THREE.InstancedMesh(geo, mat, places.length);
+      im.castShadow = false;
+      im.receiveShadow = false;
+      places.forEach((p, i) => {
+        dummy.position.set(p[0], 0, p[1]);
+        dummy.rotation.set(0, p[3] || 0, 0);
+        dummy.scale.setScalar(p[2] || 1);
+        dummy.updateMatrix();
+        im.setMatrixAt(i, dummy.matrix);
+      });
+      im.instanceMatrix.needsUpdate = true;
+      im.computeBoundingSphere();
+      this.scene.add(im);
+    }
   },
 
   // ── The sacred fountain and the sepulchre of Adonis (ch. XXIV) ───────────
@@ -997,36 +1285,52 @@ export const Cythera = {
   //   step by step declining in tiers" between them and "a stalk, mounting a
   //   foot and a half, where a box-sphere rounded itself"; and the knotwork
   //   squares of the kitchen-garden, which the terrace top carries as a tile.
-  _buildParterres(CX, CZ) {
+  _buildParterres(CX, CZ, plan = null) {
     const S = this.style, lit = S.key !== 'woodcut';
     const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
     const box = this._hedgeMat;
     const gravel = lit ? S.mat({ color: 0xa8904a, roughness: 0.95 }) : S.mat({ tone: 0.06, rim: 0 });
+    void gravel;
     const onRoad = (a, w = 0.2) => Math.min(...[0, 1, 2, 3].map(q => Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI))) < w;
 
+    // 2026-09-20: the radii come from the caller now, because the terraces they
+    // sit on are the book's own size (Area 47.4 m, ring 11.8 m, three terraces
+    // of 7 ft — pp. 351, 314). The box-work itself does NOT scale: "a hedge of
+    // box … three feet's thickness, and six high", the towers "raised nine feet,
+    // and five wide, with an open door gaping three feet" (p. 316) are stated in
+    // feet and are furniture, and furniture in this world stays 1 : 1
+    // (DIMENSIONS.md §5, the plan/furniture split).
+    const T = plan && plan.tiers ? plan.tiers : [
+      { r0: 8, r1: 11, h: 0.70 }, { r0: 11, r1: 14, h: 1.40 }, { r0: 14, r1: 18, h: 2.10 },
+    ];
+    const RIDGE = plan && plan.ridge ? plan.ridge : 17.6;
+    const TOP = T[2].h;
+    const GAP = plan ? 0.09 : 0.2;                 // half the crossroad, in radians
+
     // ── the rampart, outside the outer terrace: box six high, towers of nine
-    const RR = 17.6, HH = 1.2, TH = 1.8;
+    const RR = RIDGE, HH = 1.78, TH = 2.66;
     for (let q = 0; q < 4; q++) {
-      const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2;
-      this._m(new THREE.CylinderGeometry(RR + 0.3, RR + 0.3, HH, 40, 1, true, Math.PI / 2 - a1, a1 - a0), box, CX, HH / 2 + 2.10, CZ, { cast: false })
+      const a0 = q * Math.PI / 2 + GAP, a1 = q * Math.PI / 2 + Math.PI / 2 - GAP;
+      this._m(new THREE.CylinderGeometry(RR + 0.3, RR + 0.3, HH, 40, 1, true, Math.PI / 2 - a1, a1 - a0), box, CX, HH / 2 + TOP, CZ, { cast: false })
         .material.side = THREE.DoubleSide;
-      this._hedgeFringeArc(CX, CZ, RR + 0.3, HH + 2.10, HH, Math.PI / 2 - a1, Math.PI / 2 - a0,
-        { density: 3.2, seed: q });
-      this._m(new THREE.RingGeometry(RR, RR + 0.6, 40, 1, a0, a1 - a0), box, CX, HH + 2.10, CZ, { rx: -Math.PI / 2, cast: false });
+      this._hedgeFringeArc(CX, CZ, RR + 0.3, HH + TOP, HH, Math.PI / 2 - a1, Math.PI / 2 - a0,
+        { density: plan ? 0.35 : 3.2, seed: q });
+      this._m(new THREE.RingGeometry(RR, RR + 0.6, 40, 1, a0, a1 - a0), box, CX, HH + TOP, CZ, { rx: -Math.PI / 2, cast: false });
       // five towers a quarter, a door in each, and the clipped triumphs between
-      for (let t = 0; t < 5; t++) {
-        const a = a0 + (t + 0.5) / 5 * (a1 - a0);
+      const NT = plan ? 9 : 5;                      // the towers, at the book's own five-foot width
+      for (let t = 0; t < NT; t++) {
+        const a = a0 + (t + 0.5) / NT * (a1 - a0);
         const [x, z] = pos(a, RR + 0.3);
-        const tw = this._m(new THREE.BoxGeometry(1.0, TH, 1.0), box, x, TH / 2 + 1.26, z, { outline: true });
+        const tw = this._m(new THREE.BoxGeometry(1.48, TH, 1.48), box, x, TH / 2 + TOP, z, { outline: true });
         tw.rotation.y = -a;
-        this._m(new THREE.BoxGeometry(0.5, 1.1, 1.1), this._darkStoneMat, x, 0.55 + 1.26, z, { cast: false }).rotation.y = -a;   // the door, dark
-        if (t < 4) {
+        this._m(new THREE.BoxGeometry(0.5, 1.6, 0.89), this._darkStoneMat, x, 0.8 + TOP, z, { cast: false }).rotation.y = -a;   // the door, three feet gaping
+        if (t < NT - 1) {
           // between towers: the box reliefs — a chariot and its team, a ship, a
           // hunt — read as clipped silhouettes standing proud of the hedge
-          const am = a0 + (t + 1) / 5 * (a1 - a0);
+          const am = a0 + (t + 1) / NT * (a1 - a0);
           const [rx, rz] = pos(am, RR + 0.62);
-          const relief = new THREE.Group(); relief.position.set(rx, HH + 1.26, rz); relief.rotation.y = -am + Math.PI / 2; this.scene.add(relief);
-          const kind = (q * 4 + t) % 4;
+          const relief = new THREE.Group(); relief.position.set(rx, HH + TOP, rz); relief.rotation.y = -am + Math.PI / 2; this.scene.add(relief);
+          const kind = (q * (NT - 1) + t) % 4;
           if (kind === 0) {          // the triumph: two horses and a car
             for (const dx of [-0.9, -0.5]) this._m(new THREE.BoxGeometry(0.34, 0.24, 0.16), box, dx, 0.2, 0, { parent: relief, cast: false });
             this._m(new THREE.BoxGeometry(0.44, 0.3, 0.2), box, 0.2, 0.2, 0, { parent: relief, cast: false });
@@ -1048,9 +1352,13 @@ export const Cythera = {
     }
 
     // ── the first cloister, on the outer terrace: circle, rhomb, circle …
-    const T3 = { r0: 14, r1: 17, h: 2.10 }, mid = (T3.r0 + T3.r1) / 2;
+    const T3 = { r0: T[2].r0, r1: T[2].r1 - 1.0, h: T[2].h }, mid = (T3.r0 + T3.r1) / 2;
     for (let q = 0; q < 4; q++) {
-      const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2, n = 7;
+      const a0 = q * Math.PI / 2 + GAP, a1 = q * Math.PI / 2 + Math.PI / 2 - GAP;
+      // "a circle between two rhombs, and a rhomboid between two circles,
+      // alternating continuously in a ring" (p. 317) — an odd count a quarter
+      // so the alternation closes, one bed every ~9 m of the terrace's arc
+      const n = plan ? 2 * Math.round(mid * (a1 - a0) / 18) + 1 : 7;
       for (let i = 0; i < n; i++) {
         const a = a0 + (i + 0.5) / n * (a1 - a0);
         const [x, z] = pos(a, mid);
@@ -1083,9 +1391,10 @@ export const Cythera = {
     // ── the second cloister, on the middle terrace: orange towers, the
     //    hedges of eight kinds, crescent-horns with a tiered juniper, box
     //    spheres on stalks; the knot squares are the terrace's own tile
-    const T2 = { r0: 11, r1: 14, h: 1.40 }, m2 = T2.r1 - 0.5;
+    const T2 = { r0: T[1].r0, r1: T[1].r1, h: T[1].h }, m2 = T2.r1 - 1.6;
     for (let q = 0; q < 4; q++) {
-      const a0 = q * Math.PI / 2 + 0.2, a1 = q * Math.PI / 2 + Math.PI / 2 - 0.2, n = 4;
+      const a0 = q * Math.PI / 2 + GAP, a1 = q * Math.PI / 2 + Math.PI / 2 - GAP;
+      const n = plan ? Math.round(m2 * (a1 - a0) / 16) : 4;
       for (let i = 0; i <= n; i++) {
         const a = a0 + i / n * (a1 - a0);
         const [x, z] = pos(a, m2);
@@ -1111,16 +1420,17 @@ export const Cythera = {
       }
     }
 
-    // ── the spice wood, innermost (Segre's fourth ring): citron, juniper,
-    //    terebinth, almond — the terebinth as olive, the almond as laurel
-    for (let i = 0; i < 16; i++) {
-      const a = (i / 16) * Math.PI * 2 + 0.2;
-      if (onRoad(a, 0.28)) continue;
-      const [x, z] = pos(a, 9.5);
-      const t = this._tree(x, z, 0.42, ['citron', 'juniper', 'olive', 'laurel'][i % 4]); if (t) t.position.y = 0.70;
+    // ── the third cloister, on the lowest terrace: the clipped work of the
+    //    same kinds, carried round the bed that rings the Area
+    for (let i = 0; i < (plan ? 40 : 16); i++) {
+      const a = (i / (plan ? 40 : 16)) * Math.PI * 2 + 0.2;
+      if (onRoad(a, plan ? 0.13 : 0.28)) continue;
+      const [x, z] = pos(a, plan ? T[0].r0 + 5.4 : 9.5);
+      const t = this._tree(x, z, plan ? 1.5 : 0.42, ['citron', 'juniper', 'olive', 'laurel'][i % 4]);
+      if (t) t.position.y = T[0].h;
     }
     this._plaque({ main: 'TAPETI CHARAINI', sub: 'THE BEDS LIKE CARPETS FROM CAIRO · A CIRCLE BETWEEN TWO RHOMBS · CH. XXI' },
-      2.2, 0.36, CX + 2.6, 1.3 + 0.5, CZ + 18.6, 0, true);
+      2.2, 0.36, CX + 2.6, TOP + 1.8, CZ + RIDGE - 1.2, 0, true);
   },
 
   // ── The peristyle of the pleasure-ground ────────────────────────────────
@@ -1331,14 +1641,24 @@ export const Cythera = {
     const bays = [[r0, mid - GATE_W / 2], [mid + GATE_W / 2, r1]];
     let pilaster = 0;
     for (const [b0, b1] of bays) {
-      const n = Math.max(1, Math.round((b1 - b0) / 2.4));   // "the measured placing"
+      // 2026-09-20, the island at true scale: a fence is 246.8 m long now, not
+      // 12.4, and a 2.4 m panel would be a hundred and three panels a fence,
+      // four thousand on the island. The lattice is an ALPHA MAP, so a longer
+      // panel with the map repeated reads identically and costs one mesh —
+      // BAY is held at 16.4 m so a single `repeat` serves every panel, because
+      // the openwork material is shared between all twenty fences.
+      const BAY = (b1 - b0) > 40 ? 16.4 : 2.4;
+      const n = Math.max(1, Math.round((b1 - b0) / BAY));   // "the measured placing"
       for (let i = 0; i < n; i++) {
         const p0 = b0 + (i / n) * (b1 - b0), p1 = b0 + ((i + 1) / n) * (b1 - b0);
         const [mx, mz] = at((p0 + p1) / 2);
         // the panel of openwork, two inches thick
         const panel = this._m(new THREE.PlaneGeometry(p1 - p0 - 0.16, H - 0.25), openwork,
           mx, (H - 0.25) / 2 + 0.12, mz, { ry: -a, cast: false, receive: false });
-        panel.material.map && (panel.material.map.repeat = new THREE.Vector2(1, 1));
+        // the openwork tiles along the panel: one repeat per 2.4 m of bay, so
+        // the pierced marble keeps the same pitch whatever the panel's length
+        panel.material.map && (panel.material.map.repeat = new THREE.Vector2(Math.max(1, Math.round(BAY / 2.4)), 1));
+        panel.material.map && (panel.material.map.wrapS = panel.material.map.wrapT = THREE.RepeatWrapping);
         // a pilaster at each joint, white and red alternating
         for (const pr of (i === 0 ? [p0, p1] : [p1])) {
           const [px, pz] = at(pr);
@@ -1378,7 +1698,13 @@ export const Cythera = {
     const florGeo = this._climbFlorGeo = this._climbFlorGeo || new THREE.SphereGeometry(0.045, 5, 4);
     const rnd = (i, k) => { const v = Math.sin(i * 59.3 + k * 173.1 + seed * 23.7) * 43758.5453; return v - Math.floor(v); };
     const span = r1 - r0;
-    const n = Math.round(span * 16);
+    // 2026-09-20: sixteen leaves to the metre was right on a 12.4 m fence and
+    // is 3 900 leaves on a 246.8 m one — 78 000 across the twenty. The count is
+    // capped and the leaves spread over whatever the length is: what a climber
+    // has to do is read as a plant serpentining along a lattice, and 150 does
+    // that at any span. "So each was varied" is a fact about the SPECIES, not
+    // about the density.
+    const n = Math.min(150, Math.round(span * 16));
     for (let i = 0; i < n; i++) {
       const t = rnd(i, 1);
       const r = r0 + t * span;
@@ -1399,7 +1725,7 @@ export const Cythera = {
     }
     // the stems, running the length of the fence
     for (const yy of [0.5, 1.5, 2.4]) {
-      const SEGN = Math.max(3, Math.round(span / 1.4));
+      const SEGN = Math.max(3, Math.min(28, Math.round(span / 1.4)));
       for (let i = 0; i < SEGN; i++) {
         const p0 = r0 + (i / SEGN) * span, p1 = r0 + ((i + 1) / SEGN) * span;
         const [ax, az] = at(p0), [bx, bz] = at(p1);
