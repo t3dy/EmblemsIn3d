@@ -6,7 +6,7 @@
 
 ---
 
-**77 tickets** — 3 declined, 74 done. By kind: 31 bug, 31 debt, 9 infra, 3 question, 2 perf, 1 feat.
+**78 tickets** — 3 declined, 75 done. By kind: 32 bug, 31 debt, 9 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -610,6 +610,23 @@ WHAT IS NOT FIXED: the belt still overlaps the mountain and the glass garden. Gi
 **Files.** `src/scenes/world/approach.js` · `src/scenes/world/constants.js`
 
 **See.** DECISIONS.md 2026-09-09 the Great Portal at scale · DIRECTIONS.md
+
+
+### `bug-green-enclosure-open-north` — The green enclosure had no north side: standing in the room and looking north showed open sky
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Named in BUILDINGPLAN.md 2026-09-20 ('the palace does not yet close the green enclosure's north side'). Confirmed live 2026-09-20 before the fix: from (0, -2900) facing north the two citrus hedges stand left and right and between them is horizon and sky, with the court's colonnade visible only far to the left. Cause, measured: the siting was right and the geometry was missing. PLAN_SITES.enclosure.zNorth and PLAN_SITES.palace.zSouth are the same line (-2974.4) and research/plan.json records the palace as the enclosure's fourth side with gap_m 0; screens.js deliberately builds east and west only. But nothing in palace.js was ever drawn on that line -- the court (local z 80, x -96..-55), the hall (z 0) and the chess ground all sit well south-west of it, and the palace's builders are written in the pre-stage-2 frame (palace is not greenfield), so the precinct edge is local z +170.6, not depth/2. Book: Dallington p. 124 -- the enclosure is 'in the fore front of a marueilous Pallaice of a noble simmetriated architecturie which of this frondiferous conclausure, was the fourth part in longitude sixtie paces'.
+
+**Acceptance.** From inside the enclosure, at any standing point, a ray north reaches solid stone before it leaves the room: PLAN_SITES.enclosure.zNorth is covered by wall colliders across the full x range -44.4..+44.4 with one gate on x 0, and the hedge ends meet the wall with no open cell between them.
+
+**Resolution.** palace.js _buildPalaceForecourtWall (called first in _buildPalace): a symmetrical stone front 107 m wide (the room's 88.8 m plus 9 m either side so the hedge ends cannot leak a sightline), 9.2 m high, 3 m thick, flush with the line at -2974.4, eight pilasters, a cornice (dentils off: 235 boxes at that width), and one 8 m x 5.4 m gate on the x 0 axis so the avenue's line carries straight through. Verified live 2026-09-20 from five standing points (south end centre facing north; NW and east sides facing across the room; hard against the NW corner; the east side facing north-west): the room reads closed, hedge and wall meet flush, gate is the only opening; walker.walls holds wings at x -52.4..-4 and 4..52.4, z -2977.5..-2974.5, gate cell free, no collider on the x 0 line through to z -3020. First attempt used depth/2 for the edge and put the wall 33 m into empty ground (caught by z-bucketing the live scene's meshes). NOT done, and noted: the book puts a fountain in the middle of this court (p. 124-126); the world's Graces fountain stands inside the palace precinct, not here.
+
+**Files.** `src/scenes/world/palace.js` · `src/scenes/HPWorldScene.js` · `src/main.js` · `src/index.html`
+
+**See.** BUILDINGPLAN.md · DIRECTIONS.md#5
 
 
 ### `bug-plate-images-bound-to-page-seq-plus-eight` — fetch_1499_plates.py and build_reading.py use a +8 page offset where the measured one is +10, so every woodcut in Read mode sits two pages early

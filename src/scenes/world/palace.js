@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { METALS, SENSE_NYMPHS, shiftOf } from './constants.js?v=14';
+import { METALS, SENSE_NYMPHS, shiftOf, PLAN_SITES } from './constants.js?v=14';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Palace = {
@@ -981,11 +981,101 @@ export const Palace = {
       1.5, 0.24, FX - 0.02, Y - 0.78, 3.4, Math.PI / 2, true);
   },
 
+  // ── The palace's own front: the green enclosure's fourth side ───────────
+  //
+  // BUILDINGPLAN.md, 2026-09-20: "the palace does not yet close the green
+  // enclosure's north side, which is what the book says it is — that one is
+  // now visible from inside the room". Ticket bug-green-enclosure-open-north.
+  //
+  // Dallington p. 124 (corpus `md/Hypnerotomachia_by_Francesco_Colonna.md`,
+  // ll. 5148-5153): after the citrus hedge and its one gate, "I perceiued
+  // that it was a great enclosure in the fore front of a marueilous Pallaice
+  // of a noble simmetriated architecturie which of this frondiferous
+  // conclausure, was the fourth part in longitude sixtie paces" — the palace
+  // ITSELF, not a hedge, closes the enclosure's north side, for the
+  // enclosure's own stated width (sixty paces, 88.8 m, `PLAN_SITES.enclosure`).
+  //
+  // `PLAN_SITES.enclosure.zNorth` and `PLAN_SITES.palace.zSouth` are already
+  // the same line (-2974.4) — screens.js's `_buildGreenEnclosure` built east
+  // and west and left the north for this file, on purpose (its own comment:
+  // "The palace closes the NORTH"). What was missing was that nothing in
+  // this file had ever been drawn on that line: every structure below
+  // (`_buildCourt` at local z 80, `_buildPalace`'s hall at z 0) sits well
+  // short of the precinct's true south edge (world -2974.4 = z +170.6 in this
+  // file's own frame, see EDGE_Z below), and the court's
+  // colonnade in particular never reaches past local x -55, nowhere near the
+  // enclosure's x 0 axis. Stood in the enclosure and looked north, the whole
+  // width of the room was open to the sky beyond.
+  //
+  // Built as the book's "noble simmetriated architecturie": a symmetrical
+  // stone screen flush with the precinct edge, a little wider than the
+  // enclosure it closes so the corners don't leak a sightline past the
+  // hedge ends, with pilasters for the rhythm DIRECTIONS.md §5 asks of every
+  // screen and ONE gate — "with a Gate in the middest" is the citrus hedge's
+  // own phrase two pages earlier and the book gives the palace no reason to
+  // differ — set on the x = 0 axis the processional path (`_buildPalacePaths`)
+  // already runs on, so walking straight up the cypress avenue still carries
+  // you straight through.
+  _buildPalaceForecourtWall() {
+    const P = PLAN_SITES.enclosure;
+    const GATE = 8.0;                              // wide enough to walk through in company
+    const WALL_W = P.width + 16;                    // wider than the 88.8 m room it closes
+    const WING_W = (WALL_W - GATE) / 2;
+    const THK = 3.0, WALL_H = 9.2;
+    // `palace` is not greenfield (`plan_sites.js`'s own distinction): unlike
+    // the enclosure, its builders are NOT written in a frame centred on the
+    // precinct's own middle — they carry the pre-2026-09-17 coordinates
+    // straight through, and `_placeAt` adds `shift` on top. So the world
+    // line this wall must sit flush with (`enclosure.zNorth`, which is the
+    // same line as `palace.zSouth`, both -2974.4) has to be converted back
+    // into THIS file's own coordinate frame by subtracting the palace's
+    // shift, not by halving `palace.depth`. (The one-line version of this
+    // was tried first and put the wall 33 m into empty ground — z bucket
+    // histogram confirmed it, verify-live before deploy caught it.)
+    const EDGE_Z = PLAN_SITES.enclosure.zNorth - shiftOf('palace')[1];
+    const WZ = EDGE_Z - THK / 2 - 0.05;
+
+    for (const sx of [-1, 1]) {
+      const cx = sx * (GATE / 2 + WING_W / 2);
+      this._m(new THREE.BoxGeometry(WING_W, WALL_H, THK), this._stoneMat,
+        cx, WALL_H / 2, WZ, { outline: true });
+      this._wallCol(cx - WING_W / 2, cx + WING_W / 2, WZ - THK / 2, WZ + THK / 2);
+      // pilasters, proud of the enclosure-facing (south) face — four to a
+      // wing, the "simmetriated" rhythm the book names
+      for (let i = 0; i < 4; i++) {
+        const px = cx - WING_W / 2 + WING_W * (i + 0.5) / 4;
+        this._m(new THREE.BoxGeometry(1.1, WALL_H - 1.0, 0.4), this._darkStoneMat,
+          px, (WALL_H - 1.0) / 2 + 0.3, WZ + THK / 2 + 0.24, { cast: false });
+      }
+    }
+    // the cornice, spanning the full width including over the gate — the
+    // wall's true top, and the gate's own lintel. Dentils off: `_entablature`
+    // spaces them at ~2.2/m, fine at a 13 m bay (the hall wall's own use)
+    // but 235 boxes across this wall's 107 m, which is budget spent on
+    // texture the sward hedge equivalent (`_citrusRun`) doesn't pay either.
+    this._entablature(0, WALL_H, WZ, WALL_W + 2, THK + 0.4, { dentils: false });
+    // A gate 9 m high reads as a hole in the front, not a door in it (seen
+    // live, 2026-09-20): the opening is 5.4 m and the wall carries on over it.
+    const GATE_H = 5.4;
+    this._m(new THREE.BoxGeometry(GATE, WALL_H - GATE_H, THK), this._stoneMat,
+      0, GATE_H + (WALL_H - GATE_H) / 2, WZ, { outline: true });
+    // the gate's stone jambs, echoing the citrus hedge's own gate two pages
+    // earlier in the same passage (`screens.js` `_citrusRun`)
+    for (const sg of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.55, WALL_H + 0.3, THK + 0.3), this._darkStoneMat,
+        sg * GATE / 2, (WALL_H + 0.3) / 2, WZ, { outline: true });
+    }
+    this._plaque({ main: 'OF A NOBLE SIMMETRIATED ARCHITECTVRIE',
+                   sub: 'THE FOVRTH PART OF THE ENCLOSVRE IN LONGITVDE SIXTIE PACES · THE PALLAICE ITSELFE · DALLINGTON P. 124' },
+      7.4, 0.9, -16, 2.6, WZ + THK / 2 + 0.08, 0, true);   // on the enclosure-facing face, between two pilasters
+  },
+
   _buildPalace() {
     const S = this.style;
     // SPREAD = 4 (2026-09-17, DECISIONS.md 54): -20.5 -> -82; z stays at the
     // palace's own 0. _buildArtificialGardens keys off this CX -- see there.
     const CX = -82;
+    this._buildPalaceForecourtWall();
     this._buildPalaceFrieze();
 
     // A stepped platform, not a slab: stylobate over two courses, with a flight
