@@ -82,7 +82,7 @@ THE BRIDGE ALREADY EXISTS and is in the wrong precinct -- see bug-second-bridge-
 
 WHAT IS OURS AND MARKED SO: the river's width. No page gives it; 18 m is proposed as what three keeled-pier arches would span. research/infill_plan.json G3 carries the per-element provenance labels.
 
-COST ESTIMATE: ~74k triangles, ~19 draw calls, on the _isleGrove model (cythera.js:840). Helpers to reuse: _ribbon and _waterMat (approach.js:1127), _buildShadedWalk (palace.js:1933), _buildBirds (nature.js:69), and the plane species already in SPECIES.
+COST ESTIMATE: ~74k triangles, ~19 draw calls, on the _isleGrove model (cythera.js:840). Helpers to reuse: _ribbon and _waterMat (approach.js:1127), _buildShadedWalk (palace.js), _buildBirds (nature.js:69), and the plane species already in SPECIES.
 
 **Acceptance.** Walking north from Polia's garden on the deployed page: (1) the three doors are NOT visible from the garden's arch -- the plane-grove stops the eye; (2) a river crosses the route and is crossed by the three-arch bridge, whose two porphyry tablets are both legible from the crown of the deck; (3) beyond the bridge is shaded walk, and the bare spurs appear only when the trees stop; (4) hpDiag() before and after in the commit message, added triangles under 100k and added draw calls under 25 per cent of the reading taken at that position.
 
@@ -216,7 +216,7 @@ OUR P. 142: "without noticing, I came to the end of that flowery covering; and l
 
 This is DIRECTIONS.md 5 stated by the book itself: a covered walk that shows nothing, ended by a reveal that stops him where he stands. The gap is 185 m, which is the right length for it.
 
-WHERE IT IS NOW: _buildJasmineArbour (src/scenes/world/palace.js:1518) is built in the palace / polia_garden precincts. Chapter XI puts the arbour AFTER the third door. Reading fault R5 in research/infill_plan.json.
+WHERE IT IS NOW: _buildJasmineArbour (src/scenes/world/palace.js, called from _buildPoliaArcade) is built in the palace / polia_garden precincts. Chapter XI puts the arbour AFTER the third door. Reading fault R5 in research/infill_plan.json.
 
 "A tall arching" also answers NEXTSTEPS 0-AA's low-ceiling complaint at human scale: 4.5-5 m to the crown, not a stooping pergola.
 
