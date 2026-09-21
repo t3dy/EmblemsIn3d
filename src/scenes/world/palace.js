@@ -1140,11 +1140,15 @@ export const Palace = {
     const N = 512, c = document.createElement('canvas');
     c.width = c.height = N;
     const x = c.getContext('2d');
-    const MARBLE = ['#e6dfd0', '#d8cfc0', '#e2d8c4', '#cfc8ba'];
-    const JASPER = ['#9a4a3a', '#4a6a44', '#8a7a3a', '#6a4a62'];
-    const FILLET = '#2c3a44';
+    // Muted, and deliberately so. Drawn at full jasper saturation first, this
+    // came out as a fairground floor of red and green discs — seen live and
+    // toned down the same pass. Polished stone in raking sun is pale; the
+    // colour is in the VEIN and the ring, not in the field.
+    const MARBLE = ['#e6dfd0', '#dcd3c2', '#e2dac8', '#d4ccbc'];
+    const JASPER = ['#b08476', '#8a9a84', '#b0a684', '#9a8a9c'];
+    const FILLET = '#6a6558';
     x.fillStyle = FILLET; x.fillRect(0, 0, N, N);
-    const K = N / 2, B = 13;                    // two squares a side, the fillet between
+    const K = N / 2, B = 8;                     // two squares a side, the fillet between
     for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) {
       const ox = i * K + B / 2, oy = j * K + B / 2, s = K - B;
       const n = j * 2 + i;
@@ -1159,14 +1163,14 @@ export const Palace = {
         x.stroke();
       }
       // the round of jasper, "less than their measure"
-      const cx = ox + s / 2, cy = oy + s / 2, r = s * 0.36;
+      const cx = ox + s / 2, cy = oy + s / 2, r = s * 0.30;
       x.fillStyle = JASPER[(n + 1) % 4];
       x.beginPath(); x.arc(cx, cy, r, 0, 7); x.fill();
-      x.strokeStyle = 'rgba(30,26,22,0.5)'; x.lineWidth = 2.2; x.stroke();
-      x.strokeStyle = 'rgba(255,248,232,0.22)'; x.lineWidth = 5;
-      x.beginPath(); x.arc(cx, cy, r * 0.72, 3.6, 5.6); x.stroke();
+      x.strokeStyle = 'rgba(60,54,46,0.34)'; x.lineWidth = 2.0; x.stroke();
+      x.strokeStyle = 'rgba(255,250,240,0.22)'; x.lineWidth = 5;
+      x.beginPath(); x.arc(cx, cy, r * 0.7, 3.6, 5.6); x.stroke();
       // the four corners the round leaves over: winding fronds and lilies
-      x.strokeStyle = '#3f5a34'; x.fillStyle = '#b8203c'; x.lineWidth = 2.0;
+      x.strokeStyle = 'rgba(96,116,86,0.75)'; x.fillStyle = 'rgba(158,74,86,0.8)'; x.lineWidth = 1.8;
       for (let k = 0; k < 4; k++) {
         const a = Math.PI / 4 + k * Math.PI / 2;
         const px = cx + Math.cos(a) * s * 0.40, py = cy + Math.sin(a) * s * 0.40;
@@ -1178,7 +1182,7 @@ export const Palace = {
       }
     }
     // the tessellation of the fillets: a minute cutting of coloured stones
-    const TESS = ['#3f5a34', '#b8203c', '#26365e', '#5a3a6a', '#6a7a68'];
+    const TESS = ['#5c7050', '#96525e', '#4a5672', '#6a5a74', '#7c8478'];
     for (let i = 0; i < 620; i++) {
       const v = Math.sin(i * 91.7 + 13.1) * 43758.5453, r0 = v - Math.floor(v);
       const w2 = Math.sin(i * 57.3 + 7.7) * 43758.5453, r1 = w2 - Math.floor(w2);
@@ -1192,7 +1196,7 @@ export const Palace = {
     }
     const t = new THREE.CanvasTexture(c);
     t.wrapS = t.wrapT = THREE.RepeatWrapping;
-    t.repeat.set(22, 22);                       // squares about two metres across
+    t.repeat.set(32, 32);                       // squares about 1.3 m across
     t.colorSpace = THREE.SRGBColorSpace;
     t.anisotropy = 8;
     this._disp.push(t);
@@ -1420,13 +1424,19 @@ export const Palace = {
       this._ashlar(cx, POD, WZ, w, H0, THK, stone,
         { course: 0.92, block: 2.4, name: 'the palace front, ground storey' });
       this._wallCol(Math.min(x0, x1), Math.max(x0, x1), WZ - THK / 2, WZ + THK / 2);
-      // one Herculean panel to each intercolumniation
+      // One Herculean panel to each intercolumniation, set between two string
+      // mouldings and standing PROUD of the ashlar — "marvellously cut half
+      // free of the ground" is a relief that comes forward out of its field,
+      // which is what `_reliefTexture` draws (lit stroke over shadow stroke).
+      // `_reliefTexture`'s canvas is a frieze at 512 × 192, so the panel is
+      // laid out at that ratio: at 2.1 × 2.3 the figures came out stretched to
+      // twice their height and the whole band read as blank pale stone.
       for (let k = 0; k < 11; k++) {
         const px = sg * (CB / 2 + (k + 0.5) * S_COL);
-        const pan = this._m(new THREE.PlaneGeometry(S_COL - 1.5, 2.3), relief, px, POD + 4.3, FACE + 0.06, { cast: false });
-        void pan;
-        this._m(new THREE.BoxGeometry(S_COL - 1.2, 0.16, 0.24), stone, px, POD + 3.05, FACE + 0.12, { cast: false });
-        this._m(new THREE.BoxGeometry(S_COL - 1.2, 0.16, 0.24), stone, px, POD + 5.55, FACE + 0.12, { cast: false });
+        const pw = S_COL - 1.15;
+        this._m(new THREE.PlaneGeometry(pw, pw * 192 / 512), relief, px, POD + 4.6, FACE + 0.16, { cast: false });
+        this._m(new THREE.BoxGeometry(pw + 0.3, 0.18, 0.3), stone, px, POD + 4.6 - pw * 0.21, FACE + 0.15, { cast: false });
+        this._m(new THREE.BoxGeometry(pw + 0.3, 0.18, 0.3), stone, px, POD + 4.6 + pw * 0.21, FACE + 0.15, { cast: false });
       }
     }
     // the wall over the door, from the arch's crown to the entablature
@@ -1577,23 +1587,34 @@ export const Palace = {
     const glass = this._frontGlassMat = this._frontGlassMat || (woodcut
       ? S.mat({ tone: 0.26 })
       : S.mat({ color: 0x171a1e, roughness: 0.5, metalness: 0.1 }));
-    // the reveal: a dark panel set back, so the opening is a hole and not a
-    // drawing of one
-    this._m(new THREE.BoxGeometry(w, spring - ySill + R, 0.5), glass, x, (ySill + spring + R) / 2 - R / 2, face - 0.28, { cast: false });
-    this._m(new THREE.CircleGeometry(R, 18, 0, Math.PI), glass, x, spring, face - 0.27, { cast: false });
+    // The reveal. It must sit just PROUD of the wall face, not behind it: at
+    // face − 0.28 it was inside the ashlar — the wall is 3.6 m thick and the
+    // blocks fill it — so the opening never read at all and what you saw from
+    // the court was the coursing with a moulding drawn on it. Seen live and
+    // moved out the same pass. At +0.03 the dark panel covers the coursing and
+    // the frame below stands 0.1 further out again, which is what makes it a
+    // hole rather than a drawing of one.
+    this._m(new THREE.BoxGeometry(w, spring - ySill, 0.06), glass, x, (ySill + spring) / 2, face + 0.03, { cast: false });
+    this._m(new THREE.CircleGeometry(R, 18, 0, Math.PI), glass, x, spring, face + 0.035, { cast: false });
     // the archivolt and the jambs
-    this._m(new THREE.RingGeometry(R, R + 0.3, 18, 1, 0, Math.PI), stone, x, spring, face + 0.04, { cast: false });
+    this._m(new THREE.RingGeometry(R, R + 0.32, 18, 1, 0, Math.PI), stone, x, spring, face + 0.14, { cast: false });
     for (const sx of [-1, 1]) {
-      this._m(new THREE.BoxGeometry(0.3, spring - ySill, 0.22), stone, x + sx * (R + 0.15), (ySill + spring) / 2, face + 0.04, { cast: false });
+      this._m(new THREE.BoxGeometry(0.32, spring - ySill, 0.28), stone, x + sx * (R + 0.16), (ySill + spring) / 2, face + 0.14, { cast: false });
     }
     // the sill, on two little brackets
-    this._m(new THREE.BoxGeometry(w + 1.0, 0.2, 0.42), stone, x, ySill - 0.1, face + 0.12, { cast: false });
+    this._m(new THREE.BoxGeometry(w + 1.0, 0.2, 0.42), stone, x, ySill - 0.1, face + 0.2, { cast: false });
     for (const sx of [-1, 1]) {
-      this._m(new THREE.BoxGeometry(0.22, 0.34, 0.3), dark, x + sx * (R - 0.1), ySill - 0.37, face + 0.1, { cast: false });
+      this._m(new THREE.BoxGeometry(0.22, 0.34, 0.3), dark, x + sx * (R - 0.1), ySill - 0.37, face + 0.18, { cast: false });
     }
     // the colonnette that makes it a BIFORA, with its little abacus
-    this._m(new THREE.CylinderGeometry(0.1, 0.11, spring - ySill - 0.1, 8), stone, x, (ySill + spring) / 2, face - 0.14, { cast: false });
-    this._m(new THREE.BoxGeometry(0.3, 0.14, 0.3), stone, x, spring - 0.08, face - 0.14, { cast: false });
+    this._m(new THREE.CylinderGeometry(0.1, 0.11, spring - ySill - 0.1, 8), stone, x, (ySill + spring) / 2, face + 0.09, { cast: false });
+    this._m(new THREE.BoxGeometry(0.3, 0.14, 0.3), stone, x, spring - 0.08, face + 0.09, { cast: false });
+    // and the two little round heads the colonnette divides
+    for (const sx of [-1, 1]) {
+      const lr = (w - 0.22) / 4;
+      this._m(new THREE.RingGeometry(lr * 0.72, lr, 12, 1, 0, Math.PI), stone,
+        x + sx * (lr + 0.11), spring - R * 0.62, face + 0.1, { cast: false });
+    }
   },
 
   // The curtain at the notable door (p. 93): "all of golden thread, and
