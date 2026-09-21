@@ -116,10 +116,17 @@ function setProgress(pct, text) {
 // and stopped being fine the moment the reading mode fetched reading.json on
 // demand, hours after load. Hoisted so there is one number, not two that can
 // drift. CLAUDE.md: "Data files use the single const V in main.js loadData()."
-const DATA_V = '49';   // bump when data files are re-exported
-// Bumped 2026-09-20: reading.json's plate bindings moved by the +10 fix
+const DATA_V = '50';   // bump when data files are re-exported
+// Bumped 48->49 2026-09-20: reading.json's plate bindings moved by the +10 fix
 // (bug-plate-images-bound-to-page-seq-plus-eight) and tours.json changed three
 // ledes, a chapter tag and page ranges. infra-data-v-not-bumped-for-plate-reoffset.
+// Bumped 49->50 same day: reading.json was rewritten FIVE more times under the
+// same 49 (blank leaves restored, two caption-correction passes, the plate
+// count settling at 149/149) with nobody bumping this — so a browser that
+// fetched it partway through could be stuck on any of those intermediate
+// states. Same class of mistake as the RollUp.js?v= chain slip earlier today:
+// a data file's own content changing is not, by itself, what bumps this
+// number — every commit that rewrites reading.json (or tours.json) has to.
 
 async function loadData() {
   setProgress(10, 'Loading the dream…');
