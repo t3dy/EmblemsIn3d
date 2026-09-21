@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { METALS, SENSE_NYMPHS, shiftOf, PLAN_SITES } from './constants.js?v=14';
+import { METALS, SENSE_NYMPHS, shiftOf, PLAN_SITES } from './constants.js?v=15';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Palace = {
@@ -979,6 +979,161 @@ export const Palace = {
     this._plaque({ main: 'GENII · DELPHINI · BVCRANIVM',
                    sub: 'THE FRIEZE OF THE PALACE FRONT · 1499 PLATE 24, P. 84' },
       1.5, 0.24, FX - 0.02, Y - 0.78, 3.4, Math.PI / 2, true);
+  },
+
+  // ── The fountain in the middle of the green enclosure (ch. VIII) ─────────
+  //
+  // Our own translation, `translation/en/page_088.md`: "In the middle part of
+  // this most notable area I saw an excellent fountain of the clearest waters,
+  // **spouting on high almost to the top of the green enclosure** through the
+  // narrowest little pipes, and falling down into a wide basin, which was of
+  // the finest amethyst, its diameter containing three paces, of a thickness
+  // of a quarter, dwindling towards the lips to an inch" — and `page_089.md`
+  // for the jasper shaft cut across with chalcedony "of the colour of troubled
+  // sea-water", the round plinth of green ophite "raised from the level
+  // pavement by a fifth part, with the surrounding porphyry, which was
+  // curiously lined with well-polished little waves", the four golden harpies
+  // standing with their hinder parts to the shaft and holding up the violet
+  // lip with maidenly faces, and the three naked golden Graces on the little
+  // altar within the basin.
+  //
+  // ── ONE FOUNTAIN, NOT TWO — why this is a MOVE and not a new build ──────
+  //
+  // `_buildGracesFountain` (temple.js) already models every part of this
+  // description, and cites Dallington pp. 124–127, which is this same passage
+  // in the 1592 English. It was standing at palace-local (0, −80), world
+  // (0, −3225): 295 m north of here, inside the Queen's own precinct. Two
+  // checks settle which place the book means, and they agree:
+  //
+  //  · **The text puts it here and nowhere else.** "In the middle part of this
+  //    most notable area" is the green enclosure's own "square open court
+  //    beneath the sky" (p. 88, the sentence before). The Queen's court, our
+  //    pp. 94 following, is furnished at length — the throne, the seven
+  //    planetary panels, the banquet, the bath, the wheeled fountain of plate
+  //    #32 — and has no fountain of this kind anywhere in it.
+  //  · **The plate agrees.** `hp.db.woodcut_catalog` #23, "Third fountain with
+  //    Graces, harpies, griffins", sits at `page_seq` 80; the `page_numbering`
+  //    block of `research/coverage.json` gives a constant offset of ten
+  //    between hp.db's `page_seq` and our translation's page numbers, so plate
+  //    #23 is translation page 90 — the third page of this same fountain.
+  //
+  // So it is MOVED: HPWorldScene calls this builder inside `_in('enclosure')`
+  // and the palace precinct no longer builds one. The `fountain` station moves
+  // with it (`constants.js`), because it was aimed at the fountain and would
+  // otherwise look at bare grass.
+  //
+  // This method lives in palace.js rather than screens.js for the same reason
+  // `_buildPalaceFront` below does: the enclosure's fourth side IS the palace,
+  // and its court is the palace's forecourt. screens.js builds the green; this
+  // file builds what stands in it.
+  //
+  // What is added on top of the relocation, and why:
+  //   · the PORPHYRY PAVEMENT that the ophite round is "raised from … by a
+  //     fifth part" (p. 89). The existing model has the narrow porphyry ring
+  //     that carries the water channel but no pavement, so the fountain stood
+  //     on grass in the middle of an 88.8 m lawn.
+  //   · the GREAT JETS. "Spouting on high almost to the top of the green
+  //     enclosure" is the one thing the existing model does not do — its six
+  //     pipes play at 0.7 m — and it is the whole reason this fountain belongs
+  //     to this room rather than to any other. The hedge is 13.6 m to its top
+  //     (screens.js `_citrusRun`, the book's "as high as the lofty cypresses"),
+  //     so these rise to 12.4: almost, and not quite.
+  //   · the PROCESSIONAL WALK from the green door to the fountain and on to
+  //     the palace portal. Ours, after the worn line `_buildCypressAvenue`
+  //     already lays down the middle of the four stadia — the book does not
+  //     pave this court, and it is kept to a line rather than a pattern.
+  _buildEnclosureCourt() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+
+    // ── the pavement of porphyry, "lined with well-polished little waves" ──
+    // Radius is ours: 11.2 m gives the fountain a platform about a quarter of
+    // the court's width, which is the proportion a cortile fountain wants and
+    // is the figure Alberti's own rule of thumb for a centre-piece in a square
+    // court would give (De re aedificatoria IX.4, on the parts answering the
+    // whole). The book gives no measure for it.
+    const PAVE = 11.2;
+    const porphyr = woodcut ? S.mat({ tone: 0.22 })
+      : S.mat({ color: 0x8a3436, roughness: 0.34, metalness: 0.05 });
+    if (!woodcut) this._dress(porphyr, this._littleWavesTexture(), 0.22);
+    // A DISC, level with the ground, not a drum: the book's own sentence has
+    // the ophite round raised above "the level pavement", so the pavement is
+    // the thing that is level. 0.14 clears the enclosure's sward at 0.12.
+    this._m(new THREE.CircleGeometry(PAVE, 56), porphyr, 0, 0.14, 0,
+      { rx: -Math.PI / 2, cast: false });
+    // its kerb, so the pavement has an edge and not a horizon
+    this._m(new THREE.TorusGeometry(PAVE, 0.13, 6, 64), this._stoneMat, 0, 0.13, 0,
+      { rx: -Math.PI / 2, cast: false });
+
+    // ── the walk: the avenue's worn line carried across the court ──────────
+    // (ours; see the head note)
+    const walkMat = woodcut ? S.mat({ tone: 0.04, rim: 0 })
+      : S.mat({ color: 0x8a7a5c, roughness: 0.94 });
+    walkMat.polygonOffset = true;
+    walkMat.polygonOffsetFactor = -4;
+    walkMat.polygonOffsetUnits = -4;
+    for (const sg of [-1, 1]) {
+      const z0 = sg * PAVE, z1 = sg * 44.4;
+      this._m(new THREE.PlaneGeometry(3.6, Math.abs(z1 - z0)), walkMat, 0, 0.15, (z0 + z1) / 2,
+        { rx: -Math.PI / 2, cast: false });
+    }
+
+    // ── the fountain itself, where the book puts it ────────────────────────
+    this._buildGracesFountain(0, 0);
+
+    // ── "spouting on high almost to the top of the green enclosure" ────────
+    //
+    // Six jets, which is the book's own count two sentences later: "Among the
+    // fruits and foliage six little pipes projected a little, set in order and
+    // flowing, from which the water rose in the finest thread" (p. 89). They
+    // spring from the joined mouths of the three cornucopias over the Graces'
+    // heads — `_buildGracesFountain` sets that point at y 5.13 — and fall back
+    // inside the amethyst lip.
+    //
+    // The existing model's own six jets remain, playing low into the basin; a
+    // fountain that plays at two heights is not wrong, but folding the two
+    // sets together belongs in temple.js, which another agent holds this
+    // session. Ticket debt-enclosure-fountain-two-sets-of-pipes.
+    const MOUTH = 5.13, PEAK = 12.4, LIP = 2.49, VR = 1.5;
+    for (let i = 0; i < 6; i++) {
+      const a = i * Math.PI / 3 + Math.PI / 12;
+      this._jet(Math.cos(a) * 0.1, MOUTH, Math.sin(a) * 0.1,
+                Math.cos(a) * VR * 0.7, LIP, Math.sin(a) * VR * 0.7,
+                { r: 0.032, apex: PEAK - MOUTH, sparkle: 26 });
+    }
+
+    this._plaque({ main: 'SPOVTING ON HIGH ALMOST TO THE TOP OF THE GREENE ENCLOSVRE',
+                   sub: 'A BASIN OF THE FINEST AMETHYST, THE DIAMETER THREE PACES · FOVRE HARPIES OF GOLD, AND THE THREE GRACES · OVR PP. 88–89 · PLATE 23' },
+      9.0, 1.05, 0, 1.5, PAVE + 2.6, Math.PI, true);
+  },
+
+  // The "little waves" of p. 89, for the porphyry that surrounds the ophite
+  // round: rows of overlapping arcs, light over dark, which is how a polished
+  // porphyry floor of this period is lined and is the nearest a drawn texture
+  // gets to "curiously lined with well-polished little waves".
+  _littleWavesTexture() {
+    if (this._littleWaves) return this._littleWaves;
+    const N = 256, c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    x.fillStyle = '#8a3436'; x.fillRect(0, 0, N, N);
+    const ROWS = 7, STEP = N / ROWS;
+    for (let r = 0; r < ROWS; r++) {
+      const y = (r + 0.5) * STEP;
+      for (let i = -1; i <= ROWS + 1; i++) {
+        const px = i * STEP + (r % 2 ? STEP * 0.5 : 0);
+        x.beginPath(); x.arc(px, y + 2.2, STEP * 0.52, Math.PI, 0);
+        x.strokeStyle = 'rgba(52,12,16,0.55)'; x.lineWidth = 2.0; x.stroke();
+        x.beginPath(); x.arc(px, y, STEP * 0.52, Math.PI, 0);
+        x.strokeStyle = 'rgba(222,176,158,0.5)'; x.lineWidth = 2.6; x.stroke();
+      }
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(6, 6);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    this._littleWaves = t;
+    return t;
   },
 
   // ── The palace's own front: the green enclosure's fourth side ───────────

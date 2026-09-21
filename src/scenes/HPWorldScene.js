@@ -41,19 +41,19 @@ import {
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
   PLAN_SITES, PLAN_EXTENT, shiftOf,
-} from './world/constants.js?v=14';
-import { Materials } from './world/materials.js?v=10';
-import { Nature } from './world/nature.js?v=16';
-import { Approach } from './world/approach.js?v=13';
-import { Portal } from './world/portal.js?v=28';
-import { Palace } from './world/palace.js?v=26';
-import { Triumphs } from './world/triumphs.js?v=15';
-import { Tombs } from './world/tombs.js?v=9';
+} from './world/constants.js?v=15';
+import { Materials } from './world/materials.js?v=11';
+import { Nature } from './world/nature.js?v=17';
+import { Approach } from './world/approach.js?v=14';
+import { Portal } from './world/portal.js?v=29';
+import { Palace } from './world/palace.js?v=27';
+import { Triumphs } from './world/triumphs.js?v=16';
+import { Tombs } from './world/tombs.js?v=10';
 import { Temple } from './world/temple.js?v=16';
-import { Cythera } from './world/cythera.js?v=17';
-import { Rollup } from './world/rollup.js?v=13';
+import { Cythera } from './world/cythera.js?v=18';
+import { Rollup } from './world/rollup.js?v=14';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
-import { Screens } from './world/screens.js?v=5';
+import { Screens } from './world/screens.js?v=6';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
@@ -338,7 +338,14 @@ export class HPWorldScene {
       this._buildDividingSpring();    // the water that divides right and left
     });
     _in('cypress_avenue', () => this._buildCypressAvenue());
-    _in('enclosure',      () => this._buildGreenEnclosure());
+    _in('enclosure', () => {
+      this._buildGreenEnclosure();
+      // The amethyst fountain of pp. 88–90 — MOVED here 2026-09-20 from the
+      // palace precinct, where it stood 295 m north of the court the book puts
+      // it in the middle of. The reasoning, and the plate that settles it, are
+      // in palace.js `_buildEnclosureCourt`.
+      this._buildEnclosureCourt();
+    });
     _in('palace', () => {
       this._buildPalacePaths();
       this._buildCourt();
@@ -346,7 +353,6 @@ export class HPWorldScene {
       this._buildChessBallet();
       this._buildQuinta();
       this._buildArtificialGardens();
-      this._buildGracesFountain(0, -80);   // folio 80's own fountain
       this._buildShadedWalk();
       this._buildBridge();
       this._buildRiverPlants();

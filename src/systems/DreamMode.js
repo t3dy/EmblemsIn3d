@@ -8,7 +8,7 @@
 // Enter / → also advance; Esc leaves the dream and returns to free walking.
 
 import * as THREE from 'three';
-import { toWorld } from '../scenes/world/constants.js?v=14';
+import { toWorld } from '../scenes/world/constants.js?v=15';
 
 export class DreamMode {
   constructor(world, ui, stops, reactions = {}) {

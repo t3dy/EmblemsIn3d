@@ -11,7 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { PLAN_SITES } from './constants.js?v=14';
+import { PLAN_SITES } from './constants.js?v=15';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';

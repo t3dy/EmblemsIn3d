@@ -14,7 +14,7 @@ import * as THREE from 'three';
 import { Masonry } from '../../systems/Masonry.js?v=8';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 import { DOORS, SIGNS, PIAZZA, PYRAMID_W, PLINTH_W, PLINTH_H,
-         COURSE_H, COURSES } from './constants.js?v=14';
+         COURSE_H, COURSES } from './constants.js?v=15';
 
 export const Portal = {
   _buildGreatPortal() {

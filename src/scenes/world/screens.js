@@ -30,7 +30,7 @@
 // Sizes are the book's where the book gives them; each is cited at its use.
 
 import * as THREE from 'three';
-import { PLAN_SITES } from './constants.js?v=14';
+import { PLAN_SITES } from './constants.js?v=15';
 
 export const Screens = {
 
@@ -57,32 +57,89 @@ export const Screens = {
   //
   // The collider is the WHOLE run, gate apart: you may look through a hedge
   // and not walk through it.
-  _citrusRun(cx, cz, len, axis, { gate = 0, bays = 8, thick = 1.78, high = 4.2 } = {}) {
+  //
+  // ── HOW HIGH (2026-09-20) ───────────────────────────────────────────────
+  //
+  // `high` was 4.2 m — a garden hedge — and the book says twice over that it is
+  // not one. Our translation, `translation/en/page_088.md`: the way of cypresses
+  // "tended straight towards a green enclosure", and "Coming joyfully to that
+  // cloister, I found it equal-sided, of three walls, in the likeness of a
+  // straight wall, **as high as the lofty cypresses of the way**." The avenue's
+  // own cypresses were measured on the running page at **14.6 m** to the crown,
+  // so the hedge is 13.6: a shade under them, which is what "as high as" reads
+  // as when you stand in the gate and look up at both.
+  //
+  // That is the whole difference between a garden and a ROOM. At 4.2 m the
+  // enclosure was a low box on a lawn you could see the country over; at 13.6 it
+  // is four green walls and the sky, which is what "a square open court beneath
+  // the sky" means, and it is what makes the palace front behind it read as a
+  // building standing over a wall rather than as a wall of its own.
+  //
+  // It costs nothing: the bay is the same count of boxes at a different height,
+  // and `_hedgeFringe` was already capping its leaf count at 420 a box.
+  //
+  // The WINDOWS come in two ranges for the same reason. The lower one is the
+  // band of framed view at standing height that made this hedge architecture in
+  // the first place; the upper one is the book's own — "Above, in a fitting
+  // place, windows were set in order" (p. 88) — which a 4.2 m hedge had no room
+  // for and a 13.6 m one does.
+  _citrusRun(cx, cz, len, axis, { gate = 0, bays = 8, thick = 1.78, high = 13.6 } = {}) {
     const alongX = axis === 'x';
     const BAY = len / bays;
     const WIN = Math.min(4.4, BAY * 0.44), SILL = 1.1, HEAD = 2.9;
+    // the upper range, "above, in a fitting place" — sill and head
+    const UP0 = Math.min(high * 0.53, high - 4.0), UP1 = Math.min(high * 0.72, high - 1.6);
     const rnd = (i, k) => { const v = Math.sin(i * 53.9 + k * 311.1 + 7.7) * 43758.5453; return v - Math.floor(v); };
     const at = (u) => (alongX ? [cx + u, cz] : [cx, cz + u]);
     const box = (u, w, y, h) => {
       const [x, z] = at(u);
       this._hedge(x, y, z, alongX ? w : thick, h, alongX ? thick : w);
     };
+    // how far out from the middle the gate's own bays reach, so the green can be
+    // carried back over the opening below
+    let gateSpan = 0;
     for (let b = 0; b < bays; b++) {
       const t = -len / 2 + (b + 0.5) * BAY;
-      // a bay that the gate falls in is skipped entirely
-      if (gate && Math.abs(t) < gate / 2 + BAY / 2) continue;
+      // a bay that the gate falls in is skipped here and closed below
+      if (gate && Math.abs(t) < gate / 2 + BAY / 2) {
+        gateSpan = Math.max(gateSpan, Math.abs(t) + BAY / 2);
+        continue;
+      }
       const pw = BAY - WIN;
-      box(t - BAY / 2 + pw / 2, pw, high / 2, high);          // the pier
-      box(t + pw / 2, WIN, SILL / 2, SILL);                   // the sill under the window
-      box(t + pw / 2, WIN, (HEAD + high) / 2, high - HEAD);   // the head over it
-      // the fruit the hedge is cut out of, standing proud of its top
+      box(t - BAY / 2 + pw / 2, pw, high / 2, high);           // the pier
+      box(t + pw / 2, WIN, SILL / 2, SILL);                    // the sill under the lower window
+      box(t + pw / 2, WIN, (HEAD + UP0) / 2, UP0 - HEAD);      // the head over it, and the upper sill
+      box(t + pw / 2, WIN, (UP1 + high) / 2, high - UP1);      // the head over the upper window
+      // The fruit the hedge is cut out of, standing PROUD OF ITS TOP — p. 88:
+      // "to the desirous eyes ripe fruits and unripe offered themselves
+      // plentifully". At the old scale (1.05–1.25) a citron topped out at 2.8 m
+      // and was buried inside a 4.2 m hedge, so not one of them was ever seen;
+      // at about six the crown clears 13.6 by a metre or so, which is what the
+      // sentence describes. The trunks stay inside the green, as they must: the
+      // hedge IS these trees, "knit with an artful cohesion".
       for (let i = 0; i < 3; i++) {
         const [fx, fz] = at(t - BAY / 2 + (i + 0.5) * (BAY / 3));
-        this._tree(fx, fz, 1.05 + rnd(b * 3 + i, 2) * 0.2,
+        this._tree(fx, fz, 5.8 + rnd(b * 3 + i, 2) * 0.9,
                    ['citron', 'orange', 'lemon'][(b + i) % 3]);
       }
     }
     if (gate) {
+      // ── THE DOOR IS A DOOR, NOT A HOLE (2026-09-20) ──────────────────────
+      //
+      // p. 88: "With a door bent in the middle out of the tree-work itself,
+      // composedly carried through with the diligent industry of the maker."
+      // Bent out of the tree-work — so the green CARRIES OVER the opening and
+      // the head of the door is cut in it, which is also the only reading under
+      // which the enclosure is still "in the likeness of a straight wall".
+      // Until today the gate's two bays were skipped entirely, which at the old
+      // 4.2 m was a modest notch and at the book's own height would have been a
+      // ten-metre hole with the sky through it.
+      const DOOR = Math.min(5.0, high - 2.0);
+      box(0, gateSpan * 2, (DOOR + high) / 2, high - DOOR);      // the green over the door
+      for (const sg of [-1, 1]) {                                 // and back to the jambs
+        const w = gateSpan - gate / 2;
+        if (w > 0.05) box(sg * (gate / 2 + w / 2), w, DOOR / 2, DOOR);
+      }
       // the run either side of the gate, and the stone jambs that make the
       // opening read as made rather than as a gap in the planting
       for (const sg of [-1, 1]) {
@@ -91,8 +148,11 @@ export const Screens = {
         if (alongX) this._wallCol(x - w / 2, x + w / 2, z - thick / 2, z + thick / 2);
         else this._wallCol(x - thick / 2, x + thick / 2, z - w / 2, z + w / 2);
         const [jx, jz] = at(sg * gate / 2);
-        this._m(new THREE.BoxGeometry(alongX ? 0.5 : thick + 0.3, high + 0.4, alongX ? thick + 0.3 : 0.5),
-          this._stoneMat, jx, (high + 0.4) / 2, jz, { outline: true });
+        // The jamb stops at the door's head: a 14 m stone splinter either side
+        // of a 5 m opening is not a jamb, it is a needle. (Ours — the book's
+        // door is cut out of the greenery and names no stone.)
+        this._m(new THREE.BoxGeometry(alongX ? 0.5 : thick + 0.3, DOOR + 0.4, alongX ? thick + 0.3 : 0.5),
+          this._stoneMat, jx, (DOOR + 0.4) / 2, jz, { outline: true });
       }
     } else if (alongX) {
       this._wallCol(cx - len / 2, cx + len / 2, cz - thick / 2, cz + thick / 2);

@@ -74,8 +74,19 @@ export const HP_STATIONS = [
     pos: [-46, 0],  look: [-80, 0],  radius: 9 },
   { key: 'quinta_essentia', precinct: 'palace',  name: 'The Obelisk of the Trinity', folio: 119,
     pos: [52, 0],     look: [84, 0],   radius: 8 },
-  { key: 'fountain', precinct: 'palace',         name: 'Fountain of Venus',      folio: 80,
-    pos: [0, -42],  look: [0, -80],  radius: 8, pitch: 0.16 },
+  // MOVED 2026-09-20 out of the palace precinct and into the green enclosure,
+  // with the fountain it is aimed at. Folio 80's plate is `woodcut_catalog` #23,
+  // "Third fountain with Graces, harpies, griffins", and at the constant ten-page
+  // offset `research/coverage.json` `page_numbering` records between hp.db's
+  // page_seq and our translation that is translation page 90 — the third page of
+  // the fountain the book sets "in the middle part of this most notable area",
+  // the enclosure's square open court (our p. 88). It had been standing at
+  // palace-local (0, −80), world (0, −3225), 295 m north of that court; the
+  // station looked at it from 38 m south. Both moved together; the reasoning is
+  // in palace.js `_buildEnclosureCourt`. `enclosure` is a greenfield precinct, so
+  // these coordinates are its own frame with the origin at the court's centre.
+  { key: 'fountain', precinct: 'enclosure',      name: 'Fountain of Venus',      folio: 80,
+    pos: [0, 26],  look: [0, 0],  radius: 8, pitch: 0.16 },
   { key: 'cythera', precinct: 'shore',          name: 'The Shore to Cythera',   folio: 193,
     pos: [0, -132],    look: [0, -184],  radius: 8 },
   // Discoverable, not on the digit row:

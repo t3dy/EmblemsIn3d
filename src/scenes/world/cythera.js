@@ -11,7 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { CYTHERA_CLIMBERS, SPECIES, PLAN_SITES } from './constants.js?v=14';
+import { CYTHERA_CLIMBERS, SPECIES, PLAN_SITES } from './constants.js?v=15';
 
 export const Cythera = {
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
