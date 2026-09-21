@@ -41,7 +41,7 @@ world is *read* do more damage than the open ground:
   1 863 872 m² — **one blade per 12.8 m²**. Before stage 2 the same 36 000-blade field covered a
   336 × 340 m box at 0.315 blades/m². The bounds grew 16.3×; the count grew 4×. What the camera
   actually sees across the gardens is the flat ground plane, with a blade every twelve metres.
-  *No amount of infill fixes this, and fixing it costs one number.*
+  *No amount of infill fixes this.* **Correction (measured on the live page, 2026-09-20): it does NOT cost one number.** The two grass fields are 144 000 × 18 + 88 000 × 12 = **3.65 M triangles, 73 % of the world's 4.99 M**, each drawn as a single un-culled InstancedMesh over 1.86 M m². Raising the count ×4 would add ~11 M triangles. The fix is to tile the field and draw density only near the camera — see `bug-meadow-density-fell-4x-at-stage-2`.
 - **The garden trees are standing inside the pyramid.** `this._buildTrees()` is called at
   `HPWorldScene.js:393` **outside every precinct group**, and its coordinates are the original
   cramped ones. The myrtle-and-laurel grove of the Fountain of Venus, the citron/orange/lemon

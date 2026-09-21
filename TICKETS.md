@@ -57,13 +57,15 @@ This is the most likely single cause of Ted's "wholly empty green field" (NEXTST
 
 SECOND FAULT IN THE SAME FUNCTION: the rose drift's roseBand is still written in PRE-SPREAD coordinates (x 11..27.5 and -29.5..-11, z 12..28) while its bounds are stage-2 world metres between z -2885 and -5798. Those boxes are 3 km outside the bounds, so the rose field almost certainly selects nothing at all. Check it in the same pass.
 
-**Acceptance.** Standing on the processional axis anywhere between z -3000 and -5700 on the deployed page, the ground within 30 m reads as turf rather than as a flat plane: a screenshot shows individual blades, and a scene-graph query reports the garden grass field at >= 1.0 blades per square metre over the ground the walker can actually be on. hpDiag() before and after in the commit message; grass is ONE InstancedMesh, so the added cost is triangles, not draw calls, and must stay inside rule 7. The rose drift selects a non-empty set.
+MEASURED 2026-09-20 (coordinator, live deployed page): the two grass InstancedMeshes are 144,000 blades x 18 triangles = 2,592,000 and 88,000 undergrass x 12 = 1,056,000, i.e. 3.65 M of the world's 4.99 M triangles (73 %), and instanced meshes as a whole are 4.54 M (91 %). Each field is ONE InstancedMesh over 1.86 M m^2, so it is never frustum-culled: every blade is processed every frame wherever the camera looks. Therefore the density cannot be restored by raising `count` (x4 would add ~11 M triangles and break rule 7); the ticket's original 'one number' framing is wrong on cost. The fix is structural: tile the field, draw only tiles near/in front of the camera, and put the density where the eye is.
+
+**Acceptance.** The gardens' sward reads as continuous turf from eye height across 30-60 m (target >= the pre-stage-2 0.315 blades/m^2 within ~40 m of the camera, thinning with distance to a ground-colour/texture blend), AND total world triangles do not rise more than 5 % over the reading taken at the start of the pass (hpDiag before/after in the commit), AND per-frame instanced triangle load falls or holds because far tiles are culled. Machine check: count instances actually drawn per frame within the camera frustum; confirm the far field is culled; confirm the walker can cross precinct boundaries without a visible seam or pop.
 
 **Risk.** Do not simply multiply the count -- 1 blade/m2 over 1.86 Mm2 is 1.86 M instances and will not fit one InstancedMesh budget. The likely right fix is to narrow the BOUNDS to a corridor either side of the walked route (the walker never sees x +/-320 and the axis in one frame) and raise the count inside it, or to make createMeadowField distance-adaptive. Measure, do not guess.
 
 **Files.** `src/scenes/world/nature.js`
 
-**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R4 · NEXTSTEPS.md 0-AA · DRAWCALLS.md
+**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R4 · NEXTSTEPS.md 0-AA · DRAWCALLS.md · coordinator measurement 2026-09-20: instanced triangle census on live page
 
 
 ### `feat-infill-bridge-grove-river` — The 370 m between Polia’s garden and the three doors: the river, the plane-grove, the bridge and the dry spurs
