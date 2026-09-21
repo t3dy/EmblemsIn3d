@@ -1038,12 +1038,42 @@ export const Palace = {
   //     to this room rather than to any other. The hedge is 13.6 m to its top
   //     (screens.js `_citrusRun`, the book's "as high as the lofty cypresses"),
   //     so these rise to 12.4: almost, and not quite.
-  //   · the PROCESSIONAL WALK from the green door to the fountain and on to
-  //     the palace portal. Ours, after the worn line `_buildCypressAvenue`
-  //     already lays down the middle of the four stadia — the book does not
-  //     pave this court, and it is kept to a line rather than a pattern.
+  //   · the COURT'S OWN PAVEMENT, p. 92 — squares of fine marble with rounds
+  //     of jasper set in them, fronds and lilies in the corners, tessellated
+  //     fillets between. The court was sward; the book paves it, and p. 94
+  //     says the portico's floor is "like that outside in the enclosed court".
   _buildEnclosureCourt() {
     const S = this.style, woodcut = S.key === 'woodcut';
+
+    // ── THE COURT IS PAVED, and the book says so twice ────────────────────
+    //
+    // `translation/en/page_092.md`: "The whole space of the area, then, in the
+    // middle of which was raised this most notable artifice of the famous and
+    // sumptuous fountain, had a stone pavement of squares of fine marbles of
+    // various colour and shaping. In which, less than their measure, there
+    // were most beautifully fitted rounds of gracious jasper, levelled with
+    // the utmost evenness, differing in their colouring. And the remaining
+    // corners were beautifully satisfied with winding fronds and lilies. Then
+    // the broad bands, or fillets, between the squares I beheld to be of the
+    // best tessellation of most welcome coloured stones, with a minute
+    // cutting." And `page_094.md`, of the portico inside the door: "The
+    // cleanest paving, **like that outside in the enclosed court**."
+    //
+    // The court had sward, laid by `_buildGreenEnclosure` before anybody had
+    // read p. 92 for it — the plate catalogue has no woodcut here, which is
+    // rule 6 in `CLAUDE.md` biting again. It is one plane and one drawn
+    // texture: squares of marble, a jasper round inscribed in each, fronds and
+    // lilies in the four corners the round leaves over, and a tessellated
+    // fillet between. Laid at 0.17 over the sward's 0.12, with the polygon
+    // offset the avenue's own path needs at 13.7 km.
+    const paveMat = woodcut ? S.mat({ tone: 0.05, rim: 0 })
+      : S.mat({ color: 0xffffff, roughness: 0.42, metalness: 0.03 });
+    if (!woodcut && !paveMat.map) this._dress(paveMat, this._courtPavementTexture(), 0.16);
+    paveMat.polygonOffset = true;
+    paveMat.polygonOffsetFactor = -3;
+    paveMat.polygonOffsetUnits = -3;
+    this._m(new THREE.PlaneGeometry(PLAN_SITES.enclosure.width, PLAN_SITES.enclosure.depth),
+      paveMat, 0, 0.17, 0, { rx: -Math.PI / 2, cast: false });
 
     // ── the pavement of porphyry, "lined with well-polished little waves" ──
     // Radius is ours: 11.2 m gives the fountain a platform about a quarter of
@@ -1057,25 +1087,15 @@ export const Palace = {
     if (!woodcut) this._dress(porphyr, this._littleWavesTexture(), 0.22);
     // A DISC, level with the ground, not a drum: the book's own sentence has
     // the ophite round raised above "the level pavement", so the pavement is
-    // the thing that is level. 0.14 clears the enclosure's sward at 0.12.
-    this._m(new THREE.CircleGeometry(PAVE, 56), porphyr, 0, 0.14, 0,
+    // the thing that is level. 0.20 lies over the court's own paving at 0.17.
+    this._m(new THREE.CircleGeometry(PAVE, 56), porphyr, 0, 0.20, 0,
       { rx: -Math.PI / 2, cast: false });
     // its kerb, so the pavement has an edge and not a horizon
-    this._m(new THREE.TorusGeometry(PAVE, 0.13, 6, 64), this._stoneMat, 0, 0.13, 0,
+    this._m(new THREE.TorusGeometry(PAVE, 0.13, 6, 64), this._stoneMat, 0, 0.19, 0,
       { rx: -Math.PI / 2, cast: false });
-
-    // ── the walk: the avenue's worn line carried across the court ──────────
-    // (ours; see the head note)
-    const walkMat = woodcut ? S.mat({ tone: 0.04, rim: 0 })
-      : S.mat({ color: 0x8a7a5c, roughness: 0.94 });
-    walkMat.polygonOffset = true;
-    walkMat.polygonOffsetFactor = -4;
-    walkMat.polygonOffsetUnits = -4;
-    for (const sg of [-1, 1]) {
-      const z0 = sg * PAVE, z1 = sg * 44.4;
-      this._m(new THREE.PlaneGeometry(3.6, Math.abs(z1 - z0)), walkMat, 0, 0.15, (z0 + z1) / 2,
-        { rx: -Math.PI / 2, cast: false });
-    }
+    // (A worn walk was laid across the court here first and taken out the same
+    // pass: a court paved in squares of fine marble, jasper rounds and
+    // tessellated fillets does not have a dirt path beaten over it.)
 
     // ── the fountain itself, where the book puts it ────────────────────────
     this._buildGracesFountain(0, 0);
@@ -1104,6 +1124,80 @@ export const Palace = {
     this._plaque({ main: 'SPOVTING ON HIGH ALMOST TO THE TOP OF THE GREENE ENCLOSVRE',
                    sub: 'A BASIN OF THE FINEST AMETHYST, THE DIAMETER THREE PACES · FOVRE HARPIES OF GOLD, AND THE THREE GRACES · OVR PP. 88–89 · PLATE 23' },
       9.0, 1.05, 0, 1.5, PAVE + 2.6, Math.PI, true);
+  },
+
+  // The court's pavement, p. 92, drawn tile by tile: "a stone pavement of
+  // squares of fine marbles of various colour and shaping. In which, less than
+  // their measure, there were most beautifully fitted rounds of gracious
+  // jasper … And the remaining corners were beautifully satisfied with winding
+  // fronds and lilies. Then the broad bands, or fillets, between the squares …
+  // of the best tessellation of most welcome coloured stones, with a minute
+  // cutting. In green leaves with crimson flowers, dark blue, purple and
+  // grey-green." Four squares to the tile, so the marbles and the jaspers
+  // differ from neighbour to neighbour as the page says they do.
+  _courtPavementTexture() {
+    if (this._courtPave) return this._courtPave;
+    const N = 512, c = document.createElement('canvas');
+    c.width = c.height = N;
+    const x = c.getContext('2d');
+    const MARBLE = ['#e6dfd0', '#d8cfc0', '#e2d8c4', '#cfc8ba'];
+    const JASPER = ['#9a4a3a', '#4a6a44', '#8a7a3a', '#6a4a62'];
+    const FILLET = '#2c3a44';
+    x.fillStyle = FILLET; x.fillRect(0, 0, N, N);
+    const K = N / 2, B = 13;                    // two squares a side, the fillet between
+    for (let j = 0; j < 2; j++) for (let i = 0; i < 2; i++) {
+      const ox = i * K + B / 2, oy = j * K + B / 2, s = K - B;
+      const n = j * 2 + i;
+      x.fillStyle = MARBLE[n % 4];
+      x.fillRect(ox, oy, s, s);
+      // the shaping of the marble: a few soft veins
+      x.strokeStyle = 'rgba(120,108,88,0.28)'; x.lineWidth = 1.6;
+      for (let v = 0; v < 5; v++) {
+        const t = (v + 1) / 6;
+        x.beginPath(); x.moveTo(ox, oy + s * t);
+        x.bezierCurveTo(ox + s * 0.3, oy + s * (t + 0.1), ox + s * 0.7, oy + s * (t - 0.12), ox + s, oy + s * t);
+        x.stroke();
+      }
+      // the round of jasper, "less than their measure"
+      const cx = ox + s / 2, cy = oy + s / 2, r = s * 0.36;
+      x.fillStyle = JASPER[(n + 1) % 4];
+      x.beginPath(); x.arc(cx, cy, r, 0, 7); x.fill();
+      x.strokeStyle = 'rgba(30,26,22,0.5)'; x.lineWidth = 2.2; x.stroke();
+      x.strokeStyle = 'rgba(255,248,232,0.22)'; x.lineWidth = 5;
+      x.beginPath(); x.arc(cx, cy, r * 0.72, 3.6, 5.6); x.stroke();
+      // the four corners the round leaves over: winding fronds and lilies
+      x.strokeStyle = '#3f5a34'; x.fillStyle = '#b8203c'; x.lineWidth = 2.0;
+      for (let k = 0; k < 4; k++) {
+        const a = Math.PI / 4 + k * Math.PI / 2;
+        const px = cx + Math.cos(a) * s * 0.40, py = cy + Math.sin(a) * s * 0.40;
+        x.save(); x.translate(px, py); x.rotate(a);
+        x.beginPath(); x.moveTo(-10, 0);
+        x.quadraticCurveTo(0, -11, 11, -2); x.quadraticCurveTo(2, 2, -10, 0); x.stroke();
+        x.beginPath(); x.arc(9, -4, 2.6, 0, 7); x.fill();      // the crimson flower
+        x.restore();
+      }
+    }
+    // the tessellation of the fillets: a minute cutting of coloured stones
+    const TESS = ['#3f5a34', '#b8203c', '#26365e', '#5a3a6a', '#6a7a68'];
+    for (let i = 0; i < 620; i++) {
+      const v = Math.sin(i * 91.7 + 13.1) * 43758.5453, r0 = v - Math.floor(v);
+      const w2 = Math.sin(i * 57.3 + 7.7) * 43758.5453, r1 = w2 - Math.floor(w2);
+      const onX = r0 < 0.5;
+      const t = r1 * N;
+      const band = (Math.floor(r0 * 4) % 2) ? K - B / 2 : N - B / 2;
+      x.fillStyle = TESS[i % 5];
+      const px = onX ? t : band - B / 2 + (i % 2) * 5;
+      const py = onX ? band - B / 2 + (i % 2) * 5 : t;
+      x.fillRect(px, py, 4.5, 4.5);
+    }
+    const t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.repeat.set(22, 22);                       // squares about two metres across
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 8;
+    this._disp.push(t);
+    this._courtPave = t;
+    return t;
   },
 
   // The "little waves" of p. 89, for the porphyry that surrounds the ophite
@@ -1136,93 +1230,431 @@ export const Palace = {
     return t;
   },
 
-  // ── The palace's own front: the green enclosure's fourth side ───────────
+  // ── The palace front: the green enclosure's fourth side (ch. VIII–IX) ────
   //
-  // BUILDINGPLAN.md, 2026-09-20: "the palace does not yet close the green
-  // enclosure's north side, which is what the book says it is — that one is
-  // now visible from inside the room". Ticket bug-green-enclosure-open-north.
+  // Ted, 2026-09-20, walking the live site: *"I want the users to get good
+  // views of meticulously crafted renaissance buildings that are like as
+  // described in the novel but as the designer you might have to go beyond the
+  // text of the novel and fill in knowledge of renaissance architecture to
+  // finish out everything that needs to be built."* `NEXTSTEPS.md` 0-AA.
   //
-  // Dallington p. 124 (corpus `md/Hypnerotomachia_by_Francesco_Colonna.md`,
-  // ll. 5148-5153): after the citrus hedge and its one gate, "I perceiued
-  // that it was a great enclosure in the fore front of a marueilous Pallaice
-  // of a noble simmetriated architecturie which of this frondiferous
-  // conclausure, was the fourth part in longitude sixtie paces" — the palace
-  // ITSELF, not a hedge, closes the enclosure's north side, for the
-  // enclosure's own stated width (sixty paces, 88.8 m, `PLAN_SITES.enclosure`).
+  // What stood here until today (`_buildPalaceForecourtWall`, built this
+  // afternoon to close ticket bug-green-enclosure-open-north) was a plain
+  // stone screen 107 m wide and 9.2 m high with eight flat pilasters, a
+  // cornice and one gate. It shut the sightline and it was a WALL. The book
+  // calls this front "a wonderful and most ample palace, excellent in its
+  // symmetried architecture and very magnificent" (our `page_088.md`), and
+  // then spends two pages on it.
   //
-  // `PLAN_SITES.enclosure.zNorth` and `PLAN_SITES.palace.zSouth` are already
-  // the same line (-2974.4) — screens.js's `_buildGreenEnclosure` built east
-  // and west and left the north for this file, on purpose (its own comment:
-  // "The palace closes the NORTH"). What was missing was that nothing in
-  // this file had ever been drawn on that line: every structure below
-  // (`_buildCourt` at local z 80, `_buildPalace`'s hall at z 0) sits well
-  // short of the precinct's true south edge (world -2974.4 = z +170.6 in this
-  // file's own frame, see EDGE_Z below), and the court's
-  // colonnade in particular never reaches past local x -55, nowhere near the
-  // enclosure's x 0 axis. Stood in the enclosure and looked north, the whole
-  // width of the room was open to the sky beyond.
+  // ── WHAT THE BOOK ACTUALLY SPECIFIES ────────────────────────────────────
   //
-  // Built as the book's "noble simmetriated architecturie": a symmetrical
-  // stone screen flush with the precinct edge, a little wider than the
-  // enclosure it closes so the corners don't leak a sightline past the
-  // hedge ends, with pilasters for the rhythm DIRECTIONS.md §5 asks of every
-  // screen and ONE gate — "with a Gate in the middest" is the citrus hedge's
-  // own phrase two pages earlier and the book gives the palace no reason to
-  // differ — set on the x = 0 axis the processional path (`_buildPalacePaths`)
-  // already runs on, so walking straight up the cypress avenue still carries
-  // you straight through.
-  _buildPalaceForecourtWall() {
+  // `translation/en/page_088.md` — the front "rendered the fourth wall of the
+  // leafy enclosure, of a length of **sixty paces**" (88.8 m, and
+  // `PLAN_SITES.enclosure.width` is that number).
+  //
+  // `page_092.md` — "such **triglyphs** so excellently expressed … with fit
+  // chisels and gravers of such a tempering as our modern craftsmen know
+  // nothing of", and then "**what rule of columns and of spacing**".
+  //
+  // `page_093.md` — the sentence that gives the marbles:
+  //
+  //   "let not the Praenestine way exalt itself for the Gordian building. And
+  //    to this excellent colonnade let its two hundred columns yield —
+  //    **Numidian, Claudian, Simiadic and Thistian, divided in equal number**.
+  //    What marbles, what carvings, where I beheld **the labours of Hercules
+  //    in shining stone, marvellously cut half free of the ground**. Spoils,
+  //    statues, inscriptions and trophies, wonderfully chased. What
+  //    gate-house, or vestibule; what royal portico … There comes besides the
+  //    dignity of the **windows** and of the **notable door**, and of the most
+  //    noble **podium**."
+  //
+  //   and, at the door itself: "the way in was closed by a joyful and
+  //   marvellous **curtain** stretched across, all of golden thread, and
+  //   rewoven and inwoven with silk, with **two most worthy images**. The one
+  //   of them was surrounded with every instrument fit for working; and one,
+  //   with her maidenly face raised, considered the heavens intently."
+  //
+  // **Whose two hundred columns?** Read closely, they are the GORDIAN
+  // villa's, not this palace's: the Praenestine way is told not to exalt
+  // itself, and *its* two hundred columns are told to yield to this colonnade.
+  // The four marbles are the four the *Historia Augusta* gives that villa
+  // (*Gordiani tres* 32.2 — fifty Carystian, fifty Claudian, fifty Synnadic,
+  // fifty Numidian, "pari mensura"), which is the passage Colonna is quoting
+  // and is why they come "divided in equal number". So the book does not
+  // oblige this front to carry two hundred shafts — and it could not: two
+  // hundred over 88.8 m is one every 44 cm. What the sentence does oblige is
+  // that this colonnade be worth preferring to that one, so **the four marbles
+  // are used here, in equal number**, which is the honest way to take a
+  // comparison as a specification.
+  //
+  //   Numidian  → giallo antico, the golden yellow of Chemtou.
+  //   Claudian  → the grey-and-black speckled granodiorite of Mons Claudianus.
+  //   "Simiadic" → Synnadic, i.e. Docimian pavonazzetto, white with violet
+  //                veins. The translator's own note flags this name and
+  //                "Thistian" as carried into English untranslated, so the
+  //                identification is OURS, from the Historia Augusta list the
+  //                sentence is quoting, and is not certain.
+  //   "Thistian" → Carystian, i.e. cipollino, pale green in wavy bands. Same
+  //                caveat, and the weaker of the two guesses: it is taken
+  //                because the Historia Augusta list has exactly four and
+  //                three of them are already accounted for.
+  //
+  // ── WHAT IS OURS, AND AFTER WHAT ────────────────────────────────────────
+  //
+  // The book gives the members and is silent on their measure. Everything
+  // below that is not quoted above is ours, and is taken from the treatises
+  // Colonna's own milieu read:
+  //
+  //   · **Two superimposed orders on a podium**, Doric under Ionic — Alberti,
+  //     *De re aedificatoria* VII.6–8 and IX.4 on the orders answering one
+  //     another up a front, and the built precedent of Alberti's own Palazzo
+  //     Rucellai, where the tiers diminish storey by storey. Ours, after
+  //     Alberti and Rucellai.
+  //   · **Doric triglyphs over the lower order** — the book names the
+  //     triglyphs (p. 92); that they belong to a Doric frieze, one over each
+  //     column and one over each intercolumniation, is Vitruvius IV.3.
+  //   · **The spacing.** Columns at 3.6 m centres, which at the lower order's
+  //     1.00 m diameter is 3.6 D — Vitruvius III.3.4's *diastyle*, three
+  //     diameters clear. Ours, after Vitruvius.
+  //   · **The proportions.** Lower order 7.4 m over 1.00 m of diameter = 7.4
+  //     D, within the Doric's 7–8 (Vitruvius IV.1.8; Alberti VII.6). Upper
+  //     order 7.1 m over 0.84 = 8.45 D, the Ionic's eight and a half
+  //     (Vitruvius III.5.1). Ours, after Vitruvius.
+  //   · **The middle intercolumniation is wider** than the rest — 9.6 m
+  //     against 3.6 — because the notable door stands in it. Vitruvius III.3.6
+  //     and Alberti VII.5 both require the middle space to be the widest.
+  //   · **The crowning cornice on modillions**, after the great cornices of
+  //     Palazzo Medici and Palazzo Strozzi. Ours.
+  //   · **The return wings** sixteen metres north at either end, so the front
+  //     reads as a building with a body and not as a flat from three-quarters
+  //     on. Ours.
+  //
+  // ── HOW HIGH, AND WHY NOT HIGHER ────────────────────────────────────────
+  //
+  // 19.25 m to the top of the crowning cornice. The three numbers it is set
+  // against were all measured on the running page, not estimated:
+  //
+  //   the citrus hedge      13.6 m  (screens.js, the book's own "as high as
+  //                                  the lofty cypresses")
+  //   the fountain's jets   12.4 m  (`_buildEnclosureCourt`)
+  //   the avenue's cypress  14.6 m  — RAISED in the same pass to 22.4, because
+  //                                  a front that has to out-top a 13.6 m
+  //                                  hedge cannot also duck under a 14.6 m
+  //                                  tree, and 14.6 was the under-scaled
+  //                                  number, not the palace.
+  //
+  // So from inside the court the front stands five and a half metres over the
+  // green walls and fills the whole north side; from the south end of the
+  // avenue its upper storey shows above the hedge between the cypresses and
+  // nothing else does, which is the promise DIRECTIONS.md §5 asks for and not
+  // the reveal.
+  //
+  // ── THE COORDINATE FRAME, which has caught two builders ─────────────────
+  //
+  // `palace` is not greenfield (`plan_sites.js`'s own distinction): its
+  // builders are NOT written in a frame centred on the precinct's middle —
+  // they carry the pre-2026-09-17 coordinates straight through and `_placeAt`
+  // adds `shift` on top. So the world line this front must sit on
+  // (`enclosure.zNorth`, the same line as `palace.zSouth`, both −2974.4) is
+  // converted back into THIS file's frame by subtracting the palace's shift,
+  // not by halving `palace.depth`. The one-line version was tried first and
+  // put the old wall 33 m into empty ground.
+  _buildPalaceFront() {
+    const S = this.style, woodcut = S.key === 'woodcut';
     const P = PLAN_SITES.enclosure;
-    const GATE = 8.0;                              // wide enough to walk through in company
-    const WALL_W = P.width + 16;                    // wider than the 88.8 m room it closes
-    const WING_W = (WALL_W - GATE) / 2;
-    const THK = 3.0, WALL_H = 9.2;
-    // `palace` is not greenfield (`plan_sites.js`'s own distinction): unlike
-    // the enclosure, its builders are NOT written in a frame centred on the
-    // precinct's own middle — they carry the pre-2026-09-17 coordinates
-    // straight through, and `_placeAt` adds `shift` on top. So the world
-    // line this wall must sit flush with (`enclosure.zNorth`, which is the
-    // same line as `palace.zSouth`, both -2974.4) has to be converted back
-    // into THIS file's own coordinate frame by subtracting the palace's
-    // shift, not by halving `palace.depth`. (The one-line version of this
-    // was tried first and put the wall 33 m into empty ground — z bucket
-    // histogram confirmed it, verify-live before deploy caught it.)
-    const EDGE_Z = PLAN_SITES.enclosure.zNorth - shiftOf('palace')[1];
-    const WZ = EDGE_Z - THK / 2 - 0.05;
 
-    for (const sx of [-1, 1]) {
-      const cx = sx * (GATE / 2 + WING_W / 2);
-      this._m(new THREE.BoxGeometry(WING_W, WALL_H, THK), this._stoneMat,
-        cx, WALL_H / 2, WZ, { outline: true });
-      this._wallCol(cx - WING_W / 2, cx + WING_W / 2, WZ - THK / 2, WZ + THK / 2);
-      // pilasters, proud of the enclosure-facing (south) face — four to a
-      // wing, the "simmetriated" rhythm the book names
-      for (let i = 0; i < 4; i++) {
-        const px = cx - WING_W / 2 + WING_W * (i + 0.5) / 4;
-        this._m(new THREE.BoxGeometry(1.1, WALL_H - 1.0, 0.4), this._darkStoneMat,
-          px, (WALL_H - 1.0) / 2 + 0.3, WZ + THK / 2 + 0.24, { cast: false });
+    // ── the module ────────────────────────────────────────────────────────
+    const W = P.width;                    // 88.8 — "of a length of sixty paces"
+    const LAP = 1.78;                     // the citrus fence's own thickness
+    const FULL = W + LAP;                 // so the ends lap the hedges: no leak
+    const THK = 3.6;
+    const EDGE_Z = P.zNorth - shiftOf('palace')[1];
+    const WZ = EDGE_Z - THK / 2 - 0.05;
+    const FACE = WZ + THK / 2;            // the south face, the one the court sees
+
+    const CB = 9.6;                       // the middle intercolumniation
+    const S_COL = 3.6;                    // the rest, on centres
+    const R0 = 0.50, H0 = 7.40;           // Doric: 7.4 diameters
+    const R1 = 0.42, H1 = 7.10;           // Ionic: 8.45 diameters
+    const POD = 1.45;                     // "the most noble podium"
+    const ENT0 = 1.75;                    // architrave, triglyph frieze, cornice
+    const Y0 = POD, Y0T = Y0 + H0;                  // 1.45 → 8.85
+    const Y1 = Y0T + ENT0, Y1T = Y1 + H1;           // 10.60 → 17.70
+    const CORN = 1.55, TOP = Y1T + CORN;            // → 19.25
+    const GATE = 8.0, SPRING = 4.6;       // the notable door
+    const ARCH_R = GATE / 2, CROWN = SPRING + ARCH_R;
+
+    // the twelve column axes each side of the door
+    const AX = [];
+    for (let k = 0; k <= 11; k++) AX.push(CB / 2 + k * S_COL);   // 4.8 … 44.4
+
+    // ── the four marbles of the Gordian portico, in equal number ──────────
+    const M = (c, o = {}) => woodcut ? S.mat({ tone: o.tone ?? 0.1 })
+                                     : S.mat({ color: c, roughness: 0.34, metalness: 0.02 });
+    const MARBLES = [
+      M(0xd9b86a, { tone: 0.12 }),        // Numidian — giallo antico
+      M(0x8b8880, { tone: 0.2 }),         // Claudian — the grey granodiorite
+      M(0xe4dbe6, { tone: 0.05 }),        // Synnadic — pavonazzetto (ours)
+      M(0xa9c2a4, { tone: 0.14 }),        // Carystian — cipollino (ours)
+    ];
+    const stone = this._stoneMat, dark = this._darkStoneMat;
+
+    // ── the podium ────────────────────────────────────────────────────────
+    // A plinth the whole front stands on, carried two metres out into the
+    // court so the order has something to stand on that the eye can read.
+    this._m(new THREE.BoxGeometry(FULL + 1.2, POD, THK + 4.4), dark, 0, POD / 2, WZ - 0.6, { outline: true });
+    this._m(new THREE.BoxGeometry(FULL + 0.5, 0.22, THK + 3.8), stone, 0, POD - 0.11, WZ - 0.6, { cast: false });
+    // and the flight up to the door, on the axis
+    this._steps(0, FACE + 2.0, 15.0, 4, POD / 4, 0.62);
+
+    // ── the ground storey: ashlar, with the labours of Hercules ───────────
+    // "the labours of Hercules in shining stone, marvellously cut half free of
+    // the ground" (p. 93) — panels between the columns, the relief standing
+    // proud of the wall, which is what "half free of the ground" describes.
+    const relief = woodcut ? S.mat({ tone: 0.12 })
+      : S.mat({ color: 0xffffff, roughness: 0.82 });
+    if (!relief.map) relief.map = this._reliefTexture('the labours of Hercules, cut half free of the ground');
+    for (const sg of [-1, 1]) {
+      const x0 = sg * CB / 2, x1 = sg * (FULL / 2);
+      const w = Math.abs(x1 - x0), cx = (x0 + x1) / 2;
+      this._ashlar(cx, POD, WZ, w, H0, THK, stone,
+        { course: 0.92, block: 2.4, name: 'the palace front, ground storey' });
+      this._wallCol(Math.min(x0, x1), Math.max(x0, x1), WZ - THK / 2, WZ + THK / 2);
+      // one Herculean panel to each intercolumniation
+      for (let k = 0; k < 11; k++) {
+        const px = sg * (CB / 2 + (k + 0.5) * S_COL);
+        const pan = this._m(new THREE.PlaneGeometry(S_COL - 1.5, 2.3), relief, px, POD + 4.3, FACE + 0.06, { cast: false });
+        void pan;
+        this._m(new THREE.BoxGeometry(S_COL - 1.2, 0.16, 0.24), stone, px, POD + 3.05, FACE + 0.12, { cast: false });
+        this._m(new THREE.BoxGeometry(S_COL - 1.2, 0.16, 0.24), stone, px, POD + 5.55, FACE + 0.12, { cast: false });
       }
     }
-    // the cornice, spanning the full width including over the gate — the
-    // wall's true top, and the gate's own lintel. Dentils off: `_entablature`
-    // spaces them at ~2.2/m, fine at a 13 m bay (the hall wall's own use)
-    // but 235 boxes across this wall's 107 m, which is budget spent on
-    // texture the sward hedge equivalent (`_citrusRun`) doesn't pay either.
-    this._entablature(0, WALL_H, WZ, WALL_W + 2, THK + 0.4, { dentils: false });
-    // A gate 9 m high reads as a hole in the front, not a door in it (seen
-    // live, 2026-09-20): the opening is 5.4 m and the wall carries on over it.
-    const GATE_H = 5.4;
-    this._m(new THREE.BoxGeometry(GATE, WALL_H - GATE_H, THK), this._stoneMat,
-      0, GATE_H + (WALL_H - GATE_H) / 2, WZ, { outline: true });
-    // the gate's stone jambs, echoing the citrus hedge's own gate two pages
-    // earlier in the same passage (`screens.js` `_citrusRun`)
+    // the wall over the door, from the arch's crown to the entablature
+    this._m(new THREE.BoxGeometry(CB, Y0T - CROWN, THK), stone, 0, (CROWN + Y0T) / 2, WZ, { cast: false });
+    // its haunches, either side of the arch inside the wide middle bay
     for (const sg of [-1, 1]) {
-      this._m(new THREE.BoxGeometry(0.55, WALL_H + 0.3, THK + 0.3), this._darkStoneMat,
-        sg * GATE / 2, (WALL_H + 0.3) / 2, WZ, { outline: true });
+      this._m(new THREE.BoxGeometry(CB / 2 - ARCH_R, H0, THK), stone,
+        sg * (ARCH_R + (CB / 2 - ARCH_R) / 2), POD + H0 / 2, WZ, { cast: false });
     }
-    this._plaque({ main: 'OF A NOBLE SIMMETRIATED ARCHITECTVRIE',
-                   sub: 'THE FOVRTH PART OF THE ENCLOSVRE IN LONGITVDE SIXTIE PACES · THE PALLAICE ITSELFE · DALLINGTON P. 124' },
-      7.4, 0.9, -16, 2.6, WZ + THK / 2 + 0.08, 0, true);   // on the enclosure-facing face, between two pilasters
+
+    // ── the notable door ──────────────────────────────────────────────────
+    this._arch(0, POD + SPRING, WZ, GATE, THK, stone, { n: 13, name: 'the notable door of the palace' });
+    // the archivolt, a moulded ring standing proud of the face
+    this._m(new THREE.RingGeometry(ARCH_R + 0.02, ARCH_R + 0.62, 26, 1, 0, Math.PI), dark,
+      0, POD + SPRING, FACE + 0.1, { cast: false });
+    for (const sg of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.6, SPRING, 0.2), dark, sg * (ARCH_R + 0.3), POD + SPRING / 2, FACE + 0.1, { cast: false });
+      // the impost the arch springs from
+      this._m(new THREE.BoxGeometry(1.5, 0.26, 0.5), stone, sg * (ARCH_R + 0.2), POD + SPRING, FACE + 0.14, { cast: false });
+    }
+    // "the way in was closed by a joyful and marvellous curtain stretched
+    // across, all of golden thread … with two most worthy images" (p. 93).
+    // Drawn ASIDE, as Cynosia draws it for him: two parted panels on a rod,
+    // one image to a panel — the one ringed with every instrument fit for
+    // working, the one with her face raised considering the heavens.
+    const curtain = woodcut ? S.mat({ tone: 0.08 })
+      : S.mat({ color: 0xffffff, roughness: 0.62, metalness: 0.18 });
+    if (!curtain.map) curtain.map = this._goldCurtainTexture();
+    curtain.side = THREE.DoubleSide;
+    this._m(new THREE.CylinderGeometry(0.07, 0.07, GATE + 0.5, 8), dark, 0, POD + SPRING - 0.15, WZ, { rz: Math.PI / 2, cast: false });
+    for (const sg of [-1, 1]) {
+      const pw = 2.1;
+      const pan = this._m(new THREE.PlaneGeometry(pw, SPRING - 0.45), curtain,
+        sg * (ARCH_R - pw / 2 - 0.12), POD + (SPRING - 0.45) / 2, WZ + 0.1, { cast: false });
+      pan.rotation.y = sg * 0.16;
+    }
+
+    // ── the lower order: twenty-four columns, six of each marble ──────────
+    // Engaged three-quarter columns, not free shafts: p. 93 gives this front
+    // windows, a door and a podium, so it is a WALL with an order on it, and
+    // the free colonnade the same page praises is the "royal portico" that
+    // stands behind the curtains (p. 94, "a lofty portico, as long as the
+    // compass of the palace") and is not what you see from the court.
+    let n = 0;
+    for (const sg of [-1, 1]) for (const ax of AX) {
+      const x = sg * ax, mat = MARBLES[n++ % 4];
+      this._frontColumn(x, POD, H0, R0, FACE, mat, 'doric');
+    }
+
+    // ── the entablature over it, with the triglyphs the book names ────────
+    // p. 92: "such triglyphs so excellently expressed". One over every column
+    // and one over every intercolumniation is Vitruvius IV.3's rule.
+    this._m(new THREE.BoxGeometry(FULL + 0.6, 0.52, THK + 1.5), stone, 0, Y0T + 0.26, FACE - (THK + 1.5) / 2 + 0.75, { cast: false });
+    this._m(new THREE.BoxGeometry(FULL + 0.55, 0.72, THK + 1.4), dark, 0, Y0T + 0.88, FACE - (THK + 1.4) / 2 + 0.7, { cast: false });
+    const TRI_N = Math.round(FULL / (S_COL / 2));
+    for (let i = 0; i <= TRI_N; i++) {
+      const tx = -FULL / 2 + i * (FULL / TRI_N);
+      this._m(new THREE.BoxGeometry(0.56, 0.72, 0.2), stone, tx, Y0T + 0.88, FACE + 0.72, { cast: false });
+    }
+    this._m(new THREE.BoxGeometry(FULL + 1.5, 0.28, THK + 2.3), stone, 0, Y0T + 1.38, FACE - (THK + 2.3) / 2 + 1.15, { cast: false });
+    this._m(new THREE.BoxGeometry(FULL + 1.7, 0.22, THK + 2.5), stone, 0, Y0T + 1.63, FACE - (THK + 2.5) / 2 + 1.25, { cast: false });
+
+    // ── the piano nobile: "the dignity of the windows" ────────────────────
+    for (const sg of [-1, 1]) {
+      const x0 = sg * CB / 2, x1 = sg * (FULL / 2);
+      this._ashlar((x0 + x1) / 2, Y1, WZ, Math.abs(x1 - x0), H1, THK, stone,
+        { course: 0.82, block: 2.2, name: 'the palace front, piano nobile' });
+      for (let k = 0; k < 11; k++) {
+        this._frontWindow(sg * (CB / 2 + (k + 0.5) * S_COL), Y1 + 1.35, 1.7, FACE);
+      }
+    }
+    // the middle bay carries the door's own window, wider, over the pediment
+    this._m(new THREE.BoxGeometry(CB, H1, THK), stone, 0, Y1 + H1 / 2, WZ, { cast: false });
+    this._frontWindow(0, Y1 + 1.2, 2.4, FACE);
+
+    // ── the upper order ───────────────────────────────────────────────────
+    for (const sg of [-1, 1]) for (const ax of AX) {
+      const x = sg * ax, mat = MARBLES[n++ % 4];
+      this._frontColumn(x, Y1, H1, R1, FACE, mat, 'ionic');
+    }
+
+    // ── the crowning cornice, on modillions ───────────────────────────────
+    // Ours, after the great cornices of Palazzo Medici and Palazzo Strozzi.
+    this._m(new THREE.BoxGeometry(FULL + 0.6, 0.34, THK + 1.2), stone, 0, Y1T + 0.17, FACE - (THK + 1.2) / 2 + 0.6, { cast: false });
+    const MOD_N = Math.round(FULL / 1.55);
+    for (let i = 0; i <= MOD_N; i++) {
+      const mx = -FULL / 2 + i * (FULL / MOD_N);
+      this._m(new THREE.BoxGeometry(0.42, 0.42, 1.15), dark, mx, Y1T + 0.56, FACE + 0.5, { cast: false });
+    }
+    this._m(new THREE.BoxGeometry(FULL + 2.2, 0.46, THK + 3.0), stone, 0, Y1T + 1.02, FACE - (THK + 3.0) / 2 + 1.5, { outline: true });
+    this._m(new THREE.BoxGeometry(FULL + 2.4, 0.30, THK + 3.2), stone, 0, Y1T + 1.40, FACE - (THK + 3.2) / 2 + 1.6, { cast: false });
+
+    // ── the return wings ──────────────────────────────────────────────────
+    // Ours: sixteen metres of building turning north at either end, so the
+    // front has a body. Without them it is a flat, and reads as one the moment
+    // you step off the axis.
+    const RET = 16.0;
+    for (const sg of [-1, 1]) {
+      const rx = sg * (FULL / 2 - THK / 2);
+      this._ashlar(rx, POD, WZ - THK / 2 - RET / 2, THK, Y1T - POD, RET, stone,
+        { course: 0.9, block: 2.4, name: 'a return wing of the palace front' });
+      this._wallCol(rx - THK / 2, rx + THK / 2, WZ - THK / 2 - RET, WZ - THK / 2);
+      this._m(new THREE.BoxGeometry(THK + 2.2, 0.46, RET), stone, rx, Y1T + 1.02, WZ - THK / 2 - RET / 2, { cast: false });
+    }
+
+    this._plaque({ main: 'A WONDERFVL AND MOST AMPLE PALLAICE',
+                   sub: 'EXCELLENT IN ITS SYMMETRIED ARCHITECTVRE · THE FOVRTH WALL OF THE LEAFY ENCLOSVRE, OF A LENGTH OF SIXTIE PACES · NVMIDIAN, CLAVDIAN, SIMIADIC AND THISTIAN, DIVIDED IN EQVALL NVMBER · OVR PP. 88, 92–93' },
+      11.0, 1.25, -20.4, 2.5, FACE + 0.16, 0, true);
+  },
+
+  // One engaged three-quarter column of the front: plinth, shaft, capital.
+  // Four meshes, because forty-eight of these at `_column`'s drum-and-flute
+  // fidelity would be some five thousand, and the budget for this whole job is
+  // five per cent of the world. The drums are what `_column` is for and this is
+  // not it: these stand against a wall, are read from thirty metres, and their
+  // job is the rhythm and the colour of the marble.
+  _frontColumn(x, y0, h, r, face, mat, order) {
+    const z = face + r * 0.62;                 // three quarters proud of the wall
+    const stone = this._stoneMat;
+    this._m(new THREE.BoxGeometry(r * 3.0, r * 0.7, r * 3.0), stone, x, y0 + r * 0.35, z, { cast: false });
+    const sh = h - r * 0.7 - r * 1.1;
+    this._m(new THREE.CylinderGeometry(r * 0.86, r, sh, 16, 1, false, -Math.PI * 0.75, Math.PI * 1.5),
+      mat, x, y0 + r * 0.7 + sh / 2, z, { outline: true });
+    if (order === 'ionic') {
+      // the volutes, a pair of little discs either side of the necking
+      this._m(new THREE.CylinderGeometry(r * 1.05, r * 0.88, r * 0.42, 14), stone, x, y0 + h - r * 0.9, z, { cast: false });
+      for (const sx of [-1, 1]) {
+        const v = this._m(new THREE.CylinderGeometry(r * 0.4, r * 0.4, r * 0.26, 12), stone,
+          x + sx * r * 0.78, y0 + h - r * 0.6, z, { rz: Math.PI / 2, cast: false });
+        void v;
+      }
+      this._m(new THREE.BoxGeometry(r * 2.6, r * 0.24, r * 2.2), stone, x, y0 + h - r * 0.12, z, { cast: false });
+    } else {
+      // the Doric echinus and abacus
+      this._m(new THREE.CylinderGeometry(r * 1.22, r * 0.9, r * 0.6, 14), stone, x, y0 + h - r * 0.8, z, { cast: false });
+      this._m(new THREE.BoxGeometry(r * 2.7, r * 0.3, r * 2.7), stone, x, y0 + h - r * 0.35, z, { cast: false });
+    }
+  },
+
+  // A window of the piano nobile. Ours, after the round-headed bifore of
+  // Palazzo Medici and Palazzo Rucellai — the commonest Florentine window of
+  // the decade this book was printed, and the one form that turns a wall into
+  // a front. The book gives only "the dignity of the windows".
+  _frontWindow(x, ySill, w, face) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const stone = this._stoneMat, dark = this._darkStoneMat;
+    const R = w / 2, spring = ySill + w * 0.95;
+    const glass = this._frontGlassMat = this._frontGlassMat || (woodcut
+      ? S.mat({ tone: 0.26 })
+      : S.mat({ color: 0x171a1e, roughness: 0.5, metalness: 0.1 }));
+    // the reveal: a dark panel set back, so the opening is a hole and not a
+    // drawing of one
+    this._m(new THREE.BoxGeometry(w, spring - ySill + R, 0.5), glass, x, (ySill + spring + R) / 2 - R / 2, face - 0.28, { cast: false });
+    this._m(new THREE.CircleGeometry(R, 18, 0, Math.PI), glass, x, spring, face - 0.27, { cast: false });
+    // the archivolt and the jambs
+    this._m(new THREE.RingGeometry(R, R + 0.3, 18, 1, 0, Math.PI), stone, x, spring, face + 0.04, { cast: false });
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.3, spring - ySill, 0.22), stone, x + sx * (R + 0.15), (ySill + spring) / 2, face + 0.04, { cast: false });
+    }
+    // the sill, on two little brackets
+    this._m(new THREE.BoxGeometry(w + 1.0, 0.2, 0.42), stone, x, ySill - 0.1, face + 0.12, { cast: false });
+    for (const sx of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(0.22, 0.34, 0.3), dark, x + sx * (R - 0.1), ySill - 0.37, face + 0.1, { cast: false });
+    }
+    // the colonnette that makes it a BIFORA, with its little abacus
+    this._m(new THREE.CylinderGeometry(0.1, 0.11, spring - ySill - 0.1, 8), stone, x, (ySill + spring) / 2, face - 0.14, { cast: false });
+    this._m(new THREE.BoxGeometry(0.3, 0.14, 0.3), stone, x, spring - 0.08, face - 0.14, { cast: false });
+  },
+
+  // The curtain at the notable door (p. 93): "all of golden thread, and
+  // rewoven and inwoven with silk, with two most worthy images. The one of
+  // them was surrounded with every instrument fit for working; and one, with
+  // her maidenly face raised, considered the heavens intently." The two are
+  // the active and the contemplative life, and the same pairing hangs over
+  // every door in this part of the book; the drawing is ours, the pair is the
+  // page's.
+  _goldCurtainTexture() {
+    if (this._goldCurtain) return this._goldCurtain;
+    const W = 256, H = 384;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    const g = x.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#c8a03c'); g.addColorStop(0.5, '#e8c766'); g.addColorStop(1, '#b8892e');
+    x.fillStyle = g; x.fillRect(0, 0, W, H);
+    // the silk rewoven through the gold: vertical threads
+    for (let i = 0; i < 80; i++) {
+      x.strokeStyle = i % 3 ? 'rgba(255,238,180,0.20)' : 'rgba(150,100,30,0.22)';
+      x.lineWidth = 1.2;
+      x.beginPath(); x.moveTo(i * (W / 80), 0); x.lineTo(i * (W / 80), H); x.stroke();
+    }
+    x.strokeStyle = '#8a6216'; x.lineWidth = 5; x.strokeRect(10, 10, W - 20, H - 20);
+    // the two images, one above the other on the panel
+    const fig = (cy, heavens) => {
+      x.save(); x.translate(W / 2, cy);
+      x.strokeStyle = '#6a4a10'; x.fillStyle = '#6a4a10'; x.lineWidth = 3;
+      x.beginPath(); x.arc(0, -46, 13, 0, 7); x.stroke();              // the head
+      x.beginPath(); x.moveTo(0, -33); x.lineTo(0, 24); x.stroke();     // the body
+      x.beginPath(); x.moveTo(-16, 24); x.lineTo(0, 24); x.lineTo(16, 24); x.stroke();
+      if (heavens) {
+        x.beginPath(); x.moveTo(0, -20); x.lineTo(24, -52); x.stroke(); // an arm raised to the sky
+        x.beginPath(); x.moveTo(0, -20); x.lineTo(-20, -6); x.stroke();
+        for (let s = 0; s < 7; s++) {                                   // the stars considered
+          const a = -2.5 + s * 0.28;
+          x.beginPath(); x.arc(Math.cos(a) * 58, -70 + Math.sin(a) * 26, 2.6, 0, 7); x.fill();
+        }
+      } else {
+        x.beginPath(); x.moveTo(0, -20); x.lineTo(-26, -2); x.stroke();
+        x.beginPath(); x.moveTo(0, -20); x.lineTo(26, -2); x.stroke();
+        // every instrument fit for working, ringed about her
+        for (let s = 0; s < 9; s++) {
+          const a = s / 9 * Math.PI * 2;
+          const ix = Math.cos(a) * 54, iy = -12 + Math.sin(a) * 42;
+          x.save(); x.translate(ix, iy); x.rotate(a);
+          x.beginPath(); x.moveTo(-9, 0); x.lineTo(9, 0); x.stroke();
+          x.beginPath(); x.moveTo(6, -4); x.lineTo(12, 0); x.lineTo(6, 4); x.stroke();
+          x.restore();
+        }
+      }
+      x.restore();
+    };
+    fig(H * 0.28, false);
+    fig(H * 0.72, true);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    this._goldCurtain = t;
+    return t;
   },
 
   _buildPalace() {
@@ -1230,7 +1662,7 @@ export const Palace = {
     // SPREAD = 4 (2026-09-17, DECISIONS.md 54): -20.5 -> -82; z stays at the
     // palace's own 0. _buildArtificialGardens keys off this CX -- see there.
     const CX = -82;
-    this._buildPalaceForecourtWall();
+    this._buildPalaceFront();
     this._buildPalaceFrieze();
 
     // A stepped platform, not a slab: stylobate over two courses, with a flight

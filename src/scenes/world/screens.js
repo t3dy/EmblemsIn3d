@@ -276,8 +276,16 @@ export const Screens = {
         const i = Math.round(z) * 2 + (sx > 0 ? 1 : 0);
         // `leaves` and `cone`: see _tree. At avenue scale a cypress drawn with
         // its species' own card count is a halo of specks round a bare pole.
+        // RAISED 2026-09-20, from 4.6 (a 14.6 m tree, measured on the running
+        // page) to about seven, which is 22–26 m. Two reasons, and the second
+        // is the operative one. A cypress is 20–30 m in life and the book calls
+        // these "straight and lofty". And the enclosure's hedge is "as high as
+        // the lofty cypresses of the way" (p. 88), so the cypress sets the
+        // hedge, and the hedge has to be a wall the palace front can stand over
+        // — at 14.6 m the whole chain was set by an under-scaled tree. See
+        // palace.js `_buildPalaceFront`, "HOW HIGH, AND WHY NOT HIGHER".
         this._tree(sx * (HALF - 3.2) + (rnd(i, 4) - 0.5) * 0.8, z + (rnd(i, 5) - 0.5) * 0.9,
-          4.6 + rnd(i, 6) * 0.9, 'cypress', { leaves: 2.6, cone: true });
+          7.0 + rnd(i, 6) * 1.1, 'cypress', { leaves: 2.6, cone: true });
       }
       // and they are a WALL: you may not step out of the avenue between them
       this._wallCol(HALF - 4.6, HALF + 40, z - STEP / 2, z + STEP / 2);
