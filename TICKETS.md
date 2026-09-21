@@ -6,7 +6,53 @@
 
 ---
 
-**78 tickets** — 3 declined, 75 done. By kind: 32 bug, 31 debt, 9 infra, 3 question, 2 perf, 1 feat.
+**81 tickets** — 1 open, 1 question, 3 declined, 76 done. By kind: 34 bug, 31 debt, 9 infra, 4 question, 2 perf, 1 feat.
+
+---
+
+## The queue — pick from the top
+
+*Nothing blocks these but doing them.*
+
+### `bug-temple-drum-eight-bays-not-ten` — The temple drum is built on eight bays; the book's plan is a decad carrying eight windows plus the door and the adytum
+
+**○ open** · bug · priority 3 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** Found on 2026-09-20 while fixing the height. p. 197: "From the centre to the circumference, then, in ten radii, or partitions, the lines deduced". p. 198: "he ordained ten arches, resting upon serpentine columns", with porphyry Corinthian columns between them; the page's own note reads it as "the tenfold division ... the temple's whole plan is governed by the decad, as Cythera was by the number seven". p. 199 does the arithmetic: "Whence, in sum, eight windows there were -- because one part the door of the temple occupied, and, directly opposite the Pronaos in front, another part (the door, with the golden valves, of the rear chapel, or the sacred Adytum)". Eight windows + door + adytum = ten. _buildVenusTemple builds `bay = k * 2pi / 8` with eight piers, so the drum has SIX windows, not eight, and the decad that governs the whole plan is absent. The header comment in temple.js said "the wall is pierced in eight bays" as though the book said eight; it now says what the book says.
+
+**Acceptance.** The drum is set out on ten radial divisions, with the door in one and the sacello's golden valves in the one directly opposite it, and eight windows in the rest; the count of window bays on the running page is eight. p. 199's window is "of one square and a half" -- at ten bays and the current wall height the clear opening between piers is about 3.0 wide and about 5.0 tall, within a few per cent of 3:2, so the window proportion is a check on the same change.
+
+**Risk.** NOT a loop-bound change. At R = 6.2 a tenth of the circumference is 3.9 m and the jasper doorcase is 3.6 m wide: it will not fit between two piers of a ten-bay drum, so either R grows or the doorcase shrinks, and both move things that were verified against plates #71-#85. The bay spandrels and sills are 4.0-wide boxes sized for the eight-bay chord and would all have to come down to about 3.2. The ambulatory of p. 198 -- ten arches on serpentine columns with porphyry Corinthian columns between and jasper roundels in the spandrels -- is a second circle outside the drum and is a feature, not a fix; the wall raised to 4/6 D now has a plain two-metre band of ashlar above everything, which is exactly the band the book fills with that arcade.
+
+**Files.** `src/scenes/world/temple.js`
+
+**See.** translation/en/page_197.md · translation/en/page_198.md · translation/en/page_199.md · DIMENSIONS.md
+
+
+---
+
+## Questions for Ted
+
+*Blocked on a directional call. **An agent must not decide these.***
+
+### `question-temple-crown-short-of-the-diameter` — The temple's crown stands at 0.89 of its diameter and the lantern makes up the rest: should the DOME make it up instead?
+
+**? question** · question · priority 4 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** p. 204 gives two specific rules and one universal one, and they do not quite close. Built to the two specific ones -- the last surface of the upper binding at 4/6 of the diameter (8.267) and the roof slope off the double square (rise R/2 = 3.1) -- the crown of the cupola lands at 11.07 over the temple floor against a diameter of 12.4, so p. 197's "as much as the diametral line found, so much did it render its height" is satisfied only when the lantern is counted, which is how a rotunda of this family usually does make it up. The alternative reading takes p. 197 as governing and derives the roof from the remainder: 12.4 - 8.267 = 4.13 = D/3, which puts the crown exactly on the diameter and keeps p. 204's cornice rule intact, at the cost of the double-square slope (the rise would be 2:3 of the half-span, not 1:2). Standing inside after the fix the room reads as a genuinely tall domed hall, but the cupola still reads as a saucer with a lid rather than as the "sky-reaching cupola" the station's own commentary quotes from the text.
+
+**Acceptance.** Ted says which of the two readings the world is built to; the chosen one is written into DECISIONS.md and cited in temple.js beside DOME_RISE.
+
+**Risk.** It is NOT a one-line change. The dome courses are cylinders of a fixed height (R * 0.46 / SC * 2.2 = 0.696) spaced by sin steps; at a rise of 4.13 the lowest courses space out by 0.717 and a gap opens between them, so the course height has to be re-derived from the rise in the same pass, and the lantern sits on APEX and rises with it.
+
+**Files.** `src/scenes/world/temple.js` · `DECISIONS.md`
+
+**See.** translation/en/page_197.md · translation/en/page_204.md · DIMENSIONS.md
+
 
 ---
 
@@ -650,6 +696,25 @@ The consequence is visible, not theoretical. fetch_1499_plates.py names its outp
 **Files.** `scripts/fetch_1499_plates.py` · `scripts/build_reading.py` · `src/data/reading.json` · `images/woodcuts_1499/`
 
 **See.** bug-plate-page-seq-offset · bug-concordance-signature-quire-model · bug-woodcut-catalog-ten-unresolved-plates
+
+
+### `bug-temple-height-not-from-diameter` — The Temple of Venus was built at 0.42 of its own diameter: Colonna's height rule was nowhere in the code
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Ted, walking the live site on 2026-09-20: "we have some places where the roof is too low and is not the sky." In src/scenes/world/temple.js the drum stood as `const R = 6.2; const WALL_H = 5.2;` -- two picked numbers side by side, with no citation of the construction rule anywhere near them. The temple is the ONE building the book gives as a rule rather than a size (DIMENSIONS.md, 'The Temple of Venus Physizoa'), and the rule is explicit in our own translation: p. 197, "as much as the diametral line found, so much did it render its height"; p. 204, "all the diameter divided into six divisions, four of those rectified will likewise give the last surface of the upper binding", and the roof slope off the diagonal of a double square struck in the intercapace from wall to wall. Against a diameter of 12.4 the wall was 5.2 and the crown of the cupola 8.95 over the temple floor.
+
+**Acceptance.** WALL_H in _buildVenusTemple is DERIVED, not typed: the last surface of the upper entablature sits at 4/6 of the diameter and the dome rise is the double-square slope over the half-span. On the running page the eight pier structures report 11 courses from ground 0.42 to top 7.44, and an upward ray from a head at 1.7 in the middle of the drum meets the cupola at about 11.8 rather than at about 9.4.
+
+**Risk.** WALL_H feeds the piers, the spandrels, the entablature ring, the dome springing, the great lamp's chains and the door returns. Raising it without checking what hangs off it leaves a dome off its drum or a door that no longer fits its wall -- and in fact it opened two metres of daylight over the jasper doorcase and over the sacello's aedicule, which had to be carried over in the same pass (p. 199: a part occupied by a door is still wall above that door).
+
+**Resolution.** WALL_H 5.2 -> 7.017, off CORNICE_Y = 4/6 D less the 1.25 the entablature stacks; DOME_RISE R*0.52 (uncited) -> R/2, the p. 204 double-square slope; the two overdoors added. PIER = 0.9 was MEASURED against pp. 211-212 (the pilasters usurp 3 ft = 0.89 m at the book's foot of 0.2957) and found already right, so it was left alone. Verified live: stood in the drum and looked up, and walked out and looked at the front. The crown is 11.07 over the temple floor against a diameter of 12.4 -- p. 197's universal rule is made up by the lantern, which is a reading, and the alternative is filed as question-temple-crown-short-of-the-diameter.
+
+**Files.** `src/scenes/world/temple.js` · `DIMENSIONS.md`
+
+**See.** DIMENSIONS.md · translation/en/page_197.md · translation/en/page_199.md · translation/en/page_204.md
 
 
 ### `bug-tours-prose-ahead-of-geometry` — Tour commentary describes scenes that were never built
