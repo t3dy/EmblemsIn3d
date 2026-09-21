@@ -6,7 +6,7 @@
 
 ---
 
-**81 tickets** — 1 open, 1 question, 3 declined, 76 done. By kind: 34 bug, 31 debt, 9 infra, 4 question, 2 perf, 1 feat.
+**82 tickets** — 1 open, 1 question, 3 declined, 77 done. By kind: 34 bug, 32 debt, 9 infra, 4 question, 2 perf, 1 feat.
 
 ---
 
@@ -222,6 +222,51 @@ Every other point light in the world -- eleven of them, in palace.js, portal.js,
 **Files.** `src/scenes/world/cythera.js`
 
 **See.** DECISIONS.md 2026-09-09 call 51
+
+
+### `feat-colossus-true-scale` — The recumbent colossus was built at a third of the sixty paces the book gives him
+
+**✅ done** · debt · priority 1 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Ted, 2026-09-20, testing the live site: the built world does not earn the true-scale spread. BUILDINGPLAN.md names this one at the top of the queue -- "Only the pyramid has grown ... the colossus is a tenth of his sixty paces."
+
+THE MEASURE, confirmed against the sources and not taken second-hand. The 1499 states it outright, and it is not one of Colonna's derived or irrational figures: "Il quale iaceva decumbendo supino ... cum la bucca, di suspirare et gemere indicante, hiante; DI PROCERITATE PASSI 60" (f. b5v-b6r; Pozzi-Ciapponi, corpus file md/Francesco_Colonna_Rino_Avesani_Giuseppe_Billanovich_Mirella_Ferrari_Giovanni_Poz.md, l.1341). Dallington p. 44 englishes the same clause "his length was three score paces". The two texts agree, so no reconstruction is involved. A pace is five Roman feet = 1.48 m (DIMENSIONS.md S1), so sixty paces is 88.8 m, which is how DIMENSIONS.md S2 tables it.
+
+He has NO WOODCUT: hp.db.woodcut_catalog returns the colossal horse (#6) and the elephant (#12) for 'colos' and nothing for the recumbent figure, so he is carried by the text alone -- rule 6.
+
+MEASURED BEFORE THE PASS, on the running page at main.js?v=430: the placed group ran world z 171.89 to 206.00, a figure 28 m from crown to heel against a stated 88.8. Ratio 1 : 3.2.
+
+THE CAP HAD OUTLIVED ITS CAUSE. feat-monuments-true-scale stopped at 28 m on 2026-09-09 with its reason recorded in the code -- "the mainland ground is 132 m across and the corridor this figure lies in is clear only from x = 36 to the eastern edge at 66. At 89 m the colossus IS the island." That was true of the island and has not been true since DECISIONS.md call 60 moved him onto the true-scale plan: research/plan.json gives the Valley of the Approach 1 139.6 m of width and 1 850 m of depth, and its piazza entry says in as many words "the colossus 88.8 m long on the fallen west colonnade". Ten raycasts over the ground he had to grow into all returned open valley floor, and a sweep of walker.walls and walker.colliders over x -115..-35, z 160..280 found twenty walls and two colliders, every one of them his own.
+
+**Acceptance.** The colossus measures 88.8 m from the crown of his head to the soles of his feet, measured off the geometry on the running page and not from the scalars; a walker entering at the mouth can walk the interior passage as before, with the organ doors still at a man's size and the heart still a room he can stand in and leave; the figure is still solid from outside; the valley still has room for him and for the female beside him, clear of the court's fallen west colonnade; and the pass costs no meshes and no triangles.
+
+**Risk.** Two, and both were paid. (1) An absolute metre-count inside a builder that scales is a bug that fires on the NEXT rescale -- the file already records one such, a bare 53.5 that became a fifty-metre invisible wall in an open field. Every absolute in the builder is now written as the multiple of L or G it already was. (2) The body is made of half-cylinder vaults and a hemisphere, which are SHELLS, and a front-side shell does not exist when you are inside it; that cost nothing under 3.88 m of headroom and everything under 11.4.
+
+**Resolution.** DONE, verified on the running page at main.js?v=438 and shipped in 41a5413.
+
+L and G were 1.65 and 1.55 -- six per cent slimmer than a man, for no source -- and are now one number. The scalar is applied to what the geometry SPANS and not to the nominal 17 the old comment quoted: the crown is the back of the head dome at -2.2 G and the soles are the far ends of the leg vaults at 17.25 L, so the man occupies 19.45 units and L = G = 88.8 / 19.45 = 4.5656. Scaling the nominal 17 would have produced a 100 m figure that then failed this ticket's own acceptance clause; the Box3 on the running page caught it and the arithmetic in the comment had not.
+
+He grows SOUTHWARD down the valley, so the head and the mouth-porch do not move and the station at (-76, 140) still stands between the porch and the mouth looking back into it -- no change to constants.js was needed.
+
+ACCEPTANCE, clause by clause, all measured:
+  * LENGTH. Bronze geometry extent, read off the meshes: world z 161.52 to 255.54 and x -97.46 to -35.84. The crown of the dome stands at z 165.96 and the soles at 254.76 -- 88.8 m, the book's own number, up from 28. The mouth-porch adds 4.4 m in front of the crown.
+  * WALKABLE. Stepping 0.2 m at a time through walker.collide() from the station at (-76, 140) pressing south, the walker passes in at the mouth and continues to z = 223.94, where the legs close the passage: 84 m of continuous walk, 58 of it inside the body. Across the hall he has 9.7 m of free floor, in the throat 4.1. The heart is entered at z 191.5, gives 12 m of room, and lets him back out to the passage.
+  * STILL SOLID. The heart chamber's own outer skin stops him at x = -62.11, so the one doorway in the flank is not a way out and the figure is not walk-through-able. The legs are solid.
+  * HUMAN SCALE KEPT. DIMENSIONS.md S5 -- the plan is surveyed, the furniture is full-size -- and Dall. p. 45 asks for it by name, "a conuenient comming vnto and entrance in", convenient for a MAN inside a giant. The six organ doors, their plaques, the heart's plaque and the threshold under the mouth keep the size they were walk-tested at (HUMAN = 1.55); only their spacing rides L. Scaled with the body they would have been 3.2 x 5.2 m leaves under 6.8 m signboards, and the one thing that tells a player he is inside a giant would have gone.
+  * ROOM IN THE VALLEY. He is 43 m across the arms and the female reaches x = -35.8, fourteen metres clear of the fallen west colonnade at x = -21, inside a valley 1 139.6 m wide.
+  * COST. An A/B of the two builders inside one page -- HEAD's 28 m version imported alongside this one and each built into a throwaway group -- came out IDENTICAL: 304 meshes, 11 304 triangles, 3 point lights, 20 wall colliders and 2 circle colliders, both. Every loop bound in the builder is a ratio, so tripling the figure costs nothing. Measured, not argued. (The whole-scene hpDiag readings taken either side of this pass are NOT usable as its delta: three sibling agents were committing temple.js, palace.js and cythera.js into the same tree between them. BEFORE v=430 meshes 6594 / triangles 4 396 716; AFTER v=438 meshes 6651 / 5 232 988.)
+
+ONE THING THE SIZE BROKE, found by measuring rather than by looking, and fixed in the same pass. The vaults and the dome are shells, and a front-side shell does not exist from within. At G = 1.55 the chest's crown was 3.88 m overhead and the shell's own edges framed the view, which is why the wickets ticket could honestly report a passage. At 11.4 m a ray cast straight up from (-76, 1.7, 200) passed through the chest and hit nothing until the sky dome at 187 m -- a man standing in the heart could see out through it. One flag, bronze.side = DoubleSide in the lit register only, adds no mesh and no triangle and leaves the exterior silhouette untouched, which feat-colossus-interior requires. The same ray now stops on bronze at 9.71 m and the interior reads as a vaulted hall with its ribs, its lit wicket and its man-high doors.
+
+Seen, in both registers. Lit: the mouth is a 4.1 x 6.9 m gate between two 10 m fluted columns under the COLOSSVS plaque, with the green bronze dome and its two eyes behind; from the south-east the leg vaults run away toward the ribbed chest and the head, with the pyramid-portal filling the sky behind, which is the right relation between the two. Woodcut: builds with no exception, the hatched columns and the dark mouth reading clean.
+
+STILL PARTIAL, and deliberately not taken here: the climb in by the beard and the descent by degrees into the throat (coverage.json colossus-entry-by-beard -- ours is entered on the level), and the names in three tongues (colossus-three-tongues -- ours are Latin with an English gloss).
+
+**Files.** `src/scenes/world/portal.js`
+
+**See.** DIMENSIONS.md#2 · DECISIONS.md 2026-09-17 call 54 · DECISIONS.md 2026-09-20 call 60 · ARCHITECTURE.md the-colossus · feat-monuments-true-scale · feat-colossus-interior
 
 
 ### `feat-pace-budget` — Crossing the world is the only sanctioned answer to "this takes too long"
