@@ -1873,26 +1873,45 @@ export const Cythera = {
   // the whole of mortarless Indian alabaster; the gallery-walls of mirror-
   // black stone; and the Area itself a single slab of polished obsidian in
   // which Poliphilo's first step seems to plunge into an abyss.
-  _buildAmphitheatre(CX = 0, CZ = -150) {
+  //
+  // 2026-09-20, THE THEATRE AT ITS STATED SIZE. DIRECTIONS.md section 6.B
+  // exempts the theatre from a ground rescale as "already near-true" — and
+  // checked rather than assumed, it was not: the Area was a circle of radius
+  // 7.4, so 14.8 m across, against the "32 paces" of p. 351, which is 47.4 m.
+  // That is 1 : 3.2, not 1 : 1. So the Area takes its stated 23.7 m of radius
+  // and the colonnade takes the "8 paces thick" built ring of the same page,
+  // 11.8 m, running 23.7 to 35.5. The three orders are held at ONE height,
+  // against Vitruvius and on purpose (p. 352), at 5.2 m each — about
+  // 17½ Roman feet, which is what a building ringing a 47 m floor needs and
+  // which puts the crown of the third order 18.3 m up, well over the 6.21 m
+  // ridge of the terraces outside it. Everything a walker touches on it — the
+  // seats 6 palms high and 2½ ft deep (p. 353) — stays 1 : 1.
+  _buildAmphitheatre(CX = 0, CZ = -150, AREA_R = 7.4) {
     const S = this.style;
     const lit = S.key !== 'woodcut';
+    const big = AREA_R > 12;
     const alab = lit ? S.mat({ color: 0xf2e8d2, roughness: 0.35, metalness: 0.05 }) : S.mat({ tone: 0.03 });
     const mirror = lit ? S.mat({ color: 0x0c0c12, roughness: 0.08, metalness: 0.6 }) : S.mat({ tone: 0.36 });
     alab.userData.roll = 'a piece of Indian alabaster';
     mirror.userData.roll = 'a shard of mirror-black stone';
     // the obsidian Area, over the dark stone floor
-    this._m(new THREE.CircleGeometry(7.4, 48), mirror, CX, 0.075, CZ, { rx: -Math.PI / 2, cast: false });
-    const RC = 7.15, H = 2.4, ORDERS = 3;
+    this._m(new THREE.CircleGeometry(AREA_R, 64), mirror, CX, 0.075, CZ, { rx: -Math.PI / 2, cast: false });
+    // the colonnade stands INSIDE the 11.8 m built ring, not on its inner edge
+    const RC = big ? AREA_R + 2.2 : 7.15, H = big ? 5.2 : 2.4, ORDERS = 3;
+    const GAP = big ? 5.4 : 1.9;                   // the order's own storey height
+    const WALL = big ? RC + 4.4 : RC + 0.55;       // the gallery wall behind the columns
+    const ARC = big ? RC + 6.2 : RC + 0.62;        // the outer arcade, at the ring's face
     for (let q = 0; q < 4; q++) {
       for (let b = 0; b <= 8; b++) {
         // eight bays a quarter, and the cardinal gap for the roads and the cars
         const a = q * Math.PI / 2 + 0.16 + (b / 8) * (Math.PI / 2 - 0.32);
         const x = CX + Math.cos(a) * RC, z = CZ + Math.sin(a) * RC;
         for (let o = 0; o < ORDERS; o++) {
-          const g = new THREE.Group(); g.position.set(x, o * (H + 0.5), z); this.scene.add(g);
-          this._column(0, 0, H, { order: ['doric', 'ionic', 'corinthian'][o], r: 0.13, parent: g, mat: alab });
+          const g = new THREE.Group(); g.position.set(x, o * GAP, z); this.scene.add(g);
+          this._column(0, 0, H, { order: ['doric', 'ionic', 'corinthian'][o], r: big ? H / 9 : 0.13,
+            parent: g, mat: alab, flutes: big ? 10 : 16 });
         }
-        if (b < 8) this._circleCol(x, z, 0.22);
+        if (b < 8) this._circleCol(x, z, big ? 0.7 : 0.22);
       }
       // the entablatures, as chords over each quarter
       for (let o = 0; o < ORDERS; o++) {
@@ -1900,36 +1919,37 @@ export const Cythera = {
         for (let b = 0; b < 8; b++) {
           const aa = a0 + (b + 0.5) / 8 * (a1 - a0);
           const chord = 2 * RC * Math.sin((a1 - a0) / 16);
-          this._entablature(CX + Math.cos(aa) * RC, o * (H + 0.5) + H, CZ + Math.sin(aa) * RC, chord + 0.15, 0.7,
+          this._entablature(CX + Math.cos(aa) * RC, o * GAP + H, CZ + Math.sin(aa) * RC, chord + 0.15, big ? 1.5 : 0.7,
             { ry: -aa + Math.PI / 2, dentils: o === 2, mat: alab });
         }
         // the gallery wall behind the columns of each order: mirror-black on
         // the face the theatre sees, alabaster on the face the island sees.
         // One double-sided black shell read from outside as three stacked oil
         // tanks; the text's alabaster cavea is the outside of the building.
-        const inner = this._m(new THREE.CylinderGeometry(RC + 0.55, RC + 0.55, H - 0.2, 40, 1, true, Math.PI / 2 - a1, a1 - a0),
-          mirror.clone(), CX, o * (H + 0.5) + H / 2, CZ, { cast: false });
+        const inner = this._m(new THREE.CylinderGeometry(WALL, WALL, H - 0.2, 40, 1, true, Math.PI / 2 - a1, a1 - a0),
+          mirror.clone(), CX, o * GAP + H / 2, CZ, { cast: false });
         inner.material.side = THREE.BackSide; this._disp.push(inner.material);
         // outside, an ARCADE — piers and arched openings, one a bay — because
         // a continuous shell read from the north road as three stacked drums,
         // and the text sets this building against the Colosseum and Verona
         for (let b = 0; b < 8; b++) {
           const ab = a0 + (b / 8) * (a1 - a0), ac = a0 + ((b + 0.5) / 8) * (a1 - a0);
-          const pier = this._m(new THREE.BoxGeometry(0.34, H - 0.2, 0.5), alab,
-            CX + Math.cos(ab) * (RC + 0.62), o * (H + 0.5) + H / 2, CZ + Math.sin(ab) * (RC + 0.62), { cast: false });
+          const PW = big ? 1.1 : 0.34, PD = big ? 1.3 : 0.5, AR = big ? 2.0 : 0.5;
+          const pier = this._m(new THREE.BoxGeometry(PW, H - 0.2, PD), alab,
+            CX + Math.cos(ab) * ARC, o * GAP + H / 2, CZ + Math.sin(ab) * ARC, { cast: false });
           pier.rotation.y = -ab;
-          const arch = this._m(new THREE.TorusGeometry(0.5, 0.12, 6, 12, Math.PI), alab,
-            CX + Math.cos(ac) * (RC + 0.62), o * (H + 0.5) + H - 0.55, CZ + Math.sin(ac) * (RC + 0.62), { cast: false });
+          const arch = this._m(new THREE.TorusGeometry(AR, big ? 0.3 : 0.12, 6, 12, Math.PI), alab,
+            CX + Math.cos(ac) * ARC, o * GAP + H - (big ? 2.1 : 0.55), CZ + Math.sin(ac) * ARC, { cast: false });
           arch.rotation.y = -ac + Math.PI / 2;
         }
         const last = a1;
-        const lp = this._m(new THREE.BoxGeometry(0.34, H - 0.2, 0.5), alab,
-          CX + Math.cos(last) * (RC + 0.62), o * (H + 0.5) + H / 2, CZ + Math.sin(last) * (RC + 0.62), { cast: false });
+        const lp = this._m(new THREE.BoxGeometry(big ? 1.1 : 0.34, H - 0.2, big ? 1.3 : 0.5), alab,
+          CX + Math.cos(last) * ARC, o * GAP + H / 2, CZ + Math.sin(last) * ARC, { cast: false });
         lp.rotation.y = -last;
       }
     }
     this._plaque({ main: 'THEATRVM VENERIS', sub: 'XXXII PACES ACROSS · ALABASTER WITHOVT LIME · THREE ORDERS OF ONE HEIGHT · THE AREA OBSIDIAN' },
-      2.6, 0.42, CX, 1.0, CZ + RC + 1.2, 0, true);
+      big ? 5.2 : 2.6, big ? 0.84 : 0.42, CX, big ? 1.6 : 1.0, CZ + AREA_R - 1.4, 0, true);
   },
 
   // ── The Prospect of Cythera ──────────────────────────────────────────────
@@ -1987,12 +2007,18 @@ export const Cythera = {
     };
 
     // ── the three claustri, each a semitertio of the radius ───────────────
-    band(R * 0.66, R, 'rgba(70,96,52,0.34)');        // the bosco
-    band(R * 0.36, R * 0.66, 'rgba(150,168,96,0.30)'); // the prati
-    band(0, R * 0.36, 'rgba(196,178,120,0.28)');     // the island within the island
+    // 2026-09-20: the fractions are the BUILT ones now, not a sketch. The
+    // island is 700 m of radius and the semitertio of p. 298 is 246.8 m, so
+    // the espalier falls at 0.647 of the radius and the peristyle at 0.295.
+    // A map that disagrees with the ground it maps is worse than no map, and
+    // this is the only map in this world (see the header above).
+    const B_ESP = 1 - 246.8 / 700, B_PER = 1 - 2 * 246.8 / 700;
+    band(R * B_ESP, R, 'rgba(70,96,52,0.34)');           // the bosco
+    band(R * B_PER, R * B_ESP, 'rgba(150,168,96,0.30)'); // the prati
+    band(0, R * B_PER, 'rgba(196,178,120,0.28)');        // the island within the island
 
-    // the river, which roofs itself with a pergola of citrus
-    band(R * 0.355, R * 0.40, 'rgba(120,158,182,0.75)');
+    // the river, just inside the peristyle, roofed with a pergola of citrus
+    band(R * (B_PER - 0.015), R * (B_PER - 0.003), 'rgba(120,158,182,0.75)');
 
     // ── the twenty divisions (our translation p. 294) ─────────────────────
     // "…this will be the division of the ten-angled figure. These twenty
@@ -2000,13 +2026,13 @@ export const Cythera = {
     for (let k = 0; k < 20; k++) {
       const a = k * Math.PI / 10 - Math.PI / 2;
       x.beginPath();
-      x.moveTo(CX + Math.cos(a) * R * 0.40, CY + Math.sin(a) * R * 0.40);
+      x.moveTo(CX + Math.cos(a) * R * B_PER, CY + Math.sin(a) * R * B_PER);
       x.lineTo(CX + Math.cos(a) * R, CY + Math.sin(a) * R);
       x.strokeStyle = k % 5 === 0 ? INK : 'rgba(42,32,24,0.45)';
       x.lineWidth = k % 5 === 0 ? 2.2 : 1.1;
       x.stroke();
       // the gate in the middle of each fence
-      const g = R * 0.72;
+      const g = R * B_ESP;
       const ga = a + Math.PI / 20;
       x.beginPath();
       x.arc(CX + Math.cos(ga) * g, CY + Math.sin(ga) * g, 2.6, 0, Math.PI * 2);
@@ -2015,18 +2041,21 @@ export const Cythera = {
     }
 
     // ── the six terraces of seven steps, inside the river ─────────────────
-    for (let t = 1; t <= 6; t++) ring(R * 0.34 - t * R * 0.032, 1, 'rgba(42,32,24,0.42)');
-    // the ring roads
+    // the three terraces inside the river: 65.5, 53.5, 44.5, 35.5 of 700
+    for (const t of [65.5, 53.5, 44.5, 35.5]) ring(R * t / 700, 1, 'rgba(42,32,24,0.42)');
+    // the ring roads, and the four transverse ways of the prati
     ring(R, 2.4, INK);
-    ring(R * 0.66, 1.6, 'rgba(42,32,24,0.7)');
-    ring(R * 0.40, 1.6, 'rgba(42,32,24,0.7)');
+    ring(R * B_ESP, 1.6, 'rgba(42,32,24,0.7)');
+    ring(R * B_PER, 1.6, 'rgba(42,32,24,0.7)');
+    for (const rr of [445.8, 366.0, 286.2]) ring(R * rr / 700, 0.8, 'rgba(42,32,24,0.35)');
 
     // ── the theatre, and the fountain at its heart ────────────────────────
-    x.beginPath(); x.arc(CX, CY, R * 0.115, 0, Math.PI * 2);
+    // the built ring at 35.5 and the Area at 23.7, of 700 (p. 351)
+    x.beginPath(); x.arc(CX, CY, R * 35.5 / 700, 0, Math.PI * 2);
     x.fillStyle = 'rgba(239,228,204,0.95)'; x.fill();
     x.strokeStyle = INK; x.lineWidth = 2; x.stroke();
-    ring(R * 0.085, 1, INK); ring(R * 0.055, 1, INK);
-    x.beginPath(); x.arc(CX, CY, R * 0.022, 0, Math.PI * 2);
+    ring(R * 23.7 / 700, 1, INK);
+    x.beginPath(); x.arc(CX, CY, R * 0.012, 0, Math.PI * 2);
     x.fillStyle = INK; x.fill();
 
     // ── lettering, in the plates' hand ────────────────────────────────────
@@ -2048,15 +2077,15 @@ export const Cythera = {
     x.fillText('CYTHERA', CX, N * 0.040);
     x.font = `italic ${Math.round(N * 0.0185)}px Georgia, serif`;
     x.fillStyle = 'rgba(42,32,24,0.72)';
-    x.fillText('three miliaria about  ·  the twenty divisions  ·  our p. 294', CX, N * 0.058);
+    x.fillText('three miliaria about  ·  1 400 m across  ·  three rings of 166½ paces', CX, N * 0.058);
 
     // Four names, each on its own bearing so none can collide with another.
     const F = Math.round(N * 0.021);
-    label('IL BOSCO',     R * 0.84, -Math.PI * 0.72, F);   // upper left
-    label('I PRATI',      R * 0.53, -Math.PI * 0.28, F);   // upper right
-    label('THE RIVER',    R * 0.375, Math.PI * 0.28, F);   // lower right
-    label('THE TERRACES', R * 0.225, Math.PI * 0.78, F);   // lower left
-    label('THE THEATRE',  R * 0.115 + N * 0.038, Math.PI / 2, F);
+    label('IL BOSCO',     R * 0.82, -Math.PI * 0.72, F);   // upper left
+    label('I PRATI',      R * 0.47, -Math.PI * 0.28, F);   // upper right
+    label('THE RIVER',    R * (B_PER - 0.05), Math.PI * 0.28, F);   // lower right
+    label('THE TERRACES', R * 0.14, Math.PI * 0.78, F);    // lower left
+    label('THE THEATRE',  R * 0.051 + N * 0.038, Math.PI / 2, F);
 
     // the compass of the crossing: you come from the north, over the water
     x.fillStyle = INK;
