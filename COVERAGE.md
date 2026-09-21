@@ -767,7 +767,7 @@ Still short of the book in one respect, recorded rather than hidden: the crags r
 *Research: **enumerated**. The 2026-09-07 pass covered the swan sacrifice, the blood characters and the rose miracle. pp.238-241, the end of the chapter, were unenumerated: the arrival at the ruined seaside temple, the long survey of the country from the herbs before it, the head-to-foot blazon of Polia, and Poliphilo's refusal. Read end to end 2026-09-20 in both witnesses — our translation pp.238-241 and Dallington's corpus markdown lines 10937-11127 — and enumerated. This is where Dallington's 1592 English actually stops, at a formal FINIS, which this project had believed was forty-eight pages earlier. Of the four features: the ruined temple itself is built (as the Polyandrion of ch. XIX) but the sandy shore that leads to it is not; the other three are unbuilt.*  
 *Text: our translation (CC0) — `translation/en/page_NNN.md`*  
 *Tour: The Sacrifice and the Miracle of the Roses (venus_temple, 10 notes)*  
-*Plates: #84, #85*  
+*Plates: #84, #85, #86*  
 
 | | Feature | Kind | Built as | Source |
 |---|---|---|---|---|
@@ -787,7 +787,7 @@ Still short of the book in one respect, recorded rather than hidden: the crags r
 *Research: **enumerated**. Read against the world. Features below carry their citation and their build status.*  
 *Text: our translation (CC0) — `translation/en/page_NNN.md`*  
 *Tour: The Polyandrion (polyandrion, 13 notes)*  
-*Plates: #86, #87, #88, #89, #90, #91, #92, #93, #94, #95, #96, #97, #98, #99, #100, #101, #102, #103, #104, #105, #106, #107, #108, #109, #110, #111, #112*  
+*Plates: #87, #88, #89, #90, #91, #92, #93, #94, #95, #96, #97, #98, #99, #100, #101, #102, #103, #104, #105, #106, #107, #108, #109, #110, #111, #112*  
 
 | | Feature | Kind | Built as | Source |
 |---|---|---|---|---|

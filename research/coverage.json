@@ -22,7 +22,7 @@
     "regression_check": "23 plate->chapter pairs asserted on every seed (check_plates() in scripts/coverage_seed.py)",
     "sections_caveat": "sections_1499 is MEASURED — read from the text of our translation, boundary by boundary, on 2026-09-20, and no longer taken from hp.db.page_concordance.section, whose boundaries ran progressively early (BOOK_II_POLIA marked at 271 when Book II opens at 371) and were never derived from the collation at all. Every boundary carries the line that fixes it in boundary_measured_at. Two things it still cannot tell you: the episodes interleave (the great gate is sighted at page_seq 21, then the ruins woodcuts run to 31, then the gate resumes), and at two seams the boundary is set a page or two off the narrative turn to keep each section's own plates inside it. To place a CHAPTER still use chapters[].pages_1499. Ticket bug-concordance-section-drift.",
     "sections_check": "168 plates asserted inside their own narrative_section, and the 13 sections asserted to tile page_seq 1-457 without gap or overlap, on every seed (check_sections() in scripts/coverage_seed.py)",
-    "page_checked_check": "61 plates resolve within 3 pages of a chapter boundary; every one of them has had its scan opened, and check_page_checked() asserts that on every seed. 0 of them carry page_unresolved: the catalogued page was opened and found to carry something else, and the plate's true page has not been seen, so it is left where the catalogue put it rather than guessed at. Ticket bug-woodcut-catalog-page-jitter.",
+    "page_checked_check": "64 plates resolve within 3 pages of a chapter boundary; every one of them has had its scan opened, and check_page_checked() asserts that on every seed. 0 of them carry page_unresolved: the catalogued page was opened and found to carry something else, and the plate's true page has not been seen, so it is left where the catalogue put it rather than guessed at. Ticket bug-woodcut-catalog-page-jitter.",
     "dallington": "Chapters I-XVI also survive in Robert Dallington's 1592 English (public domain), and some sources in this ledger cite him. HIS PAGE NUMBERS ARE NOT THE 1499's: his 279 e-text pages abridge the 1499's 467, so he falls behind by about 20 pages at his p.80 and about 60 at his p.250, with no constant that repairs it. He also runs FURTHER than this project long believed — past the Four Seasons altar to a formal FINIS at the end of chapter XVIII (1499 p.241) — but only by skipping 1499 pp.194-237 outright. Confirm any 'Dallington p. N' against the header of translation/en/page_NNN.md before citing it. Ticket bug-dallington-page-drift.",
     "quires_caveat": "quires_1499 is MEASURED — read off the signatures printed at the foot of seventeen scans. hp.db.page_concordance's signature / quire / leaf_in_quire columns are a uniform reconstruction that omits the u gathering, stops nine pages short of the book, and mis-places quires on both sides of that gap; THEY ARE NOT TO BE USED FOR ANYTHING. Note that page_seq 1 is a2r, not a1r: quire a opens on our p.9, the last preliminary leaf. Never derive a page from a signature or 'correct' a plate page by a leaf — open the scan. Ticket bug-concordance-signature-quire-model.",
     "quires_check": "17 signatures read off scans asserted against the table, four scans asserted to be unsigned, and the gatherings asserted to tile the book at 234 leaves, on every seed (check_quires() in scripts/coverage_seed.py)"
@@ -3142,86 +3142,114 @@
         {
           "plate": 49,
           "description": "Triumph of Leda reliefs: Leda lying-in, eggs presented",
-          "page_1499": 152,
-          "page_translation": 162
+          "page_1499": 154,
+          "page_translation": 164,
+          "page_corrected_from": 152,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 50,
           "description": "Relief: King offering eggs at Temple of Apollo",
-          "page_1499": 153,
-          "page_translation": 163
+          "page_1499": 154,
+          "page_translation": 164,
+          "page_corrected_from": 153,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 51,
           "description": "Reliefs: Cupid tracing figures; Judgment of Paris",
-          "page_1499": 154,
-          "page_translation": 164
+          "page_1499": 155,
+          "page_translation": 165,
+          "page_corrected_from": 154,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 52,
           "description": "Second Triumph of Leda: elephants, swan (left)",
-          "page_1499": 155,
-          "page_translation": 165
+          "page_1499": 156,
+          "page_translation": 166,
+          "page_corrected_from": 155,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 53,
           "description": "Second Triumph of Leda (right continuation)",
-          "page_1499": 155,
-          "page_translation": 165
+          "page_1499": 157,
+          "page_translation": 167,
+          "page_corrected_from": 155,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 54,
           "description": "Triumph of Danae reliefs: Acrisius, tower construction",
-          "page_1499": 156,
-          "page_translation": 166
+          "page_1499": 158,
+          "page_translation": 168,
+          "page_corrected_from": 156,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 55,
           "description": "Perseus with mirror and Medusa head; Pegasus",
-          "page_1499": 156,
-          "page_translation": 166
+          "page_1499": 158,
+          "page_translation": 168,
+          "page_corrected_from": 156,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 56,
           "description": "Reliefs: Venus and Mars freed; Jupiter comforts Cupid",
-          "page_1499": 158,
-          "page_translation": 168
+          "page_1499": 159,
+          "page_translation": 169,
+          "page_corrected_from": 158,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 57,
           "description": "Third Triumph of Danae: unicorns (left)",
-          "page_1499": 159,
-          "page_translation": 169
+          "page_1499": 160,
+          "page_translation": 170,
+          "page_corrected_from": 159,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 58,
           "description": "Festival of Bacchus reliefs: Jupiter and Semele",
           "page_1499": 160,
-          "page_translation": 170
+          "page_translation": 170,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p160 the LOWER of the two cuts on the leaf, 'TABELLA DEXTRA' — Semele consumed in the flame at the left, the infant Bacchus tended by women at the right; the upper cut on the same leaf is the third triumphal car (#57, corrected above) and the text beneath begins 'EL QVARTO triũpho' = our p.170 (ch. XIV)"
         },
         {
           "plate": 59,
           "description": "Third Triumph of Danae (right continuation)",
-          "page_1499": 159,
-          "page_translation": 169
+          "page_1499": 161,
+          "page_translation": 171,
+          "page_corrected_from": 159,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 60,
           "description": "Jupiter commits infant Bacchus to Mercury",
-          "page_1499": 160,
-          "page_translation": 170
+          "page_1499": 161,
+          "page_translation": 171,
+          "page_corrected_from": 160,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 61,
           "description": "Venus and Cupid before Jupiter; Psyche with lamp",
-          "page_1499": 161,
-          "page_translation": 171
+          "page_1499": 162,
+          "page_translation": 172,
+          "page_corrected_from": 161,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 62,
           "description": "Vase relief: Jupiter and the Heliades",
-          "page_1499": 161,
-          "page_translation": 171
+          "page_1499": 164,
+          "page_translation": 174,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 161,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 63,
@@ -4089,14 +4117,19 @@
         {
           "plate": 79,
           "description": "Two virgins offering swans and doves for sacrifice",
-          "page_1499": 208,
-          "page_translation": 218
+          "page_1499": 210,
+          "page_translation": 220,
+          "page_corrected_from": 208,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 80,
           "description": "The altar in the Temple of Venus",
-          "page_1499": 210,
-          "page_translation": 220
+          "page_1499": 212,
+          "page_translation": 222,
+          "near_chapter_boundary": 2,
+          "page_corrected_from": 210,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 81,
@@ -4120,8 +4153,8 @@
           "page_1499": 213,
           "page_translation": 223,
           "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; DUPLICATE catalogue row — this row and #82 answer to one and the same woodcut. scan page_seq 213 carries exactly ONE woodcut, the priestess with the open ritual book before the altar, which is #82 (confirmed on the scan for ticket bug-woodcut-catalog-page-jitter). #81, #82 and #83 all carry the SAME placeholder description, the string 'Temple ceremony continuation', and #81 is on page_seq 212 and #82 on 213; #83 is a third row for a page that has one cut. It duplicates #82.",
-          "duplicates_plate": 82
+          "duplicates_plate": 82,
+          "page_checked": "scan opened 2026-09-20; DUPLICATE catalogue row — this row and #82 answer to one and the same woodcut. scan page_seq 213 carries exactly ONE woodcut, the priestess with the open ritual book before the altar, which is #82 (confirmed on the scan for ticket bug-woodcut-catalog-page-jitter). #81, #82 and #83 all carry the SAME placeholder description, the string 'Temple ceremony continuation', and #81 is on page_seq 212 and #82 on 213; #83 is a third row for a page that has one cut. It duplicates #82."
         }
       ],
       "plates_from": "page-range",
@@ -4350,14 +4383,27 @@
         {
           "plate": 84,
           "description": "Miracle of the roses: rose-tree rising from altar, doves",
-          "page_1499": 221,
-          "page_translation": 231
+          "page_1499": 222,
+          "page_translation": 232,
+          "page_corrected_from": 221,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 85,
           "description": "Poliphilus and Polia receive fruits from priestess",
-          "page_1499": 221,
-          "page_translation": 231
+          "page_1499": 224,
+          "page_translation": 234,
+          "page_corrected_from": 221,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+        },
+        {
+          "plate": 86,
+          "description": "Ruins of Temple Polyandrion with obelisk among trees",
+          "page_1499": 228,
+          "page_translation": 238,
+          "near_chapter_boundary": 3,
+          "page_corrected_from": 233,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -4533,15 +4579,6 @@
       },
       "plates": [
         {
-          "plate": 86,
-          "description": "Ruins of Temple Polyandrion with obelisk among trees",
-          "page_1499": 233,
-          "page_translation": 243,
-          "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; NO WOODCUT answers to this catalogue row — scan page_seq 233 opened 2026-09-20: it carries exactly TWO woodcuts — the plain obelisk on its stepped base at the right, and the round IVSTITIA medallion (the balance with the crown, the dog and the serpent) at the left. Those are #87 and #88, and neither is a view of ruins among trees. The ruined temple overgrown with ground-ivy and thorns that #86 describes is the TEXT of page_seq 232 ('quelle deuii aggeri, di fastigiato & uasto cumulo & ruina, i la magiore parte occupate di chamaeciso, & di terrambula & di spini implicita'), and scan page_seq 232 was opened the same day and is unbroken text under a knotwork initial, with no cut on it at all. No woodcut in the book answers to this row.",
-          "no_woodcut": true
-        },
-        {
           "plate": 87,
           "description": "Obelisk with hieroglyphic devices",
           "page_1499": 233,
@@ -4577,19 +4614,24 @@
           "plate": 91,
           "description": "Hieroglyphic medallion relief (fourth)",
           "page_1499": 236,
-          "page_translation": 246
+          "page_translation": 246,
+          "page_unresolved": true,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — scan page_seq 236 opened 2026-09-20: it carries exactly ONE woodcut, the broken architrave with the decapitated owl and the antique lamp over 'D. M. S. CADAVERIB. AMORE FVRENTIVM MISERABVNDIS POLYANDRION', which is #93. It is not a medallion. The Polyandrion's seven relief rows #87-#93 stand against seven cuts on four leaves — page_seq 233 carries the obelisk and the IVSTITIA medallion (#87, #88), 235 the MILITARIS PRVDENTIA medallion and the DIVI IVLII trophy (#89, #90), 236 the architrave (#93) — and the two cuts nobody has claimed are on page_seq 234 (our p.244): the hieroglyph band over 'DIVO IVLIO CAESARI SEMP. AVG.' and the medallion of the two elephants and the caduceus, 'PACE, AC CONCORDIA PARVAE RES CRESCVNT, DISCORDIA MAXIMAE DECRESCVNT'. By elimination this row and #92 are those two. That is an argument from a closed set, not something read off the leaf — the cuts carry no catalogue number — and nothing goes into PLATE_PAGE_FIXES that was not seen on the scan, so the page is left unresolved. Our p.244 is captioned from what is printed on it (PLATE_CAPTION_CHECKED in build_reading.py) regardless."
         },
         {
           "plate": 92,
           "description": "Hieroglyphic relief (fifth)",
           "page_1499": 236,
-          "page_translation": 246
+          "page_translation": 246,
+          "page_unresolved": true,
+          "page_checked": "scan opened 2026-09-20; catalogued page is WRONG and the true page is NOT YET KNOWN — the second of that pair; see #91. Catalogued on page_seq 236, which carries one cut and that cut is #93."
         },
         {
           "plate": 93,
           "description": "Architrave fragment with bird and lamp",
           "page_1499": 236,
-          "page_translation": 246
+          "page_translation": 246,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p236 the only cut on the leaf: the broken architrave, the decapitated owl and the antique lamp in the tympanum, over 'D. M. S. CADAVERIB. AMORE FVRENTIVM MISERABVNDIS POLYANDRION'; the text below reads it, 'Vno uolucre decapitato, arbitrai fusse di Bubone, & una uetusta lucerna ... VITAE LETHIFER NVNTIVS' = our p.246 (ch. XIX)"
         },
         {
           "plate": 94,
@@ -4625,13 +4667,16 @@
           "plate": 99,
           "description": "Sacrifice relief: old man, youth, faun, dancers",
           "page_1499": 245,
-          "page_translation": 255
+          "page_translation": 255,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p245 the sacrifice relief: the old man pouring at the altar lettered 'HAVE LERIA OMNIVM AMANTISS. VALE', the faun with the double pipes at the right, the matron with the reversed torch, the little satyr with the serpent. Signed 'q iiii' = our p.255 (ch. XIX)"
         },
         {
           "plate": 100,
           "description": "Epitaph with eagle and dolphins",
-          "page_1499": 247,
-          "page_translation": 257
+          "page_1499": 246,
+          "page_translation": 256,
+          "page_corrected_from": 247,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 101,
@@ -4642,8 +4687,10 @@
         {
           "plate": 102,
           "description": "Sepulchral urn with Greek inscription",
-          "page_1499": 249,
-          "page_translation": 259
+          "page_1499": 247,
+          "page_translation": 257,
+          "page_corrected_from": 249,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 103,
@@ -4654,32 +4701,41 @@
         {
           "plate": 104,
           "description": "Epitaph fragment with skulls and laurel",
-          "page_1499": 247,
-          "page_translation": 257
+          "page_1499": 250,
+          "page_translation": 260,
+          "page_corrected_from": 247,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 105,
           "description": "Epitaph: D.M. Lyndia",
-          "page_1499": 251,
-          "page_translation": 261
+          "page_1499": 250,
+          "page_translation": 260,
+          "page_corrected_from": 251,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 106,
           "description": "Sarcophagus: P. Cornelia Annia",
           "page_1499": 251,
-          "page_translation": 261
+          "page_translation": 261,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p251 the only cut on the leaf: the sarcophagus with the imbricated lid, 'D M P. CORNELIA ANNIA, NE IN DESOLATA ORBITATE SVPERVIVEREM' = our p.261 (ch. XIX). #105, which the catalogue also files here, is on p250 (corrected above)"
         },
         {
           "plate": 107,
           "description": "Sarcophagus with hieroglyphic devices",
-          "page_1499": 250,
-          "page_translation": 260
+          "page_1499": 252,
+          "page_translation": 262,
+          "page_corrected_from": 250,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 108,
           "description": "Large epitaph: O lector infoelix",
-          "page_1499": 252,
-          "page_translation": 262
+          "page_1499": 253,
+          "page_translation": 263,
+          "page_corrected_from": 252,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 109,
@@ -4690,20 +4746,26 @@
         {
           "plate": 110,
           "description": "Monument of Artemisia drinking ashes of Mausolus",
-          "page_1499": 258,
-          "page_translation": 268
+          "page_1499": 257,
+          "page_translation": 267,
+          "page_corrected_from": 258,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 111,
           "description": "Epitaph with busts of youth and woman",
-          "page_1499": 258,
-          "page_translation": 268
+          "page_1499": 259,
+          "page_translation": 269,
+          "page_corrected_from": 258,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 112,
           "description": "Sepulchral portal: narrow gates of life and death",
-          "page_1499": 260,
-          "page_translation": 270
+          "page_1499": 261,
+          "page_translation": 271,
+          "page_corrected_from": 260,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -4869,7 +4931,7 @@
           "page_1499": 275,
           "page_translation": 285,
           "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p275 the standard with the flaming vase and the crescent, captioned 'AMOR VINCIT OMNIA'. Signature 's iii' = our p.285 (ch. XX)"
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p275 the standard with the flaming vase and the crescent, captioned 'AMORVINCIT OMNIA'. Signature 's iii' = our p.285 (ch. XX)"
         }
       ],
       "plates_from": "page-range",
@@ -5064,8 +5126,10 @@
         {
           "plate": 123,
           "description": "Ornament of a flower-bed",
-          "page_1499": 309,
-          "page_translation": 319
+          "page_1499": 307,
+          "page_translation": 317,
+          "page_corrected_from": 309,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 124,
@@ -5076,8 +5140,10 @@
         {
           "plate": 125,
           "description": "Clipped tree upon altar with bull's skull and festoons",
-          "page_1499": 295,
-          "page_translation": 305
+          "page_1499": 309,
+          "page_translation": 319,
+          "page_corrected_from": 295,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 126,
@@ -5239,7 +5305,8 @@
           "plate": 136,
           "description": "Trophy: laurel wreath with Cupid, tablet 'Gained by spear'",
           "page_1499": 321,
-          "page_translation": 331
+          "page_translation": 331,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p321 the only cut on the leaf: the trophy whose laurel wreath encloses a tablet lettered in Greek 'ΔΟΡΙΚΤΗΤΟΙ' — won by the spear — with Cupid standing bow in hand above it. Signed 'x ii' = our p.331 (ch. XXII)"
         },
         {
           "plate": 137,
@@ -5250,50 +5317,63 @@
         {
           "plate": 138,
           "description": "Vase with dragon-handle monsters",
-          "page_1499": 330,
-          "page_translation": 340
+          "page_1499": 328,
+          "page_translation": 338,
+          "page_corrected_from": 330,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 139,
           "description": "Small precious stone vase with fiery sparks",
-          "page_1499": 331,
-          "page_translation": 341
+          "page_1499": 330,
+          "page_translation": 340,
+          "page_corrected_from": 331,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 140,
           "description": "Earthenware amphora with odoriferous fumes",
           "page_1499": 331,
-          "page_translation": 341
+          "page_translation": 341,
+          "page_corrected_from": 331,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 141,
           "description": "Terminal figure with three male heads",
           "page_1499": 334,
-          "page_translation": 344
+          "page_translation": 344,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p334 the only cut on the leaf: the terminal figure with three heads, the ithyphallic sign in the middle of its tapering shaft; 'Ciascuno gestaua uno mõstro rudemente exciso in ligno, & inaurato ... Dal tricapo fina alla diaphragma' = our p.344 (ch. XXII). #142, also filed here, is on p335"
         },
         {
           "plate": 142,
           "description": "Trophy with three heads of Cerberus and serpent",
-          "page_1499": 334,
-          "page_translation": 344
+          "page_1499": 335,
+          "page_translation": 345,
+          "page_corrected_from": 334,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 143,
           "description": "Triumph of Cupid: nymphs, satyrs, dragons, captives (left)",
-          "page_1499": 337,
-          "page_translation": 347
+          "page_1499": 336,
+          "page_translation": 346,
+          "page_corrected_from": 337,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 144,
           "description": "Triumph of Cupid (right continuation)",
           "page_1499": 337,
-          "page_translation": 347
+          "page_translation": 347,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p337 the Triumph of Cupid, RIGHT half: the car drawn by dragons, the nymphs with standards and the fuming pyre, trumpeters at the right. Signed 'y ii' = our p.347 (ch. XXII). #143, the left half, is on p336 (corrected above)"
         },
         {
           "plate": 145,
           "description": "Column base with rams' heads and sacrifice medallion",
           "page_1499": 339,
-          "page_translation": 349
+          "page_translation": 349,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p339 the only cut on the leaf: the column pedestal with rams' heads at the corners and the round medallion of the sacrifice at the flaming altar; 'Tra una proiectura & laltra, nel ordine dilla porta nella parte mediana dil zophoro' = our p.349 (ch. XXIII). #146, also filed here, is not on this leaf"
         },
         {
           "plate": 146,
@@ -5981,7 +6061,7 @@
           "page_1499": 349,
           "page_translation": 359,
           "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque il circulo obducto del suo diametro semisse, iui uno triangulo æq̃latero cõstituito' = our p.359 (ch. XXIII)"
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque ilcirculo obducto del suo diametro semisse, iui uno triangulo æq̃latero cõstituito' = our p.359 (ch. XXIII)"
         }
       ],
       "plates_from": "page-range",
@@ -7189,14 +7269,18 @@
         {
           "plate": 155,
           "description": "Cupid brandishes sword over kneeling victim",
-          "page_1499": 392,
-          "page_translation": 402
+          "page_1499": 391,
+          "page_translation": 401,
+          "near_chapter_boundary": 3,
+          "page_corrected_from": 392,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         },
         {
           "plate": 156,
           "description": "Lion, dog, dragon devour victims; Cupid flies above",
           "page_1499": 393,
-          "page_translation": 403
+          "page_translation": 403,
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p393 the lion, the dog and the winged dragon tearing the two girls in the wood, Cupid flying above with the sword; the text below begins 'O spectaculo di icredibile acerbitate, & di crudelitate insigne'. Signed 'B iiii' = our p.403 (ch. XXVII). The old `woodcuts` column put this on 401, which carries #155"
         }
       ],
       "plates_from": "page-range",
@@ -7751,7 +7835,7 @@
           "page_1499": 411,
           "page_translation": 421,
           "near_chapter_boundary": 3,
-          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple; 'O il mio amoroso Poliphilo morto, ouero io in tanta inconsolabile uita superstite?' = our p.421 (ch. XXIX)"
+          "page_checked": "scan opened 2026-09-20; catalogued page confirmed — p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple;'O il mio amoroso Poliphilo morto, ouero io in tanta inconsolabile uita superstite?' = our p.421 (ch. XXIX)"
         },
         {
           "plate": 158,
@@ -7993,11 +8077,11 @@
         {
           "plate": 162,
           "description": "Enamoured couple kneeling before priestess",
-          "page_1499": 419,
-          "page_translation": 429,
-          "near_chapter_boundary": 1,
-          "page_checked": "scan opened 2026-09-20; DUPLICATE catalogue row — this row and #161 answer to one and the same woodcut. scan page_seq 419 opened 2026-09-20: it carries exactly ONE woodcut — the mitred priestess enthroned at the left, Poliphilo standing, Polia kneeling with her hands raised, the flaming altar-vase on its stepped base at the right — under the text 'Dinanti alla quale ello era apresentato', and signed 'D' at the foot. That one cut answers both #161 ('Polia kneels before Venus priestess; Poliphilus beside') and #162 ('Enamoured couple kneeling before priestess'): they describe the same scene. #162 duplicates #161.",
-          "duplicates_plate": 161
+          "page_1499": 421,
+          "page_translation": 431,
+          "near_chapter_boundary": 0,
+          "page_corrected_from": 419,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
         }
       ],
       "plates_from": "page-range",
@@ -8921,7 +9005,8 @@
           "page_translation": 457,
           "near_chapter_boundary": 1,
           "page_corrected_from": 448,
-          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+          "duplicates_plate": 166,
+          "page_checked": "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES  scan opened 2026-09-20; DUPLICATE catalogue row — this row and #166 answer to one and the same woodcut. scan page_seq 447 opened 2026-09-20: it carries exactly ONE woodcut — Cupid at the left holding the bust of Polia, Poliphilo praying on the cloud in the middle, the crowned Venus seated at the right with her sceptre — under 'Mira diligentemente questa spectanda imagine'. Page_seq 448 carries the next cut, Cupid with the bow already drawn (#168), and 449 carries none. So the three rows #166 ('Poliphilus before Venus in clouds; Cupid listens'), #167 ('Cupid with bust of Polia and arrow') and #168 ('Cupid shoots arrow at bust of Polia') stand against TWO cuts, and #167 and #166 describe the same one. #167 duplicates #166. Recorded as a page correction (167 -> page_seq 447) until the caption sweep re-opened both leaves; it is a duplicate row, not a misplaced one."
         },
         {
           "plate": 168,

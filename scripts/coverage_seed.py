@@ -104,6 +104,66 @@ PLATE_PAGE_FIXES = {
                # candidissimo & benigno Tauro"). Chapter XIV either way.
     48:  153,  # the right half of the same opening; the text under it begins the second
                # triumph, "EL SEQVENTE triumpho nõ meno mirauiglioso del primo".
+               # MEASURED 2026-09-20: running head "PRIMVS", confirming the opening reads
+               # TRIVMPHVS | PRIMVS across pp.152-153.
+    #
+    # THE WHOLE TRIUMPHS RUN IS CATALOGUED ONE TO TWO PAGES EARLY. Measured 2026-09-20 by
+    # opening every leaf of the four triumphs (our pp.159-177 = page_seq 149-167) in order.
+    # The cuts run: car, then the two tabella panels, then the PARS ANTERIOR ET POSTERIOR
+    # panel, then the next car. The catalogue has the right order and the wrong leaves.
+    49:  154,  # scan p154 carries TWO cuts, "TABELLA DEXTRA" (Leda brought to bed, the eggs
+               # borne to the temple) over "TABELLA SINISTRA" (the king offering the eggs
+               # before the statue of Apollo, the oracle "VNI GRATVM MARE ALTERVM GRATVM
+               # MARI"). Catalogued at 152, which carries the left half of the First Triumph.
+    50:  154,  # the lower of those two panels on the same leaf.
+    51:  155,  # scan p155 carries ONE cut labelled "PARS ANTERIOR ET POSTERIOR" — at the
+               # left Cupid aloft pricking figures into the starry sky, at the right the
+               # Judgment of Paris. Its own text stands on the leaf before: "Nel anteriore
+               # fronte se uideua uno bellissimo Cupidine puellulo, nel æthera leuato" and
+               # "In nel posteriore, el magno Iupiter, uno solerte pastore, in suo loco
+               # iudice collocaua". Catalogued at 154, which carries the two Leda panels.
+    52:  156,  # scan p156, running head "TRIVMPHVS" — the left half of the Second Triumph,
+               # the car bearing "uno bianchissimo Cycno, negli amorosi amplexi duna inclyta
+               # Nympha filiola de Theseo". Catalogued at 155, which carries the Paris panel.
+    53:  157,  # scan p157, running head "SECVNDVS", so the opening reads TRIVMPHVS |
+               # SECVNDVS — the right half, the six white elephants drawing the car. The
+               # text beneath begins the third triumph, "EL TERTIO cæleste triumpho seguiua
+               # cum quatro uertibile rote di Chrysolitho æthiopico". Catalogued at 155.
+    54:  158,  # scan p158 carries TWO cuts, "TABELLA DEXTRA" (Acrisius before the oracle,
+               # the brazen tower building) over "SECVNDA SINISTRA" (Perseus with the
+               # Gorgon's head, Pegasus springing). Catalogued at 156.
+    55:  158,  # the lower of those two panels on the same leaf.
+    56:  159,  # scan p159 carries ONE cut, "PARS ANTERIOR ET POSTERIOR", in THREE panels:
+               # Mars and Venus freed; Jupiter consoling Cupid under the Greek
+               # "ΣΥΜΟΙ ΓΛΥΚΥΣ ΑΛΛΑ ΠΙΚΡΟΣ"; and the golden shower falling on Danae. The
+               # text beneath names the next team, "sei atrocissimi monoceri". Signed "l".
+               # Catalogued at 158, which carries the two Danae panels.
+    57:  160,  # scan p160, running head "TRIVMPHVS" — the left half of the Third Triumph,
+               # the car drawn by the horned unicorns. Catalogued at 159.
+    59:  161,  # the RIGHT half of the Third Triumph: scan p161, running head "TERTIVS", so
+               # the opening reads TRIVMPHVS | TERTIVS across pp.160-161. Catalogued at 159,
+               # which is the PARS ANTERIOR ET POSTERIOR panel of the second triumph (#56).
+    60:  161,  # the lower cut on that same leaf, labelled "SECVNDA SINISTRA": Jupiter
+               # handing the infant Bacchus to Mercury, and Mercury commending him to the
+               # nymphs in the cave. The line between the two cuts reads "Nelaltra io mirai
+               # esso opitulatore Iupiter, qllo medesimo infantulo, ad uno caeleste homo
+               # talaricato & caducifero gli offeriua". Catalogued at 160, whose lower cut
+               # is the Semele panel (#58). MEASURED in the first caption pass and recorded
+               # only in PLATE_CAPTION_CHECKED; entered here 2026-09-20 with the other ten
+               # by debt-plate-pages-measured-in-the-caption-pass-are-not-in-plate-page-fixes.
+    61:  162,  # scan p162 carries ONE cut, "PARS ANTERIOR ET POSTERIOR": Psyche with the
+               # lamp over the sleeping Cupid at the left, Venus and Cupid before Jupiter at
+               # the right with the tablet "PER FER SCINTILLAM QVI CAELVM ACCENDIS ET
+               # OMNES". The text beneath moves on to the Hyrcanian tigers of the fourth
+               # triumph. Catalogued at 161.
+    62:  164,  # the vase relief of Jupiter and the Heliades — the nymphs rooting into trees
+               # before Jove, saplings springing from their heads — at the foot of scan
+               # p164, under "in uerdigiate arbore di smaragdina" = our p.174. Catalogued at
+               # 161. MEASURED by bug-woodcut-catalog-page-jitter, which recorded it in its
+               # resolution and left it out of this table as out of scope; confirmed again
+               # on the scan 2026-09-20 during the caption sweep, and entered here by
+               # debt-plate-pages-measured-in-the-caption-pass-are-not-in-plate-page-fixes.
+               # Chapter XIV either way.
     63:  165,  # scan p165 carries the vintage: putti treading grapes at a vat and
                # harvesting under a pergola, under the line "Ma omni parte distinctamente
                # p̃fecta cerneuase" and above "Fora del p̃scripto uaso, germinaua una
@@ -117,6 +177,13 @@ PLATE_PAGE_FIXES = {
     65:  167,  # the right half of that opening. Beneath it on p167 stands the
                # capitalised argument of chapter XV ("LA MVLTITVDINE DEGLI AMANTI
                # GIOVENI"), which is why the catalogue's Four Seasons rows were put here.
+               # NOTE, measured 2026-09-20: the catalogue's own left/right parentheticals
+               # for this opening are INVERTED. #64 says "panthers (left)" and #65 "Silenus
+               # on ass (right)"; on the scans the ass and Silenus among the Maenads are on
+               # the LEFT leaf (p166 = our p.176, running head TRIVMPHVS) and the four
+               # collared panthers on the RIGHT (p167 = our p.177, head QVARTVS). The pages
+               # in this table are right; only the descriptions in hp.db are crossed, and
+               # hp.db is read-only from here.
     66:  181,  # RESOLVED 2026-09-20, ticket bug-woodcut-catalog-ten-unresolved-plates.
                # The Triumph of Vertumnus and Pomona is on scan page_seq 181, signed
                # "m iiii" at the foot — which is m4r on the measured collation below, an
@@ -150,6 +217,81 @@ PLATE_PAGE_FIXES = {
                # hauea, che oltra la candidecia sua era uenato (al requisito loco) de nigro"
                # = our p.194, chapter XVII, the same page that carries the Priapus altar.
                # Catalogued at 167.  MEASURED 2026-09-20.
+    #
+    # THE TEMPLE OF VENUS AND THE POLYANDRION. Measured 2026-09-20 by opening every leaf
+    # of our pp.214-271 in order. Through the temple the corrected catalogue runs about two
+    # pages EARLY; through the Polyandrion it runs one page early from #100 onward.
+    79:  210,  # the two virgins bearing the swan and the doves for sacrifice, under an
+               # arcade with the temple interior through the arch at the right; the text
+               # below opens "Et quiui le ualue doro reserate, inseme introrono" = our
+               # p.220. Catalogued at 208. Chapter XVII either way.
+    80:  212,  # the altar of the Temple of Venus — the great footed vessel on its stepped
+               # pedestal, crowned with flame and hung with beaded festoons — beside "Dal
+               # marmoreo & gradato pedamento, fino allo initio dil stilo exclusiuo" = our
+               # p.222. Catalogued at 210.
+    84:  222,  # the miracle of the roses: the rose-tree springing from the altar-vase with
+               # doves in its branches, the priestess reaching up with the golden dish, the
+               # virgins prostrate. Scan page_seq 222, catchword "Onde" = our p.232.
+               # Catalogued at 221, whose one cut is the priestess strewing roses and
+               # oyster-shells on the altar (see PLATE_CAPTION_CHECKED in build_reading.py).
+    85:  224,  # Poliphilo kneeling to receive the miraculous fruit from the priestess under
+               # the rose-tree; the text beneath begins "Hora non piu p̃sto che io degustai
+               # il miraculoso & suauissimo pomulo" = our p.234. Catalogued at 221.
+    86:  228,  # RE-OPENED 2026-09-20 and MOVED OUT OF PLATE_NO_WOODCUT. Scan page_seq 228
+               # carries the ruined temple by the shore: the broken rotunda, the fallen
+               # columns and drums, a palm and an obelisk among them, Poliphilo and Polia
+               # standing at the left — which is exactly what this row describes. The text
+               # immediately above the cut ends "al spatioso & harenulato litore di
+               # piaceuoli plémyruli irruenti relixo, oue era il destructo & deserto tempio
+               # perueníssimo" = our p.238, chapter XIX. bug-woodcut-catalog-ten-unresolved-
+               # plates opened page_seq 232 and 233 only, found neither carried such a view,
+               # and concluded no woodcut answered to the row; the cut is ten pages earlier.
+               # A row is only "no woodcut" once the whole run has been walked.
+    100: 246,  # the epitaph in its aedicule, the pediment carrying a spread eagle between
+               # two dolphins, lettered "D. M. VIATOR HVC PROPIVS FER TO OCVLOS. DEINDE
+               # VERBA MECVM FACITO" = our p.256. Catalogued at 247, which carries the
+               # broken stele and the Greek urn (#102).
+    102: 247,  # the two-handled sepulchral urn lettered in Greek, the right-hand of the two
+               # cuts on scan page_seq 247; the text above ends "nel fronte dilla fractura
+               # era questa praestante scriptura" and the text below opens "Relicti questi
+               # rupti monumenti" = our p.257. Catalogued at 249, and the old `woodcuts`
+               # column says 250: NEITHER is right.  MEASURED 2026-09-20.
+    104: 250,  # the small panel lettered in Greek between two ox-skulls with foliate swags,
+               # the left-hand of the two cuts on scan page_seq 250 = our p.260. Catalogued
+               # at 247.  MEASURED 2026-09-20.
+    105: 250,  # the broken tablet "D. M. LYNDIA THASIVS PVELLA", the right-hand cut on that
+               # same leaf. Catalogued at 251, whose one cut is the sarcophagus of
+               # P. Cornelia Annia (#106).  MEASURED 2026-09-20.
+    107: 252,  # the sarcophagus whose front panel carries the row of devices — mask,
+               # spindle, bird, arrows, ring, serpents, fly, altar — over "DIIS MANIBVS
+               # MORS VITAE CONTRARIA ET VELOCISSIMA CVNCTA CALCAT" = our p.262. Catalogued
+               # at 250.  MEASURED 2026-09-20.
+    108: 253,  # the full-page monument of Chrysanthus and Leucippa: an aedicule with
+               # acroteria and a draped panel lettered "O LECTOR INFOELIX HOC MONVMENT. ADES
+               # DVM TE VOCAT ET POST INDE ROGAT" = our p.263. Catalogued at 252, whose one
+               # cut is the four-square altar "ARAM DEVM INFER. VIATOR".
+    110: 257,  # the full-page monument of Artemisia: the crowned queen enthroned in the
+               # niche drinking, the roundel "ΕΡΩΤΟΣ ΚΑΤΟΠΤΡΟΝ" over the pediment and the
+               # tablet "ΑΡΤΕΜΙΣΙΔΟΣ ΒΑΣΙΛΙΔΟΣ ΣΠΟΔΟΝ" below. Signed "r ii" = our p.267.
+               # Catalogued at 258, which is text only.
+    111: 259,  # the full-page cut of two nude genii drawing back the curtain from the busts
+               # of the young pair, over "ASPICE VIATOR Q. SERTVLLII ET DVLCICVLAE SPON.
+               # MEAE". Signed "r iii" = our p.269. Catalogued at 258.
+    112: 261,  # the full-page sepulchral portal: two doves at a basin in the pediment, the
+               # architrave "·D· DITI ET PROXER·S", the epitaph of Trebia, and at the foot
+               # the two little niches lettered "NATVRAE NOVERCAE INEVITABILE STATVTVM" and
+               # "NATVRAE MATRIS BENIGNVM EDICTVM" — the two gates the text calls "una arca,
+               # cum due porte, chi entra morédo, & chi ne esse nascendo". Signed "r iiii" =
+               # our p.271. Catalogued at 260, which carries that description and no cut.
+    123: 307,  # the CIRCULAR flower-bed pattern, concentric rings of rhombs and circles, cut
+               # by the fore-edge at the right of scan page_seq 307, beside "Tra le
+               # recensuite strate intersticiamente circũsepte erano le p̃scripte figure.
+               # Dẽtro le rhõboide, circuli. Dẽtro gli circuli gli rhõbi". Signed "u iii" =
+               # our p.317. Catalogued at 309.
+    125: 309,  # the clipped topiary rising from the altar-vase with the three ox-skulls,
+               # the LOWER of the two cuts on scan page_seq 309, beside "una inane ara,
+               # rotundata di petra di flauo numidico cum tre capitale ossature di boue" =
+               # our p.319. Catalogued at 295.  MEASURED 2026-09-20.
     127: 312,  # RESOLVED 2026-09-20. The box clipped as peacocks stands on scan page_seq
                # 312, not 313: a tall cut at the right of the page showing the altar with
                # its laurel-wreath panel, the four-handled amphora on it, and the clipped
@@ -175,6 +317,32 @@ PLATE_PAGE_FIXES = {
     133: 318,  # the right trophy on that same page: the winged disk with the tablet
                # "QVIS EVA / DET", matching its own text "Poscia una tabella cum tale
                # scriptura maiuscula (QVIS EVADET?) subiaceua". Catalogued at 319.
+    138: 328,  # the fluted vase with the two dragon-head handles, the only cut on scan
+               # page_seq 328, beside "Ennia una, che nelle tuberule mano gerulaua uno
+               # dedolato uasculo Amphoe di colorissimo saphyro cum iucundissima
+               # splendescentia, cum latulo orificio emusicatamente exscalpto" = our p.338.
+               # Catalogued at 330, which carries the sparking vase (#139).
+    139: 330,  # the precious-stone vase throwing fiery sparks, beside "Fora dil quale
+               # latulo orificio uolante & crepitante, cum gratissimo scloppo scintille
+               # resultauano, per laire discurrendo lucente" = our p.340. Catalogued at 331;
+               # the old `woodcuts` column has #139 and #140 swapped between the two leaves,
+               # so neither source had this pair right.  MEASURED 2026-09-20.
+    140: 331,  # the earthenware amphora fuming, its body band lettered in Greek — and the
+               # text counts them, "tredeci litere graece mensuratissime diligentemente
+               # impresse", then "uno nebulante & euodio fumo" = our p.341. Catalogued at
+               # 331 as well, which is right for this row and wrong for #139.
+    142: 335,  # the ensign of the three heads — lion in the middle, dog at the right, wolf
+               # at the left — in a disk on a shaft wound with a serpent, the only cut on
+               # scan page_seq 335, signed "y" = our p.345. Its text stands on the leaf
+               # before: "el simulachro dagli ægyptii di Serapi uenerato. El quale era uno
+               # capo di leone. Alla dextra prosiliua uno capo di cane blandiente. Et dalla
+               # læua, uno capo di rapace lupo. Laquale effigie era tuta in uno uolumine di
+               # draco contenta & circundata". Catalogued at 334, whose one cut is the
+               # three-headed terminal figure (#141).
+    143: 336,  # the Triumph of Cupid, LEFT half: the winged boy on the car, the nymphs
+               # walking before with standards, satyrs behind. Scan page_seq 336, under the
+               # text ending "& ostentamento maximo di structura" = our p.346. Catalogued at
+               # 337, which carries the right half (#144).
     152: 386,  # scan p386 carries Polia reading while Poliphilo lies collapsed before
                # the altar; its text ends "rachiusi gli somersi ochii allato me se
                # morite" = our p.396. Catalogued at 387. Chapter XXVI either way.
@@ -185,6 +353,11 @@ PLATE_PAGE_FIXES = {
     154: 390,  # scan p390 carries the two women chained to Cupid's burning car in the
                # wood ("due dolete & siagurate fanciulle ... ad uno ignitato uehiculo")
                # = our p.400. Catalogued at 391. Chapter XXVII either way.
+    155: 391,  # Cupid standing over the kneeling girl with the drawn sword, the burning car
+               # behind, Polia watching from behind a tree; scan page_seq 391, signed
+               # "B iii", under the text ending "Cũ una soliferrea & tagliẽte Rõphea ... p
+               # medio dl suo pulsãte core ... subito trãfisse" = our p.401. Catalogued at
+               # 392. Chapter XXVII either way.  MEASURED 2026-09-20.
     160: 416,  # scan p415 is unbroken text — it DESCRIBES the two cars ("uno Vehiculo
                # tutto di Crystallino giazo, tracto da dui candidi & cornigeri cerui ...
                # da dui candidi Cygni") but carries no woodcut. The plate, in two halves
@@ -198,11 +371,20 @@ PLATE_PAGE_FIXES = {
                # Poliphilo's letter ("& uiuo, & morto tuo sum. Vale.") and above
                # "Credando Sacra Matrona che la Damicella, alle mie amorose parole".
                # Chapter XXXIII either way.
-    167: 447,  # scan p448 carries ONE woodcut, Cupid with the bow drawn (= #168), and
-               # scan p449 none at all. The plate showing Cupid holding the bust of
-               # Polia, Poliphilo praying in the clouds and the sceptred Venus is on
-               # p447 — the same plate the catalogue also lists as #166. Catalogued at
-               # 448. Chapter XXXV either way.
+    162: 421,  # RE-OPENED 2026-09-20 and MOVED OUT OF PLATE_DUPLICATE_ROWS. Scan page_seq
+               # 421, signed "D ii", carries a woodcut that is NOT the one on 419: here
+               # Poliphilo AND Polia kneel side by side on the pavement before the mitred
+               # priestess, who sits with four nymphs standing behind her, in a plain
+               # panelled chamber with no altar. On 419 Poliphilo STANDS, Polia kneels
+               # alone, and the flaming altar-vase is at the right. Two scenes, two cuts.
+               # The old `woodcuts` column put #162 on 421 and had it right.
+               # bug-woodcut-catalog-ten-unresolved-plates opened 419 only, found one cut
+               # there, and called #162 a duplicate of #161; the second cut is two leaves
+               # on. Chapter XXX either way.
+    167: 447,  # a DUPLICATE row (see PLATE_DUPLICATE_ROWS below) and so not a plate of its
+               # own — but the leaf it answers to is #166's, page_seq 447 (our p.457), not
+               # the catalogued 448, whose one cut is #168. Kept here so the ledger does not
+               # file it on a leaf carrying a cut it does not describe.
 }
 
 # Plates whose catalogued page we opened and found ALREADY RIGHT. Worth writing down:
@@ -257,6 +439,10 @@ PLATE_PAGE_CONFIRMED = {
          "sea on the bull",
     46:  "p150 'PARS ANTERIOR ET POSTERIOR TRIVMPHI' — Cupid shooting stars, and Mars "
          "before Jove's throne with the NEMO scroll = our p.160 (ch. XIV)",
+    58:  "p160 the LOWER of the two cuts on the leaf, 'TABELLA DEXTRA' — Semele consumed "
+         "in the flame at the left, the infant Bacchus tended by women at the right; the "
+         "upper cut on the same leaf is the third triumphal car (#57, corrected above) "
+         "and the text beneath begins 'EL QVARTO triũpho' = our p.170 (ch. XIV)",
     71:  "p185 the full-page worship of Priapus under the flowered bower, the ass led to "
          "sacrifice; no body text = our p.195, a page our translation holds no file for "
          "(ch. XVII)",
@@ -279,7 +465,19 @@ PLATE_PAGE_CONFIRMED = {
          "the eagle, anchor and seated soldier with the serpent = our p.245 (ch. XIX)",
     90:  "p235 the second medallion on that page, 'DIVI IVLII VICTORIARVM ET SPOLIORVM "
          "COPIOSISSIMVM TROPHAEVM, SEV INSIGNIA' — the trophy between the eye and the comet",
-    113: "p275 the standard with the flaming vase and the crescent, captioned 'AMOR "
+    93:  "p236 the only cut on the leaf: the broken architrave, the decapitated owl and "
+         "the antique lamp in the tympanum, over 'D. M. S. CADAVERIB. AMORE FVRENTIVM "
+         "MISERABVNDIS POLYANDRION'; the text below reads it, 'Vno uolucre decapitato, "
+         "arbitrai fusse di Bubone, & una uetusta lucerna ... VITAE LETHIFER NVNTIVS' = "
+         "our p.246 (ch. XIX)",
+    99:  "p245 the sacrifice relief: the old man pouring at the altar lettered 'HAVE "
+         "LERIA OMNIVM AMANTISS. VALE', the faun with the double pipes at the right, the "
+         "matron with the reversed torch, the little satyr with the serpent. Signed "
+         "'q iiii' = our p.255 (ch. XIX)",
+    106: "p251 the only cut on the leaf: the sarcophagus with the imbricated lid, 'D M "
+         "P. CORNELIA ANNIA, NE IN DESOLATA ORBITATE SVPERVIVEREM' = our p.261 (ch. XIX). "
+         "#105, which the catalogue also files here, is on p250 (corrected above)",
+    113: "p275 the standard with the flaming vase and the crescent, captioned 'AMOR"
          "VINCIT OMNIA'. Signature 's iii' = our p.285 (ch. XX)",
     114: "p281 the bark on the waves with its mast and yard; 'cum tute le altre "
          "circũstantie disopra opportunamente descripte. cusi era' = our p.291 (ch. XXI)",
@@ -294,11 +492,29 @@ PLATE_PAGE_CONFIRMED = {
          "'Consequente era uno altro nobilissimo trophæo baiulato'. Signature 'x' = "
          "our p.329 (ch. XXII)",
     135: "p319 the right trophy on that page, the winged boss with the floating ribbons",
-    148: "p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque il "
+    136: "p321 the only cut on the leaf: the trophy whose laurel wreath encloses a tablet "
+         "lettered in Greek 'ΔΟΡΙΚΤΗΤΟΙ' — won by the spear — with Cupid standing bow in "
+         "hand above it. Signed 'x ii' = our p.331 (ch. XXII)",
+    141: "p334 the only cut on the leaf: the terminal figure with three heads, the "
+         "ithyphallic sign in the middle of its tapering shaft; 'Ciascuno gestaua uno "
+         "mõstro rudemente exciso in ligno, & inaurato ... Dal tricapo fina alla "
+         "diaphragma' = our p.344 (ch. XXII). #142, also filed here, is on p335",
+    144: "p337 the Triumph of Cupid, RIGHT half: the car drawn by dragons, the nymphs "
+         "with standards and the fuming pyre, trumpeters at the right. Signed 'y ii' = "
+         "our p.347 (ch. XXII). #143, the left half, is on p336 (corrected above)",
+    145: "p339 the only cut on the leaf: the column pedestal with rams' heads at the "
+         "corners and the round medallion of the sacrifice at the flaming altar; 'Tra una "
+         "proiectura & laltra, nel ordine dilla porta nella parte mediana dil zophoro' = "
+         "our p.349 (ch. XXIII). #146, also filed here, is not on this leaf",
+    148: "p349 the heptagonal ground-plan with its inscribed circle and radii; 'Dũque il"
          "circulo obducto del suo diametro semisse, iui uno triangulo æq̃latero "
          "cõstituito' = our p.359 (ch. XXIII)",
     149: "p363 'sopra il fonte. Nelquale ... uno serpe aureo' = our p.373 (ch. XXIV)",
-    157: "p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple; "
+    156: "p393 the lion, the dog and the winged dragon tearing the two girls in the wood, "
+         "Cupid flying above with the sword; the text below begins 'O spectaculo di "
+         "icredibile acerbitate, & di crudelitate insigne'. Signed 'B iiii' = our p.403 "
+         "(ch. XXVII). The old `woodcuts` column put this on 401, which carries #155",
+    157: "p411 Polia kneeling over the prostrate Poliphilo in the colonnaded temple;"
          "'O il mio amoroso Poliphilo morto, ouero io in tanta inconsolabile uita "
          "superstite?' = our p.421 (ch. XXIX)",
     161: "p419 the priestess enthroned, Polia kneeling, Poliphilo standing, the flaming "
@@ -322,13 +538,31 @@ PLATE_PAGE_CONFIRMED = {
 # surrounding text). Each entry says what the catalogued page actually carries. These
 # still count as CHECKED — a reader can tell them from a page nobody has looked at.
 #
-# EMPTY since 2026-09-20, when ticket bug-woodcut-catalog-ten-unresolved-plates closed
-# the ten rows that stood here. Seven of them got a true page (now in PLATE_PAGE_FIXES:
-# #66-70, #127, #129) and three turned out not to be lost plates at all (#83, #162 are
-# duplicate rows, #86 answers to no woodcut — see the two tables below). The table is
-# kept, and the branch in plates() that reads it with it, because the next plate that
-# cannot be placed belongs here and not in a guess.
-PLATE_PAGE_UNRESOLVED = {}
+# It was emptied on 2026-09-20 morning, when bug-woodcut-catalog-ten-unresolved-plates
+# closed the ten rows that stood here: seven got a true page (now in PLATE_PAGE_FIXES:
+# #66-70, #127, #129) and three were called not-plates (#83 and #162 duplicates, #86 a
+# phantom). The caption sweep the same afternoon reversed two of those three — #86 and
+# #162 are real cuts with real pages — and refilled this table with the two Polyandrion
+# medallion rows below, which are the honest residue: the catalogued page has been opened
+# and shown to carry something else, and no leaf names them.
+PLATE_PAGE_UNRESOLVED = {
+    91: "scan page_seq 236 opened 2026-09-20: it carries exactly ONE woodcut, the broken "
+        "architrave with the decapitated owl and the antique lamp over 'D. M. S. CADAVERIB. "
+        "AMORE FVRENTIVM MISERABVNDIS POLYANDRION', which is #93. It is not a medallion. "
+        "The Polyandrion's seven relief rows #87-#93 stand against seven cuts on four "
+        "leaves — page_seq 233 carries the obelisk and the IVSTITIA medallion (#87, #88), "
+        "235 the MILITARIS PRVDENTIA medallion and the DIVI IVLII trophy (#89, #90), 236 "
+        "the architrave (#93) — and the two cuts nobody has claimed are on page_seq 234 "
+        "(our p.244): the hieroglyph band over 'DIVO IVLIO CAESARI SEMP. AVG.' and the "
+        "medallion of the two elephants and the caduceus, 'PACE, AC CONCORDIA PARVAE RES "
+        "CRESCVNT, DISCORDIA MAXIMAE DECRESCVNT'. By elimination this row and #92 are those "
+        "two. That is an argument from a closed set, not something read off the leaf — the "
+        "cuts carry no catalogue number — and nothing goes into PLATE_PAGE_FIXES that was "
+        "not seen on the scan, so the page is left unresolved. Our p.244 is captioned from "
+        "what is printed on it (PLATE_CAPTION_CHECKED in build_reading.py) regardless.",
+    92: "the second of that pair; see #91. Catalogued on page_seq 236, which carries one "
+        "cut and that cut is #93.",
+}
 
 # ── Catalogue rows that duplicate another row ──────────────────────────
 #
@@ -344,14 +578,23 @@ PLATE_DUPLICATE_ROWS = {
               "placeholder description, the string 'Temple ceremony continuation', and #81 "
               "is on page_seq 212 and #82 on 213; #83 is a third row for a page that has "
               "one cut. It duplicates #82."),
-    162: (161, "scan page_seq 419 opened 2026-09-20: it carries exactly ONE woodcut — the "
-               "mitred priestess enthroned at the left, Poliphilo standing, Polia kneeling "
-               "with her hands raised, the flaming altar-vase on its stepped base at the "
-               "right — under the text 'Dinanti alla quale ello era apresentato', and signed "
-               "'D' at the foot. That one cut answers both #161 ('Polia kneels before Venus "
-               "priestess; Poliphilus beside') and #162 ('Enamoured couple kneeling before "
-               "priestess'): they describe the same scene. #162 duplicates #161."),
+    167: (166, "scan page_seq 447 opened 2026-09-20: it carries exactly ONE woodcut — Cupid "
+               "at the left holding the bust of Polia, Poliphilo praying on the cloud in the "
+               "middle, the crowned Venus seated at the right with her sceptre — under 'Mira "
+               "diligentemente questa spectanda imagine'. Page_seq 448 carries the next cut, "
+               "Cupid with the bow already drawn (#168), and 449 carries none. So the three "
+               "rows #166 ('Poliphilus before Venus in clouds; Cupid listens'), #167 ('Cupid "
+               "with bust of Polia and arrow') and #168 ('Cupid shoots arrow at bust of "
+               "Polia') stand against TWO cuts, and #167 and #166 describe the same one. "
+               "#167 duplicates #166. Recorded as a page correction (167 -> page_seq 447) "
+               "until the caption sweep re-opened both leaves; it is a duplicate row, not a "
+               "misplaced one."),
 }
+# #162 was here until 2026-09-20. The caption sweep opened scan page_seq 421 — which
+# bug-woodcut-catalog-ten-unresolved-plates had not looked at — and found a SECOND,
+# different priestess scene there. It is a real cut with a real page, and it is now in
+# PLATE_PAGE_FIXES. The lesson is the same one the Polyandrion's #86 teaches two tables
+# up: a row is not a duplicate, and not a phantom, until the whole run has been walked.
 
 # ── A catalogue row with no woodcut behind it ─────────────────────────
 #
@@ -360,25 +603,28 @@ PLATE_DUPLICATE_ROWS = {
 # list more than the book draws, because its rows were made by subject-matching the TEXT
 # (woodcut_catalog.link_basis, source_method LLM_ASSISTED) and a vivid passage with no cut
 # can win a row of its own.
-PLATE_NO_WOODCUT = {
-    86: "scan page_seq 233 opened 2026-09-20: it carries exactly TWO woodcuts — the plain "
-        "obelisk on its stepped base at the right, and the round IVSTITIA medallion (the "
-        "balance with the crown, the dog and the serpent) at the left. Those are #87 and "
-        "#88, and neither is a view of ruins among trees. The ruined temple overgrown with "
-        "ground-ivy and thorns that #86 describes is the TEXT of page_seq 232 ('quelle deuii "
-        "aggeri, di fastigiato & uasto cumulo & ruina, i la magiore parte occupate di "
-        "chamaeciso, & di terrambula & di spini implicita'), and scan page_seq 232 was opened "
-        "the same day and is unbroken text under a knotwork initial, with no cut on it at "
-        "all. No woodcut in the book answers to this row.",
-}
+PLATE_NO_WOODCUT = {}
+# EMPTY since 2026-09-20. #86 stood here from the morning of that day: page_seq 232 and 233
+# had both been opened, neither carried a view of ruins among trees, and the row was filed
+# as answering to no woodcut at all. The caption sweep the same afternoon walked the whole
+# Polyandrion approach leaf by leaf and found the cut on page_seq 228 — five leaves before
+# the first one anybody had opened. It is now in PLATE_PAGE_FIXES.
+#
+# The table is kept, and the branch in plates() that reads it with it, because the claim it
+# makes is a real one and the catalogue's rows were built by subject-matching the TEXT
+# (woodcut_catalog.link_basis, source_method LLM_ASSISTED), so a vivid passage with no cut
+# can still win a row of its own. But nothing goes in here again until every leaf between
+# the neighbouring identified plates has been opened. Two of the three findings that
+# bug-woodcut-catalog-ten-unresolved-plates closed by declaring a row phantom or duplicate
+# (#86 here, #162 in the table above) were reversed by doing exactly that.
 
-# Also measured, but not near a chapter boundary and so not in the tables above:
-#   #62 "Vase relief: Jupiter and the Heliades" is catalogued at page_seq 161 and is in
-#   fact the woodcut at the foot of scan p164 — the nymphs rooting into trees before
-#   Jove, our p.174, which is exactly where our translation puts the urn-relief of "Jove
-#   and the nymphs changed into trees". It is recorded here rather than in
-#   PLATE_PAGE_FIXES because moving it is outside this ticket's scope and nothing in the
-#   ledger turns on it: page_seq 161 and 164 are both chapter XIV.
+# #62 "Vase relief: Jupiter and the Heliades" stood here as a measurement recorded but
+# deliberately not applied, because moving it was outside the scope of the ticket that
+# measured it and nothing in the ledger turned on it (page_seq 161 and 164 are both
+# chapter XIV). It is in PLATE_PAGE_FIXES now, with the other nine pages the caption sweep
+# measured — ticket debt-plate-pages-measured-in-the-caption-pass-are-not-in-plate-page-
+# fixes, 2026-09-20. A measurement recorded in prose beside the table it belongs in is a
+# second copy of a fact, and the second copy is the one that goes stale.
 
 # The eight attributions ticket bug-plate-page-seq-offset says were wrong, plus the two
 # regression points its acceptance names. Asserted on every run — see check_plates().
@@ -504,25 +750,32 @@ def plates(pages_by_ch):
             d = min((abs(page - x) for r in pages_by_ch.values() for x in r), default=99)
             if d <= 3:
                 rec["near_chapter_boundary"] = d
+        # A row can be BOTH corrected and a duplicate — #167 is on the leaf its sibling
+        # #166 is on, and answers to the same cut — so the page verdict and the
+        # is-it-a-real-plate verdict are recorded independently rather than as one elif
+        # chain, which used to let the first branch hide the second. (2026-09-20.)
+        checked = []
         if num in PLATE_PAGE_FIXES:
             rec["page_corrected_from"] = raw
-            rec["page_checked"] = "scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES"
+            checked.append("scan opened 2026-09-20; corrected — see PLATE_PAGE_FIXES")
         elif num in PLATE_PAGE_CONFIRMED:
-            rec["page_checked"] = "scan opened 2026-09-20; catalogued page confirmed — " \
-                                  + PLATE_PAGE_CONFIRMED[num]
-        elif num in PLATE_DUPLICATE_ROWS:
+            checked.append("scan opened 2026-09-20; catalogued page confirmed — "
+                           + PLATE_PAGE_CONFIRMED[num])
+        if num in PLATE_DUPLICATE_ROWS:
             dup, why = PLATE_DUPLICATE_ROWS[num]
-            rec["page_checked"] = (f"scan opened 2026-09-20; DUPLICATE catalogue row — this "
-                                   f"row and #{dup} answer to one and the same woodcut. {why}")
+            checked.append(f"scan opened 2026-09-20; DUPLICATE catalogue row — this row and "
+                           f"#{dup} answer to one and the same woodcut. {why}")
             rec["duplicates_plate"] = dup
-        elif num in PLATE_NO_WOODCUT:
-            rec["page_checked"] = ("scan opened 2026-09-20; NO WOODCUT answers to this "
-                                   "catalogue row — " + PLATE_NO_WOODCUT[num])
+        if num in PLATE_NO_WOODCUT:
+            checked.append("scan opened 2026-09-20; NO WOODCUT answers to this catalogue "
+                           "row — " + PLATE_NO_WOODCUT[num])
             rec["no_woodcut"] = True
-        elif num in PLATE_PAGE_UNRESOLVED:
-            rec["page_checked"] = "scan opened 2026-09-20; catalogued page is WRONG and the " \
-                                  "true page is NOT YET KNOWN — " + PLATE_PAGE_UNRESOLVED[num]
+        if num in PLATE_PAGE_UNRESOLVED:
+            checked.append("scan opened 2026-09-20; catalogued page is WRONG and the true "
+                           "page is NOT YET KNOWN — " + PLATE_PAGE_UNRESOLVED[num])
             rec["page_unresolved"] = True
+        if checked:
+            rec["page_checked"] = "  ".join(checked)
         placed = False
         if page is not None:
             for ch, (a, b) in pages_by_ch.items():
@@ -852,9 +1105,18 @@ def sections():
 # processional triumphs, and the section table's own caveat says the episodes interleave
 # and that any [start, end] partition of this book is an index rather than a description
 # of its structure. What the scans settle is only the PAGE.
+#
+# #86 joined them on 2026-09-20 for the same reason and with the same caveat. The view of
+# the ruined temple by the shore is on page_seq 228 (our p.238), four leaves before the
+# measured POLYANDRION boundary at 232, so by the table above it is VENUS_TEMPLE. The
+# catalogue's POLYANDRION tag reads the picture rather than the leaf, and on the picture it
+# is right: the text printed immediately over the cut is the arrival, "oue era il destructo
+# & deserto tempio perueníssimo". The boundary stands where the chapter opening puts it and
+# the plate is tagged by its page, which is what every other row here is tagged by.
 PLATE_SECTION_CORRECTED = {
     66: "VENUS_TEMPLE", 67: "VENUS_TEMPLE", 68: "VENUS_TEMPLE",
     69: "VENUS_TEMPLE", 70: "VENUS_TEMPLE",
+    86: "VENUS_TEMPLE",
 }
 
 

@@ -40,6 +40,21 @@ DELETED, or Read mode shows the same cut twice, two pages apart. So this script
 now sweeps images/woodcuts_1499/ of any pNNN.jpg the current mapping does not
 produce, and names each one it removes (--keep-stale to leave them).
 
+THE FIVE LEAVES THE CORPUS NEVER PHOTOGRAPHED. 162 files is not 167 woodcut
+leaves: the Vertumnus triumph, the four Seasons reliefs and the Cythera clipped
+tree (page_seq 181-184 and 296 = our pp.191-194 and 306) are missing from the
+primary photographs and are taken instead from the second, complete facsimile in
+the corpus at `staging\\ia_scan\\nNNN.jpg`, calibrated at n = page_seq + 5. See
+IA_FALLBACK below, which names what is printed on each of the five. Added
+2026-09-20 closing the converse half of
+bug-reading-raises-a-plate-frame-on-leaves-that-carry-no-woodcut.
+
+WHAT THIS SCRIPT DOES NOT DECIDE. It copies leaves; it does not say which leaves
+carry a cut. The corpus photographed plenty of pages of solid type, and until
+2026-09-20 build_reading.py raised a plate frame on every file it found here.
+That test now lives in build_reading.py's plate_captions(), where the opened
+scans are.
+
 The corpus is a separate git repository and is treated read-only from here: this
 script only ever reads from it.
 """
@@ -59,6 +74,46 @@ from coverage_seed import PAGE_SEQ_TO_TRANSLATION   # the ONE measured constant
 ROOT = Path(__file__).resolve().parent.parent
 SRC = Path(r"C:\Dev\hypnerotomachia polyphili\site\images\woodcuts_1499")
 OUT = ROOT / "images" / "woodcuts_1499"
+
+# ── The second facsimile ────────────────────────────────────────────────────
+#
+# The corpus photographed 162 leaves and stopped, and five of the leaves it missed
+# carry woodcuts: the Triumph of Vertumnus and Pomona and the four Seasons reliefs
+# (page_seq 181-184, our pp.191-194), and the three-ordered clipped tree of the
+# Cythera garden (page_seq 296, our p.306). Found 2026-09-20 by
+# bug-reading-raises-a-plate-frame-on-leaves-that-carry-no-woodcut, which measured
+# the converse gap at the same time as the false plates: the corrected catalogue puts
+# cuts on those five leaves and images/woodcuts_1499/ held no file for any of them,
+# so they could not come up in Read mode however the binding was fixed.
+#
+# They are not unavailable. The corpus holds a SECOND, complete facsimile at
+# staging/ia_scan/nNNN.jpg — 299 leaves, n175-n473, every one 4659x7086, which is the
+# same resolution as the best of the primary photographs. Its numbering is calibrated
+# to ours at **+5**: n = page_seq + 5, equivalently our page = n + 5. MEASURED by
+# opening n190, which is the full-page worship of Priapus = page_seq 185 = our p.195,
+# and n186, which is the Vertumnus car with the tablet "INTEGERRIMAM CORPOR.
+# VALITVDINEM ... CVLTORIB. M. OFFERO." and the signature "m iiii" = page_seq 181 =
+# our p.191, exactly where coverage_seed's PLATE_PAGE_FIXES puts plate #66.
+#
+# Each entry was opened before it was listed. page_seq -> what is printed on the leaf.
+IA_SRC = Path(r"C:\Dev\hypnerotomachia polyphili\staging\ia_scan")
+IA_OFFSET = 5                       # ia nNNN = page_seq + 5
+IA_FALLBACK = {
+    181: "the Triumph of Vertumnus and Pomona, the car drawn by four horned fauns, over "
+         "the tablet 'INTEGERRIMAM CORPOR. VALITVDINEM, ET STABILE ROBVR, CASTASQVE "
+         "MEMSAR. DELITIAS, ET BEATAM ANIMI SECVRITATEM CVLTORIB. M. OFFERO.'; signature "
+         "'m iiii'. Catalogue #66 = our p.191.",
+    182: "Spring: the flower-girdled goddess casting flowers into the flaming Chytropode, "
+         "captioned on the cut 'FLORIDO VERI .S.'. Catalogue #67 = our p.192.",
+    183: "TWO reliefs — Summer, the corn-crowned damsel with the cornucopia of grain, "
+         "'FLAVAE MESSI.S.', and Autumn, the vine-crowned youth with the goat, "
+         "'MVSTVLENTO AVTVMNO .S.'. Catalogue #68 and #69 = our p.193.",
+    184: "Winter: the bearded king in the beast-skin, his sceptre raised into a "
+         "hail-streaked sky, captioned 'HYEMI AEOLIAE.S.'. Catalogue #70 = our p.194.",
+    296: "a clipped tree of three orders rising from a vase with dragon-headed handles, "
+         "beside 'Gli fructigeri arbori di forma hemispheria inconuexo'. The catalogue "
+         "files #117, #118 and #119 on this leaf and it carries one cut = our p.306.",
+}
 
 WIDTH = 800          # what the reading panel can actually show
 QUALITY = 82
@@ -108,6 +163,32 @@ def main():
         made += 1
         total += dest.stat().st_size
 
+    # The five leaves the primary photographs missed, taken from the second
+    # facsimile. See IA_FALLBACK above: each was opened before it was listed.
+    from_ia, missing_ia = 0, []
+    for seq in sorted(IA_FALLBACK):
+        ours = seq + OFFSET
+        dest = OUT / f"p{ours:03d}.jpg"
+        wanted.add(dest.name)
+        if (SRC / f"hp1499_p{seq:03d}.jpg").exists():
+            continue                      # the corpus has it after all; prefer the primary
+        f = IA_SRC / f"n{seq + IA_OFFSET:03d}.jpg"
+        if not f.exists():
+            missing_ia.append(ours)
+            continue
+        if not remap and dest.exists() and dest.stat().st_mtime >= f.stat().st_mtime:
+            skipped += 1
+            total += dest.stat().st_size
+            continue
+        im = Image.open(f)
+        if im.mode != "RGB":
+            im = im.convert("RGB")
+        if im.width > WIDTH:
+            im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
+        im.save(dest, "JPEG", quality=QUALITY, optimize=True, progressive=True)
+        from_ia += 1
+        total += dest.stat().st_size
+
     # Sweep the leftovers. A change of OFFSET RENAMES every output, and a rename
     # that only writes the new name leaves the old one behind, so Read mode would
     # raise the same cut on two pages -- the one it belongs to and the one the old
@@ -124,7 +205,14 @@ def main():
 
     stamp.write_text(f"{OFFSET}\n", encoding="utf-8")
 
-    print(f"wrote {made} plate(s), {skipped} already current")
+    print(f"wrote {made + from_ia} plate(s), {skipped} already current")
+    if from_ia:
+        print(f"  of which {from_ia} from the second facsimile (staging/ia_scan, "
+              f"n = page_seq + {IA_OFFSET}), for leaves the corpus never photographed: "
+              f"{', '.join('p%03d' % (s + OFFSET) for s in sorted(IA_FALLBACK))}")
+    if missing_ia:
+        print(f"  UNAVAILABLE: {missing_ia} — a cut is known to stand on these leaves and "
+              f"NEITHER facsimile on this machine holds the page")
     print(f"  into  {OUT.relative_to(ROOT)}  (page_seq + {OFFSET} = our page)")
     print(f"  pages {min(int(p.stem[1:]) for p in OUT.glob('p*.jpg'))}"
           f"-{max(int(p.stem[1:]) for p in OUT.glob('p*.jpg'))}"
