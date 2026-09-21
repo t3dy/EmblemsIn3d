@@ -274,11 +274,12 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*65 calls. Each links to its full text in the archive.*
+*66 calls. Each links to its full text in the archive.*
 
 
 **2026-09-20**
 
+- [66. The Temple of Venus's crown is set to the diameter: p. 197 governs](decisions/2026-09.md#2026-09-20--66-the-temple-of-venuss-crown-is-set-to-the-diameter-p-197-governs) — roof rise R/2 → **D/3**; crown 11.07 → 12.4 m; both readings are the book's, this answers "the roof is too low"
 - [65. One Controls button and panel for every mode, not seven ad hoc places](decisions/2026-09.md#2026-09-20--65-one-controls-button-and-panel-for-every-mode-not-seven-ad-hoc-places) — the audit that came with it found and fixed four real live bugs: stale walker/dragon bounds after Stage 2, a dead gallery Esc, ShiftRight not dashing in roll mode
 - [64. No wedding fanfare — the 2026-09-04 silence rule stands](decisions/2026-09.md#2026-09-20--64-no-wedding-fanfare--the-2026-09-04-silence-rule-stands) — asked directly, Ted said no; `AlchemicalAudio.fanfare('wedding')` stays a documented no-op
 - [63. Roll mode's camera falls behind the ball's growth, Katamari-style](decisions/2026-09.md#2026-09-20--63-roll-modes-camera-falls-behind-the-balls-growth-katamari-style) — `tune.camBase`/`camScale` default 0/6 → **1.2/2.0**; the ball swells in frame as it grows, at the cost of a third the view at full size

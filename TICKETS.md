@@ -6,13 +6,28 @@
 
 ---
 
-**82 tickets** — 1 open, 1 question, 3 declined, 77 done. By kind: 34 bug, 32 debt, 9 infra, 4 question, 2 perf, 1 feat.
+**83 tickets** — 2 open, 3 declined, 78 done. By kind: 35 bug, 32 debt, 9 infra, 4 question, 2 perf, 1 feat.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
+
+### `bug-temple-crown-to-diameter` — Raise the Temple of Venus's cupola so its crown stands on the diameter (rise D/3), re-deriving the dome courses
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** DECISIONS.md 66. DOME_RISE is R/2 (3.1 m) from p. 204's double-square slope, putting the crown at 11.07 m over a 12.4 m diameter. p. 197 governs: 12.4 - 8.267 (cornice at 4/6 D) = 4.13 = D/3. The dome courses are fixed-height cylinders spaced by sin steps; at a 4.13 rise the lowest spacing is 0.717 against a course height of 0.696, so gaps open unless the course height is re-derived in the same pass.
+
+**Acceptance.** DOME_RISE is derived as D - CORNICE_Y (not typed) in _buildVenusTemple; an upward ray from a 1.7 m eye at the drum centre meets the cupola at about 12.4 - 0.4 m on the running page rather than 11.58; no gap is visible between dome courses from inside or outside; the lantern, sacello and door overhangs still sit. hpDiag before/after.
+
+**Files.** `src/scenes/world/temple.js`
+
+**See.** DECISIONS.md#66 · bug-temple-height-not-from-diameter
+
 
 ### `bug-temple-drum-eight-bays-not-ten` — The temple drum is built on eight bays; the book's plan is a decad carrying eight windows plus the door and the adytum
 
@@ -29,29 +44,6 @@
 **Files.** `src/scenes/world/temple.js`
 
 **See.** translation/en/page_197.md · translation/en/page_198.md · translation/en/page_199.md · DIMENSIONS.md
-
-
----
-
-## Questions for Ted
-
-*Blocked on a directional call. **An agent must not decide these.***
-
-### `question-temple-crown-short-of-the-diameter` — The temple's crown stands at 0.89 of its diameter and the lantern makes up the rest: should the DOME make it up instead?
-
-**? question** · question · priority 4 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** p. 204 gives two specific rules and one universal one, and they do not quite close. Built to the two specific ones -- the last surface of the upper binding at 4/6 of the diameter (8.267) and the roof slope off the double square (rise R/2 = 3.1) -- the crown of the cupola lands at 11.07 over the temple floor against a diameter of 12.4, so p. 197's "as much as the diametral line found, so much did it render its height" is satisfied only when the lantern is counted, which is how a rotunda of this family usually does make it up. The alternative reading takes p. 197 as governing and derives the roof from the remainder: 12.4 - 8.267 = 4.13 = D/3, which puts the crown exactly on the diameter and keeps p. 204's cornice rule intact, at the cost of the double-square slope (the rise would be 2:3 of the half-span, not 1:2). Standing inside after the fix the room reads as a genuinely tall domed hall, but the cupola still reads as a saucer with a lid rather than as the "sky-reaching cupola" the station's own commentary quotes from the text.
-
-**Acceptance.** Ted says which of the two readings the world is built to; the chosen one is written into DECISIONS.md and cited in temple.js beside DOME_RISE.
-
-**Risk.** It is NOT a one-line change. The dome courses are cylinders of a fixed height (R * 0.46 / SC * 2.2 = 0.696) spaced by sin steps; at a rise of 4.13 the lowest courses space out by 0.717 and a gap opens between them, so the course height has to be re-derived from the rise in the same pass, and the lantern sits on APEX and rises with it.
-
-**Files.** `src/scenes/world/temple.js` · `DECISIONS.md`
-
-**See.** translation/en/page_197.md · translation/en/page_204.md · DIMENSIONS.md
 
 
 ---
@@ -1731,6 +1723,25 @@ All three moved entries carry a bracketed RE-FILED note in the house form, with 
 **Files.** `research/coverage.json`
 
 **See.** bug-plate-page-seq-offset · bug-dallington-page-drift
+
+
+### `question-temple-crown-short-of-the-diameter` — The temple's crown stands at 0.89 of its diameter and the lantern makes up the rest: should the DOME make it up instead?
+
+**✅ done** · question · priority 4 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** p. 204 gives two specific rules and one universal one, and they do not quite close. Built to the two specific ones -- the last surface of the upper binding at 4/6 of the diameter (8.267) and the roof slope off the double square (rise R/2 = 3.1) -- the crown of the cupola lands at 11.07 over the temple floor against a diameter of 12.4, so p. 197's "as much as the diametral line found, so much did it render its height" is satisfied only when the lantern is counted, which is how a rotunda of this family usually does make it up. The alternative reading takes p. 197 as governing and derives the roof from the remainder: 12.4 - 8.267 = 4.13 = D/3, which puts the crown exactly on the diameter and keeps p. 204's cornice rule intact, at the cost of the double-square slope (the rise would be 2:3 of the half-span, not 1:2). Standing inside after the fix the room reads as a genuinely tall domed hall, but the cupola still reads as a saucer with a lid rather than as the "sky-reaching cupola" the station's own commentary quotes from the text.
+
+**Acceptance.** Ted says which of the two readings the world is built to; the chosen one is written into DECISIONS.md and cited in temple.js beside DOME_RISE.
+
+**Risk.** It is NOT a one-line change. The dome courses are cylinders of a fixed height (R * 0.46 / SC * 2.2 = 0.696) spaced by sin steps; at a rise of 4.13 the lowest courses space out by 0.717 and a gap opens between them, so the course height has to be re-derived from the rise in the same pass, and the lantern sits on APEX and rises with it.
+
+**Resolution.** Decided by the designer under Ted's standing delegation (DECISIONS.md 66): p. 197 governs, so the roof rise is D/3 and the crown lands on the diameter. Implementation tracked in bug-temple-crown-to-diameter.
+
+**Files.** `src/scenes/world/temple.js` · `DECISIONS.md`
+
+**See.** translation/en/page_197.md · translation/en/page_204.md · DIMENSIONS.md
 
 
 ### `bug-manifest-page-092-chapter-disagrees-with-header` — translation/manifest.json still records our p.92 as chapter IX after the page header was corrected to VIII

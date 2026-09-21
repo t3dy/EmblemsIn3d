@@ -92,7 +92,7 @@
       "id": "question-temple-crown-short-of-the-diameter",
       "title": "The temple's crown stands at 0.89 of its diameter and the lantern makes up the rest: should the DOME make it up instead?",
       "kind": "question",
-      "status": "question",
+      "status": "done",
       "priority": 4,
       "evidence": "p. 204 gives two specific rules and one universal one, and they do not quite close. Built to the two specific ones -- the last surface of the upper binding at 4/6 of the diameter (8.267) and the roof slope off the double square (rise R/2 = 3.1) -- the crown of the cupola lands at 11.07 over the temple floor against a diameter of 12.4, so p. 197's \"as much as the diametral line found, so much did it render its height\" is satisfied only when the lantern is counted, which is how a rotunda of this family usually does make it up. The alternative reading takes p. 197 as governing and derives the roof from the remainder: 12.4 - 8.267 = 4.13 = D/3, which puts the crown exactly on the diameter and keeps p. 204's cornice rule intact, at the cost of the double-square slope (the rise would be 2:3 of the half-span, not 1:2). Standing inside after the fix the room reads as a genuinely tall domed hall, but the cupola still reads as a saucer with a lid rather than as the \"sky-reaching cupola\" the station's own commentary quotes from the text.",
       "acceptance": "Ted says which of the two readings the world is built to; the chosen one is written into DECISIONS.md and cited in temple.js beside DOME_RISE.",
@@ -107,7 +107,9 @@
         "translation/en/page_204.md",
         "DIMENSIONS.md"
       ],
-      "opened": "2026-09-20"
+      "opened": "2026-09-20",
+      "closed": "2026-09-20",
+      "resolution": "Decided by the designer under Ted's standing delegation (DECISIONS.md 66): p. 197 governs, so the roof rise is D/3 and the crown lands on the diameter. Implementation tracked in bug-temple-crown-to-diameter."
     },
     {
       "id": "bug-plate-page-seq-offset",
@@ -1776,6 +1778,24 @@
       ],
       "opened": "2026-09-20",
       "closed": "2026-09-20"
+    },
+    {
+      "id": "bug-temple-crown-to-diameter",
+      "title": "Raise the Temple of Venus's cupola so its crown stands on the diameter (rise D/3), re-deriving the dome courses",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "DECISIONS.md 66. DOME_RISE is R/2 (3.1 m) from p. 204's double-square slope, putting the crown at 11.07 m over a 12.4 m diameter. p. 197 governs: 12.4 - 8.267 (cornice at 4/6 D) = 4.13 = D/3. The dome courses are fixed-height cylinders spaced by sin steps; at a 4.13 rise the lowest spacing is 0.717 against a course height of 0.696, so gaps open unless the course height is re-derived in the same pass.",
+      "acceptance": "DOME_RISE is derived as D - CORNICE_Y (not typed) in _buildVenusTemple; an upward ray from a 1.7 m eye at the drum centre meets the cupola at about 12.4 - 0.4 m on the running page rather than 11.58; no gap is visible between dome courses from inside or outside; the lantern, sacello and door overhangs still sit. hpDiag before/after.",
+      "files": [
+        "src/scenes/world/temple.js"
+      ],
+      "role": "hp-builder",
+      "refs": [
+        "DECISIONS.md#66",
+        "bug-temple-height-not-from-diameter"
+      ],
+      "opened": "2026-09-20"
     }
   ]
 }
