@@ -110,18 +110,26 @@ export const Screens = {
       box(t + pw / 2, WIN, SILL / 2, SILL);                    // the sill under the lower window
       box(t + pw / 2, WIN, (HEAD + UP0) / 2, UP0 - HEAD);      // the head over it, and the upper sill
       box(t + pw / 2, WIN, (UP1 + high) / 2, high - UP1);      // the head over the upper window
-      // The fruit the hedge is cut out of, standing PROUD OF ITS TOP — p. 88:
-      // "to the desirous eyes ripe fruits and unripe offered themselves
-      // plentifully". At the old scale (1.05–1.25) a citron topped out at 2.8 m
-      // and was buried inside a 4.2 m hedge, so not one of them was ever seen;
-      // at about six the crown clears 13.6 by a metre or so, which is what the
-      // sentence describes. The trunks stay inside the green, as they must: the
-      // hedge IS these trees, "knit with an artful cohesion".
+      // The trees the hedge is cut out of. They stay INSIDE it, and that is the
+      // book's own instruction, not a saving: p. 88, "So that on the surface no
+      // wood or stem whatever showed itself, but only the pleasant and welcome
+      // green of the flowering fronds." (Tried at six metres first, to crest
+      // the raised hedge — it put bare boughs and floating oranges three metres
+      // out over the court, which is the one thing that sentence forbids. Seen
+      // live and reverted the same pass.)
       for (let i = 0; i < 3; i++) {
         const [fx, fz] = at(t - BAY / 2 + (i + 0.5) * (BAY / 3));
-        this._tree(fx, fz, 5.8 + rnd(b * 3 + i, 2) * 0.9,
+        this._tree(fx, fz, 1.05 + rnd(b * 3 + i, 2) * 0.2,
                    ['citron', 'orange', 'lemon'][(b + i) % 3]);
       }
+      // So the fruit is ON THE GREEN, where the same page puts it: "Among the
+      // fair, thick and living leaves it was most abundantly adorned with white
+      // blossom, breathing a sweet orange scent; and to the desirous eyes ripe
+      // fruits and unripe offered themselves plentifully, in the highest degree
+      // delectable." Citron, orange and lemon, with blossom among them, sitting
+      // proud of the two faces and the top — which is the only way a hedge that
+      // shows no stem can still be seen to be fruiting.
+      this._citrusFruit(b, t, BAY, high, thick, alongX, cx, cz, rnd);
     }
     if (gate) {
       // ── THE DOOR IS A DOOR, NOT A HOLE (2026-09-20) ──────────────────────
@@ -158,6 +166,45 @@ export const Screens = {
       this._wallCol(cx - len / 2, cx + len / 2, cz - thick / 2, cz + thick / 2);
     } else {
       this._wallCol(cx - thick / 2, cx + thick / 2, cz - len / 2, cz + len / 2);
+    }
+  },
+
+  // The ripe fruits and unripe, and the white blossom among them (p. 88), set
+  // on the faces and the top of one bay of the citrus fence. Four shared
+  // materials and one shared sphere between every bay in the world, so the
+  // whole enclosure and the avenue's closing hedge cost about four hundred
+  // little spheres between them.
+  _citrusFruit(b, t, BAY, high, thick, alongX, cx, cz, rnd) {
+    const S = this.style;
+    if (!this._citrusFruitMats) {
+      // citron, orange, lemon — SPECIES' own fruit colours (constants.js) —
+      // and the blossom
+      this._citrusFruitMats = (S.key === 'woodcut'
+        ? [0, 1, 2, 3].map(() => S.mat({ tone: 0.06 }))
+        : [0xe8d24a, 0xe08a1c, 0xf0e060, 0xf6f2e4].map((c, i) =>
+            S.mat({ color: c, roughness: i === 3 ? 0.85 : 0.52 })));
+      this._citrusFruitGeo = new THREE.SphereGeometry(1, 6, 5);
+    }
+    const mats = this._citrusFruitMats, geo = this._citrusFruitGeo;
+    const off = (u, s) => (alongX ? [cx + u, cz + s] : [cx + s, cz + u]);
+    for (let i = 0; i < 18; i++) {
+      const k = b * 71 + i;
+      const blossom = i % 4 === 0;
+      const r = blossom ? 0.085 : 0.15 + rnd(k, 3) * 0.05;
+      const u = t + (rnd(k, 1) - 0.5) * BAY * 0.94;
+      const side = rnd(k, 2);
+      let x, y, z;
+      if (side < 0.16) {                       // the clipped top
+        [x, z] = off(u, (rnd(k, 4) - 0.5) * thick * 0.8);
+        y = high + r * 0.5;
+      } else {
+        const sg = side < 0.58 ? 1 : -1;
+        [x, z] = off(u, sg * (thick / 2 + r * 0.45));
+        y = 0.7 + rnd(k, 5) * (high - 1.2);
+      }
+      const m = this._m(geo, mats[blossom ? 3 : (b + i) % 3], x, y, z,
+        { cast: false, receive: false });
+      m.scale.set(r, r, r);
     }
   },
 

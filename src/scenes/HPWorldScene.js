@@ -53,7 +53,7 @@ import { Temple } from './world/temple.js?v=16';
 import { Cythera } from './world/cythera.js?v=18';
 import { Rollup } from './world/rollup.js?v=14';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
-import { Screens } from './world/screens.js?v=6';
+import { Screens } from './world/screens.js?v=7';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
