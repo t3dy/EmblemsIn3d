@@ -5235,12 +5235,12 @@
           "plate": null,
           "source": "our pp. 316–318",
           "status": "built",
-          "built_as": "HPWorldScene._buildParterres",
+          "built_as": "HPWorldScene._buildParterres (world/cythera.js), now taking its radii from the caller",
           "modes": [
             "walk",
             "tour"
           ],
-          "note": ""
+          "note": "Rebuilt onto the true-scale terraces 2026-09-20: the rampart on the 65.5 m ridge, the first cloister on the 6.21 m terrace and the second on the 4.14 m one, with the bed counts derived from each terrace's own arc rather than typed. The box-work itself does NOT scale - \"a hedge of box ... three feet's thickness, and six high\", the towers \"raised nine feet, and five wide, with an open door gaping three feet\" (p. 316) are stated in feet and are furniture, and furniture in this world stays 1:1 (DIMENSIONS.md section 5, the plan/furniture split)."
         },
         {
           "id": "herb-bands",
@@ -5249,12 +5249,12 @@
           "plate": null,
           "source": "our p. 320",
           "status": "built",
-          "built_as": "HPWorldScene (tiers + _herbBedTexture)",
+          "built_as": "HPWorldScene._buildCytheraIsle, the tiers array with _herbBedTexture and _tuft",
           "modes": [
             "walk",
             "tour"
           ],
-          "note": ""
+          "note": "The three bands of p. 320 now ring terraces of the book's own height: marjoram on the 2.07 m terrace, southernwood on the 4.14, ground-pine on the 6.21. Rhizopoulou 2016 (u3-u6') confirms every one of them as a plant of the book."
         },
         {
           "id": "hollyhocks",
@@ -5269,6 +5269,93 @@
             "tour"
           ],
           "note": "Named in the same passage as the herb bands; not built."
+        },
+        {
+          "id": "xxi-island-three-miliaria",
+          "name": "The island a perfect circle of three miliaria, 1,400 m across",
+          "kind": "place",
+          "plate": null,
+          "source": "our pp. 292, 297",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCytheraIsle (world/cythera.js) - R read from research/plan.json's cythera precinct through _precinctLocal, not typed",
+          "modes": [
+            "walk",
+            "tour",
+            "flight"
+          ],
+          "note": "p. 292 \"encircled ... three miliaria\" = 4,440 m round; p. 297 derives the diameter with Colonna's own pi (3 + 2/11) as about 1,400 m. Built 2026-09-20 at R = 700, replacing the R = 50 island that DECISIONS.md call 60 had recorded against itself as unfinished (\"Cythera is a 50 m island in a 1,400 m precinct\"). Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). The sward reads 0.05-0.07 m out to r 700 and the sand to r 716; sixty coast colliders of radius 42 close a 4,400 m shore that the forty of radius 4.6 had been leaving open."
+        },
+        {
+          "id": "xxi-three-claustri-semitertio",
+          "name": "The three concentric claustri, each a semitertio of 166 and a half paces",
+          "kind": "place",
+          "plate": null,
+          "source": "our pp. 297-298, 311",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCytheraIsle - R_ESPALIER 453.2, R_PERISTYLE 206.4",
+          "modes": [
+            "walk",
+            "tour",
+            "flight"
+          ],
+          "note": "p. 298: the middle garden \"stretched toward the centre, of 166 paces and a half\" - the semitertio, \"half of a third\", 246.8 m. Colonna's own two figures do not reconcile: three semitertii is 740 m of radius where his diameter gives 700. The plan wins for the outline and the stated depth wins for the two outer rings, so the 6 per cent is absorbed in the innermost ring, where the theatre's own stated numbers take over - both of his figures are built and neither is invented around. Built 2026-09-20. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway)."
+        },
+        {
+          "id": "xxi-citrus-espalier-eight-paces",
+          "name": "The citrus espalier eight paces high dividing bosco from prati, with its twenty arched gates",
+          "kind": "plant",
+          "plate": null,
+          "source": "our p. 297 (p. 294 for the gates)",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCytheraIsle, the ESP_H block",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "p. 297: \"an excellent enclosure, of a height of eight paces and of a foot's thickness, so densely leafy that the least stem did not appear ... arching open gates, made and compactly conducted of orange, lemon and citron trees\". 11.8 m high, 0.3 thick, twenty gates at the p. 294 measure of 7 ft by 9 (2.07 x 2.66). This is the first of the island's three screens - DIRECTIONS.md section 5, \"nothing in this book is approached across open ground with the destination in view\". Built 2026-09-20. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). r 452 reads 0.09 m (ground), r 453.2 reads 11.75-11.80 m at every bearing, r 460 reads 0.09 m again - so the wall is the stated foot thick and closes the whole circuit."
+        },
+        {
+          "id": "xxi-shore-cypress-and-myrtle",
+          "name": "The shore rim: cypresses at three paces, the shorn myrtle wall behind them",
+          "kind": "plant",
+          "plate": null,
+          "source": "our p. 293",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCytheraIsle, RIM_N and the myrtleWall arcs, planted through the new _isleGrove",
+          "modes": [
+            "walk",
+            "tour",
+            "flight"
+          ],
+          "note": "Cypresses at the stated 3 paces (4.44 m) round a 4,400 m coast is 990 of them, so they are instanced - two draw calls for the ring, and skipped by _mergeInto and by the roll-up _census alike, which is right: a wood is not furniture and a katamari should not eat a plantation. The shorn myrtle wall behind is 1.5 pace (2.22 m) high, in twenty arcs with the twenty roads left open between them. Built 2026-09-20. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). r 694 reads 23.72 m on a bearing between roads and null on a road, which is the opening the road passes through."
+        },
+        {
+          "id": "xxi-prati-sixty-meadows",
+          "name": "The prati: three orders of meadows between four five-pace ways, and Segre's 240 corner trees",
+          "kind": "place",
+          "plate": null,
+          "source": "our p. 298",
+          "status": "partial",
+          "built_as": "HPWorldScene._buildCytheraIsle, the bands block",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "p. 298 gives the whole geometry: \"passages straight to the centre, and circularly transverse, five paces wide\", meadows of 50 paces in the first line, \"the fourth line, toward the centre, decremented\", and the squaring \"deformed\" because the radii converge - which Colonna admits outright. Twenty divisions by three orders is sixty meadows, and four fruit trees at the corners of each is Segre's 240, a number this world's code had quoted in a comment since the island was first built and had never actually laid. Laid 2026-09-20: apples in the first order, pears in the second, plums in the third, Segre's own sequence, instanced. PARTIAL because what each meadow contains is still a single centrepiece standing alone in 5,000 square metres of lawn; p. 298's pergola'd streets are built only as the little dome on four Ionic columns at each of the twenty crossings of the middle way, not along their length; and the \"tomb-shaped platforms of finest marbles\" are not built. Ticket debt-cythera-prati-meadow-interiors."
+        },
+        {
+          "id": "xxi-seven-step-terraces",
+          "name": "The terraces of seven steps, each of seven feet, falling from the ridge to the Area",
+          "kind": "building",
+          "plate": null,
+          "source": "our pp. 314, 353",
+          "status": "built",
+          "built_as": "HPWorldScene._buildCytheraIsle, the tiers array and _cytheraSteps",
+          "modes": [
+            "walk",
+            "tour"
+          ],
+          "note": "A terrace is 7 ft (2.07 m) and is reached by a flight of seven steps, so a riser is one Roman foot, 0.296 m, on the 2.5-ft tread p. 353 gives the theatre's seats. Three terraces is 6.21 m from the Area to the ridge, and every flight is now a whole number of sevens - three sevens from the bank up to the ridge, then one seven down each terrace. Built 2026-09-20 at 2.07 / 4.14 / 6.21, replacing 0.70 / 1.40 / 2.10. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). r 44.5 reads 4.14, r 53.5 reads 6.21, r 65.5 reads 7.99 (the ridge with its box rampart) and 13.42 on the cardinal, where the chariot gate stands."
         }
       ]
     },
@@ -5881,11 +5968,12 @@
           "kind": "building",
           "plate": null,
           "source": "our translation (CC0), 1499 p. 350",
-          "status": "unknown",
-          "note": "Colonna names the Vitruvian rule (each upper order a quarter shorter, the third a fifth shorter) and states his theatre deliberately breaks it for 'elegant and symmetrical' effect. Grep of `_buildAmphitheatre` (cythera.js line 1522: `const RC = 7.15, H = 2.4, ORDERS = 3`, each order stacked at the identical height `o * (H + 0.5)`) shows exactly this rule-break implemented, and the code's own comment names Vitruvius. Strong, specific match.",
+          "status": "built",
+          "note": "BUILT and measured 2026-09-20 (it was `unknown` for want of a live check, not for want of geometry). The three orders are kept at ONE height, against the Vitruvian rule and on purpose (p. 352), at 5.2 m each - about 17.5 Roman feet, which is what a building ringing a 47.4 m floor needs. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). The column bin at r 25-26 reads 17.25 m, which is three equal storeys and the entablature over them.",
           "modes": [
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildAmphitheatre, the ORDERS loop"
         },
         {
           "id": "xxii-mortarless-alabaster",
@@ -5905,12 +5993,13 @@
           "kind": "building",
           "plate": null,
           "source": "our translation (CC0), 1499 p. 351",
-          "status": "unknown",
-          "note": "The exact plan-geometry that fixes the whole building: Area diameter 32 paces (47.4 m), surrounding built ring 8 paces thick (11.8 m), the colonnade quartered over the circumference with 8 bays a quarter, radial and concentric columns carrying vaulted porticoes, and an opus-sectile pavement. Grep of `_buildAmphitheatre` shows the plaque text 'XXXII PACES ACROSS' and a `for (let q = 0; q < 4; q++) for (let b = 0; b <= 8; b++)` loop -- an exact plan match to the book's own numbers, though the world's actual radius (RC = 7.15 units) is not yet scaled to the book's 47.4 m (see DIMENSIONS.md's note that this is the one monument already close to true scale, at roughly 1:2).",
+          "status": "built",
+          "note": "BUILT and measured 2026-09-20. The 2026-09-17 research pass left this `unknown` with its grep evidence named, explicitly because it had not loaded the running page; the page has now been loaded and the plan measured. The Area was a circle of radius 7.4 - 14.8 m across against the stated 32 paces, 47.4 m, so 1:3.2. That is worth recording, because DIRECTIONS.md section 6.B had called the theatre \"already near-true\" and exempted it from the rescale on that basis. It now takes its stated 23.7 m of radius, with the 8-pace (11.8 m) built ring running 23.7 to 35.5, quartered, eight bays to a quarter, the four cardinals left open for the chariots. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). r 10-23.7 reads 0.07 m (the obsidian Area), r 25-26 reads 17.25 m (the three orders), r 32 reads 16.10 m (the outer arcade at the ring's face), and r 35.5 reads 2.07 m, where the first terrace begins exactly as the ring ends. On the four cardinals r 25-32 reads 0.07 m throughout: the openings are open.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildAmphitheatre (world/cythera.js), AREA_R passed in from _buildCytheraIsle"
         },
         {
           "id": "xxii-sectile-pavement-obsidian-mirror",
@@ -5982,12 +6071,13 @@
           "kind": "plant",
           "plate": null,
           "source": "our translation (CC0), 1499 p. 354",
-          "status": "unknown",
-          "note": "The topmost planted tier carries pairs of cypresses trained to lean and interlace into arches (each pair three paces apart), clipped box-spheres filling the gaps between arches, a topiary juniper sphere in the triangular voids, and aromatic herbs filling the rest -- echoing the stone arcades below in greenery. Colonna even remarks it 'appears designed at the top of the Theatre' (i.e. is shown in the woodcut). Grep of cythera.js lines 533-554 finds this built closely: 12 cypress-pairs around a ring radius (cardinal gaps left open for the crossroads), each pair joined by a torus 'arch' and topped with a sphere finial, cited explicitly to this page. Strong, specific match -- the closest 1:1 build in the whole chapter.",
+          "status": "built",
+          "note": "BUILT and measured 2026-09-20 (it was `unknown` for want of a live check). Paired cypresses trained to arch and meet over, ringing the top of the cavea, with a box-sphere finial; the pairs take the stated three paces (4.44 m, DIMENSIONS.md section 4) and the four crossroads are left open. Measured on the running page 2026-09-20 by raycasting a section straight down through the built island from its centre (the browser pane would not composite, so a screenshot was not available; the section is stronger evidence anyway). r 65.5 reads 7.99 m - the 6.21 m ridge with the arcade and the box rampart standing on it.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "HPWorldScene._buildCytheraIsle, the arcadeR block"
         },
         {
           "id": "xxii-three-perfumed-pergola-pavements",

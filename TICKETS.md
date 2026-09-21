@@ -6,7 +6,7 @@
 
 ---
 
-**83 tickets** — 2 open, 3 declined, 78 done. By kind: 35 bug, 32 debt, 9 infra, 4 question, 2 perf, 1 feat.
+**86 tickets** — 5 open, 3 declined, 78 done. By kind: 35 debt, 35 bug, 9 infra, 4 question, 2 perf, 1 feat.
 
 ---
 
@@ -29,6 +29,40 @@
 **See.** DECISIONS.md#66 · bug-temple-height-not-from-diameter
 
 
+### `debt-chapter-xxi-under-enumerated` — Chapter XXI carried three features for thirty-six pages, and none of them was the island's plan
+
+**○ open** · debt · priority 2 · hp-researcher
+ · opened 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 while updating the ledger after the Cythera rescale. research/coverage.json marks chapter XXI (1499 pp. 290-325, the whole description of the island) as research status `enumerated`, and it held THREE features: cythera-parterres, herb-bands, hollyhocks. Its neighbour XXII holds fifty for thirty-two pages. Nothing in the chapter's three features named the island's circumference, its diameter, the three claustri, the citrus espalier, the shore rim, the twenty divisions, the twenty lattice fences, the meadows, the terraces, the river or the peristyle - that is, none of the things the chapter is actually about. Six of those were added by hand from the build pass on 2026-09-20 (xxi-island-three-miliaria, xxi-three-claustri-semitertio, xxi-citrus-espalier-eight-paces, xxi-shore-cypress-and-myrtle, xxi-prati-sixty-meadows, xxi-seven-step-terraces), but a build pass is the wrong place to enumerate a chapter and the rest are still missing. This is rule 6 in a new costume: the plates are an index, not an inventory, and chapter XXI has few plates of its own.
+
+**Acceptance.** Chapter XXI is re-enumerated end to end against translation/en/page_290.md through page_325.md by /research-chapter XXI, with a feature count of the same order as its neighbours, and its research.note says what was missed the first time and why. Every existing XXI feature keeps its id so no built_as link breaks.
+
+**Risk.** The chapter is currently marked `enumerated`, so every coverage audit reports it as done research. Until this is fixed the two-queue report understates the research gap, which is exactly the failure the ledger exists to prevent.
+
+**Files.** `research/coverage.json`
+
+**See.** HPTOTOURPIPELINE.md · COVERAGE.md
+
+
+### `debt-cythera-adonis-enclosure-undersized` — Adonis's sacred enclosure is re-sited onto the true-scale island but not regrown
+
+**○ open** · debt · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** 2026-09-20, the Cythera rescale. _buildAdonis was moved from r 42 on a fifty-metre island to r 138.4 on the 1,400 m one, which is where HP_STATIONS puts the `adonis` station (pos [81.36, -488.04], 138.4 m from the isle centre on a bearing of exactly 3 x 18 deg) and where research/plan.json's cythera size_source says the fountain is ("in the inner ring"). Its INTERIOR was not touched. The book gives the hexagonal fountain "36 paces in circumference" (p. 371) = 53.3 m round, six faces of 8.9 m, so about 17.8 m across the flats; _buildAdonis builds its pavement as CircleGeometry(5.0) and its grove at r 5.7, which is roughly 1 : 1.8. The citrus cloister's stated 4-pace (5.9 m) standoff from the border and the 10-pace (14.8 m) box-and-myrtle enclosures outside it (p. 370) are likewise at about a third. DIMENSIONS.md section 4 "The Fountain and Sepulchre of Adonis" has every figure.
+
+**Acceptance.** A raycast section down through the Adonis enclosure from its own centre shows the hexagonal fountain's border at ~8.9 m of circumradius and the citrus cloister standing off it by 5.9 m, matching DIMENSIONS.md section 4. The sepulchre itself stays 1 : 1 at 1.48 m (p. 372) -- it is furniture, and the plan/furniture split of DIMENSIONS.md section 5 applies.
+
+**Risk.** The enclosure sits in a 30 m clearing carved out of the inner claustro's spice wood and on a road that parts round it; growing the enclosure without widening the clearing and the road's parting will put trees through the cloister.
+
+**Files.** `src/scenes/world/cythera.js`
+
+**See.** DIMENSIONS.md#4 · RECIPES/model-an-asset.md
+
+
 ### `bug-temple-drum-eight-bays-not-ten` — The temple drum is built on eight bays; the book's plan is a decad carrying eight windows plus the door and the adytum
 
 **○ open** · bug · priority 3 · hp-builder
@@ -44,6 +78,21 @@
 **Files.** `src/scenes/world/temple.js`
 
 **See.** translation/en/page_197.md · translation/en/page_198.md · translation/en/page_199.md · DIMENSIONS.md
+
+
+### `debt-cythera-prati-meadow-interiors` — The sixty meadows of the prati have their plan but not their planting
+
+**○ open** · debt · priority 3 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** 2026-09-20, the Cythera rescale. The middle claustro now has the geometry p. 298 states: three orders of meadow between four 5-pace ways, twenty radial divisions, 72.4 m of radial depth each, with the trapezoidal narrowing Colonna admits ("the squaring was deformed"), Segre's 240 corner fruit trees, and a little dome on four Ionic columns at each of the twenty crossings of the middle transverse way. What each meadow CONTAINS is still one centrepiece -- a topiary or a pool -- scaled up from the old island, standing alone in 5,000 m2 of lawn. p. 298 also gives "tomb-shaped platforms of finest marbles, with most becoming lineaments" "here and there of the passages, or streets", and the streets are "pergola'd" along their whole length, of which only the domes are built.
+
+**Acceptance.** Every meadow reads as a room rather than a field: the pergola runs the transverse ways as well as standing at their crossings, and the marble platforms of p. 298 appear along the passages. Measured with hpDiag before and after, inside the rule-7 gate.
+
+**Files.** `src/scenes/world/cythera.js`
+
+**See.** DIMENSIONS.md#4 · GARDENS.md
 
 
 ---
