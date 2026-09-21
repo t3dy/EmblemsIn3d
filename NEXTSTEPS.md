@@ -22,6 +22,48 @@ for something, it goes in here immediately, in his words, before work starts.
 
 ---
 
+## 0-AA. Ted, 2026-09-20 (evening): the built world doesn't earn the true-scale spread
+
+*Tested live, after "ALL STAGES DEPLOYED" above.*
+
+*"I tested it and things have gotten weird we have some places where the roof is too low and
+is not the sky etc. We might need to rethink from the ground up how the whole thing works. I
+don't want a bunch of mostly empty spaces between our buildings. and I want the users to get
+good views of meticulously crafted renaissance buildings that are like as described in the
+novel but as the designer you might have to go beyond the text of the novel and fill in
+knowledge of renaissance architecture to finish out everything that needs to be built, and
+make sure that our points of view deliver spectacular experiences such as Poliphilo is
+describing and reacting to."*
+
+**Diagnosed live the same day, before proposing anything** (screenshots and scene-graph
+queries, `https://t3dy.github.io/EmblemsIn3d/src/`):
+
+- **The emptiness is real and severe.** From the palace precinct (x76, z−3460) looking north,
+  the pyramid and its flanking cliffs stand as a thin sliver on the horizon behind a wholly
+  empty green field — nothing built between camera and horizon. A small arcaded shrine one
+  precinct further in (z−3500) is genuinely well made up close: two long facing colonnades,
+  a central pavilion. **The problem is what's between named stations, not the stations
+  themselves.**
+- **The low-ceiling complaint is systemic, not one broken mesh.** Interior/colonnade heights
+  across the codebase: Temple of Venus wall height 5.2 m (drum radius 6.2 m — a squat dome),
+  the Queen's Court colonnade 4.0 m, a second temple structure's colonnade 2.5–3.0 m. These
+  are domestic-scale numbers, not the loftier proportions of monumental Renaissance
+  architecture (compare Bramante's Tempietto, whose drum-to-entablature run is taller
+  relative to its own modest diameter). No single mesh is broken; the whole architectural
+  vocabulary was set for an intimate world and never reconsidered when Stage 1 (SPREAD=4)
+  and Stage 2 (full true scale, 13.7 km) grew the world around it.
+- **Both complaints share one root cause**: the buildings kept their original modest
+  dimensions while the space around them grew by orders of magnitude. They now read as both
+  cramped inside and sparse from outside — tiny islands in an empty landscape.
+
+**Ted's own framing authorizes the fix's shape**: go beyond the text where it's silent, use
+real Renaissance architectural knowledge to finish what the novel only gestures at, and
+design the *approach* — not just the destination — for spectacle. This is being treated as a
+new phase, not a patch: see `RETHINK.md` (to be written) for the plan and its sequencing, and
+`DECISIONS.md` for the scale-and-density fork settled before large build work starts.
+
+---
+
 ## Open — 2026-09-20 Status
 
 *Updated 2026-09-20 after full audit of plan implementation and coverage. All four plan
