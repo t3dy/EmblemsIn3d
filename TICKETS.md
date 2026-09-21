@@ -6,40 +6,13 @@
 
 ---
 
-**98 tickets** — 15 open, 1 question, 3 declined, 79 done. By kind: 42 debt, 39 bug, 9 infra, 5 question, 2 perf, 1 feat.
+**105 tickets** — 21 open, 1 question, 3 declined, 80 done. By kind: 44 debt, 43 bug, 9 infra, 5 question, 2 perf, 1 feature, 1 feat.
 
 ---
 
 ## The queue — pick from the top
 
 *Nothing blocks these but doing them.*
-
-### `bug-garden-trees-never-placed` — _buildTrees is called outside every precinct group, so the Fountain of Venus grove stands inside the pyramid
-
-**○ open** · bug · priority 1 · hp-builder
- · opened 2026-09-20
-
-
-**Evidence.** READ FROM THE CODE, not seen live. src/scenes/HPWorldScene.js:393 calls this._buildTrees() with no _in(...) and no _placeAt -- it sits between the precinct block and _buildMotes/_buildMeadow. Its coordinates (src/scenes/world/nature.js:988-1018) are the ORIGINAL cramped ones and were never multiplied or shifted:
-  * the myrtle-and-laurel grove of the Fountain of Venus, a ring of radius 11.5 about (0, -20);
-  * the cypress pairs "the way to the palace, set on either sides with Cyprus Trees" at z 15.5, 24.5;
-  * the citrus enclosure "altogither of Cytrons, Orenges and Lymonds" at x +/-9 and +/-13.5, z +/-5.4;
-  * planes, oaks and olives out to x +/-29, and two hedges WITH WALL COLLIDERS at (+/-8.5, 8.8).
-
-With no shift those are WORLD coordinates. PLAN_SITES.pyramid spans z +104 to -1035.6 centred on x 0, and PLAN_SITES.piazza is z 148.4..104. So the Temple of Venus's grove, the green enclosure's citrus hedge and the palace avenue's cypresses are standing in and around the Great Portal's court and inside the pyramid's footprint, between 2.7 and 5.3 km from the precincts whose text placed them. Two of them carry wall colliders, so there are also invisible walls in the piazza.
-
-Three gaps on the itinerary are bare because their planting was left behind at the origin.
-
-This is HANDOVER.md 4.3 in a fifth costume, after the hand-copied spawn, the meadow clearance map, the dream mode's paths and the triumph cars' moving colliders (DECISIONS.md 60).
-
-**Acceptance.** A scene-graph query from the deployed page finds no tree mesh inside the pyramid precinct box (x +/-570, z +104..-1035.6) that does not belong to the valley or approach builders; the Fountain of Venus grove stands within 40 m of the temple precinct centre (-200, -5335.4); the citrus pairs stand in the green enclosure (0, -2930); and no hedge wall collider remains in the piazza. Fix by routing each group through toWorld(key, x, z) or by wrapping each in _placeAt with shiftOf(key) -- do NOT re-type the coordinates, which is the mistake stage 2 exists to prevent.
-
-**Risk.** _buildTrees mixes trees belonging to at least four precincts in one function. Splitting it is the fix, but the split must carry the species and the citations already in its comments. The comment at the plane tree records that it was moved once already to clear the Temple of Venus's approach -- that reasoning was done in the OLD frame and needs redoing in the new one.
-
-**Files.** `src/scenes/world/nature.js` · `src/scenes/HPWorldScene.js`
-
-**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R1 · DECISIONS.md 60 · HANDOVER.md 4.3
-
 
 ### `bug-meadow-density-fell-4x-at-stage-2` — The meadow is one grass blade per 12.8 square metres, so the gardens render as a painted plane
 
@@ -126,6 +99,17 @@ COST ESTIMATE: ~125k triangles, ~16 draw calls.
 **See.** RETHINK.md 3 · research/infill_plan.json G6 · translation/en/page_189.md · translation/en/page_190.md · research/coverage.json xvii-orchard-hedge-garden
 
 
+### `bug-fountain-station-carries-the-bath-tour-stop` — Tour stop "The Five Nymphs and the Bath" rides on the `fountain` station, which is the Graces fountain
+
+**○ open** · bug · priority 2 · unassigned
+ · opened 2026-09-20
+
+
+**Evidence.** `src/data/tours.json` line 663 puts the chapter VI-VII bath episode on station `fountain`, whose folio is 80 and whose plate (`hp.db.woodcut_catalog` #23) is the Graces fountain of chapter VIII. Standing at the fountain on 2026-09-20 the panel that opened was the bath. The bath has its own precinct on the plan, `fountain_house` (PLAN_SITES), and no station. Moving the `fountain` station into the green enclosure with its fountain (done 2026-09-20) carried the wrong tour stop with it.
+
+**Acceptance.** Walking to the bath-house opens the bath stop, and walking to the enclosure's fountain opens a stop about the Graces fountain.
+
+
 ### `bug-itinerary-path-misses-three-precincts` — The processional path runs dead straight at x = 0 while three of the last four precincts stand 150-430 m off it
 
 **○ open** · bug · priority 2 · hp-builder
@@ -172,6 +156,23 @@ It is also built at garden scale: deck 4.6 x 3.4 m, three torus arches of radius
 **See.** RETHINK.md 2 · research/infill_plan.json G3 · translation/en/page_133.md · translation/en/page_134.md
 
 
+### `bug-shade-map-covers-only-the-old-origin` — The baked shade map is one 132 m canvas at the origin, so no tree in the 13.7 km world casts drawn shade
+
+**○ open** · bug · priority 2 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** READ FROM THE CODE and confirmed against the running scene 2026-09-20. `_buildShadeMap` (nature.js) bakes `_shadeSpots` into one 1024 px canvas covering X0 -66, Z0 -68, W 132, D 132 -- the old ground -- lays one overlay plane there, and gives the same box to every meadow field (`attachShade`), whose shader clamps to the edge texel outside it. Stage 2 spread the world over 13.7 km, so every tree in every precinct is off the canvas. Worse, `_tree` pushes its spot in the LOCAL frame of whatever `_placeAt` group it is built in, so 453 spots sit inside the pyramid box (x +/-570, z 104..-1035.6) that belong to trees kilometres away (wooded_country, valley, wood ...). The three groups planted by bug-garden-trees-never-placed add their shift back and are in world coordinates, but they land off the canvas too, so no drawn shade follows them.
+
+**Acceptance.** On the running page, standing under the enclosure's citrus at (9, -2915.4), the ground and the meadow blades there are darkened by a shade pool (sample the overlay texture at the tree's world position: alpha > 0.3), and no shade pool is drawn on the pyramid's court from a tree that stands elsewhere. Either one map per precinct group, or `_shadeSpots` pushed in world coordinates (a `_shadeSpot` registrar that `_placeAt` maps, as it maps `_circleCol`) with the canvas re-tiled over the sites that have trees.
+
+**Risk.** The shade map is one texture bound into every meadow field's shader; per-precinct maps mean per-field uniforms.
+
+**Files.** `src/scenes/world/nature.js` · `src/scenes/world/materials.js` · `src/systems/Meadow.js`
+
+**See.** bug-garden-trees-never-placed · PLEASURES.md 1 · DECISIONS.md 60 · HANDOVER.md 4.3
+
+
 ### `debt-chapter-xxi-under-enumerated` — Chapter XXI carried three features for thirty-six pages, and none of them was the island's plan
 
 **○ open** · debt · priority 2 · hp-researcher
@@ -187,6 +188,19 @@ It is also built at garden scale: deck 4.6 x 3.4 m, three torus arches of radius
 **Files.** `research/coverage.json`
 
 **See.** HPTOTOURPIPELINE.md · COVERAGE.md
+
+
+### `debt-cypress-avenue-under-scaled` — The avenue's cypresses are 14.6 m, and raising them to life size costs 247,000 triangles
+
+**○ open** · debt · priority 2 · unassigned
+ · opened 2026-09-20
+
+
+**Evidence.** Measured live 2026-09-20 while building the palace front. `_buildCypressAvenue` (screens.js) plants at `_tree` scale 4.6, which is a 14.6 m tree; a cypress is 20-30 m in life and the book calls these "straight and lofty" (our page_088.md). Raised to ~7.5 (22-26 m) and reverted within the hour on the measurement: `_canopyCards` (nature.js) does NOT use the card count it is handed - it derives one from the crown's VOLUME ("a big crown gets MORE cards, not bigger ones") - so a cypress goes from 546 leaf cards to 1,454 between 4.6 and 7.5. 136 of them down the avenue = +247,000 triangles, a quarter of that job's whole budget for one species.
+
+This also sets the citrus hedge, which the book ties to the cypresses ("as high as the lofty cypresses of the way"), and through it the whole vertical scale of the green enclosure and the palace front.
+
+**Acceptance.** The avenue's cypresses measure over 20 m on the running page AND `await hpDiag()` shows the cypress_avenue precinct within 15% of its 2026-09-20 triangle count (469,978).
 
 
 ### `debt-cythera-adonis-enclosure-undersized` — Adonis's sacred enclosure is re-sited onto the true-scale island but not regrown
@@ -260,6 +274,43 @@ HEIGHT. NEXTSTEPS 0-AA: the Queen's Court colonnade is 4.0 m, a domestic number 
 **See.** RETHINK.md 3 · research/infill_plan.json G1 · translation/en/page_093.md · translation/en/page_094.md · BUILDINGPLAN.md · NEXTSTEPS.md 0-AA
 
 
+### `feat-palace-portico-behind-the-gate-house` — Behind the gate-house there is no palace: the portico, the court of Eleuterylida and the three curtains are one room deep
+
+**○ open** · feature · priority 2 · unassigned
+ · opened 2026-09-20
+
+
+**Evidence.** Our page_093.md and page_094.md give a sequence: the notable door, the first (golden) curtain and Cynosia, an enclosed space, the second curtain and Indalomena, an equal space, the third curtain and Mnemosyne, and then "a lofty portico, as long as the compass of the palace. Whose golden vaulting was painted with green foliage, with distinct flowers and entwined fronds and flying birds, choicely embroidered in mosaic work ... The walls crusted with sumptuous stones artfully set in fine work", and beyond it "a stupendous and spacious court ... perfect in its square" with the chess pavement of sixty-four squares of three feet. Built on 2026-09-20: the front, the gate-house, and the second curtain, which is where the sequence stops. `_buildCourt` stands 170 m further north and is not joined to it.
+
+**Acceptance.** Walking north on x=0 from the green door you pass three curtains and a colonnaded portico and arrive at the Queen's court without crossing open field.
+
+
+### `bug-garden-pleasures-never-placed` — The garden's fumes, birds, turf seats and motes stand at the old origin, not in any precinct
+
+**○ open** · bug · priority 3 · hp-builder
+ · opened 2026-09-20
+
+
+**Evidence.** Measured on the running scene 2026-09-20, after bug-garden-trees-never-placed moved the trees out. The scene root still carries 31 bird groups (userData.wings) scattered within about +/-50 m of x = 0 and z -143..71, eight further groups at (-2,-25), (2,-25), (22,20), (15,20), (-6,30), (6,30), (-21,8), (-40,44), and a Points object (the motes) at (0, -19) -- all in the pyramid box, none in a `_in(...)` group. `_buildFumes` (nature.js ~245) lists its censers in the old frame: 'fountain grove' (0, -20), 'Temple of Venus' (-30, -12), 'rite of Priapus' (44, -12), 'Polyandrion crypt furnace' (30, -27). commit 6640c45 recorded this class as 'unstationed decorative scatter ... flagged as a follow-up' and it was never done. Two remnants of the fountain's move to the enclosure are the same shape: `_buildPalacePaths` (approach.js:106) still lays a roundel of radius 8.5 at palace-local (0, -80), and `_meadowClearance` masks `pal.circle(0, -20, 8.8) // fountain grove` -- where the fountain stood before 3291a52.
+
+**Acceptance.** A scene-graph query from the deployed page finds no bird group, motes Points or fume emitter inside the pyramid box; each fume stands within 10 m of the building it is named for (the enclosure fountain, venus_temple, vertumnus, polyandrion); no roundel at palace-local (0, -80); no meadow clearance circle at that point.
+
+**Files.** `src/scenes/world/nature.js` · `src/scenes/world/approach.js` · `src/scenes/HPWorldScene.js`
+
+**See.** bug-garden-trees-never-placed · DECISIONS.md 60 · HANDOVER.md 4.3 · PLEASURES.md
+
+
+### `bug-graces-basin-under-the-books-diameter` — The amethyst basin is 3.0 m across; the book says three paces, 4.44 m
+
+**○ open** · bug · priority 3 · unassigned
+ · opened 2026-09-20
+
+
+**Evidence.** Our page_088.md: the basin "was of the finest amethyst, its diameter containing three paces, of a thickness of a quarter, dwindling towards the lips to an inch". Three paces at the project's 1.48 m/pace is 4.44 m, so VR should be 2.22. `_buildGracesFountain` (temple.js) has `VR = 1.5`, 68% of the stated size, and the ophite round and porphyry channel are sized from it. Not fixed on 2026-09-20 because temple.js was held by another writer.
+
+**Acceptance.** Raycast across the basin's lip on the running page returns a diameter of 4.4 +/- 0.1 m.
+
+
 ### `bug-temple-drum-eight-bays-not-ten` — The temple drum is built on eight bays; the book's plan is a decad carrying eight windows plus the door and the adytum
 
 **○ open** · bug · priority 3 · hp-builder
@@ -290,6 +341,17 @@ HEIGHT. NEXTSTEPS 0-AA: the Queen's Court colonnade is 4.0 m, a domestic number 
 **Files.** `src/scenes/world/cythera.js`
 
 **See.** DIMENSIONS.md#4 · GARDENS.md
+
+
+### `debt-enclosure-fountain-two-sets-of-pipes` — The enclosure fountain plays two sets of jets from the same six pipes
+
+**○ open** · debt · priority 3 · unassigned
+ · opened 2026-09-20
+
+
+**Evidence.** `_buildGracesFountain` (temple.js) fires six jets from the joined cornucopias at apex 0.7 - the low reading of p. 89's "six little pipes ... from which the water rose in the finest thread". `_buildEnclosureCourt` (palace.js) fires six more from the same point to 12.4 m, which is p. 88's "spouting on high almost to the top of the green enclosure". Both are the same six pipes in the book. They were not folded together because temple.js was held by another writer on 2026-09-20.
+
+**Acceptance.** Grep shows exactly one `_jet` loop firing from the cornucopia point, and standing at the fountain the jets still reach within a metre of the hedge top.
 
 
 ### `feat-infill-elysian-flower-field` — The Elysian field of ch. XV: the one gap the book insists stays open, and it has neither flowers nor people
@@ -483,6 +545,39 @@ TWO OPTIONS, and this is Ted's call, not an agent's:
 **Files.** `DEPLOY_STATE.md`
 
 **See.** ENGINEERING.md#4
+
+
+### `bug-garden-trees-never-placed` — _buildTrees is called outside every precinct group, so the Fountain of Venus grove stands inside the pyramid
+
+**✅ done** · bug · priority 1 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** READ FROM THE CODE, not seen live. src/scenes/HPWorldScene.js:393 calls this._buildTrees() with no _in(...) and no _placeAt -- it sits between the precinct block and _buildMotes/_buildMeadow. Its coordinates (src/scenes/world/nature.js:988-1018) are the ORIGINAL cramped ones and were never multiplied or shifted:
+  * the myrtle-and-laurel grove of the Fountain of Venus, a ring of radius 11.5 about (0, -20);
+  * the cypress pairs "the way to the palace, set on either sides with Cyprus Trees" at z 15.5, 24.5;
+  * the citrus enclosure "altogither of Cytrons, Orenges and Lymonds" at x +/-9 and +/-13.5, z +/-5.4;
+  * planes, oaks and olives out to x +/-29, and two hedges WITH WALL COLLIDERS at (+/-8.5, 8.8).
+
+With no shift those are WORLD coordinates. PLAN_SITES.pyramid spans z +104 to -1035.6 centred on x 0, and PLAN_SITES.piazza is z 148.4..104. So the Temple of Venus's grove, the green enclosure's citrus hedge and the palace avenue's cypresses are standing in and around the Great Portal's court and inside the pyramid's footprint, between 2.7 and 5.3 km from the precincts whose text placed them. Two of them carry wall colliders, so there are also invisible walls in the piazza.
+
+Three gaps on the itinerary are bare because their planting was left behind at the origin.
+
+This is HANDOVER.md 4.3 in a fifth costume, after the hand-copied spawn, the meadow clearance map, the dream mode's paths and the triumph cars' moving colliders (DECISIONS.md 60).
+
+**Acceptance.** A scene-graph query from the deployed page finds no tree mesh inside the pyramid precinct box (x +/-570, z +104..-1035.6) that does not belong to the valley or approach builders; the Fountain of Venus grove stands within 40 m of the temple precinct centre (-200, -5335.4); the citrus pairs stand in the green enclosure (0, -2930); and no hedge wall collider remains in the piazza. Fix by routing each group through toWorld(key, x, z) or by wrapping each in _placeAt with shiftOf(key) -- do NOT re-type the coordinates, which is the mistake stage 2 exists to prevent.
+
+**Risk.** _buildTrees mixes trees belonging to at least four precincts in one function. Splitting it is the fix, but the split must carry the species and the citations already in its comments. The comment at the plane tree records that it was moved once already to clear the Temple of Venus's approach -- that reasoning was done in the OLD frame and needs redoing in the new one.
+
+**Resolution.** Fixed 2026-09-20 (nature.js `_buildTrees`, nature.js?v=19). Split per precinct, each group hung on its precinct's shift through `_placeAt`, anchors converted by `toWorld(key, x, z)`; layouts keep their real metres about the anchor (stage 1's rule: positions scale, sizes don't), because x4 would put the second citrus pair at x 54, outside a wall at 44.4. Read off the deployed page: 18 trees 14.2-29.1 m from the enclosure fountain (0, -2930), citrus at x +/-9 and +/-13.5 inside the wall; 4 cypresses at (+/-5.2, -3060.5 / -3069.5) about the axis's crossing of the upper cross path; 6 planes/oaks/olives 17-67 m from the temple; hedge colliders at (+/-8.5, -3136.2) and none at (+/-8.5, 8.8); no leaf-card mesh above 1.5 m inside the pyramid box.
+
+TWO DEVIATIONS FROM THE ACCEPTANCE AS WRITTEN. (1) The grove is not within 40 m of the temple precinct centre and was not meant to be: the folio-80 fountain it rings was MOVED to the green enclosure's court on 2026-09-20 (3291a52, palace.js `_buildEnclosureCourt`), so the grove follows the fountain, not the old coordinate. This ticket was written as if the grove belonged to the Temple of Venus; it belonged to the fountain. (2) Even the temple itself stands 88 m from that plan centre (-200, -5335.4), because `venus_temple`'s shift carries no lateral jog (shift x = 0 against centre x = -200), so no tree anchored to the temple could have met it.
+
+The temple's approach reasoning was redone in the new frame: the station is 36 m from the temple, not 9, so three trees stood on the axis, one on the station itself; a 9 m half-width strip is kept clear and the three take alternating sides. Two further faults found and ticketed rather than fixed: bug-shade-map-covers-only-the-old-origin and bug-garden-pleasures-never-placed.
+
+**Files.** `src/scenes/world/nature.js` · `src/scenes/HPWorldScene.js`
+
+**See.** RETHINK.md 1 · research/infill_plan.json reading_faults R1 · DECISIONS.md 60 · HANDOVER.md 4.3
 
 
 ### `bug-piazza-wrong-side-of-portal` — The horse, colossus and elephant sit past the portal; the book puts them before it

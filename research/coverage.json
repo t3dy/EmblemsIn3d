@@ -1943,15 +1943,15 @@
           "kind": "place",
           "plate": null,
           "source": "Dallington pp. 123-124",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "built",
+          "built_as": "world/screens.js _buildCypressAvenue",
           "modes": [
             "walk",
             "tour",
             "dream",
             "flight"
           ],
-          "note": "740 m of avenue between cypresses, closed by a hedge of citron, orange and lemon 6 ft thick with a single gate in the middle, opening onto a green enclosure 60 paces (88.8 m) on a side of which the palace is the fourth. The longest stated distance in Book I and the only explicit inter-station measurement in the book.\n\nRe-read 2026-09-09. The avenue is not bare: the level ground under it is covered over with periwinkle -- green Vinca pervinca, or laureole and chamme, Daphne -- and full of its azure flowers, and the cypresses carry their corner-clefted cones and are as thick with leaves as their nature allows. The world's nearest thing is the shaded walk, whose own comment in palace.js distinguishes it: a walk of laced trees throws continuous shade, and 'that is what makes it a walk and not an avenue'. So this is confirmed absent rather than merely unlocated."
+          "note": "Four stadia, 740 m, floored with periwinkle and closed by the citrus hedge and its one gate. The cypresses stand 14.6 m, short for the species and short of the book's “lofty”; raising them costs 247,000 triangles because _canopyCards derives a crown's card count from its volume. Ticket debt-cypress-avenue-under-scaled."
         },
         {
           "id": "nymph-flight-pantofles",
@@ -1986,12 +1986,13 @@
           "plate": null,
           "name": "The green enclosure: three fences of citron, orange and lemon, six foot thick",
           "source": "Dallington 1592 pp. 123-124",
-          "status": "unbuilt",
-          "note": "The avenue leads into an equilateral enclosure walled on three sides by a fence as high as the cypresses, made altogether of citrons, oranges and lemons whose leaves bush one within another, knit and twisted artificially together, about six foot thick, with a gate in the middle made of the same trees. White flowers show abundantly between the twistings and the fruit is nowhere wanting. The world has citron and lemon in its species table and plants exactly two of them, at nature.js 987; the enclosure itself is absent.",
+          "status": "built",
+          "note": "88.8 m square, three sides of citron, orange and lemon 1.78 m thick, the palace the fourth. Raised 2026-09-20 from 4.2 m to 13.6 — the book's “as high as the lofty cypresses of the way” — which is what makes the enclosure a room rather than a low box on a lawn. The fruit and the white blossom sit on the faces and the clipped top (_citrusFruit), because p. 88 says “on the surface no wood or stem whatever showed itself”. The green now carries over the door as well, p. 88's “a door bent in the middle out of the tree-work itself”.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/screens.js _buildGreenEnclosure and _citrusRun"
         },
         {
           "id": "hedge-windows",
@@ -1999,12 +2000,13 @@
           "plate": null,
           "name": "Windows made in the hedge, where the boughs are left bare",
           "source": "Dallington 1592 p. 123",
-          "status": "unbuilt",
-          "note": "Above, in convenient places, windows are made in the living fence, so that the boughs there are to be seen bare but for their green leaves. A window cut in a hedge is the kind of detail that decides whether a garden reads as ARCHITECTURE made of plants, which is this book's whole proposition about gardens.",
+          "status": "built",
+          "note": "The lower range is the band of framed view at standing height that makes the hedge architecture; the upper range is the book's own — “Above, in a fitting place, windows were set in order” (p. 88) — and was added when the hedge went to 13.6 m and there was room for it.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/screens.js _citrusRun, two ranges of windows to the bay"
         },
         {
           "id": "hedge-climbable",
@@ -2026,12 +2028,64 @@
           "name": "The third fountain, with Graces, harpies and griffins",
           "source": "1499 plate #23, page_seq 80 = our p. 90 — one of the four pages translation/en holds no file for, because the leaf is the full-page third fountain with no body text; CONFIRMED on hp1499_p080.jpg. The earlier source read '1499 plate #23 (p. 80)', which is the page_seq. Our p.90 is inside chapter VIII [79,93], so this one does NOT move. Ticket debt-ledger-cites-page-seq-as-folio.",
           "status": "built",
-          "note": "Attached to this chapter in the plate index; not yet read against the world.\n\nBUILT, confirmed 2026-09-09. temple.js carries a dedicated `_buildGracesFountain` whose comments quote the passage -- the graces of fine gold, the water falling on the opened crown, every jet named in the text made a jet here -- and a mesh census on the running page finds 92 meshes within 6 m of its coordinates, topping 6.03 m. The evidence is the census and the named builder rather than a screenshot, which is worth saying plainly.",
+          "note": "MOVED 2026-09-20 out of the palace precinct (palace-local 0,−80 = world 0,−3225) into the middle of the green enclosure's court, where p. 88 puts it: “In the middle part of this most notable area”. One fountain and not two — plate #23 sits at hp.db page_seq 80, which at this project's constant ten-page offset is translation page 90, the third page of this same description. The great jets of p. 88 (“spouting on high almost to the top of the green enclosure”, here 12.4 m against a 13.6 m hedge) and the porphyry pavement of p. 89 are added in _buildEnclosureCourt. The basin is still 3.0 m across where the book says three paces: ticket bug-graces-basin-under-the-books-diameter.",
           "modes": [
             "walk",
             "tour"
           ],
-          "built_as": "world/temple.js _buildGracesFountain"
+          "built_as": "world/temple.js _buildGracesFountain, called from world/palace.js _buildEnclosureCourt inside the ENCLOSURE precinct"
+        },
+        {
+          "id": "enclosure-court-paved",
+          "name": "The pavement of the enclosed court: marble squares, jasper rounds, tessellated fillets",
+          "kind": "ornament",
+          "plate": null,
+          "source": "our p. 92",
+          "status": "built",
+          "built_as": "world/palace.js _buildEnclosureCourt, _courtPaveMat and _courtPavementTexture",
+          "modes": [
+            "walk"
+          ],
+          "note": "p. 92: “a stone pavement of squares of fine marbles of various colour and shaping. In which, less than their measure, there were most beautifully fitted rounds of gracious jasper … And the remaining corners were beautifully satisfied with winding fronds and lilies. Then the broad bands, or fillets, between the squares … of the best tessellation.” The court was sward until 2026-09-20. It has no woodcut, which is why it went unbuilt — rule 6."
+        },
+        {
+          "id": "palace-front-order",
+          "name": "The palace front: podium, two orders in the four marbles, triglyph frieze, windows and the notable door",
+          "kind": "architecture",
+          "plate": null,
+          "source": "our pp. 88, 92–93",
+          "status": "built",
+          "built_as": "world/palace.js _buildPalaceFront, _frontColumn, _frontWindow",
+          "modes": [
+            "walk"
+          ],
+          "note": "88.8 m — the book's sixty paces — replacing a 107 m plain stone screen. FROM THE BOOK: the length; the triglyphs (p. 92); the four marbles “divided in equal number” (p. 93); the labours of Hercules “cut half free of the ground”; the windows, the notable door and the “most noble podium”. The two hundred columns of that sentence are the GORDIAN villa's, which must yield to this colonnade — Historia Augusta, Gordiani tres 32.2 — so the four marbles are used here in equal number rather than two hundred shafts being crammed into 88.8 m. OURS: two orders on a podium after Alberti De re aed. VII.6–8 and Palazzo Rucellai; spacing at 3.6 D, Vitruvius III.3.4 diastyle; proportions 7.4 D Doric (IV.1.8) and 8.45 D Ionic (III.5.1); the middle intercolumniation widest (III.3.6, Alberti VII.5); a triglyph over every column and every space (IV.3); the modillioned crowning cornice after Medici and Strozzi; round-headed bifore after Medici and Rucellai. 19.25 m to the cornice."
+        },
+        {
+          "id": "hercules-labours-relief",
+          "name": "The labours of Hercules, in shining stone, cut half free of the ground",
+          "kind": "ornament",
+          "plate": null,
+          "source": "our p. 93",
+          "status": "partial",
+          "built_as": "world/palace.js _buildPalaceFront, twenty-two relief panels between the ground columns",
+          "modes": [
+            "walk"
+          ],
+          "note": "Drawn by _reliefTexture, which gives a seeded crowd of relief figures. Partial because the twelve labours are nameable and are not named: each panel should carry one."
+        },
+        {
+          "id": "golden-curtain-first",
+          "name": "The first curtain at the notable door, of golden thread, with two most worthy images",
+          "kind": "ornament",
+          "plate": null,
+          "source": "our p. 93",
+          "status": "built",
+          "built_as": "world/palace.js _buildPalaceFront and _goldCurtainTexture",
+          "modes": [
+            "walk"
+          ],
+          "note": "“all of golden thread, and rewoven and inwoven with silk, with two most worthy images. The one of them was surrounded with every instrument fit for working; and one, with her maidenly face raised, considered the heavens intently.” Built drawn ASIDE on its rod, as Cynosia draws it for him, so the door stays walkable."
         }
       ]
     },
@@ -2285,6 +2339,58 @@
             "tour"
           ],
           "built_as": "world/palace.js, the METALS panelling"
+        },
+        {
+          "id": "gate-house-vestibule",
+          "name": "The gate-house behind the notable door, with its coffered and gilded vault",
+          "kind": "architecture",
+          "plate": null,
+          "source": "our pp. 93–94",
+          "status": "built",
+          "built_as": "world/palace.js _buildPalaceFront (the vestibule), _cofferTexture; its floor shares _courtPaveMat",
+          "modes": [
+            "walk"
+          ],
+          "note": "p. 93 asks “what gate-house, or vestibule” and gives its ceiling — “most beautifully coffered, with little coffers between the wavings, covered with foliage, set in square and round … gilded of pure gold and of a dark blue colouring” — and p. 94 gives its floor, “The cleanest paving, like that outside in the enclosed court”, so it is the court's own pavement carried through. Before it was built the notable door opened on daylight and empty field."
+        },
+        {
+          "id": "curtain-second-indalomena",
+          "name": "The second curtain, Indalomena's, varied with every tincture",
+          "kind": "ornament",
+          "plate": null,
+          "source": "our p. 93",
+          "status": "built",
+          "built_as": "world/palace.js _buildPalaceFront and _secondVeilTexture",
+          "modes": [
+            "walk"
+          ],
+          "note": "“another veiling of most noble artifice and composition, and varied with every tincture. In which were signs, shapes, plants and animals of a singular reweaving.” Drawn across, and passable. The three keepers are the inner faculties in order — Cynosia watchfulness, Indalomena image-making, Mnemosyne memory — and this is the image-making one, which is why it carries shapes and animals and nothing discursive."
+        },
+        {
+          "id": "three-curtains-and-keepers",
+          "name": "The three curtains and their keepers: Cynosia, Indalomena, Mnemosyne",
+          "kind": "scene",
+          "plate": null,
+          "source": "our pp. 93–94",
+          "status": "partial",
+          "built_as": "world/palace.js _buildPalaceFront: the first and second curtains only",
+          "modes": [
+            "walk"
+          ],
+          "note": "The sequence that must be passed in order to reach the Queen, and the scheme the English leaves invisible (the translator's own note on p. 93). Two curtains stand; there is no third, and none of the three keepers is a figure in the world. Ticket feat-palace-portico-behind-the-gate-house."
+        },
+        {
+          "id": "lofty-portico-compass",
+          "name": "The lofty portico, as long as the compass of the palace",
+          "kind": "architecture",
+          "plate": null,
+          "source": "our p. 94",
+          "status": "unbuilt",
+          "built_as": "",
+          "modes": [
+            "walk"
+          ],
+          "note": "“a lofty portico, as long as the compass of the palace. Whose golden vaulting was painted with green foliage, with distinct flowers and entwined fronds and flying birds, choicely embroidered in mosaic work … The walls crusted with sumptuous stones artfully set in fine work.” Nothing stands between the gate-house and the Queen's court, which is 170 m further north. Ticket feat-palace-portico-behind-the-gate-house."
         }
       ]
     },

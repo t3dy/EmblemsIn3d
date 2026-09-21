@@ -19,6 +19,61 @@
   "opened": "2026-09-08",
   "tickets": [
     {
+      "id": "debt-cypress-avenue-under-scaled",
+      "title": "The avenue's cypresses are 14.6 m, and raising them to life size costs 247,000 triangles",
+      "kind": "debt",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Measured live 2026-09-20 while building the palace front. `_buildCypressAvenue` (screens.js) plants at `_tree` scale 4.6, which is a 14.6 m tree; a cypress is 20-30 m in life and the book calls these \"straight and lofty\" (our page_088.md). Raised to ~7.5 (22-26 m) and reverted within the hour on the measurement: `_canopyCards` (nature.js) does NOT use the card count it is handed - it derives one from the crown's VOLUME (\"a big crown gets MORE cards, not bigger ones\") - so a cypress goes from 546 leaf cards to 1,454 between 4.6 and 7.5. 136 of them down the avenue = +247,000 triangles, a quarter of that job's whole budget for one species.\n\nThis also sets the citrus hedge, which the book ties to the cypresses (\"as high as the lofty cypresses of the way\"), and through it the whole vertical scale of the green enclosure and the palace front.",
+      "fix": "Either give `_canopyCards` a caller-supplied cap (an `opts.maxCards`) so a big tree can be drawn with fewer, larger sprays, or build the avenue's cypresses as an InstancedMesh of one crown. Then raise scale to ~7.5 and the hedge to ~21 with it.",
+      "acceptance": "The avenue's cypresses measure over 20 m on the running page AND `await hpDiag()` shows the cypress_avenue precinct within 15% of its 2026-09-20 triangle count (469,978).",
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "debt-enclosure-fountain-two-sets-of-pipes",
+      "title": "The enclosure fountain plays two sets of jets from the same six pipes",
+      "kind": "debt",
+      "status": "open",
+      "priority": 3,
+      "evidence": "`_buildGracesFountain` (temple.js) fires six jets from the joined cornucopias at apex 0.7 - the low reading of p. 89's \"six little pipes ... from which the water rose in the finest thread\". `_buildEnclosureCourt` (palace.js) fires six more from the same point to 12.4 m, which is p. 88's \"spouting on high almost to the top of the green enclosure\". Both are the same six pipes in the book. They were not folded together because temple.js was held by another writer on 2026-09-20.",
+      "fix": "Fold the two into one set inside `_buildGracesFountain`, taking the peak from a parameter so the mainland fountain and any future copy can differ.",
+      "acceptance": "Grep shows exactly one `_jet` loop firing from the cornucopia point, and standing at the fountain the jets still reach within a metre of the hedge top.",
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "bug-graces-basin-under-the-books-diameter",
+      "title": "The amethyst basin is 3.0 m across; the book says three paces, 4.44 m",
+      "kind": "bug",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Our page_088.md: the basin \"was of the finest amethyst, its diameter containing three paces, of a thickness of a quarter, dwindling towards the lips to an inch\". Three paces at the project's 1.48 m/pace is 4.44 m, so VR should be 2.22. `_buildGracesFountain` (temple.js) has `VR = 1.5`, 68% of the stated size, and the ophite round and porphyry channel are sized from it. Not fixed on 2026-09-20 because temple.js was held by another writer.",
+      "fix": "VR 1.5 -> 2.22 in `_buildGracesFountain`, with R_CH, the harpies' radius, the dragons and the lion-heads re-derived from it rather than re-typed. The basin's thickness (a quarter of a pace, 0.37, thinning to an inch at the lip) is also stated and is not built.",
+      "acceptance": "Raycast across the basin's lip on the running page returns a diameter of 4.4 +/- 0.1 m.",
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "bug-fountain-station-carries-the-bath-tour-stop",
+      "title": "Tour stop \"The Five Nymphs and the Bath\" rides on the `fountain` station, which is the Graces fountain",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "`src/data/tours.json` line 663 puts the chapter VI-VII bath episode on station `fountain`, whose folio is 80 and whose plate (`hp.db.woodcut_catalog` #23) is the Graces fountain of chapter VIII. Standing at the fountain on 2026-09-20 the panel that opened was the bath. The bath has its own precinct on the plan, `fountain_house` (PLAN_SITES), and no station. Moving the `fountain` station into the green enclosure with its fountain (done 2026-09-20) carried the wrong tour stop with it.",
+      "fix": "Give `fountain_house` a station of its own and point the bath stop at it; the `fountain` station keeps folio 80 and should be renamed off \"Fountain of Venus\", which belongs to the Cythera fountain of chapters XXI-XXIV.",
+      "acceptance": "Walking to the bath-house opens the bath stop, and walking to the enclosure's fountain opens a stop about the Graces fountain.",
+      "opened": "2026-09-20"
+    },
+    {
+      "id": "feat-palace-portico-behind-the-gate-house",
+      "title": "Behind the gate-house there is no palace: the portico, the court of Eleuterylida and the three curtains are one room deep",
+      "kind": "feature",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Our page_093.md and page_094.md give a sequence: the notable door, the first (golden) curtain and Cynosia, an enclosed space, the second curtain and Indalomena, an equal space, the third curtain and Mnemosyne, and then \"a lofty portico, as long as the compass of the palace. Whose golden vaulting was painted with green foliage, with distinct flowers and entwined fronds and flying birds, choicely embroidered in mosaic work ... The walls crusted with sumptuous stones artfully set in fine work\", and beyond it \"a stupendous and spacious court ... perfect in its square\" with the chess pavement of sixty-four squares of three feet. Built on 2026-09-20: the front, the gate-house, and the second curtain, which is where the sequence stops. `_buildCourt` stands 170 m further north and is not joined to it.",
+      "fix": "Build the three spaces in order behind the gate-house and run the portico from it to the court of Eleuterylida, so that the palace is one building from the enclosure's door to the Queen's throne.",
+      "acceptance": "Walking north on x=0 from the green door you pass three curtains and a colonnaded portico and arrive at the Queen's court without crossing open field.",
+      "opened": "2026-09-20"
+    },
+    {
       "id": "feat-colossus-true-scale",
       "title": "The recumbent colossus was built at a third of the sixty paces the book gives him",
       "kind": "debt",
@@ -1895,9 +1950,11 @@
         "DECISIONS.md 60",
         "HANDOVER.md 4.3"
       ],
-      "status": "open",
+      "status": "done",
       "opened": "2026-09-20",
-      "role": "hp-builder"
+      "role": "hp-builder",
+      "closed": "2026-09-20",
+      "resolution": "Fixed 2026-09-20 (nature.js `_buildTrees`, nature.js?v=19). Split per precinct, each group hung on its precinct's shift through `_placeAt`, anchors converted by `toWorld(key, x, z)`; layouts keep their real metres about the anchor (stage 1's rule: positions scale, sizes don't), because x4 would put the second citrus pair at x 54, outside a wall at 44.4. Read off the deployed page: 18 trees 14.2-29.1 m from the enclosure fountain (0, -2930), citrus at x +/-9 and +/-13.5 inside the wall; 4 cypresses at (+/-5.2, -3060.5 / -3069.5) about the axis's crossing of the upper cross path; 6 planes/oaks/olives 17-67 m from the temple; hedge colliders at (+/-8.5, -3136.2) and none at (+/-8.5, 8.8); no leaf-card mesh above 1.5 m inside the pyramid box.\n\nTWO DEVIATIONS FROM THE ACCEPTANCE AS WRITTEN. (1) The grove is not within 40 m of the temple precinct centre and was not meant to be: the folio-80 fountain it rings was MOVED to the green enclosure's court on 2026-09-20 (3291a52, palace.js `_buildEnclosureCourt`), so the grove follows the fountain, not the old coordinate. This ticket was written as if the grove belonged to the Temple of Venus; it belonged to the fountain. (2) Even the temple itself stands 88 m from that plan centre (-200, -5335.4), because `venus_temple`'s shift carries no lateral jog (shift x = 0 against centre x = -200), so no tree anchored to the temple could have met it.\n\nThe temple's approach reasoning was redone in the new frame: the station is 36 m from the temple, not 9, so three trees stood on the axis, one on the station itself; a 9 m half-width strip is kept clear and the three take alternating sides. Two further faults found and ticketed rather than fixed: bug-shade-map-covers-only-the-old-origin and bug-garden-pleasures-never-placed."
     },
     {
       "id": "bug-second-bridge-in-wrong-precinct",
@@ -2124,6 +2181,51 @@
         "NEXTSTEPS.md 0-AA"
       ],
       "status": "open",
+      "opened": "2026-09-20",
+      "role": "hp-builder"
+    },
+    {
+      "id": "bug-shade-map-covers-only-the-old-origin",
+      "title": "The baked shade map is one 132 m canvas at the origin, so no tree in the 13.7 km world casts drawn shade",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "READ FROM THE CODE and confirmed against the running scene 2026-09-20. `_buildShadeMap` (nature.js) bakes `_shadeSpots` into one 1024 px canvas covering X0 -66, Z0 -68, W 132, D 132 -- the old ground -- lays one overlay plane there, and gives the same box to every meadow field (`attachShade`), whose shader clamps to the edge texel outside it. Stage 2 spread the world over 13.7 km, so every tree in every precinct is off the canvas. Worse, `_tree` pushes its spot in the LOCAL frame of whatever `_placeAt` group it is built in, so 453 spots sit inside the pyramid box (x +/-570, z 104..-1035.6) that belong to trees kilometres away (wooded_country, valley, wood ...). The three groups planted by bug-garden-trees-never-placed add their shift back and are in world coordinates, but they land off the canvas too, so no drawn shade follows them.",
+      "acceptance": "On the running page, standing under the enclosure's citrus at (9, -2915.4), the ground and the meadow blades there are darkened by a shade pool (sample the overlay texture at the tree's world position: alpha > 0.3), and no shade pool is drawn on the pyramid's court from a tree that stands elsewhere. Either one map per precinct group, or `_shadeSpots` pushed in world coordinates (a `_shadeSpot` registrar that `_placeAt` maps, as it maps `_circleCol`) with the canvas re-tiled over the sites that have trees.",
+      "risk": "The shade map is one texture bound into every meadow field's shader; per-precinct maps mean per-field uniforms.",
+      "files": [
+        "src/scenes/world/nature.js",
+        "src/scenes/world/materials.js",
+        "src/systems/Meadow.js"
+      ],
+      "refs": [
+        "bug-garden-trees-never-placed",
+        "PLEASURES.md 1",
+        "DECISIONS.md 60",
+        "HANDOVER.md 4.3"
+      ],
+      "opened": "2026-09-20",
+      "role": "hp-builder"
+    },
+    {
+      "id": "bug-garden-pleasures-never-placed",
+      "title": "The garden's fumes, birds, turf seats and motes stand at the old origin, not in any precinct",
+      "kind": "bug",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Measured on the running scene 2026-09-20, after bug-garden-trees-never-placed moved the trees out. The scene root still carries 31 bird groups (userData.wings) scattered within about +/-50 m of x = 0 and z -143..71, eight further groups at (-2,-25), (2,-25), (22,20), (15,20), (-6,30), (6,30), (-21,8), (-40,44), and a Points object (the motes) at (0, -19) -- all in the pyramid box, none in a `_in(...)` group. `_buildFumes` (nature.js ~245) lists its censers in the old frame: 'fountain grove' (0, -20), 'Temple of Venus' (-30, -12), 'rite of Priapus' (44, -12), 'Polyandrion crypt furnace' (30, -27). commit 6640c45 recorded this class as 'unstationed decorative scatter ... flagged as a follow-up' and it was never done. Two remnants of the fountain's move to the enclosure are the same shape: `_buildPalacePaths` (approach.js:106) still lays a roundel of radius 8.5 at palace-local (0, -80), and `_meadowClearance` masks `pal.circle(0, -20, 8.8) // fountain grove` -- where the fountain stood before 3291a52.",
+      "acceptance": "A scene-graph query from the deployed page finds no bird group, motes Points or fume emitter inside the pyramid box; each fume stands within 10 m of the building it is named for (the enclosure fountain, venus_temple, vertumnus, polyandrion); no roundel at palace-local (0, -80); no meadow clearance circle at that point.",
+      "files": [
+        "src/scenes/world/nature.js",
+        "src/scenes/world/approach.js",
+        "src/scenes/HPWorldScene.js"
+      ],
+      "refs": [
+        "bug-garden-trees-never-placed",
+        "DECISIONS.md 60",
+        "HANDOVER.md 4.3",
+        "PLEASURES.md"
+      ],
       "opened": "2026-09-20",
       "role": "hp-builder"
     }
