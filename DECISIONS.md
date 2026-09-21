@@ -11,6 +11,24 @@ Directional calls made mid-build, recorded so they don't get re-litigated. Newes
 
 ---
 
+## 2026-09-20 — 65. One Controls button and panel for every mode, not seven ad hoc places
+
+*Ted: "I want to make sure that there are keyboard commands and mouse inputs and that there
+is a button for 'controls' that brings up a panel that explains the controls that you can
+toggle on and off. Make sure the interface makes sense." Full text in
+[`decisions/2026-09.md`](decisions/2026-09.md).*
+
+One `Controls` button in `#world-nav` — the one chrome constant across every mode, checked
+live before deciding — folding the dragon's two hard-written cards into it and demoting roll
+mode's permanent footer to a one-line cue. Content comes from one `CONTROLS` table in
+`main.js`, swapped per mode, not seven duplicated HTML blocks. **Dispatching the keys live,
+not reading the code, found and fixed four real bugs**: the walker's and dragon's bounds were
+never widened for Stage 2's 13.7 km world, so most digit-key teleports snapped you back on
+the first step; Gallery's Esc was a dead empty branch; `ShiftRight` didn't dash in roll mode.
+Tickets `bug-walker-bounds-stale-after-stage-2`, `bug-dragon-bounds-stale-after-stage-2`,
+`bug-gallery-esc-does-nothing`, `bug-roll-shiftright-no-dash`,
+`debt-dream-mode-no-keyboard-choice`.
+
 ## 2026-09-20 — 63. Roll mode's camera falls behind the ball's growth, Katamari-style
 
 *Settles `question-roll-camera-curve`. Full text in [`decisions/2026-09.md`](decisions/2026-09.md).*
@@ -256,11 +274,12 @@ say plainly that both early editions withheld what you are looking at.
 
 ## The index — every decision, newest first
 
-*62 calls. Each links to its full text in the archive.*
+*65 calls. Each links to its full text in the archive.*
 
 
 **2026-09-20**
 
+- [65. One Controls button and panel for every mode, not seven ad hoc places](decisions/2026-09.md#2026-09-20--65-one-controls-button-and-panel-for-every-mode-not-seven-ad-hoc-places) — the audit that came with it found and fixed four real live bugs: stale walker/dragon bounds after Stage 2, a dead gallery Esc, ShiftRight not dashing in roll mode
 - [64. No wedding fanfare — the 2026-09-04 silence rule stands](decisions/2026-09.md#2026-09-20--64-no-wedding-fanfare--the-2026-09-04-silence-rule-stands) — asked directly, Ted said no; `AlchemicalAudio.fanfare('wedding')` stays a documented no-op
 - [63. Roll mode's camera falls behind the ball's growth, Katamari-style](decisions/2026-09.md#2026-09-20--63-roll-modes-camera-falls-behind-the-balls-growth-katamari-style) — `tune.camBase`/`camScale` default 0/6 → **1.2/2.0**; the ball swells in frame as it grows, at the cost of a third the view at full size
 - [60. Stage 2 of the true scale: the world moves by precinct, not by literal](decisions/2026-09.md#2026-09-20--60-stage-2-of-the-true-scale-the-world-moves-by-precinct-not-by-literal) — **executes call 54**; 13.7 km, 23 precincts, and **not one interior coordinate re-typed**; the pyramid is square at 1 139.6 m and the valley's neck is derived from it

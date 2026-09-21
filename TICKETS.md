@@ -6,7 +6,7 @@
 
 ---
 
-**72 tickets** — 1 open, 3 declined, 68 done. By kind: 30 debt, 27 bug, 9 infra, 3 question, 2 perf, 1 feat.
+**77 tickets** — 1 open, 3 declined, 73 done. By kind: 31 bug, 31 debt, 9 infra, 3 question, 2 perf, 1 feat.
 
 ---
 
@@ -170,6 +170,23 @@ The forecourt and the two colonnades this ticket was blocking were built in the 
 **Files.** `scripts/coverage_seed.py` · `research/coverage.json` · `src/data/tours.json`
 
 **See.** ROUTER.md · HPTOTOURPIPELINE.md
+
+
+### `bug-walker-bounds-stale-after-stage-2` — The walker's movement box was never widened for Stage 2, so most station jumps snapped back on the first step
+
+**✅ done** · bug · priority 1 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found 2026-09-20 while auditing keys for the Controls panel (decision 65) by dispatching them live and measuring, not by reading the code. Walker.js's bounds were the SPREAD=4 box from the 2026-09-17 true-scale stage 1 pass -- 2,672 m wide -- and Stage 2 (DECISIONS.md 60) moved every precinct onto research/plan.json, which is 13,728.8 m long, without touching the walker's own box. 22 of the walk mode's 28 stations stood outside it. window.hpGoTo/onDigit and Walker.teleportTo write player.pos directly, so pressing 0 (documented on the mode card, the entry hint, and the touch Wonders menu, 'sails to Cythera') landed correctly -- then the first W press ran through Walker.collide, which clamps to the stale box, and threw the player back to its edge. Measured live: 0 put the walker at z -7701.4 and one step snapped it to z -824, a 6,877 m jerk.
+
+**Acceptance.** src/scenes/HPWorldScene.js's walker bounds are derived from research/plan.json's own extent (with margin) rather than hand-typed, so they cannot go stale against the plan again without the plan itself moving. Verified: teleporting to any of the 28 stations and taking one step does not move the walker more than a normal step's distance.
+
+**Resolution.** Bounds changed from the hand-typed SPREAD=4 box to { minX: -1000, maxX: 1840, minZ: -8760, maxZ: 5110 }, derived from plan.json's extent (z_north -8689.4, z_south 5039.4, width_max 1850) plus the off-spine Treviso precinct (x 1400, 740 m wide) plus 60 m margin. Confirmed live on the deployed page: window._hp.state.activeScene.walker.bounds reads the new values.
+
+**Files.** `src/scenes/HPWorldScene.js`
+
+**See.** DECISIONS.md#65 · DECISIONS.md#60
 
 
 ### `bug-woodcut-blanks-on-adonis` — Switching to the woodcut register threw inside _buildAdonis and left the page black
@@ -550,6 +567,23 @@ hpDiag, same spawn camera, before -> after: drawCalls 5402 -> 5406 (+0.07 %), me
 **Files.** `research/coverage.json` · `RECIPES/research-a-chapter.md`
 
 **See.** ROUTER.md
+
+
+### `bug-dragon-bounds-stale-after-stage-2` — The dragon's flight box was never widened for Stage 2 either, and its ceiling was too low for the true-scale pyramid
+
+**✅ done** · bug · priority 2 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found in the same Controls-panel audit as bug-walker-bounds-stale-after-stage-2, same root cause: DragonFlight's bounds were the stage-1 box, not Stage 2's plan.json extent, plus a maxY of 48 m in front of a pyramid built 790 m tall. '1-9 swoop to a wonder' delivered the dragon to the corner of a 480 x 1048 m box instead of the wonder itself.
+
+**Acceptance.** The dragon's flight bounds match the walker's plan-derived extent in x/z, with a ceiling tall enough to clear the pyramid.
+
+**Resolution.** Bounds changed to the walker's own x/z extent, maxY raised to 900. Fixed in the same commit as the walker bounds (65cdaee).
+
+**Files.** `src/scenes/HPWorldScene.js`
+
+**See.** DECISIONS.md#65
 
 
 ### `bug-fields-dark-wedge` — The fields station stands 2.4 m from the flank of the valley mountain
@@ -1006,6 +1040,23 @@ NOT VERIFIED LIVE: reading.json changed substantially, 453 of 463 pages placed, 
 **See.** ticket debt-reading-station-is-chapter-grained · ticket bug-dallington-page-drift · ticket bug-chapter-xi-tour-misattributed
 
 
+### `bug-gallery-esc-does-nothing` — Esc in the Gallery was an empty branch while the hint promised it closed the gallery
+
+**✅ done** · bug · priority 3 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found in the Controls-panel audit, 2026-09-20. The gallery's own entry hint has said 'Esc to close' since it was written; the keydown handler's Escape branch for the gallery grid was `else if (e.key === 'Escape' ...) { }` -- an empty block. Pressing Esc in the gallery did nothing.
+
+**Acceptance.** Esc leaves the gallery.
+
+**Resolution.** The branch now hides the gallery overlay. The scene behind it was never disposed while the gallery was open, so no rebuild is needed on exit.
+
+**Files.** `src/main.js`
+
+**See.** DECISIONS.md#65
+
+
 ### `bug-tours-dallington-seam-note-wrong` — tours.json's intro and two stop ledes still say Dallington 'stops mid-word'/'mid-sentence' at Mustulento; other stops in the same file already correct this
 
 **✅ done** · bug · priority 3 · hp-researcher
@@ -1396,6 +1447,23 @@ MACHINE CHECK, asserted after the rebuild: no page in reading.json carries `wc` 
 **See.** debt-reading-plate-captions-come-from-a-jittery-column · bug-plate-images-bound-to-page-seq-plus-eight · bug-woodcut-catalog-page-jitter
 
 
+### `bug-roll-shiftright-no-dash` — ShiftRight did not dash in roll mode, though every other mode with a dash takes either shift key
+
+**✅ done** · bug · priority 4 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found in the Controls-panel audit, 2026-09-20. RollUp.js's dash check was `this._keys.has('ShiftLeft') ? 1.7 : 1`, hardcoded to the left key only, where Walker.js and DragonFlight.js both accept either shift. Measured live before the fix: ShiftLeft 7.42 m in 90 frames, ShiftRight 5.44 m (no better than no shift at 4.76 m).
+
+**Acceptance.** ShiftRight dashes in roll mode the same as ShiftLeft.
+
+**Resolution.** Check widened to either ShiftLeft or ShiftRight. Measured live after: ShiftLeft 7.41 m, ShiftRight 8.10 m.
+
+**Files.** `src/systems/RollUp.js`
+
+**See.** DECISIONS.md#65
+
+
 ### `bug-tours-priapus-stop-chapter-tag` — tours.json tags the 'priapus' stop chapter XVI; the Priapus altar is chapter XVII
 
 **✅ done** · bug · priority 4 · hp-builder
@@ -1516,6 +1584,23 @@ ONE NEW TABLE NEEDS EXPLAINING. Moving #66-70 to page_seq 181-184 fired check_se
 **Files.** `scripts/coverage_seed.py` · `research/coverage.json`
 
 **See.** bug-woodcut-catalog-page-jitter · bug-plate-page-seq-offset
+
+
+### `debt-dream-mode-no-keyboard-choice` — Poliphilo's Dream had no keyboard path to its own reaction choice
+
+**✅ done** · debt · priority 4 · hp-builder
+ · opened 2026-09-20, closed 2026-09-20
+
+
+**Evidence.** Found in the Controls-panel audit, 2026-09-20. Every wonder in the story mode asks the player to choose a reaction (wonder/desire/melancholy/dread), and the only way to answer was clicking one of the four rendered .dp-choice buttons -- no keyboard equivalent, unlike every other interaction in the mode.
+
+**Acceptance.** 1-4 pick the nth rendered choice, so the keyboard path can never outrun what is actually on screen (fewer than four options some wonders, say).
+
+**Resolution.** 1-4 now click the nth .dp-choice element by index rather than assuming a fixed four-option layout.
+
+**Files.** `src/main.js`
+
+**See.** DECISIONS.md#65
 
 
 ### `debt-ledger-cites-page-seq-as-folio` — Some ledger sources give an hp.db page_seq and call it a 1499 page
