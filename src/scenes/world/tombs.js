@@ -936,6 +936,60 @@ export const Tombs = {
     this._plaque({ main: 'CVBICVLVM POLIAE', sub: 'DIANA IN ICE, VENVS IN FIRE, THROVGH THE WINDOW · PLATES 160–165' },
       2.2, 0.4, CX2, 0.95, CZ2 + 2.35, 0, true);
 
+    // ── ch. XXXII: Poliphilo's own chamber and writing desk, "one of the
+    // very few domestic interiors drawn in the whole book" -- carved desk, a
+    // window onto a broken column and rocky ground, a small votive image
+    // above the desk, a curtained bed behind him. Our translation p.443;
+    // plate #164 (hp.db.woodcut_catalog, page_seq 433 -- offset, true page
+    // 443, see research.note). Sited east of Polia's own bed-chamber above,
+    // a separate room for his side of the correspondence.
+    // xxxii-writing-desk-chamber, xxxii-plate-writing-at-desk.
+    const WX = CX2 + 8, WZ = CZ2;
+    this._m(new THREE.BoxGeometry(4.4, 0.3, 4.0), dark, WX, 0.15, WZ, { cast: false });
+    for (const [dx, dz, w, d] of [[0, -1.9, 4.4, 0.3], [-2.15, 0, 0.3, 4.0], [2.15, 0, 0.3, 4.0]]) {
+      this._m(new THREE.BoxGeometry(w, 2.8, d), stone, WX + dx, 1.7, WZ + dz, { outline: true });
+      this._wallCol(WX + dx - w / 2, WX + dx + w / 2, WZ + dz - d / 2, WZ + dz + d / 2);
+    }
+    this._roof(WX, 3.1, WZ, 4.6, 4.2, { pitch: 0.8, ridgeAlong: 'x' });
+    // the window in the west wall, onto a broken column and rocky ground
+    this._m(new THREE.BoxGeometry(0.3, 1.2, 1.1), S.mat(lit ? { color: 0xbcd6f0, roughness: 0.2, transparent: true, opacity: 0.4 } : { tone: 0.05 }),
+      WX - 2.16, 1.8, WZ - 1.0, { cast: false });
+    const brokenCol = this._column(WX - 3.6, WZ - 1.4, 1.3, { order: 'ionic', r: 0.13 });
+    this._m(new THREE.SphereGeometry(0.45, 8, 6), this._stoneMat, WX - 3.9, 0.2, WZ - 0.4, { cast: false }); // rocky ground
+    // the curtained bed behind him, a low chest beside it
+    this._m(new THREE.BoxGeometry(1.3, 0.45, 2.0), S.mat(lit ? { color: 0x5a3a5a, roughness: 0.8 } : { tone: 0.18 }), WX + 1.4, 0.5, WZ - 0.7, { outline: true });
+    this._m(new THREE.BoxGeometry(1.4, 0.85, 0.18), this._trunkMat, WX + 1.4, 0.9, WZ - 1.65, { cast: false });
+    this._m(new THREE.BoxGeometry(0.6, 0.35, 0.4), this._trunkMat, WX + 1.85, 0.32, WZ + 0.55, { outline: true }); // low chest
+    // the carved writing desk, Poliphilo seated at it (the woodcut itself)
+    this._m(new THREE.BoxGeometry(0.9, 0.6, 0.55), this._trunkMat, WX - 0.6, 0.5, WZ + 1.2, { outline: true });
+    this._m(new THREE.BoxGeometry(0.75, 0.05, 0.45), S.mat(lit ? { color: 0xe8dcc0, roughness: 0.8 } : { tone: 0.06 }), WX - 0.6, 0.82, WZ + 1.2, { cast: false }); // a book/box on it
+    const writer = this.cast.figure({ name: 'Poliphilo', h: 0.9, robe: 0x8a4a3a, pose: 'sit' });
+    this._npc('b2_poliphilo_writing', writer, WX - 0.6, WZ + 1.9, Math.PI, { sway: 0.02 });
+    // a small votive image above the desk -- a framed picture of two seated
+    // figures, per the plate; content unspecified by the text, kept modest
+    this._m(new THREE.BoxGeometry(0.35, 0.28, 0.03), gold, WX - 0.6, 1.55, WZ + 1.75, { cast: false });
+    this._plaque({ main: 'CVBICVLVM POLIPHILI', sub: 'THE WRITING DESK · HIS LOVE-LETTERS · PLATE 164' },
+      1.9, 0.34, WX, 0.9, WZ - 2.2, 0, false);
+
+    // ── ch. XXXV: afterward, Cupid shows Poliphilo the effigy of Polia and
+    // strikes it with a golden arrow -- sited near the writing chamber above,
+    // since the text places it after his letters are told. Our translation
+    // pp. 457-458; plates #166-168 (hp.db.woodcut_catalog, catalogued a page
+    // or two early -- see research.note on both entries).
+    // xxxv-effigy-of-polia, xxxv-cupid-shoots-the-image.
+    const EX = WX, EZ = WZ + 6;
+    this._m(new THREE.CylinderGeometry(0.32, 0.38, 0.9, 12), this._stoneMat, EX, 0.45, EZ, { outline: true }); // pedestal
+    this._m(new THREE.SphereGeometry(0.24, 12, 10), gold, EX, 1.08, EZ, { cast: false }).scale.set(1, 1.15, 1); // the bust
+    const cupidShooter = this.cast.figure({ name: 'Cupid', h: 0.55, skin: 0xd8b048, winged: true, pose: 'reach' });
+    this._npc('b2_cupid_shooter', cupidShooter, EX + 1.1, EZ + 0.2, -1.4, { sway: 0.05 });
+    // the golden arrow, thorn-feathered and many-coloured, mid-flight
+    const arrowGeo = new THREE.CylinderGeometry(0.012, 0.012, 0.5, 6);
+    this._m(arrowGeo, gold, EX + 0.55, 1.1, EZ + 0.1, { rz: Math.PI / 2 - 0.5, cast: false });
+    this._m(new THREE.ConeGeometry(0.03, 0.08, 6), S.mat(lit ? { color: 0xc83a4a, roughness: 0.6 } : { tone: 0.2 }),
+      EX + 0.32, 1.16, EZ + 0.03, { rz: Math.PI / 2 - 0.5, cast: false }); // the mordant thorn-head
+    this._plaque({ main: 'EFFIGIES POLIAE', sub: 'CVPID SHOWS AND SHOOTS HER IMAGE · PLATES 166–168' },
+      1.8, 0.34, EX, 1.7, EZ - 1.1, 0, false);
+
     // ── the Venus-priestess enthroned, the lovers kissing before her (#163)
     const TX2 = BX - 8, TZ2 = BZ + 4;
     this._m(new THREE.CylinderGeometry(2.6, 2.8, 0.3, 24), stone, TX2, 0.15, TZ2, { cast: false });
