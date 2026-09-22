@@ -2228,6 +2228,17 @@
       ],
       "opened": "2026-09-20",
       "role": "hp-builder"
+    },
+    {
+      "id": "bug-walker-player-pos-nan-idle",
+      "title": "walker.player.pos.x/z goes NaN spontaneously, with no interaction, on both localhost and the deployed page",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "Found 2026-09-21 verifying the ch. XXV-XXXV Book II build (tombs.js._buildBookTwo, commits eff27e6..52a7710) -- not caused by that work: reproduces from a bare #hp auto-launch with ZERO calls made (no hpGoTo, no hpExplore, nothing), on localhost:3457 as much as on t3dy.github.io. Sequence observed repeatedly: fresh load -> sc.camera.position and sc.walker.player.pos both valid ([0,1.7,1792]) -> after a few seconds of pure idle wait (no interaction at all) -> sc.walker.player.pos.x and .z read as NaN (JSON-serializes to null), while .y stays 0 and sc.camera.position.z keeps a valid, sometimes-changing value ([0,1.7,1792] or drifting, e.g. -488.77) -- so x is the only coordinate that goes bad, and it does so before the camera has visibly diverged, which then breaks EVERY subsequent sc.teleport(key)/hpGoTo(string) call: teleportTo() captures the already-NaN player.pos into the transition's `f`rom fields and NaN propagates through the lerp forever after (confirmed: even manually setting player.pos.x back to a valid number does not fix sc.camera.position.x, which stays NaN once corrupted -- a lerp toward a NaN target/from a NaN source cannot recover). Reproduced for unrelated, pre-existing stations too (e.g. 'colossus'), so this is not specific to the Book II precinct or to anything tombs.js does.",
+      "fix": "Find what runs on a timer/idle tick early in HPWorldScene's lifecycle (not on user input) that can compute player.pos.x as 0/0 or divide-by-zero -- candidates: an auto-intro camera sweep, a fog/aerial-perspective update, or a floorAt() raycast that misses all geometry and returns NaN before the ground finishes uploading. Add a NaN guard in Walker's update loop (a position update should never accept a NaN and should log instead of silently propagating it) since right now one bad frame poisons the whole session irrecoverably.",
+      "acceptance": "On a fresh #hp load, wait 15s with zero interaction, then read sc.walker.player.pos.x and sc.camera.position.x: both are finite numbers, and sc.teleport('colossus') afterward lands the walker at a finite, correct position.",
+      "opened": "2026-09-21"
     }
   ]
 }

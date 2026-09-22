@@ -6,7 +6,7 @@
 
 ---
 
-**105 tickets** — 21 open, 1 question, 3 declined, 80 done. By kind: 44 debt, 43 bug, 9 infra, 5 question, 2 perf, 1 feature, 1 feat.
+**106 tickets** — 22 open, 1 question, 3 declined, 80 done. By kind: 44 debt, 44 bug, 9 infra, 5 question, 2 perf, 1 feature, 1 feat.
 
 ---
 
@@ -177,6 +177,17 @@ It is also built at garden scale: deck 4.6 x 3.4 m, three torus arches of radius
 **Files.** `src/scenes/world/nature.js` · `src/scenes/world/materials.js` · `src/systems/Meadow.js`
 
 **See.** bug-garden-trees-never-placed · PLEASURES.md 1 · DECISIONS.md 60 · HANDOVER.md 4.3
+
+
+### `bug-walker-player-pos-nan-idle` — walker.player.pos.x/z goes NaN spontaneously, with no interaction, on both localhost and the deployed page
+
+**○ open** · bug · priority 2 · unassigned
+ · opened 2026-09-21
+
+
+**Evidence.** Found 2026-09-21 verifying the ch. XXV-XXXV Book II build (tombs.js._buildBookTwo, commits eff27e6..52a7710) -- not caused by that work: reproduces from a bare #hp auto-launch with ZERO calls made (no hpGoTo, no hpExplore, nothing), on localhost:3457 as much as on t3dy.github.io. Sequence observed repeatedly: fresh load -> sc.camera.position and sc.walker.player.pos both valid ([0,1.7,1792]) -> after a few seconds of pure idle wait (no interaction at all) -> sc.walker.player.pos.x and .z read as NaN (JSON-serializes to null), while .y stays 0 and sc.camera.position.z keeps a valid, sometimes-changing value ([0,1.7,1792] or drifting, e.g. -488.77) -- so x is the only coordinate that goes bad, and it does so before the camera has visibly diverged, which then breaks EVERY subsequent sc.teleport(key)/hpGoTo(string) call: teleportTo() captures the already-NaN player.pos into the transition's `f`rom fields and NaN propagates through the lerp forever after (confirmed: even manually setting player.pos.x back to a valid number does not fix sc.camera.position.x, which stays NaN once corrupted -- a lerp toward a NaN target/from a NaN source cannot recover). Reproduced for unrelated, pre-existing stations too (e.g. 'colossus'), so this is not specific to the Book II precinct or to anything tombs.js does.
+
+**Acceptance.** On a fresh #hp load, wait 15s with zero interaction, then read sc.walker.player.pos.x and sc.camera.position.x: both are finite numbers, and sc.teleport('colossus') afterward lands the walker at a finite, correct position.
 
 
 ### `debt-chapter-xxi-under-enumerated` — Chapter XXI carried three features for thirty-six pages, and none of them was the island's plan
