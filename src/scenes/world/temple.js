@@ -644,6 +644,53 @@ export const Temple = {
     this._plaque({ main: 'MIRACVLVM ROSARVM', sub: 'THE ROSES SCATTERED, THE SWANS OFFERED, A ROSE-BVSH RISES FROM THE ALTAR TO THE CVPOLA · THREE FRVITS TASTED · PP. 233–234' },
       2.2, 0.36, AX, FY + 0.95, AZ + 2.1, 0, true);
 
+    // ── the giving and tasting of the three fruits (#85, "unbuilt": coverage
+    // said the bush was built but "the giving of the three fruits is not
+    // staged" -- this stages it) ──────────────────────────────────────────
+    // woodcut_catalog #85 (page_seq 221): "Poliphilus and Polia receive
+    // fruits from priestess." The text, our pp. 233-234 (translation/en/
+    // page_233.md, page_234.md): "the sacrificing Priestess having risen,
+    // with matronal decorum -- and Polia too ... both, reassuring me,
+    // invited me into the sacrosanct sacello to enter; and, within, calling
+    // me before, venerating, of the divine Altar, between the Priestess and
+    // Polia genuflecting me, the Priestess, with veteran ceremony, three of
+    // the miraculous fruits extirpated: the one for herself reserved; of the
+    // two, to me one, and to Polia the other, offering. Those ... together,
+    // all three, we tasted." He kneels facing the altar (north, toward the
+    // valves), the two women flanking him, standing on the sacello's south
+    // (back-wall) side of the altar, clear of the book-stand, candelabrum
+    // and blood-characters plane, which all sit on the north (door) side.
+    // No `kneel` pose exists in Cast.js -- the same fix used for the
+    // Cupid's-arrow tableau below (search "genuflecting" further down this
+    // file): height cut to about three-fifths and a forward tilt.
+    {
+      const faceAlt = (x, z) => Math.atan2(AX - x, AZ - z);
+      const [prX, prZ] = [AX - 0.8, AZ - 1.3];
+      const priestessGive = this.cast.nymph({ name: 'Antistita', robe: 0xf0ead8, h: 1.02,
+                                               rank: 'mitre', cutout: null, pose: 'offer' });
+      this._npc('venus_fruit_priestess', priestessGive, prX, prZ, faceAlt(prX, prZ),
+        { label: 'The Antistita', sub: 'THREE FRVITS EXTIRPATED FROM THE BVSH · ONE KEPT FOR HERSELF', sway: 0.03 });
+      this._m(new THREE.SphereGeometry(0.07, 8, 6), fruitM, prX + 0.15, 0.78, prZ + 0.15, { cast: false });
+
+      const [poX, poZ] = [AX, AZ - 1.5];
+      const poliphiloGive = this.cast.figure({ name: 'Poliphilo', h: 0.6, robe: 0x3f4470,
+                                               hat: 'cap', pose: 'reach' });
+      poliphiloGive.rotation.x = 0.16;                              // genuflecting, bowed
+      this._npc('venus_fruit_poliphilo', poliphiloGive, poX, poZ, faceAlt(poX, poZ),
+        { label: 'Poliphilo', sub: 'GENVFLECTING BETWEEN THEM · GIVEN ONE OF THE THREE', sway: 0.02 });
+      this._m(new THREE.SphereGeometry(0.065, 8, 6), fruitM, poX + 0.12, 0.42, poZ + 0.18, { cast: false });
+
+      const [plX, plZ] = [AX + 0.8, AZ - 1.3];
+      const poliaGive = this.cast.nymph({ name: 'Polia', robe: 0xd8c4e8, h: 1.0,
+                                          rank: 'tutulus', cutout: null, pose: 'offer' });
+      this._npc('venus_fruit_polia', poliaGive, plX, plZ, faceAlt(plX, plZ),
+        { label: 'Polia', sub: 'GIVEN THE THIRD FRVIT', sway: 0.03 });
+      this._m(new THREE.SphereGeometry(0.07, 8, 6), fruitM, plX - 0.15, 0.75, plZ + 0.15, { cast: false });
+
+      this._plaque({ main: 'TRIA POMA', sub: '"THE ONE FOR HERSELF RESERVED; OF THE TWO, TO ME ONE, AND TO POLIA THE OTHER" · TASTED TOGETHER, ALL THREE · PP. 233–234' },
+        2.0, 0.34, AX, FY + 0.55, AZ - 1.85, Math.PI, true);
+    }
+
     // ── the great lamp, hung from the cupola on four chains ───────────────
     const LY = PLAT_Y + WALL_H - 0.9;
     for (let k = 0; k < 4; k++) {
