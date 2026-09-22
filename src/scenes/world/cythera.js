@@ -12,6 +12,7 @@
 
 import * as THREE from 'three';
 import { CYTHERA_CLIMBERS, SPECIES, PLAN_SITES } from './constants.js?v=16';
+import { ParticleStream } from '../../systems/Particles.js?v=3';
 
 // DECISIONS.md 2026-09-21 call 67: "I'd like to go back to the relatively
 // smaller island" — Ted, naming Cythera specifically, after walking the
@@ -1939,11 +1940,16 @@ export const Cythera = {
     const GAP = big ? 5.4 : 1.9;                   // the order's own storey height
     const WALL = big ? RC + 4.4 : RC + 0.55;       // the gallery wall behind the columns
     const ARC = big ? RC + 6.2 : RC + 0.62;        // the outer arcade, at the ring's face
+    // ground-order bays, kept for the ram-skull altars below (p. 348: "some,
+    // with even alternation and distribution, filled with figures" — the
+    // altars sit under SOME half-columns, not all, so every other bay).
+    const ramAltarPositions = [];
     for (let q = 0; q < 4; q++) {
       for (let b = 0; b <= 8; b++) {
         // eight bays a quarter, and the cardinal gap for the roads and the cars
         const a = q * Math.PI / 2 + 0.16 + (b / 8) * (Math.PI / 2 - 0.32);
         const x = CX + Math.cos(a) * RC, z = CZ + Math.sin(a) * RC;
+        if (big && b % 2 === 0) ramAltarPositions.push([x, z, a]);
         for (let o = 0; o < ORDERS; o++) {
           const g = new THREE.Group(); g.position.set(x, o * GAP, z); this.scene.add(g);
           this._column(0, 0, H, { order: ['doric', 'ionic', 'corinthian'][o], r: big ? H / 9 : 0.13,
@@ -1988,6 +1994,380 @@ export const Cythera = {
     }
     this._plaque({ main: 'THEATRVM VENERIS', sub: 'XXXII PACES ACROSS · ALABASTER WITHOVT LIME · THREE ORDERS OF ONE HEIGHT · THE AREA OBSIDIAN' },
       big ? 5.2 : 2.6, big ? 0.84 : 0.42, CX, big ? 1.6 : 1.0, CZ + AREA_R - 1.4, 0, true);
+
+    // ── Five named objects from the procession that arrives here ───────────
+    // Built 2026-09-21 for research/coverage.json's xxii-panta-baia-biou-vase,
+    // xxii-vrachivias-spark-urn, xxii-serapis-simulacrum,
+    // xxii-ram-skull-altar-reliefs and xxii-bull-frieze-relief — the last
+    // five plate-attached gaps chapter XXII's amphitheatre carried. Gated on
+    // `big`, same as the true-proportioned geometry above: the small legacy
+    // fallback never got this detail and isn't worth adding it to.
+    if (big) {
+      const S2 = S, lit2 = lit;
+      const DOOR = Math.PI / 2;                // the south gap: the pier, the
+      // triumph car (CZ + RIDGE_R + 34) and the rose-way all sit on this
+      // bearing (see _buildCytheraIsle above) — the door the whole
+      // procession this chapter describes actually walks through.
+      const tx = -Math.sin(DOOR), tz = Math.cos(DOOR);   // ground tangent, for "flanking"
+
+      // -- Capnolina's smoking vase, ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ (our translation p. 340) --
+      // "a little goatish, or earthen, vase, with a narrow orifice, raised
+      // somewhat high and thinning at the bottom... above its dilation...
+      // thirteen most-measured Greek letters... out of which, and through the
+      // vent-holes, leapt forth a misty and sweet-smelling smoke, resolving
+      // into nothing through the air." The last two matrons in the file close
+      // immediately before the car (pp. 339-341); set down at the threshold
+      // the procession has just carried them through.
+      {
+        const clay = S2.mat({ color: 0xb87b3e, roughness: 0.82 });
+        clay.userData.roll = 'an earthen vase, breathing smoke';
+        const vr = 0.30, vh = 0.95;
+        const prof = [
+          [0, 0], [vr * 0.34, 0], [vr * 0.55, vh * 0.08], [vr * 0.74, vh * 0.22],
+          [vr * 0.64, vh * 0.42], [vr * 0.42, vh * 0.62], [vr * 0.22, vh * 0.82],
+          [vr * 0.27, vh * 0.90], [vr * 0.18, vh * 0.97], [vr * 0.18, vh],
+        ].map(([px, py]) => new THREE.Vector2(px, py));
+        const vx = CX + Math.cos(DOOR) * (AREA_R - 1.3) + tx * -1.15;
+        const vz = CZ + Math.sin(DOOR) * (AREA_R - 1.3) + tz * -1.15;
+        this._m(new THREE.LatheGeometry(prof, 20), clay, vx, 0, vz, { outline: true });
+        if (lit2) {
+          const smoke = new ParticleStream({
+            count: 14, source: new THREE.Vector3(vx, vh, vz),
+            target: new THREE.Vector3(vx + 0.3, vh + 1.1, vz + 0.2),
+            color: 0xd8d0c0, size: 0.05, speed: 0.12, arc: 0.5,
+          });
+          smoke.opacity = 0.3; smoke.active = true;
+          this.style.tuneStream(smoke);
+          this.scene.add(smoke.points);
+          this._streams.push(smoke);
+        }
+        this._plaque({ main: 'ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ', sub: 'CAPNOLINA’S VASE · ALL THE THINGS OF LIFE ARE TRIFLING · OVR P. 340' },
+          1.5, 0.3, vx, vh + 0.55, vz, DOOR + Math.PI, true);
+        this._circleCol(vx, vz, 0.4);
+      }
+
+      // -- Vrachivia's emerald spark-urn (our translation pp. 339-340) -------
+      // "an antique little urn... clothed with an inestimable making of
+      // celery-leaf foliage... two little handles... out of which broadish
+      // orifice, flying and crackling, with a most-pleasing pop, sparks leapt
+      // out, running lucent through the air; which then, extinguished, fell
+      // as ashen sparks." The doubled vanitas with the vase above: spark and
+      // smoke, set down together.
+      {
+        const jade = S2.mat({ color: 0x0d7548, roughness: 0.22, metalness: 0.35,
+          emissive: 0x06301d, emissiveIntensity: 0.4 });
+        jade.userData.roll = 'an emerald urn, throwing sparks';
+        const ur = 0.34, uh = 0.82;
+        const prof = [
+          [0, 0], [ur * 0.30, 0], [ur * 0.55, uh * 0.06], [ur * 0.80, uh * 0.20],
+          [ur, uh * 0.40], [ur * 0.90, uh * 0.58], [ur * 0.70, uh * 0.74],
+          [ur * 0.78, uh * 0.88], [ur * 0.66, uh],
+        ].map(([px, py]) => new THREE.Vector2(px, py));
+        const ux = CX + Math.cos(DOOR) * (AREA_R - 1.3) + tx * 1.15;
+        const uz = CZ + Math.sin(DOOR) * (AREA_R - 1.3) + tz * 1.15;
+        this._m(new THREE.LatheGeometry(prof, 20), jade, ux, 0, uz, { outline: true });
+        for (const e of [-1, 1]) {                          // the two little handles
+          this._m(new THREE.TorusGeometry(0.10, 0.03, 6, 10, Math.PI), jade,
+            ux + e * ur * 0.85, uh * 0.62, uz, { ry: DOOR, rz: Math.PI / 2, cast: false });
+        }
+        if (lit2) {
+          const sparks = new ParticleStream({
+            count: 22, source: new THREE.Vector3(ux, uh * 0.9, uz),
+            target: new THREE.Vector3(ux - 0.25, uh * 0.25, uz + 0.3),
+            color: 0xffa050, size: 0.03, speed: 0.5, arc: 0.4,
+          });
+          sparks.opacity = 0.55; sparks.active = true;
+          this.style.tuneStream(sparks);
+          this.scene.add(sparks.points);
+          this._streams.push(sparks);
+        }
+        this._plaque({ main: 'VRACHIVIA’S VRN', sub: 'SPARKS THAT LEAPT OVT, THEN FELL AS ASHEN SPARKS · OVR PP. 339-340' },
+          1.5, 0.3, ux, uh + 0.55, uz, DOOR + Math.PI, true);
+        this._circleCol(ux, uz, 0.4);
+      }
+
+      // -- The tricephalic Serapis simulacrum (our translation p. 344, plate #142) --
+      // "a head of a lion; to the right jutted a fawning dog's head; and to
+      // the left, a head of a rapacious wolf. Which effigy was all contained
+      // and surrounded in a coil of a dragon, emitting fore-sharpened rays...
+      // most-excellently gilt." Macrobius's Time-allegory (Sat. I.20): the
+      // three heads present, past and future, the serpent eternity — sited
+      // opposite the south door, across the area, so the theatre reads Love
+      // under the sign of Time from the moment you cross the threshold.
+      {
+        const bronze = S2.mat({ color: 0x8a6a3a, roughness: 0.55, metalness: 0.4 });
+        const gilt = S2.mat({ color: 0xd4af37, roughness: 0.28, metalness: 0.75 });
+        bronze.userData.roll = 'the simulacrum of Serapis, lion, dog and wolf';
+        const sx = CX + Math.cos(DOOR + Math.PI) * (AREA_R - 1.3);
+        const sz = CZ + Math.sin(DOOR + Math.PI) * (AREA_R - 1.3);
+        this._m(new THREE.CylinderGeometry(0.22, 0.30, 0.16, 4), bronze, sx, 0.08, sz, { ry: Math.PI / 4 });
+        this._m(new THREE.CylinderGeometry(0.16, 0.24, 0.62, 4), bronze, sx, 0.16 + 0.31, sz, { ry: Math.PI / 4 });
+        this._m(new THREE.SphereGeometry(0.06, 8, 6), gilt, sx, 0.62, sz, { cast: false });   // the apple at the breast
+        const headY = 0.90;
+        this._m(new THREE.SphereGeometry(0.17, 10, 8), bronze, sx, headY, sz + 0.05, { outline: true });         // the lion, centre
+        this._m(new THREE.ConeGeometry(0.09, 0.16, 8), bronze, sx, headY - 0.02, sz + 0.22, { rx: Math.PI / 2 }); // the lion's snout
+        this._m(new THREE.SphereGeometry(0.12, 8, 6), bronze, sx + 0.24, headY - 0.04, sz - 0.02);                // the dog, right, fawning
+        this._m(new THREE.SphereGeometry(0.12, 8, 6), bronze, sx - 0.24, headY - 0.04, sz - 0.02);                // the wolf, left, rapacious
+        for (const e of [-1, 1]) {                                                    // their pricked ears
+          this._m(new THREE.ConeGeometry(0.04, 0.09, 6), bronze, sx + e * 0.24, headY + 0.10, sz - 0.02, { cast: false });
+        }
+        const coil = [];                       // the dragon, coiled around the body
+        for (let k = 0; k <= 24; k++) {
+          const t = k / 24, ang = t * Math.PI * 2 * 1.6;
+          coil.push(new THREE.Vector3(sx + Math.cos(ang) * 0.30, 0.20 + t * 0.62, sz + Math.sin(ang) * 0.30));
+        }
+        this._m(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(coil), 32, 0.035, 6, false), gilt, 0, 0, 0, { cast: false });
+        for (let k = 4; k < 24; k += 4) {       // fore-sharpened rays along the coil
+          const p = coil[k];
+          const dx = p.x - sx, dz = p.z - sz, len = Math.hypot(dx, dz) || 1;
+          this._m(new THREE.ConeGeometry(0.025, 0.12, 5), gilt,
+            p.x + (dx / len) * 0.08, p.y, p.z + (dz / len) * 0.08, { cast: false });
+        }
+        const tip = coil[coil.length - 1];      // the dragon's own head, at the top
+        this._m(new THREE.ConeGeometry(0.06, 0.14, 6), gilt, tip.x, tip.y + 0.08, tip.z, { ry: DOOR, cast: false });
+        this._plaque({ main: 'SERAPIS', sub: 'LION, DOG AND WOLF, COILED BY A RAYED DRAGON · MACROBIVS’S TIME · OVR P. 344' },
+          1.4, 0.3, sx, 1.3, sz, DOOR, true);
+        this._circleCol(sx, sz, 0.5);
+      }
+
+      // -- The ram-skull altars, ground order (our translation p. 348, plate #145) --
+      // "Set under the bases of which, becoming little altars lay, and with
+      // the requisite lineament. At the angles of which... hung two bones of
+      // a ram's head... a leafy jewel with pressed foliage... within the
+      // compass of the jewel, egregiously carved, was a satyric little
+      // sacrifice: with a little altar set under a tripod, with an antique
+      // boiling cook-pot, and two nude Nymphs... two little boys... two
+      // lascivious Satyrs... [one] stopped the orifice of a leaky vase." Built
+      // at alternating ground-order half-columns ("some, with even
+      // alternation and distribution") — the text itself says only some
+      // half-columns carry the figured altars; the rest carry "manifold
+      // trophies" and "set figures" that are their own, still-unbuilt gap.
+      const ramTex = this._ramSkullAltarTexture();
+      const ramMat = S2.mat({ color: 0xc8bc9c, roughness: 0.85 });
+      if (!ramMat.map) ramMat.map = ramTex;
+      for (const [ax, az, aa] of ramAltarPositions) {
+        this._m(new THREE.BoxGeometry(0.46, 0.30, 0.30), alab, ax, 0.15, az, { ry: -aa });
+        this._m(new THREE.PlaneGeometry(0.42, 0.42), ramMat,
+          ax - Math.cos(aa) * 0.16, 0.34, az - Math.sin(aa) * 0.16, { ry: -aa + Math.PI / 2, cast: false });
+      }
+      this._plaque({ main: 'THE RAM-SKVLL ALTARS', sub: 'A SATYRIC SACRIFICE CARVED IN EACH FESTOON · P. 348, PLATE 145' },
+        1.6, 0.3, CX, 0.9, CZ + AREA_R + 3.6, 0, true);
+
+      // -- The frieze over the theatre-door (our translation pp. 349-350, plate #146) --
+      // "a most-ancient vase, stuffed, having the orifice of antique and
+      // prependent fronds. And here and there lay a horned bull, prostrate...
+      // and a nude one riding it, with the right hand lifted and gripping
+      // manifold little rods... a nude girl sat, dorsally... held a veiling
+      // cloth... a satyr, the bull's horn grasped... held a balled-up
+      // serpent." Hung across the one gap the column loop above already
+      // leaves open at each cardinal bearing — the door itself, here the
+      // south one the whole procession has just come through.
+      const bullTex = this._bullFriezeTexture();
+      const bullMat = S2.mat({ color: 0xc8bc9c, roughness: 0.85 });
+      if (!bullMat.map) bullMat.map = bullTex;
+      {
+        const fx = CX + Math.cos(DOOR) * RC, fz = CZ + Math.sin(DOOR) * RC;
+        const chord = 2 * RC * Math.sin(0.32 / 2);
+        this._m(new THREE.PlaneGeometry(chord, 1.1), bullMat, fx, H + 0.75, fz,
+          { ry: -DOOR + Math.PI / 2, cast: false });
+      }
+      this._plaque({ main: 'THE BVLL FRIEZE', sub: 'A BACCHIC SACRIFICE OVER THE THEATRE-DOOR · PP. 349-350, PLATE 146' },
+        1.6, 0.3, CX + Math.cos(DOOR) * (RC + 0.4), H - 0.4, CZ + Math.sin(DOOR) * (RC + 0.4), -DOOR + Math.PI / 2, true);
+    }
+  },
+
+  // Ram-skull altar relief — our translation p. 348, plate #145. Same carved
+  // technique as `_reliefTexture` (triumphs.js: bead-and-reel border, then
+  // every shape drawn twice, once offset into an ink shadow and once offset
+  // into a lit highlight) but kept local to this file rather than added as a
+  // new named case there, since this session only has cythera.js to itself.
+  // Drawn once and shared by every altar `_buildAmphitheatre` places, so the
+  // extra draw cost is one texture and one material, not one per altar.
+  _ramSkullAltarTexture() {
+    if (this._ramAltarTex) return this._ramAltarTex;
+    const W = 256, H = 256;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#a89878'; x.fillRect(0, 0, W, H);
+    const ink = '#5c5240', lit = '#e2d6b8';
+    const carve = (draw) => {
+      x.save(); x.translate(0, 1.6); x.fillStyle = ink; x.strokeStyle = ink; draw(); x.restore();
+      x.save(); x.translate(0, -1.1); x.fillStyle = lit; x.strokeStyle = lit; draw(); x.restore();
+    };
+    carve(() => { x.lineWidth = 5; x.strokeRect(8, 8, W - 16, H - 16); });
+
+    // the ram's-head bucranium at the top, horns spiralled
+    const bx = W / 2, by = 56;
+    carve(() => {
+      x.beginPath();
+      x.moveTo(bx - 13, by - 8); x.quadraticCurveTo(bx - 16, by + 16, bx, by + 30);
+      x.quadraticCurveTo(bx + 16, by + 16, bx + 13, by - 8);
+      x.closePath(); x.fill();
+      x.lineWidth = 6;
+      for (const e of [-1, 1]) {
+        x.beginPath();
+        x.moveTo(bx + e * 11, by - 6);
+        x.quadraticCurveTo(bx + e * 34, by - 26, bx + e * 20, by + 6);
+        x.quadraticCurveTo(bx + e * 12, by + 16, bx + e * 26, by + 20);
+        x.stroke();
+      }
+    });
+    // the festoon hung from the horns, framing the little scene below
+    carve(() => {
+      x.lineWidth = 5;
+      for (const e of [-1, 1]) {
+        x.beginPath();
+        x.moveTo(bx + e * 24, by + 10);
+        x.quadraticCurveTo(bx + e * 92, by + 60, bx + e * 60, by + 128);
+        x.stroke();
+      }
+    });
+
+    // within the festoon: the satyric sacrifice — the tripod and cook-pot,
+    // a nymph piping at the fire, a satyr stopping a leaky vase
+    const gy = H - 44;
+    carve(() => {
+      x.lineWidth = 4;
+      x.beginPath(); x.moveTo(bx - 10, gy); x.lineTo(bx - 4, gy - 26); x.lineTo(bx, gy); x.stroke();
+      x.beginPath(); x.moveTo(bx + 10, gy); x.lineTo(bx + 4, gy - 26); x.lineTo(bx, gy); x.stroke();
+      x.beginPath(); x.arc(bx, gy - 30, 13, 0, Math.PI, true); x.fill();
+      const nx = bx - 46;                                 // the nymph, piping, at the left
+      x.beginPath(); x.arc(nx, gy - 46, 8, 0, 7); x.fill();
+      x.beginPath();
+      x.moveTo(nx - 9, gy); x.quadraticCurveTo(nx - 11, gy - 30, nx - 4, gy - 40);
+      x.lineTo(nx + 4, gy - 40); x.quadraticCurveTo(nx + 11, gy - 30, nx + 9, gy);
+      x.closePath(); x.fill();
+      x.lineWidth = 3;
+      x.beginPath(); x.moveTo(nx + 6, gy - 44); x.lineTo(nx + 20, gy - 52); x.stroke();
+      const sx = bx + 46;                                 // the satyr, at the right
+      x.beginPath(); x.arc(sx, gy - 46, 8, 0, 7); x.fill();
+      x.lineWidth = 3;
+      x.beginPath(); x.moveTo(sx - 5, gy - 52); x.lineTo(sx - 10, gy - 60); x.stroke();
+      x.beginPath(); x.moveTo(sx + 5, gy - 52); x.lineTo(sx + 10, gy - 60); x.stroke();
+      x.beginPath();
+      x.moveTo(sx - 9, gy); x.quadraticCurveTo(sx - 11, gy - 28, sx - 4, gy - 40);
+      x.lineTo(sx + 4, gy - 40); x.quadraticCurveTo(sx + 11, gy - 28, sx + 9, gy);
+      x.closePath(); x.fill();
+      x.beginPath(); x.arc(sx - 16, gy - 20, 5, 0, 7); x.fill();  // the leaky vase he stops
+    });
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    this._disp.push(t);
+    this._ramAltarTex = t;
+    return t;
+  },
+
+  // The frieze over the theatre-door — our translation pp. 349-350, plate
+  // #146. Same technique as `_ramSkullAltarTexture` above (and as
+  // `_reliefTexture` in triumphs.js).
+  _bullFriezeTexture() {
+    if (this._bullFriezeTex) return this._bullFriezeTex;
+    const W = 512, H = 192;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const x = c.getContext('2d');
+    x.fillStyle = '#b9ae99'; x.fillRect(0, 0, W, H);
+    const ink = '#6a5f4f', lit = '#e8dfc9';
+    const carve = (draw) => {
+      x.save(); x.translate(0, 2.0); x.fillStyle = ink; x.strokeStyle = ink; draw(); x.restore();
+      x.save(); x.translate(0, -1.4); x.fillStyle = lit; x.strokeStyle = lit; draw(); x.restore();
+    };
+    carve(() => { x.lineWidth = 5; x.strokeRect(9, 9, W - 18, H - 18); });
+
+    const GY = H - 34;
+    carve(() => {
+      x.lineCap = 'round'; x.lineJoin = 'round';
+      const vx = W / 2;                                   // the garlanded vase, at centre
+      x.beginPath();
+      x.moveTo(vx - 20, GY); x.quadraticCurveTo(vx - 24, GY - 40, vx - 10, GY - 58);
+      x.lineTo(vx + 10, GY - 58); x.quadraticCurveTo(vx + 24, GY - 40, vx + 20, GY);
+      x.closePath(); x.fill();
+      x.lineWidth = 4;                                    // the prependent fronds at its orifice
+      for (const e of [-1, 1]) {
+        x.beginPath(); x.moveTo(vx + e * 6, GY - 58); x.lineTo(vx + e * 20, GY - 78); x.stroke();
+      }
+
+      const bull = (bx, face) => {                        // a prostrate bull, feet toward the vase
+        x.beginPath();
+        x.moveTo(bx, GY);
+        x.quadraticCurveTo(bx + face * 40, GY - 6, bx + face * 66, GY - 26);
+        x.quadraticCurveTo(bx + face * 78, GY - 40, bx + face * 60, GY - 46);
+        x.quadraticCurveTo(bx + face * 20, GY - 34, bx, GY - 14);
+        x.closePath(); x.fill();
+        x.lineWidth = 5;                                  // the raised head and horns
+        x.beginPath();
+        x.moveTo(bx + face * 60, GY - 42); x.quadraticCurveTo(bx + face * 74, GY - 60, bx + face * 66, GY - 72);
+        x.stroke();
+        x.beginPath(); x.moveTo(bx + face * 64, GY - 66); x.lineTo(bx + face * 78, GY - 76); x.stroke();
+      };
+      bull(vx - 46, -1);
+      bull(vx + 46, 1);
+
+      const yx = vx + 70;                                 // the nude youth mounted, rods raised
+      x.beginPath(); x.arc(yx, GY - 66, 9, 0, 7); x.fill();
+      x.beginPath();
+      x.moveTo(yx - 9, GY - 30); x.quadraticCurveTo(yx - 11, GY - 52, yx - 3, GY - 60);
+      x.lineTo(yx + 3, GY - 60); x.quadraticCurveTo(yx + 11, GY - 52, yx + 9, GY - 30);
+      x.closePath(); x.fill();
+      x.lineWidth = 4;
+      x.beginPath(); x.moveTo(yx + 6, GY - 58); x.lineTo(yx + 26, GY - 84); x.stroke();
+
+      const gx = vx - 74;                                 // the nude girl, seated dorsally, the veil blown out
+      x.beginPath(); x.arc(gx, GY - 60, 9, 0, 7); x.fill();
+      x.beginPath();
+      x.moveTo(gx - 9, GY - 20); x.quadraticCurveTo(gx - 11, GY - 44, gx - 3, GY - 52);
+      x.lineTo(gx + 3, GY - 52); x.quadraticCurveTo(gx + 11, GY - 44, gx + 9, GY - 20);
+      x.closePath(); x.fill();
+      x.lineWidth = 3;
+      x.beginPath();
+      x.moveTo(gx, GY - 66); x.quadraticCurveTo(gx - 30, GY - 92, gx - 44, GY - 68);
+      x.stroke();
+
+      const satyr = (sx, face, serpent) => {               // a satyr at each end
+        x.beginPath(); x.arc(sx, GY - 60, 8, 0, 7); x.fill();
+        x.lineWidth = 3;
+        x.beginPath(); x.moveTo(sx - face * 5, GY - 66); x.lineTo(sx - face * 11, GY - 74); x.stroke();
+        x.beginPath();
+        x.moveTo(sx - 8, GY - 20); x.quadraticCurveTo(sx - 10, GY - 44, sx - 3, GY - 52);
+        x.lineTo(sx + 3, GY - 52); x.quadraticCurveTo(sx + 10, GY - 44, sx + 8, GY - 20);
+        x.closePath(); x.fill();
+        x.lineWidth = 4;
+        if (serpent) {                                    // the balled-up serpent, one grasps
+          x.beginPath();
+          x.moveTo(sx + face * 8, GY - 48);
+          x.quadraticCurveTo(sx + face * 26, GY - 60, sx + face * 18, GY - 74);
+          x.quadraticCurveTo(sx + face * 10, GY - 82, sx + face * 24, GY - 90);
+          x.stroke();
+        } else {                                          // the swag of fronds, the other
+          x.beginPath();
+          x.moveTo(sx + face * 8, GY - 44);
+          x.quadraticCurveTo(sx + face * 30, GY - 50, sx + face * 40, GY - 30);
+          x.stroke();
+        }
+      };
+      satyr(20, 1, true);
+      satyr(W - 20, -1, false);
+
+      for (const e of [-1, 1]) {                          // acanthus dissolving the bulls' hindquarters
+        const sx0 = e === -1 ? 46 : W - 46;
+        x.lineWidth = 3;
+        x.beginPath();
+        x.moveTo(sx0, GY);
+        x.quadraticCurveTo(sx0 + e * 18, GY - 14, sx0, GY - 28);
+        x.quadraticCurveTo(sx0 - e * 14, GY - 36, sx0 + e * 6, GY - 46);
+        x.stroke();
+      }
+    });
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    t.anisotropy = 4;
+    this._disp.push(t);
+    this._bullFriezeTex = t;
+    return t;
   },
 
   // ── The Prospect of Cythera ──────────────────────────────────────────────

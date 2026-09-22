@@ -5857,8 +5857,9 @@
           "kind": "inscription",
           "plate": 140,
           "source": "our translation (CC0), 1499 p. 340",
-          "status": "unbuilt",
-          "note": "An earthenware vase with a narrow orifice, thirteen Greek letters impressed round its dilation reading ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ -- 'all the things of life are trifling/brief' -- breathing fragrant smoke that 'resolves into nothing through the air'. The philosophical answer to QUIS EVADET/NEMO: none escapes Love, and none escapes transience. Plate #140 ('Earthenware amphora with odoriferous fumes') matches this vase closely by description; per the research block's offset finding, the scan for the paired spark-and-smoke vases (hp1499_p330.jpg) shows both this vase and Vrachivia's (xxii-vrachivias-spark-urn) on one leaf, with the Greek inscription legible. No inscribed smoking vase found in the world.",
+          "status": "built",
+          "built_as": "cythera.js._buildAmphitheatre (the 'Five named objects' block)",
+          "note": "BUILT 2026-09-21. A lathe-turned earthen vase set at the south door threshold (where the procession carrying it arrives, pp. 339-341), with a plaque quoting ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ and its gloss, and a thin particle-smoke stream from its orifice in the three lit render styles. An earthenware vase with a narrow orifice, thirteen Greek letters impressed round its dilation reading ΠΑΝΤΑ ΒΑΙΑ ΒΙΟΥ -- 'all the things of life are trifling/brief' -- breathing fragrant smoke that 'resolves into nothing through the air'. The philosophical answer to QUIS EVADET/NEMO: none escapes Love, and none escapes transience. Plate #140 ('Earthenware amphora with odoriferous fumes') matches this vase closely by description; per the research block's offset finding, the scan for the paired spark-and-smoke vases (hp1499_p330.jpg) shows both this vase and Vrachivia's (xxii-vrachivias-spark-urn) on one leaf, with the Greek inscription legible.",
           "modes": [
             "walk",
             "tour"
@@ -5870,8 +5871,9 @@
           "kind": "object",
           "plate": 139,
           "source": "our translation (CC0), 1499 pp. 339-340",
-          "status": "unbuilt",
-          "note": "A celery-foliage-clad emerald urn from whose broad orifice sparks 'leapt out, running lucent through the air', then fell extinguished as ash -- paired with Capnolina's smoke-vase as a doubled vanitas image (spark and smoke, both vanishing). Plate #139 matches by description. Not built; would be a striking particle-effect object (the world already has `ParticleStream`, imported in triumphs.js, for exactly this kind of effect).",
+          "status": "built",
+          "built_as": "cythera.js._buildAmphitheatre (the 'Five named objects' block)",
+          "note": "BUILT 2026-09-21, paired with the vase above at the south door threshold: a lathe-turned emerald urn with two foliate handles, a `ParticleStream` throwing sparks that arc and die (color 0xffa050, matching the text's 'leapt out, running lucent... fell as ashen sparks'), and a citing plaque. A celery-foliage-clad emerald urn from whose broad orifice sparks 'leapt out, running lucent through the air', then fell extinguished as ash -- paired with Capnolina's smoke-vase as a doubled vanitas image (spark and smoke, both vanishing). Plate #139 matches by description.",
           "modes": [
             "walk",
             "tour"
@@ -5986,8 +5988,9 @@
           "kind": "picture",
           "plate": 142,
           "source": "our translation (CC0), 1499 p. 344",
-          "status": "unbuilt",
-          "note": "Carried with 'special honour and obstinate superstition': a lion head with a fawning dog's head to the right and a rapacious wolf's head to the left, the whole encoiled by a gilt, ray-emitting dragon -- Macrobius's exact Time-allegory (Saturnalia I.20): the three heads are present/past/future, the serpent is eternity. Sets Love's triumph under the sign of Time, the same memento as PANTA BAIA BIOU. Plate #142 ('trophy with three heads of Cerberus and serpent') matches this closely, catalogued at the same page_seq (334) as plate #141, and both are consistent with the single scan I opened at hp1499_p334.jpg showing the tricephalic idol. Not built anywhere in the code.",
+          "status": "built",
+          "built_as": "cythera.js._buildAmphitheatre (the 'Five named objects' block)",
+          "note": "BUILT 2026-09-21 as a standing cult image (not just a tour picture): lion head centre, dog and wolf heads either side, a gilt dragon coiled up a low plinth with small rays, sited across the obsidian Area from the south door so the theatre reads Love under the sign of Time from the threshold. Carried with 'special honour and obstinate superstition': a lion head with a fawning dog's head to the right and a rapacious wolf's head to the left, the whole encoiled by a gilt, ray-emitting dragon -- Macrobius's exact Time-allegory (Saturnalia I.20): the three heads are present/past/future, the serpent is eternity. Plate #142 ('trophy with three heads of Cerberus and serpent') matches this closely.",
           "modes": [
             "tour"
           ]
@@ -6050,8 +6053,9 @@
           "kind": "picture",
           "plate": 145,
           "source": "our translation (CC0), 1499 p. 348",
-          "status": "unbuilt",
-          "note": "Every half-column stands on a little altar carved with a ram's-head bucranium and festoon, and within the festoon's frame a miniature narrative relief: a satyric sacrifice, two nude nymphs piping at a boiling tripod, two boys with vases, two lascivious satyrs, one stopping a leaky vase. Plate #145 ('column base with rams' heads and sacrifice medallion') matches exactly. `_buildAmphitheatre`'s comment mentions 'ram-skull altars with micro-reliefs' as an aspiration but no relief-carving geometry for this scene was found at that location in the code -- the comment describes the text, not a built feature.",
+          "status": "partial",
+          "built_as": "cythera.js._buildAmphitheatre + _ramSkullAltarTexture",
+          "note": "BUILT 2026-09-21, at alternating ground-order half-columns only (16 of the ring's 36) -- 'some, with even alternation and distribution' per the text itself, the rest carrying other, still-unbuilt ornament. Each altar is a small alabaster plinth with a named canvas relief (bucranium, spiralled horns, festoon, and within it the tripod-and-cookpot, a piping nymph and a satyr stopping a leaky vase) drawn in the same carved-relief technique `_reliefTexture` uses elsewhere, kept local to cythera.js rather than added to triumphs.js's shared dispatcher since this session had only cythera.js to itself. `partial` because only the alternating altars are built, not the other columns' 'manifold trophies' and 'set figures'. Every half-column stands on a little altar carved with a ram's-head bucranium and festoon, and within the festoon's frame a miniature narrative relief: a satyric sacrifice, two nude nymphs piping at a boiling tripod, two boys with vases, two lascivious satyrs, one stopping a leaky vase. Plate #145 matches exactly.",
           "modes": [
             "tour"
           ]
@@ -6062,8 +6066,9 @@
           "kind": "picture",
           "plate": 146,
           "source": "our translation (CC0), 1499 pp. 349-350",
-          "status": "unbuilt",
-          "note": "A dense figured panel above the entrance: prostrate bulls at a garlanded vase, a nude youth mounted and about to strike with raised rods, a nude girl seated back-to-back with a billowing veil, satyrs with a coiled serpent and festoons, the bulls' hindquarters dissolving at the panel-ends into acanthus scrollwork. Plate #146 matches. The engine already has a general `_reliefScene` system (triumphs.js line 580 onward, used for the forge and other narrative panels) capable of exactly this kind of carved scene, but this specific bull-relief was not found named or drawn anywhere in grep.",
+          "status": "built",
+          "built_as": "cythera.js._buildAmphitheatre + _bullFriezeTexture",
+          "note": "BUILT 2026-09-21: a single named relief panel (garlanded vase, two prostrate bulls, the mounted youth with raised rods, the seated girl with the wind-blown veil, satyrs with the coiled serpent and a frond-swag, acanthus dissolving the ends) hung across the one gap the column loop already leaves open at the south door -- the door the whole procession this chapter describes actually walks through. A dense figured panel above the entrance: prostrate bulls at a garlanded vase, a nude youth mounted and about to strike with raised rods, a nude girl seated back-to-back with a billowing veil, satyrs with a coiled serpent and festoons, the bulls' hindquarters dissolving at the panel-ends into acanthus scrollwork. Plate #146 matches.",
           "modes": [
             "tour"
           ]
