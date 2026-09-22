@@ -48,7 +48,7 @@ import { Approach } from './world/approach.js?v=15';
 import { Portal } from './world/portal.js?v=31';
 import { Palace } from './world/palace.js?v=32';
 import { Triumphs } from './world/triumphs.js?v=17';
-import { Tombs } from './world/tombs.js?v=17';
+import { Tombs } from './world/tombs.js?v=18';
 import { Temple } from './world/temple.js?v=16';
 import { Cythera } from './world/cythera.js?v=20';
 import { Rollup } from './world/rollup.js?v=15';
@@ -323,7 +323,7 @@ export class HPWorldScene {
     _in('piazza', () => {
       this._buildPiazza();
       this._buildColossalHorse();
-      this._placeAt(28, 168, 0, () => this._buildElephant());
+      this._placeAt(28, 168, 0, () => { this._buildElephant(); this._buildPorchQueenSarcophagus(); });
       this._placeColossus(-76, 176);
       this._buildWaterLabyrinth();
       this._buildRills();

@@ -191,6 +191,70 @@ export const Tombs = {
     this._hiero = { ant, ele: eleG };
   },
 
+  // ── The Queen's sarcophagus, inside the Elephant (p. 40, plate #14) ──────
+  //
+  // Continuing "towards the forepart of the Olyphant" past the King's tomb
+  // (our p. 39, plate #13 — marked in the world only by the door and the
+  // everlasting lamp in _buildElephant), Poliphilo finds "such an other
+  // fashioned sepulcher as the former, with a stature or image standing
+  // thereupon as the other, sauing that it was a Queene, who lyfting vp hir
+  // right arme with hir formost finger, poynted towards that part behinde hir
+  // shoulders, and with the other shee helde a little table fast in hir hand"
+  // (Dallington 1592, pp. 51-52; our translation, translation/en/page_040.md,
+  // "Chapter IV"; hp.db woodcut_catalog #14 "Sarcophagus with nude Queen
+  // figure", catalog_number 14 / page_seq 30). Her tablet carries, in three
+  // tongues, QVISQVIS ES, QVANTVNCVNQVE LIBVERIT HVIVS THESAVRI SVME AD
+  // MONEO. AVFER CAPVT. CORPVS NE TANGITO — "Whoever you are, take as much
+  // of this treasure as you please. But I warn you: take away the head. Do
+  // not touch the body." The 1499 prints Hebrew and Greek beside the Latin;
+  // only the Latin is carried here, matching the loss our own translation's
+  // page notes already record.
+  //
+  // research/coverage.json (porch-sarcophagus-queen) found the OBJECT TYPE
+  // built — tombs.js already builds sarcophagi at the Polyandrion — but not
+  // THIS sarcophagus. Placed beside the elephant's own door rather than
+  // behind it: the beast's hollow interior is not modelled anywhere in the
+  // world (the King's tomb is marked by the door and the lamp alone, nothing
+  // built behind them), so this stands as the visible marker of what the
+  // text says lies within, the same abstraction the King's tomb already
+  // uses. Called from HPWorldScene's `_placeAt(28, 168, 0, ...)` for the
+  // elephant, so `this.scene` here is that placement group and (x, y, z) are
+  // ITS frame — not rotated by the elephant model's own extra π turn, the
+  // same convention _buildElephant's own plaques already use (portal.js,
+  // "_plaque adds to the scene, not to g").
+  _buildPorchQueenSarcophagus() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const X = -1.3, Z = -1.0;                  // west of the door and the steps, clear of both
+    // the sarcophagus: a fitted chest and a lid, cut from the same stone as
+    // the elephant's own porphyry base
+    this._m(new THREE.BoxGeometry(1.0, 0.5, 0.6), this._stoneMat, X, 0.25, Z, { outline: true });
+    const lid = this._m(new THREE.BoxGeometry(1.08, 0.14, 0.68), this._darkStoneMat, X, 0.57, Z);
+    lid.rotation.y = 0.04;
+    this._circleCol(X, Z, 0.75);
+    // the Queen, nude, standing on the lid. The shared "point" pose raises
+    // and extends the right arm; it does not by itself reach BEHIND the
+    // shoulder the way the text has her do, so the pivot is swung round its
+    // own vertical axis after the fact to bring the extended hand back over
+    // her shoulder rather than out in front of her.
+    const q = this.cast.figure({ name: 'porch-queen', h: 0.56, robe: null, pose: 'point' });
+    q.position.set(X, 0.64, Z);
+    if (q.userData.armR) {
+      q.userData.armR.rotation.y = Math.PI * 0.82;
+      q.userData.armR.rotation.z = -1.9;
+    }
+    this.scene.add(q);
+    // "with the other shee helde a little table fast in hir hand" — the
+    // closed tablet, in the left hand
+    this._m(new THREE.BoxGeometry(0.1, 0.13, 0.02),
+      woodcut ? S.mat({ tone: 0.3 }) : S.mat({ color: 0xcabf9e, roughness: 0.6 }),
+      X - 0.13, 0.64 + 0.56 * 0.62, Z + 0.1, { cast: false });
+    this._plaque({ main: 'QVISQVIS ES, QVANTVNCVNQVE LIBVERIT HVIVS THESAVRI SVME. AT MONEO.',
+                   sub: 'WHOEVER YOV ARE, TAKE AS MVCH OF THIS TREASVRE AS YOV PLEASE · BVT I WARN YOV · P. 40 · PLATE #14' },
+      1.9, 0.3, X, 0.94, Z + 0.42, 0, true);
+    this._plaque({ main: 'AVFER CAPVT. CORPVS NE TANGITO.', sub: 'TAKE AWAY THE HEAD · DO NOT TOVCH THE BODY' },
+      1.2, 0.3, X, 0.62, Z + 0.42, 0, true);
+  },
+
   // ── The ciborium (p. 246, plate #94) ────────────────────────────────────
   // "sexangular, with the bases upon a solid stone of Ophite, of the same
   // figure, fixed in the pavement; and six little columns, distant one from
