@@ -11,6 +11,28 @@ Directional calls made mid-build, recorded so they don't get re-litigated. Newes
 
 ---
 
+## 2026-09-21 — 67. Call 54 is partly reversed: the world shrinks back down, and gaps grow only when a building needs them
+
+*Reverses the SPACING half of call 54, keeps the SCALE half. Full text in
+[`decisions/2026-09.md`](decisions/2026-09.md).*
+
+Ted, after walking the deployed true-scale build: *"I think I've changed my mind about having
+things super spread out. I'd like to go back to the relatively smaller island, although we
+should move things apart as necessary as we add more buildings. Highest priority is to make
+sure all the scenes of the woodcuts have analogs in our virtual world. And we have a lot of
+work to do making the buildings beautiful and the gardens filled with plants that look like
+the plants named in the novel or our scholarship."*
+
+Monument and garden SIZE against the book's own numbers stays true scale (the pyramid is still
+1,139.6 m). The one-stadium (185 m) DEFAULT GAP invented between every unstated precinct —
+what actually made the walk "mostly empty spaces" — drops to 30 m (`THRESHOLD`), with a 75 m
+tier kept for the two gaps that carry real textual "distance in words." The valley's reveal
+approach halves (10→5 stadia) and the crossing trims (6→4). Cythera, named specifically,
+scales to 45% of its literal 1,400 m diameter with all internal ring proportions preserved.
+Standing priority becomes: `research/coverage.json`'s 246 unbuilt / 42 partial features first
+(every woodcut gets an analog), then a building-beauty pass, then species-true garden
+planting. The true-scale infill tickets are reprioritised, not discarded.
+
 ## 2026-09-20 — 65. One Controls button and panel for every mode, not seven ad hoc places
 
 *Ted: "I want to make sure that there are keyboard commands and mouse inputs and that there
