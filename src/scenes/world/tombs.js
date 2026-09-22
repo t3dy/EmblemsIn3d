@@ -800,6 +800,80 @@ export const Tombs = {
     this._npc('b2_polia_drag', poliaDrag, dragCorner.x + 1.3, dragCorner.z + 0.8, 2.4,
       { label: 'Polia', sub: 'DRAGGING HIM BY THE COLD FEET · PLATE 153', sway: 0.03 });
 
+    // ── ch. XXVII: Cupid's fiery-chariot nightmare, in the agrestic grove
+    // beyond the temple -- Polia's dream-vision of two chained girls tortured
+    // and killed for a heart that would not feel. Our translation p. 400-402;
+    // plates #154-156 (hp.db.woodcut_catalog, catalogued under ch. XXVI's page
+    // range -- see research.note on the plate/text mismatch). A DIFFERENT,
+    // darker vision from the gentle ice/fire triumph-chariots already built in
+    // Polia's bed-chamber below (Diana's stags, Venus's swans) -- this is a
+    // punishment vehicle in a dark wood, not a sky-borne triumph, so it gets
+    // its own clearing rather than reusing that geometry.
+    // xxvii-two-damsels-chained, xxvii-fiery-chariot, xxvii-cupid-tormentor,
+    // xxvii-cupid-slays-with-blade, xxvii-beast-feast, xxvii-hearts-and-viscera-thrown.
+    const GX = BX - 22, GZ = BZ - 16;
+    const woodGround = S.mat(lit ? { color: 0x2c3320, roughness: 0.98 } : { tone: 0.03 });
+    this._m(new THREE.CircleGeometry(7.5, 28), woodGround, GX, 0.02, GZ, { rx: -Math.PI / 2, cast: false });
+    // a rough thicket wall round the clearing -- "a shrubbery, and shady wood...
+    // much impeded and pathless" (p. 399), enough to read as a wood and not
+    // the manicured gardens everywhere else in the precinct
+    for (let i = 0; i < 8; i++) {
+      const a = i / 8 * Math.PI * 2;
+      this._hedge(GX + Math.cos(a) * 7.2, 0.5, GZ + Math.sin(a) * 7.2, 2.6, 1.1, 1.0, { ry: a });
+    }
+    // the fiery chariot -- ignited vehicle, white-hot chains for a yoke
+    const chariot = this.cast.props.chariot(1.25, { color: 0xa8341a });
+    chariot.position.set(GX, 0, GZ - 1.2); chariot.rotation.y = Math.PI; this.scene.add(chariot);
+    const chariotFire = this.cast.props.fire(0.55); chariotFire.position.set(0, 0.7, 0.3); chariot.add(chariotFire);
+    const yokeMat = S.mat(lit ? { color: 0xfff0c0, roughness: 0.15, metalness: 0.2 } : { tone: 0.02 });
+    this._m(new THREE.BoxGeometry(2.2, 0.09, 0.09), yokeMat, GX, 0.95, GZ - 2.15, { cast: false });
+    // two doleful girls, dishevelled, chained by white-hot steel to the yoke
+    const damselPos = [[-1.3, -2.9], [1.3, -2.9]];
+    for (let i = 0; i < 2; i++) {
+      const [ox, oz] = damselPos[i];
+      const damsel = this.cast.nymph({ name: 'damsel_' + i, robe: 0xe8c8a8, h: 0.9, pose: 'reach', cutout: null });
+      this._npc('b2_damsel_' + i, damsel, GX + ox, GZ + oz, i === 0 ? -0.8 : 0.8, { sway: 0.06 });
+      // a chain of small links from her bound wrists back to the yoke ends
+      const wristX = GX + ox * 0.75, wristZ = GZ + oz * 0.8, wristY = 0.75;
+      const yokeEndX = GX + (i === 0 ? -1.1 : 1.1), yokeEndZ = GZ - 2.15, yokeEndY = 0.95;
+      for (let k = 0; k < 4; k++) {
+        const t = k / 3;
+        this._m(new THREE.TorusGeometry(0.055, 0.016, 5, 8), yokeMat,
+          wristX + (yokeEndX - wristX) * t, wristY + (yokeEndY - wristY) * t, wristZ + (yokeEndZ - wristZ) * t,
+          { cast: false });
+      }
+    }
+    // Cupid as executioner, hovering over the ardent vehicle -- "a flame-
+    // bearing, and without measure furious... boy" (p. 400), fire-lit rather
+    // than the gilt Cupid of the Book I triumph-cars or the Venus shrine
+    const cupidTormentor = this.cast.figure({ name: 'Cupid', h: 0.55, skin: 0xd8804a, winged: true, pose: 'point' });
+    cupidTormentor.position.set(GX, 2.1, GZ - 1.6); this.scene.add(cupidTormentor);
+    this._hovers.push({ g: cupidTormentor, y: cupidTormentor.position.y, phase: 1.1 });
+    // Cupid dismounted, the killing blow -- "with a soliferrum... and cutting
+    // rhomphaea... through the middle of their pulsing heart" (p. 401)
+    const cupidSlayer = this.cast.figure({ name: 'Cupid', h: 0.55, skin: 0xd8804a, winged: true, pose: 'reach' });
+    this._npc('b2_cupid_slayer', cupidSlayer, GX, GZ - 3.6, Math.PI, { sway: 0.04 });
+    this._m(new THREE.BoxGeometry(0.035, 0.5, 0.09), silver, GX + 0.32, 0.75, GZ - 3.6, { rz: 0.3, cast: false });
+    this._m(new THREE.CylinderGeometry(0.012, 0.02, 0.7, 6), this._trunkMat, GX - 0.32, 0.75, GZ - 3.6, { rz: -0.35, cast: false });
+    // the pack: dogs, a lion, a wolf, eagles, kites and vultures (the text
+    // names six; the plate's caption simplifies to three) converging on the
+    // bodies, and the hearts and viscera thrown to the birds (p. 402)
+    const wolf = this.cast.animals.wolf(0.6); wolf.position.set(GX - 2.1, 0, GZ - 1.6); wolf.rotation.y = 0.6; this.scene.add(wolf);
+    const dog = this.cast.animals.dog(0.55); dog.position.set(GX + 2.2, 0, GZ - 1.9); dog.rotation.y = -0.5; this.scene.add(dog);
+    const lion = this.cast.animals.lion(0.65); lion.position.set(GX - 1.5, 0, GZ - 3.8); lion.rotation.y = 1.2; this.scene.add(lion);
+    const eagle = this.cast.animals.eagle(0.6); eagle.position.set(GX + 1.4, 1.6, GZ - 4.0); eagle.rotation.y = -1.0; this.scene.add(eagle);
+    const kite = this.cast.animals.bird(0.6, { color: 0x6a4a2a, flying: true }); kite.position.set(GX + 0.4, 2.0, GZ - 2.6); this.scene.add(kite);
+    const vulture = this.cast.animals.bird(0.6, { color: 0x4a4238, flying: true }); vulture.position.set(GX - 0.6, 1.8, GZ - 2.4); this.scene.add(vulture);
+    // the living hearts, thrown to the fierce fowls -- two small red spheres,
+    // held in the air the way the bed-chamber's chariots hover
+    for (const [hx, hz, ph] of [[GX + 0.4, GZ - 2.4, 0.4], [GX - 0.6, GZ - 2.2, 2.0]]) {
+      const heart = this._m(new THREE.SphereGeometry(0.05, 8, 6), S.mat(lit ? { color: 0x9a1a1a, roughness: 0.6 } : { tone: 0.25 }),
+        hx, 1.7, hz, { cast: false });
+      this._hovers.push({ g: heart, y: heart.position.y, phase: ph });
+    }
+    this._plaque({ main: 'SOMNIVM POLIAE · CVRRVS IGNEVS', sub: 'CVPID PVNISHES TWO WOMEN · PLATES 154–156' },
+      2.2, 0.4, GX, 0.95, GZ + 3.6, 0, true);
+
     // ── Polia's bed-chamber, and the vision through its window (#160)
     const CX2 = BX + 8, CZ2 = BZ + 4;
     this._m(new THREE.BoxGeometry(5.0, 0.3, 4.4), dark, CX2, 0.15, CZ2, { cast: false });
