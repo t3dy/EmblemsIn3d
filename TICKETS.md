@@ -63,6 +63,8 @@ COST ESTIMATE: ~74k triangles, ~19 draw calls, on the _isleGrove model (cythera.
 
 **Risk.** Build in a NEW module src/scenes/world/infill.js so palace.js, temple.js and cythera.js stay free for the builders already in them. HPWorldScene.js is the serialization point -- one writer at a time. The rock ring must not become a second valley: p. 134 says dry, gnawed, grassless spurs, not cliffs, and _meadowClearance already masks grass over the whole stony seat.
 
+2026-09-21 (DECISIONS.md call 67): reprioritised, not discarded. This span is three_doors' own gap (two stadia = 370 m, kept a NARRATIVE_GAP under call 67 because the country is named as a country -- but that gap is now 75 m, not 370), so the river-and-bridge content this ticket sized is filling ground about a fifth as long. Re-measure before building; the bridge and grove are still coverage-queue material, just smaller ground to fill them in.
+
 **Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
 
 **See.** RETHINK.md 4 · research/infill_plan.json G3 · translation/en/page_133.md · translation/en/page_134.md · DIRECTIONS.md 5
@@ -93,6 +95,8 @@ COST ESTIMATE: ~125k triangles, ~16 draw calls.
 **Acceptance.** From the Vertumnus altar on the deployed page the Temple of Venus is NOT visible across open grass; it appears when the walker reaches the aimed road, and not before. The hedges measure 1.48 m high. Palms alternate strictly with fruit trees along the hedge lines. The conifer hills close the horizon on both flanks. hpDiag() before and after in the commit message.
 
 **Risk.** Ten named fruit species at two draw calls each is twenty calls for the planting alone; group them into four crown types to hold it near eight, as _isleGrove does. The 350 m lateral jog is a separate question (question-lateral-offsets-of-the-last-four-precincts) -- build the orchard across the jog rather than waiting for that call, since the orchard is what would justify it.
+
+2026-09-21 (DECISIONS.md call 67): reprioritised, not discarded. venus_temple's own gap was one of the ten filler defaults and dropped from 185 m (one stadium) to 30 m, a sixth the span the compartment count and road length here were sized against. Re-measure before building.
 
 **Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
 
@@ -125,6 +129,8 @@ The book gives the remedy in the same stretch it describes: "wide, straight, fou
 **Acceptance.** From the triumphs to the shore a walker can reach every station on made ground without crossing unmarked sward, and each branch reads as a road (kerb, gravel, or the book's hedged four-way road). Checked by walking the route on the deployed page, not by reading the diff.
 
 **Risk.** The path plane is one draw call and polygon-offset against the sward; branches must share pathMat and its polygonOffset settings or they will z-fight at 13.7 km under the logarithmic depth buffer -- the failure the existing comment records. An alternative fix is to reduce the lateral offsets in scripts/plan_sites.py, but those are plan data and belong to Ted (question-lateral-offsets-of-the-last-four-precincts).
+
+2026-09-21 (DECISIONS.md call 67): reprioritised, not discarded. The default gap this dog-legs across shrank from one stadium (185 m) to 30/75 m, so the unmarked-ground crossings this ticket measured (486, 509, 567 m centre to centre) are now roughly a third that size. The path-plane fix is still needed -- the lateral offsets did not change -- but the acceptance walk should be re-measured against the smaller plan before this is picked up.
 
 **Files.** `src/scenes/world/approach.js`
 
@@ -243,6 +249,8 @@ COST ESTIMATE: ~72k triangles, ~10 draw calls -- about 74 merged arches at 2.5 m
 **Acceptance.** On the deployed page, from inside the arbour the triumph cars are not visible at any point; they appear in one step at the north mouth; a turf seat stands at the mouth where the book has him sit. The arbour's crown clears 4.5 m. hpDiag() before and after.
 
 **Risk.** Do not leave gaps in the planting: a tunnel that leaks the reveal is worse than no tunnel. Check by walking it, not by counting instances. _turfSeat (nature.js:161) exists; reuse it rather than modelling a bench.
+
+2026-09-21 (DECISIONS.md call 67): reprioritised, not discarded. The evidence above calls the 185 m gap (triumphs' own, one stadium) "the right length for it" -- that default is now 30 m, so the arbour this ticket describes needs to be re-sized to the smaller span, not built at the old length. Still coverage-queue material.
 
 **Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
 

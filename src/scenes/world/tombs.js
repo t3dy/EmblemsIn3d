@@ -11,7 +11,7 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { DOORS } from './constants.js?v=15';
+import { DOORS } from './constants.js?v=16';
 
 export const Tombs = {
   // ── The Polyandrion — the ruined temple of the dead ───────────────────────

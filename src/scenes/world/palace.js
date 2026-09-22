@@ -12,7 +12,7 @@
 
 import * as THREE from 'three';
 import { ParticleStream } from '../../systems/Particles.js?v=3';
-import { METALS, SENSE_NYMPHS, shiftOf, PLAN_SITES } from './constants.js?v=15';
+import { METALS, SENSE_NYMPHS, shiftOf, PLAN_SITES } from './constants.js?v=16';
 import { isVariant } from '../../systems/AssetVariants.js?v=12';
 
 export const Palace = {

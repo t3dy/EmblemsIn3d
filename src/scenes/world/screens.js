@@ -30,7 +30,7 @@
 // Sizes are the book's where the book gives them; each is cited at its use.
 
 import * as THREE from 'three';
-import { PLAN_SITES } from './constants.js?v=15';
+import { PLAN_SITES } from './constants.js?v=16';
 
 export const Screens = {
 

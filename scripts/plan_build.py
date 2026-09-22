@@ -15,11 +15,14 @@ precinct before it. Every one of those three numbers is either
 **Two rules, and they exist to stop the discretionary half of this table from quietly becoming
 the whole of it.**
 
-1. **An unstated gap is one stadium of clear ground between precinct edges.** 185 m is the book's
-   own unit of long distance, it is a walk of about 37 s and a run of 12, and using one figure
-   everywhere means the world's spacing cannot drift into being an accident. Where the book
-   insists on distance in words rather than numbers — *"a farre off"*, a wandering, a whole
-   chapter of song — the gap is larger, in stadia, and the passage is cited.
+1. **An unstated gap is a two-tier default, not one stadium of clear ground.** DECISIONS.md
+   2026-09-21 call 67 reverses the SPACING half of call 54: walking the deployed true-scale
+   build, Ted judged the one-stadium (185 m) default gap "mostly empty spaces," not the
+   buildings' own true size. The default for a precinct with no textual distance at all drops
+   to **`THRESHOLD` = 30 m** — a real felt arrival at the next place. Where the book insists on
+   distance in words rather than numbers — *"a farre off"*, a wandering, a whole chapter of
+   song — the gap keeps a wider **`NARRATIVE_GAP` = 75 m**, since it is still carrying a
+   textual claim, just not a numeric one. `stated` gaps are untouched either way.
 2. **Every `ours` distance is written in STADIA, never in round metres.** The first draft of this
    table came out 16.2 km long, of which 12.7 km was invention — a ratio that makes the book's
    own measurements decoration. Forcing each guess to be *n stadia* makes it legible as a guess,
@@ -42,7 +45,10 @@ OUT_JSON = ROOT / 'research' / 'plan.json'
 OUT_MD = ROOT / 'research' / 'plan.md'
 CONSTANTS = ROOT / 'src' / 'scenes' / 'world' / 'constants.js'
 
-STADIUM = 185.0          # the default unstated gap, and the unit every `ours` distance is in
+STADIUM = 185.0          # the book's own unit of long distance; still used for `st(n)` below
+THRESHOLD = 30.0         # DECISIONS.md 2026-09-21 call 67: the new default unstated gap
+NARRATIVE_GAP = 75.0     # call 67: the wider gap for the two precincts with textual "distance
+                         # in words" — great_oak and three_doors
 PACE = 1.48
 
 
@@ -71,8 +77,9 @@ PRECINCTS = [
                    'which is the whole effect')),
 
     dict(key='wood', name='The Dark Wood', chapter='I',
-         gap=STADIUM, depth=st(3), width=st(4), x=0, keys=['wood'],
-         gap_src=('ours', 'he enters it off the plain "a pretty way" (Dall. p. 14) — one stadium'),
+         gap=THRESHOLD, depth=st(3), width=st(4), x=0, keys=['wood'],
+         gap_src=('ours', 'he enters it off the plain "a pretty way" (Dall. p. 14) — the filler '
+                  'default is now 30 m (call 67), not one stadium'),
          size_src=('ours', 'no path in and none out; he wanders right, left, back and forward, '
                    'and it is the Hercynian forest by name. THREE STADIA deep is two minutes of '
                    'walking to cross even going straight, which is the least that can carry '
@@ -87,31 +94,34 @@ PRECINCTS = [
                    'from "high and fertlesse mountaines"')),
 
     dict(key='great_oak', name='The Great Oak in the Green Mead', chapter='I',
-         gap=st(3), depth=st(2), width=st(2), x=90, keys=['great_oak'],
+         gap=NARRATIVE_GAP, depth=st(2), width=st(2), x=90, keys=['great_oak'],
          gap_src=('ours', 'he reaches it only after LOSING the river while chasing the song, so '
                   'it is separated from the water by a wandering, not adjacent to it '
-                  '(DIRECTIONS.md §3 #4). Three stadia — the one place before the valley where the '
-                  'book insists on distance in words rather than numbers'),
+                  '(DIRECTIONS.md §3 #4). NARRATIVE_GAP = 75 m (call 67) — wider than the 30 m '
+                  'filler default because this is the one place before the valley where the book '
+                  'insists on distance in words rather than numbers, not just an unstated gap'),
          size_src=('ours', '"a spacious greene mead" — the oak wants a field to stand alone in')),
 
     dict(key='palm_plain', name='The Palm and the Wolf', chapter='II',
-         gap=STADIUM, depth=st(2), width=st(3), x=-60, keys=['palm_plain'],
-         gap_src=('ours', 'the second dream begins here; one stadium'),
+         gap=THRESHOLD, depth=st(2), width=st(3), x=-60, keys=['palm_plain'],
+         gap_src=('ours', 'the second dream begins here; the filler default is now 30 m '
+                  '(call 67), not one stadium'),
          size_src=('ours', 'a low rise scattered with trees "growing distantly one from another", '
                    'then a sandy gravelly plain with ONE date palm. The wolf appears on the '
                    'RIGHT — 1499 p. 21, dextra, against Dallington\'s "left" (DIRECTIONS.md §4)')),
 
     dict(key='valley', name='The Valley of the Approach', chapter='II–III',
-         gap=STADIUM, depth=st(10), width=1139.6, x=0, keys=['valley'],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=st(5), width=1139.6, x=0, keys=['valley'],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('stated+ours', 'the WIDTH is stated: the valley span is the pyramid\'s base, '
                    '"passi vinti et stadii sei" = 1 139.6 m (1499 l. 905; DIMENSIONS.md §2). The '
                    'LENGTH is ours: the pyramid is ~785 m tall and must first appear as "the '
                    'forme of a tower of an incredible heygth, with a spyre vnperfectlie '
-                   'appearing" and then grow "by little and little" over a walk. TEN STADIA: at '
-                   '1 850 m an 865 m spire stands about 25° high and grows to fill the sky, '
-                   'which is the effect the passage describes. It is the largest single guess '
-                   'in this table and the one most worth arguing with')),
+                   'appearing" and then grow "by little and little" over a walk. FIVE STADIA '
+                   '(925 m), halved from the ten-stadia figure by DECISIONS.md call 67: the '
+                   'reveal is worth keeping, but at 1 850 m it was reveal stretched into '
+                   'padding, and the remaining approach is to be filled with incident — the '
+                   'valley\'s own build-queue items — rather than raw distance')),
 
     dict(key='piazza', name='The Court before the Porch', chapter='III',
          gap=0, depth=44.4, width=1139.6, x=0, keys=['horse', 'elephant', 'colossus'],
@@ -132,8 +142,9 @@ PRECINCTS = [
                    '10 paces = 14.8 m of clearance to the cliff on each side')),
 
     dict(key='wooded_country', name='The Wooded Country and the Bridge', chapter='VI',
-         gap=STADIUM, depth=st(4), width=st(5), x=-120, keys=['fields'],
-         gap_src=('ours', 'the vaults come out the far side of the pyramid; one stadium'),
+         gap=THRESHOLD, depth=st(4), width=st(5), x=-120, keys=['fields'],
+         gap_src=('ours', 'the vaults come out the far side of the pyramid; the filler default '
+                  'is now 30 m (call 67), not one stadium'),
          size_src=('ours', '"silvosa contrata circunclusa dall\'arborifera montagna" (1499 '
                    'll. 2800–2813): a wooded district RINGED by a tree-bearing mountain, with the '
                    'bridge whose spring divides right and left. A ring needs its diameter: five '
@@ -147,8 +158,8 @@ PRECINCTS = [
          size_src=('ours', 'the book gives the building\'s ornament, not its span')),
 
     dict(key='cypress_avenue', name='The Cypress Avenue', chapter='VIII',
-         gap=STADIUM, depth=740, width=40, x=0, keys=[],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=740, width=40, x=0, keys=[],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('stated', 'FOUR STADIA = 740 m (Dall. pp. 123–124) — the longest stated '
                    'distance in Book I and the only explicit inter-station measurement in the '
                    'book. Periwinkle over the whole floor of it; closed by a citron-orange-lemon '
@@ -173,17 +184,18 @@ PRECINCTS = [
                    'bug-artificial-gardens-wrong-side-of-portal are both this number')),
 
     dict(key='polia_garden', name="Polia's Ivied Garden", chapter='XII–XIII',
-         gap=STADIUM, depth=141, width=141, x=0, keys=['polia'],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=141, width=141, x=0, keys=['polia'],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('stated', '100 arches of 3 paces round the garden (Dall. p. 182) = 444 m of '
                    'circumference, so **141 m across**, the arcade 5 paces = 7.4 m high. The '
                    'world gives this station a radius of 7. DIMENSIONS.md §3 calls that single '
                    'number the clearest measure of the compression')),
 
     dict(key='three_doors', name='The Three Doors', chapter='XIII',
-         gap=st(2), depth=st(1), width=st(1.5), x=0, keys=['three_doors'],
+         gap=NARRATIVE_GAP, depth=st(1), width=st(1.5), x=0, keys=['three_doors'],
          gap_src=('ours', 'reached across "a plentiful seate and pleasant Countrey" (Dall. '
-                  'p. 192) — two stadia, because the country is named as a country'),
+                  'p. 192) — NARRATIVE_GAP = 75 m (call 67), wider than the 30 m filler default, '
+                  'because the country is named as a country rather than left unstated'),
          size_src=('ours', 'the doors are HEWN OUT OF THE LIVING ROCK in "abrupt and wilesome '
                    'hilly places… without any greene grasse or hearbe" (Dall. p. 192), not a '
                    'free-standing wall. The precinct is the rock face and the stony highland '
@@ -191,22 +203,22 @@ PRECINCTS = [
                    'approachable in any order (DIRECTIONS.md §4)')),
 
     dict(key='triumphs', name='The Four Triumphs', chapter='XIV',
-         gap=STADIUM, depth=st(2), width=st(1.5), x=0, keys=['triumphs'],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=st(2), width=st(1.5), x=0, keys=['triumphs'],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('ours', 'processional — the cars come TO him, so the ground must be long '
                    'enough for a triumph to arrive along and pass. Each car is drawn by six '
                    'beasts with a riding nymph to each')),
 
     dict(key='vertumnus', name='Vertumnus, Pomona and the Rite of Priapus', chapter='XV–XVI',
-         gap=STADIUM, depth=st(1), width=st(1.5), x=150, keys=['priapus'],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=st(1), width=st(1.5), x=150, keys=['priapus'],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('stated+ours', 'the square enclosure with the palms is quickset 1 pace high '
                    '(Dall. p. 253); the orchard hedge of juniper and box is one pace (ch. XV, '
                    'enumerated 2026-09-17). The precinct itself is ours')),
 
     dict(key='venus_temple', name='The Temple of Venus Physizoa', chapter='XVII–XVIII',
-         gap=STADIUM, depth=st(1), width=st(1), x=-200, keys=['venus_temple'],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=st(1), width=st(1), x=-200, keys=['venus_temple'],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('ours', 'the one building in the book given as a RULE rather than a size: a '
                    'circle in a square, height equal to diameter, ten radial divisions '
                    '(pp. 197–199, 204). Its absolute size is therefore a free choice, and one '
@@ -214,34 +226,43 @@ PRECINCTS = [
                    'theatre without outbuilding either')),
 
     dict(key='polyandrion', name='The Polyandrion', chapter='XIX',
-         gap=STADIUM, depth=st(1), width=st(1), x=230, keys=['polyandrion'],
+         gap=THRESHOLD, depth=st(1), width=st(1), x=230, keys=['polyandrion'],
          gap_src=('ours', 'a DIGRESSION — ruins off the road (p. 247), so it sits aside from the '
-                  'spine as well as along it'),
+                  'spine as well as along it. The filler default is now 30 m (call 67), not one '
+                  'stadium'),
          size_src=('ours', 'entered through a broken pier and a little door choked with ivy')),
 
     dict(key='shore', name='The Shore, and Cupid\'s Boat', chapter='XX',
-         gap=STADIUM, depth=st(0.5), width=st(4), x=0, keys=['cythera'],
-         gap_src=('ours', 'one stadium'),
+         gap=THRESHOLD, depth=st(0.5), width=st(4), x=0, keys=['cythera'],
+         gap_src=('ours', 'the filler default is now 30 m (call 67), not one stadium'),
          size_src=('ours', 'the beach and the six-oar exeres. The gunwales are 2 ft above the '
                    'decking and the thwarts 1½ (p. 291); no length is given')),
 
     dict(key='crossing', name='The Crossing', chapter='XX',
-         gap=0, depth=st(6), width=st(10), x=0, keys=[],
+         gap=0, depth=st(4), width=st(10), x=0, keys=[],
          gap_src=('stated', 'the water begins at the beach'),
          size_src=('ours', 'no distance is given — but the DURATION is the fact: the crossing '
-                   'fills a whole chapter of song (DIRECTIONS.md §3 #24). SIX STADIA is about four '
-                   'minutes under oars, which is a chapter')),
+                   'fills a whole chapter of song (DIRECTIONS.md §3 #24). FOUR STADIA (740 m), '
+                   'trimmed from six by DECISIONS.md call 67 — proportionally lighter than the '
+                   'valley\'s cut since a boat crossing is a journey, not a building gap — is '
+                   'still nearly three minutes under oars')),
 
     dict(key='cythera', name='The Island of Cythera', chapter='XXI–XXIV',
-         gap=0, depth=1400, width=1400, x=0,
+         gap=0, depth=630.0, width=630.0, x=0,
          keys=['cythera_isle', 'cythera_theatre', 'adonis'],
          gap_src=('stated', 'the boat lands on it'),
-         size_src=('stated', 'a perfect circle: circumference 3 miliaria = 4 440 m, diameter '
-                   '≈ 1 400 m by Colonna\'s own π (pp. 292, 297). Three concentric rings of '
-                   '166 paces 10 palms = 246.8 m each, twenty radial divisions, a citrus '
-                   'espalier 8 paces = 11.8 m high dividing the rings. At its centre the '
-                   'theatre: Area 47.4 m across inside a built ring 11.8 m thick (p. 351). '
-                   'Adonis\'s hexagonal fountain, 53.3 m round, is in the inner ring')),
+         size_src=('ours', 'the book states a perfect circle of diameter ≈ 1 400 m (circumference '
+                   '3 miliaria = 4 440 m by Colonna\'s own π, pp. 292, 297) — but DECISIONS.md '
+                   'call 67 names Cythera specifically for "the relatively smaller island, read '
+                   'literally": ISLAND_SCALE = 0.45 applied uniformly in '
+                   'src/scenes/world/cythera.js, 630 m across. Every internal ring keeps its '
+                   'proportion to the others and to the book\'s own ratios — three concentric '
+                   'rings of 166 paces 10 palms = 246.8 m each at true scale, twenty radial '
+                   'divisions, a citrus espalier 8 paces = 11.8 m high, a theatre of Area 47.4 m '
+                   'across inside a built ring 11.8 m thick (p. 351), Adonis\'s hexagonal '
+                   'fountain 53.3 m round in the inner ring — only the whole island is built at '
+                   '45% of the literal figure. This number is READ from cythera.js\'s own '
+                   'ISLAND_SCALE, not re-typed by hand')),
 
     # Off the spine entirely — Book II is a told place, and DECISIONS.md 55 makes it a real one.
     dict(key='treviso', name='Treviso — Polia\'s City', chapter='XXV–XXXVIII',
@@ -308,13 +329,15 @@ def build():
     out = {
         'note': ('The true-scale ground plan. Generated by scripts/plan_build.py — do not hand '
                  'edit; edit the PRECINCTS table there and re-run. DECISIONS.md 2026-09-17 '
-                 'call 54.'),
+                 'call 54 (scale), reprioritised by call 67 (spacing) 2026-09-21.'),
         'anchor': ('the front of the porch of the Great Portal, z = 0 — the book\'s own hinge, '
                    'where "no man could go further forward or backe againe" (Dall. p. 27)'),
         'compass': '+z SOUTH, -z NORTH, +x EAST, -x WEST; Poliphilo walks northward',
-        'default_gap_m': STADIUM,
-        'default_gap_rule': ('one stadium of clear ground between precinct edges wherever the '
-                            'book states no distance'),
+        'default_gap_m': THRESHOLD,
+        'default_gap_rule': ('30 m of clear ground between precinct edges wherever the book '
+                            'states no distance at all (call 67); 75 m where the book insists '
+                            'on distance in words rather than numbers'),
+        'narrative_gap_m': NARRATIVE_GAP,
         'precincts': [],
     }
 
@@ -357,11 +380,11 @@ def build():
     L.append('*Generated from the PRECINCTS table in `scripts/plan_build.py`. '
              'DECISIONS.md 2026-09-17 call 54: the world is rebuilt at the book\'s own scale, '
              'and the plan is settled as data before any geometry moves, so that no precinct is '
-             'moved twice.*\n')
+             'moved twice. Spacing reprioritised by call 67 (2026-09-21): the default gap '
+             'shrinks to a felt arrival, not a desert crossing.*\n')
     L.append(f'**Anchor:** {out["anchor"]}  ')
     L.append(f'**Compass:** {out["compass"]}  ')
-    L.append(f'**The rule for an unstated gap:** {out["default_gap_rule"]} '
-             f'({STADIUM:.0f} m).\n')
+    L.append(f'**The rule for an unstated gap:** {out["default_gap_rule"]}\n')
     L.append(f'**The world this produces:** {out["extent"]["length_m"]:,.0f} m along the '
              f'itinerary, {out["extent"]["width_max"]:,.0f} m at its widest. '
              f'Today the whole mainland is 77 × 105 m.\n')

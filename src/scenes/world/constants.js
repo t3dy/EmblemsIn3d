@@ -18,8 +18,8 @@
 // needs a THREE type, import it here rather than reaching for the class.)
 
 // plan_sites.js is plain data too — generated from research/plan.json, never typed.
-import { PLAN_SITES, shiftOf } from './plan_sites.js?v=4';
-export { PLAN_SITES, PLAN_EXTENT, PLAN_ANCHOR, SPREAD, shiftOf, toWorld } from './plan_sites.js?v=4';
+import { PLAN_SITES, shiftOf } from './plan_sites.js?v=5';
+export { PLAN_SITES, PLAN_EXTENT, PLAN_ANCHOR, SPREAD, shiftOf, toWorld } from './plan_sites.js?v=5';
 
 // pos/look are [x, z] on the ground plane; folio feeds the HUD and the research links.
 // The first nine are reachable with digit keys 1–9 (journey order).
@@ -115,15 +115,24 @@ export const HP_STATIONS = [
   { key: 'polyandrion', precinct: 'polyandrion',      name: 'The Polyandrion',        folio: 242,
     pos: [92, -88], look: [120, -108], radius: 9 },
   // The island itself — reached by Cupid's boat (digit 0), returned from by 9:
+  //
+  // DECISIONS.md 2026-09-21 call 67: these three stations' local literals were
+  // authored against the island's true-scale rings (cythera.js's own
+  // ISLAND_SCALE = 0.45 was still 1.0), radial from this precinct's fixed
+  // local anchor (0, -600) — see `_precinctLocal('cythera')`. Shrinking the
+  // rings without rescaling these literals would leave the teleport targets
+  // sitting where the OLD, bigger rings used to be, off in open sward. Each
+  // offset from (0, -600) is multiplied by 0.45 here to match; `radius` is
+  // the human-sized proximity trigger and is untouched.
   { key: 'cythera_isle', precinct: 'cythera',     name: 'The Gardens of Cythera', folio: 290,
-    pos: [0, -416], look: [0, -600], radius: 13 },
+    pos: [0, -517.2], look: [0, -600], radius: 13 },
   { key: 'cythera_theatre', precinct: 'cythera',  name: 'The Theatre of Venus',   folio: 358,
-    pos: [0, -534], look: [0, -600], radius: 11, pitch: 0.05 },
+    pos: [0, -570.3], look: [0, -600], radius: 11, pitch: 0.05 },
   // The last station of Book I (ch. XXIV, our pp. 370-379). It has no woodcut,
   // which is why the tour's stop 25 pointed at the theatre's floor for months:
   // every coverage check ran off the plate catalogue. See ROUTER.md rule 6.
   { key: 'adonis', precinct: 'cythera',           name: 'The Fountain of Adonis', folio: 370,
-    pos: [81.36, -488.04], look: [98.76, -464.08], radius: 8 },
+    pos: [36.61, -549.62], look: [44.44, -538.84], radius: 8 },
   // Appended after the island so the digit keys 1-9 keep their journey order.
   // The chess ballet is at signature g8r-h1r, facsimile pages 111-113 — the
   // Queen's entertainment after the banquet, and the last thing that happens

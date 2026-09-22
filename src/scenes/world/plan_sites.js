@@ -10,7 +10,7 @@
 // written in the precinct's OWN frame, origin at its centre, and the shift IS the
 // plan centre — which is why `was` reads [0, 0] for those.
 //
-// The itinerary is 13,729 m long and 1,850 m at its widest.
+// The itinerary is 9,184 m long and 1,850 m at its widest.
 
 export const PLAN_ANCHOR = 104.0;   // world z of the front of the porch, the plan's origin
 
@@ -30,34 +30,34 @@ export function toWorld(key, x, z) {
 }
 
 export const PLAN_EXTENT = {
-  zSouth: 5143.4, zNorth: -8585.4, widthMax: 1850.0, length: 13728.8,
+  zSouth: 3273.4, zNorth: -5910.4, widthMax: 1850.0, length: 9183.8,
 };
 
 export const PLAN_SITES = {
   // plain — The Spacious Plain (ch. I)
   //   from plain
-  plain: { centre: [0.0, 4773.4], was: [0.0, 1792.0], shift: [0.0, 2981.4],
-    width: 1110.0, depth: 740.0, zSouth: 5143.4, zNorth: 4403.4, greenfield: false, fixed: false, sized: 'ours' },
+  plain: { centre: [0.0, 2903.4], was: [0.0, 1792.0], shift: [0.0, 1111.4],
+    width: 1110.0, depth: 740.0, zSouth: 3273.4, zNorth: 2533.4, greenfield: false, fixed: false, sized: 'ours' },
   // wood — The Dark Wood (ch. I)
   //   anchored on the WOOD box centre (z0 1192.5, z1 1387.5), not the station inside it
-  wood: { centre: [0.0, 3940.9], was: [0.0, 1290.0], shift: [0.0, 2650.9],
-    width: 740.0, depth: 555.0, zSouth: 4218.4, zNorth: 3663.4, greenfield: false, fixed: false, sized: 'ours' },
+  wood: { centre: [0.0, 2225.9], was: [0.0, 1290.0], shift: [0.0, 935.9],
+    width: 740.0, depth: 555.0, zSouth: 2503.4, zNorth: 1948.4, greenfield: false, fixed: false, sized: 'ours' },
   // spring — The Spring and the Stream (ch. I)
   //   greenfield
-  spring: { centre: [-260.0, 3940.9], was: [0.0, 0.0], shift: [-260.0, 3940.9],
-    width: 370.0, depth: 120.0, zSouth: 4000.9, zNorth: 3880.9, greenfield: true, fixed: false, sized: 'ours' },
+  spring: { centre: [-260.0, 2225.9], was: [0.0, 0.0], shift: [-260.0, 2225.9],
+    width: 370.0, depth: 120.0, zSouth: 2285.9, zNorth: 2165.9, greenfield: true, fixed: false, sized: 'ours' },
   // great_oak — The Great Oak in the Green Mead (ch. I)
   //   from great_oak
-  great_oak: { centre: [90.0, 2923.4], was: [36.0, 712.0], shift: [0.0, 2211.4],
-    width: 370.0, depth: 370.0, zSouth: 3108.4, zNorth: 2738.4, greenfield: false, fixed: false, sized: 'ours' },
+  great_oak: { centre: [90.0, 1688.4], was: [36.0, 712.0], shift: [0.0, 976.4],
+    width: 370.0, depth: 370.0, zSouth: 1873.4, zNorth: 1503.4, greenfield: false, fixed: false, sized: 'ours' },
   // palm_plain — The Palm and the Wolf (ch. II)
   //   from palm_plain
-  palm_plain: { centre: [-60.0, 2368.4], was: [-24.0, 564.0], shift: [0.0, 1804.4],
-    width: 555.0, depth: 370.0, zSouth: 2553.4, zNorth: 2183.4, greenfield: false, fixed: false, sized: 'ours' },
+  palm_plain: { centre: [-60.0, 1288.4], was: [-24.0, 564.0], shift: [0.0, 724.4],
+    width: 555.0, depth: 370.0, zSouth: 1473.4, zNorth: 1103.4, greenfield: false, fixed: false, sized: 'ours' },
   // valley — The Valley of the Approach (ch. II–III)
   //   FIXED — its north edge abuts the court at 148.4 already; stage 2 lengthens it south
-  valley: { centre: [0.0, 1073.4], was: [0.0, 1073.4], shift: [0.0, 0.0],
-    width: 1139.6, depth: 1850.0, zSouth: 1998.4, zNorth: 148.4, greenfield: false, fixed: true, sized: 'stated+ours' },
+  valley: { centre: [0.0, 610.9], was: [0.0, 610.9], shift: [0.0, 0.0],
+    width: 1139.6, depth: 925.0, zSouth: 1073.4, zNorth: 148.4, greenfield: false, fixed: true, sized: 'stated+ours' },
   // piazza — The Court before the Porch (ch. III)
   //   FIXED — PIAZZA.z0 = 104 and side = 44.4 are the book's own numbers and already hold
   piazza: { centre: [0.0, 126.2], was: [0.0, 126.2], shift: [0.0, 0.0],
@@ -68,60 +68,60 @@ export const PLAN_SITES = {
     width: 1139.6, depth: 1139.6, zSouth: 104.0, zNorth: -1035.6, greenfield: false, fixed: true, sized: 'stated' },
   // wooded_country — The Wooded Country and the Bridge (ch. VI)
   //   from fields
-  wooded_country: { centre: [-120.0, -1590.6], was: [-96.0, 256.0], shift: [-24.0, -1846.6],
-    width: 925.0, depth: 740.0, zSouth: -1220.6, zNorth: -1960.6, greenfield: false, fixed: false, sized: 'ours' },
+  wooded_country: { centre: [-120.0, -1435.6], was: [-96.0, 256.0], shift: [-24.0, -1691.6],
+    width: 925.0, depth: 740.0, zSouth: -1065.6, zNorth: -1805.6, greenfield: false, fixed: false, sized: 'ours' },
   // fountain_house — The Octagonal Fountain and the Bath (ch. VI–VII)
   //   greenfield
-  fountain_house: { centre: [60.0, -1590.6], was: [0.0, 0.0], shift: [60.0, -1590.6],
-    width: 120.0, depth: 120.0, zSouth: -1530.6, zNorth: -1650.6, greenfield: true, fixed: false, sized: 'ours' },
+  fountain_house: { centre: [60.0, -1435.6], was: [0.0, 0.0], shift: [60.0, -1435.6],
+    width: 120.0, depth: 120.0, zSouth: -1375.6, zNorth: -1495.6, greenfield: true, fixed: false, sized: 'ours' },
   // cypress_avenue — The Cypress Avenue (ch. VIII)
   //   greenfield
-  cypress_avenue: { centre: [0.0, -2515.6], was: [0.0, 0.0], shift: [0.0, -2515.6],
-    width: 40.0, depth: 740.0, zSouth: -2145.6, zNorth: -2885.6, greenfield: true, fixed: false, sized: 'stated' },
+  cypress_avenue: { centre: [0.0, -2205.6], was: [0.0, 0.0], shift: [0.0, -2205.6],
+    width: 40.0, depth: 740.0, zSouth: -1835.6, zNorth: -2575.6, greenfield: true, fixed: false, sized: 'stated' },
   // enclosure — The Green Enclosure (ch. VIII)
   //   greenfield
-  enclosure: { centre: [0.0, -2930.0], was: [0.0, 0.0], shift: [0.0, -2930.0],
-    width: 88.8, depth: 88.8, zSouth: -2885.6, zNorth: -2974.4, greenfield: true, fixed: false, sized: 'stated' },
+  enclosure: { centre: [0.0, -2620.0], was: [0.0, 0.0], shift: [0.0, -2620.0],
+    width: 88.8, depth: 88.8, zSouth: -2575.6, zNorth: -2664.4, greenfield: true, fixed: false, sized: 'stated' },
   // palace — Queen Eleuterylida's Palace (ch. VIII–XI)
   //   from court, planetary_palace, chess, artificial, quinta_essentia
-  palace: { centre: [0.0, -3113.2], was: [-56.9, 31.8], shift: [0.0, -3145.0],
-    width: 462.5, depth: 277.5, zSouth: -2974.4, zNorth: -3251.9, greenfield: false, fixed: false, sized: 'stated+ours' },
+  palace: { centre: [0.0, -2803.2], was: [-56.9, 31.8], shift: [0.0, -2835.0],
+    width: 462.5, depth: 277.5, zSouth: -2664.4, zNorth: -2941.9, greenfield: false, fixed: false, sized: 'stated+ours' },
   // polia_garden — Polia's Ivied Garden (ch. XII–XIII)
   //   from polia
-  polia_garden: { centre: [0.0, -3507.4], was: [58.0, 94.0], shift: [0.0, -3601.4],
-    width: 141.0, depth: 141.0, zSouth: -3436.9, zNorth: -3577.9, greenfield: false, fixed: false, sized: 'stated' },
+  polia_garden: { centre: [0.0, -3042.4], was: [58.0, 94.0], shift: [0.0, -3136.4],
+    width: 141.0, depth: 141.0, zSouth: -2971.9, zNorth: -3112.9, greenfield: false, fixed: false, sized: 'stated' },
   // three_doors — The Three Doors (ch. XIII)
   //   from three_doors
-  three_doors: { centre: [0.0, -4040.4], was: [0.0, 84.0], shift: [0.0, -4124.4],
-    width: 277.5, depth: 185.0, zSouth: -3947.9, zNorth: -4132.9, greenfield: false, fixed: false, sized: 'ours' },
+  three_doors: { centre: [0.0, -3280.4], was: [0.0, 84.0], shift: [0.0, -3364.4],
+    width: 277.5, depth: 185.0, zSouth: -3187.9, zNorth: -3372.9, greenfield: false, fixed: false, sized: 'ours' },
   // triumphs — The Four Triumphs (ch. XIV)
   //   from triumphs
-  triumphs: { centre: [0.0, -4502.9], was: [22.0, -18.0], shift: [0.0, -4484.9],
-    width: 277.5, depth: 370.0, zSouth: -4317.9, zNorth: -4687.9, greenfield: false, fixed: false, sized: 'ours' },
+  triumphs: { centre: [0.0, -3587.9], was: [22.0, -18.0], shift: [0.0, -3569.9],
+    width: 277.5, depth: 370.0, zSouth: -3402.9, zNorth: -3772.9, greenfield: false, fixed: false, sized: 'ours' },
   // vertumnus — Vertumnus, Pomona and the Rite of Priapus (ch. XV–XVI)
   //   from priapus
-  vertumnus: { centre: [150.0, -4965.4], was: [176.0, -48.0], shift: [0.0, -4917.4],
-    width: 277.5, depth: 185.0, zSouth: -4872.9, zNorth: -5057.9, greenfield: false, fixed: false, sized: 'stated+ours' },
+  vertumnus: { centre: [150.0, -3895.4], was: [176.0, -48.0], shift: [0.0, -3847.4],
+    width: 277.5, depth: 185.0, zSouth: -3802.9, zNorth: -3987.9, greenfield: false, fixed: false, sized: 'stated+ours' },
   // venus_temple — The Temple of Venus Physizoa (ch. XVII–XVIII)
   //   from venus_temple
-  venus_temple: { centre: [-200.0, -5335.4], was: [-120.0, -48.0], shift: [0.0, -5287.4],
-    width: 185.0, depth: 185.0, zSouth: -5242.9, zNorth: -5427.9, greenfield: false, fixed: false, sized: 'ours' },
+  venus_temple: { centre: [-200.0, -4110.4], was: [-120.0, -48.0], shift: [0.0, -4062.4],
+    width: 185.0, depth: 185.0, zSouth: -4017.9, zNorth: -4202.9, greenfield: false, fixed: false, sized: 'ours' },
   // polyandrion — The Polyandrion (ch. XIX)
   //   from polyandrion
-  polyandrion: { centre: [230.0, -5705.4], was: [92.0, -88.0], shift: [0.0, -5617.4],
-    width: 185.0, depth: 185.0, zSouth: -5612.9, zNorth: -5797.9, greenfield: false, fixed: false, sized: 'ours' },
+  polyandrion: { centre: [230.0, -4325.4], was: [92.0, -88.0], shift: [0.0, -4237.4],
+    width: 185.0, depth: 185.0, zSouth: -4232.9, zNorth: -4417.9, greenfield: false, fixed: false, sized: 'ours' },
   // shore — The Shore, and Cupid's Boat (ch. XX)
   //   from cythera
-  shore: { centre: [0.0, -6029.1], was: [0.0, -132.0], shift: [0.0, -5897.1],
-    width: 740.0, depth: 92.5, zSouth: -5982.9, zNorth: -6075.4, greenfield: false, fixed: false, sized: 'ours' },
+  shore: { centre: [0.0, -4494.1], was: [0.0, -132.0], shift: [0.0, -4362.1],
+    width: 740.0, depth: 92.5, zSouth: -4447.9, zNorth: -4540.4, greenfield: false, fixed: false, sized: 'ours' },
   // crossing — The Crossing (ch. XX)
   //   greenfield
-  crossing: { centre: [0.0, -6630.4], was: [0.0, 0.0], shift: [0.0, -6630.4],
-    width: 1850.0, depth: 1110.0, zSouth: -6075.4, zNorth: -7185.4, greenfield: true, fixed: false, sized: 'ours' },
+  crossing: { centre: [0.0, -4910.4], was: [0.0, 0.0], shift: [0.0, -4910.4],
+    width: 1850.0, depth: 740.0, zSouth: -4540.4, zNorth: -5280.4, greenfield: true, fixed: false, sized: 'ours' },
   // cythera — The Island of Cythera (ch. XXI–XXIV)
   //   anchored on the isle's own centre CZ in _buildCytheraIsle, which everything is radial from
-  cythera: { centre: [0.0, -7885.4], was: [27.1, -600.0], shift: [0.0, -7285.4],
-    width: 1400.0, depth: 1400.0, zSouth: -7185.4, zNorth: -8585.4, greenfield: false, fixed: false, sized: 'stated' },
+  cythera: { centre: [0.0, -5595.4], was: [12.2, -600.0], shift: [0.0, -4995.4],
+    width: 630.0, depth: 630.0, zSouth: -5280.4, zNorth: -5910.4, greenfield: false, fixed: false, sized: 'ours' },
   // treviso — Treviso — Polia's City (ch. XXV–XXXVIII)
   //   from book_two
   treviso: { centre: [1400.0, -496.0], was: [176.0, 128.0], shift: [1224.0, -624.0],

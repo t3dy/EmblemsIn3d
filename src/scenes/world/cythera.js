@@ -11,7 +11,24 @@
 // nothing but the move.
 
 import * as THREE from 'three';
-import { CYTHERA_CLIMBERS, SPECIES, PLAN_SITES } from './constants.js?v=15';
+import { CYTHERA_CLIMBERS, SPECIES, PLAN_SITES } from './constants.js?v=16';
+
+// DECISIONS.md 2026-09-21 call 67: "I'd like to go back to the relatively
+// smaller island" — Ted, naming Cythera specifically, after walking the
+// true-scale build. The book's own diameter (1,400 m, pp. 292, 297) is not
+// wrong, it is a directorial override of it, the same kind of call call 3 of
+// 2026-09-09 made for individual monuments, now made for the one place in
+// the book that is a self-contained world rather than a station on a road.
+// Every ring boundary below that is a distance DERIVED FROM THE STATED
+// DIAMETER — the rim, the espalier, the peristyle, the theatre and its own
+// terraces, Adonis's fountain — is multiplied by this one root constant so
+// they keep their proportions to each other and to the book's own ratios;
+// research/plan.json's `cythera` precinct depth/width (630 m) is this number
+// applied to the stated diameter, read from here rather than re-typed.
+// WAY and the espalier/gate "furniture" (hedge height, gate width) are held
+// 1:1 by the plan/furniture split DIMENSIONS.md §5 already establishes, and
+// are left alone.
+const ISLAND_SCALE = 0.45;
 
 export const Cythera = {
   // ── The shore, Cupid's boat, and distant Cythera ──────────────────────────
@@ -312,16 +329,19 @@ export const Cythera = {
     // precinct's width is the stated 1 400 m diameter. If stage 3 moves or
     // resizes the island, nothing in this file has to change.
     const [CX, CZ] = this._precinctLocal('cythera');
-    const R = PLAN_SITES.cythera.width / 2;         // 700 — pp. 292, 297
-    const SEMI = 246.8;                             // 166 paces 10 palms, p. 298
-    const R_ESPALIER  = R - SEMI;                   // 453.2 — the citrus wall
-    const R_PERISTYLE = R - 2 * SEMI;               // 206.4 — the colonnade
-    const R_RIVER_O = R_PERISTYLE - 2.4, R_RIVER_I = R_RIVER_O - 8.0;
-    const AREA_R  = 23.7;                           // 32 paces across, p. 351
-    const THEAT_R = AREA_R + 11.8;                  // 35.5 — the built ring
-    const TER_H   = 2.07;                           // a seven-step terrace, 7 ft
-    const RIDGE_R = 65.5;                           // the outer lip of the cavea
-    const WAY     = 7.4;                            // 5 paces, the ways, p. 298
+    const R = PLAN_SITES.cythera.width / 2;         // 315 at ISLAND_SCALE (700 true, pp. 292, 297)
+    const SEMI = 246.8 * ISLAND_SCALE;              // 111.06 (166 paces 10 palms = 246.8 true, p. 298)
+    const R_ESPALIER  = R - SEMI;                   // 203.94 — the citrus wall
+    const R_PERISTYLE = R - 2 * SEMI;               // 92.88 — the colonnade
+    const R_RIVER_O = R_PERISTYLE - 2.4 * ISLAND_SCALE, R_RIVER_I = R_RIVER_O - 8.0 * ISLAND_SCALE;
+    const AREA_R  = 23.7 * ISLAND_SCALE;            // 10.665 (32 paces = 23.7 true, p. 351)
+    const THEAT_R = AREA_R + 11.8 * ISLAND_SCALE;   // 15.975 — the built ring
+    const TER_H   = 2.07 * ISLAND_SCALE;            // a seven-step terrace, 7 ft true — scales
+                                                     // with the ring it terraces, unlike the
+                                                     // "furniture" heights below
+    const RIDGE_R = 65.5 * ISLAND_SCALE;            // 29.475 — the outer lip of the cavea
+    const WAY     = 7.4;                            // 5 paces, the ways, p. 298 — a walked
+                                                     // width, held 1:1 (plan/furniture split)
 
     const pos = (a, r) => [CX + Math.cos(a) * r, CZ + Math.sin(a) * r];
     // TWENTY, not twelve (2026-09-08). Our p. 294 does not merely assert the
@@ -336,12 +356,13 @@ export const Cythera = {
       Math.abs(((a - q * Math.PI / 2 + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI))) < w;
 
     // The sacred fountain of Adonis (ch. XXIV). research/plan.json puts it
-    // "in the inner ring", and so does HP_STATIONS: the `adonis` station sits
-    // at [81.36, -488.04], which is 138.4 m from this centre on a bearing of
-    // exactly 3 × 18°. It was built at r 42 on a fifty-metre island — four
-    // station-radii from where the tour teleports you. Both numbers now come
-    // out of the same geometry.
-    const ADONIS_K = 3, ADONIS_A = ADONIS_K * STEP, ADONIS_R = 138.4;
+    // "in the inner ring", and so does HP_STATIONS: the `adonis` station's
+    // authored local pos is on the same bearing (3 × 18°) at ISLAND_SCALE of
+    // its old 138.4 m radius — call 67 rescaled the station literal in
+    // constants.js by the same factor, so it and this ring stay in the same
+    // place. It was built at r 42 on a fifty-metre island — four
+    // station-radii from where the tour teleports you.
+    const ADONIS_K = 3, ADONIS_A = ADONIS_K * STEP, ADONIS_R = 138.4 * ISLAND_SCALE;
 
     // ── The shore: sand, sward, and a coast you cannot walk off ───────────
     const sandMat = lit ? S.mat({ color: 0x9a8a64, roughness: 0.95 }) : S.mat({ tone: 0.02, rim: 0 });
@@ -663,10 +684,15 @@ export const Cythera = {
     // book. The heights are the book's seven-step terrace of 7 ft (p. 314):
     // 2.07, 4.14, 6.21, with the outermost ring the ridge.
     const knot = lit ? this._knotTexture() : null;
+    // The 9 m and 18 m band widths (p. 320) are themselves distances between
+    // two now-scaled rings (THEAT_R and RIDGE_R), so ISLAND_SCALE applies to
+    // them too (call 67) — leaving them at true scale would push the
+    // outermost band's inner edge (THEAT_R + 18) past the scaled RIDGE_R.
+    const BAND = 9 * ISLAND_SCALE;                  // 4.05 (true 9 m, p. 320)
     const tiers = [
-      { r0: THEAT_R,      r1: THEAT_R + 9,  h: TER_H,     bed: 0xc84a5a, herb: 'marjoram' },
-      { r0: THEAT_R + 9,  r1: THEAT_R + 18, h: TER_H * 2, bed: 0xe07a8a, herb: 'southernwood' },
-      { r0: THEAT_R + 18, r1: RIDGE_R,      h: TER_H * 3, bed: 0xd8a850, herb: 'groundpine' },
+      { r0: THEAT_R,             r1: THEAT_R + BAND,      h: TER_H,     bed: 0xc84a5a, herb: 'marjoram' },
+      { r0: THEAT_R + BAND,      r1: THEAT_R + 2 * BAND,  h: TER_H * 2, bed: 0xe07a8a, herb: 'southernwood' },
+      { r0: THEAT_R + 2 * BAND,  r1: RIDGE_R,             h: TER_H * 3, bed: 0xd8a850, herb: 'groundpine' },
     ];
     // …and they are floors you stand on -- but as FOUR ARCS each, with the
     // crossroads left out, exactly as the tops themselves are drawn. The
@@ -728,16 +754,20 @@ export const Cythera = {
     // (Segre, GARDENS.md §5). Every riser here is one Roman foot, 0.296 m, on
     // the 2½-ft tread of the seats (p. 353), and every flight a whole number
     // of sevens: three sevens from the bank up to the ridge (6.21 m), then one
-    // seven down each terrace (2.07 m apiece).
-    const TREAD = 0.74;
+    // seven down each terrace (2.07 m apiece). The tread and the landing depth
+    // below are steps BETWEEN two now-scaled rings, not furniture standing at
+    // one spot, so ISLAND_SCALE applies to them too (call 67) — unscaled they
+    // no longer fit inside the shrunk terrace bands and invert (r0 > r1).
+    const TREAD = 0.74 * ISLAND_SCALE;
+    const LAND = 2.5 * ISLAND_SCALE;                // the flight's own landing depth
     const climbR0 = RIDGE_R + 21 * TREAD;
     for (let q = 0; q < 4; q++) {
       const a = q * Math.PI / 2;
       this._cytheraSteps(CX, CZ, a, climbR0, RIDGE_R, 0, TER_H * 3, 21);
       const flights = [
-        [tiers[2].r0 + 2.5, tiers[2].r0 + 2.5 - 7 * TREAD, TER_H * 3, TER_H * 2],
-        [tiers[1].r0 + 2.5, tiers[1].r0 + 2.5 - 7 * TREAD, TER_H * 2, TER_H],
-        [tiers[0].r0 + 2.5, tiers[0].r0 + 2.5 - 7 * TREAD, TER_H, 0],
+        [tiers[2].r0 + LAND, tiers[2].r0 + LAND - 7 * TREAD, TER_H * 3, TER_H * 2],
+        [tiers[1].r0 + LAND, tiers[1].r0 + LAND - 7 * TREAD, TER_H * 2, TER_H],
+        [tiers[0].r0 + LAND, tiers[0].r0 + LAND - 7 * TREAD, TER_H, 0],
       ];
       for (const [r0, r1, y0, y1] of flights) this._cytheraSteps(CX, CZ, a, r0, r1, y0, y1, 7);
       // …and the landings between them. A crossroad is a ROAD across the
@@ -745,9 +775,9 @@ export const Cythera = {
       // the walk drops to the sward the moment it steps off a stair.
       const G = 0.06;                                    // half the road, in radians
       const landings = [
-        [tiers[2].r0 + 2.5, tiers[2].r1, TER_H * 3],
-        [tiers[1].r0 + 2.5, flights[0][1], TER_H * 2],
-        [tiers[0].r0 + 2.5, flights[1][1], TER_H],
+        [tiers[2].r0 + LAND, tiers[2].r1, TER_H * 3],
+        [tiers[1].r0 + LAND, flights[0][1], TER_H * 2],
+        [tiers[0].r0 + LAND, flights[1][1], TER_H],
       ];
       for (const [r0, r1, y] of landings) {
         this._floor({ kind: 'ring', cx: CX, cz: CZ, r0, r1, y, a0: a - G, a1: a + G });
@@ -1425,7 +1455,10 @@ export const Cythera = {
     for (let i = 0; i < (plan ? 40 : 16); i++) {
       const a = (i / (plan ? 40 : 16)) * Math.PI * 2 + 0.2;
       if (onRoad(a, plan ? 0.13 : 0.28)) continue;
-      const [x, z] = pos(a, plan ? T[0].r0 + 5.4 : 9.5);
+      // +5.4 is a distance INTO T[0]'s own (now-scaled) band, not a fixed
+      // furniture offset, so it scales too (call 67) — unscaled it overshoots
+      // the shrunk band and plants this ring of trees in the terrace above.
+      const [x, z] = pos(a, plan ? T[0].r0 + 5.4 * ISLAND_SCALE : 9.5);
       const t = this._tree(x, z, plan ? 1.5 : 0.42, ['citron', 'juniper', 'olive', 'laurel'][i % 4]);
       if (t) t.position.y = T[0].h;
     }
@@ -1889,7 +1922,12 @@ export const Cythera = {
   _buildAmphitheatre(CX = 0, CZ = -150, AREA_R = 7.4) {
     const S = this.style;
     const lit = S.key !== 'woodcut';
-    const big = AREA_R > 12;
+    // `big` picks the true-proportioned build over the pre-2026-09-08 broken
+    // small one; the threshold used to be a bare 12 m, which the caller's own
+    // AREA_R (23.7 m) cleared easily. Call 67's ISLAND_SCALE shrinks that
+    // same AREA_R to 10.665 m, so the threshold has to shrink with it or the
+    // theatre falls back to the wrong (1:3.2-off) geometry.
+    const big = AREA_R > 12 * ISLAND_SCALE;
     const alab = lit ? S.mat({ color: 0xf2e8d2, roughness: 0.35, metalness: 0.05 }) : S.mat({ tone: 0.03 });
     const mirror = lit ? S.mat({ color: 0x0c0c12, roughness: 0.08, metalness: 0.6 }) : S.mat({ tone: 0.36 });
     alab.userData.roll = 'a piece of Indian alabaster';

@@ -14,7 +14,7 @@ import * as THREE from 'three';
 import { Walker } from '../../systems/Walker.js?v=6';
 import { EYE, WOOD_CLEARINGS, WOOD, WITNESS_POSES, WITNESS_AT, SPECIES,
          PYRAMID_W, PYRAMID_CLEAR, VALLEY_Z0, VALLEY_Z1, VALLEY_LEN,
-         PLAN_EXTENT, PLAN_SITES } from './constants.js?v=15';
+         PLAN_EXTENT, PLAN_SITES } from './constants.js?v=16';
 
 export const Approach = {
   // ── Ground, paths ─────────────────────────────────────────────────────────

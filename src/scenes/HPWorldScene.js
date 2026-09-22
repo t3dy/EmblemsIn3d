@@ -41,19 +41,19 @@ import {
   WOOD, WOOD_CLEARINGS, WITNESS_POSES, WITNESS_AT, SIGNS,
   CYTHERA_CLIMBERS, HERBS, SPECIES,
   PLAN_SITES, PLAN_EXTENT, shiftOf,
-} from './world/constants.js?v=15';
-import { Materials } from './world/materials.js?v=11';
-import { Nature } from './world/nature.js?v=19';
-import { Approach } from './world/approach.js?v=14';
-import { Portal } from './world/portal.js?v=29';
-import { Palace } from './world/palace.js?v=31';
-import { Triumphs } from './world/triumphs.js?v=16';
-import { Tombs } from './world/tombs.js?v=10';
+} from './world/constants.js?v=16';
+import { Materials } from './world/materials.js?v=12';
+import { Nature } from './world/nature.js?v=20';
+import { Approach } from './world/approach.js?v=15';
+import { Portal } from './world/portal.js?v=30';
+import { Palace } from './world/palace.js?v=32';
+import { Triumphs } from './world/triumphs.js?v=17';
+import { Tombs } from './world/tombs.js?v=11';
 import { Temple } from './world/temple.js?v=16';
-import { Cythera } from './world/cythera.js?v=18';
-import { Rollup } from './world/rollup.js?v=14';
+import { Cythera } from './world/cythera.js?v=19';
+import { Rollup } from './world/rollup.js?v=15';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
-import { Screens } from './world/screens.js?v=9';
+import { Screens } from './world/screens.js?v=10';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
@@ -107,11 +107,17 @@ export class HPWorldScene {
       // z = -7 701.4 and one press of W snapped it to z = -824, 6 877 m away.
       //
       // The numbers are the plan's OWN extent -- research/plan.json `extent`
-      // (z_north -8 689.4, z_south 5 039.4, width_max 1 850) and the Treviso
-      // precinct, which sits off the spine at x 1 400 and is 740 m wide -- with
-      // 60 m of margin, so it cannot go stale against the plan again without
-      // the plan itself moving.
-      bounds: { minX: -1000, maxX: 1840, minZ: -8760, maxZ: 5110 },
+      // and the Treviso precinct, which sits off the spine at x 1 400 and is
+      // 740 m wide -- with about 70 m of margin, so it cannot go stale
+      // against the plan again without the plan itself moving.
+      //
+      // DECISIONS.md 2026-09-21 call 67 shrank the default gap (185 m ->
+      // 30/75 m) and Cythera (1 400 m -> 630 m), so the itinerary is 9 183.8 m
+      // long now, not 13 728.8 m -- PLAN_EXTENT.zSouth/zNorth (plan_sites.js)
+      // recomputed. minX/maxX are untouched: neither the crossing's width
+      // (still the plan's widest, unchanged by call 67) nor Treviso's x/width
+      // moved.
+      bounds: { minX: -1000, maxX: 1840, minZ: -5980.4, maxZ: 3343.4 },
       onDigit: (n) => {
         if (n === 0) { this.teleport('cythera_isle'); return; }   // Cupid ferries the willing
         const st = HP_STATIONS[n - 1];
@@ -1107,7 +1113,10 @@ export class HPWorldScene {
       // (see the far-plane note at the head of this file). You could not fly
       // over the one thing in the book you are meant to fly over. 900 clears
       // it with the apex in view.
-      bounds: { minX: -1000, maxX: 1840, minZ: -8760, maxZ: 5110, minY: 0.9, maxY: 900 },
+      //
+      // x/z re-tightened alongside the walker's box, call 67 (2026-09-21) --
+      // see the note above the walker's own bounds.
+      bounds: { minX: -1000, maxX: 1840, minZ: -5980.4, maxZ: 3343.4, minY: 0.9, maxY: 900 },
       onDigit: (n) => { if (n === 0) this.teleport('cythera_isle'); else { const st = HP_STATIONS[n - 1]; if (st) this.teleport(st.key); } },
       onLand: () => { this.endFlight(); this.onLand?.(); },
     });
