@@ -769,6 +769,37 @@ export const Tombs = {
     this._plaque({ main: 'TEMPLVM DIANAE', sub: 'TREVISO · THE PLAGVE, THE VOW, THE LOVERS DRIVEN OVT · PLATES 152–159' },
       2.4, 0.42, DX, 1.0, DZ + 3.3, 0, true);
 
+    // ── ch. XXV-XXVI: the plague strikes the city, and Polia drags the corpse
+    // into a corner of the sanctuary. Our translation p. 387 ("a gland (bubo)
+    // in the pudic groin" strikes Polia herself, driving the vow named on the
+    // plaque above) and p. 397 ("by his cold feet... into a corner of the
+    // temple... drawing, left him"); plates #152-153 (hp.db.woodcut_catalog).
+    // The temple plaque already NAMES the plague and the vow; these stage the
+    // two acts it only summarises. xxv-plague-onset-bubo, xxvi-corpse-dragged-into-corner.
+    const PLX = DX + 8, PLZ = DZ + 3;
+    const plagueVictim = this.cast.figure({ h: 0.9, robe: 0x6a5040, pose: 'recline' });
+    plagueVictim.position.set(PLX, 0.2, PLZ); plagueVictim.rotation.y = 0.6; this.scene.add(plagueVictim);
+    const plagueFleeing = this.cast.figure({ h: 0.95, robe: 0x4a5a4a, pose: 'reach' });
+    this._npc('b2_plague_fleeing', plagueFleeing, PLX + 1.5, PLZ - 1.1, 2.3, { sway: 0.05 });
+    this._plaque({ main: 'PESTIS IN VRBE', sub: 'THE PLAGVE STRIKES TREVISO · PLATE 152' },
+      1.8, 0.34, PLX, 0.85, PLZ + 1.1, 0.5, false);
+    // Polia's own bubo, on the temple's own Polia figure -- a small, ugly
+    // swelling low on the hip. Placement is a modest approximation; the text
+    // settles only that it is in the groin, not its exact drawn position.
+    const bubo = this._m(new THREE.SphereGeometry(0.045, 8, 6), S.mat(lit ? { color: 0x8a3a3a, roughness: 0.8 } : { tone: 0.3 }),
+      -0.13, 0.62, 0.06, { parent: polia, cast: false });
+    bubo.scale.set(1, 0.8, 1);
+    // the drag: a second Poliphilo body near the back-left corner, Polia
+    // gripping his feet and hauling him in, away from the threshold swoon
+    const dragCorner = { x: DX - 2.6, z: DZ - 1.9 };
+    const polDragged = this.cast.figure({ h: 0.92, robe: 0x8a4a3a, pose: 'stand' });
+    polDragged.position.set(dragCorner.x, 0.16, dragCorner.z);
+    polDragged.rotation.set(0, 1.1, Math.PI / 2);
+    this.scene.add(polDragged);
+    const poliaDrag = this.cast.nymph({ name: 'Polia', robe: 0xe8e2d0, h: 0.98, rank: 'tutulus', cutout: null, pose: 'reach' });
+    this._npc('b2_polia_drag', poliaDrag, dragCorner.x + 1.3, dragCorner.z + 0.8, 2.4,
+      { label: 'Polia', sub: 'DRAGGING HIM BY THE COLD FEET · PLATE 153', sway: 0.03 });
+
     // ── Polia's bed-chamber, and the vision through its window (#160)
     const CX2 = BX + 8, CZ2 = BZ + 4;
     this._m(new THREE.BoxGeometry(5.0, 0.3, 4.4), dark, CX2, 0.15, CZ2, { cast: false });
