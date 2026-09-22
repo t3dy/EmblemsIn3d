@@ -1,6 +1,6 @@
 {
   "$schema_note": "See HPTOTOURPIPELINE.md for the field meanings and the workflow.",
-  "generated": "2026-09-20",
+  "generated": "2026-09-21",
   "generator": "scripts/coverage_seed.py",
   "hand_edited_fields": [
     "chapters[].research",
@@ -7189,9 +7189,9 @@
           "kind": "rite",
           "plate": null,
           "source": "p. 388",
-          "status": "unknown",
-          "built_as": "tombs.js _buildBookTwo, ~L753-754 (Diana statue + plaque sub-label 'THE VOW OF PERPETVAL CHASTITY · CH. XXVI')",
-          "note": "'With tremulous voice purely exorating, I prayed... religiously, to serve ever her sacred temples, with tenacious chastity, if she, pitying me, freed me from the mortal contagion.' This is the ROOT of her cruelty to Poliphilo -- the chapter's own argument. Grep found a Diana statue and a plaque naming the vow, but not the act of vowing (no altar-side prayer gesture, no votive offering) -- not seen live.",
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "The Temple of Diana (4 ionic columns, pediment with crescent moon, Diana statue, a stag) is built, and Polia is present as a veiled nymph NPC inside it -- the fact of her admission to Diana's service is represented. But the vow itself (the rite, the sickbed context, the Iphigenia/Thesmophoria reasoning) is not staged as an action; there is no dedication-day crowd or ceremony. Confirmed by reading tombs.js lines 738-770 against translation/en/page_388.md.",
           "modes": [
             "walk",
             "tour"
@@ -7229,9 +7229,9 @@
           "kind": "people",
           "plate": null,
           "source": "p. 388",
-          "status": "unknown",
-          "built_as": "tombs.js _buildBookTwo, ~L735-767 (temple structure, one Polia figure, two priestesses)",
-          "note": "'Admitted into the holy temple, and into the consortial convent and society of many other virgin girls received (who to that chaste and pure Goddess served), I began, I too, sedulously, with them, to visit and humbly the Dianal Altars to venerate.' The built temple has one Polia and two priestesses, not a company of consecrated virgins, and only one altar. Not seen live.",
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "Two priestess NPCs ('priestess_0'/'priestess_1', rank 'tutulus') stand in the temple alongside the veiled Polia NPC -- a token consort of virgin attendants, not a full company, and no 'visiting the Dianal Altars' action. tombs.js lines 765-768.",
           "modes": [
             "walk",
             "tour"
@@ -7295,9 +7295,9 @@
           "kind": "rite",
           "plate": null,
           "source": "p. 389",
-          "status": "unknown",
-          "built_as": "tombs.js _buildBookTwo, ~L757-761 (Polia figure labelled 'MORE FREEZING THAN PORPHYRY'; a figure 'pol' positioned near the threshold)",
-          "note": "'No sooner before me did I see him, than promptly, contaminated, my indisposed heart -- like frigid Diamond, which, by burning, alters not, rigid, froze itself -- became more freezing than the Porphyry stone.' Grep found this exact line already quoted as a sub-label in the built temple -- a genuine hit -- but not verified live, and it is unclear from the code alone whether the Poliphilo figure there is posed for this approach or for his later collapse (see xxvi-poliphilos-death below).",
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "The Polia NPC in the Temple of Diana carries the literal on-screen label 'MORE FREEZING THAN PORPHYRY' (tombs.js line 762), a direct quote of this page's line. But she is staged beside a fallen Poliphilo figure rather than 'alone, praying' as the text has it at this exact moment -- the tableau conflates this beat with the later death-swoon (see xxvi-poliphilos-death) into one static scene, so the specific solitary-prayer framing is not there.",
           "modes": [
             "walk",
             "tour"
@@ -7413,9 +7413,9 @@
           "kind": "person",
           "plate": 152,
           "source": "pp. 395-396",
-          "status": "unknown",
-          "built_as": "tombs.js _buildBookTwo, ~L760-761 (a figure 'pol' near the threshold, rotation set) -- ambiguous whether this represents the approach/plea or the death itself; not seen live",
-          "note": "'The springing tears, wretched, the last words terminated, prostrate on the ground, he died.' And again, p. 396: '...the submerged eyes shut, beside me he died.' Woodcut #152 (catalogued at page_seq 387, but its true 1499 page is 396, ten more than page_seq -- see the research note) shows exactly this: Polia standing, holding an open book, indifferent, while Poliphilo lies collapsed against her at her feet -- a distinct, citable composition (her continued devotion beside his corpse) that the single generic 'prostrate' figure in the built world does not obviously capture.",
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "A Poliphilo figure ('pol') lies at DX+0.6,DZ+1.2 with rotation set to a lying pose near the Polia NPC, matching plate #152's 'Poliphilus prostrate' -- the corpse/swoon itself is physically present. Not modeled: Polia shown reading/unmoved (no book prop), and the pose is shared with the earlier-chapter prostration beat, so the two moments are not visually distinguished. tombs.js lines 760-764.",
           "modes": [
             "walk",
             "tour"
@@ -7527,7 +7527,7 @@
         "status": "enumerated",
         "enumerated_by": "hp-researcher (chapter XXVII pass, Claude)",
         "date": "2026-09-17",
-        "note": "Read in full: translation/en/page_398.md through page_408.md (our CC0 translation, 1499 pp. 398-408). This chapter has no woodcut in its own page range, but it is not undepicted: plates 154-156 ('Dream of Polia: Cupid punishes two women' / 'Cupid brandishes sword over kneeling victim' / 'Lion, dog, dragon devour victims; Cupid flies above') sit at 1499 pp. 391-393, which coverage.json's page-range logic assigns to chapter XXVI. But chapter XXVI's own text at those pages (verified pp. 392, 396-397) is Poliphilo's death and Polia's guilty flight from the temple -- it says nothing about a whirlwind, a chariot, or beasts. The vision the three plates depict is only narrated in chapter XXVII's text (pp. 399-408), five to fifteen pages after its own woodcuts. This is a 1499 quire-layout artifact (the block was cut and set before the text it illustrates), not a duplicate telling -- and it means a plate-driven coverage check would credit chapter XXVI with 'covering' a scene its text does not contain, while chapter XXVII -- which spends six pages on it in far more graphic and zoological detail than any three-line caption (six kinds of beast, not 'lion, dog, dragon'; named weapons; hearts torn out) -- shows as plateless and gets skipped. Recommend chapter XXVI's researcher note this cross-reference too. Grepped src/scenes/world/tombs.js (_buildBookTwo, ~L714-823), src/scenes/HPWorldScene.js and src/systems/Cast.js for whirlwind/executioner/nurse/fiery chariot/paliurus/soliferrum/rhomphaea: no matches. The built Book II precinct (_buildBookTwo) covers only the Temple of Diana and the vow (ch. XXV-XXVI, plates 152-153), the bed-chamber's ice-chariot/fire-chariot window vision (ch. XXVI/XXXV, plates 160-165), and the Venus-priestess enthroned (ch. XXXV, plate 163). Nothing from chapter XXVII -- the whirlwind, the punishment-vision, the thorn-thicket, or the nightmare of the two executioners -- exists anywhere in the code. Cast.js already has wolf(), dog(), lion(), eagle() and a generic bird() constructor (grepped, not opened in full) -- most of the beast-feast's cast is already modelled for other scenes and only needs assembling here; kite and vulture have no dedicated model but bird() takes a colour argument."
+        "note": "Read in full: translation/en/page_398.md through page_408.md (our CC0 translation, 1499 pp. 398-408). This chapter has no woodcut in its own page range, but it is not undepicted: plates 154-156 ('Dream of Polia: Cupid punishes two women' / 'Cupid brandishes sword over kneeling victim' / 'Lion, dog, dragon devour victims; Cupid flies above') sit at 1499 pp. 391-393, which coverage.json's page-range logic assigns to chapter XXVI. But chapter XXVI's own text at those pages (verified pp. 392, 396-397) is Poliphilo's death and Polia's guilty flight from the temple -- it says nothing about a whirlwind, a chariot, or beasts. The vision the three plates depict is only narrated in chapter XXVII's text (pp. 399-408), five to fifteen pages after its own woodcuts. This is a 1499 quire-layout artifact (the block was cut and set before the text it illustrates), not a duplicate telling -- and it means a plate-driven coverage check would credit chapter XXVI with 'covering' a scene its text does not contain, while chapter XXVII -- which spends six pages on it in far more graphic and zoological detail than any three-line caption (six kinds of beast, not 'lion, dog, dragon'; named weapons; hearts torn out) -- shows as plateless and gets skipped. Recommend chapter XXVI's researcher note this cross-reference too. Grepped src/scenes/world/tombs.js (_buildBookTwo, ~L714-823), src/scenes/HPWorldScene.js and src/systems/Cast.js for whirlwind/executioner/nurse/fiery chariot/paliurus/soliferrum/rhomphaea: no matches. The built Book II precinct (_buildBookTwo) covers only the Temple of Diana and the vow (ch. XXV-XXVI, plates 152-153), the bed-chamber's ice-chariot/fire-chariot window vision (ch. XXVI/XXXV, plates 160-165), and the Venus-priestess enthroned (ch. XXXV, plate 163). Nothing from chapter XXVII -- the whirlwind, the punishment-vision, the thorn-thicket, or the nightmare of the two executioners -- exists anywhere in the code. Cast.js already has wolf(), dog(), lion(), eagle() and a generic bird() constructor (grepped, not opened in full) -- most of the beast-feast's cast is already modelled for other scenes and only needs assembling here; kite and vulture have no dedicated model but bird() takes a colour argument. RECONCILIATION (2026-09-21, ledger-only pass against tombs.js ._buildBookTwo, read in full lines 690-826): confirmed this chapter's whirlwind/thorny-grove/fiery-chariot/beast-feast nightmare has no geometry anywhere in the built world. The ice-chariot/fire-chariot vision built in Polia's bed-chamber (plate 160, ch. XXIX) is a DIFFERENT, gentler vision -- Diana's stags vs Venus's swans, seen through a window, no violence -- and does not answer this chapter's plates 154-156 (two women chained to a burning car, run through with a blade, devoured by a beast pack). All 24 of this chapter's features remain unbuilt; this is the single largest confirmed gap in the XXV-XXXV span."
       },
       "features": [
         {
@@ -8132,9 +8132,9 @@
           "kind": "person",
           "plate": 157,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 420); woodcut #157 (catalogued page_seq 411, actually depicts this scene -- see research.note)",
-          "status": "unknown",
-          "built_as": "src/scenes/world/tombs.js _buildBookTwo (the prostrate 'pol' figure, DX+0.6, DZ+1.2)",
-          "note": "grep of src/scenes/world/tombs.js found a prostrate Poliphilo figure in the Temple of Diana, but the code comment attaches it to an EARLIER scene (plate #152, ch. XXVI, Poliphilo collapsing at the threshold while alive). It is not distinctly staged as THIS chapter's corpse -- pallid, bloodless, dragged there by Polia -- and I have not seen the running page to know how it actually reads."
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "The same lying Poliphilo figure used for the ch. XXVI death-swoon (tombs.js line 763-764) is the only body geometry in the precinct, and the temple's own plaque claims 'PLATES 152-159' -- a range that includes #157, this feature's plate. The body is there; the specific 'colder and more congealed than hard marble' discovery beat and Polia's lament over it (see xxix-polia-lament, still unbuilt) are not staged as a distinct action."
         },
         {
           "id": "xxix-polia-lament",
@@ -8169,9 +8169,9 @@
           "kind": "rite",
           "plate": 159,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 423-424); woodcut #159 (catalogued page_seq 413, matched against this page's text -- see research.note)",
-          "status": "unknown",
-          "built_as": "src/scenes/world/tombs.js _buildBookTwo (two generic 'priestess_i' NPCs, pose 'point')",
-          "note": "grep found two anonymous priestess NPCs standing at the temple steps with a plaque reading 'THE LOVERS DRIVEN OVT,' but the specific action -- 'some with rods, and others with branches of young-oak... beating -- dissociated our sweet embracing' -- is not staged (no weapons/branches, no beating pose, no dissociation of an embracing pair). Not verified live."
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "The two priestess NPCs face the temple (rotation Math.PI, pose 'point') and the precinct's own plaque reads '...THE LOVERS DRIVEN OVT...' (tombs.js line 769-770) -- the concept is asserted and the priestesses are present and posed toward the scene. But there is no beating/rod/oak-branch action and no departing-lovers pose; it is declarative text plus static presence, not the physical eviction the page describes."
         },
         {
           "id": "xxix-algerea",
@@ -8233,9 +8233,9 @@
           "kind": "machine",
           "plate": 160,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 425); woodcut #160 (catalogued page_seq 415, matched against this page's text -- see research.note)",
-          "status": "unknown",
-          "built_as": "src/scenes/world/tombs.js _buildBookTwo (the 'ice' THREE.Group with two stag meshes, bursting through the bed-chamber window)",
-          "note": "grep found a car-and-two-stags group positioned outside Polia's bed-chamber window and gently hovering. Not modelled from the code alone: the stags' \"little chains of livid lead,\" Diana's \"chaplet of Agnus-willow,\" her \"un-corded bow,\" and \"the inane (empty) quiver\" -- the text is specific about the un-strung bow and the empty quiver as signs of her defeat, which the car+stags alone don't convey. Not verified live."
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "Fully modeled as a hovering vision group behind Polia's bed-chamber window: an ice-coloured car (BoxGeometry, pale-blue metal-ish material) drawn by two stag models, tagged '(#160)' in the source comment. tombs.js lines 792-797. Missing: no Diana figure riding it, no empty-quiver detail. Not live-verified this session -- code-confirmed only, on a commit already on origin/main (static site, no build step)."
         },
         {
           "id": "xxix-venus-fire-chariot",
@@ -8243,9 +8243,9 @@
           "kind": "machine",
           "plate": 160,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 425); woodcut #160 (see research.note)",
-          "status": "unknown",
-          "built_as": "src/scenes/world/tombs.js _buildBookTwo (the 'fire' THREE.Group with two swan meshes, a fire prop, and small red spheres)",
-          "note": "grep found the counterpart chariot (car, two swans, a flame prop, and eight small red spheres that read as roses) opposite the ice chariot. \"With her she had a feathered little boy (Cupid)\" -- no Cupid child figure appears among the group's contents in the code I read. Not verified live."
+          "status": "partial",
+          "built_as": "tombs.js._buildBookTwo",
+          "note": "Fully modeled as a hovering vision group opposite the ice-chariot: a gold car drawn by two swans, with a fire prop and eight ember spheres. tombs.js lines 798-803. Missing: no Venus figure riding it and no Cupid beside her, both named in the text ('with Cupid beside her'). Not live-verified this session."
         },
         {
           "id": "xxix-chariot-duel",
@@ -8339,13 +8339,14 @@
           "kind": "place",
           "plate": 161,
           "source": "pp. 428–429 (text); woodcut true 1499 p. 429, catalogued as #161 at mislabelled page_seq 419",
-          "status": "unknown",
-          "note": "grep of src/scenes/world/tombs.js finds _buildBookTwo (~L805–823) building a small tetrastyle shrine at TX2,TZ2 with an enthroned priestess and the lovers kissing before her, plaqued 'IN CONSPECTV ANTISTITAE ... PLATE 163' — i.e. built (if it is, unverified live) for chapter XXXI's climax, not explicitly for this chapter's petition scene. The book calls this room 'the vaulted Temple' (p. 428) with a sounding echo; the code's shrine has no vault modelled and no acoustic behaviour.",
+          "status": "partial",
+          "note": "The world builds one Temple-of-Venus location (circular platform, altar between two Corinthian columns, entablature, an enthroned priestess NPC) that tours.json's own 'book_two' stop for 'chapter: XXX-XXXI' treats as covering this whole arc together. Geometrically it is posed and labelled only for the ch. XXXI kiss (plate 163) -- no checkerboard floor, no barred window, no tetrastyle hall distinct from the round precinct this chapter's own plate (#161) shows. The physical setting exists; this chapter's specific staging (Poliphilo pleading, Polia kneeling) does not. See xxx-poliphilo-plea-pose.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-priestess-tribunal-throne",
@@ -8353,13 +8354,14 @@
           "kind": "object",
           "plate": 161,
           "source": "p. 429",
-          "status": "unknown",
-          "note": "grep finds an Antistita NPC ('b2_venus_priestess', tombs.js ~L812–813) enthroned at the same location; not verified live this session, and her pose/label there is written for the kiss, not the plea.",
+          "status": "partial",
+          "note": "The priestess NPC ('Antistita') is present at the one built Temple-of-Venus location, but geometry gives her no distinct throne/seat prop -- she stands. 'Enthroned' is asserted by the code comment and the later plaque, not modeled as a chair.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-altar-of-venus-flame",
@@ -8367,13 +8369,14 @@
           "kind": "object",
           "plate": 161,
           "source": "p. 429 (text: \"the sacrificial Altars of the most-holy Cytherean\"); woodcut true p. 429 shows it explicitly, between the columns, opposite the barred window",
-          "status": "unbuilt",
-          "note": "grep finds a stone-block-plus-gold-slab pair at the same precinct (tombs.js ~L807–809) but it is not modelled as a vase with a visible flame, and it is not cited in any comment to this passage — probably not the same object.",
+          "status": "partial",
+          "note": "An altar (a stone block plus a gold panel) sits between the two Corinthian columns of the Temple of Venus, matching the page's 'sacrificial Altars of the most-holy Cytherean... between two columns' structurally. tombs.js lines 811-813. Not modeled: no flame/fire prop on this altar (unlike the fire-chariot vision elsewhere in the same precinct, which does call this.cast.props.fire) -- so the 'lit' altar is unlit.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-poliphilo-plea-pose",
@@ -8531,13 +8534,14 @@
           "kind": "rite",
           "plate": 163,
           "source": "p. 435 (its true page, once the page_seq offset is corrected — see research note)",
-          "status": "unknown",
-          "note": "grep of src/scenes/world/tombs.js finds this exact tableau: _buildBookTwo (~L805–823) builds an enthroned Antistita ('b2_venus_priestess') with Poliphilo and Polia ('b2_poliphilo_kiss'/'b2_polia_kiss') kissing before her, plaqued 'IN CONSPECTV ANTISTITAE ... THE LOVERS KISS IN HER PRESENCE · PLATE 163' — the correct plate, correctly matched to this chapter, whatever its page-citation history. Not verified live this session, so recorded as unknown rather than built. Note the in-code NPC sub-label reads 'ENTHRONED · CH. XXXV' (~L813), a stray chapter mislabel in the comment text (should be XXXI) worth a small fix when this is next touched.",
+          "status": "partial",
+          "note": "A near-complete, deliberate match: priestess NPC 'Antistita' enthroned (label 'ENTHRONED'), Poliphilo and Polia NPCs posed kissing before her (pose 'reach'/'offer', facing each other), a plaque reading 'IN CONSPECTV ANTISTITAE / THE LOVERS KISS IN HER PRESENCE * PLATE 163'. tombs.js lines 808-823 -- the code's own comment cites '(#163)' and the plaque names the plate explicitly. Code-confirmed only; not loaded live this session (no computer-use tool available in this pass), so left at 'partial' rather than 'built' per this project's verify-live rule -- recommend promoting to 'built' once someone loads the running page and looks.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxxi-kiss-arra-pledge",
@@ -8545,13 +8549,14 @@
           "kind": "rite",
           "plate": 163,
           "source": "pp. 434–435",
-          "status": "unknown",
-          "note": "same built evidence as xxxi-priestess-enthroned-kiss above; tours.json's 'Before the Priestess' stop already narrates this as the pledge-kiss and cross-references Book I's well-rite arra-kiss (p. 218) — the two accounts of the same pledge, from each side of the story.",
+          "status": "partial",
+          "note": "The kissing pose itself (Poliphilo/Polia NPCs facing each other before the enthroned priestess) is built, matching the moment. The specific choreography of the text ('kissing, sipping... the tongue's little bite') is of course not literally modeled -- two static figures, no animation.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxxi-priestess-blessing-speech",
@@ -9263,7 +9268,7 @@
         "status": "enumerated",
         "enumerated_by": "read end to end against our own translation (translation/en/page_455.md [argument]-page_460.md, CC0), session of 2026-09-17",
         "date": "2026-09-17",
-        "note": "Chapter XXXV has NO PLATE of its own -- hp.db.woodcut_catalog returns zero rows for page_seq 456-460. The nearest plates (166-168) fall at pages 447-448, inside chapter XXXIII's text as translated (translation/en/page_447.md, page_448.md), TWO PAGES BEFORE chapter XXXIV even opens -- so the catalogue's page_seq for these three plates does not line up with the events they depict (Venus in the clouds, Cupid with Polia's bust, Cupid shooting the bust), which are narrated only here in XXXV, pp. 456-458. This is a genuine mismatch worth a ticket: either the catalogue's page_seq is off for #166-168, or the 1499's plates were set ahead of the text they illustrate (a known period layout habit). This pass treats the plates as belonging to this chapter's events on content grounds, per hp.db's own descriptions, while leaving the numeric page_seq discrepancy on record. The chapter itself is Poliphilo's near-death vision: his soul, freed at his death (the close of ch. XXXIV), rises to Venus enthroned in the clouds, complains against Cupid, watches Cupid strike Polia's divine effigy with the golden arrow and win her yielding, is shown a beatific vision of Polia's celestial beauty, hears Venus's world-softening voice, and returns to his body. This chapter is also where the world's own tour text for chapter XXXV is attached -- to 'quinta_essentia' (src/scenes/world/constants.js line 57), which is a pre-existing BOOK I station, 'The Obelisk of the Trinity' (folio 119). No ground of its own has been modelled for this chapter's heavenly court; the note is attached to unrelated Book I geometry. Separately, tombs.js's built Venus-priestess-enthroned scene (_buildBookTwo, ~line 828) is code-commented 'sub: ENTHRONED . CH. XXXV', but its plate (163, p. 425) and its content (a human priestess on earth, the lovers kissing before her) actually belongs to chapters XXX-XXXI, not this chapter's heavenly throne (Venus in the clouds, not a priestess on earth). That mislabel is worth a ticket of its own: a code comment naming this chapter proves someone looked, not that this chapter's content exists. No measured distances, paces or physical dimensions are stated anywhere in the chapter; the only countable things are narrative (three presences at the throne; six gods named as susceptible to Venus's voice; three zodiacal figures named as banished from it)."
+        "note": "Chapter XXXV has NO PLATE of its own -- hp.db.woodcut_catalog returns zero rows for page_seq 456-460. The nearest plates (166-168) fall at pages 447-448, inside chapter XXXIII's text as translated (translation/en/page_447.md, page_448.md), TWO PAGES BEFORE chapter XXXIV even opens -- so the catalogue's page_seq for these three plates does not line up with the events they depict (Venus in the clouds, Cupid with Polia's bust, Cupid shooting the bust), which are narrated only here in XXXV, pp. 456-458. This is a genuine mismatch worth a ticket: either the catalogue's page_seq is off for #166-168, or the 1499's plates were set ahead of the text they illustrate (a known period layout habit). This pass treats the plates as belonging to this chapter's events on content grounds, per hp.db's own descriptions, while leaving the numeric page_seq discrepancy on record. The chapter itself is Poliphilo's near-death vision: his soul, freed at his death (the close of ch. XXXIV), rises to Venus enthroned in the clouds, complains against Cupid, watches Cupid strike Polia's divine effigy with the golden arrow and win her yielding, is shown a beatific vision of Polia's celestial beauty, hears Venus's world-softening voice, and returns to his body. This chapter is also where the world's own tour text for chapter XXXV is attached -- to 'quinta_essentia' (src/scenes/world/constants.js line 57), which is a pre-existing BOOK I station, 'The Obelisk of the Trinity' (folio 119). No ground of its own has been modelled for this chapter's heavenly court; the note is attached to unrelated Book I geometry. Separately, tombs.js's built Venus-priestess-enthroned scene (_buildBookTwo, ~line 828) is code-commented 'sub: ENTHRONED . CH. XXXV', but its plate (163, p. 425) and its content (a human priestess on earth, the lovers kissing before her) actually belongs to chapters XXX-XXXI, not this chapter's heavenly throne (Venus in the clouds, not a priestess on earth). That mislabel is worth a ticket of its own: a code comment naming this chapter proves someone looked, not that this chapter's content exists. No measured distances, paces or physical dimensions are stated anywhere in the chapter; the only countable things are narrative (three presences at the throne; six gods named as susceptible to Venus's voice; three zodiacal figures named as banished from it). RECONCILIATION (2026-09-21): confirmed tombs.js's Venus-priestess-enthroned scene, which its own code comment tags 'sub: ENTHRONED * CH. XXXV' (line 816), is mistagged in the CODE -- its content (a human priestess on earth, the betrothal kiss, plate 163) belongs to chapter XXXI, as this ledger's own XXXI entry already correctly has it. This chapter's actual content -- Venus enthroned IN THE CLOUDS, Poliphilo's soul, Cupid shooting the effigy of Polia -- has no geometry anywhere in the precinct. The ledger was already correct; only the .js comment is wrong, and this pass does not touch .js files. All 16 of this chapter's features remain unbuilt."
       },
       "features": [
         {
