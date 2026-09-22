@@ -45,7 +45,7 @@ import {
 import { Materials } from './world/materials.js?v=12';
 import { Nature } from './world/nature.js?v=20';
 import { Approach } from './world/approach.js?v=15';
-import { Portal } from './world/portal.js?v=30';
+import { Portal } from './world/portal.js?v=31';
 import { Palace } from './world/palace.js?v=32';
 import { Triumphs } from './world/triumphs.js?v=17';
 import { Tombs } from './world/tombs.js?v=14';
@@ -335,6 +335,7 @@ export class HPWorldScene {
     _in('pyramid', () => {
       this._buildGreatPortal();
       this._buildPorchStylobate();
+      this._buildSpandrelMedallions();
     });
 
     // ── North of the porch: the gardens ─────────────────────────────────────

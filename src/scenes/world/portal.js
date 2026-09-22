@@ -399,6 +399,94 @@ export const Portal = {
     this._circleCol(PX, PZ, W * 0.78);
   },
 
+  // ── The porch's own ornament, continued: the spandrel medallions and the
+  // pediment inscription (chapter V, plate #16, our p.55 — our translation
+  // holds no file for that page, since it is a full-page woodcut; the
+  // catalogue's page_seq was corrected 38 -> 45 on 2026-09-20, see
+  // scripts/coverage_seed.py PLATE_PAGE_FIXES[16] and
+  // research/coverage.json's porch-medallion-busts entry). Chapter V's own
+  // argument is "the ORNAMENT of the great gate" and it is the SAME gate
+  // _buildGreatPortal raises, described in more of its own carving than the
+  // structural build ever drew from.
+  //
+  // WHAT THE TEXT ACTUALLY GIVES (our translation pp. 49-54, not just the
+  // db's plate gloss): the gate is arched, with a coffered soffit, a
+  // keystone cut with an eagle bearing off a boy (Ganymede, named by neither
+  // Colonna nor the English — p.50), and in the spandrels — "the triangles
+  // which the arch made" — "a shrine-bearing figure in each... with the
+  // garments imitating the maidenly little body... holding out towards the
+  // keystone the Trophy of victory," worked as a CAMEO: white figure cut
+  // from the stone's own lighter vein, black ground (p.51). Then, "in the
+  // temple-like pinnacle, or frontispiece, beneath the order of the upper
+  // cornice," two words in Attic capitals: ΔΙΟΣ ΑΙΓΙΟΧΟΙΟ, "of aegis-bearing
+  // Zeus" (p.54) — the pediment inscription.
+  //
+  // hp.db.woodcuts #66 glosses the same cut as "medallion busts," which is
+  // the plate read at a distance; the text is closer work and says these are
+  // full shrine-bearing (Pastophora) nymphs in relief, not head-and-shoulder
+  // portraits, and NAMES NO ONE — so this build follows the text's content
+  // (a robed figure, arm out toward the centre) inside a round medallion
+  // frame, and does not invent an identity for either figure.
+  //
+  // WHERE THEY GO: _buildGreatPortal's own gate is trabeated (piers and a
+  // flat lintel, not an arch — see its "THE BASE STOREY" comment), so there
+  // is no literal arch to spring spandrels from. This mounts the two
+  // medallions on the wall face directly above the lintel and frieze,
+  // flanking the door's own centreline the way spandrels flank a keystone —
+  // the nearest structural reading of "the triangles which the arch made"
+  // this building actually has — and hangs the pediment plaque above them,
+  // "beneath the upper cornice" of the same wall rather than at its true
+  // 37 m top, which would be unreadable from the ground. Both adaptations,
+  // not measurements: the book settles the content, not this substitution.
+  //
+  // 2026-09-09's ledger note claimed "approach.js already builds a MEDALLION
+  // WALL" — checked 2026-09-21 and that was wrong. The two "medallion wall"
+  // comments in approach.js (_buildRuinWeeds) are about the Polyandrion's
+  // ruin (chapter XIX, tombs.js's five tomb medallions), not this gate, and
+  // they mark where flowers are EXCLUDED from planting, not built geometry.
+  // No medallion, bust or pediment inscription existed anywhere near the
+  // Great Portal before this.
+  _buildSpandrelMedallions() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const Z = 104;                       // matches _buildGreatPortal's own anchor
+    const ground = woodcut ? S.mat({ tone: 0.02 }) : this._darkStoneMat;   // the cameo's black stone
+    const fig = woodcut ? S.mat({ tone: 0.42 }) : this._stoneMat;          // the cameo's white vein
+
+    const medallion = (sx) => {
+      const g = new THREE.Group();
+      const x = sx * 3.1, y = 9.9, z = Z + 1.66;
+      // the round frame: a dark disc in a beaded stone ring
+      this._m(new THREE.CircleGeometry(0.58, 20), ground, 0, 0, 0, { parent: g, cast: false });
+      this._m(new THREE.TorusGeometry(0.58, 0.06, 6, 20), this._stoneMat, 0, 0, 0.01, { parent: g });
+      // the shrine-bearing figure, in profile, facing the doorway's centre —
+      // "maidenly," robed, one arm held out toward the keystone
+      const face = sx > 0 ? -1 : 1;      // inner-facing profile
+      this._m(new THREE.SphereGeometry(0.135, 12, 10), fig, face * 0.16, 0.22, 0.05, { parent: g, cast: false });
+      this._m(new THREE.CapsuleGeometry(0.05, 0.1, 4, 6), fig, face * 0.19, 0.34, 0.02, { parent: g, cast: false }); // the hair knotted up
+      // the draped shoulders and body, "the garments imitating the maidenly
+      // little body, flying and yielding"
+      const robe = this._m(new THREE.ConeGeometry(0.24, 0.5, 10), fig, 0, -0.12, 0.04, { parent: g, cast: false });
+      robe.rotation.x = Math.PI;
+      // the arm out, "holding out towards the keystone the Trophy of victory"
+      const arm = this._m(new THREE.CapsuleGeometry(0.035, 0.28, 4, 6), fig, face * -0.2, 0.02, 0.05, { parent: g, cast: false });
+      arm.rotation.z = face * 1.15;
+      // the trophy at its reach, a small hung breastplate on a shaft
+      this._m(new THREE.BoxGeometry(0.1, 0.16, 0.03), fig, face * -0.42, 0.08, 0.06, { parent: g, cast: false });
+      this._m(new THREE.CylinderGeometry(0.012, 0.012, 0.32, 5), fig, face * -0.42, -0.02, 0.06, { parent: g, cast: false });
+      g.position.set(x, y, z);
+      this.scene.add(g);
+      return g;
+    };
+    medallion(-1);
+    medallion(1);
+
+    // the pediment inscription — Greek, as the 1499 cuts it, with the English
+    // Colonna's own gloss supplies (p.54); mounted above the medallions, not
+    // at the wall's true 37 m top (see comment above)
+    this._plaque({ main: 'ΔΙΟΣ ΑΙΓΙΟΧΟΙΟ', sub: 'OF AEGIS-BEARING ZEVS · THE GATE’S PEDIMENT · P.54' },
+      3.0, 0.6, 0, 12.0, Z + 1.66, 0, true);
+  },
+
   _buildDoorsWall() {
     const S = this.style;
     // SPREAD = 4 (2026-09-17, DECISIONS.md 54): 12 -> 48. WALL_H is a size
