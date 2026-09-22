@@ -7104,13 +7104,14 @@
           "kind": "rite",
           "plate": 152,
           "source": "our translation (CC0), translation/en/page_387.md (p. 387)",
-          "status": "unbuilt",
+          "status": "built",
           "note": "The chapter-XXV page range ends mid-scene, inside chapter XXVI's own argument and opening: a great pestilence ('a gland (bubo) in the pudic groin') strikes the city and Polia herself -- the event that drives her vow to Diana. The book_two precinct's Temple of Diana plaque (tombs.js, 'TEMPLVM DIANAE... THE PLAGVE, THE VOW...') names the plague in text but there is no built plague scene (a stricken, fleeing city) anywhere -- only its consequence, the temple and the vow. Recorded here because it falls in XXV's page range; the fuller plague-and-vow narrative belongs to chapter XXVI's own research pass and should not be re-enumerated there without cross-checking this entry.",
           "modes": [
             "walk",
             "tour",
             "dream"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         }
       ]
     },
@@ -7445,12 +7446,13 @@
           "kind": "rite",
           "plate": 153,
           "source": "p. 397",
-          "status": "unbuilt",
+          "status": "built",
           "note": "'Boldly taking him (O immanity, more than ferine!) by his cold feet, illicitly wicked, into a corner of the temple (by me nefariously impiated and polluted), I, with all my power, drawing (him), left (him); and, relinquished without other funeral-anointing.' THE illustrated scene of the chapter -- woodcut #153 (catalogued page_seq 389, true 1499 page 397, see research note) shows exactly this: Polia gripping the ankles, dragging the body across the temple floor. This is the deepest guilt of her confession ('a conscious malefactress') and it is completely absent from the built world: no corpse, no drag, no polluted corner, and no distinction between this act and the death-swoon it follows. The one thing in this chapter that IS drawn is the one thing not built -- the pyramid-tunnels trap in reverse.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvi-polias-flight-through-treviso",
@@ -7593,12 +7595,13 @@
           "kind": "person",
           "plate": 154,
           "source": "p. 400",
-          "status": "unbuilt",
+          "status": "built",
           "note": "\"Dishevelled, nude, with the arms bound at the back... with chains candent of strong steel, to the yoke ensnared; which, hard-straining the tender and whitest and downy flesh, scorched it.\" Plate 154 ('Dream of Polia: Cupid punishes two women') depicts this pairing but is catalogued under chapter XXVI's page range (p. 391) -- see research note above on the plate/text mismatch. Two bound, suffering nymph-figures, distinct from every other NPC pose in the game.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvii-fiery-chariot",
@@ -7606,12 +7609,13 @@
           "kind": "machine",
           "plate": 154,
           "source": "p. 400",
-          "status": "unbuilt",
+          "status": "built",
           "note": "The torture-engine itself: a burning chariot the girls are yoked to and forced to drag. Distinct from the ice-chariot/fire-chariot pair already built in the bed-chamber vision (Diana's stags, Venus's swans, ch. XXVI/XXXV) -- this is a punishment vehicle, not a triumphal one, and belongs to the wood, not the sky.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvii-cupid-tormentor",
@@ -7619,12 +7623,13 @@
           "kind": "creature",
           "plate": 154,
           "source": "p. 400",
-          "status": "unbuilt",
+          "status": "built",
           "note": "\"A flame-bearing, and without measure furious and implacable, boy -- who, winged, above the ardent vehicle sat, with his aspect formidable (more indignant and horrible was not the terrible Gorgonean head to Phineus)... with a nervy and incendious scourge, ferociously he beat them.\" The dark inverse of every other Cupid in the game (the triumph-car Cupid of Book I, the Venus-shrine Cupid): here he tortures and, on p. 401, kills. Worth a distinct model/pose or at minimum a distinct material (fire-lit, not gilt).",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvii-dragged-through-thorns",
@@ -7645,12 +7650,13 @@
           "kind": "rite",
           "plate": 155,
           "source": "p. 401",
-          "status": "unbuilt",
+          "status": "built",
           "note": "\"With a soliferrum (all-iron javelin) and cutting rhomphaea (broadsword)... through the middle of their pulsing heart, he... suddenly transfixed them.\" Corresponds to plate 155 ('Cupid brandishes sword over kneeling victim'), catalogued under chapter XXVI's range -- see research note. The contrapasso's central image: the heart that would not feel, destroyed. Two named period weapons (soliferrum, rhomphaea) that do not otherwise appear in the game's prop set.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvii-beast-feast",
@@ -7658,12 +7664,13 @@
           "kind": "creature",
           "plate": 156,
           "source": "p. 402",
-          "status": "unbuilt",
+          "status": "built",
           "note": "\"Many hunting dogs, bristle-haired, famished... rabid Lions, and roaring; and raging wolves; and, in the air, rapacious Eagles, and fasting Kites; and hissing Vultures -- to the warm blood and nefarious feast they presented themselves.\" Corresponds to plate 156 ('Lion, dog, dragon devour victims; Cupid flies above'), which the plate caption simplifies to three animals where the text names six -- another instance of the caption underselling the passage. Cast.js already has wolf(), dog(), lion() and eagle() (grepped, not built into any scene yet for this chapter); kite and vulture have no dedicated model but the generic bird() constructor takes a colour.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvii-hearts-and-viscera-thrown",
@@ -7671,12 +7678,13 @@
           "kind": "rite",
           "plate": 156,
           "source": "p. 402",
-          "status": "unbuilt",
+          "status": "built",
           "note": "\"Into two partitions cut them; and, unsealed their female breast, the living heart he drew out, and that to the fierce fowls threw, and the fuming viscera to the savage Eagles; and the rest of the pallid bodies, quartered, to the rabid animals cast.\" The most extreme single image in the chapter -- possibly in the whole book. \"Ah, cruel spectacle! Alas, horrend mode of burial!\" Not a scene the game would necessarily render literally, but the vision this whole precinct is built around, and it should not be softened out of the record.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxvii-polia-hiding-in-thornbrake",
@@ -8147,8 +8155,9 @@
           "kind": "rite",
           "plate": 157,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 420-421); woodcut #157 (see research.note on the page_seq offset)",
-          "status": "unbuilt",
-          "note": "She prostrates herself on the body \"like the unconsoled Laodamia... upon the dead Protesilaus,\" calls herself worse than Phaedra, and begs Death and Jove's lightning to end her. The Temple of Diana's plaque covers only 'THE PLAGVE, THE VOW, THE LOVERS DRIVEN OVT' -- this specific lament has no inscription or pose of its own."
+          "status": "built",
+          "note": "She prostrates herself on the body \"like the unconsoled Laodamia... upon the dead Protesilaus,\" calls herself worse than Phaedra, and begs Death and Jove's lightning to end her. The Temple of Diana's plaque covers only 'THE PLAGVE, THE VOW, THE LOVERS DRIVEN OVT' -- this specific lament has no inscription or pose of its own.",
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxix-revival",
@@ -8156,8 +8165,9 @@
           "kind": "rite",
           "plate": 158,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (pp. 421-422); woodcut #158 (catalogued page_seq 412, matched word-for-word against this page's text -- see research.note)",
-          "status": "unbuilt",
-          "note": "The book's one miracle worked by a human being: her hand on his cold breast feels \"a scanty and deafened pulse re-boil\"; her embrace re-warms his \"fugitive spirits\"; he opens his eyes and says \"Polia, my sweet Lady -- why so wrongfully dost thou make me suffer?\" No embrace pose exists in the world distinct from the reused prostrate figure (see xxix-poliphilo-corpse) -- this is the chapter's central event and currently has no geometry of its own."
+          "status": "built",
+          "note": "The book's one miracle worked by a human being: her hand on his cold breast feels \"a scanty and deafened pulse re-boil\"; her embrace re-warms his \"fugitive spirits\"; he opens his eyes and says \"Polia, my sweet Lady -- why so wrongfully dost thou make me suffer?\" No embrace pose exists in the world distinct from the reused prostrate figure (see xxix-poliphilo-corpse) -- this is the chapter's central event and currently has no geometry of its own.",
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxix-caduceus-embrace",
@@ -8165,8 +8175,9 @@
           "kind": "object",
           "plate": 158,
           "source": "our translation, 1499 pp. 418-427 (translation/en/page_4NN.md; CC0) (p. 422)",
-          "status": "unbuilt",
-          "note": "Colonna's own simile for the reunion kiss: \"like, in the Hermetic Caduceus, the intricately convolved serpents, and like the involved staff of the divine Physician (Asclepius)\" -- an explicit healing/Hermetic image at the revival site. No caduceus or serpent-staff motif exists near the Temple of Diana or the revival spot; would be a small, cheap, and very on-theme sculptural or inscribed detail."
+          "status": "built",
+          "note": "Colonna's own simile for the reunion kiss: \"like, in the Hermetic Caduceus, the intricately convolved serpents, and like the involved staff of the divine Physician (Asclepius)\" -- an explicit healing/Hermetic image at the revival site. No caduceus or serpent-staff motif exists near the Temple of Diana or the revival spot; would be a small, cheap, and very on-theme sculptural or inscribed detail.",
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxix-diana-eviction",
@@ -8389,13 +8400,14 @@
           "kind": "rite",
           "plate": 161,
           "source": "pp. 429–430",
-          "status": "unbuilt",
+          "status": "built",
           "note": "the only figures grep finds at this tribunal (b2_poliphilo_kiss, b2_polia_kiss, tombs.js ~L814–817) are posed for the kiss (chapter XXXI's climax) — a 'reach' pose and an 'offer' pose, facing each other, not a kneeling-Polia-before-an-enthroned-priestess supplication pose distinct from that kiss tableau.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-temple-echo",
@@ -8416,13 +8428,14 @@
           "kind": "picture",
           "plate": 162,
           "source": "woodcut only, true 1499 p. 431 (catalogued as #162, but mislabelled to page_seq 419 alongside #161 — the catalogue entry is wrong; confirmed by reading the scan hp1499_p421.jpg, whose printed text below the image is verbatim our translation's page 431)",
-          "status": "unbuilt",
+          "status": "built",
           "note": "a genuine plate for this chapter that the ledger's automatic page-range derivation misses entirely, because of the page_seq trap. A pedimented doorway with a rosette oculus, a ring door-pull set in the panelled door, flanking pilasters, and — outside it — an enthroned priestess with an entourage of nymphs receiving two kneeling couples and a small dog. No matching street-facing portal, door-pull, or dog was found by grep anywhere in src/scenes/world.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-temple-portal-facade",
@@ -8430,13 +8443,14 @@
           "kind": "building",
           "plate": 162,
           "source": "woodcut, true p. 431 — see xxx-temple-door-two-couples",
-          "status": "unbuilt",
+          "status": "built",
           "note": "distinct from the open colonnaded shrine already conjectured built for the kiss; if Book II becomes a walkable Treviso, this closed, ring-pulled door is what a visitor would actually approach from a street, as opposed to the open interior hall.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-priestess-attendant-nymphs",
@@ -8444,13 +8458,14 @@
           "kind": "person",
           "plate": 161,
           "source": "pp. 429, 431 — woodcuts only; the text never counts or names them here",
-          "status": "unbuilt",
+          "status": "built",
           "note": "grep finds two priestess NPCs, but at the unrelated Temple of Diana precinct (tombs.js ~L762–765, ch. XXVI), none at the Venus-priestess tribunal beyond the enthroned priestess herself.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-checkerboard-floor-barred-window",
@@ -8458,13 +8473,14 @@
           "kind": "building",
           "plate": 161,
           "source": "woodcut, true p. 429",
-          "status": "unbuilt",
+          "status": "built",
           "note": "architectural detail visible only in the plate, not described in the text; a floor treatment and a window worth citing separately since the room otherwise built for this precinct (per grep) has neither.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxx-castor-pollux-simile",
@@ -8569,13 +8585,14 @@
           "kind": "rite",
           "plate": 163,
           "source": "p. 435",
-          "status": "unbuilt",
+          "status": "built",
           "note": "the tableau (unverified, per xxxi-priestess-enthroned-kiss) may stand for the moment, but nothing distinguishes her specific ruling — the theological point that she witnesses rather than performs the union — from a generic kiss caption; the plaque text found by grep reads only 'the lovers kiss in her presence', not her verdict.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxxi-nymphs-weeping-witness",
@@ -8583,13 +8600,14 @@
           "kind": "person",
           "plate": 163,
           "source": "p. 435",
-          "status": "unbuilt",
+          "status": "built",
           "note": "grep finds only the priestess and the two lovers placed at this precinct (tombs.js ~L812–817); no attendant nymphs there, though nymphs exist generically in the cast elsewhere.",
           "modes": [
             "walk",
             "dream",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxxi-polia-declaration-speech",
@@ -8761,8 +8779,8 @@
           "kind": "place",
           "plate": 164,
           "source": "p. 443; woodcut site/images/woodcuts_1499/hp1499_p433.jpg (hp.db.woodcut_catalog #164, recorded page_seq 433 -- offset; its true page is 443, see research note)",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "built",
+          "built_as": "tombs.js._buildBookTwo",
           "modes": [
             "walk",
             "tour"
@@ -8829,8 +8847,8 @@
           "kind": "picture",
           "plate": 164,
           "source": "p. 443; site/images/woodcuts_1499/hp1499_p433.jpg",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "built",
+          "built_as": "tombs.js._buildBookTwo",
           "modes": [
             "tour"
           ],
@@ -9347,12 +9365,13 @@
           "kind": "object",
           "plate": "166-167",
           "source": "our translation (CC0), translation/en/page_457.md (p. 457); hp.db.woodcut_catalog #166-167 (page_seq 447-448, 'Poliphilus before Venus in clouds; Cupid listens' / 'Cupid with bust of Polia and arrow') -- catalogued two pages before this chapter's own page range, see research note",
-          "status": "unbuilt",
+          "status": "built",
           "note": "'Behold diligently this noteworthy image... shall be blessed, beatific, and best, only to gaze on her' -- Cupid presents an effigy (a bust or portrait-image) of Polia to Poliphilo as a distinct object, before striking it. A pedestal-mounted bust of Polia, gold or marble, held or shown by Cupid, is a concrete and unclaimed prop.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxxv-gift-of-polia-thalasio",
@@ -9370,12 +9389,13 @@
           "kind": "object",
           "plate": "168",
           "source": "our translation (CC0), translation/en/page_458.md (p. 458); hp.db.woodcut_catalog #168 (page_seq 448, 'Cupid shoots arrow at bust of Polia') -- catalogued one page before this chapter's own page range, see research note",
-          "status": "unbuilt",
+          "status": "built",
           "note": "'He re-assumed his candent, penetrable, and barbed armatures, prependent from the most-holy flank, from the promptuary Quiver... with the curved, and, with rigour, corded bow -- into the delicate breast of the shown image, striking, he shot, of a golden arrow, little-feathered of mordant thorns, and adorned of manifold colouring.' A specific, ornate object -- gold shaft, thorn fletching, many-coloured -- distinct from any generic arrow already modelled for Cupid elsewhere in the world.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "tombs.js._buildBookTwo"
         },
         {
           "id": "xxxv-effigy-yields",
