@@ -952,6 +952,20 @@ export const Tombs = {
     this._circleCol(TX2, TZ2 - 1.2, 1.0);
     this._plaque({ main: 'IN CONSPECTV ANTISTITAE', sub: 'THE LOVERS KISS IN HER PRESENCE · PLATE 163' },
       2.0, 0.38, TX2, 0.95, TZ2 + 2.4, 0, true);
+    // ── ch. XXXI: the priestess's ruling, and her nymphs weeping at the kiss.
+    // Extends this same enthroned-kiss tableau rather than rebuilding it (our
+    // translation p. 435; plate 163, already cited on the plaque above).
+    // "Love has conciled you himself" -- she declines to intervene and asks
+    // Poliphilo to tell his own story; her nymphs, "standing-by", are moved
+    // to tears. xxxi-priestess-blessing-speech, xxxi-nymphs-weeping-witness.
+    const witnessAngles = [2.0, 2.6, 3.7, 4.3];
+    for (let i = 0; i < witnessAngles.length; i++) {
+      const a = witnessAngles[i];
+      const wn = this.cast.nymph({ name: 'witness_' + i, robe: 0xd4c8dc, h: 0.85, cutout: null });
+      this._npc('b2_kiss_witness_' + i, wn, TX2 + Math.cos(a) * 2.15, TZ2 + Math.sin(a) * 2.15, a + Math.PI, { sway: 0.05 });
+    }
+    this._plaque({ main: 'AMOR VOS IPSE CONCILIAVIT', sub: '"LOVE HAS CONCILED YOV HIMSELF" · HER NYMPHS WEEP · PLATE 163' },
+      2.0, 0.36, TX2, 1.55, TZ2 + 2.85, 0, false);
     // ── ch. XXX: the Venus-priestess's audience hall, and her street-facing
     // portal -- the most architectural beat of the whole precinct, and the
     // enclosed room the open kiss-platform above (TX2, TZ2) does not have.
