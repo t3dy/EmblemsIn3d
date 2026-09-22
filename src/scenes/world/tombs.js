@@ -874,6 +874,32 @@ export const Tombs = {
     this._plaque({ main: 'SOMNIVM POLIAE · CVRRVS IGNEVS', sub: 'CVPID PVNISHES TWO WOMEN · PLATES 154–156' },
       2.2, 0.4, GX, 0.95, GZ + 3.6, 0, true);
 
+    // ── ch. XXIX: the lament, the revival, and the Caduceus embrace, at the
+    // same threshold where the ch. XXVI corpse already lies (DX+0.6, DZ+1.2,
+    // above). Our translation pp. 420-422 (page_4NN.md); plates #157-158
+    // (hp.db.woodcut_catalog, page_seq matched word-for-word against this
+    // text -- see research.note). The temple plaque's "PLATES 152-159" and
+    // the ch. XXVI corpse already claim the spot; this adds the three acts
+    // that spot was not yet staged for, without moving or duplicating the body.
+    // xxix-polia-lament, xxix-revival, xxix-caduceus-embrace.
+    const lamentPolia = this.cast.nymph({ name: 'Polia', robe: 0xe8e2d0, h: 0.95, rank: 'tutulus', cutout: null, pose: 'sit' });
+    this._npc('b2_polia_lament', lamentPolia, DX + 1.5, DZ + 1.5, -2.3,
+      { label: 'Polia', sub: 'HER LAMENT · "LIKE THE VNCONSOLED LAODAMIA" · PLATE 157', sway: 0.03 });
+    // the revival: Poliphilo's pulse re-boils and he wakes in her arms --
+    // a second pair, embracing, a short distance from the collapsed body so
+    // the two moments of the same scene both read
+    const revivedPol = this.cast.figure({ name: 'Poliphilo', h: 0.95, robe: 0x8a4a3a, pose: 'reach' });
+    const revivedPolia = this.cast.nymph({ name: 'Polia', robe: 0xe8e2d0, h: 0.95, rank: 'tutulus', cutout: null, pose: 'offer' });
+    this._npc('b2_pol_revived', revivedPol, DX - 0.9, DZ + 2.6, 0.7, { sway: 0.03 });
+    this._npc('b2_polia_revived', revivedPolia, DX - 0.2, DZ + 2.9, -0.7, { sway: 0.03 });
+    // "like, in the Hermetic Caduceus, the intricately convolved serpents" --
+    // Colonna's own simile for the reunion, built as a small standing emblem
+    const caduceusStaff = this._m(new THREE.CylinderGeometry(0.02, 0.02, 0.9, 8), this._trunkMat, DX - 0.55, 0.45 + 0.45, DZ + 2.75, { cast: false });
+    const serpentPair = this.cast.animals.serpent(0.35, { coil: 0.8 });
+    serpentPair.position.set(DX - 0.55, 0.5, DZ + 2.75); serpentPair.rotation.x = Math.PI / 2; this.scene.add(serpentPair);
+    this._plaque({ main: 'CADVCEVS HERMETIS', sub: 'THE REVIVAL AND THE ENTWINED EMBRACE · PLATE 158' },
+      1.8, 0.34, DX - 0.55, 1.7, DZ + 3.0, 0, false);
+
     // ── Polia's bed-chamber, and the vision through its window (#160)
     const CX2 = BX + 8, CZ2 = BZ + 4;
     this._m(new THREE.BoxGeometry(5.0, 0.3, 4.4), dark, CX2, 0.15, CZ2, { cast: false });
