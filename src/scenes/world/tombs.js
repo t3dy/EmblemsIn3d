@@ -952,6 +952,87 @@ export const Tombs = {
     this._circleCol(TX2, TZ2 - 1.2, 1.0);
     this._plaque({ main: 'IN CONSPECTV ANTISTITAE', sub: 'THE LOVERS KISS IN HER PRESENCE · PLATE 163' },
       2.0, 0.38, TX2, 0.95, TZ2 + 2.4, 0, true);
+    // ── ch. XXX: the Venus-priestess's audience hall, and her street-facing
+    // portal -- the most architectural beat of the whole precinct, and the
+    // enclosed room the open kiss-platform above (TX2, TZ2) does not have.
+    // Our translation pp. 428-431; plates #161-162 (hp.db.woodcut_catalog
+    // #162 misfiled to page_seq 419 -- see research.note). Distinct from the
+    // TX2/TZ2 platform, which stages ch. XXXI's kiss (plate 163): this is the
+    // arrival, before the priestess rules on anything.
+    // xxx-poliphilo-plea-pose, xxx-priestess-attendant-nymphs,
+    // xxx-checkerboard-floor-barred-window, xxx-temple-door-two-couples,
+    // xxx-temple-portal-facade.
+    const AX = TX2, AZ = TZ2 + 12;
+    // the chequered tile floor (p.429's own plate, not the text)
+    const checkLight = S.mat(lit ? { color: 0xd8c9a0, roughness: 0.5 } : { tone: 0.08 });
+    const checkDark = S.mat(lit ? { color: 0x6a5638, roughness: 0.5 } : { tone: 0.02 });
+    for (let cz = 0; cz < 5; cz++) for (let cx = 0; cx < 6; cx++) {
+      this._m(new THREE.BoxGeometry(0.98, 0.06, 0.98), (cx + cz) % 2 ? checkDark : checkLight,
+        AX - 2.5 + cx, 0.03, AZ - 2 + cz, { cast: false });
+    }
+    // walls (open to the south, toward the street portal) and a roof
+    for (const [dx, w] of [[-3.0, 0.3], [3.0, 0.3]]) this._m(new THREE.BoxGeometry(w, 3.0, 5.2), stone, AX + dx, 1.5, AZ, { outline: true });
+    this._m(new THREE.BoxGeometry(6.3, 3.0, 0.3), stone, AX, 1.5, AZ - 2.6, { outline: true });
+    this._wallCol(AX - 3.15, AX - 2.85, AZ - 2.6, AZ + 2.6); this._wallCol(AX + 2.85, AX + 3.15, AZ - 2.6, AZ + 2.6);
+    this._wallCol(AX - 3.15, AX + 3.15, AZ - 2.75, AZ - 2.45);
+    this._roof(AX, 3.3, AZ, 6.6, 5.5, { pitch: 0.75, ridgeAlong: 'x' });
+    // the barred, arched window in the west wall
+    this._m(new THREE.BoxGeometry(0.06, 1.3, 1.0), silver, AX - 3.02, 1.9, AZ - 0.6, { cast: false });
+    for (let b = 0; b < 4; b++) this._m(new THREE.CylinderGeometry(0.02, 0.02, 1.3, 6), silver, AX - 3.03, 1.9, AZ - 1.0 + b * 0.28, { rz: Math.PI / 2, cast: false });
+    // the priestess enthroned, and her standing company of nymphs -- four
+    // behind her throne (the text never counts them; the plate does)
+    const throneMat = gold;
+    this._m(new THREE.BoxGeometry(1.0, 0.5, 0.9), stone, AX, 0.4, AZ - 1.7, { outline: true });
+    this._m(new THREE.BoxGeometry(1.0, 1.2, 0.16), throneMat, AX, 1.15, AZ - 2.1, { cast: false });
+    const hallPriestess = this.cast.nymph({ name: 'Antistita', robe: 0xf0ead8, h: 1.0, rank: 'mitre', cutout: null });
+    this._npc('b2_hall_priestess', hallPriestess, AX, AZ - 1.4, Math.PI, { label: 'The Priestess of Venus', sub: 'AVDIENCE HALL · CH. XXX', sway: 0.0 });
+    for (let i = 0; i < 4; i++) {
+      const an = this.cast.nymph({ name: 'attendant_' + i, robe: 0xdcd0e8, h: 0.9, rank: 'tutulus', cutout: null });
+      this._npc('b2_hall_attendant_' + i, an, AX - 1.5 + i, AZ - 2.3, Math.PI, { sway: 0.04 });
+    }
+    // Poliphilo standing and pleading; Polia kneeling beside him (p.429-430)
+    const pleaPol = this.cast.figure({ name: 'Poliphilo', h: 0.95, robe: 0x8a4a3a, pose: 'beckon' });
+    this._npc('b2_plea_poliphilo', pleaPol, AX - 0.7, AZ + 1.2, Math.PI, { sway: 0.03 });
+    const pleaPolia = this.cast.nymph({ name: 'Polia', robe: 0xd8c4e8, h: 0.85, cutout: null, pose: 'sit' });
+    this._npc('b2_plea_polia', pleaPolia, AX + 0.2, AZ + 1.4, Math.PI, { sway: 0.02 });
+    this._plaque({ main: 'AVLA ANTISTITAE', sub: 'THE CHEQVERED HALL · POLIPHILO PLEADS · PLATE 161' },
+      2.0, 0.36, AX, 1.0, AZ + 2.7, 0, false);
+
+    // the street-facing portal: a pedimented door, rosette oculus, ring
+    // door-pull, flanking pilasters (p.431, plate #162) -- real Renaissance
+    // proportion for the beauty pass DECISIONS.md 67 asks for, not a box
+    const FX = AX, FZ = AZ + 8;
+    this._m(new THREE.CircleGeometry(6.5, 28), this._darkStoneMat, FX, 0.02, FZ, { rx: -Math.PI / 2, cast: false });
+    this._m(new THREE.BoxGeometry(4.6, 3.4, 0.5), stone, FX, 1.7, FZ, { outline: true });
+    this._doorway(FX, 0, FZ - 0.2, 1.3, 2.1, { ry: 0 });
+    for (const sx of [-1, 1]) this._column(FX + sx * 1.7, FZ, 3.0, { order: 'ionic', r: 0.13 });
+    this._entablature(FX, 3.15, FZ, 4.2, 0.6, { ry: 0 });
+    // the pediment and its rosette oculus
+    const pedGeo2 = new THREE.CylinderGeometry(2.3, 2.3, 0.3, 3);
+    pedGeo2.rotateZ(Math.PI / 2); pedGeo2.rotateY(Math.PI / 2); pedGeo2.scale(1, 0.4, 1);
+    this._m(pedGeo2, stone, FX, 3.85, FZ, { cast: false, outline: true });
+    this._m(new THREE.TorusGeometry(0.32, 0.05, 8, 16), gold, FX, 3.75, FZ - 0.35, { cast: false });
+    this._m(new THREE.TorusGeometry(0.03, 0.012, 6, 10), gold, FX, 1.45, FZ + 0.05, { cast: false }); // the door-pull ring
+    // two couples kneeling before the priestess and her nymphs, and a small
+    // dog at her feet
+    const doorPriestess = this.cast.nymph({ name: 'Antistita', robe: 0xf0ead8, h: 0.95, rank: 'mitre', cutout: null });
+    this._npc('b2_door_priestess', doorPriestess, FX, FZ + 1.8, 0, { sway: 0.02 });
+    for (let i = 0; i < 2; i++) {
+      const dn = this.cast.nymph({ name: 'door_nymph_' + i, robe: 0xe4dcc8, h: 0.85, cutout: null });
+      this._npc('b2_door_nymph_' + i, dn, FX - 0.9 + i * 1.8, FZ + 2.1, 0, { sway: 0.03 });
+    }
+    const coupleOffsets = [[-1.1, 3.2], [1.1, 3.2]];
+    for (let i = 0; i < 2; i++) {
+      const [ox, oz] = coupleOffsets[i];
+      const husband = this.cast.figure({ h: 0.85, robe: 0x5a4a70, pose: 'sit' });
+      const wife = this.cast.nymph({ name: 'couple_wife_' + i, robe: 0xc8a860, h: 0.8, cutout: null, pose: 'sit' });
+      this._npc('b2_couple_h_' + i, husband, AX + ox - 0.25, FZ + oz, Math.PI, { sway: 0.02 });
+      this._npc('b2_couple_w_' + i, wife, AX + ox + 0.25, FZ + oz, Math.PI, { sway: 0.02 });
+    }
+    const doorDog = this.cast.animals.dog(0.35); doorDog.position.set(FX + 0.3, 0, FZ + 1.5); doorDog.rotation.y = 2.6; this.scene.add(doorDog);
+    this._plaque({ main: 'PORTA ANTISTITAE', sub: 'TWO COVPLES AT THE DOOR · PLATE 162' },
+      1.8, 0.34, FX, 3.4, FZ + 2.6, 0, false);
+
     // the precinct's own paving, so it reads as one place
     this._m(new THREE.CircleGeometry(14, 40), this._darkStoneMat, BX, 0.02, BZ + 1, { rx: -Math.PI / 2, cast: false });
   },
