@@ -64,6 +64,45 @@ new phase, not a patch: see `RETHINK.md` (to be written) for the plan and its se
 
 ---
 
+## 0-AB. Ted, 2026-09-21: back to a smaller island, priority is coverage then beauty then planting
+
+*Ted, after the true-scale spread from 0-AA landed and was walked live:*
+
+*"I think I've changed my mind about having things super spread out. I'd like to go back to
+the relatively smaller island, although we should move things apart as necessary as we add
+more buildings. Highest priority is to make sure all the scenes of the woodcuts have analogs
+in our virtual world. And we have a lot of work to do making the buildings beautiful and the
+gardens filled with plants that look like the plants named in the novel or our scholarship."*
+
+**This partly reverses call 54 (0-AA's fix), not all of it.** See `DECISIONS.md` / call 67 for
+the full reasoning and the exact new constants. In short: monument and garden SIZE stays true
+to the book (the pyramid is still 1,139.6 m); the invented one-stadium DEFAULT GAP between
+every precinct — the actual cause of "mostly empty spaces" — drops from 185 m to 30 m (75 m
+for the two gaps that carry real textual "distance in words"), the valley's reveal approach
+halves, the crossing trims, and Cythera itself scales to 45% of its literal diameter (Ted named
+the island specifically). Execution tracked in the ticket work touching `scripts/plan_build.py`
+/ `research/plan.json` / `src/scenes/world/cythera.js`.
+
+**Standing priority order from here, replacing "close the true-scale infill queue":**
+
+1. **`research/coverage.json`'s build queue is priority one.** 246 unbuilt + 42 partial
+   features, chapter by chapter, is literally "does every woodcut scene have an analog" —
+   that is what the ledger already tracks (`COVERAGE.md`). Work it with `/build-feature` /
+   `/research-chapter`, ranked by which features are plate-attached (a woodcut exists) first.
+2. **A building-beauty pass** — proportion, material, ornament, using `SOURCES.md`'s
+   "Modelling the 3-D assets" table and real Renaissance precedent to fill what the text
+   underdetermines, per the standing 0-AA brief's own licence to go beyond the text.
+3. **Species-true garden planting** — named plants from the novel and the scholarship
+   (`WOODS.md`, the ground-flora decision) extended to trees, hedges and orchards, not
+   stand-in greenery.
+
+The true-scale infill tickets (`feat-infill-bridge-grove-river`,
+`feat-infill-orchard-quincunx`, `feat-infill-jasmine-arbour-reveal`,
+`bug-itinerary-path-misses-three-precincts`) are reprioritised behind item 1, not dropped —
+the content they add is often coverage-queue material too, just now filling a third the space.
+
+---
+
 ## Open — 2026-09-20 Status
 
 *Updated 2026-09-20 after full audit of plan implementation and coverage. All four plan
