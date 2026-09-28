@@ -2067,12 +2067,12 @@
           "kind": "ornament",
           "plate": null,
           "source": "our p. 93",
-          "status": "partial",
-          "built_as": "world/palace.js _buildPalaceFront, twenty-two relief panels between the ground columns",
+          "status": "built",
+          "built_as": "world/palace.js _buildPalaceFront (panel loop + naming plaque), world/triumphs.js _reliefScene 'Hercules: <labour>' cases",
           "modes": [
             "walk"
           ],
-          "note": "Drawn by _reliefTexture, which gives a seeded crowd of relief figures. Partial because the twelve labours are nameable and are not named: each panel should carry one."
+          "note": "Drawn by _reliefTexture, which used to give a seeded crowd of relief figures shared by all twenty-two panels. Built 2026-09-28: _reliefScene (triumphs.js) gained twelve named cases -- Nemean Lion, Lernaean Hydra, Ceryneian Hind, Erymanthian Boar, Augean Stables, Stymphalian Birds, Cretan Bull, Mares of Diomedes, Belt of Hippolyta, Cattle of Geryon, Apples of the Hesperides, Cerberus -- each a constant Hercules (head, torso, club) at the left and that labour's own beast or task at the right, so a panel reads as its own labour by sight. The twenty-two ground-storey panels cycle through the twelve (palace.js _buildPalaceFront), and a plaque beside them names the sequence in order, following the precedent at portal.js _buildColossalHorse that baked words run off the stone at this panel size."
         },
         {
           "id": "golden-curtain-first",
