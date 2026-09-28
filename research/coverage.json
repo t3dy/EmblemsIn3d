@@ -1072,15 +1072,15 @@
           "kind": "building",
           "plate": null,
           "source": "Dallington pp. 26-31; 1499 l. 905; Bury 1998 Appendix (Word & Image 14.1-2, corpus md ll. 845-890)",
-          "status": "unbuilt",
-          "built_as": "HPWorldScene._buildPortal (at 1:65)",
+          "status": "built",
+          "built_as": "world/portal.js _buildGreatPortal (the stepped-pyramid block, DECISIONS.md 60)",
           "modes": [
             "walk",
             "tour",
             "dream",
             "flight"
           ],
-          "note": "Base 6 stadia + 20 paces = 1 139.6 m wide; base storey 37 m; plinth 1 110 m wide and 20.7 m high; pyramid 1 110 m square and about 785 m tall by Colonna's own construction (edge = base side), 1 410 courses of 0.56 m; cube 5.9 m; obelisk 10.4 m. Total to the nymph about 865 m. Built today at 17.5 m wide and 21 m tall. Bury: the huge figures are deliberate, \"to sustain the romantic fiction that the ruin discovered by Poliphilus surpassed all the wonders of the ancient world\". Full table in DIMENSIONS.md 2."
+          "note": "CORRECTED 2026-09-28: this entry still read \"Built today at 17.5 m wide and 21 m tall\", which predates DECISIONS.md call 60 (2026-09-20, Stage 2 of the true-scale plan) and was stale. Checked live (local build via python -m http.server, src/index.html): constants.js sets PYRAMID_W = 1139.6 and PLINTH_W = 1110.0, and portal.js's _buildGreatPortal builds the plinth and 94 merged bands of courses directly off those constants (no re-typed literal). Queried the running scene graph directly rather than trusting the source read alone: scene.traverse() over every mesh gives a world bounding box of x in [-254.9, 1417.4], z in [-5850.3, 2722.2], y up to 965.85 -- and the small cluster of meshes at the very top (the winged Fortuna on the obelisk) sits at x~0, z~-465.8, y~965.3-965.85, matching the book's own \"about 865 m\" to the cube plus the obelisk and nymph above it (DECISIONS.md 60: \"about 965 to the winged nymph\"). Base 1,139.6 m, plinth 1,110 m square x 20.7 m high, 1,410 courses of 0.56 m to 789.6 m, cube at TOP, obelisk and Fortuna above that to ~965 m. Built at true scale; the ledger was simply not updated when call 60 landed."
         },
         {
           "id": "closed-valley",
@@ -1432,12 +1432,13 @@
           "plate": null,
           "name": "The construction of the porch's proportion, drawn on the ground",
           "source": "Dallington 1592 p. 55",
-          "status": "unbuilt",
-          "note": "Poliphilo works out the architect's rule by drawing it: he takes a square off the two columns either side, makes a tetragon ABCD, divides it with three lines each way into sixteen quadrats, adds half as much again to get twenty-four, draws the two diagonals and two more lines to make four quadrats mutually intersecting, then sets four median points in the void over the isopleures and joins them into a rhombus. This is the book being a treatise for a page, and it is the reason the porch is described at all. Nothing in the world shows it; grepping for tetragon, rhombus and quadrat finds only unrelated canvas code.",
+          "status": "built",
+          "note": "Checked live first: nothing in portal.js or approach.js drew a tetragon, quadrat or rhombus before this pass -- confirmed by grep, not assumed. Built 2026-09-28 as an inlaid pavement diagram in the piazza immediately south of the Great Portal's two piers, geometrically correct to the construction Dallington actually gives (read directly from the corpus md, Da Capo Press 1592 facsimile, scan pp.51-52 = printed pp.55-56, the same +4 scan/printed offset already established by the forge relief's own citation): a 4x4 (16-quadrat) square ABCD taken from the two piers' own 10.8 m spacing, an adjunct of 8 more quadrats (\"half as much more\", 24 total) attached but not built on further, both diagonals AND both medians drawn in ABCD alone (the four centre quadrats they cross \"mutually intersect\"), and the four side-midpoints (\"median pricks... ouer the Isopleures\") joined into the Rhombus the passage builds toward. A plaque at the gate end cites Dall. pp.55-56. Verified live locally (localhost:3457) in both lit and woodcut styles by teleporting the walker (window.hpWalk / direct player.pos writes) and looking down at it -- the grid, both diagonals, both medians and the rhombus all render correctly, and the ground colour was corrected (darkened, matching _piazzaTexture's own documented fix) after the first version bloomed to solid white under direct sun.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/portal.js _buildPorchProportionFigure + _proportionFigureTexture"
         },
         {
           "id": "architect-character",
@@ -1445,12 +1446,13 @@
           "plate": null,
           "name": "What the architect must be, and the rule of the solid",
           "source": "Dallington 1592 pp. 56-57",
-          "status": "unbuilt",
-          "note": "The digression the proportion figure sets off. Take away order and rule and nothing can be made beautiful or durable; ornament may be added or diminished, but the SOLID -- the body of the frame, its invention and symmetry -- must be kept whole. Then the architect himself: honest, no prattler, courteous, patient, full of new devices, a curious searcher into all arts, and not subject to avarice. Belongs in the commentary layer rather than in geometry, but it is one of the few places the book states its own method, and the world does not carry it anywhere.",
+          "status": "built",
+          "note": "Checked live first: no plaque or panel near the porch carried this content before this pass. Built 2026-09-28 as two plaques flanking the proportion figure's far edge (clear of the alabaster stylobate at x~7.6, z~105.9) -- this project's established pattern for inscription-kind content at this exact porch (see _buildPorchStylobate's VVLCANVS plaque, _buildSpandrelMedallions's pediment plaque), not a new UI. Text is drawn from the corpus md directly (Da Capo Press 1592 facsimile, scan pp.52-53 = printed pp.56-57, confirmed by the same +4 offset as the proportion figure and the already-built forge relief): one plaque (\"SOLIDVM\") for the rule that ornament may be added or removed but the solid -- the body of the frame, its invention and symmetry -- must be kept whole; one (\"QVALIS ARCHITECTVS\") for the character the architect must have (honest, no prattler, courteous, patient, full of new devices, a curious searcher into all arts, not subject to avarice). Verified live locally in both lit and woodcut styles.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/portal.js _buildArchitectCharacter (two plaques)"
         },
         {
           "id": "porch-stylobate-right",

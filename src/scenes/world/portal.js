@@ -487,6 +487,182 @@ export const Portal = {
       3.0, 0.6, 0, 12.0, Z + 1.66, 0, true);
   },
 
+  // ── The porch's own proportion, drawn on the ground (Dallington 1592
+  // pp.55-56 — verified directly against the Da Capo Press 1592 facsimile,
+  // corpus md `Francesco_Colonna_Hypnerotomachia_Poliphili_Da_Capo_Press.md`,
+  // scan pages 51-52; that file's own scan-page numbers run 4 behind the
+  // printed pagination Dallington's book (and this project's other citations
+  // to it) use, confirmed against the forge relief just above — scan p.54
+  // there = the "pp.58-60" already cited for `_buildPorchStylobate`) ────────
+  //
+  // Poliphilo does not just admire the porch, he SURVEYS it — the book turns
+  // into a real construction for a page, not a gesture at one:
+  //
+  //   "I began after this manner, taking a square from the two collumnes on
+  //    either side in a perfect ioynt, in the which I tooke the due
+  //    proportion of the whole porch. A tetragon figure A.B.C.D. diuided by
+  //    three lines straight, and three ouerthwart equally distant one from
+  //    an other will make sixetene quadrats, then adde to the figure halfe
+  //    as much more in like proportion... you shall finde foure and twenty
+  //    quadrats. ... Draw then in the first figure A.B.C.D. two diagons,
+  //    make also in the same two lines, one straight downe, and the other
+  //    ouerthwart, which make the quadrats mutually intersect. Then in the
+  //    voide ouer the Isopleures make foure mediane prickes, drawing lines
+  //    from one to another, and they wil make the Rhombus."
+  //
+  // Built to that construction exactly, not a generic lattice:
+  //   1. Tetragon ABCD — the square taken off the two piers — divided 4x4
+  //      into SIXTEEN quadrats (three lines each way).
+  //   2. An adjunct of half that area (8 more quadrats) added on, "in like
+  //      proportion", making TWENTY-FOUR. The book calls this figure a
+  //      reference only ("shall serve of credence... to make the
+  //      demonstration"), so it is drawn attached but the construction below
+  //      acts on the plain square, not the adjunct.
+  //   3. Back in ABCD alone: both diagonals AND both medians ("one straight
+  //      downe, and the other ouerthwart") — four lines meeting at the
+  //      centre, which is what "make the quadrats mutually intersect" means:
+  //      the four 1x1 cells of the 4x4 grid that meet at that point.
+  //   4. Four points at the midpoints of ABCD's four equal sides ("the
+  //      Isopleures" — literally equal-sided) joined in sequence into the
+  //      RHOMBUS the whole passage has been building toward.
+  //
+  // The square's own side is not a number the book gives; it ties the figure
+  // to "the two collumnes on either side", so this build uses the one
+  // measurement the scene actually has for that — the 10.8 m between
+  // `_buildGreatPortal`'s own two piers (`s * 5.4`) — rather than inventing
+  // one. Inlaid in the piazza pavement immediately south of the gate, where
+  // the book has him draw it: "after this manner", at the porch, still
+  // looking at it.
+  _buildPorchProportionFigure() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const Z = 104;                    // matches _buildGreatPortal's own anchor
+    const SIDE = 10.8;                 // the two piers, s * 5.4 each side
+    const UNIT = SIDE / 4;             // 2.7 m — one quadrat
+    const DEPTH = UNIT * 6;            // 16.2 m — 4 (the square) + 2 (the adjunct)
+    const Z0 = Z + 1.4;                // clears the piers' own collision box (Z +/- 1.1)
+    const CZ = Z0 + DEPTH / 2;
+
+    const diagMat = S.mat({ color: 0xffffff, roughness: 0.86 });
+    const tex = this._proportionFigureTexture(woodcut);
+    diagMat.map = tex;
+    if (!woodcut) { diagMat.bumpMap = tex; diagMat.bumpScale = 0.02; }
+    this._m(new THREE.PlaneGeometry(SIDE, DEPTH), diagMat, 0, 0.036, CZ,
+      { rx: -Math.PI / 2, cast: false, receive: false });
+
+    // the plaque stands at the edge nearest the gate — the square ABCD
+    // itself, not the adjunct — where Poliphilo is standing when he draws it
+    this._plaque({ main: 'RHOMBVS',
+      sub: 'A SQVARE TAKEN FROM THE TWO COLVMNES · XVI QVADRATS TO XXIV · DIAGONALS AND MEDIANS · FOVRE PRICKES OVER THE ISOPLEVRES · DALL. PP. 55-56' },
+      4.6, 0.62, 0, 0.9, Z0 + 0.3, 0, true);
+  },
+
+  // The diagram itself, drawn rather than modelled (the pavement's own
+  // technique — see `_piazzaTexture`): local units u (0..4 -> x) and v
+  // (0..6 -> depth away from the porch); ABCD is v 0..4, the adjunct v 4..6.
+  _proportionFigureTexture(woodcut) {
+    const PX = 100;                    // px per quadrat
+    const W = 4 * PX, H = 6 * PX;
+    const c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d');
+
+    // Darkened and desaturated to the piazza's own values (see _piazzaTexture's
+    // note): a pale limestone here reflected the high sun straight into bloom
+    // and the whole panel washed out to white from a few metres off.
+    const ground = woodcut ? '#ded6c2' : '#a89878';
+    const grid = woodcut ? '#6e6656' : '#665a44';
+    const strong = woodcut ? '#3a3428' : '#6a3e16';     // diagonals + medians
+    const rhomb = woodcut ? '#181410' : '#4a140e';      // the rhombus itself
+    g.fillStyle = ground; g.fillRect(0, 0, W, H);
+
+    // the sixteen (then twenty-four) quadrats: three lines each way across
+    // ABCD, continued through the adjunct "in like proportion"
+    g.strokeStyle = grid; g.lineWidth = 2;
+    for (let i = 0; i <= 4; i++) { g.beginPath(); g.moveTo(i * PX, 0); g.lineTo(i * PX, H); g.stroke(); }
+    for (let i = 0; i <= 6; i++) { g.beginPath(); g.moveTo(0, i * PX); g.lineTo(W, i * PX); g.stroke(); }
+    // the join between the square and its adjunct, a shade darker
+    g.strokeStyle = woodcut ? '#4a4436' : '#5a4a30'; g.lineWidth = 3;
+    g.beginPath(); g.moveTo(0, 4 * PX); g.lineTo(W, 4 * PX); g.stroke();
+
+    // "Draw then in the first figure A.B.C.D. two diagons" — ABCD only, the
+    // near 4x4 block (v 0..4), corners at (0,0) (4,0) (4,4) (0,4) in quadrats
+    g.strokeStyle = strong; g.lineWidth = 3.5;
+    g.beginPath(); g.moveTo(0, 0); g.lineTo(4 * PX, 4 * PX); g.stroke();
+    g.beginPath(); g.moveTo(4 * PX, 0); g.lineTo(0, 4 * PX); g.stroke();
+    // "make also in the same two lines, one straight downe, and the other
+    // ouerthwart" — the medians, redrawn bold over the grid lines already at
+    // the halfway point, so the four centre quadrats they cross read as
+    // "mutually intersecting"
+    g.beginPath(); g.moveTo(2 * PX, 0); g.lineTo(2 * PX, 4 * PX); g.stroke();
+    g.beginPath(); g.moveTo(0, 2 * PX); g.lineTo(4 * PX, 2 * PX); g.stroke();
+    g.fillStyle = strong; g.globalAlpha = 0.22;
+    g.fillRect(1 * PX, 1 * PX, 2 * PX, 2 * PX);           // the four centre quadrats
+    g.globalAlpha = 1;
+
+    // "Then in the voide ouer the Isopleures make foure mediane prickes... and
+    // they wil make the Rhombus" — the midpoints of ABCD's four equal sides
+    const mids = [[2 * PX, 0], [4 * PX, 2 * PX], [2 * PX, 4 * PX], [0, 2 * PX]];
+    g.strokeStyle = rhomb; g.lineWidth = 4;
+    g.beginPath();
+    mids.forEach((p, i) => i ? g.lineTo(p[0], p[1]) : g.moveTo(p[0], p[1]));
+    g.closePath(); g.stroke();
+    g.fillStyle = rhomb;
+    for (const [px, py] of mids) { g.beginPath(); g.arc(px, py, 6, 0, 7); g.fill(); }
+
+    // the tetragon's own name, at its corners — the source names the figure
+    // "A.B.C.D." but does not draw it, so this reading order (clockwise from
+    // the corner nearest the gate) is this build's own, not the book's
+    g.fillStyle = strong; g.font = '28px Georgia'; g.textAlign = 'center';
+    [['A', 0, 0, 16, 26], ['B', 4 * PX, 0, -16, 26], ['C', 4 * PX, 4 * PX, -16, -10], ['D', 0, 4 * PX, 16, -10]]
+      .forEach(([ch, px, py, dx, dy]) => g.fillText(ch, px + dx, py + dy));
+
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    this._disp.push(t);
+    return t;
+  },
+
+  // ── What the architect must be, and the rule of the solid (Dallington
+  // 1592 pp.56-57 — scan pp.52-53, the same corpus file and the same +4
+  // offset as above; the digression runs straight on from the rhombus and
+  // ends where `_buildPorchStylobate`'s own citation (pp.58-60) picks up) ──
+  //
+  // Having drawn the rhombus, Poliphilo turns from the figure to its moral:
+  //
+  //   "take away order and rule, and what thing can any man make, either
+  //    beautifull to the eye, or of commendable proportion and durable?...
+  //    I call that SOLID which is the bodye of the frame, which is the
+  //    principall intent, inuention, foresetting downe, and symmetrie, or
+  //    dew proportion of the building, without any additions... which will
+  //    manifest the skill of the workeman; and the same afterwardes to
+  //    adorne and beautifie, which adiuncts is an easie matter."
+  //
+  // Ornament may be ADDED OR TAKEN AWAY; the solid — the body of the frame,
+  // its invention and symmetry — may not be touched. Then the architect
+  // himself, in one breath:
+  //
+  //   "besides his skill he must be honest, no prattler full of wordes, but
+  //    courteous, gentle, tractable, patient, mery and pleasant, full of new
+  //    deuices, a curious searcher into all artes... and in no wise be
+  //    subiect to auarice."
+  //
+  // `kind: inscription` in research/coverage.json — commentary, not a shape
+  // — so it is built the way this project already builds commentary at the
+  // porch: a plaque (`_buildPorchStylobate`'s VVLCANVS plaque,
+  // `_buildSpandrelMedallions`'s pediment plaque), not a new UI. Two
+  // plaques, since the passage has two distinct halves; set past the
+  // proportion figure's far (adjunct) edge so neither collides with the
+  // alabaster stylobate at x ~= 7.6, z ~= 105.9.
+  _buildArchitectCharacter() {
+    const Z = 104;
+    this._plaque({ main: 'SOLIDVM',
+      sub: 'ORNAMENT MAY BE ADDED OR TAKEN AWAY · THE SOLID — THE BODY OF THE FRAME, ITS INVENTION AND SYMMETRIE — KEPT WHOLE · DALL. P. 56' },
+      3.8, 0.6, -7.0, 1.3, Z + 17.6, 0, true);
+    this._plaque({ main: 'QVALIS ARCHITECTVS',
+      sub: 'HONEST, NO PRATLER, COVRTEOVS, PATIENT, FVLL OF NEW DEVICES, A CVRIOVS SEARCHER INTO ALL ARTES, NOT SVBIECT TO AVARICE · DALL. P. 57' },
+      3.8, 0.6, 7.0, 1.3, Z + 17.6, 0, true);
+  },
+
   _buildDoorsWall() {
     const S = this.style;
     // SPREAD = 4 (2026-09-17, DECISIONS.md 54): 12 -> 48. WALL_H is a size

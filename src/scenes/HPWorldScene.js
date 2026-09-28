@@ -45,7 +45,7 @@ import {
 import { Materials } from './world/materials.js?v=12';
 import { Nature } from './world/nature.js?v=21';
 import { Approach } from './world/approach.js?v=15';
-import { Portal } from './world/portal.js?v=31';
+import { Portal } from './world/portal.js?v=32';
 import { Palace } from './world/palace.js?v=33';
 import { Triumphs } from './world/triumphs.js?v=18';
 import { Tombs } from './world/tombs.js?v=18';
@@ -53,7 +53,7 @@ import { Temple } from './world/temple.js?v=17';
 import { Cythera } from './world/cythera.js?v=20';
 import { Rollup } from './world/rollup.js?v=15';
 // The screens: what stops you seeing where you are going (DIRECTIONS.md 5).
-import { Screens } from './world/screens.js?v=10';
+import { Screens } from './world/screens.js?v=11';
 
 // main.js imports HP_STATIONS from here and always has; keep that face.
 export { HP_STATIONS };
@@ -336,6 +336,8 @@ export class HPWorldScene {
       this._buildGreatPortal();
       this._buildPorchStylobate();
       this._buildSpandrelMedallions();
+      this._buildPorchProportionFigure();  // Dallington 1592 pp.55-56 — coverage.json porch-proportion-figure
+      this._buildArchitectCharacter();     // Dallington 1592 pp.56-57 — coverage.json architect-character
     });
 
     // ── North of the porch: the gardens ─────────────────────────────────────
