@@ -1175,6 +1175,76 @@ export const Approach = {
       2.4, 0.32, BX + 2.6, 0.62, BZ + 4.8, -Math.PI / 2, true);
   },
 
+  // ── The nymphs' flight: golden pantofles and veils, scattered (ch. VIII) ──
+  //
+  // Our translation p. 87, continuing straight into the passage
+  // `_buildRiverPlants` above already sites here (Dallington p. 122 — the
+  // SAME page that source cites for Geusia's herbs, because it is the same
+  // continuous scene): Poliphilo makes as if to seize the five nymphs, and
+  // "they with fresh laughter called one another to help, and fled, leaving
+  // their golden slippers and veils here and there, their fillets carried
+  // off by the cool breezes; and their little vessels ran among the
+  // neglected flowers." Only after this, "the slippers and other scattered
+  // things gathered up", does Geusia stoop to the river for the herb — so
+  // this is the ground the chase crosses on the way to that same water.
+  //
+  // coverage.json `nymph-flight-pantofles`, confirmed absent 2026-09-09: "no
+  // pantofles and no scattered veils anywhere (the veils in the world are
+  // the sphinxes' linen and the priestess's)." Static litter for WALK mode —
+  // this project's OTHER litter system (`src/systems/Litter.js`, DECISIONS.md
+  // 2026-09-08) is Roll Up only and is not what this note asks for.
+  //
+  // Sited by `_buildRiverPlants`'s own siting brief, which put the sighting
+  // in the green enclosure court: read against the actual page, the chase
+  // and the herb-gathering are one passage, both citing Dallington p. 122,
+  // and the herbs are already built here at the river — so the litter they
+  // drop while fleeing TO that river belongs beside it, not two precincts
+  // away in the enclosure the chapter reaches only afterward.
+  _buildNymphFlightLitter(BX = -44, BZ = 80) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const rnd = (i, k) => { const v = Math.sin(i * 91.7 + k * 233.1 + 3.3) * 43758.5453; return v - Math.floor(v); };
+    const gold = woodcut ? S.mat({ tone: 0.03 }) : S.mat({ color: 0xd9b25a, metalness: 0.75, roughness: 0.3 });
+    const veilMat = woodcut ? S.mat({ tone: 0.0 })
+      : S.mat({ color: 0xf2ecd8, roughness: 0.85, side: THREE.DoubleSide, transparent: true, opacity: 0.92 });
+    const vesselMat = woodcut ? S.mat({ tone: 0.05 }) : S.mat({ color: 0xe8d8b0, roughness: 0.4, metalness: 0.1 });
+
+    // a slipper: a flattened, pointed sole with a small raised heel — one for
+    // each of the five sense-nymphs (Aphea, Osfressia, Orassia, Achoe,
+    // Geussia, p. 79), dropped at its own angle as she ran
+    const slipper = (x, z, ry) => {
+      const g = new THREE.Group(); g.position.set(x, 0.02, z); g.rotation.y = ry; this.scene.add(g);
+      const sole = this._m(new THREE.SphereGeometry(0.11, 8, 6), gold, 0, 0.03, 0, { parent: g, cast: false });
+      sole.scale.set(1, 0.32, 1.9);
+      this._m(new THREE.SphereGeometry(0.045, 6, 5), gold, 0, 0.05, -0.16, { parent: g, cast: false });   // the raised heel
+    };
+    for (const [dx, dz, ry] of [[-1.6, 5.8, 0.4], [-0.4, 4.3, -1.1], [1.3, 5.1, 2.0], [2.0, -3.4, 0.9], [-2.4, -4.6, -0.6]]) {
+      slipper(BX + dx, BZ + dz, ry);
+    }
+
+    // veils: white folded silk (p. 79's own "white folded veils of silk"),
+    // most fallen flat, a couple caught mid-air by "the cool breezes"
+    for (const [dx, dz, ry, aloft] of [[-2.0, 6.4, 0.2, false], [0.8, 5.4, -0.5, true], [1.9, -4.0, 0.15, false], [-1.2, -3.8, 1.1, true]]) {
+      const v = this._m(new THREE.PlaneGeometry(0.9, 0.6, 4, 3), veilMat, BX + dx, aloft ? 0.55 : 0.025, BZ + dz,
+        { ry, rx: aloft ? -0.6 : -Math.PI / 2, cast: false, receive: false });
+      const pos = v.geometry.attributes.position;
+      for (let i = 0; i < pos.count; i++) pos.setZ(i, Math.sin(i * 1.7) * 0.05);   // a little rumple, not a flat card
+      pos.needsUpdate = true; v.geometry.computeVertexNormals();
+    }
+
+    // "their little vessels ran among the neglected flowers" — the alabaster
+    // boxes of perfumed powder and the little cleansing vessels of p. 79,
+    // left where they fell
+    for (const [dx, dz, kind] of [[-1.0, 6.9, 'box'], [2.4, 4.5, 'cup'], [-2.8, -4.0, 'box']]) {
+      const x = BX + dx, z = BZ + dz;
+      if (kind === 'box') this._m(new THREE.BoxGeometry(0.1, 0.08, 0.1), vesselMat, x, 0.04, z, { cast: false, ry: rnd(dx, 1) * 3 });
+      else this._m(new THREE.CylinderGeometry(0.05, 0.04, 0.09, 8), vesselMat, x, 0.045, z, { cast: false, rz: Math.PI / 2 - 0.3 });
+    }
+
+    this._plaque({ main: 'GOLDEN PANTOFLES AND VEILES',
+                   sub: 'THEY FLED, LEAVING THEM HEERE AND THERE, THEIR FILLETS CARIED OFF BY THE COOLE BREEZES · THEIR VESSELS NEGLECTED IN THE FLOWERS · OVR P. 87 (DALL. P. 122)' },
+      2.2, 0.34, BX - 2.9, 0.5, BZ + 5.6, Math.PI / 2, true);
+  },
+
   // ── The Polyandrion's weeds (our pp. 272-273; Rhizopoulou 2016) ─────────
   // "I found huge stones of the putrescent wall gaping, and grassy through the
   // cracks with aster and pellitory; which was also entangled and destroyed, as

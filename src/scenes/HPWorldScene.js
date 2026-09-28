@@ -44,7 +44,7 @@ import {
 } from './world/constants.js?v=16';
 import { Materials } from './world/materials.js?v=12';
 import { Nature } from './world/nature.js?v=21';
-import { Approach } from './world/approach.js?v=15';
+import { Approach } from './world/approach.js?v=16';
 import { Portal } from './world/portal.js?v=32';
 import { Palace } from './world/palace.js?v=33';
 import { Triumphs } from './world/triumphs.js?v=18';
@@ -370,6 +370,7 @@ export class HPWorldScene {
       this._buildShadedWalk();
       this._buildBridge();
       this._buildRiverPlants();
+      this._buildNymphFlightLitter();
     });
     _in('polia_garden', () => {
       this._buildPoliaGarden();
