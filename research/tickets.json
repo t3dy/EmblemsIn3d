@@ -2240,6 +2240,46 @@
       "acceptance": "On a fresh #hp load, wait 15s with zero interaction, then read sc.walker.player.pos.x and sc.camera.position.x: both are finite numbers, and sc.teleport('colossus') afterward lands the walker at a finite, correct position.",
       "opened": "2026-09-21",
       "note": "\n\nSECOND SYMPTOM, same suspected root (idle/attract-mode), found independently 2026-09-21 by the porch-sarcophagus builder: `sc.walker.locked` spontaneously flips back to a locked/scripted state after certain UI interactions, requiring `sc.walker.locked = false` plus a direct `player.pos` write to work around during verification. Not confirmed as the same code path as the NaN symptom, but both are walker-state corruption with no player interaction, so check whatever idle/attract timer exists before treating these as two separate bugs."
+    },
+    {
+      "id": "bug-ancient-bridge-precinct-split",
+      "title": "The ancient bridge (anchor-and-dolphin, p. 69) stands in the palace precinct, not over the spring it names in the very next sentence",
+      "kind": "bug",
+      "status": "open",
+      "priority": 3,
+      "evidence": "Our pp. 69-70, one continuous sentence across the page break: 'I found a marble and most ancient bridge of one very great and high arch... Beneath which ancient, solid and excellent bridge there gushed a broad vein of most limpid living water, which, dividing itself, made two running streamlets, one to the right and the other to the left.' The dividing spring is built at wooded_country (nature.js _buildDividingSpring, local SX=-112). The bridge with the SAME hieroglyph panels (plate 18: helmet/ox-skull/lamp; anchor-and-dolphin, ARCHITECTURE.md 4) is built at portal.js _buildBridge, called from HPWorldScene's `palace` precinct hook (ch. VIII-XI) alongside Dallington's second bridge (pp. 191-192) and Geusia's river -- about 1,300 m from where the text puts it. This pass (2026-09-28) added a second, plain arch-and-parapet span directly over the spring's head (_buildAncientBridgeOverSpring, nature.js) rather than duplicate the hieroglyph panels a second time, so the world now has two bridges standing for one passage: one correctly sited but bare, one fully carved but 1.3 km out of place.",
+      "fix": "Reconcile into one: either move `_buildBridge`'s call (and `_buildRiverPlants`, which shares its BX/BZ) from the `palace` hook to `wooded_country`, replacing `_buildAncientBridgeOverSpring`'s plain span with the real hieroglyph-carrying one at the spring's SX/SZ; or, if the river-with-two-bridges composition near the palace is a deliberate compression worth keeping, carry the anchor-and-dolphin panels onto THIS pass's span instead and repurpose the palace-precinct one as an unrelated crossing. Either way, check `_buildRiverPlants`'s own comment (\"the bridge's watercourse is that river\") before moving anything, since it assumes _buildBridge's exact BX/BZ.",
+      "acceptance": "Exactly one bridge in the world carries the anchor-and-dolphin / helmet-and-lamp hieroglyphs, and it stands within the wooded_country precinct, directly over (or immediately beside) the dividing spring's basin.",
+      "refs": [
+        "bug-fountain-station-carries-the-bath-tour-stop"
+      ],
+      "opened": "2026-09-28"
+    },
+    {
+      "id": "bug-bath-house-wrong-precinct",
+      "title": "The eight-sided bath (ΑΣΑΜΙΝΘΟΣ) is folded into the palace court; its own precinct, fountain_house, stood empty until this pass",
+      "kind": "bug",
+      "status": "open",
+      "priority": 2,
+      "evidence": "palace.js `_buildCourt` calls `this._buildBath(CX + 3.5, CZ + 2.8)` with its own comment: \"the plan gives it a precinct of its own, `fountain_house`; it is folded in here. Out of scope for this pass, but at the court's true size it is no longer what crowds the place out.\" `research/plan.json` and `plan_sites.js` both give `fountain_house` a real, sized, greenfield precinct (120x120 m) standing WITHIN `wooded_country`, citing our p. 70's first-glimpse-through-the-trees sightline. Until this pass (2026-09-28) nothing at all stood there. Added `_buildFountainGlimpse` (nature.js): a modest exterior shell (drum, columns, roof, pinnacle, threshold basin) and a screening stand of trees, sited correctly, but deliberately NOT the full interior (jacinth columns, censer, ivory nymph, fish mosaic, pp. 112-115) since that is `_buildBath`'s and duplicating it risked exactly the double-build RECIPES/model-an-asset.md step 0 warns against. The world now has two eight-sided buildings standing for the one the book describes: a full interior in the wrong place, and a correctly-sited shell.",
+      "fix": "Relocate `_buildBath`'s call from `_buildCourt` (palace.js) to a `fountain_house` precinct hook, replacing or absorbing `_buildFountainGlimpse`'s shell. `_buildBath` is already fully parametric on (BX, BZ) with no other outer-scope dependency (checked 2026-09-28) so this is a call-site move, not a rewrite. Also close bug-fountain-station-carries-the-bath-tour-stop in the same pass, since both are the same underlying gap (the precinct was empty, so both the geometry and the tour station drifted to wherever there was room).",
+      "acceptance": "`_buildBath` is called from within `_in('fountain_house', ...)`, no octagonal bath interior remains inside the palace court, and the `fountain` tour station (or a new one) opens the bath's own commentary when reached at that precinct.",
+      "refs": [
+        "bug-fountain-station-carries-the-bath-tour-stop",
+        "bug-ancient-bridge-precinct-split"
+      ],
+      "opened": "2026-09-28"
+    },
+    {
+      "id": "debt-no-poplar-alder-larch-species",
+      "title": "constants.js SPECIES has no poplar, alder or larch, three of the eight species the wooded-country passage names",
+      "kind": "debt",
+      "status": "open",
+      "priority": 4,
+      "evidence": "Our p. 70 / 1499 ll. 2800-2813 names, for the wooded district: black and white poplar, riverside alder and manna-ash along the water, and tall single-stemmed fir, weeping larch and silver fir on the mountains. `_buildWoodedCountry` (screens.js) already plants fir/pine on the ring (built before this pass); this pass's `_buildFountainGlimpse` (nature.js) needed valley-floor trees for its screen and used 'ash' (already in SPECIES, standing in loosely for manna-ash/poplar) since no closer match exists. `constants.js` SPECIES has 25 entries and none is poplar, alder or larch.",
+      "fix": "Add SPECIES entries for poplar (tall, columnar, pale bark), alder (riverside, similar to elm/ash but darker) and larch (deciduous conifer -- SP.cone plus a seasonal/needle-drop distinction the engine does not currently model at all), then re-plant the wooded-country ring and valley floor with the correct species instead of the fir/pine/ash standing in for them now.",
+      "acceptance": "SPECIES has poplar, alder and larch entries, and `_buildWoodedCountry` / `_buildFountainGlimpse` plant them where the text specifically names them.",
+      "opened": "2026-09-28"
     }
   ]
 }

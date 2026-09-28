@@ -1744,14 +1744,14 @@
           "kind": "place",
           "plate": null,
           "source": "1499 ll. 2793-2800; Dallington pp. 90-92",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "built",
+          "built_as": "world/nature.js _buildDividingSpring (2026-09-17) + _buildAncientBridgeOverSpring (this pass)",
           "modes": [
             "walk",
             "tour",
             "roll"
           ],
-          "note": "\"scaturiva una larga vena di chiarissima aqua viva, la quale dividentese faceva dui correnti fluenticuli, uno alla dextra et alla sinistra l'altro\" — banks of stone and shade with the straddling roots laid bare, hung with maidenhair fern and cymbalaria. A legible piece of geography the fields station lacks."
+          "note": "The spring and its two streams, right and left, were already built. What was missing was the bridge itself: our pp. 69-70, one continuous sentence across the page break, ties the 'marble and most ancient bridge of one very great and high arch' directly to the spring beneath it, and nothing stood there. Added a modest arch, abutments, deck and seated parapets AT the spring's head, deliberately WITHOUT re-carving the anchor-and-dolphin / helmet-and-lamp hieroglyph panels this same bridge carries (p. 69, plate 18) -- those already exist, built once, in portal.js _buildBridge ('The Bridge into Eleuterylida's realm'), which stands elsewhere in the world folded into the palace-precinct river alongside Dallington's second bridge (pp. 191-192). That build is at the wrong precinct for its own citation (palace, ch. VIII-XI, not wooded_country, ch. VI-VII) but reconciling the two into one is a larger relocation than this pass scopes -- ticket bug-ancient-bridge-precinct-split."
         },
         {
           "id": "ringing-wooded-mountain",
@@ -1759,14 +1759,14 @@
           "kind": "place",
           "plate": null,
           "source": "1499 ll. 2800-2813",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "built",
+          "built_as": "world/screens.js _buildWoodedCountry",
           "modes": [
             "walk",
             "flight",
             "tour"
           ],
-          "note": "\"silvosa contrata circunclusa dall'arborifera montagna\": black and white poplars, riverside alder, manna-ash and flowering oleander on the water; tall single-stemmed fir, weeping larch and silver fir on the mountains. This is where the conifers belong — putting fir in the dark wood took them from the wrong passage entirely. See WOODS.md 3."
+          "note": "Was already built when this pass checked (RECIPES/model-an-asset step 0): the ledger had gone stale, not the world. A 925x740 m ring of 72 rock masses closes both sightlines out of the wooded_country precinct bar the two mouths (south back to the pyramid, north to the cypress avenue), each mass planted with 4 conifers (fir/pine alternating). No poplar, alder or larch is modelled in this world (constants.js SPECIES) so the valley floor's black/white poplar, alder and manna-ash, and the mountain's weeping larch, remain unrepresented — fir and pine stand in for 'et gli lachrymosi larigni et sapini'. Ticket debt-no-poplar-alder-larch-species records the gap."
         },
         {
           "id": "fountain-through-trees",
@@ -1774,14 +1774,14 @@
           "kind": "building",
           "plate": null,
           "source": "1499 ll. 2813-2818 (\"mirai una fabrica marmorea tra gli arbori apparendo et sopra le tenelle cime il suo fastigio\")",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "partial",
+          "built_as": "world/nature.js _buildFountainGlimpse",
           "modes": [
             "walk",
             "tour",
             "dream"
           ],
-          "note": "A building seen through a wood before it is reached: the book's standard way of introducing a monument, and a sightline the world does not currently have anywhere."
+          "note": "Built: a correctly-sited, modest exterior shell in the fountain_house precinct (its own precinct per research/plan.json, previously greenfield/empty) -- an eight-sided marble drum, corner half-columns, an eight-sided lead roof rising to a pinnacle, and a threshold basin -- screened by a stand of ash and fir on its western, wooded_country-facing side, with gaps left on the direct sightline so the roof-crest reads through the canopy before the building is reached (our p. 70 / 1499 ll. 2813-2818). Partial, not built, because this is the SAME building whose full, richly-detailed interior (jacinth columns, the lion-head censer, the ivory nymph, the fish mosaic; Dallington pp. 112-115) is already built as palace.js _buildBath -- but folded into the palace court as an acknowledged stopgap (that code's own comment says so) because this precinct stood empty. The two are not yet reconciled into one sited building; ticket bug-bath-house-wrong-precinct."
         }
       ]
     },

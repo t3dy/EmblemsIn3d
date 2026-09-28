@@ -43,7 +43,7 @@ import {
   PLAN_SITES, PLAN_EXTENT, shiftOf,
 } from './world/constants.js?v=16';
 import { Materials } from './world/materials.js?v=12';
-import { Nature } from './world/nature.js?v=20';
+import { Nature } from './world/nature.js?v=21';
 import { Approach } from './world/approach.js?v=15';
 import { Portal } from './world/portal.js?v=31';
 import { Palace } from './world/palace.js?v=32';
@@ -340,10 +340,15 @@ export class HPWorldScene {
 
     // ── North of the porch: the gardens ─────────────────────────────────────
     _in('wooded_country', () => {
-      this._buildWoodedCountry();     // the ring of tree-bearing mountain
-      this._buildSecondNature();      // the fruitful fields, ch. VI
-      this._buildDividingSpring();    // the water that divides right and left
+      this._buildWoodedCountry();          // the ring of tree-bearing mountain
+      this._buildSecondNature();           // the fruitful fields, ch. VI
+      this._buildDividingSpring();         // the water that divides right and left
+      this._buildAncientBridgeOverSpring(); // the bridge the spring gushes out from beneath, ch. VI-VII
     });
+    // Greenfield precinct (research/plan.json): stands WITHIN wooded_country,
+    // "mirai una fabrica marmorea tra gli arbori apparendo" (1499 l. 2813) —
+    // first glimpsed through the trees before it is reached.
+    _in('fountain_house', () => this._buildFountainGlimpse());
     _in('cypress_avenue', () => this._buildCypressAvenue());
     _in('enclosure', () => {
       this._buildGreenEnclosure();

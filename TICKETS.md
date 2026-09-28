@@ -6,7 +6,7 @@
 
 ---
 
-**106 tickets** — 22 open, 1 question, 3 declined, 80 done. By kind: 44 debt, 44 bug, 9 infra, 5 question, 2 perf, 1 feature, 1 feat.
+**109 tickets** — 25 open, 1 question, 3 declined, 80 done. By kind: 46 bug, 45 debt, 9 infra, 5 question, 2 perf, 1 feature, 1 feat.
 
 ---
 
@@ -101,6 +101,19 @@ COST ESTIMATE: ~125k triangles, ~16 draw calls.
 **Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
 
 **See.** RETHINK.md 3 · research/infill_plan.json G6 · translation/en/page_189.md · translation/en/page_190.md · research/coverage.json xvii-orchard-hedge-garden
+
+
+### `bug-bath-house-wrong-precinct` — The eight-sided bath (ΑΣΑΜΙΝΘΟΣ) is folded into the palace court; its own precinct, fountain_house, stood empty until this pass
+
+**○ open** · bug · priority 2 · unassigned
+ · opened 2026-09-28
+
+
+**Evidence.** palace.js `_buildCourt` calls `this._buildBath(CX + 3.5, CZ + 2.8)` with its own comment: "the plan gives it a precinct of its own, `fountain_house`; it is folded in here. Out of scope for this pass, but at the court's true size it is no longer what crowds the place out." `research/plan.json` and `plan_sites.js` both give `fountain_house` a real, sized, greenfield precinct (120x120 m) standing WITHIN `wooded_country`, citing our p. 70's first-glimpse-through-the-trees sightline. Until this pass (2026-09-28) nothing at all stood there. Added `_buildFountainGlimpse` (nature.js): a modest exterior shell (drum, columns, roof, pinnacle, threshold basin) and a screening stand of trees, sited correctly, but deliberately NOT the full interior (jacinth columns, censer, ivory nymph, fish mosaic, pp. 112-115) since that is `_buildBath`'s and duplicating it risked exactly the double-build RECIPES/model-an-asset.md step 0 warns against. The world now has two eight-sided buildings standing for the one the book describes: a full interior in the wrong place, and a correctly-sited shell.
+
+**Acceptance.** `_buildBath` is called from within `_in('fountain_house', ...)`, no octagonal bath interior remains inside the palace court, and the `fountain` tour station (or a new one) opens the bath's own commentary when reached at that precinct.
+
+**See.** bug-fountain-station-carries-the-bath-tour-stop · bug-ancient-bridge-precinct-split
 
 
 ### `bug-fountain-station-carries-the-bath-tour-stop` — Tour stop "The Five Nymphs and the Bath" rides on the `fountain` station, which is the Graces fountain
@@ -304,6 +317,19 @@ HEIGHT. NEXTSTEPS 0-AA: the Queen's Court colonnade is 4.0 m, a domestic number 
 **Acceptance.** Walking north on x=0 from the green door you pass three curtains and a colonnaded portico and arrive at the Queen's court without crossing open field.
 
 
+### `bug-ancient-bridge-precinct-split` — The ancient bridge (anchor-and-dolphin, p. 69) stands in the palace precinct, not over the spring it names in the very next sentence
+
+**○ open** · bug · priority 3 · unassigned
+ · opened 2026-09-28
+
+
+**Evidence.** Our pp. 69-70, one continuous sentence across the page break: 'I found a marble and most ancient bridge of one very great and high arch... Beneath which ancient, solid and excellent bridge there gushed a broad vein of most limpid living water, which, dividing itself, made two running streamlets, one to the right and the other to the left.' The dividing spring is built at wooded_country (nature.js _buildDividingSpring, local SX=-112). The bridge with the SAME hieroglyph panels (plate 18: helmet/ox-skull/lamp; anchor-and-dolphin, ARCHITECTURE.md 4) is built at portal.js _buildBridge, called from HPWorldScene's `palace` precinct hook (ch. VIII-XI) alongside Dallington's second bridge (pp. 191-192) and Geusia's river -- about 1,300 m from where the text puts it. This pass (2026-09-28) added a second, plain arch-and-parapet span directly over the spring's head (_buildAncientBridgeOverSpring, nature.js) rather than duplicate the hieroglyph panels a second time, so the world now has two bridges standing for one passage: one correctly sited but bare, one fully carved but 1.3 km out of place.
+
+**Acceptance.** Exactly one bridge in the world carries the anchor-and-dolphin / helmet-and-lamp hieroglyphs, and it stands within the wooded_country precinct, directly over (or immediately beside) the dividing spring's basin.
+
+**See.** bug-fountain-station-carries-the-bath-tour-stop
+
+
 ### `bug-garden-pleasures-never-placed` — The garden's fumes, birds, turf seats and motes stand at the old origin, not in any precinct
 
 **○ open** · bug · priority 3 · hp-builder
@@ -425,6 +451,17 @@ COST ESTIMATE: ~146k triangles, ~21 draw calls. The most expensive of the eight.
 **Files.** `src/scenes/world/infill.js` · `src/scenes/HPWorldScene.js`
 
 **See.** RETHINK.md 4 · research/infill_plan.json G7 · translation/en/page_238.md · translation/en/page_239.md · translation/en/page_242.md
+
+
+### `debt-no-poplar-alder-larch-species` — constants.js SPECIES has no poplar, alder or larch, three of the eight species the wooded-country passage names
+
+**○ open** · debt · priority 4 · unassigned
+ · opened 2026-09-28
+
+
+**Evidence.** Our p. 70 / 1499 ll. 2800-2813 names, for the wooded district: black and white poplar, riverside alder and manna-ash along the water, and tall single-stemmed fir, weeping larch and silver fir on the mountains. `_buildWoodedCountry` (screens.js) already plants fir/pine on the ring (built before this pass); this pass's `_buildFountainGlimpse` (nature.js) needed valley-floor trees for its screen and used 'ash' (already in SPECIES, standing in loosely for manna-ash/poplar) since no closer match exists. `constants.js` SPECIES has 25 entries and none is poplar, alder or larch.
+
+**Acceptance.** SPECIES has poplar, alder and larch entries, and `_buildWoodedCountry` / `_buildFountainGlimpse` plant them where the text specifically names them.
 
 
 ### `feat-infill-shore-grove-and-sea-gods` — The sandy shore where the ruined temple stands: the red obelisk, the sea-gods, and the standard AMOR VINCIT OMNIA

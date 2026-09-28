@@ -869,6 +869,128 @@ export const Nature = {
     }
   },
 
+  // ── The ancient bridge, over the spring's head (ch. VI-VII) ──────────────
+  //
+  // Our translation p. 69, running straight on into p. 70 (one sentence
+  // across the page break): "I found a marble and most ancient bridge of one
+  // very great and high arch. Upon which, on the several sides of the
+  // parapets, seats were most conveniently built... Beneath which ancient,
+  // solid and excellent bridge there gushed a broad vein of most limpid
+  // living water, which, dividing itself, made two running streamlets, one
+  // to the right and the other to the left." (1499 ll. 2793-2800.) The bridge
+  // and the dividing spring are ONE passage, so it stands directly over the
+  // spring's head built by `_buildDividingSpring`, immediately above.
+  //
+  // NOT built here: the anchor-and-dolphin / helmet-and-lamp hieroglyph
+  // panels this SAME bridge carries on its parapets (p. 69, plate 18) --
+  // those are already carved, on both sides, in `portal.js` `_buildBridge`
+  // ("The Bridge into Eleuterylida's realm"). That build stands elsewhere in
+  // the world (folded into the palace-precinct river, alongside Dallington's
+  // second bridge, pp. 191-192) rather than at this, its textually correct
+  // site -- ticket bug-ancient-bridge-precinct-split records the mismatch for
+  // whoever next reconciles the two builds into one. Carving the same panels
+  // a second time here would be exactly the duplicate RECIPES/model-an-asset
+  // step 0 warns against. What was missing, and what this adds, is the SPAN
+  // itself -- the one great high arch and its seated parapets -- which stood
+  // nowhere in the world.
+  _buildAncientBridgeOverSpring() {
+    const SX = -112, SZ = 246;              // matches _buildDividingSpring's SX, and just short of its basin
+    const stone = this._stoneMat, dark = this._darkStoneMat;
+
+    // the one great high arch, spanning the point the water wells up from.
+    // Default TorusGeometry orientation (no rotation, as `_buildSecondBridge`
+    // also leaves it) already lies in the X-Y plane, legs down at x = ±radius,
+    // crown up at y = +radius: the arch shape itself, unrotated.
+    this._m(new THREE.TorusGeometry(1.7, 0.3, 8, 16, Math.PI), stone, SX, 0.02, SZ, { cast: false, outline: true });
+    for (const dx of [-2.0, 2.0]) {          // the abutments either side of the arch
+      this._m(new THREE.BoxGeometry(0.8, 1.9, 2.8), dark, SX + dx, 0.75, SZ, { cast: false });
+    }
+    // the deck, level across the top of the arch
+    this._m(new THREE.BoxGeometry(5.2, 0.3, 3.0), stone, SX, 1.85, SZ, { cast: false, outline: true });
+    // the parapets, and "seats most conveniently built" upon them
+    for (const s of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(5.2, 0.6, 0.22), stone, SX, 2.3, SZ + s * 1.5, { outline: true });
+      this._wallCol(SX - 2.6, SX + 2.6, SZ + s * 1.5 - 0.11, SZ + s * 1.5 + 0.11);
+      for (const dx of [-1.4, 1.4]) {
+        this._m(new THREE.BoxGeometry(1.0, 0.34, 0.5), dark, SX + dx, 2.18, SZ + s * 1.1, { cast: false });
+      }
+    }
+    this._plaque({ main: 'A MOST ANCIENT BRIDGE OF ONE VERY GREAT AND HIGH ARCH', sub: 'WITH SEATS BVILT VPON THE PARAPETS · OVR PP. 69-70' },
+      2.2, 0.32, SX, 2.75, SZ - 1.9, 0, true);
+  },
+
+  // ── The octagonal fountain-house, first glimpsed through the trees (ch. VI-VII) ──
+  //
+  // 1499 ll. 2813-2818 / our translation p. 70: "And then directing my eyes to
+  // the adorned plain... I beheld a marble building appearing among the
+  // trees, and above the tender tree-tops its pinnacle" -- "mirai una fabrica
+  // marmorea tra gli arbori apparendo et sopra le tenelle cime il suo
+  // fastigio." One of the book's standard ways of introducing a monument, and
+  // a sightline the world had nowhere.
+  //
+  // This is the SAME eight-sided building whose interior -- jacinth columns,
+  // the lion-head censer, the ivory nymph, the fish mosaic (Dallington pp.
+  // 112-115) -- is already built in full, as `palace.js` `_buildBath`. That
+  // code's own comment says it is "folded in" to the palace court as a
+  // stopgap, because `fountain_house`, its own precinct per
+  // `research/plan.json`, stood empty; relocating that whole build here is a
+  // separate, larger pass (ticket bug-bath-house-wrong-precinct). What THIS
+  // feature is actually about, and what the palace-court placement cannot
+  // give a player at all, is the approach: a modest, correctly-sited exterior
+  // shell, screened by a stand of trees, so the roof and its pinnacle are
+  // glimpsed above the canopy before the building itself is reached.
+  _buildFountainGlimpse() {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const FX = 14, FZ = 0;                  // fountain_house's own local frame, greenfield
+    const marble = woodcut ? S.mat({ tone: -0.02 }) : S.mat({ color: 0xe8e2d4, roughness: 0.55 });
+    const lead   = woodcut ? S.mat({ tone: 0.34 })  : S.mat({ color: 0x5c6068, roughness: 0.4, metalness: 0.6 });
+    const R = 4.0, WALL_H = 3.4;
+
+    // the eight-sided drum, "pinnacled with an eight-sided roof... of white
+    // and shining marble" (p. 70)
+    this._m(new THREE.CylinderGeometry(R, R, WALL_H, 8, 1, true), marble, FX, WALL_H / 2, FZ, { outline: true });
+    for (let i = 0; i < 8; i++) {
+      const a = (i / 8) * Math.PI * 2 + Math.PI / 8;
+      this._m(new THREE.CylinderGeometry(0.34, 0.34, WALL_H, 10), marble,
+        FX + Math.cos(a) * R, WALL_H / 2, FZ + Math.sin(a) * R, { cast: true });   // the corner half-columns
+    }
+    this._m(new THREE.CylinderGeometry(R + 0.3, R + 0.3, 0.3, 8), marble, FX, WALL_H + 0.15, FZ, { cast: false, outline: true });
+    // the eight-sided lead-covered roof, rising to the "fastigio"
+    const roof = this._m(new THREE.ConeGeometry(R + 0.6, 3.2, 8), lead, FX, WALL_H + 1.9, FZ, { cast: true });
+    roof.rotation.y = Math.PI / 8;
+    this._m(new THREE.CylinderGeometry(0.1, 0.16, 1.0, 8), marble, FX, WALL_H + 3.9, FZ, { cast: true });   // the pinnacle itself
+    this._m(new THREE.SphereGeometry(0.14, 10, 8), lead, FX, WALL_H + 4.5, FZ, { cast: true });
+
+    // "a wonderful and excellent fountain": a modest basin at the threshold,
+    // not the elaborate hydraulics of pp. 112-115 -- those belong to
+    // `_buildBath`, and are not re-built here (RECIPES/model-an-asset step 0).
+    const water = this._waterMat();
+    this._waters.push({ m: this._m(new THREE.CircleGeometry(1.1, 8), water, FX, 0.09, FZ - R - 1.6, { rx: -Math.PI / 2, cast: false }), rate: 0.09 });
+    this._m(new THREE.CylinderGeometry(1.2, 1.3, 0.3, 8, 1, true), marble, FX, 0.0, FZ - R - 1.6, { cast: false });
+    this._caustics(FX, 0.09, FZ - R - 1.6, 1.05, 0.06);
+
+    this._plaque({ main: 'A MARBLE BVILDING APPEARING AMONG THE TREES', sub: 'AND ABOVE THE TENDER TREE-TOPS ITS PINNACLE · OVR P. 70' },
+      2.2, 0.3, FX, 1.0, FZ - R - 3.2, 0, true);
+    this._circleCol(FX, FZ, R + 0.6);
+
+    // The screen of trees the building is glimpsed THROUGH, on the west side
+    // facing the wooded country's approach (the dividing spring and its
+    // bridge, ~180 m further west). No poplar, alder or larch is modelled in
+    // this world (constants.js SPECIES) -- 'ash' stands in for the valley's
+    // manna-ash and poplar, 'fir' for the mountain conifers already planted
+    // by `_buildWoodedCountry`. Gaps are left close in, on the direct
+    // sightline, so the roof-crest reads through them rather than being
+    // simply hidden.
+    const rnd = (i, k) => { const v = Math.sin(i * 131.3 + k * 271.9 + 7.7) * 43758.5453; return v - Math.floor(v); };
+    const SP = ['ash', 'fir', 'ash'];
+    for (let i = 0; i < 34; i++) {
+      const tx = FX - R - 6 - rnd(i, 1) * 46;             // a band west of the building
+      const tz = -34 + rnd(i, 2) * 68;
+      if (Math.abs(tz) < 3 && tx > FX - R - 18) continue;  // keep the near sightline itself open
+      this._tree(tx, tz, 1.6 + rnd(i, 3) * 1.3, SP[i % SP.length]);
+    }
+  },
+
   // `opts` (2026-09-20, for the cypress avenue):
   //   leaves  multiply the species' card count. A tree's leaf cards are a FIXED
   //           number per species, so scaling one up spreads the same 26 cards
