@@ -1436,9 +1436,31 @@ export const Palace = {
     // "the labours of Hercules in shining stone, marvellously cut half free of
     // the ground" (p. 93) — panels between the columns, the relief standing
     // proud of the wall, which is what "half free of the ground" describes.
-    const relief = woodcut ? S.mat({ tone: 0.12 })
-      : S.mat({ color: 0xffffff, roughness: 0.82 });
-    if (!relief.map) relief.map = this._reliefTexture('the labours of Hercules, cut half free of the ground');
+    //
+    // The book names the programme, not the individual labours; the twelve
+    // are the convention it invokes. coverage.json's `hercules-labours-relief`
+    // (status was `partial`): "Drawn by `_reliefTexture`, which gives a seeded
+    // crowd of relief figures. Partial because the twelve labours are
+    // nameable and are not named: each panel should carry one." Each of the
+    // twenty-two panels below now gets one of the canonical twelve, cycling —
+    // `_reliefScene` in triumphs.js draws Hercules (club, lion-skin) constant
+    // at the left and that labour's beast or task at the right, so a panel
+    // can be told from its neighbour by sight, and the plaque below names the
+    // sequence in order.
+    const HERCULES_LABOURS = [
+      'Nemean Lion', 'Lernaean Hydra', 'Ceryneian Hind', 'Erymanthian Boar',
+      'Augean Stables', 'Stymphalian Birds', 'Cretan Bull', 'Mares of Diomedes',
+      'Belt of Hippolyta', 'Cattle of Geryon', 'Apples of the Hesperides', 'Cerberus',
+    ];
+    const herculesMats = {};
+    const reliefMatFor = (labour) => {
+      if (herculesMats[labour]) return herculesMats[labour];
+      const m = woodcut ? S.mat({ tone: 0.12 }) : S.mat({ color: 0xffffff, roughness: 0.82 });
+      m.map = this._reliefTexture('Hercules: ' + labour);
+      herculesMats[labour] = m;
+      return m;
+    };
+    let panelIdx = 0;
     for (const sg of [-1, 1]) {
       const x0 = sg * CB / 2, x1 = sg * (FULL / 2);
       const w = Math.abs(x1 - x0), cx = (x0 + x1) / 2;
@@ -1455,11 +1477,16 @@ export const Palace = {
       for (let k = 0; k < 11; k++) {
         const px = sg * (CB / 2 + (k + 0.5) * S_COL);
         const pw = S_COL - 1.15;
-        this._m(new THREE.PlaneGeometry(pw, pw * 192 / 512), relief, px, POD + 4.6, FACE + 0.16, { cast: false });
+        const labour = HERCULES_LABOURS[panelIdx % HERCULES_LABOURS.length];
+        panelIdx++;
+        this._m(new THREE.PlaneGeometry(pw, pw * 192 / 512), reliefMatFor(labour), px, POD + 4.6, FACE + 0.16, { cast: false });
         this._m(new THREE.BoxGeometry(pw + 0.3, 0.18, 0.3), stone, px, POD + 4.6 - pw * 0.21, FACE + 0.15, { cast: false });
         this._m(new THREE.BoxGeometry(pw + 0.3, 0.18, 0.3), stone, px, POD + 4.6 + pw * 0.21, FACE + 0.15, { cast: false });
       }
     }
+    this._plaque({ main: 'THE LABOVRS OF HERCVLES',
+                   sub: 'IN SHINING STONE, CVT HALF FREE OF THE GROVND · READING OVTWARD FROM THE DOOR, EACH WING REPEATS: NEMEAN LION, LERNAEAN HYDRA, CERYNEIAN HIND, ERYMANTHIAN BOAR, AVGEAN STABLES, STYMPHALIAN BIRDS, CRETAN BVLL, MARES OF DIOMEDES, BELT OF HIPPOLYTA, CATTLE OF GERYON, APPLES OF THE HESPERIDES, CERBERVS · OVR P. 93' },
+      11.0, 1.6, -CB / 2 - 6.0, 1.9, FACE + 0.2, 0, true);
     // the wall over the door, from the arch's crown to the entablature
     this._m(new THREE.BoxGeometry(CB, Y0T - CROWN, THK), stone, 0, (CROWN + Y0T) / 2, WZ, { cast: false });
     // its haunches, either side of the arch inside the wide middle bay

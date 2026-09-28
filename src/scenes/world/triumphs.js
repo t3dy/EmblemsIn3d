@@ -1079,6 +1079,178 @@ export const Triumphs = {
       return true;
     }
 
+    // ── The Labours of Hercules (our p. 93: "the labours of Hercules in
+    // shining stone, marvellously cut half free of the ground", palace.js
+    // `_buildPalaceFront`) ──────────────────────────────────────────────────
+    // The book names the programme and not the individual labours; the
+    // convention that there are twelve does. coverage.json's
+    // `hercules-labours-relief` called the panels "nameable and are not
+    // named: each panel should carry one." Hercules — head, torso and club —
+    // is the constant figure at the left of every panel; the beast or task of
+    // that labour is the distinguishing figure at the right, so a panel reads
+    // as its own labour without the plaque (which palace.js also adds, naming
+    // the sequence).
+    if (/^Hercules: /.test(scene)) {
+      const labour = scene.slice('Hercules: '.length);
+      const HX = 132, BX = 372;
+      carve(() => {
+        x.lineCap = 'round'; x.lineJoin = 'round';
+
+        // Hercules: head, torso under the lion-skin, its head at his shoulder,
+        // the arm raised to the knotted club — common to all twelve panels.
+        x.beginPath(); x.arc(HX, GY - 90, 9, 0, 7); x.fill();
+        x.beginPath();
+        x.moveTo(HX - 13, GY - 78); x.quadraticCurveTo(HX - 19, GY - 40, HX - 9, GY);
+        x.lineTo(HX + 9, GY); x.quadraticCurveTo(HX + 17, GY - 40, HX + 10, GY - 78);
+        x.closePath(); x.fill();
+        x.beginPath(); x.arc(HX - 15, GY - 84, 6, 0, 7); x.fill();
+        x.lineWidth = 7;
+        x.beginPath(); x.moveTo(HX + 9, GY - 70); x.lineTo(HX + 34, GY - 104); x.stroke();
+        x.beginPath();
+        x.moveTo(HX + 34, GY - 104); x.lineTo(HX + 46, GY - 128); x.lineTo(HX + 30, GY - 118);
+        x.closePath(); x.fill();
+
+        switch (labour) {
+          case 'Nemean Lion':
+            x.beginPath();
+            x.moveTo(BX - 40, GY); x.quadraticCurveTo(BX - 46, GY - 46, BX - 10, GY - 54);
+            x.quadraticCurveTo(BX + 34, GY - 58, BX + 44, GY - 20); x.quadraticCurveTo(BX + 40, GY, BX + 20, GY);
+            x.closePath(); x.fill();
+            x.beginPath(); x.arc(BX + 34, GY - 62, 15, 0, 7); x.fill();
+            x.lineWidth = 4;
+            for (let k = 0; k < 8; k++) {
+              const a = k / 8 * Math.PI * 2;
+              x.beginPath();
+              x.moveTo(BX + 34 + Math.cos(a) * 15, GY - 62 + Math.sin(a) * 15);
+              x.lineTo(BX + 34 + Math.cos(a) * 24, GY - 62 + Math.sin(a) * 24);
+              x.stroke();
+            }
+            break;
+          case 'Lernaean Hydra':
+            x.lineWidth = 10;
+            x.beginPath(); x.moveTo(BX - 30, GY); x.quadraticCurveTo(BX - 10, GY - 30, BX + 10, GY - 10); x.stroke();
+            for (let k = 0; k < 5; k++) {
+              const nx = BX - 20 + k * 18, ny = GY - 40 - (k % 2) * 20;
+              x.lineWidth = 4;
+              x.beginPath(); x.moveTo(BX, GY - 20); x.quadraticCurveTo(BX + (nx - BX) * 0.5, GY - 70, nx, ny); x.stroke();
+              x.beginPath(); x.arc(nx, ny, 7, 0, 7); x.fill();
+            }
+            break;
+          case 'Ceryneian Hind':
+            x.beginPath();
+            x.moveTo(BX - 28, GY); x.quadraticCurveTo(BX - 30, GY - 40, BX, GY - 46);
+            x.quadraticCurveTo(BX + 26, GY - 44, BX + 24, GY - 10); x.quadraticCurveTo(BX + 20, GY, BX, GY);
+            x.closePath(); x.fill();
+            x.beginPath(); x.arc(BX + 30, GY - 56, 8, 0, 7); x.fill();
+            x.lineWidth = 3;
+            for (const e of [-1, 1]) {
+              x.beginPath(); x.moveTo(BX + 30, GY - 62); x.lineTo(BX + 30 + e * 10, GY - 80); x.stroke();
+              x.beginPath(); x.moveTo(BX + 30 + e * 6, GY - 72); x.lineTo(BX + 30 + e * 18, GY - 74); x.stroke();
+            }
+            x.lineWidth = 5;
+            for (const dx of [-18, -4, 8, 20]) { x.beginPath(); x.moveTo(BX + dx, GY - 6); x.lineTo(BX + dx + 6, GY + 4); x.stroke(); }
+            break;
+          case 'Erymanthian Boar':
+            x.beginPath();
+            x.moveTo(BX - 34, GY); x.quadraticCurveTo(BX - 38, GY - 44, BX - 4, GY - 48);
+            x.quadraticCurveTo(BX + 30, GY - 46, BX + 30, GY - 14); x.quadraticCurveTo(BX + 26, GY, BX + 10, GY);
+            x.closePath(); x.fill();
+            x.lineWidth = 4;
+            for (let k = 0; k < 6; k++) {
+              const bx2 = BX - 26 + k * 10;
+              x.beginPath(); x.moveTo(bx2, GY - 44); x.lineTo(bx2 - 2, GY - 56); x.stroke();
+            }
+            x.lineWidth = 3;
+            x.beginPath(); x.moveTo(BX - 34, GY - 20); x.lineTo(BX - 44, GY - 14); x.stroke();
+            break;
+          case 'Augean Stables':
+            x.beginPath();
+            x.moveTo(BX - 34, GY - 10); x.lineTo(BX - 34, GY - 40); x.lineTo(BX, GY - 64);
+            x.lineTo(BX + 34, GY - 40); x.lineTo(BX + 34, GY - 10);
+            x.closePath(); x.fill();
+            x.lineWidth = 4;
+            for (const yy of [GY - 24, GY - 14]) {
+              x.beginPath();
+              x.moveTo(BX - 44, yy);
+              x.quadraticCurveTo(BX - 20, yy - 8, BX, yy);
+              x.quadraticCurveTo(BX + 20, yy + 8, BX + 44, yy);
+              x.stroke();
+            }
+            break;
+          case 'Stymphalian Birds':
+            x.lineWidth = 3;
+            for (let k = 0; k < 4; k++) {
+              const bx2 = BX - 24 + k * 20, by2 = GY - 50 - (k % 2) * 16;
+              x.beginPath(); x.moveTo(bx2 - 10, by2); x.quadraticCurveTo(bx2, by2 - 10, bx2 + 10, by2); x.stroke();
+            }
+            break;
+          case 'Cretan Bull':
+            x.beginPath();
+            x.moveTo(BX - 30, GY); x.quadraticCurveTo(BX - 34, GY - 40, BX, GY - 44);
+            x.quadraticCurveTo(BX + 32, GY - 42, BX + 30, GY - 8); x.quadraticCurveTo(BX + 26, GY, BX + 10, GY);
+            x.closePath(); x.fill();
+            x.lineWidth = 6;
+            for (const e of [-1, 1]) {
+              x.beginPath(); x.moveTo(BX - 4, GY - 44); x.quadraticCurveTo(BX - 4 + e * 14, GY - 58, BX - 4 + e * 26, GY - 46); x.stroke();
+            }
+            break;
+          case 'Mares of Diomedes':
+            for (const e of [-1, 1]) {
+              const mx = BX + e * 16;
+              x.beginPath();
+              x.moveTo(mx, GY); x.quadraticCurveTo(mx - e * 6, GY - 40, mx + e * 4, GY - 60);
+              x.quadraticCurveTo(mx + e * 10, GY - 44, mx + e * 8, GY);
+              x.closePath(); x.fill();
+              x.beginPath(); x.arc(mx + e * 6, GY - 66, 6, 0, 7); x.fill();
+            }
+            break;
+          case 'Belt of Hippolyta':
+            x.beginPath(); x.arc(BX, GY - 84, 8, 0, 7); x.fill();
+            x.beginPath(); x.moveTo(BX - 16, GY); x.lineTo(BX, GY - 70); x.lineTo(BX + 16, GY); x.closePath(); x.fill();
+            x.lineWidth = 6;
+            x.beginPath(); x.moveTo(HX + 20, GY - 50); x.lineTo(BX - 12, GY - 50); x.stroke();
+            break;
+          case 'Cattle of Geryon':
+            x.beginPath();
+            x.moveTo(BX - 8, GY); x.lineTo(BX - 8, GY - 30); x.lineTo(BX + 8, GY - 30); x.lineTo(BX + 8, GY);
+            x.closePath(); x.fill();
+            for (const e of [-1, 0, 1]) {
+              x.beginPath(); x.arc(BX + e * 14, GY - 46, 7, 0, 7); x.fill();
+              x.beginPath();
+              x.moveTo(BX + e * 14 - 6, GY - 40); x.lineTo(BX + e * 14 - 6, GY - 30);
+              x.lineTo(BX + e * 14 + 6, GY - 30); x.lineTo(BX + e * 14 + 6, GY - 40);
+              x.closePath(); x.fill();
+            }
+            break;
+          case 'Apples of the Hesperides':
+            x.lineWidth = 6;
+            x.beginPath(); x.moveTo(BX, GY); x.lineTo(BX, GY - 50); x.stroke();
+            x.beginPath(); x.arc(BX, GY - 66, 26, 0, 7); x.fill();
+            for (const [dx, dy] of [[-14, -10], [10, -4], [-4, 6], [16, 10]]) {
+              x.beginPath(); x.arc(BX + dx, GY - 66 + dy, 5, 0, 7); x.fill();
+            }
+            x.lineWidth = 4;
+            x.beginPath();
+            x.moveTo(BX - 8, GY);
+            x.quadraticCurveTo(BX + 14, GY - 16, BX - 8, GY - 32);
+            x.quadraticCurveTo(BX + 14, GY - 48, BX, GY - 60);
+            x.stroke();
+            break;
+          case 'Cerberus':
+          default:
+            x.beginPath();
+            x.moveTo(BX - 26, GY); x.quadraticCurveTo(BX - 30, GY - 34, BX, GY - 38);
+            x.quadraticCurveTo(BX + 30, GY - 36, BX + 28, GY - 8); x.quadraticCurveTo(BX + 24, GY, BX + 10, GY);
+            x.closePath(); x.fill();
+            for (const e of [-1, 0, 1]) { x.beginPath(); x.arc(BX + e * 16, GY - 50, 9, 0, 7); x.fill(); }
+            x.lineWidth = 4;
+            x.beginPath(); x.moveTo(HX + 12, GY - 20); x.lineTo(BX - 20, GY - 12); x.stroke();
+            break;
+        }
+      });
+      return true;
+    }
+
     if (!/forge of Vulcan/i.test(scene)) return false;
 
     carve(() => {
