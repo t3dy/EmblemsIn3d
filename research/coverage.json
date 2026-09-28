@@ -1635,12 +1635,12 @@
           "kind": "building",
           "plate": null,
           "source": "Dallington p. 87",
-          "status": "unbuilt",
-          "built_as": null,
+          "status": "built",
+          "built_as": "VaultsScene (vault chambers + buttress piers)",
           "modes": [
             "vaults"
           ],
-          "note": "The crawl has corridors and pillars but no vaulted halls or buttressed chambers."
+          "note": "Built 2026-09-28: each of the three altar cells is widened into a vaulted hall (up to 3x3 cells / 9.6 m, clamped at the maze border), roofed with a barrel vault springing at WALL_H and crowning at WALL_H + r (verified live via geometry.computeBoundingBox(), y range [4.4, 9.2]), with stepped buttress piers engaged to its walls (collidered, distinct from the freestanding vault-pillars feature). Dallington p.87: \"the dimme images and the large foundations, and feareful vaultes, and subterraneal buttresses or vpholders and strengthes\" -- seen exactly where he finds the everlasting lamp. Verified live: scene-graph query (bbox, collider count) and screenshot (the vault curve and a stepped pier both visible from inside a chamber)."
         },
         {
           "id": "porch-medallion-busts",
