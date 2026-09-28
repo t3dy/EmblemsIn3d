@@ -189,6 +189,36 @@ export class VaultsScene {
       this.pits.add(k);
     }
 
+    // ── vaulted halls & buttressed chambers ─────────────────────────────
+    // "somewhat I saw, the dimme images and the large foundations, and
+    // feareful vaultes, and subterraneal buttresses or vpholders and
+    // strengthes, heare and there in infinite places distributed" —
+    // Dallington 1592 p.87. He sees this precisely where he finds the
+    // everlasting lamp (p.86-87: "I discouered a little light... an
+    // euerlasting Lampe, burning before an Aultar"), so each altar cell is
+    // widened from an ordinary corridor square into a real chamber, rather
+    // than decorating the existing corridor. "Large foundations" and
+    // "buttresses" are a different structural idea from "many huge and
+    // mightie pillers... fouresquare, sixe square, eight square" a
+    // sentence later (already built as vault-pillars, freestanding in the
+    // passages) — a buttress is engaged to a wall, carrying thrust down to
+    // a wide footing, so these are built attached to each chamber's walls,
+    // stepped from a wide plinth to a narrow cap, under a real vaulted
+    // ceiling standing proud of the corridor's flat slab. feat id
+    // subterranean-buttresses (research/coverage.json).
+    const chamberR = 1;                 // 3×3 cells ⇒ a 9.6 m hall, not a 3.2 m corridor cell
+    this._vaultChambers = [];
+    for (const [ax, ay] of this.altars) {
+      const x0 = Math.max(1, ax - chamberR), x1 = Math.min(this.W - 2, ax + chamberR);
+      const y0 = Math.max(1, ay - chamberR), y1 = Math.min(this.H - 2, ay + chamberR);
+      for (let y = y0; y <= y1; y++) for (let x = x0; x <= x1; x++) {
+        if (this.pits.has(y * this.W + x)) continue;    // never open a hole into a pit
+        this.solid[y][x] = false;
+      }
+      this._vaultChambers.push({ x0, x1, y0, y1 });
+    }
+    const inChamber = (x, y) => this._vaultChambers.some(c => x >= c.x0 && x <= c.x1 && y >= c.y0 && y <= c.y1);
+
     // ── the fabric ──────────────────────────────────────────────────────
     const wallGeo = [], floorGeo = [];
     const box = (w, h, d, x, y, z) => new THREE.BoxGeometry(w, h, d).translate(x, y, z);
@@ -221,17 +251,88 @@ export class VaultsScene {
     };
     add(wallGeo, stone);
     add(floorGeo, dark);
-    // the ceiling: the underside of the pyramid's own mass
-    const ceil = new THREE.Mesh(new THREE.PlaneGeometry(this.W * CELL, this.H * CELL), stone);
-    ceil.rotation.x = Math.PI / 2; ceil.position.y = WALL_H;
-    this.scene.add(ceil); this._disp.push(ceil.geometry);
+    this.colliders = [];
+    // the ceiling: the underside of the pyramid's own mass. Tiled per cell
+    // (rather than one big plane, as before) so each vault chamber can open
+    // a hole in it for its own vaulted ceiling to cap instead of the flat slab.
+    const ceilGeo = [];
+    for (let y = 0; y < this.H; y++) for (let x = 0; x < this.W; x++) {
+      if (inChamber(x, y)) continue;
+      ceilGeo.push(box(CELL, 0.2, CELL, this.wx(x), WALL_H + 0.1, this.wz(y)));
+    }
+    add(ceilGeo, stone);
+
+    // the vaulted halls: a barrel vault (semicircular in cross-section,
+    // open-ended so its underside is visible — CLAUDE.md's open-cylinder
+    // rule, hence DoubleSide) spanning each chamber, springing from the
+    // corridor's own WALL_H so the transition from flat to vaulted reads as
+    // one continuous ceiling, not a seam.
+    const vaultMat = M(0x2c261d, { roughness: 0.95, side: THREE.DoubleSide });
+    const vaultGeoAll = [];
+    for (const c of this._vaultChambers) {
+      const X0 = this.wx(c.x0) - CELL / 2, X1 = this.wx(c.x1) + CELL / 2;
+      const Z0 = this.wz(c.y0) - CELL / 2, Z1 = this.wz(c.y1) + CELL / 2;
+      const cx = (X0 + X1) / 2, cz = (Z0 + Z1) / 2;
+      const width = X1 - X0, depth = Z1 - Z0;
+      const alongX = width >= depth;
+      const runLen = alongX ? width : depth, spanLen = alongX ? depth : width;
+      const r = spanLen / 2;
+      const segs = Math.max(1, alongX ? c.x1 - c.x0 : c.y1 - c.y0);
+      // half-cylinder: three.js's own CylinderGeometry puts x = r·sinθ,
+      // z = r·cosθ (checked against a bounding-box readout, not assumed —
+      // the first draft had these swapped and built an arch that bulged
+      // both up AND down through the springline, verified live via
+      // scene.traverse + geometry.computeBoundingBox before this fix).
+      // θ ∈ [0, π] ⇒ x = r·sinθ ∈ [0, r] (one-sided — becomes the vertical
+      // arch after rotateZ), z = r·cosθ ∈ [-r, r] (symmetric — the lateral
+      // span). rotateZ(π/2) swings the cylinder's own length axis from
+      // vertical into the run direction.
+      const vg = new THREE.CylinderGeometry(r, r, runLen, 20, segs, true, 0, Math.PI);
+      vg.rotateZ(Math.PI / 2);
+      if (!alongX) vg.rotateY(Math.PI / 2);
+      vg.translate(cx, WALL_H, cz);
+      vaultGeoAll.push(vg);
+    }
+    add(vaultGeoAll, vaultMat);
+
+    // stepped buttress piers, engaged to the two long walls of each
+    // chamber, carrying the vault's thrust down to a wide footing —
+    // Dallington's own pairing of "large foundations" with "subterraneal
+    // buttresses". Given circle colliders like the freestanding pillars so
+    // the walker cannot clip through them.
+    const buttressGeo = [];
+    for (const c of this._vaultChambers) {
+      const X0 = this.wx(c.x0) - CELL / 2, X1 = this.wx(c.x1) + CELL / 2;
+      const Z0 = this.wz(c.y0) - CELL / 2, Z1 = this.wz(c.y1) + CELL / 2;
+      const cx = (X0 + X1) / 2, cz = (Z0 + Z1) / 2;
+      const width = X1 - X0, depth = Z1 - Z0;
+      const alongX = width >= depth;
+      const runLen = alongX ? width : depth, spanLen = alongX ? depth : width;
+      const nB = Math.max(2, Math.round(runLen / CELL));
+      for (let i = 0; i < nB; i++) {
+        const t = (i + 0.5) / nB - 0.5;
+        const along = t * runLen;
+        for (const side of [-1, 1]) {
+          const across = side * (spanLen / 2 - 0.05);
+          const px = alongX ? cx + along : cx + across;
+          const pz = alongX ? cz + across : cz + along;
+          // three receding steps: a wide plinth ("large foundations"),
+          // a plain shaft, a narrow cap flush with the vault's springline
+          buttressGeo.push(box(0.9, 0.5, 0.9, px, 0.25, pz));
+          buttressGeo.push(box(0.6, WALL_H - 1.0, 0.6, px, 0.5 + (WALL_H - 1.0) / 2, pz));
+          buttressGeo.push(box(0.42, 0.5, 0.42, px, WALL_H - 0.25, pz));
+          this.colliders.push({ x: px, z: pz, r: 0.5 });
+        }
+      }
+    }
+    add(buttressGeo, stone);
 
     // ── the pillars: "some fouresquare, some sixe square, some eight square" ──
     const pillarGeo = [];
-    this.colliders = [];
     for (const [x, y] of this.open) {
       const k = y * this.W + x;
       if (this.pits.has(k) || taken.has(k)) continue;
+      if (inChamber(x, y)) continue;   // the vaulted halls have their own buttresses, not freestanding pillars
       if (rnd() > 0.16) continue;
       const sides = [4, 6, 8][Math.floor(rnd() * 3)];
       const r = 0.5 + rnd() * 0.18;
