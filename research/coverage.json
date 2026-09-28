@@ -2016,12 +2016,13 @@
           "plate": null,
           "name": "The thickness you can climb inside, unseen",
           "source": "Dallington 1592 p. 124",
-          "status": "unbuilt",
-          "note": "In the interstitious thickness the boughs are so twisted and grown together that you may ascend up by them and be seen neither in them nor on the way you went. A hedge with a hidden stair inside its own six feet. Nothing in the world does anything like it, and it is the most striking single image in the chapter.",
+          "status": "built",
+          "note": "Dallington 1592 p.124: \"In the interstitious thickness the boughs are so twisted and grown together that you may ascend up by them and be seen neither in them nor on the way you went.\" Built 2026-09-28 into one pier of the green enclosure's west hedge run: a recessed dark gap in the court-facing face (checked live -- the first version sat behind the face, sign error, invisible, fixed the same pass), a lattice of tapered _limb boughs the shaft's full height, and a _floor rect at the crown so standing in the footprint rises the player to the top via Walker's own climbRate -- the game's reading of \"ascend up by them\". The run's collider is split around the notch with a stub wall closing the far face, so it is a shaft to climb and not a hole through the hedge; confirmed with Walker.collide() stepped through in both directions. A plaque just inside cites the page.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/screens.js _citrusRun (climbBay param) + _buildHedgeClimbShaft"
         },
         {
           "id": "plate-23-third-fountain",
