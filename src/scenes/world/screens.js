@@ -83,7 +83,7 @@ export const Screens = {
   // the first place; the upper one is the book's own — "Above, in a fitting
   // place, windows were set in order" (p. 88) — which a 4.2 m hedge had no room
   // for and a 13.6 m one does.
-  _citrusRun(cx, cz, len, axis, { gate = 0, bays = 8, thick = 1.78, high = 13.6 } = {}) {
+  _citrusRun(cx, cz, len, axis, { gate = 0, bays = 8, thick = 1.78, high = 13.6, climbBay = -1 } = {}) {
     const alongX = axis === 'x';
     const BAY = len / bays;
     const WIN = Math.min(4.4, BAY * 0.44), SILL = 1.1, HEAD = 2.9;
@@ -98,6 +98,11 @@ export const Screens = {
     // how far out from the middle the gate's own bays reach, so the green can be
     // carried back over the opening below
     let gateSpan = 0;
+    // captured when the climb bay is reached below — the pier's own centre,
+    // in world (x, z), so the collider split and the shaft after the loop can
+    // find it. `climbBay` is only meaningful on a 'z'-axis run (the only kind
+    // this project has ever called it with); see `_buildHedgeClimbShaft`.
+    let climbAt = null;
     for (let b = 0; b < bays; b++) {
       const t = -len / 2 + (b + 0.5) * BAY;
       // a bay that the gate falls in is skipped here and closed below
@@ -106,7 +111,9 @@ export const Screens = {
         continue;
       }
       const pw = BAY - WIN;
-      box(t - BAY / 2 + pw / 2, pw, high / 2, high);           // the pier
+      const pierU = t - BAY / 2 + pw / 2;
+      box(pierU, pw, high / 2, high);           // the pier
+      if (b === climbBay) climbAt = at(pierU);   // this pier's own [x, z]
       box(t + pw / 2, WIN, SILL / 2, SILL);                    // the sill under the lower window
       box(t + pw / 2, WIN, (HEAD + UP0) / 2, UP0 - HEAD);      // the head over it, and the upper sill
       box(t + pw / 2, WIN, (UP1 + high) / 2, high - UP1);      // the head over the upper window
@@ -162,11 +169,107 @@ export const Screens = {
         this._m(new THREE.BoxGeometry(alongX ? 0.5 : thick + 0.3, DOOR + 0.4, alongX ? thick + 0.3 : 0.5),
           this._stoneMat, jx, (DOOR + 0.4) / 2, jz, { outline: true });
       }
+    } else if (climbAt && !alongX) {
+      // ── The thickness you can climb inside, unseen (Dallington 1592 p.124,
+      // ch. VIII, coverage.json `hedge-climbable`) — carved into ONE pier of
+      // this run instead of the run's usual single unbroken collider. See
+      // `_buildHedgeClimbShaft` for the passage itself.
+      const [px, pz] = climbAt, NOTCH = 1.3;
+      this._wallCol(cx - thick / 2, cx + thick / 2, cz - len / 2, pz - NOTCH / 2);
+      this._wallCol(cx - thick / 2, cx + thick / 2, pz + NOTCH / 2, cz + len / 2);
+      // a thin stub wall closing the OUTWARD face (the far side of the
+      // thickness from the court this run faces), so the notch is a shaft to
+      // climb, not a hole clean through the hedge to the far side. cx's own
+      // sign says which face is outward: the green enclosure's court is
+      // always toward x = 0.
+      const outSign = cx < 0 ? -1 : 1;
+      const stubX0 = outSign < 0 ? cx - thick / 2 : cx + thick / 2 - 0.2;
+      const stubX1 = outSign < 0 ? cx - thick / 2 + 0.2 : cx + thick / 2;
+      this._wallCol(stubX0, stubX1, pz - NOTCH / 2, pz + NOTCH / 2);
+      this._buildHedgeClimbShaft(px, pz, cx, thick, high, NOTCH, outSign);
     } else if (alongX) {
       this._wallCol(cx - len / 2, cx + len / 2, cz - thick / 2, cz + thick / 2);
     } else {
       this._wallCol(cx - thick / 2, cx + thick / 2, cz - len / 2, cz + len / 2);
     }
+  },
+
+  // ── The hidden climb inside the hedge's own thickness (Dallington 1592
+  // p.124, ch. VIII): "In the interstitious thickness the boughs are so
+  // twisted and grown together that you may ascend up by them and be seen
+  // neither in them nor on the way you went." coverage.json
+  // `hedge-climbable`, marked unbuilt: "nothing in the world does anything
+  // like it, and it is the most striking single image in the chapter."
+  //
+  // Built as one real shaft inside one pier's 1.78 m thickness, not a
+  // gesture at the idea: a dark gap cut in the entry face (the `_frontWindow`
+  // trick — a recessed dark plane, not a boolean hole, same as every other
+  // "opening" in this codebase), a lattice of crossed boughs to climb by
+  // (`_limb`, the tree-limb primitive, doing what it does for a canopy), and
+  // a `_floor` rect at the crown's height so walking into the footprint
+  // rises you there over Walker's own `climbRate` — which is the mechanic
+  // this book's sentence describes: you go up, inside the hedge, and nothing
+  // marks the way either in or out.
+  //
+  //   px, pz     the pier's own centre (world x, z)
+  //   cx         the run's centre x — its sign says which face is outward
+  //   thick, high  the run's own thickness and height
+  //   notch      the opening's width along the run (z, for this 'z'-axis run)
+  //   outSign    -1 if the court this run faces is toward +x, else 1
+  _buildHedgeClimbShaft(px, pz, cx, thick, high, notch, outSign) {
+    const S = this.style, woodcut = S.key === 'woodcut';
+    const courtX = px - outSign * thick / 2;           // the entry face, court side
+    const DOOR_W = notch - 0.3, DOOR_H = 2.3;
+
+    // the dark gap in the boughs — the entry, cut into the pier's own face.
+    // PROUD of the face (toward the court, i.e. away from `outward`), by more
+    // than `_hedgeFringe`'s own 0.055 m of leaf-card standoff — recessed
+    // BEHIND the face (the sign this had until seen live) puts it inside the
+    // solid box, same trap `_frontWindow`'s own comment names (palace.js).
+    const gapMat = woodcut ? S.mat({ tone: 0.04 }) : S.mat({ color: 0x0c1408, roughness: 0.95 });
+    this._m(new THREE.PlaneGeometry(DOOR_W, DOOR_H), gapMat, courtX - outSign * 0.08, DOOR_H / 2, pz,
+      { ry: outSign < 0 ? Math.PI / 2 : -Math.PI / 2, cast: false, receive: false });
+
+    // the lattice of twisted boughs, climbed rather than walked — a zigzag of
+    // tapered limbs the whole height of the shaft, using the same primitive
+    // `_tree`'s canopy limbs use. Decorative: `Walker.climbRate` is what
+    // actually carries the player up once they stand in the footprint below.
+    const g = new THREE.Group();
+    g.position.set(px, 0, pz);
+    this.scene.add(g);
+    const bark = this._trunkMat;
+    const halfD = thick / 2 - 0.14, halfW = notch / 2 - 0.2;
+    const N = Math.round(high / 1.0);
+    let ax = -halfD, az = -halfW;
+    for (let i = 0; i < N; i++) {
+      const y0 = i * (high / N), y1 = (i + 1) * (high / N);
+      const bx = (i % 2 ? 1 : -1) * halfD, bz = (i % 3 === 0 ? 1 : -1) * halfW;
+      this._limb(g, bark, ax, y0, az, bx, y1, bz, 0.09, 0.07);
+      ax = bx; az = bz;
+    }
+
+    // the crown: a short hidden walkway on top of the clipped hedge, behind
+    // its own fringe of leaves, so a climber "seen neither... on the way went"
+    // stands among the topiary rather than above it in the open.
+    const platMat = woodcut ? S.mat({ tone: 0.1 }) : S.mat({ color: 0x2c4419, roughness: 0.95 });
+    this._m(new THREE.BoxGeometry(thick + 0.3, 0.1, notch + 1.6), platMat, px, high - 0.02, pz, { cast: false });
+    this._hedgeFringe(px, high + 0.02, pz, thick + 0.3, 0.2, notch + 1.6, 0, { density: 40 });
+    // a low rail so the platform reads as somewhere to stand, not a ledge
+    for (const sg of [-1, 1]) {
+      this._m(new THREE.BoxGeometry(thick + 0.3, 0.5, 0.08), bark, px, high + 0.27, pz + sg * (notch + 1.6) / 2, { cast: false });
+    }
+
+    // the climb itself: the footprint under the lattice rises to the crown.
+    // `Walker.floorAt` takes the highest floor under foot, and `_settleFloor`
+    // eases toward it at `climbRate` — stand in the shaft and the crown comes
+    // up to you over about four seconds, which is the game's whole reading of
+    // "ascend up by them."
+    this._floor({ kind: 'rect', x0: px - thick / 2, x1: px + thick / 2,
+                  z0: pz - (notch + 1.6) / 2, z1: pz + (notch + 1.6) / 2, y: high - 0.08 });
+
+    this._plaque({ main: 'THE THICKNESSE YOV MAY ASCEND VP BY',
+                   sub: 'THE BOVGHES SO TWISTED AND GROWNE TOGETHER THAT YOV MAY GOE VP AND BE SEENE NEITHER IN THEM NOR ON THE WAY YOV WENT · DALLINGTON P. 124' },
+      2.4, 0.7, courtX - outSign * 0.12, 1.6, pz, outSign < 0 ? Math.PI / 2 : -Math.PI / 2, true);
   },
 
   // The ripe fruits and unripe, and the white blossom among them (p. 88), set
@@ -342,7 +445,10 @@ export const Screens = {
     // is the fourth" — and the SOUTH is the hedge the cypress avenue runs at,
     // built once by `_buildCypressAvenue` with the gate in it. Building it
     // here as well put two hedges in the same 1.78 m.
-    this._citrusRun(-H, 0, SIDE, 'z', { bays: 8 });
+    // climbBay: 1 — the second pier from the palace end of the west run gets
+    // the hidden climb (coverage.json `hedge-climbable`); see `_citrusRun`
+    // and `_buildHedgeClimbShaft`.
+    this._citrusRun(-H, 0, SIDE, 'z', { bays: 8, climbBay: 1 });
     this._citrusRun(H, 0, SIDE, 'z', { bays: 8 });
 
     // ── what stands in the room ───────────────────────────────────────────
