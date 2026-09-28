@@ -1961,12 +1961,13 @@
           "plate": null,
           "name": "The nymphs run, and leave their golden pantofles and veils behind",
           "source": "Dallington 1592 p. 122",
-          "status": "unbuilt",
-          "note": "He makes as if to do what he dare not, and the five run off laughing and calling each other for help, leaving golden pantofles and veils here and there to be carried about by the wind and their vessels neglected in the grass; he chases, and afterwards goes back to gather up what they scattered. It is the moment that sets up Geussia's remedy, and it is scatterable litter -- the world already has a litter system. Marked unknown: not yet read against the court's own build.\n\nChecked 2026-09-09 and absent: no pantofles and no scattered veils anywhere (the veils in the world are the sphinxes' linen and the priestess's). The Litter system exists and is the natural carrier -- golden pantofles and veils left to be carried about by the wind, and vessels neglected in the grass, is litter with a reason for being where it is.",
+          "status": "built",
+          "note": "Our p. 87: \"they with fresh laughter called one another to help, and fled, leaving their golden slippers and veils here and there, their fillets carried off by the cool breezes; and their little vessels ran among the neglected flowers.\" Built 2026-09-28 beside the river, not the green enclosure court -- this scene and the already-built geussia-herbs feature (_buildRiverPlants) cite the same page (Dallington p.122) and are one continuous passage; the enclosure belongs to p.88, later in the chapter. Five golden slippers (one per sense-nymph), four white silk veils (two fallen, two caught aloft), and three vessels neglected in the flowers, plus a plaque. Verified live by screenshot beside the river.",
           "modes": [
             "walk",
             "tour"
-          ]
+          ],
+          "built_as": "world/approach.js _buildNymphFlightLitter, called from the 'palace' precinct block right after _buildRiverPlants"
         },
         {
           "id": "geussia-herbs",
